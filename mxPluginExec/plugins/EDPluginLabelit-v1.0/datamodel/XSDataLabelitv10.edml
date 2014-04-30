@@ -1,0 +1,58 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSData
+import XSDataCommon.XSDataAngle
+import XSDataCommon.XSDataBoolean
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataImage
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataLength
+import XSDataCommon.XSDataMatrixDouble
+import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataString
+
+complex type XSDataCell {
+	angle_alpha : XSDataAngle
+	angle_beta : XSDataAngle
+	angle_gamma : XSDataAngle
+	length_a : XSDataLength
+	length_b : XSDataLength
+	length_c : XSDataLength
+}
+
+complex type XSDataInputLabelit extends XSDataInput {
+	image : XSDataImage []
+}
+
+complex type XSDataLabelitMosflmScriptsOutput extends XSData {
+	aMatrix : XSDataMatrixDouble
+	uMatrix : XSDataMatrixDouble
+}
+
+complex type XSDataLabelitScreenOutput extends XSData {
+	beamCentreX : XSDataLength
+	beamCentreY : XSDataLength
+	distance : XSDataLength
+	mosaicity : XSDataAngle
+	selectedSolutionNumber : XSDataInteger
+	labelitScreenSolution : XSDataLabelitScreenSolution [] optional
+}
+
+complex type XSDataLabelitScreenSolution extends XSData {
+	bravaisLattice : XSDataString
+	crystalSystem : XSDataString
+	happy : XSDataBoolean
+	metricFitCode : XSDataString
+	metricFitValue : XSDataDouble
+	numberOfSpots : XSDataInteger
+	rmsd : XSDataLength
+	solutionNumber : XSDataInteger
+	unitCell : XSDataCell
+	volume : XSDataInteger
+}
+
+complex type XSDataResultLabelit extends XSDataResult {
+	labelitMosflmScriptsOutput : XSDataLabelitMosflmScriptsOutput
+	labelitScreenOutput : XSDataLabelitScreenOutput
+}

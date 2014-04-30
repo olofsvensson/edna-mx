@@ -1,0 +1,84 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSData
+import XSDataCommon.XSDataAngle
+import XSDataCommon.XSDataBoolean
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataImage
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataLength
+import XSDataCommon.XSDataMatrixDouble
+import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataString
+
+complex type XSDataCell {
+	angle_alpha : XSDataAngle
+	angle_beta : XSDataAngle
+	angle_gamma : XSDataAngle
+	length_a : XSDataLength
+	length_b : XSDataLength
+	length_c : XSDataLength
+}
+
+complex type XSDataImageQualityIndicators extends XSData {
+	binPopCutOffMethod2Res : XSDataDouble
+	goodBraggCandidates : XSDataInteger
+	iceRings : XSDataInteger
+	image : XSDataImage
+	inResTotal : XSDataInteger
+	inResolutionOvrlSpots : XSDataInteger
+	maxUnitCell : XSDataDouble
+	optional
+	method1Res : XSDataDouble
+	method2Res : XSDataDouble optional
+	pctSaturationTop50Peaks : XSDataDouble
+	optional
+	saturationRangeAverage : XSDataDouble optional
+	saturationRangeMax : XSDataDouble optional
+	saturationRangeMin : XSDataDouble optional
+	signalRangeAverage : XSDataDouble optional
+	signalRangeMax : XSDataDouble
+	optional
+	signalRangeMin : XSDataDouble optional
+	spotTotal : XSDataInteger
+	totalIntegratedSignal : XSDataDouble
+	optional
+}
+
+complex type XSDataInputDistlSignalStrength extends XSDataInput {
+	referenceImage : XSDataImage
+}
+
+complex type XSDataLabelitMosflmScriptsOutput extends XSData {
+	aMatrix : XSDataMatrixDouble
+	uMatrix : XSDataMatrixDouble
+}
+
+complex type XSDataLabelitScreenOutput extends XSData {
+	beamCentreX : XSDataLength
+	beamCentreY : XSDataLength
+	distance : XSDataLength
+	labelitScreenSolution : XSDataLabelitScreenSolution [] optional
+	mosaicity : XSDataAngle
+	pathToLogFile : XSDataFile
+	selectedSolutionNumber : XSDataInteger
+}
+
+complex type XSDataLabelitScreenSolution extends XSData {
+	bravaisLattice : XSDataString
+	crystalSystem : XSDataString
+	happy : XSDataBoolean
+	metricFitCode : XSDataString
+	metricFitValue : XSDataDouble
+	numberOfSpots : XSDataInteger
+	rmsd : XSDataLength
+	solutionNumber : XSDataInteger
+	unitCell : XSDataCell
+	volume : XSDataInteger
+}
+
+complex type XSDataResultDistlSignalStrength extends XSDataResult {
+	imageQualityIndicators : XSDataImageQualityIndicators
+}

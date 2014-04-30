@@ -1,0 +1,672 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataImage
+import XSDataCommon.XSData
+import XSDataCommon.XSDataBoolean
+import XSDataCommon.XSDataString
+import XSDataCommon.XSDataLength
+import XSDataCommon.XSDataAngle
+import XSDataCommon.XSDataTime
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataFile
+
+complex type XSDataISPyBImageQualityIndicators extends XSData {
+	binPopCutOffMethod2Res : XSDataDouble
+	goodBraggCandidates : XSDataInteger
+	iceRings : XSDataInteger
+	image : XSDataImage
+	inResTotal : XSDataInteger
+	inResolutionOvrlSpots : XSDataInteger
+	maxUnitCell : XSDataDouble optional
+	method1Res : XSDataDouble
+	method2Res : XSDataDouble optional
+	pctSaturationTop50Peaks : XSDataDouble optional
+	saturationRangeAverage : XSDataDouble optional
+	saturationRangeMax : XSDataDouble optional
+	saturationRangeMin : XSDataDouble optional
+	signalRangeAverage : XSDataDouble optional
+	signalRangeMax : XSDataDouble optional
+	signalRangeMin : XSDataDouble optional
+	spotTotal : XSDataInteger
+	totalIntegratedSignal : XSDataDouble optional
+	background3D_score : XSDataDouble optional
+}
+
+
+complex type XSDataInputStoreImageQualityIndicators extends XSDataInput {
+	imageQualityIndicators : XSDataISPyBImageQualityIndicators
+}
+
+complex type XSDataResultStoreImageQualityIndicators extends XSDataResult {
+	imageQualityIndicatorsId : XSDataInteger
+}
+
+complex type XSDataInputStoreListOfImageQualityIndicators extends XSDataInput {
+	imageQualityIndicators : XSDataISPyBImageQualityIndicators []
+}
+
+complex type XSDataResultStoreListOfImageQualityIndicators extends XSDataResult {
+	imageQualityIndicatorsId : XSDataInteger []
+}
+
+complex type XSDataInputStoreAutoProc extends XSDataInput {
+	AutoProcContainer : AutoProcContainer
+} 
+
+complex type XSDataResultStoreAutoProc extends XSDataResult {
+	autoProcId : XSDataInteger optional
+	autoProcScalingId : XSDataInteger optional
+} 
+
+
+complex type AutoProc {
+	autoProcId : integer optional
+	spaceGroup : string
+	refinedCell_a : float
+	refinedCell_b : float
+	refinedCell_c : float
+	refinedCell_alpha : float
+	refinedCell_beta : float
+	refinedCell_gamma : float
+}
+
+complex type AutoProcScalingContainer {
+	AutoProcScaling : AutoProcScaling
+	AutoProcScalingStatistics : AutoProcScalingStatistics []
+	AutoProcIntegrationContainer : AutoProcIntegrationContainer
+}
+
+complex type AutoProcScaling {
+	autoProcScalingId : integer optional
+	recordTimeStamp : string
+}
+
+complex type AutoProcScalingStatistics {
+	autoProcScalingStatisticsId : integer optional
+	scalingStatisticsType : string
+	comments : string
+	resolutionLimitLow : float
+	resolutionLimitHigh : float
+	rMerge : float
+	rmeasWithinIplusIminus : float
+	rmeasAllIplusIminus : float
+	rpimWithinIplusIminus : float
+	rpimAllIplusIminus : float
+	fractionalPartialBias : float
+	nTotalObservations : integer
+	ntotalUniqueObservations : integer
+	meanIOverSigI : float
+	completeness : float
+	multiplicity : float
+	anomalousCompleteness : float
+	anomalousMultiplicity : float
+	recordTimeStamp : string
+	anomalous : boolean
+	ccHalf : float
+}
+
+complex type Image {
+	dataCollectionId : integer
+}
+
+complex type AutoProcIntegration {
+	autoProcIntegrationId : integer optional
+	startImageNumber : integer
+	endImageNumber : integer
+	refinedDetectorDistance : float
+	refinedXbeam : float
+	refinedYbeam : float
+	rotationAxisX : float
+	rotationAxisY : float
+	rotationAxisZ : float
+	beamVectorX : float
+	beamVectorY : float
+	beamVectorZ : float
+	cell_a : float
+	cell_b : float
+	cell_c : float
+	cell_alpha : float
+	cell_beta : float
+	cell_gamma : float
+	anomalous : boolean
+}
+
+complex type AutoProcIntegrationContainer {
+	Image : Image
+	AutoProcIntegration : AutoProcIntegration
+}
+
+complex type AutoProcProgram {
+	autoProcProgramId : integer optional
+	processingCommandLine : string
+	processingPrograms : string
+	processingStatus : boolean
+	processingMessage : string
+	processingStartTime : string
+	processingEndTime : string
+	processingEnvironment : string
+}
+
+complex type AutoProcProgramAttachment {
+	autoProcProgramAttachmentId : integer optional
+	fileType : string
+	fileName : string
+	filePath : string
+	recordTimeStamp : string
+}
+
+complex type AutoProcProgramContainer {
+	AutoProcProgram : AutoProcProgram
+	AutoProcProgramAttachment : AutoProcProgramAttachment []
+}
+
+complex type AutoProcContainer {
+	AutoProc : AutoProc
+	AutoProcScalingContainer : AutoProcScalingContainer
+	AutoProcProgramContainer : AutoProcProgramContainer
+}
+
+
+complex type XSDataInputStoreAutoProcStatus extends XSDataInput {
+	dataCollectionId : integer optional
+	autoProcIntegrationId : integer optional
+	autoProcStatusId : integer optional
+	AutoProcStatus : AutoProcStatus
+} 
+
+complex type XSDataResultStoreAutoProcStatus extends XSDataResult {
+	autoProcIntegrationId : integer
+	autoProcStatusId : integer
+} 
+
+complex type AutoProcStatus {
+	autoProcStatusId : integer optional
+	autoProcIntegrationId : integer
+	step : string
+	status : string
+	comments : string
+	bltimeStamp : string
+}
+
+complex type XSDataInputStoreDataCollection extends XSDataInput {
+	dataCollection : XSDataISPyBDataCollection
+}
+
+complex type XSDataResultStoreDataCollection extends XSDataResult {
+	dataCollectionId : XSDataInteger optional
+}
+
+complex type XSDataInputRetrieveDataCollection extends XSDataInput {
+	image : XSDataImage
+}
+
+complex type XSDataResultRetrieveDataCollection extends XSDataResult {
+	dataCollection : XSDataISPyBDataCollection
+}
+
+complex type XSDataISPyBDataCollection {
+	actualCenteringPosition : string
+	averageTemperature : float
+	axisEnd : float
+	axisRange : float
+	axisStart : float
+	beamShape : string
+	beamSizeAtSampleX : float
+	beamSizeAtSampleY : float
+	centeringMethod : string
+	comments : string
+	dataCollectionId : integer
+	dataCollectionNumber : integer
+	detector2theta : float
+	detectorDistance : float
+	detectorMode : string
+	endTime : string
+	exposureTime : float
+	fileTemplate : string
+	flux : float
+	imageDirectory : string
+	imagePrefix : string
+	imageSuffix : string
+	kappaStart : float
+	numberOfImages : integer
+	numberOfPasses : integer
+	omegaStart : float
+	overlap : float
+	phiStart : float
+	printableForReport : boolean
+	resolution : float
+	resolutionAtCorner : float
+	rotationAxis : string
+	runStatus : string
+	slitGapVertical : float
+	slitGapHorizontal : float
+	startImageNumber : integer
+	strategySubWedgeOrigId : integer optional
+	startTime : string
+	synchrotronMode : string
+	transmission : float
+	undulatorGap1 : float
+	undulatorGap2 : float
+	undulatorGap3 : float
+	wavelength : float
+	xbeam : float
+	xtalSnapshotFullPath1 : string
+	xtalSnapshotFullPath2 : string
+	xtalSnapshotFullPath3 : string
+	xtalSnapshotFullPath4 : string
+	ybeam : float
+}
+
+
+complex type XSDataISPyBDiffractionPlan extends XSData {
+	aimedCompleteness : XSDataDouble optional
+	aimedIOverSigmaAtHighestResolution : XSDataDouble optional
+	aimedMultiplicity : XSDataDouble optional
+	aimedResolution : XSDataDouble optional
+	anomalousData : XSDataBoolean optional
+	comments : XSDataString optional
+	complexity : XSDataString optional
+	diffractionPlanId : XSDataInteger optional
+	estimateRadiationDamage : XSDataBoolean optional
+	experimentKind : XSDataString optional
+	exposureTime : XSDataDouble optional
+	forcedSpaceGroup : XSDataString optional
+	kappaStrategyOption : XSDataString optional
+	maxDimAccrossSpindleAxis : XSDataDouble optional
+	maximalResolution : XSDataDouble optional
+	minDimAccrossSpindleAxis : XSDataDouble optional
+	minimalResolution : XSDataDouble optional
+	numberOfPositions : XSDataInteger optional
+	observedResolution : XSDataDouble optional
+	oscillationRange : XSDataDouble optional
+	preferredBeamSizeX : XSDataDouble optional
+	preferredBeamSizeY : XSDataDouble optional
+	radiationSensitivity : XSDataDouble optional
+	radiationSensitivityBeta : XSDataDouble optional
+	radiationSensitivityGamma : XSDataDouble optional
+	requiredCompleteness : XSDataDouble optional
+	requiredMultiplicity : XSDataDouble optional
+	requiredResolution : XSDataDouble optional
+	screeningResolution : XSDataDouble optional
+	anomalousScatterer : XSDataString optional
+	strategyOption : XSDataString optional
+	xmlDocumentId : XSDataInteger optional
+}
+
+complex type XSDataISPyBScreening extends XSData {
+	screeningId : XSDataInteger optional
+	dataCollectionId : XSDataInteger
+	diffractionplanId : XSDataInteger
+	timeStamp : XSDataString
+	programVersion : XSDataString optional
+	comments : XSDataString optional
+	shortComments : XSDataString optional
+	xmlSampleInformation : XSDataString optional
+}
+
+complex type XSDataISPyBScreeningFile extends XSData {
+	screeningFileId : XSDataInteger optional
+	screeningId : XSDataInteger optional
+	fileType : XSDataString optional
+	fileName : XSDataString
+	filePath : XSDataString
+	description : XSDataString optional
+	timeStamp : XSDataString
+}
+
+complex type XSDataISPyBScreeningRank extends XSData {
+	screeningRankId : XSDataInteger optional
+	screeningRankSetId : XSDataInteger
+	screeningId : XSDataInteger optional
+	rankValue : XSDataDouble
+	rankInformation : XSDataString
+}
+
+complex type XSDataISPyBScreeningRankSet extends XSData {
+	screeningRankSetId : XSDataInteger
+	rankEngine : XSDataString
+	rankingProjectFileName : XSDataString
+	rankingSummaryFileName : XSDataString
+}
+
+
+complex type XSDataISPyBScreeningOutput extends XSData {
+	screeningOutputId : XSDataInteger optional
+	screeningId : XSDataInteger
+	statusDescription : XSDataString optional
+	rejectedReflections : XSDataInteger optional
+	resolutionObtained : XSDataDouble optional
+	spotDeviationR : XSDataLength optional
+	spotDeviationTheta : XSDataAngle optional
+	beamShiftX : XSDataLength optional
+	beamShiftY : XSDataLength optional
+	numSpotsFound : XSDataInteger optional
+	numSpotsUsed : XSDataInteger optional
+	numSpotsRejected : XSDataInteger optional
+	mosaicity : XSDataDouble optional
+	iOverSigma : XSDataDouble optional
+	diffractionRings : XSDataBoolean optional
+	indexingSuccess : XSDataBoolean
+	strategySuccess : XSDataBoolean
+	mosaicityEstimated : XSDataBoolean optional
+	rankingResolution : XSDataDouble optional
+	program : XSDataString optional
+	doseTotal : XSDataDouble optional
+	totalExposureTime : XSDataDouble optional
+	totalRotationRange : XSDataDouble optional
+	totalNumberOfImages : XSDataInteger optional
+	rFriedel : XSDataDouble optional
+}
+
+complex type XSDataISPyBScreeningOutputLattice extends XSData {
+	screeningOutputLatticeId : XSDataInteger optional
+	screeningOutputId : XSDataInteger
+	spaceGroup : XSDataString optional
+	pointGroup : XSDataString optional
+	bravaisLattice : XSDataString optional
+	rawOrientationMatrix_a_x : XSDataDouble optional
+	rawOrientationMatrix_a_y : XSDataDouble optional
+	rawOrientationMatrix_a_z : XSDataDouble optional
+	rawOrientationMatrix_b_x : XSDataDouble optional
+	rawOrientationMatrix_b_y : XSDataDouble optional
+	rawOrientationMatrix_b_z : XSDataDouble optional
+	rawOrientationMatrix_c_x : XSDataDouble optional
+	rawOrientationMatrix_c_y : XSDataDouble optional
+	rawOrientationMatrix_c_z : XSDataDouble optional
+	unitCell_a : XSDataLength
+	unitCell_alpha : XSDataAngle
+	unitCell_b : XSDataLength
+	unitCell_beta : XSDataAngle
+	unitCell_c : XSDataLength
+	unitCell_gamma : XSDataAngle
+	timeStamp : XSDataLength
+	labelitIndexing : XSDataBoolean optional
+}
+
+complex type XSDataISPyBScreeningStrategy extends XSData {
+	screeningStrategyId : XSDataInteger optional
+	screeningOutputId : XSDataInteger
+	phiStart : XSDataDouble optional
+	phiEnd : XSDataDouble optional
+	rotation : XSDataDouble optional
+	exposureTime : XSDataDouble optional
+	resolution : XSDataDouble optional
+	completeness : XSDataDouble optional
+	multiplicity : XSDataDouble optional
+	anomalous : XSDataBoolean optional
+	program : XSDataString optional
+	rankingResolution : XSDataDouble optional
+	transmission : XSDataDouble optional
+}
+
+
+complex type XSDataISPyBScreeningStrategyWedge extends XSData {
+	screeningStrategyWedgeId : XSDataInteger optional
+	screeningStrategyId : XSDataInteger
+	screeningStrategyOutputId : XSDataInteger
+	wedgeNumber : XSDataInteger
+	resolution : XSDataDouble
+	completeness : XSDataDouble
+	multiplicity : XSDataDouble
+	doseTotal : XSDataDouble optional
+	numberOfImages : XSDataInteger
+	phi : XSDataDouble optional
+	kappa : XSDataDouble optional
+	comments : XSDataString optional
+	wavelength : XSDataDouble optional
+}
+
+
+complex type XSDataISPyBScreeningStrategySubWedge extends XSData {
+	screeningStrategySubWedgeId : XSDataInteger optional
+	screeningStrategyWedgeId : XSDataInteger
+	subWedgeNumber : XSDataInteger
+	rotationAxis : XSDataString optional
+	axisStart : XSDataAngle
+	axisEnd : XSDataAngle
+	exposureTime : XSDataTime
+	transmission : XSDataDouble optional
+	oscillationRange : XSDataAngle
+	completeness : XSDataDouble optional
+	multiplicity : XSDataDouble optional
+	doseTotal : XSDataDouble optional
+	numberOfImages : XSDataInteger
+	comments : XSDataString optional
+}
+
+
+complex type XSDataISPyBImage extends XSData {
+	fileLocation : XSDataString
+	fileName : XSDataString
+	comments : XSDataString optional
+	cumulativeIntensity : XSDataDouble optional
+	imageId : XSDataInteger optional
+	imageNumber : XSDataInteger optional
+	jpegFileFullPath : XSDataString optional
+	jpegThumbnailFileFullPath : XSDataString optional
+	machineMessage : XSDataString optional
+	measuredIntensity : XSDataDouble optional
+	synchrotronCurrent : XSDataDouble optional
+	temperature : XSDataDouble optional
+}
+
+
+complex type XSDataISPyBScreeningOutputContainer extends XSData {
+	screeningOutput : XSDataISPyBScreeningOutput
+	screeningOutputLattice : XSDataISPyBScreeningOutputLattice [] optional
+	screeningStrategyContainer : XSDataISPyBScreeningStrategyContainer [] optional
+}
+
+
+complex type XSDataISPyBScreeningStrategyContainer extends XSData {
+	screeningStrategy : XSDataISPyBScreeningStrategy
+	screeningStrategyWedgeContainer : XSDataISPyBScreeningStrategyWedgeContainer [] optional
+}
+
+
+complex type XSDataISPyBScreeningStrategyWedgeContainer extends XSData {
+	screeningStrategySubWedge : XSDataISPyBScreeningStrategySubWedge [] optional
+	screeningStrategyWedge : XSDataISPyBScreeningStrategyWedge
+}
+
+complex type XSDataInputISPyBStoreScreening extends XSDataInput {
+	diffractionPlan : XSDataISPyBDiffractionPlan optional
+	file : XSDataISPyBScreeningFile [] optional
+	image : XSDataISPyBImage optional
+	screening : XSDataISPyBScreening optional
+	screeningOutputContainer : XSDataISPyBScreeningOutputContainer [] optional
+	screeningRank : XSDataISPyBScreeningRank [] optional
+	screeningRankSet : XSDataISPyBScreeningRankSet optional
+}
+
+
+complex type XSDataResultISPyBStoreScreening extends XSDataResult {
+	screeningId : XSDataInteger optional
+	dataCollectionId : XSDataInteger optional
+}
+
+complex type XSDataISPyBWorkflow extends XSData {
+	comments: XSDataString optional
+	logFilePath: XSDataString optional
+	recordTimeStamp: XSDataString optional
+	resultFilePath: XSDataString optional
+	status: XSDataString 
+	workflowId: XSDataInteger optional
+	workflowTitle: XSDataString optional
+	workflowType: XSDataString optional
+}
+
+complex type XSDataInputISPyBStoreWorkflow extends XSDataInput {
+	workflow: XSDataISPyBWorkflow
+}
+
+complex type XSDataResultISPyBStoreWorkflow extends XSDataResult {
+	workflowId: XSDataInteger
+}
+
+complex type XSDataInputISPyBUpdateDataCollectionGroupWorkflowId extends XSDataInput {
+	fileLocation: XSDataString
+	fileName: XSDataString
+	workflowId: XSDataInteger
+}
+
+complex type XSDataResultISPyBUpdateDataCollectionGroupWorkflowId extends XSDataResult {
+	dataCollectionGroupId: XSDataInteger
+}
+
+complex type XSDataInputISPyBGroupDataCollections extends XSDataInput {
+	dataCollectionGroupId: XSDataInteger
+	filePath: XSDataString []
+}
+
+complex type XSDataResultISPyBGroupDataCollections extends XSDataResult {
+	dataCollectionId: XSDataInteger [] optional
+}
+
+complex type XSDataInputISPyBUpdateWorkflowStatus extends XSDataInput {
+	workflowId: XSDataInteger
+	newStatus: XSDataString
+}
+
+complex type XSDataResultISPyBUpdateWorkflowStatus extends XSDataResult {
+	workflowId: XSDataInteger
+}
+
+complex type XSDataISPyBSamplePosition extends XSData {
+	gridIndexY : XSDataInteger optional
+	gridIndexZ : XSDataInteger optional
+	kappa : XSDataDouble
+	omega : XSDataDouble
+	phi : XSDataDouble
+	phiX : XSDataDouble
+	phiY : XSDataDouble
+	phiZ : XSDataDouble
+	sampX : XSDataDouble
+	sampY : XSDataDouble
+}
+
+
+complex type XSDataISPyBImagePosition extends XSData {
+	fileName : XSDataFile
+	position : XSDataISPyBSamplePosition
+	jpegFileFullPath : XSDataFile
+	jpegThumbnailFileFullPath : XSDataFile
+}
+
+
+complex type XSDataInputISPyBSetImagesPositions extends XSDataInput {
+	imagePosition : XSDataISPyBImagePosition []
+}
+
+
+complex type XSDataISPyBImageCreation extends XSData {
+	fileLocation : XSDataString
+	fileName : XSDataString
+	imageId : XSDataInteger
+	isCreated : XSDataBoolean
+}
+
+complex type XSDataResultISPyBSetImagesPositions extends XSDataResult {
+	imageCreation : XSDataISPyBImageCreation [] optional
+}
+
+complex type XSDataInputISPyBStoreMotorPosition extends XSDataInput {
+	motorPosition : XSDataISPyBSamplePosition
+}
+
+complex type XSDataResultISPyBStoreMotorPosition extends XSDataResult {
+	motorPositionId : XSDataInteger
+}
+
+complex type XSDataInputISPyBSetDataCollectionPosition extends XSDataInput {
+	fileName : XSDataFile
+	startPosition : XSDataISPyBSamplePosition
+	endPosition : XSDataISPyBSamplePosition
+}
+
+complex type XSDataResultISPyBSetDataCollectionPosition extends XSDataResult {
+	dataCollectionId : XSDataInteger
+}
+
+complex type XSDataInputISPyBDataCollectionPosition extends XSData {
+	fileName : XSDataFile
+	startPosition : XSDataISPyBSamplePosition
+	endPosition : XSDataISPyBSamplePosition
+}
+
+complex type XSDataInputISPyBSetDataCollectionsPositions extends XSDataInput {
+	dataCollectionPosition : XSDataInputISPyBDataCollectionPosition []
+}
+
+complex type XSDataResultISPyBSetDataCollectionsPositions extends XSDataResult {
+	dataCollectionId : XSDataInteger [] optional
+}
+
+complex type XSDataInputISPyBStoreGridInfo extends XSDataInput {
+	gridInfoId : XSDataInteger optional
+	workflowMeshId : XSDataInteger
+	dx_mm : XSDataDouble
+	dy_mm : XSDataDouble
+	xOffset : XSDataDouble
+	yOffset : XSDataDouble
+	steps_x : XSDataInteger
+	steps_y : XSDataInteger
+	meshAngle : XSDataDouble
+}
+
+complex type XSDataResultISPyBStoreGridInfo extends XSDataResult {
+	gridInfoId : XSDataInteger optional
+}
+
+	
+complex type XSDataInputISPyBStoreWorkflowMesh extends XSDataInput {
+	workflowId: XSDataInteger
+	bestPositionId: XSDataInteger
+	bestImageId: XSDataInteger
+	value1: XSDataDouble
+	value2: XSDataDouble
+	value3: XSDataDouble
+	value4: XSDataDouble
+	cartographyPath: XSDataString
+}
+
+complex type XSDataResultISPyBStoreWorkflowMesh extends XSDataResult {
+	workflowMeshId : XSDataInteger
+}
+
+complex type XSDataInputISPyBSetBestWilsonPlotPath extends XSDataInput {
+	dataCollectionId: XSDataInteger
+	bestWilsonPlotPath: XSDataString
+}
+
+complex type XSDataResultISPyBSetBestWilsonPlotPath extends XSDataResult {
+	dataCollectionId : XSDataInteger
+}
+
+
+complex type XSDataInputGetSampleInformation extends XSDataInput {
+	sampleId: XSDataInteger
+}
+
+complex type XSDataResultGetSampleInformation extends XSDataResult {
+	cellA: XSDataDouble
+	cellB: XSDataDouble
+	cellC: XSDataDouble
+	cellAlpha: XSDataDouble
+	cellBeta: XSDataDouble
+	cellGamma: XSDataDouble
+	code: XSDataString
+	containerSampleChangerLocation: XSDataString
+	crystalSpaceGroup: XSDataString
+	diffractionPlan: XSDataISPyBDiffractionPlan
+	experimentType: XSDataString
+	holderLength: XSDataDouble
+	minimalResolution: XSDataDouble
+	proteinAcronym: XSDataString
+	sampleId: XSDataInteger
+	sampleLocation: XSDataString
+	sampleName: XSDataString
+}

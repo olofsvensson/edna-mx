@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<XSDataInputStoreImageQualityIndicators>
+    <imageQualityIndicators>
+        <goodBraggCandidates>
+            <value>4</value>
+        </goodBraggCandidates>
+        <iceRings>
+            <value>5</value>
+        </iceRings>
+        <image>
+            <path>
+                <value>/data/id14eh4/inhouse/opid144/20130319/RAW_DATA/1-2/discrete-1/opid144_1_0001.img</value>
+            </path>
+            <date>
+                <value>Tue Mar 19 09:16:32 2013</value>
+            </date>
+            <number>
+                <value>1</value>
+            </number>
+        </image>
+        <inResTotal>
+            <value>3</value>
+        </inResTotal>
+        <inResolutionOvrlSpots>
+            <value>6</value>
+        </inResolutionOvrlSpots>
+        <maxUnitCell>
+            <value>5.3</value>
+        </maxUnitCell>
+        <method1Res>
+            <value>5.1</value>
+        </method1Res>
+        <method2Res>
+            <value>5.2</value>
+        </method2Res>
+        <spotTotal>
+            <value>2</value>
+        </spotTotal>
+        <totalIntegratedSignal>
+            <value>9.4</value>
+        </totalIntegratedSignal>
+        <background3D_score>
+            <value>123.45</value>
+        </background3D_score>
+        <pctSaturationTop50Peaks>
+            <value>5.4</value>
+        </pctSaturationTop50Peaks>
+        <binPopCutOffMethod2Res>
+            <value>7.1</value>
+        </binPopCutOffMethod2Res>
+    </imageQualityIndicators>
+</XSDataInputStoreImageQualityIndicators>

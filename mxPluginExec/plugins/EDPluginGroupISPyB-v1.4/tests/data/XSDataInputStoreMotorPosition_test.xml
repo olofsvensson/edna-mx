@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<XSDataInputSetImagesPositions>
+	<motorPosition>
+		<kappa><value>3.0</value></kappa>
+		<omega><value>4.0</value></omega>
+		<phi><value>5.0</value></phi>
+		<phiX><value>6.0</value></phiX>
+		<phiY><value>7.0</value></phiY>
+		<phiZ><value>8.0</value></phiZ>
+		<sampX><value>9.0</value></sampX>
+		<sampY><value>10.0</value></sampY>
+	</motorPosition>
+</XSDataInputSetImagesPositions>

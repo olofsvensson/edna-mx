@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<XSConfiguration> 
+	<XSPluginList>
+		<XSPluginItem> 
+			<name>indexingMosflm</name> 
+			<XSParamList>
+				<XSParamItem>
+					<name>workingDir</name>
+					<value>/path/to/working/dir</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>number</name>
+					<value>3</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem> 
+	</XSPluginList> 
+</XSConfiguration> 
