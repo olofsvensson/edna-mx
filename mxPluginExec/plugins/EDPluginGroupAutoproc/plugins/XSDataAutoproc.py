@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Jan 31 02:24::34 2013 by EDGenerateDS.
+# Generated Tue Feb 18 02:18::32 2014 by EDGenerateDS.
 #
 
 import os, sys
@@ -360,55 +360,55 @@ class XSDataRange(object):
 
 
 class XSDataXdsCompletenessEntry(object):
-    def __init__(self, half_dataset_correlation=None, outer_isig=None, outer_rfactor=None, outer_complete=None, outer_possible=None, outer_unique=None, outer_observed=None, outer_res=None):
-        if outer_res is None:
-            self._outer_res = None
-        elif outer_res.__class__.__name__ == "XSDataFloat":
-            self._outer_res = outer_res
+    def __init__(self, half_dataset_correlation=None, isig=None, rfactor=None, complete=None, possible=None, unique=None, observed=None, res=None):
+        if res is None:
+            self._res = None
+        elif res.__class__.__name__ == "XSDataFloat":
+            self._res = res
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'outer_res' is not XSDataFloat but %s" % self._outer_res.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'res' is not XSDataFloat but %s" % self._res.__class__.__name__
             raise BaseException(strMessage)
-        if outer_observed is None:
-            self._outer_observed = None
-        elif outer_observed.__class__.__name__ == "XSDataFloat":
-            self._outer_observed = outer_observed
+        if observed is None:
+            self._observed = None
+        elif observed.__class__.__name__ == "XSDataFloat":
+            self._observed = observed
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'outer_observed' is not XSDataFloat but %s" % self._outer_observed.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'observed' is not XSDataFloat but %s" % self._observed.__class__.__name__
             raise BaseException(strMessage)
-        if outer_unique is None:
-            self._outer_unique = None
-        elif outer_unique.__class__.__name__ == "XSDataFloat":
-            self._outer_unique = outer_unique
+        if unique is None:
+            self._unique = None
+        elif unique.__class__.__name__ == "XSDataFloat":
+            self._unique = unique
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'outer_unique' is not XSDataFloat but %s" % self._outer_unique.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'unique' is not XSDataFloat but %s" % self._unique.__class__.__name__
             raise BaseException(strMessage)
-        if outer_possible is None:
-            self._outer_possible = None
-        elif outer_possible.__class__.__name__ == "XSDataFloat":
-            self._outer_possible = outer_possible
+        if possible is None:
+            self._possible = None
+        elif possible.__class__.__name__ == "XSDataFloat":
+            self._possible = possible
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'outer_possible' is not XSDataFloat but %s" % self._outer_possible.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'possible' is not XSDataFloat but %s" % self._possible.__class__.__name__
             raise BaseException(strMessage)
-        if outer_complete is None:
-            self._outer_complete = None
-        elif outer_complete.__class__.__name__ == "XSDataFloat":
-            self._outer_complete = outer_complete
+        if complete is None:
+            self._complete = None
+        elif complete.__class__.__name__ == "XSDataFloat":
+            self._complete = complete
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'outer_complete' is not XSDataFloat but %s" % self._outer_complete.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'complete' is not XSDataFloat but %s" % self._complete.__class__.__name__
             raise BaseException(strMessage)
-        if outer_rfactor is None:
-            self._outer_rfactor = None
-        elif outer_rfactor.__class__.__name__ == "XSDataFloat":
-            self._outer_rfactor = outer_rfactor
+        if rfactor is None:
+            self._rfactor = None
+        elif rfactor.__class__.__name__ == "XSDataFloat":
+            self._rfactor = rfactor
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'outer_rfactor' is not XSDataFloat but %s" % self._outer_rfactor.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'rfactor' is not XSDataFloat but %s" % self._rfactor.__class__.__name__
             raise BaseException(strMessage)
-        if outer_isig is None:
-            self._outer_isig = None
-        elif outer_isig.__class__.__name__ == "XSDataFloat":
-            self._outer_isig = outer_isig
+        if isig is None:
+            self._isig = None
+        elif isig.__class__.__name__ == "XSDataFloat":
+            self._isig = isig
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'outer_isig' is not XSDataFloat but %s" % self._outer_isig.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'isig' is not XSDataFloat but %s" % self._isig.__class__.__name__
             raise BaseException(strMessage)
         if half_dataset_correlation is None:
             self._half_dataset_correlation = None
@@ -417,90 +417,90 @@ class XSDataXdsCompletenessEntry(object):
         else:
             strMessage = "ERROR! XSDataXdsCompletenessEntry constructor argument 'half_dataset_correlation' is not XSDataFloat but %s" % self._half_dataset_correlation.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'outer_res' attribute
-    def getOuter_res(self): return self._outer_res
-    def setOuter_res(self, outer_res):
-        if outer_res is None:
-            self._outer_res = None
-        elif outer_res.__class__.__name__ == "XSDataFloat":
-            self._outer_res = outer_res
+    # Methods and properties for the 'res' attribute
+    def getRes(self): return self._res
+    def setRes(self, res):
+        if res is None:
+            self._res = None
+        elif res.__class__.__name__ == "XSDataFloat":
+            self._res = res
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry.setOuter_res argument is not XSDataFloat but %s" % outer_res.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry.setRes argument is not XSDataFloat but %s" % res.__class__.__name__
             raise BaseException(strMessage)
-    def delOuter_res(self): self._outer_res = None
-    outer_res = property(getOuter_res, setOuter_res, delOuter_res, "Property for outer_res")
-    # Methods and properties for the 'outer_observed' attribute
-    def getOuter_observed(self): return self._outer_observed
-    def setOuter_observed(self, outer_observed):
-        if outer_observed is None:
-            self._outer_observed = None
-        elif outer_observed.__class__.__name__ == "XSDataFloat":
-            self._outer_observed = outer_observed
+    def delRes(self): self._res = None
+    res = property(getRes, setRes, delRes, "Property for res")
+    # Methods and properties for the 'observed' attribute
+    def getObserved(self): return self._observed
+    def setObserved(self, observed):
+        if observed is None:
+            self._observed = None
+        elif observed.__class__.__name__ == "XSDataFloat":
+            self._observed = observed
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry.setOuter_observed argument is not XSDataFloat but %s" % outer_observed.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry.setObserved argument is not XSDataFloat but %s" % observed.__class__.__name__
             raise BaseException(strMessage)
-    def delOuter_observed(self): self._outer_observed = None
-    outer_observed = property(getOuter_observed, setOuter_observed, delOuter_observed, "Property for outer_observed")
-    # Methods and properties for the 'outer_unique' attribute
-    def getOuter_unique(self): return self._outer_unique
-    def setOuter_unique(self, outer_unique):
-        if outer_unique is None:
-            self._outer_unique = None
-        elif outer_unique.__class__.__name__ == "XSDataFloat":
-            self._outer_unique = outer_unique
+    def delObserved(self): self._observed = None
+    observed = property(getObserved, setObserved, delObserved, "Property for observed")
+    # Methods and properties for the 'unique' attribute
+    def getUnique(self): return self._unique
+    def setUnique(self, unique):
+        if unique is None:
+            self._unique = None
+        elif unique.__class__.__name__ == "XSDataFloat":
+            self._unique = unique
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry.setOuter_unique argument is not XSDataFloat but %s" % outer_unique.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry.setUnique argument is not XSDataFloat but %s" % unique.__class__.__name__
             raise BaseException(strMessage)
-    def delOuter_unique(self): self._outer_unique = None
-    outer_unique = property(getOuter_unique, setOuter_unique, delOuter_unique, "Property for outer_unique")
-    # Methods and properties for the 'outer_possible' attribute
-    def getOuter_possible(self): return self._outer_possible
-    def setOuter_possible(self, outer_possible):
-        if outer_possible is None:
-            self._outer_possible = None
-        elif outer_possible.__class__.__name__ == "XSDataFloat":
-            self._outer_possible = outer_possible
+    def delUnique(self): self._unique = None
+    unique = property(getUnique, setUnique, delUnique, "Property for unique")
+    # Methods and properties for the 'possible' attribute
+    def getPossible(self): return self._possible
+    def setPossible(self, possible):
+        if possible is None:
+            self._possible = None
+        elif possible.__class__.__name__ == "XSDataFloat":
+            self._possible = possible
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry.setOuter_possible argument is not XSDataFloat but %s" % outer_possible.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry.setPossible argument is not XSDataFloat but %s" % possible.__class__.__name__
             raise BaseException(strMessage)
-    def delOuter_possible(self): self._outer_possible = None
-    outer_possible = property(getOuter_possible, setOuter_possible, delOuter_possible, "Property for outer_possible")
-    # Methods and properties for the 'outer_complete' attribute
-    def getOuter_complete(self): return self._outer_complete
-    def setOuter_complete(self, outer_complete):
-        if outer_complete is None:
-            self._outer_complete = None
-        elif outer_complete.__class__.__name__ == "XSDataFloat":
-            self._outer_complete = outer_complete
+    def delPossible(self): self._possible = None
+    possible = property(getPossible, setPossible, delPossible, "Property for possible")
+    # Methods and properties for the 'complete' attribute
+    def getComplete(self): return self._complete
+    def setComplete(self, complete):
+        if complete is None:
+            self._complete = None
+        elif complete.__class__.__name__ == "XSDataFloat":
+            self._complete = complete
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry.setOuter_complete argument is not XSDataFloat but %s" % outer_complete.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry.setComplete argument is not XSDataFloat but %s" % complete.__class__.__name__
             raise BaseException(strMessage)
-    def delOuter_complete(self): self._outer_complete = None
-    outer_complete = property(getOuter_complete, setOuter_complete, delOuter_complete, "Property for outer_complete")
-    # Methods and properties for the 'outer_rfactor' attribute
-    def getOuter_rfactor(self): return self._outer_rfactor
-    def setOuter_rfactor(self, outer_rfactor):
-        if outer_rfactor is None:
-            self._outer_rfactor = None
-        elif outer_rfactor.__class__.__name__ == "XSDataFloat":
-            self._outer_rfactor = outer_rfactor
+    def delComplete(self): self._complete = None
+    complete = property(getComplete, setComplete, delComplete, "Property for complete")
+    # Methods and properties for the 'rfactor' attribute
+    def getRfactor(self): return self._rfactor
+    def setRfactor(self, rfactor):
+        if rfactor is None:
+            self._rfactor = None
+        elif rfactor.__class__.__name__ == "XSDataFloat":
+            self._rfactor = rfactor
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry.setOuter_rfactor argument is not XSDataFloat but %s" % outer_rfactor.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry.setRfactor argument is not XSDataFloat but %s" % rfactor.__class__.__name__
             raise BaseException(strMessage)
-    def delOuter_rfactor(self): self._outer_rfactor = None
-    outer_rfactor = property(getOuter_rfactor, setOuter_rfactor, delOuter_rfactor, "Property for outer_rfactor")
-    # Methods and properties for the 'outer_isig' attribute
-    def getOuter_isig(self): return self._outer_isig
-    def setOuter_isig(self, outer_isig):
-        if outer_isig is None:
-            self._outer_isig = None
-        elif outer_isig.__class__.__name__ == "XSDataFloat":
-            self._outer_isig = outer_isig
+    def delRfactor(self): self._rfactor = None
+    rfactor = property(getRfactor, setRfactor, delRfactor, "Property for rfactor")
+    # Methods and properties for the 'isig' attribute
+    def getIsig(self): return self._isig
+    def setIsig(self, isig):
+        if isig is None:
+            self._isig = None
+        elif isig.__class__.__name__ == "XSDataFloat":
+            self._isig = isig
         else:
-            strMessage = "ERROR! XSDataXdsCompletenessEntry.setOuter_isig argument is not XSDataFloat but %s" % outer_isig.__class__.__name__
+            strMessage = "ERROR! XSDataXdsCompletenessEntry.setIsig argument is not XSDataFloat but %s" % isig.__class__.__name__
             raise BaseException(strMessage)
-    def delOuter_isig(self): self._outer_isig = None
-    outer_isig = property(getOuter_isig, setOuter_isig, delOuter_isig, "Property for outer_isig")
+    def delIsig(self): self._isig = None
+    isig = property(getIsig, setIsig, delIsig, "Property for isig")
     # Methods and properties for the 'half_dataset_correlation' attribute
     def getHalf_dataset_correlation(self): return self._half_dataset_correlation
     def setHalf_dataset_correlation(self, half_dataset_correlation):
@@ -521,34 +521,34 @@ class XSDataXdsCompletenessEntry(object):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataXdsCompletenessEntry'):
         pass
-        if self._outer_res is not None:
-            self.outer_res.export(outfile, level, name_='outer_res')
+        if self._res is not None:
+            self.res.export(outfile, level, name_='res')
         else:
-            warnEmptyAttribute("outer_res", "XSDataFloat")
-        if self._outer_observed is not None:
-            self.outer_observed.export(outfile, level, name_='outer_observed')
+            warnEmptyAttribute("res", "XSDataFloat")
+        if self._observed is not None:
+            self.observed.export(outfile, level, name_='observed')
         else:
-            warnEmptyAttribute("outer_observed", "XSDataFloat")
-        if self._outer_unique is not None:
-            self.outer_unique.export(outfile, level, name_='outer_unique')
+            warnEmptyAttribute("observed", "XSDataFloat")
+        if self._unique is not None:
+            self.unique.export(outfile, level, name_='unique')
         else:
-            warnEmptyAttribute("outer_unique", "XSDataFloat")
-        if self._outer_possible is not None:
-            self.outer_possible.export(outfile, level, name_='outer_possible')
+            warnEmptyAttribute("unique", "XSDataFloat")
+        if self._possible is not None:
+            self.possible.export(outfile, level, name_='possible')
         else:
-            warnEmptyAttribute("outer_possible", "XSDataFloat")
-        if self._outer_complete is not None:
-            self.outer_complete.export(outfile, level, name_='outer_complete')
+            warnEmptyAttribute("possible", "XSDataFloat")
+        if self._complete is not None:
+            self.complete.export(outfile, level, name_='complete')
         else:
-            warnEmptyAttribute("outer_complete", "XSDataFloat")
-        if self._outer_rfactor is not None:
-            self.outer_rfactor.export(outfile, level, name_='outer_rfactor')
+            warnEmptyAttribute("complete", "XSDataFloat")
+        if self._rfactor is not None:
+            self.rfactor.export(outfile, level, name_='rfactor')
         else:
-            warnEmptyAttribute("outer_rfactor", "XSDataFloat")
-        if self._outer_isig is not None:
-            self.outer_isig.export(outfile, level, name_='outer_isig')
+            warnEmptyAttribute("rfactor", "XSDataFloat")
+        if self._isig is not None:
+            self.isig.export(outfile, level, name_='isig')
         else:
-            warnEmptyAttribute("outer_isig", "XSDataFloat")
+            warnEmptyAttribute("isig", "XSDataFloat")
         if self._half_dataset_correlation is not None:
             self.half_dataset_correlation.export(outfile, level, name_='half_dataset_correlation')
         else:
@@ -559,40 +559,40 @@ class XSDataXdsCompletenessEntry(object):
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'outer_res':
+            nodeName_ == 'res':
             obj_ = XSDataFloat()
             obj_.build(child_)
-            self.setOuter_res(obj_)
+            self.setRes(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'outer_observed':
+            nodeName_ == 'observed':
             obj_ = XSDataFloat()
             obj_.build(child_)
-            self.setOuter_observed(obj_)
+            self.setObserved(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'outer_unique':
+            nodeName_ == 'unique':
             obj_ = XSDataFloat()
             obj_.build(child_)
-            self.setOuter_unique(obj_)
+            self.setUnique(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'outer_possible':
+            nodeName_ == 'possible':
             obj_ = XSDataFloat()
             obj_.build(child_)
-            self.setOuter_possible(obj_)
+            self.setPossible(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'outer_complete':
+            nodeName_ == 'complete':
             obj_ = XSDataFloat()
             obj_.build(child_)
-            self.setOuter_complete(obj_)
+            self.setComplete(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'outer_rfactor':
+            nodeName_ == 'rfactor':
             obj_ = XSDataFloat()
             obj_.build(child_)
-            self.setOuter_rfactor(obj_)
+            self.setRfactor(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'outer_isig':
+            nodeName_ == 'isig':
             obj_ = XSDataFloat()
             obj_.build(child_)
-            self.setOuter_isig(obj_)
+            self.setIsig(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'half_dataset_correlation':
             obj_ = XSDataFloat()
@@ -643,8 +643,8 @@ class XSDataXdsCompletenessEntry(object):
 
 
 class XSDataXscaleCompletenessEntry(XSDataXdsCompletenessEntry):
-    def __init__(self, half_dataset_correlation=None, outer_isig=None, outer_rfactor=None, outer_complete=None, outer_possible=None, outer_unique=None, outer_observed=None, outer_res=None, multiplicity=None):
-        XSDataXdsCompletenessEntry.__init__(self, half_dataset_correlation, outer_isig, outer_rfactor, outer_complete, outer_possible, outer_unique, outer_observed, outer_res)
+    def __init__(self, half_dataset_correlation=None, isig=None, rfactor=None, complete=None, possible=None, unique=None, observed=None, res=None, multiplicity=None):
+        XSDataXdsCompletenessEntry.__init__(self, half_dataset_correlation, isig, rfactor, complete, possible, unique, observed, res)
         if multiplicity is None:
             self._multiplicity = None
         elif multiplicity.__class__.__name__ == "XSDataFloat":
@@ -732,7 +732,7 @@ class XSDataXscaleCompletenessEntry(XSDataXdsCompletenessEntry):
 
 
 class XSDataAimless(XSDataInput):
-    def __init__(self, configuration=None, anom=None, res=None, end_image=None, start_image=None, dataCollectionID=None, output_file=None, input_file=None):
+    def __init__(self, configuration=None, anom=None, res=None, end_image=None, start_image=None, dataCollectionID=None, command_file=None, output_file=None, input_file=None):
         XSDataInput.__init__(self, configuration)
         if input_file is None:
             self._input_file = None
@@ -747,6 +747,13 @@ class XSDataAimless(XSDataInput):
             self._output_file = output_file
         else:
             strMessage = "ERROR! XSDataAimless constructor argument 'output_file' is not XSDataString but %s" % self._output_file.__class__.__name__
+            raise BaseException(strMessage)
+        if command_file is None:
+            self._command_file = None
+        elif command_file.__class__.__name__ == "XSDataString":
+            self._command_file = command_file
+        else:
+            strMessage = "ERROR! XSDataAimless constructor argument 'command_file' is not XSDataString but %s" % self._command_file.__class__.__name__
             raise BaseException(strMessage)
         if dataCollectionID is None:
             self._dataCollectionID = None
@@ -807,6 +814,18 @@ class XSDataAimless(XSDataInput):
             raise BaseException(strMessage)
     def delOutput_file(self): self._output_file = None
     output_file = property(getOutput_file, setOutput_file, delOutput_file, "Property for output_file")
+    # Methods and properties for the 'command_file' attribute
+    def getCommand_file(self): return self._command_file
+    def setCommand_file(self, command_file):
+        if command_file is None:
+            self._command_file = None
+        elif command_file.__class__.__name__ == "XSDataString":
+            self._command_file = command_file
+        else:
+            strMessage = "ERROR! XSDataAimless.setCommand_file argument is not XSDataString but %s" % command_file.__class__.__name__
+            raise BaseException(strMessage)
+    def delCommand_file(self): self._command_file = None
+    command_file = property(getCommand_file, setCommand_file, delCommand_file, "Property for command_file")
     # Methods and properties for the 'dataCollectionID' attribute
     def getDataCollectionID(self): return self._dataCollectionID
     def setDataCollectionID(self, dataCollectionID):
@@ -883,6 +902,10 @@ class XSDataAimless(XSDataInput):
             self.output_file.export(outfile, level, name_='output_file')
         else:
             warnEmptyAttribute("output_file", "XSDataString")
+        if self._command_file is not None:
+            self.command_file.export(outfile, level, name_='command_file')
+        else:
+            warnEmptyAttribute("command_file", "XSDataString")
         if self._dataCollectionID is not None:
             self.dataCollectionID.export(outfile, level, name_='dataCollectionID')
         else:
@@ -918,6 +941,11 @@ class XSDataAimless(XSDataInput):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setOutput_file(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'command_file':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setCommand_file(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'dataCollectionID':
             obj_ = XSDataInteger()
@@ -1300,7 +1328,7 @@ class XSDataAutoprocImport(XSDataInput):
 
 
 class XSDataAutoprocImportOut(XSDataResult):
-    def __init__(self, status=None, files=None):
+    def __init__(self, status=None, aimless_log_noanom=None, aimless_log_anom=None, pointless_sgstring=None, pointless_sgnumber=None, files=None):
         XSDataResult.__init__(self, status)
         if files is None:
             self._files = []
@@ -1308,6 +1336,34 @@ class XSDataAutoprocImportOut(XSDataResult):
             self._files = files
         else:
             strMessage = "ERROR! XSDataAutoprocImportOut constructor argument 'files' is not list but %s" % self._files.__class__.__name__
+            raise BaseException(strMessage)
+        if pointless_sgnumber is None:
+            self._pointless_sgnumber = None
+        elif pointless_sgnumber.__class__.__name__ == "XSDataInteger":
+            self._pointless_sgnumber = pointless_sgnumber
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut constructor argument 'pointless_sgnumber' is not XSDataInteger but %s" % self._pointless_sgnumber.__class__.__name__
+            raise BaseException(strMessage)
+        if pointless_sgstring is None:
+            self._pointless_sgstring = None
+        elif pointless_sgstring.__class__.__name__ == "XSDataString":
+            self._pointless_sgstring = pointless_sgstring
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut constructor argument 'pointless_sgstring' is not XSDataString but %s" % self._pointless_sgstring.__class__.__name__
+            raise BaseException(strMessage)
+        if aimless_log_anom is None:
+            self._aimless_log_anom = None
+        elif aimless_log_anom.__class__.__name__ == "XSDataString":
+            self._aimless_log_anom = aimless_log_anom
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut constructor argument 'aimless_log_anom' is not XSDataString but %s" % self._aimless_log_anom.__class__.__name__
+            raise BaseException(strMessage)
+        if aimless_log_noanom is None:
+            self._aimless_log_noanom = None
+        elif aimless_log_noanom.__class__.__name__ == "XSDataString":
+            self._aimless_log_noanom = aimless_log_noanom
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut constructor argument 'aimless_log_noanom' is not XSDataString but %s" % self._aimless_log_noanom.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'files' attribute
     def getFiles(self): return self._files
@@ -1342,6 +1398,54 @@ class XSDataAutoprocImportOut(XSDataResult):
         else:
             strMessage = "ERROR! XSDataAutoprocImportOut.addFiles argument is not XSDataString but %s" % value.__class__.__name__
             raise BaseException(strMessage)
+    # Methods and properties for the 'pointless_sgnumber' attribute
+    def getPointless_sgnumber(self): return self._pointless_sgnumber
+    def setPointless_sgnumber(self, pointless_sgnumber):
+        if pointless_sgnumber is None:
+            self._pointless_sgnumber = None
+        elif pointless_sgnumber.__class__.__name__ == "XSDataInteger":
+            self._pointless_sgnumber = pointless_sgnumber
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut.setPointless_sgnumber argument is not XSDataInteger but %s" % pointless_sgnumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delPointless_sgnumber(self): self._pointless_sgnumber = None
+    pointless_sgnumber = property(getPointless_sgnumber, setPointless_sgnumber, delPointless_sgnumber, "Property for pointless_sgnumber")
+    # Methods and properties for the 'pointless_sgstring' attribute
+    def getPointless_sgstring(self): return self._pointless_sgstring
+    def setPointless_sgstring(self, pointless_sgstring):
+        if pointless_sgstring is None:
+            self._pointless_sgstring = None
+        elif pointless_sgstring.__class__.__name__ == "XSDataString":
+            self._pointless_sgstring = pointless_sgstring
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut.setPointless_sgstring argument is not XSDataString but %s" % pointless_sgstring.__class__.__name__
+            raise BaseException(strMessage)
+    def delPointless_sgstring(self): self._pointless_sgstring = None
+    pointless_sgstring = property(getPointless_sgstring, setPointless_sgstring, delPointless_sgstring, "Property for pointless_sgstring")
+    # Methods and properties for the 'aimless_log_anom' attribute
+    def getAimless_log_anom(self): return self._aimless_log_anom
+    def setAimless_log_anom(self, aimless_log_anom):
+        if aimless_log_anom is None:
+            self._aimless_log_anom = None
+        elif aimless_log_anom.__class__.__name__ == "XSDataString":
+            self._aimless_log_anom = aimless_log_anom
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut.setAimless_log_anom argument is not XSDataString but %s" % aimless_log_anom.__class__.__name__
+            raise BaseException(strMessage)
+    def delAimless_log_anom(self): self._aimless_log_anom = None
+    aimless_log_anom = property(getAimless_log_anom, setAimless_log_anom, delAimless_log_anom, "Property for aimless_log_anom")
+    # Methods and properties for the 'aimless_log_noanom' attribute
+    def getAimless_log_noanom(self): return self._aimless_log_noanom
+    def setAimless_log_noanom(self, aimless_log_noanom):
+        if aimless_log_noanom is None:
+            self._aimless_log_noanom = None
+        elif aimless_log_noanom.__class__.__name__ == "XSDataString":
+            self._aimless_log_noanom = aimless_log_noanom
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut.setAimless_log_noanom argument is not XSDataString but %s" % aimless_log_noanom.__class__.__name__
+            raise BaseException(strMessage)
+    def delAimless_log_noanom(self): self._aimless_log_noanom = None
+    aimless_log_noanom = property(getAimless_log_noanom, setAimless_log_noanom, delAimless_log_noanom, "Property for aimless_log_noanom")
     def export(self, outfile, level, name_='XSDataAutoprocImportOut'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1354,6 +1458,22 @@ class XSDataAutoprocImportOut(XSDataResult):
             files_.export(outfile, level, name_='files')
         if self.getFiles() == []:
             warnEmptyAttribute("files", "XSDataString")
+        if self._pointless_sgnumber is not None:
+            self.pointless_sgnumber.export(outfile, level, name_='pointless_sgnumber')
+        else:
+            warnEmptyAttribute("pointless_sgnumber", "XSDataInteger")
+        if self._pointless_sgstring is not None:
+            self.pointless_sgstring.export(outfile, level, name_='pointless_sgstring')
+        else:
+            warnEmptyAttribute("pointless_sgstring", "XSDataString")
+        if self._aimless_log_anom is not None:
+            self.aimless_log_anom.export(outfile, level, name_='aimless_log_anom')
+        else:
+            warnEmptyAttribute("aimless_log_anom", "XSDataString")
+        if self._aimless_log_noanom is not None:
+            self.aimless_log_noanom.export(outfile, level, name_='aimless_log_noanom')
+        else:
+            warnEmptyAttribute("aimless_log_noanom", "XSDataString")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1364,6 +1484,26 @@ class XSDataAutoprocImportOut(XSDataResult):
             obj_ = XSDataString()
             obj_.build(child_)
             self.files.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pointless_sgnumber':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setPointless_sgnumber(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pointless_sgstring':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setPointless_sgstring(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'aimless_log_anom':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setAimless_log_anom(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'aimless_log_noanom':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setAimless_log_noanom(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -1484,10 +1624,10 @@ class XSDataAutoprocInput(XSDataInput):
             raise BaseException(strMessage)
         if spacegroup is None:
             self._spacegroup = None
-        elif spacegroup.__class__.__name__ == "XSDataInteger":
+        elif spacegroup.__class__.__name__ == "XSDataString":
             self._spacegroup = spacegroup
         else:
-            strMessage = "ERROR! XSDataAutoprocInput constructor argument 'spacegroup' is not XSDataInteger but %s" % self._spacegroup.__class__.__name__
+            strMessage = "ERROR! XSDataAutoprocInput constructor argument 'spacegroup' is not XSDataString but %s" % self._spacegroup.__class__.__name__
             raise BaseException(strMessage)
         if unit_cell is None:
             self._unit_cell = None
@@ -1628,10 +1768,10 @@ class XSDataAutoprocInput(XSDataInput):
     def setSpacegroup(self, spacegroup):
         if spacegroup is None:
             self._spacegroup = None
-        elif spacegroup.__class__.__name__ == "XSDataInteger":
+        elif spacegroup.__class__.__name__ == "XSDataString":
             self._spacegroup = spacegroup
         else:
-            strMessage = "ERROR! XSDataAutoprocInput.setSpacegroup argument is not XSDataInteger but %s" % spacegroup.__class__.__name__
+            strMessage = "ERROR! XSDataAutoprocInput.setSpacegroup argument is not XSDataString but %s" % spacegroup.__class__.__name__
             raise BaseException(strMessage)
     def delSpacegroup(self): self._spacegroup = None
     spacegroup = property(getSpacegroup, setSpacegroup, delSpacegroup, "Property for spacegroup")
@@ -1754,7 +1894,7 @@ class XSDataAutoprocInput(XSDataInput):
             self.setNres(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'spacegroup':
-            obj_ = XSDataInteger()
+            obj_ = XSDataString()
             obj_.build(child_)
             self.setSpacegroup(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
@@ -2121,6 +2261,151 @@ class XSDataFileConversion(XSDataInput):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataFileConversion
+
+
+class XSDataFileConversionOut(XSDataResult):
+    def __init__(self, status=None, aimless_log=None, pointless_sgstring=None, pointless_sgnumber=None):
+        XSDataResult.__init__(self, status)
+        if pointless_sgnumber is None:
+            self._pointless_sgnumber = None
+        elif pointless_sgnumber.__class__.__name__ == "XSDataInteger":
+            self._pointless_sgnumber = pointless_sgnumber
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut constructor argument 'pointless_sgnumber' is not XSDataInteger but %s" % self._pointless_sgnumber.__class__.__name__
+            raise BaseException(strMessage)
+        if pointless_sgstring is None:
+            self._pointless_sgstring = None
+        elif pointless_sgstring.__class__.__name__ == "XSDataString":
+            self._pointless_sgstring = pointless_sgstring
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut constructor argument 'pointless_sgstring' is not XSDataString but %s" % self._pointless_sgstring.__class__.__name__
+            raise BaseException(strMessage)
+        if aimless_log is None:
+            self._aimless_log = None
+        elif aimless_log.__class__.__name__ == "XSDataString":
+            self._aimless_log = aimless_log
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut constructor argument 'aimless_log' is not XSDataString but %s" % self._aimless_log.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'pointless_sgnumber' attribute
+    def getPointless_sgnumber(self): return self._pointless_sgnumber
+    def setPointless_sgnumber(self, pointless_sgnumber):
+        if pointless_sgnumber is None:
+            self._pointless_sgnumber = None
+        elif pointless_sgnumber.__class__.__name__ == "XSDataInteger":
+            self._pointless_sgnumber = pointless_sgnumber
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut.setPointless_sgnumber argument is not XSDataInteger but %s" % pointless_sgnumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delPointless_sgnumber(self): self._pointless_sgnumber = None
+    pointless_sgnumber = property(getPointless_sgnumber, setPointless_sgnumber, delPointless_sgnumber, "Property for pointless_sgnumber")
+    # Methods and properties for the 'pointless_sgstring' attribute
+    def getPointless_sgstring(self): return self._pointless_sgstring
+    def setPointless_sgstring(self, pointless_sgstring):
+        if pointless_sgstring is None:
+            self._pointless_sgstring = None
+        elif pointless_sgstring.__class__.__name__ == "XSDataString":
+            self._pointless_sgstring = pointless_sgstring
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut.setPointless_sgstring argument is not XSDataString but %s" % pointless_sgstring.__class__.__name__
+            raise BaseException(strMessage)
+    def delPointless_sgstring(self): self._pointless_sgstring = None
+    pointless_sgstring = property(getPointless_sgstring, setPointless_sgstring, delPointless_sgstring, "Property for pointless_sgstring")
+    # Methods and properties for the 'aimless_log' attribute
+    def getAimless_log(self): return self._aimless_log
+    def setAimless_log(self, aimless_log):
+        if aimless_log is None:
+            self._aimless_log = None
+        elif aimless_log.__class__.__name__ == "XSDataString":
+            self._aimless_log = aimless_log
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut.setAimless_log argument is not XSDataString but %s" % aimless_log.__class__.__name__
+            raise BaseException(strMessage)
+    def delAimless_log(self): self._aimless_log = None
+    aimless_log = property(getAimless_log, setAimless_log, delAimless_log, "Property for aimless_log")
+    def export(self, outfile, level, name_='XSDataFileConversionOut'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataFileConversionOut'):
+        XSDataResult.exportChildren(self, outfile, level, name_)
+        if self._pointless_sgnumber is not None:
+            self.pointless_sgnumber.export(outfile, level, name_='pointless_sgnumber')
+        else:
+            warnEmptyAttribute("pointless_sgnumber", "XSDataInteger")
+        if self._pointless_sgstring is not None:
+            self.pointless_sgstring.export(outfile, level, name_='pointless_sgstring')
+        else:
+            warnEmptyAttribute("pointless_sgstring", "XSDataString")
+        if self._aimless_log is not None:
+            self.aimless_log.export(outfile, level, name_='aimless_log')
+        else:
+            warnEmptyAttribute("aimless_log", "XSDataString")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pointless_sgnumber':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setPointless_sgnumber(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pointless_sgstring':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setPointless_sgstring(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'aimless_log':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setAimless_log(obj_)
+        XSDataResult.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataFileConversionOut" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataFileConversionOut' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataFileConversionOut is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataFileConversionOut.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataFileConversionOut()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataFileConversionOut" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataFileConversionOut()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataFileConversionOut
 
 
 class XSDataMatthewsCoeffIn(XSDataInput):
@@ -4362,7 +4647,7 @@ class XSDataXdsGenerateInput(XSDataInput):
 
 
 class XSDataXdsGenerateOutput(XSDataResult):
-    def __init__(self, status=None, gxparm=None, correct_lp_no_anom=None, correct_lp_anom=None, hkl_no_anom=None, hkl_anom=None):
+    def __init__(self, status=None, gxparm=None, integrate_noanom=None, integrate_anom=None, correct_lp_no_anom=None, correct_lp_anom=None, hkl_no_anom=None, hkl_anom=None):
         XSDataResult.__init__(self, status)
         if hkl_anom is None:
             self._hkl_anom = None
@@ -4391,6 +4676,20 @@ class XSDataXdsGenerateOutput(XSDataResult):
             self._correct_lp_no_anom = correct_lp_no_anom
         else:
             strMessage = "ERROR! XSDataXdsGenerateOutput constructor argument 'correct_lp_no_anom' is not XSDataString but %s" % self._correct_lp_no_anom.__class__.__name__
+            raise BaseException(strMessage)
+        if integrate_anom is None:
+            self._integrate_anom = None
+        elif integrate_anom.__class__.__name__ == "XSDataString":
+            self._integrate_anom = integrate_anom
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateOutput constructor argument 'integrate_anom' is not XSDataString but %s" % self._integrate_anom.__class__.__name__
+            raise BaseException(strMessage)
+        if integrate_noanom is None:
+            self._integrate_noanom = None
+        elif integrate_noanom.__class__.__name__ == "XSDataString":
+            self._integrate_noanom = integrate_noanom
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateOutput constructor argument 'integrate_noanom' is not XSDataString but %s" % self._integrate_noanom.__class__.__name__
             raise BaseException(strMessage)
         if gxparm is None:
             self._gxparm = None
@@ -4447,6 +4746,30 @@ class XSDataXdsGenerateOutput(XSDataResult):
             raise BaseException(strMessage)
     def delCorrect_lp_no_anom(self): self._correct_lp_no_anom = None
     correct_lp_no_anom = property(getCorrect_lp_no_anom, setCorrect_lp_no_anom, delCorrect_lp_no_anom, "Property for correct_lp_no_anom")
+    # Methods and properties for the 'integrate_anom' attribute
+    def getIntegrate_anom(self): return self._integrate_anom
+    def setIntegrate_anom(self, integrate_anom):
+        if integrate_anom is None:
+            self._integrate_anom = None
+        elif integrate_anom.__class__.__name__ == "XSDataString":
+            self._integrate_anom = integrate_anom
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateOutput.setIntegrate_anom argument is not XSDataString but %s" % integrate_anom.__class__.__name__
+            raise BaseException(strMessage)
+    def delIntegrate_anom(self): self._integrate_anom = None
+    integrate_anom = property(getIntegrate_anom, setIntegrate_anom, delIntegrate_anom, "Property for integrate_anom")
+    # Methods and properties for the 'integrate_noanom' attribute
+    def getIntegrate_noanom(self): return self._integrate_noanom
+    def setIntegrate_noanom(self, integrate_noanom):
+        if integrate_noanom is None:
+            self._integrate_noanom = None
+        elif integrate_noanom.__class__.__name__ == "XSDataString":
+            self._integrate_noanom = integrate_noanom
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateOutput.setIntegrate_noanom argument is not XSDataString but %s" % integrate_noanom.__class__.__name__
+            raise BaseException(strMessage)
+    def delIntegrate_noanom(self): self._integrate_noanom = None
+    integrate_noanom = property(getIntegrate_noanom, setIntegrate_noanom, delIntegrate_noanom, "Property for integrate_noanom")
     # Methods and properties for the 'gxparm' attribute
     def getGxparm(self): return self._gxparm
     def setGxparm(self, gxparm):
@@ -4483,6 +4806,14 @@ class XSDataXdsGenerateOutput(XSDataResult):
             self.correct_lp_no_anom.export(outfile, level, name_='correct_lp_no_anom')
         else:
             warnEmptyAttribute("correct_lp_no_anom", "XSDataString")
+        if self._integrate_anom is not None:
+            self.integrate_anom.export(outfile, level, name_='integrate_anom')
+        else:
+            warnEmptyAttribute("integrate_anom", "XSDataString")
+        if self._integrate_noanom is not None:
+            self.integrate_noanom.export(outfile, level, name_='integrate_noanom')
+        else:
+            warnEmptyAttribute("integrate_noanom", "XSDataString")
         if self._gxparm is not None:
             self.gxparm.export(outfile, level, name_='gxparm')
         else:
@@ -4512,6 +4843,16 @@ class XSDataXdsGenerateOutput(XSDataResult):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setCorrect_lp_no_anom(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'integrate_anom':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setIntegrate_anom(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'integrate_noanom':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setIntegrate_noanom(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'gxparm':
             obj_ = XSDataString()

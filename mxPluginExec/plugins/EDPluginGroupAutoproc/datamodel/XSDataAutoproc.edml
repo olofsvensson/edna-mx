@@ -60,14 +60,14 @@ complex type XSDataXdsOutputFile extends XSDataInput {
 }
 
 complex type XSDataXdsCompletenessEntry {
-        outer_res                : XSDataFloat
-        outer_observed           : XSDataFloat
-        outer_unique             : XSDataFloat
-        outer_possible           : XSDataFloat
-        outer_complete           : XSDataFloat
-        outer_rfactor            : XSDataFloat
-        outer_isig               : XSDataFloat
-        half_dataset_correlation : XSDataFloat
+        res				: XSDataFloat
+        observed			: XSDataFloat
+        unique				: XSDataFloat
+        possible			: XSDataFloat
+        complete			: XSDataFloat
+        rfactor				: XSDataFloat
+        isig				: XSDataFloat
+        half_dataset_correlation	: XSDataFloat
 }
 
 complex type XSData2DCoordinates {
@@ -195,6 +195,8 @@ complex type XSDataXdsGenerateOutput extends XSDataResult {
         hkl_no_anom        : XSDataString
         correct_lp_anom    : XSDataString
         correct_lp_no_anom : XSDataString
+        integrate_anom     : XSDataString
+        integrate_noanom   : XSDataString
         gxparm             : XSDataString
 }
 
@@ -212,7 +214,7 @@ complex type XSDataAutoprocInput extends XSDataInput {
         low_resolution_limit	: XSDataFloat optional
         nres			: XSDataFloat optional
 
-	spacegroup		: XSDataInteger optional
+	spacegroup		: XSDataString optional
 	unit_cell		: XSDataString optional // space separated numerical values
 
         output_file		: XSDataFile
@@ -237,13 +239,14 @@ complex type XSDataPointlessOut extends XSDataResult {
 }
 
 complex type XSDataAimless extends XSDataInput {
-        input_file       : XSDataString // intermediate file name
-        output_file      : XSDataString
-        dataCollectionID : XSDataInteger
-        start_image      : XSDataInteger
-        end_image        : XSDataInteger
-        res              : XSDataFloat
-        anom             : XSDataBoolean
+        input_file		: XSDataString // intermediate file name
+        output_file		: XSDataString
+        command_file		: XSDataString
+        dataCollectionID	: XSDataInteger
+        start_image		: XSDataInteger
+        end_image		: XSDataInteger
+        res			: XSDataFloat
+        anom			: XSDataBoolean
 }
 
 complex type XSDataTruncate extends XSDataInput {
@@ -273,6 +276,12 @@ complex type XSDataFileConversion extends XSDataInput {
 	image_prefix     : XSDataString optional
 }
 
+complex type XSDataFileConversionOut extends XSDataResult {
+	pointless_sgnumber : XSDataInteger
+	pointless_sgstring : XSDataString
+	aimless_log        : XSDataString
+}
+
 complex type XSDataAutoprocImport extends XSDataInput {
 	input_anom		: XSDataString
 	input_noanom		: XSDataString
@@ -286,5 +295,10 @@ complex type XSDataAutoprocImport extends XSDataInput {
 }
 
 complex type XSDataAutoprocImportOut extends XSDataResult {
-	files : XSDataString []
+	files			: XSDataString []
+	// Those two come from the noanom data
+	pointless_sgnumber	: XSDataInteger
+	pointless_sgstring	: XSDataString
+	aimless_log_anom        : XSDataString
+	aimless_log_noanom	: XSDataString
 }

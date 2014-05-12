@@ -53,11 +53,11 @@ class EDPluginExecPointless(EDPluginExecProcessScript):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG('Pointless: preprocess')
         if self.output_file is not None and self.input_file is not None:
-            # TODO: ask Max why he forces the version to 6.2.0
-            options = 'xdsin {0} hklout {1}'.format(self.input_file,
-                                                    self.output_file)
+            options = '''xdsin {0} hklout {1}'''.format(self.input_file,
+                                                        self.output_file)
             self.setScriptCommandline(options)
             self.DEBUG('command line options set to {0}'.format(options))
+        self.addListCommandExecution('setting symmetry-based')
 
     def checkParameters(self):
         self.DEBUG('Pointless: checkParameters')
@@ -93,7 +93,7 @@ class EDPluginExecPointless(EDPluginExecProcessScript):
         if log is not None:
             # we'll apply the regexp to the whole file contents which
             # hopefully won't be that long.
-            m = sgre.match(log)
+            m = sgre.search(log)
             if m is not None:
                 d = m.groupdict()
                 sgnumber = d['sgnumber']

@@ -85,9 +85,10 @@ class EDPluginExecAimless(EDPluginExecProcessScript):
         self.addListCommandExecution('anomalous {0}'.format(anomalous))
         self.addListCommandExecution('END')
 
-        # TODO: Max saves those parameters to a file, we'll need to
-        # see where to put it. Until then, just log them
         self.DEBUG(self.getListCommandExecution())
+        with open(self.dataInput.command_file.value, 'w') as command_file:
+            command_file.write('\n'.join(self.getListCommandExecution()))
+
 
     def checkParameters(self):
         self.DEBUG('Aimless: checkParameters')

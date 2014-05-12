@@ -68,7 +68,7 @@ class EDPluginResCutoff(EDPlugin):
 
     def preProcess(self, _edObject = None):
         EDPlugin.preProcess(self)
-        self.DEBUG("EDPluginParseXdsOutput.preProcess")
+        self.DEBUG("EDPluginResCutoff.preProcess")
 
     def process(self, _edObject = None):
         EDPlugin.process(self)
@@ -88,6 +88,12 @@ class EDPluginResCutoff(EDPlugin):
         else:
             isig_cutoff = isig_cutoff_param.value
 
+        cc_half_cutoff_param = self.dataInput.cc_half_cutoff
+        if cc_half_cutoff_param is not None:
+            cc_half_cutoff = cc_half_cutoff_param.value
+        else:
+            cc_half_cutoff = 30
+
         res_override = self.dataInput.res_override
 
         bins = list()
@@ -105,34 +111,24 @@ class EDPluginResCutoff(EDPlugin):
         res = detector_max_res
 
         for entry in self.dataInput.completeness_entries:
-            outer_res = entry.outer_res.value
-            outer_complete = entry.outer_complete.value
-            outer_rfactor = entry.outer_rfactor.value
-            outer_isig = entry.outer_isig.value
+            current_res = entry.res.value
+            complete = entry.complete.value
+            rfactor = entry.rfactor.value
+            isig = entry.isig.value
+            cc_half = entry.half_dataset_correlation.value
 
-            if outer_complete < local_completeness_cutoff or outer_isig < isig_cutoff or \
-                    (res_override is not None and outer_res < res_override.value):
-                if outer_complete < completeness_cutoff:
-                    EDVerbose.DEBUG('incomplete data (%s) in this shell' % outer_complete)
-                    res = prev_res
-                else:
-                    res = _calculate_res_from_bins(prev_isig, prev_res,
-                                                   outer_isig, outer_res,
-                                                   isig_cutoff)
-                bins.append(outer_res)
-
-                #NOTE: get out of the loop, see the value of `skip` in
-                #max's code
-                break
+            #isig < isig_cutoff or \
+            if cc_half < cc_half_cutoff or \
+               (res_override is not None and current_res < res_override.value):
+                continue
             else:
-                bins.append(outer_res)
-            prev_res, prev_isig = outer_res, outer_isig
+                bins.append(current_res)
 
         # Now the implementation of what max does when he encouters
         # the total values, which are conveniently already parsed in
         # our case
         if len(bins) < 2:
-            EDVerbose.DEBUG("No bins with I/sigma greater than %s" % isig_cutoff)
+            EDVerbose.DEBUG("No bins with CC1/2 greater than %s" % cc_half_cutoff)
             EDVerbose.DEBUG("""something could be wrong, or the completeness could be too low!
 bravais lattice/SG could be incorrect or something more insidious like
 incorrect parameters in XDS.INP like distance, X beam, Y beam, etc.
@@ -143,17 +139,17 @@ Stopping""")
             res = sorted(bins)[0]
         if res_override is not None:
             res = res_override.value
-        # remove last bin (see why w/ max)
-        retbins = [XSDataFloat(x) for x in bins[:-1]]
+
+        retbins = [XSDataFloat(x) for x in bins]
 
 
         data_output = XSDataResCutoffResult()
         data_output.res = XSDataFloat(res)
         data_output.bins = retbins
         totals = self.dataInput.total_completeness
-        data_output.total_complete = totals.outer_complete
-        data_output.total_rfactor = totals.outer_rfactor
-        data_output.total_isig = totals.outer_isig
+        data_output.total_complete = totals.complete
+        data_output.total_rfactor = totals.rfactor
+        data_output.total_isig = totals.isig
 
         self.dataOutput = data_output
 
@@ -163,14 +159,14 @@ Stopping""")
 
 
 # straight port of max's code, reusing the same var names (pythonized)
-def _calculate_res_from_bins(prev_isig, prev_res, outer_isig, outer_res, isig_cutoff):
-    diff_i = prev_isig - outer_isig
-    diff_d = prev_res - outer_res
+def _calculate_res_from_bins(prev_isig, prev_res, isig, res, isig_cutoff):
+    diff_i = prev_isig - isig
+    diff_d = prev_res - res
 
     hyp = math.sqrt((diff_i ** 2) + (diff_d ** 2))
     alpha = diff_i / diff_d
 
-    res_id = isig_cutoff - outer_isig
+    res_id = isig_cutoff - isig
     res_offset = res_id / alpha
 
-    return res_offset + outer_res
+    return res_offset + res

@@ -57,13 +57,11 @@ class EDPluginExecTruncate(EDPluginExecProcessScript):
         self.setScriptCommandline(options)
         self.DEBUG('command line options set to {0}'.format(options))
 
-        nres = self.dataInput.nres.value
+        nres = self.dataInput.nres
         anom = self.dataInput.anom.value
         res = self.dataInput.res.value
-        if res is None:
-            res = 0
-
-        self.addListCommandExecution('nres {0}'.format(nres))
+        if nres is not None:
+            self.addListCommandExecution('nres {0}'.format(nres.value))
         self.addListCommandExecution('truncate YES')
         self.addListCommandExecution('anomalous {0}'.format(anom))
         self.addListCommandExecution('plot OFF')

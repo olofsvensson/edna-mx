@@ -101,10 +101,9 @@ class EDPluginExecMinimalXds(EDPluginExecProcessScript):
         first_image = _template_to_image(file_template, first_image_no)
         real_data_dir = os.path.dirname(os.path.realpath(first_image))
 
-        # create a link to this dir in our dir - skip if path exists (i.e. multiple XDS runs)
-        i_path = os.path.join(self.getWorkingDirectory(), 'i')
-        if not os.path.exists(i_path):
-            os.symlink(real_data_dir, i_path)
+        # create a link to this dir in our dir
+        os.symlink(real_data_dir,
+                   os.path.join(self.getWorkingDirectory(), 'i'))
 
         # and update the config to refer to this dir
         new_template = os.path.join('i', os.path.basename(file_template))
@@ -131,7 +130,7 @@ class EDPluginExecMinimalXds(EDPluginExecProcessScript):
         if resolution_range is not None and len(resolution_range) != 0:
             parsed_config["INCLUDE_RESOLUTION_RANGE="] = [x.value for x in resolution_range]
         if friedels_law is not None:
-            if friedels_law:
+            if friedels_law.value:
                 parsed_config["FRIEDEL'S_LAW="] = "TRUE"
             else:
                 parsed_config["FRIEDEL'S_LAW="] = "FALSE"
@@ -163,15 +162,13 @@ class EDPluginExecMinimalXds(EDPluginExecProcessScript):
         # For [XY]-GEO_CORR files, link them in the cwd and fix their paths
         if 'X-GEO_CORR=' in parsed_config:
             xgeo = parsed_config['X-GEO_CORR='][0]
-            xgeo_path = os.path.join(self.getWorkingDirectory(), os.path.basename(xgeo))
-            if not os.path.exists(xgeo_path):
-                os.symlink(xgeo, xgeo_path)
+            os.symlink(xgeo,
+                       os.path.join(self.getWorkingDirectory(), os.path.basename(xgeo)))
             parsed_config['X-GEO_CORR='] = os.path.basename(xgeo)
         if 'Y-GEO_CORR=' in parsed_config:
             ygeo = parsed_config['Y-GEO_CORR='][0]
-            ygeo_path = os.path.join(self.getWorkingDirectory(), os.path.basename(ygeo))
-            if not os.path.exists(ygeo_path):
-                os.symlink(ygeo, ygeo_path)
+            os.symlink(ygeo,
+                       os.path.join(self.getWorkingDirectory(), os.path.basename(ygeo)))
             parsed_config['Y-GEO_CORR='] = os.path.basename(ygeo)
 
         # Save back the changes

@@ -116,17 +116,17 @@ class EDPluginControlXscaleGenerate(EDPluginControl):
 
         self.xscale_anom_unmerged_parser = self.loadPlugin("EDPluginParseXscaleOutput")
         parserinput = XSDataXscaleParsingInput()
-        parserinput.lp_file = XSDataString(self.xscale_anom_merged.dataOutput.lp_file.value)
+        parserinput.lp_file = XSDataString(self.xscale_anom_unmerged.dataOutput.lp_file.value)
         self.xscale_anom_unmerged_parser.dataInput = parserinput
 
         self.xscale_noanom_merged_parser = self.loadPlugin("EDPluginParseXscaleOutput")
         parserinput = XSDataXscaleParsingInput()
-        parserinput.lp_file = XSDataString(self.xscale_anom_merged.dataOutput.lp_file.value)
+        parserinput.lp_file = XSDataString(self.xscale_noanom_merged.dataOutput.lp_file.value)
         self.xscale_noanom_merged_parser.dataInput = parserinput
 
         self.xscale_noanom_unmerged_parser = self.loadPlugin("EDPluginParseXscaleOutput")
         parserinput = XSDataXscaleParsingInput()
-        parserinput.lp_file = XSDataString(self.xscale_anom_merged.dataOutput.lp_file.value)
+        parserinput.lp_file = XSDataString(self.xscale_noanom_unmerged.dataOutput.lp_file.value)
         self.xscale_noanom_unmerged_parser.dataInput = parserinput
 
         # as if the previous horror was not enough, the parsing will

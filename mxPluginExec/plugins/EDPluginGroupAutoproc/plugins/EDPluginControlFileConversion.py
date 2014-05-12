@@ -33,6 +33,8 @@ import re
 import os.path
 import tempfile
 import shutil
+import traceback
+import subprocess
 
 # for the chmod constants
 from stat import *
@@ -40,7 +42,7 @@ from stat import *
 from EDPluginControl import EDPluginControl
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult, XSDataString
-from XSDataAutoproc import XSDataFileConversion
+from XSDataAutoproc import XSDataFileConversion, XSDataFileConversionOut
 from XSDataAutoproc import XSDataPointless, XSDataAimless
 from XSDataAutoproc import XSDataTruncate, XSDataUniqueify
 
@@ -74,6 +76,7 @@ class EDPluginControlFileConversion(EDPluginControl):
         self.pointless_out = "{0}unmerged_{1}_pointless_multirecord.mtz".format(self.image_prefix, anom)
         self.truncate_out = '{0}{1}_truncate.mtz'.format(self.image_prefix, anom)
         self.aimless_out = '{0}{1}_aimless.mtz'.format(self.image_prefix, anom)
+        self.aimless_commands_out = '{0}{1}_aimless.inp'.format(self.image_prefix, anom)
 
 
     def checkParameters(self):
@@ -110,6 +113,8 @@ class EDPluginControlFileConversion(EDPluginControl):
         aimless_in.input_file = pointless_in.output_file
         aimless_in.output_file = XSDataString(os.path.join(self.results_dir,
                                                            self.aimless_out))
+        aimless_in.command_file = XSDataString(os.path.join(self.results_dir,
+                                                            self.aimless_commands_out))
         aimless_in.dataCollectionID = self.dataInput.dataCollectionID
         aimless_in.start_image = self.dataInput.start_image
         aimless_in.end_image = self.dataInput.end_image
@@ -127,6 +132,7 @@ class EDPluginControlFileConversion(EDPluginControl):
         # copy the aimless log where the results files are
         source_log = os.path.join(self.aimless.getWorkingDirectory(),
                                   self.aimless.getScriptLogFileName())
+        self.aimless_log = source_log
         target_log = os.path.join(self.results_dir,
                                   '{0}aimless_{1}.log'.format(self.image_prefix,
                                                               "anom" if self.dataInput.anom.value else "noanom"))
@@ -194,9 +200,20 @@ class EDPluginControlFileConversion(EDPluginControl):
         EDPluginControl.postProcess(self)
         output_file = self.dataInput.output_file.value
 
-        res = XSDataResult()
+        # gzip the pointless multirecord file
+        pointless_out = os.path.join(os.path.dirname(self.dataInput.output_file.value),
+                                     self.pointless_out)
+        try:
+            self.DEBUG("gzip'ing pointless multirecord file {0}".format(pointless_out))
+            subprocess.call(['gzip', pointless_out])
+        except Exception:
+            self.DEBUG("gzip'ing the file failed: {0}".format(traceback.format_exc()))
+
+        res = XSDataFileConversionOut()
         status = XSDataStatus()
         status.isSuccess = XSDataBoolean(os.path.exists(self.uniqueify.dataInput.output_file.value))
         res.status = status
-
+        res.pointless_sgnumber = self.pointless.dataOutput.sgnumber
+        res.pointless_sgstring = self.pointless.dataOutput.sgstr
+        res.aimless_log = XSDataString(self.aimless_log)
         self.dataOutput = res

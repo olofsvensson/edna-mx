@@ -118,4 +118,8 @@ class EDPluginControlAutoprocImport(EDPluginControl):
                 files.append(p.dataInput.output_file)
         res.files = files
 
+        res.pointless_sgnumber = self.noanom.dataOutput.pointless_sgnumber
+        res.pointless_sgstring = self.noanom.dataOutput.pointless_sgstring
+        res.aimless_log_anom = self.anom.dataOutput.aimless_log
+        res.aimless_log_noanom = self.noanom.dataOutput.aimless_log
         self.dataOutput = res

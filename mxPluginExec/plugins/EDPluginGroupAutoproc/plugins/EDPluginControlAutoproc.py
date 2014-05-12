@@ -28,6 +28,9 @@ __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
 
+WS_URL='http://ispyb.esrf.fr:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl'
+
+import os
 import os.path
 import time
 import sys
@@ -35,11 +38,22 @@ import json
 import traceback
 import shutil
 import socket
+from stat import *
 
 from EDPluginControl import EDPluginControl
 from EDVerbose import EDVerbose
 
 from EDFactoryPlugin import edFactoryPlugin
+
+# try the suds from the system
+try:
+    import suds
+except ImportError:
+    EDVerbose.warning('Suds not installed system wide, will try the EDNA bundled one')
+    edFactoryPlugin.loadModule("EDInstallSudsv0_4")
+
+import suds
+
 
 from XSDataCommon import XSDataFile, XSDataBoolean, XSDataString
 from XSDataCommon import  XSDataInteger, XSDataTime, XSDataFloat
@@ -54,13 +68,20 @@ from XSDataAutoproc import XSDataXscaleInputFile
 from XSDataAutoproc import XSDataAutoprocInput
 from XSDataAutoproc import XSDataAutoprocImport
 
-edFactoryPlugin.loadModule('XSDataWaitFilev1_0')
-from XSDataWaitFilev1_0 import XSDataInputWaitFile
-
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 # plugin input/output
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
 from XSDataISPyBv1_4 import XSDataResultStoreAutoProc
+
+# dimple stuff
+
+# this depends on the CCTBX modules so perhaps we could make running
+# dimple dependent on whether those are installed or not
+edFactoryPlugin.loadModule('XSDataCCP4DIMPLE')
+from XSDataCCP4DIMPLE import CCP4DataInputControlPipelineCalcDiffMap
+from XSDataCCP4DIMPLE import HKL, XYZ, CCP4MTZColLabels, CCP4LogFile
+
+edFactoryPlugin.loadModule('EDPluginControlDIMPLEPipelineCalcDiffMapv10.py')
 
 # what actually goes inside
 from XSDataISPyBv1_4 import AutoProcContainer, AutoProc, AutoProcScalingContainer
@@ -85,7 +106,7 @@ WAIT_FOR_FRAME_TIMEOUT=240 #max uses 50*5
 # We used to go through the results directory and add all files to the
 # ispyb upload. Now some files should not be uploaded, so we'll
 # discriminate by extension for now
-ISPYB_UPLOAD_EXTENSIONS=['.lp', '.mtz', '.log', '.inp']
+ISPYB_UPLOAD_EXTENSIONS=['.lp', '.mtz', '.log', '.inp', '.mtz.gz']
 
 class EDPluginControlAutoproc(EDPluginControl):
     """
@@ -99,6 +120,11 @@ class EDPluginControlAutoproc(EDPluginControl):
         """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataAutoprocInput)
+
+    def configure(self):
+        EDPluginControl.configure(self)
+        self.ispyb_user = self.config.get('ispyb_user')
+        self.ispyb_password = self.config.get('ispyb_password')
 
     def checkParameters(self):
         """
@@ -130,7 +156,11 @@ class EDPluginControlAutoproc(EDPluginControl):
     def preProcess(self, _edObject = None):
         EDPluginControl.preProcess(self)
         self.DEBUG('EDPluginControlAutoproc.preProcess starting')
-        self.DEBUG('failure state is currently {0}'.format(self.isFailure()))
+        self.DEBUG('running on {0}'.format(socket.gethostname()))
+        try:
+            self.DEBUG('system load avg: {0}'.format(os.getloadavg()))
+        except OSError:
+            pass
 
         # for info to send to the autoproc stats server
         self.custom_stats = dict(creation_time=time.time(),
@@ -139,10 +169,27 @@ class EDPluginControlAutoproc(EDPluginControl):
                                  comments='running on {0}'.format(socket.gethostname()))
 
 
+
+
         data_in = self.dataInput
+
+        # Check if the spacegroup needs to be converted to a number
+        # (ie it's a symbolic thing)
+        sgnumber = None
+        if data_in.spacegroup is not None:
+            try:
+                sgnumber = int(data_in.spacegroup.value)
+            except ValueError:
+                # strip all whitespace and upcase the whole thing
+                cleanedup = data_in.spacegroup.value.replace(' ', '').upper()
+                if cleanedup in SPACE_GROUP_NUMBERS:
+                    sgnumber = SPACE_GROUP_NUMBERS[cleanedup]
+
+
         xds_in = XSDataMinimalXdsIn()
         xds_in.input_file = data_in.input_file.path
-        xds_in.spacegroup = data_in.spacegroup
+        if sgnumber is not None:
+            xds_in.spacegroup = XSDataInteger(sgnumber)
         xds_in.unit_cell = data_in.unit_cell
 
         self.log_file_path = os.path.join(self.root_dir, 'stats.json')
@@ -160,7 +207,7 @@ class EDPluginControlAutoproc(EDPluginControl):
         try:
             os.makedirs(self.results_dir)
         except OSError: # it most likely exists
-            pass
+            EDVerbose.ERROR('Error creating the results directory: {0}'.format(traceback.format_exc()))
 
         # Copy the vanilla XDS input file to the results dir
         infile_dest = os.path.join(self.results_dir, self.image_prefix + '_input_XDS.INP')
@@ -172,7 +219,7 @@ class EDPluginControlAutoproc(EDPluginControl):
         try:
             os.makedirs(self.autoproc_ids_dir)
         except OSError: # it's there
-            pass
+            EDVerbose.ERROR('Error creating the autoproc ids directory: {0}'.format(traceback.format_exc()))
 
 
         # we'll need the low res limit later on
@@ -252,18 +299,6 @@ class EDPluginControlAutoproc(EDPluginControl):
 
         first_image = _template_to_image(template, start_image)
 
-
-        self.wait_file = self.loadPlugin('EDPluginWaitFile')
-        waitfileinput = XSDataInputWaitFile()
-        waitfileinput.expectedFile = XSDataFile()
-        waitfileinput.expectedFile.path = XSDataString(first_image)
-        waitfileinput.expectedSize = XSDataInteger(0) # we do not care
-        timeout = XSDataTime()
-        global WAIT_FOR_FRAME_TIMEOUT
-        timeout.value = WAIT_FOR_FRAME_TIMEOUT
-        waitfileinput.timeOut = timeout
-        self.wait_file.dataInput = waitfileinput
-
         self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProc")
         self.xds_first.dataInput = xds_in
 
@@ -282,6 +317,8 @@ class EDPluginControlAutoproc(EDPluginControl):
         self.store_autoproc_noanom = self.loadPlugin('EDPluginISPyBStoreAutoProcv1_4')
 
         self.file_conversion = self.loadPlugin('EDPluginControlAutoprocImport')
+
+        self.dimple = self.loadPlugin('EDPluginControlDIMPLEPipelineCalcDiffMapv10')
 
         self.DEBUG('EDPluginControlAutoproc.preProcess finished')
 
@@ -304,19 +341,6 @@ class EDPluginControlAutoproc(EDPluginControl):
         except Exception, e:
             EDVerbose.ERROR('could not get integration ID: \n{0}'.format(traceback.format_exc(e)))
             self.integration_id_anom = None
-
-        # wait for the first frame
-        t0=time.time()
-        self.wait_file.executeSynchronous()
-        if self.wait_file.isFailure():
-            self.ERROR('error waiting for the first image file to appear')
-            self.setFailure()
-            return
-        EDVerbose.screen('first frame appeared on time')
-        self.stats['wait_file'] = time.time()-t0
-
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
 
         # first XDS plugin run with supplied XDS file
         EDVerbose.screen('STARTING XDS run...')
@@ -388,12 +412,12 @@ class EDPluginControlAutoproc(EDPluginControl):
         xdsresult = self.xds_first.dataOutput
 
         # for the custom stats
-        self.custom_stats['overall_i_over_sigma']=xdsresult.total_completeness.outer_isig.value
-        self.custom_stats['overall_r_value']=xdsresult.total_completeness.outer_rfactor.value
-        self.custom_stats['inner_i_over_sigma']=xdsresult.completeness_entries[0].outer_isig.value
-        self.custom_stats['inner_r_value']=xdsresult.completeness_entries[0].outer_rfactor.value
-        self.custom_stats['outer_i_over_sigma']=xdsresult.completeness_entries[-1].outer_isig.value
-        self.custom_stats['outer_r_value']=xdsresult.completeness_entries[-1].outer_rfactor.value
+        self.custom_stats['overall_i_over_sigma']=xdsresult.total_completeness.isig.value
+        self.custom_stats['overall_r_value']=xdsresult.total_completeness.rfactor.value
+        self.custom_stats['inner_i_over_sigma']=xdsresult.completeness_entries[0].isig.value
+        self.custom_stats['inner_r_value']=xdsresult.completeness_entries[0].rfactor.value
+        self.custom_stats['i_over_sigma']=xdsresult.completeness_entries[-1].isig.value
+        self.custom_stats['r_value']=xdsresult.completeness_entries[-1].rfactor.value
 
 
         res_cutoff_in = XSDataResCutoff()
@@ -470,6 +494,12 @@ class EDPluginControlAutoproc(EDPluginControl):
                          'Scaling',
                          'Successful',
                          'anom/noanom generation finished in {0}s'.format(self.stats['anom/noanom_generation']))
+
+        # Copy the integrate and xds_ascii files to the results directory (for
+        # max)
+        shutil.copy(self.generate.dataOutput.hkl_anom.value, os.path.join(self.results_dir, 'XDS_ASCII.HKL'))
+        shutil.copy(self.generate.dataOutput.integrate_anom.value, os.path.join(self.results_dir, 'INTEGRATE.HKL'))
+
 
         # we can now use the xds output parser on the two correct.lp
         # files, w/ and w/out anom
@@ -696,9 +726,117 @@ class EDPluginControlAutoproc(EDPluginControl):
             EDVerbose.screen(traceback.format_exc())
 
 
+        # Now onto DIMPLE
+
+        # create a startup script
+        # This is ugly
+        script_template = '''#!/bin/sh
+
+if [ $# -eq 1 ]; then
+        ssh mxnice /scisoft/bin/cctbx_python_debian6.sh /scisoft/bin/run-dimple-autoproc.py {root_dir} `readlink -f "$1"`;
+else
+        ssh mxnice /scisoft/bin/cctbx_python_debian6.sh /scisoft/bin/run-dimple-autoproc.py {root_dir} {dcid}
+fi
+'''
+        dimple_script = script_template.format(dcid=self.dataInput.data_collection_id.value,
+                                               root_dir=self.root_dir)
+        script_path = os.path.join(self.root_dir, 'dimple.sh')
+        with open(script_path, 'w') as f:
+            f.write(dimple_script)
+        os.chmod(script_path, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH|S_IXUSR|S_IXGRP|S_IXOTH)
+
+
+        # we need a PDB file either in ispyb or in the image directory
+        c = suds.client.Client(WS_URL, username=self.ispyb_user, password=self.ispyb_password)
+        pdb_file = c.service.getPdbFilePath(self.dataInput.data_collection_id.value)
+        if pdb_file is None:
+            EDVerbose.screen('No pdb file in ispyb, trying the toplevel dir {0}'.format(self.root_dir))
+        for f in os.listdir(self.root_dir):
+            if f.endswith('.pdb'):
+                pdb_file = os.path.join(self.root_dir, f)
+                break
+
+        # We need these 2 variables for the coot script below
+        dimple_out = os.path.join(self.results_dir, '{0}_dimple_out.pdb'.format(self.image_prefix))
+        dimple_mtzout = os.path.join(self.results_dir, '{0}_dimple_out.mtz'.format(self.image_prefix))
+
+        # To indicate if dimple ran successfully. Perhaps there's a
+        # way to do it with edplugin's various isStarted, isFailure,
+        # isWhatever
+        dimple_did_run = False
+
+        if pdb_file is None:
+            EDVerbose.WARNING('No pdb file found, not running dimple')
+        else:
+            EDVerbose.screen('Using pdb file {0}'.format(pdb_file))
+            dimple_in = CCP4DataInputControlPipelineCalcDiffMap()
+            dimple_in.XYZIN = XYZ(path=XSDataString(pdb_file))
+
+            # We'll put the results in the results directory as well
+
+            dimple_in.XYZOUT = XYZ(path=XSDataString(dimple_out))
+
+            labels = CCP4MTZColLabels()
+            labels.F = XSDataString('F_xdsproc')
+            labels.SIGF = XSDataString('SIGF_xdsproc')
+            labels.IMEAN = XSDataString('IMEAN')
+            labels.SIGIMEAN = XSDataString('SIGIMEAN')
+            dimple_in.ColLabels = labels
+
+            # For now the import plugin does no give information about
+            # the paths to the various files it generates so we look
+            # into the results directory for the right mtz file
+            mtz_file = None
+            for f in os.listdir(self.results_dir):
+                if f.endswith('anom_aimless.mtz'):
+                    mtz_file = os.path.join(self.results_dir, f)
+                    break
+
+
+            if mtz_file is None:
+                EDVerbose.ERROR('No suitable input mtz found for dimple, not running it')
+            else:
+                dimple_in.HKLIN = HKL(path=XSDataString(mtz_file))
+                dimple_log = os.path.join(self.results_dir, '{0}_dimple.log'.format(self.image_prefix))
+                dimple_in.outputLogFile = CCP4LogFile(path=XSDataString(dimple_log))
+                dimple_in.HKLOUT = HKL(path=XSDataString(dimple_mtzout))
+                self.dimple.dataInput = dimple_in
+                self.dimple.executeSynchronous()
+                if not self.dimple.isFailure():
+                    dimple_did_run = True
+
+        # Now create a coot startup file, only if dimple ran successfully
+        if dimple_did_run:
+            coot_script = """#!/bin/sh
+if [ ! -e {mtz} ] || [ ! -e {pdb} ]; then
+        echo Either {mtz} or {pdb} is missing
+        echo Did dimple run?
+        exit 1
+else
+        echo Let\\'s run coot
+        coot --pdb {pdb} --auto {mtz} --python -c 'difference_map_peaks(2,0,5,5,1,1)'
+fi
+""".format(pdb=os.path.basename(dimple_out),
+           mtz=os.path.basename(dimple_mtzout))
+
+            script_path = os.path.join(self.results_dir, 'coot.sh')
+            with open(script_path, 'w') as f:
+                f.write(coot_script)
+            os.chmod(script_path, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH|S_IXUSR|S_IXGRP|S_IXOTH)
+
+
+
     def postProcess(self, _edObject = None):
         EDPluginControl.postProcess(self)
         self.DEBUG("EDPluginControlAutoproc.postProcess")
+
+        # Create a file in the results directory to indicate all files have been
+        # populated in it already so Max's code can be aware of that
+        try:
+            os.mknod(os.path.join(self.results_dir, '.finished'), 0755)
+        except OSError: # file exists
+            pass
+
 
         #Now that we have executed the whole thing we need to create
         #the suitable ISPyB plugin input and serialize it to the file
@@ -708,17 +846,18 @@ class EDPluginControlAutoproc(EDPluginControl):
         # AutoProc attr
         autoproc = AutoProc()
 
+        # There's also
+        pointless_sg_str = self.file_conversion.dataOutput.pointless_sgstring
+        if pointless_sg_str is not None:
+            autoproc.spaceGroup = pointless_sg_str.value
+
         xdsout = self.xds_first.dataOutput
-        if xdsout.sg_number is not None: # and it should not
-            autoproc.spaceGroup = SPACE_GROUP_NAMES[xdsout.sg_number.value]
-        autoproc.refinedCell_a = xdsout.cell_a.value
-        autoproc.refinedCell_b = xdsout.cell_b.value
-        autoproc.refinedCell_c = xdsout.cell_c.value
-        autoproc.refinedCell_alpha = xdsout.cell_alpha.value
-        autoproc.refinedCell_beta = xdsout.cell_beta.value
-        autoproc.refinedCell_gamma = xdsout.cell_gamma.value
+
+        # The unit cell will be taken from the no anom aimless run below
 
         output.AutoProc = autoproc
+
+        # NOANOM PATH
 
         # scaling container and all the things that go in
         scaling_container_noanom = AutoProcScalingContainer()
@@ -727,33 +866,29 @@ class EDPluginControlAutoproc(EDPluginControl):
 
         scaling_container_noanom.AutoProcScaling = scaling
 
-        # NOANOM PATH
-        xscale_stats_noanom = self.xscale_generate.dataOutput.stats_noanom_merged
-        inner_stats_noanom = xscale_stats_noanom.completeness_entries[0]
-        outer_stats_noanom = xscale_stats_noanom.completeness_entries[-1]
+        inner, outer, overall, unit_cell = _parse_aimless(self.file_conversion.dataOutput.aimless_log_noanom.value)
 
-        # use the previous shell's res as low res, if available
-        prev_res = self.low_resolution_limit
-        try:
-            prev_res = xscale_stats_noanom.completeness_entries[-2].outer_res.value
-        except IndexError:
-            pass
-        total_stats_noanom = xscale_stats_noanom.total_completeness
+        autoproc.refinedCell_a = str(unit_cell[0])
+        autoproc.refinedCell_b = str(unit_cell[1])
+        autoproc.refinedCell_c = str(unit_cell[2])
+        autoproc.refinedCell_alpha = str(unit_cell[3])
+        autoproc.refinedCell_beta = str(unit_cell[4])
+        autoproc.refinedCell_gamma = str(unit_cell[5])
 
-        stats = _create_scaling_stats(inner_stats_noanom, 'innerShell',
-                                      self.low_resolution_limit, False)
-        overall_low = stats.resolutionLimitLow
-        scaling_container_noanom.AutoProcScalingStatistics.append(stats)
+        inner_stats = AutoProcScalingStatistics()
+        for k, v in inner.iteritems():
+            setattr(inner_stats, k, v)
+        scaling_container_noanom.AutoProcScalingStatistics.append(inner_stats)
 
-        stats = _create_scaling_stats(outer_stats_noanom, 'outerShell',
-                                      prev_res, False)
-        overall_high = stats.resolutionLimitHigh
-        scaling_container_noanom.AutoProcScalingStatistics.append(stats)
-        stats = _create_scaling_stats(total_stats_noanom, 'overall',
-                                      self.low_resolution_limit, False)
-        stats.resolutionLimitLow = overall_low
-        stats.resolutionLimitHigh = overall_high
-        scaling_container_noanom.AutoProcScalingStatistics.append(stats)
+        outer_stats = AutoProcScalingStatistics()
+        for k, v in outer.iteritems():
+            setattr(outer_stats, k, v)
+        scaling_container_noanom.AutoProcScalingStatistics.append(outer_stats)
+
+        overall_stats = AutoProcScalingStatistics()
+        for k, v in overall.iteritems():
+            setattr(overall_stats, k, v)
+        scaling_container_noanom.AutoProcScalingStatistics.append(overall_stats)
 
         integration_container_noanom = AutoProcIntegrationContainer()
         image = Image()
@@ -763,13 +898,12 @@ class EDPluginControlAutoproc(EDPluginControl):
         integration_noanom = AutoProcIntegration()
         if self.integration_id_noanom is not None:
             integration_noanom.autoProcIntegrationId = self.integration_id_noanom
-        crystal_stats =  self.parse_xds_noanom.dataOutput
-        integration_noanom.cell_a = crystal_stats.cell_a.value
-        integration_noanom.cell_b = crystal_stats.cell_b.value
-        integration_noanom.cell_c = crystal_stats.cell_c.value
-        integration_noanom.cell_alpha = crystal_stats.cell_alpha.value
-        integration_noanom.cell_beta = crystal_stats.cell_beta.value
-        integration_noanom.cell_gamma = crystal_stats.cell_gamma.value
+        integration_noanom.cell_a = unit_cell[0]
+        integration_noanom.cell_b = unit_cell[1]
+        integration_noanom.cell_c = unit_cell[2]
+        integration_noanom.cell_alpha = unit_cell[3]
+        integration_noanom.cell_beta = unit_cell[4]
+        integration_noanom.cell_gamma = unit_cell[5]
         integration_noanom.anomalous = 0
 
         # done with the integration
@@ -778,6 +912,25 @@ class EDPluginControlAutoproc(EDPluginControl):
 
         # ANOM PATH
         scaling_container_anom = AutoProcScalingContainer()
+
+        inner, outer, overall, unit_cell = _parse_aimless(self.file_conversion.dataOutput.aimless_log_anom.value)
+        inner_stats = AutoProcScalingStatistics()
+        for k, v in inner.iteritems():
+            setattr(inner_stats, k, v)
+        scaling_container_anom.AutoProcScalingStatistics.append(inner_stats)
+
+        outer_stats = AutoProcScalingStatistics()
+        for k, v in outer.iteritems():
+            setattr(outer_stats, k, v)
+        scaling_container_anom.AutoProcScalingStatistics.append(outer_stats)
+
+        overall_stats = AutoProcScalingStatistics()
+        for k, v in overall.iteritems():
+            setattr(overall_stats, k, v)
+        scaling_container_anom.AutoProcScalingStatistics.append(overall_stats)
+
+
+
         scaling = AutoProcScaling()
         scaling.recordTimeStamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
@@ -790,7 +943,7 @@ class EDPluginControlAutoproc(EDPluginControl):
         # use the previous shell's res as low res if available
         prev_res = self.low_resolution_limit
         try:
-            prev_res = xscale_stats_anom.completeness_entries[-2].outer_res.value
+            prev_res = xscale_stats_anom.completeness_entries[-2].res.value
         except IndexError:
             pass
         total_stats_anom = xscale_stats_anom.total_completeness
@@ -820,12 +973,12 @@ class EDPluginControlAutoproc(EDPluginControl):
         crystal_stats =  self.parse_xds_anom.dataOutput
         if self.integration_id_anom is not None:
             integration_anom.autoProcIntegrationId = self.integration_id_anom
-        integration_anom.cell_a = crystal_stats.cell_a.value
-        integration_anom.cell_b = crystal_stats.cell_b.value
-        integration_anom.cell_c = crystal_stats.cell_c.value
-        integration_anom.cell_alpha = crystal_stats.cell_alpha.value
-        integration_anom.cell_beta = crystal_stats.cell_beta.value
-        integration_anom.cell_gamma = crystal_stats.cell_gamma.value
+        integration_anom.cell_a = unit_cell[0]
+        integration_anom.cell_b = unit_cell[1]
+        integration_anom.cell_c = unit_cell[2]
+        integration_anom.cell_alpha = unit_cell[3]
+        integration_anom.cell_beta = unit_cell[4]
+        integration_anom.cell_gamma = unit_cell[5]
         integration_anom.anomalous = 1
 
         # done with the integration
@@ -835,12 +988,10 @@ class EDPluginControlAutoproc(EDPluginControl):
 
         # ------ NO ANOM / ANOM end
 
-
-
         program_container = AutoProcProgramContainer()
         program_container.AutoProcProgram = AutoProcProgram()
         program_container.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container.AutoProcProgram.processingPrograms = 'edna-fastproc'
+        program_container.AutoProcProgram.processingPrograms = 'EDNAproc'
 
         # now for the generated files. There's some magic to do with
         # their paths to determine where to put them on pyarch
@@ -1000,14 +1151,14 @@ def _create_scaling_stats(xscale_stats, stats_type, lowres, anom):
     stats.scalingStatisticsType = stats_type
     stats.resolutionLimitLow = lowres
     if stats_type != 'overall':
-        stats.resolutionLimitHigh = xscale_stats.outer_res.value
-    stats.meanIOverSigI = xscale_stats.outer_isig.value
-    stats.completeness = xscale_stats.outer_complete.value
+        stats.resolutionLimitHigh = xscale_stats.res.value
+    stats.meanIOverSigI = xscale_stats.isig.value
+    stats.completeness = xscale_stats.complete.value
     stats.multiplicity = xscale_stats.multiplicity.value
     # The ispyb plugin DOES NOT convert to the right data types. This
     # happens to be an integer on the ispyb side
-    stats.nTotalObservations = int(xscale_stats.outer_observed.value)
-    stats.rMerge = xscale_stats.outer_rfactor.value
+    stats.nTotalObservations = int(xscale_stats.observed.value)
+    stats.rMerge = xscale_stats.rfactor.value
     stats.anomalous = anom
 
     return stats
@@ -1034,6 +1185,48 @@ def _template_to_image(fmt, num):
     fmt_string = prefix + '{0:0' + str(length) + 'd}' + suffix
 
     return fmt_string.format(num)
+
+
+# mapping between the start of the line and the name of the property
+# in the ispyb data object thing
+INTERESTING_LINES = {
+    'Low resolution limit': 'resolutionLimitLow',
+    'High resolution limit': 'resolutionLimitHigh',
+    'Mean((I)/sd(I))': 'meanIOverSigI',
+    'Completeness': 'completeness',
+    'Multiplicity': 'multiplicity',
+    'Total number of observations': 'nTotalObservations',
+    'Rmerge  (within I+/I-)': 'rMerge'
+}
+
+UNIT_CELL_PREFIX = 'Average unit cell:' # special case, 6 values
+
+def _parse_aimless(filepath):
+    lines = []
+    inner_stats = {'scalingStatisticsType':'innerShell'}
+    outer_stats = {'scalingStatisticsType':'outerShell'}
+    overall_stats = {'scalingStatisticsType':'overall'}
+    unit_cell = None
+    with open(filepath, 'r') as f:
+        lines = f.readlines()
+    started = False
+    for line in lines:
+        # avoid all the stuff before the final summary
+        if line.startswith('<!--SUMMARY_BEGIN--> $TEXT:Result: $$ $$'):
+            started = True
+        if started:
+            for prefix, prop_name in INTERESTING_LINES.iteritems():
+                if line.startswith(prefix):
+                    # We need to multiply the values for rMerge by 100
+                    factor = 100 if prop_name == 'rMerge' else 1
+                    # 3 last columns are the values we're after
+                    overall, inner, outer = [float(x) * factor for x in line.split()[-3:]]
+                    overall_stats[prop_name] = overall
+                    inner_stats[prop_name] = inner
+                    outer_stats[prop_name] = outer
+            if line.startswith(UNIT_CELL_PREFIX):
+                unit_cell = map(float, line.split()[-6:])
+    return inner_stats, outer_stats, overall_stats, unit_cell
 
 
 # taken straight from max's code
@@ -1268,4 +1461,238 @@ SPACE_GROUP_NAMES = {
     228: ' F d -3 c1 ',
     229: ' I m -3 m ',
     230: ' I a -3 d1 ',
+}
+
+
+SPACE_GROUP_NUMBERS = {
+    'P1':1,
+    'P-1':2,
+    'P121':3,
+    'P1211':4,
+    'C121':5,
+    'P1M1':6,
+    'P1C1':7,
+    'C1M1':8,
+    'C1C1':9,
+    'P12/M1':10,
+    'P121/M1':11,
+    'C12/M1':12,
+    'P12/C1':13,
+    'P121/C1':14,
+    'C12/C1':15,
+    'P222':16,
+    'P2221':17,
+    'P21212':18,
+    'P212121':19,
+    'C2221':20,
+    'C222':21,
+    'F222':22,
+    'I222':23,
+    'I212121':24,
+    'PMM2':25,
+    'PMC21':26,
+    'PCC2':27,
+    'PMA2':28,
+    'PCA21':29,
+    'PNC2':30,
+    'PMN21':31,
+    'PBA2':32,
+    'PNA21':33,
+    'PNN2':34,
+    'CMM2':35,
+    'CMC21':36,
+    'CCC2':37,
+    'AMM2':38,
+    'ABM2':39,
+    'AMA2':40,
+    'ABA2':41,
+    'FMM2':42,
+    'FDD2':43,
+    'IMM2':44,
+    'IBA2':45,
+    'IMA2':46,
+    'PMMM':47,
+    'PNNN':48,
+    'PCCM':49,
+    'PBAN':50,
+    'PMMA1':51,
+    'PNNA1':52,
+    'PMNA1':53,
+    'PCCA1':54,
+    'PBAM1':55,
+    'PCCN1':56,
+    'PBCM1':57,
+    'PNNM1':58,
+    'PMMN1':59,
+    'PBCN1':60,
+    'PBCA1':61,
+    'PNMA1':62,
+    'CMCM1':63,
+    'CMCA1':64,
+    'CMMM':65,
+    'CCCM':66,
+    'CMMA':67,
+    'CCCA':68,
+    'FMMM':69,
+    'FDDD':70,
+    'IMMM':71,
+    'IBAM':72,
+    'IBCA1':73,
+    'IMMA1':74,
+    'P4':75,
+    'P41':76,
+    'P42':77,
+    'P43':78,
+    'I4':79,
+    'I41':80,
+    'P-4':81,
+    'I-4':82,
+    'P4/M':83,
+    'P42/M':84,
+    'P4/N':85,
+    'P42/N':86,
+    'I4/M':87,
+    'I41/A':88,
+    'P422':89,
+    'P4212':90,
+    'P4122':91,
+    'P41212':92,
+    'P4222':93,
+    'P42212':94,
+    'P4322':95,
+    'P43212':96,
+    'I422':97,
+    'I4122':98,
+    'P4MM':99,
+    'P4BM':100,
+    'P42CM':101,
+    'P42NM':102,
+    'P4CC':103,
+    'P4NC':104,
+    'P42MC':105,
+    'P42BC':106,
+    'I4MM':107,
+    'I4CM':108,
+    'I41MD':109,
+    'I41CD':110,
+    'P-42M':111,
+    'P-42C':112,
+    'P-421M':113,
+    'P-421C':114,
+    'P-4M2':115,
+    'P-4C2':116,
+    'P-4B2':117,
+    'P-4N2':118,
+    'I-4M2':119,
+    'I-4C2':120,
+    'I-42M':121,
+    'I-42D':122,
+    'P4/MMM':123,
+    'P4/MCC':124,
+    'P4/NBM':125,
+    'P4/NNC':126,
+    'P4/MBM1':127,
+    'P4/MNC1':128,
+    'P4/NMM1':129,
+    'P4/NCC1':130,
+    'P42/MMC':131,
+    'P42/MCM':132,
+    'P42/NBC':133,
+    'P42/NNM':134,
+    'P42/MBC':135,
+    'P42/MNM':136,
+    'P42/NMC':137,
+    'P42/NCM':138,
+    'I4/MMM':139,
+    'I4/MCM':140,
+    'I41/AMD':141,
+    'I41/ACD':142,
+    'P3':143,
+    'P31':144,
+    'P32':145,
+    'H3':146,
+    'P-3':147,
+    'H-3':148,
+    'P312':149,
+    'P321':150,
+    'P3112':151,
+    'P3121':152,
+    'P3212':153,
+    'P3221':154,
+    'H32':155,
+    'P3M1':156,
+    'P31M':157,
+    'P3C1':158,
+    'P31C':159,
+    'H3M':160,
+    'H3C':161,
+    'P-31M':162,
+    'P-31C':163,
+    'P-3M1':164,
+    'P-3C1':165,
+    'H-3M':166,
+    'H-3C':167,
+    'P6':168,
+    'P61':169,
+    'P65':170,
+    'P62':171,
+    'P64':172,
+    'P63':173,
+    'P-6':174,
+    'P6/M':175,
+    'P63/M':176,
+    'P622':177,
+    'P6122':178,
+    'P6522':179,
+    'P6222':180,
+    'P6422':181,
+    'P6322':182,
+    'P6MM':183,
+    'P6CC':184,
+    'P63CM':185,
+    'P63MC':186,
+    'P-6M2':187,
+    'P-6C2':188,
+    'P-62M':189,
+    'P-62C':190,
+    'P6/MMM':191,
+    'P6/MCC':192,
+    'P63/MCM':193,
+    'P63/MMC':194,
+    'P23':195,
+    'F23':196,
+    'I23':197,
+    'P213':198,
+    'I213':199,
+    'PM-3':200,
+    'PN-3':201,
+    'FM-3':202,
+    'FD-3':203,
+    'IM-3':204,
+    'PA-31':205,
+    'IA-31':206,
+    'P432':207,
+    'P4232':208,
+    'F432':209,
+    'F4132':210,
+    'I432':211,
+    'P4332':212,
+    'P4132':213,
+    'I4132':214,
+    'P-43M':215,
+    'F-43M':216,
+    'I-43M':217,
+    'P-43N':218,
+    'F-43C':219,
+    'I-43D':220,
+    'PM-3M':221,
+    'PN-3N':222,
+    'PM-3N1':223,
+    'PN-3M1':224,
+    'FM-3M':225,
+    'FM-3C':226,
+    'FD-3M1':227,
+    'FD-3C1':228,
+    'IM-3M':229,
+    'IA-3D1':230,
 }

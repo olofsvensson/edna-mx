@@ -267,30 +267,42 @@ def _extract_infos(lines, output):
         raise ValueError('Some parameters missing')
 
 def _extract_completeness_entries(lines, output):
+    # Since the latest XDS version there's no guarantee the fields
+    # will be separated by whitespace. What's fixed is the size of
+    # each field. So we'll now use fixed offsets to extract the
+    # fields.
+
+    # The Fortran code uses this format statement:
+    # 1130  FORMAT(F9.2,I12,I8,I10,F11.1,'%',F10.1,'%',F9.1,'%',I9,F8.2,      &
+    #              F8.1,'%',F8.1,A1,I6,A1,F8.3,I8)
+
+    res_start = 0
+    res_end = 9
+    offsets = {
+        'observed': (9, 21),
+        'unique': (21, 29),
+        'possible': (29, 39),
+        'complete': (39, 50),
+        'rfactor': (51, 61),
+        'isig': (81, 89),
+        'half_dataset_correlation': (99, 107)
+    }
+
+
     for line in lines:
-        if line.find('total') != -1:
-            # special case for the last table line which contains the
-            # totals
-            infos = [float(x.replace('%', '').replace('*','')) for x in line.split()[1:]]
-            output.total_completeness = XSDataXdsCompletenessEntry()
-            output.total_completeness.outer_observed = XSDataFloat(infos[0])
-            output.total_completeness.outer_unique = XSDataFloat(infos[1])
-            output.total_completeness.outer_possible = XSDataFloat(infos[2])
-            output.total_completeness.outer_complete = XSDataFloat(infos[3])
-            output.total_completeness.outer_rfactor = XSDataFloat(infos[4])
-            output.total_completeness.outer_isig = XSDataFloat(infos[7])
-            output.total_completeness.half_dataset_correlation = XSDataFloat(infos[10])
+        completeness_entry = XSDataXdsCompletenessEntry()
+        total = (line.find('total') != -1)
+
+        if not total:
+            # regular line, so extract the resolution
+            completeness_entry.res = XSDataFloat(float(line[res_start:res_end]))
+
+        # Extract values and store them in the data model
+        for (name, (start, end)) in offsets.iteritems():
+            value = float(line[start:end])
+            setattr(completeness_entry, name, XSDataFloat(value))
+
+        if total:
+            output.total_completeness = completeness_entry
         else:
-            # regular line, do not strip the first elem and bump the
-            # indices by 1
-            infos = [float(x.replace('%', '').replace('*','')) for x in line.split()]
-            res = XSDataXdsCompletenessEntry()
-            res.outer_res = XSDataFloat(infos[0])
-            res.outer_observed = XSDataFloat(infos[1])
-            res.outer_unique = XSDataFloat(infos[2])
-            res.outer_possible = XSDataFloat(infos[3])
-            res.outer_complete = XSDataFloat(infos[4])
-            res.outer_rfactor = XSDataFloat(infos[5])
-            res.outer_isig = XSDataFloat(infos[8])
-            res.half_dataset_correlation = XSDataFloat(infos[10])
-            output.completeness_entries.append(res)
+            output.completeness_entries.append(completeness_entry)

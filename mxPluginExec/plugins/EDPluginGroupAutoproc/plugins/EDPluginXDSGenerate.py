@@ -114,7 +114,7 @@ class EDPluginXDSGenerate(EDPluginControl):
         # create the data inputs now we know the files are here
         input_anom = XSDataMinimalXdsIn()
         input_anom.input_file = XSDataString(new_xdsinp)
-        input_anom.friedels_law = XSDataBoolean(True)
+        input_anom.friedels_law = XSDataBoolean(False)
         input_anom.job = XSDataString('CORRECT')
         input_anom.resolution = self.dataInput.resolution
         input_anom.resolution_range = [XSDataFloat(60), self.dataInput.resolution]
@@ -122,7 +122,7 @@ class EDPluginXDSGenerate(EDPluginControl):
 
         input_noanom = XSDataMinimalXdsIn()
         input_noanom.input_file = XSDataString(new_xdsinp)
-        input_noanom.friedels_law = XSDataBoolean(False)
+        input_noanom.friedels_law = XSDataBoolean(True)
         input_noanom.job = XSDataString('CORRECT')
         input_noanom.resolution_range = [XSDataFloat(60), self.dataInput.resolution]
         self.xds_noanom.dataInput = input_noanom
@@ -162,6 +162,11 @@ class EDPluginXDSGenerate(EDPluginControl):
         correct_lp_anom = os.path.join(mydir, 'CORRECT_ANOM.LP')
         copyfile(correct_lp, correct_lp_anom)
 
+        # Integrate.HKL as well
+        integrate_hkl = os.path.join(xds_run_directory, 'INTEGRATE.HKL')
+        integrate_hkl_anom = os.path.join(mydir, 'INTEGRATE_ANOM.HKL')
+        copyfile(integrate_hkl, integrate_hkl_anom)
+
         # now the second run, generate w/out anom
         EDVerbose.DEBUG('second run w/out anom')
 
@@ -184,6 +189,11 @@ class EDPluginXDSGenerate(EDPluginControl):
         correct_lp_noanom = os.path.join(mydir, 'CORRECT_NOANOM.LP')
         copyfile(correct_lp, correct_lp_noanom)
 
+        # Integrate.HKL as well
+        integrate_hkl = os.path.join(xds_run_directory, 'INTEGRATE.HKL')
+        integrate_hkl_noanom = os.path.join(mydir, 'INTEGRATE_NOANOM.HKL')
+        copyfile(integrate_hkl, integrate_hkl_noanom)
+
         gxparm = os.path.join(xds_run_directory, 'GXPARM.XDS')
 
         # everything went fine
@@ -192,6 +202,8 @@ class EDPluginXDSGenerate(EDPluginControl):
         data_output.hkl_no_anom = XSDataString(output_noanom)
         data_output.correct_lp_no_anom = XSDataString(correct_lp_noanom)
         data_output.correct_lp_anom = XSDataString(correct_lp_anom)
+        data_output.integrate_anom = XSDataString(integrate_hkl_anom)
+        data_output.integrate_noanom = XSDataString(integrate_hkl_noanom)
 
         if not os.path.isfile(gxparm):
             EDVerbose.WARNING('No GXPARM.XDS in {0}'.format(xds_run_directory))

@@ -123,30 +123,30 @@ def _extract_completeness_entries(lines, output):
             # totals
             infos = [float(x.replace('%', '').replace('*','')) for x in line.split()[1:]]
             output.total_completeness = XSDataXscaleCompletenessEntry()
-            output.total_completeness.outer_observed = XSDataFloat(infos[0])
-            output.total_completeness.outer_unique = XSDataFloat(infos[1])
-            output.total_completeness.outer_possible = XSDataFloat(infos[2])
+            output.total_completeness.observed = XSDataFloat(infos[0])
+            output.total_completeness.unique = XSDataFloat(infos[1])
+            output.total_completeness.possible = XSDataFloat(infos[2])
 
             output.total_completeness.multiplicity = XSDataFloat(infos[0] / infos[2])
 
-            output.total_completeness.outer_complete = XSDataFloat(infos[3])
-            output.total_completeness.outer_rfactor = XSDataFloat(infos[4])
-            output.total_completeness.outer_isig = XSDataFloat(infos[7])
+            output.total_completeness.complete = XSDataFloat(infos[3])
+            output.total_completeness.rfactor = XSDataFloat(infos[4])
+            output.total_completeness.isig = XSDataFloat(infos[7])
             output.total_completeness.half_dataset_correlation = XSDataFloat(infos[10])
         else:
             # regular line, do not strip the first elem and bump the
             # indices by 1
             infos = [float(x.replace('%', '').replace('*','')) for x in line.split()]
             res = XSDataXscaleCompletenessEntry()
-            res.outer_res = XSDataFloat(infos[0])
-            res.outer_observed = XSDataFloat(infos[1])
-            res.outer_unique = XSDataFloat(infos[2])
-            res.outer_possible = XSDataFloat(infos[3])
+            res.res = XSDataFloat(infos[0])
+            res.observed = XSDataFloat(infos[1])
+            res.unique = XSDataFloat(infos[2])
+            res.possible = XSDataFloat(infos[3])
 
             res.multiplicity = XSDataFloat(infos[1] / infos[3])
 
-            res.outer_complete = XSDataFloat(infos[4])
-            res.outer_rfactor = XSDataFloat(infos[5])
-            res.outer_isig = XSDataFloat(infos[8])
+            res.complete = XSDataFloat(infos[4])
+            res.rfactor = XSDataFloat(infos[5])
+            res.isig = XSDataFloat(infos[8])
             res.half_dataset_correlation = XSDataFloat(infos[10])
             output.completeness_entries.append(res)
