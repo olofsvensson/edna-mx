@@ -49,10 +49,10 @@ class EDPluginSTACStrategyv2_0( EDPluginSTACv2_0 ):
         EDFactoryPluginStatic.loadModule( "XSDataMXv1" )
         EDFactoryPluginStatic.loadModule( "XSDataMXv2" )
         EDFactoryPluginStatic.loadModule( "XSDataSTACv2_0" )
-        EDFactoryPluginStatic.loadModule( "XSDataBestv1_1" )
+        EDFactoryPluginStatic.loadModule( "XSDataBestv1_2" )
         from XSDataMXv1 import XSDataIndexingResult
         from XSDataMXv1 import XSDataInputStrategy
-        from XSDataBestv1_1 import XSDataInputBest
+        from XSDataBestv1_2 import XSDataInputBest
         self.setXSDataInputClass( kappa_strategy_request, "kappa_strategy_request" )
         import XSDataMXv2
         self.setXSDataInputClass( XSDataMXv2.XSDataCollection, "mxv2DataCollection" )

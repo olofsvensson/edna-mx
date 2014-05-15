@@ -44,9 +44,3 @@ class EDTestCasePluginUnitSTACAlignmentv2_0(EDTestCasePluginUnit):
         self.addTestMethod(self.testCreatePlugin)
 
 
-
-
-if __name__ == '__main__':
-
-    edTestCasePluginUnitSTACAlignmentv2_0 = EDTestCasePluginUnitMOSFLMIndexingv10("EDTestCasePluginUnitSTACAlignmentv2_0")
-    edTestCasePluginUnitSTACAlignmentv2_0.execute()
