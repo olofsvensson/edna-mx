@@ -36,9 +36,9 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
-#EDNA/eclipse specific
+#EDNA specific
 /.XSDataDictionaryModule.xml
-/.project
-/.pydevproject
-/.settings
 /tests/data/images
+
+#Eclipse specific
+.settings
