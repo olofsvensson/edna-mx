@@ -77,11 +77,11 @@ from XSDataISPyBv1_4 import XSDataResultStoreAutoProc
 
 # this depends on the CCTBX modules so perhaps we could make running
 # dimple dependent on whether those are installed or not
-edFactoryPlugin.loadModule('XSDataCCP4DIMPLE')
-from XSDataCCP4DIMPLE import CCP4DataInputControlPipelineCalcDiffMap
-from XSDataCCP4DIMPLE import HKL, XYZ, CCP4MTZColLabels, CCP4LogFile
+#edFactoryPlugin.loadModule('XSDataCCP4DIMPLE')
+#from XSDataCCP4DIMPLE import CCP4DataInputControlPipelineCalcDiffMap
+#from XSDataCCP4DIMPLE import HKL, XYZ, CCP4MTZColLabels, CCP4LogFile
 
-edFactoryPlugin.loadModule('EDPluginControlDIMPLEPipelineCalcDiffMapv10.py')
+#edFactoryPlugin.loadModule('EDPluginControlDIMPLEPipelineCalcDiffMapv10.py')
 
 # what actually goes inside
 from XSDataISPyBv1_4 import AutoProcContainer, AutoProc, AutoProcScalingContainer
@@ -318,7 +318,7 @@ class EDPluginControlAutoproc(EDPluginControl):
 
         self.file_conversion = self.loadPlugin('EDPluginControlAutoprocImport')
 
-        self.dimple = self.loadPlugin('EDPluginControlDIMPLEPipelineCalcDiffMapv10')
+#        self.dimple = self.loadPlugin('EDPluginControlDIMPLEPipelineCalcDiffMapv10')
 
         self.DEBUG('EDPluginControlAutoproc.preProcess finished')
 

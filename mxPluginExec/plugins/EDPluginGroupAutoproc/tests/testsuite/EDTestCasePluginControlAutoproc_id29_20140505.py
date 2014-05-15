@@ -34,7 +34,7 @@ from EDAssert                            import EDAssert
 from EDTestCasePluginExecute             import EDTestCasePluginExecute
 
 
-class EDTestCasePluginControlAutoproc(EDTestCasePluginExecute):
+class EDTestCasePluginControlAutoproc_id29_20140505(EDTestCasePluginExecute):
     """
     Those are all execution tests for the EDNA Exec plugin SolveContent
     """
@@ -45,17 +45,14 @@ class EDTestCasePluginControlAutoproc(EDTestCasePluginExecute):
         EDTestCasePluginExecute.__init__(self, "EDPluginControlAutoproc")
 #        self.setConfigurationFile(os.path.join(self.getPluginTestsDataHome(),
 #                                               "XSConfiguration_SolveContent.xml"))
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
-                                           "XSDataAutoprocInput_reference.xml"))
-        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \
-                                                     "XSDataAutoproc_reference.xml"))
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(),
+                                           "id29_20140505",
+                                           "edna-autoproc-input.xml"))
+#        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \
+#                                                     "XSDataAutoproc_reference.xml"))
 
     def testExecute(self):
-        """
-        """
         self.run()
 
     def process(self):
-        """
-        """
         self.addTestMethod(self.testExecute)
