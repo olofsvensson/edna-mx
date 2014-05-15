@@ -550,16 +550,6 @@ class EDPlugin(EDAction):
         self.__listErrorMessages.append(_strErrorMessage)
 
 
-    def getErrorMessages(self):
-        """
-        Returns the error messages list
-        OBS! This method is deprecated, please use getListOfErrorMessages instead.
-        """
-        self.warning("Deprecation by Monday 7th June 2010 of EDPlugin, called getErrorMessages")
-        from EDImportLib import EDList
-        return EDList(self.__listErrorMessages)
-
-
     def getListOfErrorMessages(self):
         """
         Returns the error messages list
@@ -573,16 +563,6 @@ class EDPlugin(EDAction):
         """
         self.DEBUG("EDPlugin.addWarningMessage : " + _strWarningMessage)
         self.__listWarningMessages.append(_strWarningMessage)
-
-
-    def getWarningMessages(self):
-        """
-        Returns the warning messages list
-        OBS! This method is deprecated, please use getListOfWarningMessages instead.
-        """
-        self.warning("Deprecation by Monday 7th June 2010 of EDPlugin, called getWarningMessages")
-        from EDImportLib import EDList
-        return EDList(self.__listWarningMessages)
 
 
     def getListOfWarningMessages(self):

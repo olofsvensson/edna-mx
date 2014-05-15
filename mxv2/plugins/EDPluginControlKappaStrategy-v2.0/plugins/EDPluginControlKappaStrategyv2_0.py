@@ -60,7 +60,6 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
 
     def __init__ (self):
         EDPluginControl.__init__(self)
-        #self.setXSDataInputClass(EDList)
 
         self.setRequiredToHaveConfiguration(True)
 
@@ -393,14 +392,6 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         xsDataInputStrategyCopy.setSample(self.xsDataSampleCopy)
 
         xsDataInputBest = self.edHandlerXSDataBest.getXSDataInputBest(xsDataInputStrategyCopy)
-
-        #xsDataAlignmentInput=EDList()
-        #xsDataAlignmentInput.add(xsDataBestInput)
-        ##data collection descriptor
-        #xsDataAlignmentInput.add(self.getDataInput("mxv2DataCollection")[0])
-        ##indexing result
-        #xsDataAlignmentInput.add(self.getDataInput("mxv1Indexingresult")[0])
-        #self.edPluginAlignment.setDataInput( xsDataAlignmentInput )
         self.edPluginAlignment.setDataInput(xsDataInputBest, "inputBest")
         self.edPluginAlignment.setDataInput(self.getDataInput("mxv2DataCollection")[0], "dataCollection")
         self.edPluginAlignment.setDataInput(self.getDataInput("mxv1IndexingResult")[0], "indexingResult")
@@ -430,15 +421,6 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         self.xsksreq = strategy_request()
         self.xsKappaStrategyRequest.setStandard_request(self.xsksreq)
 
-        #xsDataKappaStrategyInput=EDList()
-        #xsDataKappaStrategyInput.add(self.xsKappaStrategyRequest)
-        ##data collection descriptor
-        #xsDataKappaStrategyInput.add(self.getDataInput("mxv2DataCollection")[0])
-        ##indexing result
-        #xsDataKappaStrategyInput.add(self.getDataInput("mxv1IndexingResult")[0])
-        ##bestfile
-        #xsDataKappaStrategyInput.add(self.getDataInput("mxv1InputStrategy")[0])
-        #self.edPluginKappaStrategy.setDataInput( xsDataKappaStrategyInput )
         self.edPluginKappaStrategy.setDataInput(self.xsKappaStrategyRequest, "kappa_strategy_request")
         self.edPluginKappaStrategy.setDataInput(self.getDataInput("mxv2DataCollection")[0], "dataCollection")
         self.edPluginKappaStrategy.setDataInput(self.getDataInput("mxv1InputStrategy")[0], "inputBest")

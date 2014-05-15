@@ -55,9 +55,6 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
         """
         """
         EDPluginControl.__init__(self)
-        #self.setXSDataInputClass( XSDataInputCharacterisation )
-        #self.setXSDataInputClass(EDList)
-        #self.strPluginIndexingName = "EDPluginControlIndexingv2_0"
         self.strPluginIndexingName = "EDPluginControlIndexingv10"
         self.edPluginIndexing = None
         self.strPluginIntegrationName = "EDPluginControlIntegrationv10"
@@ -204,12 +201,6 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
         if self.hasDataInput("mxv2DataCollection"):
             self.edPluginStrategy.setDataInput(self.getDataInput("mxv2DataCollection")[0], "mxv2DataCollection")
         self.edPluginStrategy.setDataInput(self.xsDataResultCharacterisation.getIndexingResult(), "mxv1IndexingResult")
-
-#            xsDataInputStrategy= EDList()
-#            xsDataInputStrategy.add(xsDataInputStrategyOLD)
-#            xsDataInputStrategy.add(self.getDataInput()[1])
-#            xsDataInputStrategy.add(self.xsDataResultCharacterisationv2_0.getIndexingResult())
-#            self.edPluginStrategy.setDataInput( xsDataInputStrategy )
         self.edPluginStrategy.executeSynchronous()
 
 

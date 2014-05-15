@@ -111,14 +111,6 @@ class EDPluginControlSubWedgeAssemblyv2_0(EDPluginControl):
         EDPluginControl.postProcess(self, _edObject)
         EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.postProcess")
         if (self.xsDataResultSubWedgeAssemble is not None):
-            #copy/duplicate: YY.parseString(XX.marshal())
-            #xsDataResultSubWedgeAssembly = XSDataResultSubWedgeAssemble()            
-            #xsDataResultSubWedgeAssembly = self.xsDataResultSubWedgeAssemble
-
-#            xsDataResultSubWedgeAssembly = EDList()
-#            xsDataResultSubWedgeAssembly.add(self.xsDataResultSubWedgeAssemble)
-#            xsDataResultSubWedgeAssembly.add(self.xsDatacollection_v2)
-#            self.setDataOutput( xsDataResultSubWedgeAssembly )
             self.setDataOutput(self.xsDataResultSubWedgeAssemble , "mxv1Assemble")
             if self.xsDatacollection_v2 != None:
                 self.setDataOutput(self.xsDatacollection_v2 , "mxv2DataCollection")

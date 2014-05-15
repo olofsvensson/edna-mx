@@ -52,4 +52,3 @@ from EDActionCluster              import EDActionCluster
 from EDCommandLine                import EDCommandLine
 
 from EDCompiler                   import EDCompiler
-from EDList                       import EDList
