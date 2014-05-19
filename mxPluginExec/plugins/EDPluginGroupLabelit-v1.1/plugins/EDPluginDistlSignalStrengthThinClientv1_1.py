@@ -59,6 +59,7 @@ class EDPluginDistlSignalStrengthThinClientv1_1(EDPluginExecProcessScript):
         self.setXSDataInputClass(XSDataInputDistlSignalStrength)
         self.strHostName = "localhost"
         self.iPortNumber = self.DEFAULT_SERVER_PORT
+        self.setDataOutput(XSDataResultDistlSignalStrength())
 
 
     def configure(self):
