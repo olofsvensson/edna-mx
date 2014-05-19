@@ -77,9 +77,9 @@ class EDPluginControlGridScreeningv1_0(EDPluginControl):
         self.setXSDataInputClass(XSDataInputGridScreening)
         self.strControlReadImageHeaderPluginName = "EDPluginControlReadImageHeaderv10"
         self.edPluginControlReadImageHeader = None
-        self.strControlledIndicatorsPluginName = "EDPluginControlImageQualityIndicatorsv1_3"
+        self.strControlledIndicatorsPluginName = "EDPluginControlImageQualityIndicatorsv1_4"
         self.edPluginControlIndicators = None
-        self.strISPyBStoreImageQualityIndicatorsPluginName = "EDPluginISPyBStoreImageQualityIndicatorsv1_3"
+        self.strISPyBStoreImageQualityIndicatorsPluginName = "EDPluginISPyBStoreImageQualityIndicatorsv1_4"
         self.edPluginISPyBStoreImageQualityIndicators = None
         self.strIndexingMOSFLMPluginName = "EDPluginMOSFLMIndexingv10"
         self.edPluginMOSFLMIndexing = None
