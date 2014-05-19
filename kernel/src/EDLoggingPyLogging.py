@@ -85,7 +85,8 @@ class EDLoggingPyLogging(EDObject):
 
     def setLogLevel(self, _logLevel):
         EDLoggingPyLogging.__logLevel = _logLevel
-        self.stream_hdlr.setLevel(_logLevel)
+        if self.stream_hdlr is not None:
+            self.stream_hdlr.setLevel(_logLevel)
 
 
     def setAllLogLevels(self, _logLevel):
