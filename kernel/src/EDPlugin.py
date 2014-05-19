@@ -173,7 +173,7 @@ class EDPlugin(EDAction):
         """
         Gets the Plugin Configuration as an XSPluginItem
         """
-        self.DEBUG("EDPlugin.getConfiguration")
+        #self.DEBUG("EDPlugin.getConfiguration")
         return self.__edConfiguration.getXSConfigurationItem(self.getPluginName())
     configuration = property(getConfiguration, setConfiguration)
 
@@ -182,7 +182,7 @@ class EDPlugin(EDAction):
         """
         Gets the Plugin Configuration as a dictionary
         """
-        self.DEBUG("EDPlugin.getConfig")
+        #self.DEBUG("EDPlugin.getConfig")
         return self.__edConfiguration.get(self.getPluginName(), {})
 
     def setConfig(self, _dict, _bLocal = False):

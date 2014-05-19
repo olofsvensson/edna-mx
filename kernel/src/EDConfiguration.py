@@ -97,9 +97,7 @@ class EDConfiguration(EDLogging):
         if not os.path.exists(strFileName):
             self.WARNING("Trying to add configuration file but file %s doesn't exist!" % _strFileName)
         else:
-            if strFileName in self._dictConfigurationFiles:
-                self.DEBUG("EDConfiguration.addConfigurationFile: File %s already parsed, in cache" % strFileName)
-            else:
+            if not strFileName in self._dictConfigurationFiles:
                 self.DEBUG("EDConfiguration.addConfigurationFile: Parsing file %s" % strFileName)
                 strConfiguration = EDUtilsFile.readFileAndParseVariables(strFileName)
                 if strFileName.endswith(".xml"):
@@ -156,7 +154,7 @@ class EDConfiguration(EDLogging):
                             else:
                                 self.DEBUG("EDConfiguration.addConfigurationFile: plugin configuration for %s already exists and will not be replaced." % strPluginName)
                         else:
-                            self.DEBUG("EDConfiguration.addConfigurationFile: adding plugin configuration for %s." % strPluginName)
+                            #self.DEBUG("EDConfiguration.addConfigurationFile: adding plugin configuration for %s." % strPluginName)
                             self._dictPluginConfiguration[strPluginName] = dictConfig[strPluginName]
 
 
@@ -189,8 +187,8 @@ class EDConfiguration(EDLogging):
                     for ext in [".json", ".xml"]:
                         strPathToProjectConfigurationFile = os.path.abspath(os.path.join(strPathToConfigurationDirectory, \
                                                                                     strConfigurationFileBaseName + ext))
-                        self.DEBUG("Looking for configuration file for %s in %s" %
-                                    (_strPluginName, strPathToProjectConfigurationFile))
+                        #self.DEBUG("Looking for configuration file for %s in %s" %
+                        #            (_strPluginName, strPathToProjectConfigurationFile))
                         bConfFileFound = os.path.isfile(strPathToProjectConfigurationFile)
                         if bConfFileFound:
                             break
