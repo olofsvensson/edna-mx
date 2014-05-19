@@ -46,7 +46,7 @@ class EDVerbose(object):
     
     All methods are thread safe.
     """
-    __edLogging = EDLogging("EDVerbose")
+    __edLogging = EDLogging()
 
 
     def setTestOn():

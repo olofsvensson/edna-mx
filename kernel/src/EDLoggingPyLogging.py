@@ -35,7 +35,7 @@ __contact__ = "svensson@esrf.eu"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
-import logging, sys, traceback, os
+import logging, sys, traceback, os, time
 from EDThreading import Semaphore
 from EDObject import EDObject
 
@@ -46,7 +46,6 @@ class EDLoggingPyLogging(EDObject):
     purposes in the EDNA framework.
     """
     __semaphoreLogging = Semaphore()
-    __dictLoggers = {}
     __logLevel = logging.INFO
     __bInitisalised = False
 
@@ -59,37 +58,38 @@ class EDLoggingPyLogging(EDObject):
 
     def __init__(self, _strName=None):
         EDObject.__init__(self)
-        if _strName is None:
-            self.__loggingId = self.getClassName()
-        else:
-            self.__loggingId = _strName
         with EDLoggingPyLogging.__semaphoreLogging:
             if not EDLoggingPyLogging.__bInitisalised:
-                logging.basicConfig(level=EDLoggingPyLogging.__logLevel, stream=sys.stdout)
                 logging.addLevelName(EDLoggingPyLogging.UNIT_TEST_LEVEL, EDLoggingPyLogging.UNIT_TEST_NAME)
                 logging.addLevelName(EDLoggingPyLogging.ASSERT_LEVEL, EDLoggingPyLogging.ASSERT_NAME)
                 EDLoggingPyLogging.__bInitisalised = True
-            if not self.__loggingId in EDLoggingPyLogging.__dictLoggers:
-                self.logger = logging.getLogger(self.__loggingId)
-                self.logger.setLevel(EDLoggingPyLogging.__logLevel)
-                EDLoggingPyLogging.__dictLoggers[self.__loggingId] = self.logger
+                self.logger = logging.getLogger("EDNA")
+                self.logger.setLevel(logging.DEBUG)
+                self.stream_hdlr = logging.StreamHandler(strm=sys.stdout)
+                stream_formatter = logging.Formatter('  %(levelname)-10s: %(message)s')
+                self.stream_hdlr.setFormatter(stream_formatter)
+                self.stream_hdlr.setLevel(EDLoggingPyLogging.__logLevel)
+                self.logger.addHandler(self.stream_hdlr)
             else:
-                self.logger = EDLoggingPyLogging.__dictLoggers[self.__loggingId]
+                root_logger = logging.getLogger()
+                root_logger.handlers = []
+                self.logger = logging.getLogger("EDNA")
+                self.logger.setLevel(logging.DEBUG)
         self.__bIsTest = False
         self.__bIsVerboseDebug = False
         self.__strLogFileName = None
         self.__bIsLogFile = False
+        self.info_hdlr = None
+        self.debug_hdlr = None
 
 
     def setLogLevel(self, _logLevel):
-        self.logger.setLevel(_logLevel)
+        EDLoggingPyLogging.__logLevel = _logLevel
+        self.stream_hdlr.setLevel(_logLevel)
 
 
     def setAllLogLevels(self, _logLevel):
-        with EDLoggingPyLogging.__semaphoreLogging:
-            EDLoggingPyLogging.__logLevel = _logLevel
-            for logger in EDLoggingPyLogging.__dictLoggers.values():
-                logger.setLevel(_logLevel)
+        self.setLogLevel(_logLevel)
 
 
     def setTestOn(self):
@@ -266,11 +266,31 @@ class EDLoggingPyLogging(EDObject):
         @type _strLogFileName: python string
         """
         self.__strLogFileName = _strLogFileName
-
+        with EDLoggingPyLogging.__semaphoreLogging:
+            self.setLogFileOff()
+            # Log file
+            logFileName = _strLogFileName
+            self.info_hdlr = logging.FileHandler(logFileName)
+            info_formatter = logging.Formatter('%(asctime)s %(levelname)-10s %(message)s')
+            self.info_hdlr.setFormatter(info_formatter)
+            self.info_hdlr.setLevel(logging.INFO)
+            self.logger.addHandler(self.info_hdlr)
+            # Debug log file
+            debugLogFileName = _strLogFileName+"_debug"
+            debug_hdlr = logging.FileHandler(debugLogFileName)
+            debug_formatter = logging.Formatter('%(asctime)s %(levelname)-10s %(message)s')
+            debug_hdlr.setFormatter(debug_formatter)
+            debug_hdlr.setLevel(logging.DEBUG)
+            self.logger.addHandler(debug_hdlr)
+            
 
     def setLogFileOff(self):
         """
         This method truns off output to the log file.
         """
+        if self.info_hdlr:
+            self.logger.removeHandler(self.info_hdlr)
+        if self.debug_hdlr:
+            self.logger.removeHandler(self.debug_hdlr)
         self.__bIsLogFile = False
 

@@ -47,7 +47,7 @@ class EDLogging(EDObject):
     """
 
 
-    def __init__(self, _strLoggerName="EDVerbose"):
+    def __init__(self, _strLoggerName="PyLogging"):
         EDObject.__init__(self)
         if _strLoggerName == "PyLogging":
             self.edLogging = EDLoggingPyLogging()
