@@ -164,10 +164,13 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
             edPluginControlDozor = pluginPair[1]
             edPluginPluginExecImageQualityIndicator.synchronize()
             edPluginControlDozor.synchronize()
-            xsDataImageQualityIndicators = XSDataImageQualityIndicators.parseString(\
-                                             edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators.marshal())
+            if edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators is None:
+                xsDataImageQualityIndicators = XSDataImageQualityIndicators()
+            else:
+                xsDataImageQualityIndicators = XSDataImageQualityIndicators.parseString(\
+                        edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators.marshal())
             if edPluginControlDozor.dataOutput.imageDozor != []:
-                xsDataImageQualityIndicators.background3D_estimate = edPluginControlDozor.dataOutput.imageDozor[0].score
+                xsDataImageQualityIndicators.dozor_score = edPluginControlDozor.dataOutput.imageDozor[0].score
             self.xsDataResultControlImageQualityIndicators.addImageQualityIndicators(xsDataImageQualityIndicators)
             xsDataISPyBImageQualityIndicators = \
                 XSDataISPyBImageQualityIndicators.parseString(xsDataImageQualityIndicators.marshal())
@@ -181,14 +184,14 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         if bDoIndexing:
             # Find the 5 most intensive images (TIS):
             listImage = []
-            # Check that we have background3D_estimate from all images:
-            has_background3D_estimate = True
+            # Check that we have dozor_score from all images:
+            has_dozor_score = True
             for imageQualityIndicators in self.xsDataResultControlImageQualityIndicators.imageQualityIndicators:
-                if imageQualityIndicators.background3D_estimate is None:
-                    has_background3D_estimate = False
-            if has_background3D_estimate:
+                if imageQualityIndicators.dozor_score is None:
+                    has_dozor_score = False
+            if has_dozor_score:
                 listSorted = sorted(self.xsDataResultControlImageQualityIndicators.imageQualityIndicators,
-                                    key=lambda imageQualityIndicators: imageQualityIndicators.background3D_estimate.value)
+                                    key=lambda imageQualityIndicators: imageQualityIndicators.dozor_score.value)
             else:
                 listSorted = sorted(self.xsDataResultControlImageQualityIndicators.imageQualityIndicators,
                                     key=lambda imageQualityIndicators: imageQualityIndicators.totalIntegratedSignal.value)

@@ -180,8 +180,9 @@ class EDPluginControlGridScreeningv1_0(EDPluginControl):
             strComment = "No image quality indicators"
         else:
             xsDataResultGridScreening.setImageQualityIndicators(self.xsDataImageQualityIndicators)
-            if self.xsDataImageQualityIndicators.getIceRings().getValue() > 1:
-                strComment = "Ice rings detected"
+            if self.xsDataImageQualityIndicators.getIceRings() is not None:
+                if self.xsDataImageQualityIndicators.getIceRings().getValue() > 1:
+                    strComment = "Ice rings detected"
         if self.xsDataIndexingResult is None:
             if strComment == "":
                 strComment = "No indexing result"

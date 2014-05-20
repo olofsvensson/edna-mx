@@ -75,6 +75,7 @@ class EDLoggingPyLogging(EDObject):
                 root_logger.handlers = []
                 self.logger = logging.getLogger("EDNA")
                 self.logger.setLevel(logging.DEBUG)
+                self.stream_hdlr = None
         self.__bIsTest = False
         self.__bIsVerboseDebug = False
         self.__strLogFileName = None

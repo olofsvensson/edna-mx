@@ -153,15 +153,15 @@ def functionXMLout(_xsDataInputGridScreening, _xsDataResultGridScreening):
     else:
         strResultText = "%40s  " % os.path.basename(strImagePath)
         fileNameParameters = _xsDataResultGridScreening.getFileNameParameters()
-        if fileNameParameters is None:
-            strResultText += "%6s%10s%10s%6s" % ("NA", "NA", "NA", "NA")
-        else:
-            strResultText += "%6s%10s%10s%6s" % (
-                            fileNameParameters.getScanId1().getValue(),
-                            fileNameParameters.getMotorPosition1().getValue(),
-                            fileNameParameters.getMotorPosition2().getValue(),
-                            fileNameParameters.getScanId2().getValue(),
-                                                    )
+#        if fileNameParameters is None:
+#            strResultText += "%6s%10s%10s%6s" % ("NA", "NA", "NA", "NA")
+#        else:
+#            strResultText += "%6s%10s%10s%6s" % (
+#                            fileNameParameters.getScanId1().getValue(),
+#                            fileNameParameters.getMotorPosition1().getValue(),
+#                            fileNameParameters.getMotorPosition2().getValue(),
+#                            fileNameParameters.getScanId2().getValue(),
+#                                                    )
         imageQualityIndicators = _xsDataResultGridScreening.getImageQualityIndicators()
         if imageQualityIndicators is None:
             strResultText += "%6s%6s%6s%6s%10s%10s" % ("NA", "NA", "NA", "NA", "NA", "NA")
@@ -181,9 +181,9 @@ def functionXMLout(_xsDataInputGridScreening, _xsDataResultGridScreening):
             strTotalIntegratedSignal = "%10s" % "NA"
             if imageQualityIndicators.getTotalIntegratedSignal():
                 strTotalIntegratedSignal = "%10.0f" % imageQualityIndicators.getTotalIntegratedSignal().getValue()
-            if imageQualityIndicators.getBackground3D_estimate():
-                strBackground3D_estimate = "%10.2f" % imageQualityIndicators.getBackground3D_estimate().getValue()
-            strResultText += strMethod1Res + strMethod2Res + strSpotTotal + strGoodBraggCandidates + strTotalIntegratedSignal + strBackground3D_estimate
+            if imageQualityIndicators.getDozor_score():
+                strDozor_score = "%10.1f" % imageQualityIndicators.getDozor_score().getValue()
+            strResultText += strMethod1Res + strMethod2Res + strSpotTotal + strGoodBraggCandidates + strTotalIntegratedSignal + strDozor_score
         if _xsDataResultGridScreening.getMosaicity() is None:
             strResultText += "%6s" % "NA"
         else:
@@ -296,7 +296,10 @@ if __name__ == '__main__':
         strResultText = "<?xml version=\"1.0\" ?>\n"
         strResultText += "<imageset>"
         writeToResultFile(strResultText)
-
+    else:
+        writeToResultFile("%40s  %6s%6s%6s%6s%10s%10s%6s%6s  %s" % 
+                          ("Image name", "Res1", "Res2", "SpotT", "Bragg", 
+                           "TIS", "Dozor", "Mos", "RRes", "Comment"))
     EDParallelExecuteGridScreening.fMaxExposureTime = fMaxExpTime
     EDParallelExecuteGridScreening.bOnlyImageQualityIndicators = bOnlyImageQualityIndicators
     EDParallelExecuteGridScreening.bDoOnlyIntegrationWithXMLOutput = bOnlyIntegrationWithXMLOutput
