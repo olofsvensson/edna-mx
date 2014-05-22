@@ -187,7 +187,8 @@ class EDLoggingPyLogging(EDObject):
         @param _strMessage: The message to be written to standard output and log file
         @type _strMessage: python string
         """
-        self.logger.log(EDLoggingPyLogging.UNIT_TEST_LEVEL, _strMessage)
+#        self.logger.log(EDLoggingPyLogging.UNIT_TEST_LEVEL, _strMessage)
+        self.logger.info(_strMessage)
 
 
     def ERROR(self, _strMessage=""):
@@ -277,13 +278,14 @@ class EDLoggingPyLogging(EDObject):
             self.info_hdlr.setFormatter(info_formatter)
             self.info_hdlr.setLevel(logging.INFO)
             self.logger.addHandler(self.info_hdlr)
-            # Debug log file
-            debugLogFileName = _strLogFileName+"_debug"
-            debug_hdlr = logging.FileHandler(debugLogFileName)
-            debug_formatter = logging.Formatter('%(asctime)s %(levelname)-10s %(message)s')
-            debug_hdlr.setFormatter(debug_formatter)
-            debug_hdlr.setLevel(logging.DEBUG)
-            self.logger.addHandler(debug_hdlr)
+            if self.__bIsVerboseDebug:
+                # Debug log file
+                debugLogFileName = _strLogFileName+"_debug"
+                self.debug_hdlr = logging.FileHandler(debugLogFileName)
+                debug_formatter = logging.Formatter('%(asctime)s %(levelname)-10s %(message)s')
+                self.debug_hdlr.setFormatter(debug_formatter)
+                self.debug_hdlr.setLevel(logging.DEBUG)
+                self.logger.addHandler(self.debug_hdlr)
             
 
     def setLogFileOff(self):
