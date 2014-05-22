@@ -58,6 +58,7 @@ package XSDataMXv1 {
 		}
 
 		complex type XSDataInputControlImageQualityIndicators extends XSDataInput {
+			doDistlSignalStrength : XSDataBoolean optional
 			doIndexing : XSDataBoolean optional
 			doUploadToIspyb : XSDataBoolean optional
 			image : XSDataImage []
