@@ -63,6 +63,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.strTableColourRows   = "#FFFFA0"
         self.strPageEDNALog = None
         self.fMinTransmission = 10 # %
+        self.bIsHelical = False
+        self.bIsMultiPositional = False
 
 
     def preProcess(self, _edPlugin=None):
@@ -249,7 +251,11 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             else:
                 iNoSubWedges = len(listXSDataCollectionPlan)
                 self.page.h2()
-                if iNoSubWedges != 1:
+                if self.bIsHelical:
+                    self.page.strong( "Helical collection plan strategy (" )
+                elif self.bIsMultiPositional:
+                    self.page.strong( "Multi-positional collection plan strategy (" )
+                elif iNoSubWedges != 1:
                     self.page.strong("Multi-wedge collection plan strategy (")
                 else:
                     self.page.strong( "Collection plan strategy (" )
@@ -393,6 +399,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             strStrategyOption = xsDataDiffractionPlan.strategyOption.value
             if strStrategyOption.find("-helic") != -1:
                 strTitle = "Helical Diffraction Plan"
+                self.bIsHelical = True
                 strExtraColumnTitle = "Helical<br>distance (mm)"
                 if self.dataInput.helicalDistance is not None:
                     fHelicalDistance = self.dataInput.helicalDistance.value
@@ -401,6 +408,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     strExtraColumnValue = "Unknown"
             elif strStrategyOption.find("-Npos") != -1:
                 strTitle = "Multi-positional Diffraction Plan"
+                self.bIsMultiPositional = True
         self.page.h2( strTitle )
         self.page.table( class_='diffractionPlan', border_="1", cellpadding_="0")
         self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle2)
