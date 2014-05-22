@@ -29,7 +29,7 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20120712"
 __status__ = "production"
 
-
+import os
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 from EDConfiguration import EDConfiguration
@@ -82,6 +82,7 @@ class EDPluginDistlSignalStrengthThinClientv1_1(EDPluginExecProcessScript):
         strCommandLine += " %d" % self.iPortNumber
         self.setScriptCommandline(strCommandLine)
         self.addListCommandPreExecution("export PYTHONPATH=\"\" ")
+        self.setProcessInfo("image %s" % os.path.basename(self.xsDataImage.getPath().getValue()))
 
 
     def postProcess(self, _edObject=None):

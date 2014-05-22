@@ -72,6 +72,7 @@ class EDPluginExecProcess(EDPluginExec):
         self.__iPID = None
         self.__strCWD = None
         self.__strExecutionStatus = ""
+        self.__strProcessInfo = None
 
 
     def process_locally(self, _edObject=None):
@@ -82,7 +83,10 @@ class EDPluginExecProcess(EDPluginExec):
         strCommand = self.getExecutable() + " " + self.getCommandline()
         EDVerbose.DEBUG("EDPluginExecProcess.process executing: " + self.getExecutable())
         self.synchronizeOn()
-        EDVerbose.screen(self.getBaseName() + ": Processing")
+        if self.__strProcessInfo is None:
+            self.screen(self.getBaseName() + ": Processing")
+        else:
+            self.screen(self.getBaseName() + ": Processing, " + self.__strProcessInfo)
         timer = threading.Timer(float(self.getTimeOut()), self.kill)
         timer.start()
         self.__subprocess = EDUtilsPlatform.Popen(shlex.split(str(EDUtilsPlatform.escape(strCommand))),
@@ -260,3 +264,9 @@ class EDPluginExecProcess(EDPluginExec):
         Returns the string containing the execution status.
         """
         return self.__strExecutionStatus
+    
+    def setProcessInfo(self, _strProcessInfo):
+        """
+        Sets additional process info
+        """
+        self.__strProcessInfo = _strProcessInfo
