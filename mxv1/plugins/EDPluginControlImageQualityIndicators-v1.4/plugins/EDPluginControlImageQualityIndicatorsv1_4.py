@@ -157,7 +157,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                     edPluginPluginExecImageQualityIndicator.setDataInput(xsDataInputDistlSignalStrength)
                     edPluginPluginExecImageQualityIndicator.execute()
                 else:
-                    edPluginPluginExecImageQualityIndicator = None
+                    edPluginPluginExecImageQualityIndicator = xsDataImage
                 edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor)
                 xsDataInputControlDozor = XSDataInputControlDozor()
                 xsDataInputControlDozor.addImage(XSDataFile(xsDataImage.path))
@@ -178,6 +178,8 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                             edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators.marshal())
             else:
                 xsDataImageQualityIndicators = XSDataImageQualityIndicators()
+                xsDataImage = pluginPair[0]
+                xsDataImageQualityIndicators.image = xsDataImage
             edPluginControlDozor = pluginPair[1]
             edPluginControlDozor.synchronize()
             if edPluginControlDozor.dataOutput.imageDozor != []:
