@@ -386,7 +386,22 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         xsDataDiffractionPlan = self.xsDataResultCharacterisation.getDataCollection().getDiffractionPlan()
         if xsDataDiffractionPlan is None:
             xsDataDiffractionPlan = XSDataDiffractionPlan()
-        self.page.h2( "Diffraction Plan" )
+        strTitle = "Diffraction Plan"
+        strExtraColumnTitle = None
+        strExtraColumnValue = None
+        if xsDataDiffractionPlan.strategyOption is not None:
+            strStrategyOption = xsDataDiffractionPlan.strategyOption.value
+            if strStrategyOption.find("-helic") != -1:
+                strTitle = "Helical Diffraction Plan"
+                strExtraColumnTitle = "Helical<br>distance (mm)"
+                if self.dataInput.helicalDistance is not None:
+                    fHelicalDistance = self.dataInput.helicalDistance.value
+                    strExtraColumnValue = "%.3f" % fHelicalDistance
+                else:
+                    strExtraColumnValue = "Unknown"
+            elif strStrategyOption.find("-Npos") != -1:
+                strTitle = "Multi-positional Diffraction Plan"
+        self.page.h2( strTitle )
         self.page.table( class_='diffractionPlan', border_="1", cellpadding_="0")
         self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle2)
         self.page.th("Forced<br>space group")
@@ -395,6 +410,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.page.th("Aimed<br>completeness")
         self.page.th("Aimed I/sigma<br>at highest res.")
         self.page.th("Aimed<br>resolution (&Aring;)")
+        if strExtraColumnTitle is not None:
+            self.page.th(strExtraColumnTitle)
         self.page.tr.close()
         self.page.tr( align_="CENTER", bgcolor_=self.strTableColourRows)
         # Forced space group               
@@ -433,6 +450,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         else:
             strAimedResolution = "%0.2f" % xsDataDiffractionPlan.getAimedResolution().getValue()
         self.page.th(strAimedResolution)
+        if strExtraColumnValue is not None:
+            self.page.th(strExtraColumnValue)
         # Close the table
         self.page.tr.close()
         self.page.table.close()     
