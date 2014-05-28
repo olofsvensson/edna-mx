@@ -112,9 +112,9 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "pixel_min -1\n"
             strCommandText += "pixel_max 64000\n"
             strCommandText += "ix_min 1\n"
-            strCommandText += "ix_max 1321\n"
-            strCommandText += "iy_min 1198\n"
-            strCommandText += "iy_max 1304\n"
+            strCommandText += "ix_max 1270\n"
+            strCommandText += "iy_min 1190\n"
+            strCommandText += "iy_max 1310\n"
             strCommandText += "orgx %.1f\n" % _xsDataInputDozor.orgx.value
             strCommandText += "orgy %.1f\n" % _xsDataInputDozor.orgy.value
             strCommandText += "oscillation_range %.3f\n" % _xsDataInputDozor.oscillationRange.value
