@@ -83,12 +83,12 @@ class EDHandlerXSDataBestv1_2(EDObject):
                     fCrystalSizeY = xsDataSample.getSize().getY().getValue()
                     fCrystalSizeZ = xsDataSample.getSize().getZ().getValue()
                     fDiagonal = math.sqrt(fCrystalSizeY ** 2 + fCrystalSizeZ ** 2)
-                    fBeamSizeX = xsDataBeam.getSize().getX().getValue()
+                    fBeamSizeY = xsDataBeam.getSize().getY().getValue()
                     fCrystalShape = None
-                    if fBeamSizeX > fDiagonal:
+                    if fBeamSizeY > fDiagonal:
                         fCrystalShape = 1.0
                     else:
-                        fCrystalShape = int(10 * fDiagonal / fBeamSizeX) / 10.0
+                        fCrystalShape = int(10 * fDiagonal / fBeamSizeY) / 10.0
                     xsDataDoubleCrystalShape = XSDataDouble(fCrystalShape)
             xsDataInputBest.setCrystalShape(xsDataDoubleCrystalShape)
             # Radiation damage model parameters
