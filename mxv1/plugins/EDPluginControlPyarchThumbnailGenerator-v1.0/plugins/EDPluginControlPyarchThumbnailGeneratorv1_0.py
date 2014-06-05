@@ -79,7 +79,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         """
         Checks the mandatory parameters.
         """
-        EDVerbose.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.checkParameters")
+        self.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
         self.checkMandatoryParameters(self.getDataInput().getDiffractionImage(), "No diffraction image file path")
 
@@ -87,12 +87,12 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
 
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
-        EDVerbose.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.preProcess")
+        self.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.preProcess")
         # Check that the input image exists and is of the expected type
         strPathToDiffractionImage = self.getDataInput().getDiffractionImage().getPath().getValue()
         strImageFileNameExtension = os.path.splitext(strPathToDiffractionImage)[1]
         if not strImageFileNameExtension in [".img", ".marccd", ".mccd", ".cbf"]:
-            EDVerbose.error("Unknown image file name extension for pyarch thumbnail generator: %s" % strPathToDiffractionImage)
+            self.error("Unknown image file name extension for pyarch thumbnail generator: %s" % strPathToDiffractionImage)
             self.setFailure()
         else:
             # Load the waitFile plugin
@@ -123,7 +123,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
             if self.getDataInput().getForcedOutputDirectory():
                 strForcedOutputDirectory = self.getDataInput().getForcedOutputDirectory().getPath().getValue()
                 if not os.access(strForcedOutputDirectory, os.W_OK):
-                    EDVerbose.error("Cannot write to forced output directory : %s" % strForcedOutputDirectory)
+                    self.error("Cannot write to forced output directory : %s" % strForcedOutputDirectory)
                     self.setFailure()
                 else:
                     self.strOutputPathWithoutExtension = os.path.join(strForcedOutputDirectory, strImageNameWithoutExt)
@@ -139,13 +139,13 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
                             os.makedirs(strOutputDirname)
                             bIsOk = True
                         except BaseException, e:
-                            EDVerbose.WARNING("Couldn't create the directory %s" % strOutputDirname)
+                            self.WARNING("Couldn't create the directory %s" % strOutputDirname)
                     elif os.access(strOutputDirname, os.W_OK):
                         bIsOk = True
                 if not bIsOk:
-                    EDVerbose.warning("Cannot write to pyarch directory: %s" % strOutputDirname)
+                    self.warning("Cannot write to pyarch directory: %s" % strOutputDirname)
                     strOutputDirname = tempfile.mkdtemp("", "EDPluginPyarchThumbnailv10_", "/tmp")
-                    EDVerbose.warning("Writing thumbnail images to: %s" % strOutputDirname)
+                    self.warning("Writing thumbnail images to: %s" % strOutputDirname)
                 self.strOutputPathWithoutExtension = os.path.join(strOutputDirname, strImageNameWithoutExt)
             self.strOutputPath = os.path.join(self.strOutputPathWithoutExtension + ".jpeg")
             xsDataInputExecThumbnail.setOutputPath(XSDataFile(XSDataString(self.strOutputPath)))
@@ -154,7 +154,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
 
     def process(self, _edObject=None):
         EDPluginControl.process(self)
-        EDVerbose.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.process")
+        self.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.process")
         if self.edPluginExecThumbnail and self.edPluginWaitFile:
             self.edPluginWaitFile.connectSUCCESS(self.doSuccessWaitFile)
             self.edPluginWaitFile.connectFAILURE(self.doFailureWaitFile)
@@ -164,7 +164,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
 
     def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self)
-        EDVerbose.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.postProcess")
+        self.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.postProcess")
         # Create some output data
         xsDataResult = XSDataResultPyarchThumbnailGenerator()
         if self.xsDataFilePathToThumbnail:
@@ -175,7 +175,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
 
 
     def doSuccessWaitFile(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlID29CreateThumbnailv1_0.doSuccessWaitFile")
+        self.DEBUG("EDPluginControlID29CreateThumbnailv1_0.doSuccessWaitFile")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlID29CreateThumbnailv1_0.doSuccessWaitFile")
         # Check that the image is really there
         # The image is here - make the first thumbnail
@@ -184,19 +184,19 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
             self.edPluginExecThumbnail.connectFAILURE(self.doFailureExecThumbnail)
             self.edPluginExecThumbnail.executeSynchronous()
         else:
-            EDVerbose.error("Time-out while waiting for image!")
+            self.error("Time-out while waiting for image!")
             self.setFailure()
 
 
     def doFailureWaitFile(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlID29CreateThumbnailv1_0.doFailureWaitFile")
+        self.DEBUG("EDPluginControlID29CreateThumbnailv1_0.doFailureWaitFile")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlID29CreateThumbnailv1_0.doFailureWaitFile")
         # To be removed if failure of the exec plugin shouldn't make the control plugin to fail:
         self.setFailure()
 
 
     def doSuccessExecThumbnail(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.doSuccessExecThumbnail")
+        self.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.doSuccessExecThumbnail")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlPyarchThumbnailGeneratorv1_0.doSuccessExecThumbnail")
         # Retrieve the output path
         self.xsDataFilePathToThumbnail = self.edPluginExecThumbnail.getDataOutput().getThumbnailPath()
@@ -216,20 +216,20 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
 
 
     def doFailureExecThumbnail(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.doFailureExecThumbnail")
+        self.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.doFailureExecThumbnail")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlPyarchThumbnailGeneratorv1_0.doFailureExecThumbnail")
         # To be removed if failure of the exec plugin shouldn't make the control plugin to fail:
         self.setFailure()
 
 
     def doSuccessExecThumbnail2(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.doSuccessExecThumbnail2")
+        self.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.doSuccessExecThumbnail2")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlPyarchThumbnailGeneratorv1_0.doSuccessExecThumbnail2")
         self.xsDataFilePathToThumbnail2 = self.edPluginExecThumbnail2.getDataOutput().getThumbnailPath()
 
 
     def doFailureExecThumbnail2(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.doFailureExecThumbnail2")
+        self.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.doFailureExecThumbnail2")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlPyarchThumbnailGeneratorv1_0.doFailureExecThumbnail2")
         # To be removed if failure of the exec plugin shouldn't make the control plugin to fail:
         self.setFailure()

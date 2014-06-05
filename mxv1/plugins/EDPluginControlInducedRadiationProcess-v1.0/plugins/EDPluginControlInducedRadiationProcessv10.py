@@ -57,7 +57,7 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
         """
         Checks the mandatory parameters
         """
-        EDVerbose.DEBUG("EDPluginControlInducedRadiationProcessv10.checkParameters")
+        self.DEBUG("EDPluginControlInducedRadiationProcessv10.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
         self.checkMandatoryParameters(self.getDataInput().getDataCollection(), "dataCollection")
         self.checkMandatoryParameters(self.getDataInput().getIndexingResult(), "indexingResult")
@@ -81,7 +81,7 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
         Gets the Configuration Parameters, if found, overrides default parameters
         """
         EDPluginControl.preProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlInducedRadiationProcessv10.preProcess...")
+        self.DEBUG("EDPluginControlInducedRadiationProcessv10.preProcess...")
 
         # TODO, if it's Bonly no Indexation needed! Get matrix from reference
         #xsDataStringStrategyOption = self.getDataInput().getDataCollection().getDiffractionPlan().getStrategyOption()
@@ -93,7 +93,7 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
         self.__edPluginStrategy = self.loadPlugin(self.__strPluginStrategyName   , "Strategy")
 
 #        if ( self.__edPluginIndexing is not None ):
-#            EDVerbose.DEBUG( "EDPluginControlInducedRadiationProcessv10.preProcess: " + self.__strPluginIndexingName + " Found... setting Data Input")
+#            self.DEBUG( "EDPluginControlInducedRadiationProcessv10.preProcess: " + self.__strPluginIndexingName + " Found... setting Data Input")
 #            # create Data Input for indexing
 #            xsDataInputStrategy = self.getDataInput()
 #            xsDataCollection   = xsDataInputStrategy.getDataCollection()
@@ -126,7 +126,7 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
         """
         """
         EDPluginControl.process(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlInducedRadiationProcessv10.process")
+        self.DEBUG("EDPluginControlInducedRadiationProcessv10.process")
         self.connectProcess(self.__edPluginIntegration.executeSynchronous)
 #        self.__edPluginIndexing.connectSUCCESS( self.doIndexingToIntegrationTransition )
 #        self.__edPluginIndexing.connectFAILURE( self.doFailureActionIndexing )
@@ -138,13 +138,13 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
 
     def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlInducedRadiationProcessv10.postProcess")
+        self.DEBUG("EDPluginControlInducedRadiationProcessv10.postProcess")
         if (self.__xsDataResultCharacterisation is not None):
             self.setDataOutput(self.__xsDataResultCharacterisation)
 
 
 #    def doIndexingToIntegrationTransition(self, _edPlugin=None):
-#        EDVerbose.DEBUG("EDPluginControlInducedRadiationProcessv10.doIndexingToIntegrationTransition")
+#        self.DEBUG("EDPluginControlInducedRadiationProcessv10.doIndexingToIntegrationTransition")
 #        self.retrieveSuccessMessages(_edPlugin, "EDPluginControlInducedRadiationProcessv10.doIntegrationToStrategyTransition")
 #        xsDataIndexingResult = self.__edPluginIndexing.getDataOutput()
 #        self.__xsDataResultCharacterisation.setIndexingResult(xsDataIndexingResult)
@@ -157,12 +157,12 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
 
 
     def doIntegrationToStrategyTransition(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlInducedRadiationProcessv10.doIntegrationToStrategyTransition")
+        self.DEBUG("EDPluginControlInducedRadiationProcessv10.doIntegrationToStrategyTransition")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlInducedRadiationProcessv10.doIntegrationToStrategyTransition")
 
         xsDataIntegrationOutput = self.__edPluginIntegration.getDataOutput()
         self.__xsDataResultCharacterisation.setIntegrationResult(xsDataIntegrationOutput)
-        #EDVerbose.DEBUG( self.__xsDataExperimentCharacterisation.marshal() )
+        #self.DEBUG( self.__xsDataExperimentCharacterisation.marshal() )
         xsDataInputStrategy = XSDataInputStrategy()
 
         xsDataSolutionSelected = self.__xsDataResultCharacterisation.getIndexingResult().getSelectedSolution()
@@ -188,17 +188,17 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
 
 
     def doFailureActionIndexing(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlInducedRadiationProcessv10.doFailureActionIndexing")
+        self.DEBUG("EDPluginControlInducedRadiationProcessv10.doFailureActionIndexing")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlInducedRadiationProcessv10.doFailureActionIndexing")
 
 
     def doFailureActionIntegration(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlInducedRadiationProcessv10.doFailureActionIntegration")
+        self.DEBUG("EDPluginControlInducedRadiationProcessv10.doFailureActionIntegration")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlInducedRadiationProcessv10.doFailureActionIntegration")
 
 
     def doFailureActionStrategy(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlInducedRadiationProcessv10.doFailureActionStrategy")
+        self.DEBUG("EDPluginControlInducedRadiationProcessv10.doFailureActionStrategy")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlInducedRadiationProcessv10.doFailureActionStrategy")
 
 
@@ -206,7 +206,7 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
         """
         retrieve the potential warning messages
         """
-        EDVerbose.DEBUG("EDPluginControlInducedRadiationProcessv10.doSuccessActionStrategy")
+        self.DEBUG("EDPluginControlInducedRadiationProcessv10.doSuccessActionStrategy")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlInducedRadiationProcessv10.doSuccessActionStrategy")
         xsDataResultStrategy = self.__edPluginStrategy.getDataOutput()
         self.__xsDataResultCharacterisation.setStrategyResult(xsDataResultStrategy)
@@ -214,12 +214,12 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
 
 #    def configure(self):
 #        EDPluginControl.configure(self)
-#        EDVerbose.DEBUG("EDPluginControlInducedRadiationProcessv10.configure")
+#        self.DEBUG("EDPluginControlInducedRadiationProcessv10.configure")
 #        pluginConfiguration = self.getConfiguration()
 #
 #        if(pluginConfiguration == None):
 #            warningMessage = EDMessage.WARNING_NO_PLUGIN_CONFIGURATION_ITEM_FOUND_02 % ('EDPluginControlCharacterisationv01.configure', self.getPluginName())
-#            EDVerbose.warning(warningMessage)
+#            self.warning(warningMessage)
 #            self.addWarningMessage(warningMessage)
 #        else:
 #            strSymopHome = EDConfiguration.getStringParamValue(pluginConfiguration, "KAPPA")
@@ -242,7 +242,7 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
         """
         Generates a summary of the execution of the plugin.
         """
-        EDVerbose.DEBUG("EDPluginControlInducedRadiationProcessv10.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlInducedRadiationProcessv10.generateExecutiveSummary")
         self.addExecutiveSummaryLine("Summary of characterisation:")
         self.addErrorWarningMessagesToExecutiveSummary("Characterisation failure! Error messages: ")
         self.addExecutiveSummarySeparator()

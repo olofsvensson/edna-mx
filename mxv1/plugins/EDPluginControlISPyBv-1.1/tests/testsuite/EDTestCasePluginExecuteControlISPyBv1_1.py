@@ -67,7 +67,7 @@ class EDTestCasePluginExecuteControlISPyBv1_1(EDTestCasePluginExecute):
         # Checks the expected result
         strExpectedOutput = self.readAndParseFile (self.getReferenceDataOutputFile())
         strObtainedOutput = self.readAndParseFile (self.m_edObtainedOutputDataFile)
-        EDVerbose.DEBUG("Checking obtained result...")
+        self.DEBUG("Checking obtained result...")
 
         xsDataResultReference = XSDataResultControlISPyB.parseString(strExpectedOutput)
         xsDataResultObtained = XSDataResultControlISPyB.parseString(strObtainedOutput)

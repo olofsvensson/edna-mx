@@ -104,8 +104,8 @@ class EDPluginControlIndexingParallelv10(EDPluginControlIndexingv10):
 
     def doFailureActionIndexingParallel(self, _edPlugin=None):
         self.verboseDebug("EDPluginControlIndexingParallelv10.doFailureActionIndexing")
-        EDVerbose.screen("Execution of " + _edPlugin.getName() + "  failed.")
-        EDVerbose.screen("Please inspect the log file for further information.")
+        self.screen("Execution of " + _edPlugin.getName() + "  failed.")
+        self.screen("Please inspect the log file for further information.")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlIndexingParallelv10.doFailureActionIndexing")
 
 

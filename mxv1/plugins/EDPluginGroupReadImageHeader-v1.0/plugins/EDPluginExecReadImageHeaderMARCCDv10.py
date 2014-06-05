@@ -69,20 +69,20 @@ class EDPluginExecReadImageHeaderMARCCDv10(EDPluginExec):
         """
         Checks the mandatory parameters.
         """
-        EDVerbose.DEBUG("EDPluginExecReadImageHeaderMARCCDv10.checkParameters")
+        self.DEBUG("EDPluginExecReadImageHeaderMARCCDv10.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
 
 
     def process(self, _edObject=None):
         EDPluginExec.process(self)
-        EDVerbose.DEBUG("EDPluginExecReadImageHeaderMARCCDv10.process")
+        self.DEBUG("EDPluginExecReadImageHeaderMARCCDv10.process")
         xsDataInputReadImageHeader = self.getDataInput()
         xsDataFile = xsDataInputReadImageHeader.getImage()
         strPath = xsDataFile.getPath().getValue()
         dictMARCCDHeader = self.readHeaderMarccd(strPath)
         if (dictMARCCDHeader is None):
             strErrorMessage = "EDPluginExecReadImageHeaderMARCCDv10.process : Cannot read header : %s" % strPath
-            EDVerbose.error(strErrorMessage)
+            self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             self.setFailure()
         else:
@@ -118,7 +118,7 @@ class EDPluginExecReadImageHeaderMARCCDv10(EDPluginExec):
                     # Somethings very wrong with the distances...
                     strErrorMessage = "EDPluginExecReadImageHeaderMARCCDv10.process : Inconsistency in MAR CCD image header: start_xtal_to_detector = %d, end_xtal_to_detector = %d" % \
                                                                            (fDistanceStart, fDistanceEnd)
-                    EDVerbose.error(strErrorMessage)
+                    self.error(strErrorMessage)
                     self.addErrorMessage(strErrorMessage)
                     self.setFailure()
             xsDataDetector.setDistance(XSDataLength(fDistance))
@@ -140,7 +140,7 @@ class EDPluginExecReadImageHeaderMARCCDv10(EDPluginExec):
                 xsDataDetector.setType(XSDataString("mar325"))
             else:
                 strErrorMessage = EDMessage.ERROR_DATA_HANDLER_02 % ("EDPluginExecReadImageHeaderMARCCDv10.process", "Unknown detector type")
-                EDVerbose.error(strErrorMessage)
+                self.error(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
                 raise RuntimeError, strErrorMessage
 
@@ -181,7 +181,7 @@ class EDPluginExecReadImageHeaderMARCCDv10(EDPluginExec):
 
     def postProcess(self, _edObject=None):
         EDPluginExec.postProcess(self)
-        EDVerbose.DEBUG("EDPluginExecReadImageHeaderMARCCDv10.postProcess")
+        self.DEBUG("EDPluginExecReadImageHeaderMARCCDv10.postProcess")
         if (self.__xsDataResultReadImageHeader is not None):
             self.setDataOutput(self.__xsDataResultReadImageHeader)
 
@@ -365,9 +365,9 @@ class EDPluginExecReadImageHeaderMARCCDv10(EDPluginExec):
         try:
             pyFile = open(_strFileName, "rb")
         except:
-            EDVerbose.warning("EDPluginExecReadImageHeaderMARCCDv10.readHeaderMarccd: couldn't open file: " + _strFileName)
+            self.warning("EDPluginExecReadImageHeaderMARCCDv10.readHeaderMarccd: couldn't open file: " + _strFileName)
         if (pyFile is not None):
-            EDVerbose.DEBUG("EDPluginExecReadImageHeaderMARCCDv10.readHeaderMarccd: Reading header from image " + _strFileName)
+            self.DEBUG("EDPluginExecReadImageHeaderMARCCDv10.readHeaderMarccd: Reading header from image " + _strFileName)
             dictMarccd = {}
             # Move to marccd part of header
             pyFile.seek(1024)

@@ -89,13 +89,13 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
 
     def configure(self):
         EDPluginControl.configure(self)
-        EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.configure")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.configure")
         xsPluginItem = self.getConfiguration()
         if xsPluginItem == None:
-            EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.configure: No plugin item defined.")
+            self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.configure: No plugin item defined.")
         else:
             self.__strEDNAContactEmail = EDConfiguration.getStringParamValue(xsPluginItem, EDPluginControlInterfaceToMXCuBEv1_2.__EDNA_CONTACT_EMAIL)
-            EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.configure: EDNAContactEmail = %s" % self.__strEDNAContactEmail)
+            self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.configure: EDNAContactEmail = %s" % self.__strEDNAContactEmail)
             strEDNAEmailSender = EDConfiguration.getStringParamValue(xsPluginItem, self.__EDNA_EMAIL_SENDER)
             if strEDNAEmailSender:
                 self.__strEDNAEmailSender = strEDNAEmailSender
@@ -106,7 +106,7 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
         This method prepares the input for the CCP4i plugin and loads it.
         """
         EDPluginControl.preProcess(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.preProcess...")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.preProcess...")
 
         EDFactoryPluginStatic.loadModule("XSDataCCP4iv1_1")
         from XSDataCCP4iv1_1 import XSDataInputCCP4i
@@ -130,7 +130,7 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
 
     def process(self, _edPlugin=None):
         EDPluginControl.process(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.process...")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.process...")
 
         if self.__edPluginControlCCP4i is not None:
             self.connectProcess(self.__edPluginControlCCP4i.executeSynchronous)
@@ -143,12 +143,12 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
 
     def postProcess(self, _edPlugin=None):
         EDPluginControl.postProcess(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.postProcess...")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.postProcess...")
         self.setDataOutput(self.__xsDataResultMXCuBE)
 
 
     def doSuccessActionCCP4i(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.doSuccessActionCCP4i...")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.doSuccessActionCCP4i...")
         self.retrieveSuccessMessages(self.__edPluginControlCCP4i, "EDPluginControlInterfaceToMXCuBEv1_2.doSuccessActionCCP4i")
         # Retrieve the results from the CCP4 plugin execution
         xsDataResultCCP4i = self.__edPluginControlCCP4i.getDataOutput()
@@ -201,7 +201,7 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
                             shutil.copy(strPathToHTMLFile, os.path.join(strPathToPyArchIndexDirectory, "index.html"))
                             shutil.copytree(strPathToHTMLDir, os.path.join(strPathToPyArchIndexDirectory, os.path.basename(strPathToHTMLDir)))
                     except Exception, e:
-                        EDVerbose.DEBUG("Exception caught: %r" % e)
+                        self.DEBUG("Exception caught: %r" % e)
         if (self.__edPluginControlISPyB is not None):
             # Execute the ISPyB control plugin
             xsDataInputControlISPyB = XSDataInputControlISPyB()
@@ -223,7 +223,7 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
             xsDataResultCharacterisation = XSDataResultCharacterisation.parseFile(strPathToXSDataResultCharacteristion)
         else:
             errorMessage = EDMessage.ERROR_DATA_HANDLER_02 % ("EDPluginControlInterfaceToMXCuBEv1_2.getXSDataResultCharacterisation", "Cannot find dataOutput.xml file in %s" % _strListOfOutputFiles)
-            EDVerbose.error(errorMessage)
+            self.error(errorMessage)
             self.addErrorMessage(errorMessage)
             raise RuntimeError, errorMessage
         return xsDataResultCharacterisation
@@ -233,7 +233,7 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
 
 
     def doFailureActionCCP4i(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.doFailureActionCCP4i...")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.doFailureActionCCP4i...")
         self.setFailure()
         xsDataResultMXCuBE = XSDataResultMXCuBE()
         self.setDataOutput(xsDataResultMXCuBE)
@@ -245,12 +245,12 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
 
 
     def doSuccessActionISPyB(self, _edPlugin):
-        EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.doSuccessActionISPyB...")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.doSuccessActionISPyB...")
         self.retrieveSuccessMessages(self.__edPluginControlISPyB, "EDPluginControlInterfaceToMXCuBEv1_2.doSuccessActionISPyB")
 
 
     def doFailureActionISPyB(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.doFailureActionISpyB...")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.doFailureActionISpyB...")
         self.retrieveFailureMessages(self.__edPluginControlISPyB, "EDPluginControlInterfaceToMXCuBEv1_2.doFailureActionISpyB")
         # Send failure email message (MXSUP-183):
         strSubject = "%s : FAILURE!" % EDUtilsPath.getEdnaSite()
@@ -319,7 +319,7 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
                 for strDirectory in listOfDirectories[ 5: ]:
                     strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, strDirectory)
         if (strPyarchDNAFilePath is None):
-            EDVerbose.WARNING("EDPluginControlInterfaceToMXCuBEv1_2.createPyArchDNAFilePath: path not converted for pyarch: %s " % _strDNAFileDirectoryPath)
+            self.WARNING("EDPluginControlInterfaceToMXCuBEv1_2.createPyArchDNAFilePath: path not converted for pyarch: %s " % _strDNAFileDirectoryPath)
         return strPyarchDNAFilePath
 
 
@@ -331,20 +331,20 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
         bSuccess = False
         if (_strDNAFileDirectoryPath is not None):
             if (os.path.exists(_strDNAFileDirectoryPath)):
-                EDVerbose.warning("Removing existing DNA files directory: %s" % _strDNAFileDirectoryPath)
+                self.warning("Removing existing DNA files directory: %s" % _strDNAFileDirectoryPath)
                 if (os.access(_strDNAFileDirectoryPath, os.W_OK)):
                     shutil.rmtree(_strDNAFileDirectoryPath)
                 else:
-                    EDVerbose.warning("Cannot remove existing DNA files directory!")
+                    self.warning("Cannot remove existing DNA files directory!")
             if (_strDNAFileDirectoryPath is not None):
                 # Check if directory one level up is writeable
                 strDNAFileBaseDirectory = os.path.split(_strDNAFileDirectoryPath)[0]
                 if (os.access(strDNAFileBaseDirectory, os.W_OK)):
-                    EDVerbose.DEBUG("Creating DNA files directory: %s" % _strDNAFileDirectoryPath)
+                    self.DEBUG("Creating DNA files directory: %s" % _strDNAFileDirectoryPath)
                     os.mkdir(_strDNAFileDirectoryPath)
                     bSuccess = True
                 else:
-                    EDVerbose.warning("Cannot create DNA files directory: %s" % _strDNAFileDirectoryPath)
+                    self.warning("Cannot create DNA files directory: %s" % _strDNAFileDirectoryPath)
         return bSuccess
 
 
@@ -472,7 +472,7 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
         retrieve the potential warning messages
         retrieve the potential error messages
         """
-        EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.doFailureActionCharacterisation")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.doFailureActionCharacterisation")
         # Send failure email message (MXSUP-183):
         strSubject = "%s : FAILURE!" % EDUtilsPath.getEdnaSite()
         strMessage = "Characterisation FAILURE!"
@@ -491,7 +491,7 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
         - Min oscillation width
         - Sample information
         """
-        EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.createDataInputCharacterisationFromDataSets")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.createDataInputCharacterisationFromDataSets")
         xsDataCollection = _xsDataInputCharacterisation.getDataCollection()
         if (_xsDataInputCharacterisation is not None):
             xsDataInputCCP4i = self.getDataInput()
@@ -532,17 +532,17 @@ class EDPluginControlInterfaceToMXCuBEv1_2(EDPluginControl):
     def sendEmail(self, _strSubject, _strMessage):
         """Sends an email to the EDNA contact person (if configured)."""
 
-        EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.sendEmail: Subject = %s" % _strSubject)
-        EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.sendEmail: Message:")
-        EDVerbose.DEBUG(_strMessage)
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.sendEmail: Subject = %s" % _strSubject)
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.sendEmail: Message:")
+        self.DEBUG(_strMessage)
         if self.__strEDNAContactEmail == None:
-            EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.sendEmail: No email address configured!")
+            self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.sendEmail: No email address configured!")
         elif not EDUtilsPath.getEdnaSite().startswith("ESRF"):
-            EDVerbose.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.sendEmail: Not executed at the ESRF! EDNA_SITE=%s" % EDUtilsPath.getEdnaSite())
+            self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_2.sendEmail: Not executed at the ESRF! EDNA_SITE=%s" % EDUtilsPath.getEdnaSite())
         else:
             try:
-                EDVerbose.DEBUG("Sending message to %s." % self.__strEDNAContactEmail)
-                EDVerbose.DEBUG("Message: %s" % _strMessage)
+                self.DEBUG("Sending message to %s." % self.__strEDNAContactEmail)
+                self.DEBUG("Message: %s" % _strMessage)
                 strMessage = """
 EDNA_HOME = %s
 EDNA_SITE = %s
@@ -558,5 +558,5 @@ working_dir = %s
                 server.sendmail(self.__strEDNAEmailSender, self.__strEDNAContactEmail, strEmailMsg)
                 server.quit()
             except:
-                EDVerbose.DEBUG("Error when sending email message!")
-                EDVerbose.writeErrorTrace()
+                self.DEBUG("Error when sending email message!")
+                self.writeErrorTrace()

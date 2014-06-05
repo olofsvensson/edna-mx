@@ -52,13 +52,13 @@ class EDPluginControlXDSGenerateBackgroundImagev1_0(EDPluginControl):
         """
         Checks the mandatory parameters.
         """
-        EDVerbose.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.checkParameters")
+        self.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
 
 
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
-        EDVerbose.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.preProcess")
+        self.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.preProcess")
         # Input data
         xsDataCollection = self.getDataInput().getDataCollection()
         xsDataInputXDS = EDHandlerXSDataXDSv1_0.generateXSDataInputXDS(xsDataCollection)
@@ -69,7 +69,7 @@ class EDPluginControlXDSGenerateBackgroundImagev1_0(EDPluginControl):
 
     def process(self, _edObject=None):
         EDPluginControl.process(self)
-        EDVerbose.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.process")
+        self.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.process")
         self.__edPluginXDSGenerateBackgroundImage.connectSUCCESS(self.doSuccessExecTemplate)
         self.__edPluginXDSGenerateBackgroundImage.connectFAILURE(self.doFailureExecTemplate)
         self.executePluginSynchronous(self.__edPluginXDSGenerateBackgroundImage)
@@ -77,14 +77,14 @@ class EDPluginControlXDSGenerateBackgroundImagev1_0(EDPluginControl):
 
     def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self)
-        EDVerbose.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.postProcess")
+        self.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.postProcess")
         # Create some output data
         # xsDataResult = XSDataResultControlXDSGenerateBackgroundImage()
         # self.setDataOutput(xsDataResult)
 
 
     def doSuccessExecTemplate(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.doSuccessExecTemplate")
+        self.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.doSuccessExecTemplate")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlXDSGenerateBackgroundImagev1_0.doSuccessExecTemplate")
         xsDataResultXDSGenerateBackgroundImage = self.__edPluginXDSGenerateBackgroundImage.getDataOutput()
         xsDataResultControlXDSGenerateBackgroundImage = EDHandlerXSDataXDSv1_0.generateXSDataResultXDSGenerateBackgroundImage(xsDataResultXDSGenerateBackgroundImage)
@@ -92,5 +92,5 @@ class EDPluginControlXDSGenerateBackgroundImagev1_0(EDPluginControl):
 
 
     def doFailureExecTemplate(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.doFailureExecTemplate")
+        self.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.doFailureExecTemplate")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlXDSGenerateBackgroundImagev1_0.doFailureExecTemplate")

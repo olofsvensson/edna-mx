@@ -69,5 +69,5 @@ class EDTestCasePluginExecuteControlMXCuBEWrapperv1_3(EDTestCasePluginExecute):
                 try:
                     os.remove(os.path.join("/tmp", strFile))
                 except:
-                    EDVerbose.unitTest("Couldn't delete temporary file: %s" % strFile)
+                    self.unitTest("Couldn't delete temporary file: %s" % strFile)
 

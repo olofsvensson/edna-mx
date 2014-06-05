@@ -69,20 +69,20 @@ class EDPluginExecReadImageHeaderPilatus6Mv10(EDPluginExec):
         """
         Checks the mandatory parameters.
         """
-        EDVerbose.DEBUG("EDPluginExecReadImageHeaderPilatus6Mv10.checkParameters")
+        self.DEBUG("EDPluginExecReadImageHeaderPilatus6Mv10.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
 
 
     def process(self, _edObject=None):
         EDPluginExec.process(self)
-        EDVerbose.DEBUG("EDPluginExecReadImageHeaderPilatus6Mv10.process")
+        self.DEBUG("EDPluginExecReadImageHeaderPilatus6Mv10.process")
         xsDataInputReadImageHeader = self.getDataInput()
         xsDataFile = xsDataInputReadImageHeader.getImage()
         strPath = xsDataFile.getPath().getValue()
         dictPilatus6MHeader = self.readHeaderPilatus6M(strPath)
         if (dictPilatus6MHeader is None):
             strErrorMessage = "EDPluginExecReadImageHeaderPilatus6Mv10.process : Cannot read header : %s" % strPath
-            EDVerbose.error(strErrorMessage)
+            self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             self.setFailure()
         else:
@@ -152,7 +152,7 @@ class EDPluginExecReadImageHeaderPilatus6Mv10(EDPluginExec):
 
     def postProcess(self, _edObject=None):
         EDPluginExec.postProcess(self)
-        EDVerbose.DEBUG("EDPluginExecReadImageHeaderPilatus6Mv10.postProcess")
+        self.DEBUG("EDPluginExecReadImageHeaderPilatus6Mv10.postProcess")
         if (self.__xsDataResultReadImageHeader is not None):
             self.setDataOutput(self.__xsDataResultReadImageHeader)
 
@@ -166,10 +166,10 @@ class EDPluginExecReadImageHeaderPilatus6Mv10(EDPluginExec):
         try:
             pyFile = open(_strImageFileName, "r")
         except:
-            EDVerbose.ERROR("EDPluginExecReadImageHeaderPilatus6Mv10.readHeaderPilauts6M: couldn't open file: " + _strImageFileName)
+            self.ERROR("EDPluginExecReadImageHeaderPilatus6Mv10.readHeaderPilauts6M: couldn't open file: " + _strImageFileName)
             self.setFailure()
         if (pyFile != None):
-            EDVerbose.DEBUG("EDPluginExecReadImageHeaderPilatus6Mv10.readHeaderPilauts6M: Reading header from image " + _strImageFileName)
+            self.DEBUG("EDPluginExecReadImageHeaderPilatus6Mv10.readHeaderPilauts6M: Reading header from image " + _strImageFileName)
             pyFile.seek(0, 0)
             bContinue = True
             iMax = 60

@@ -60,7 +60,7 @@ class EDPluginControlISPyBv1_1(EDPluginControl):
         """
         Checks the mandatory parameters
         """
-        EDVerbose.DEBUG("EDPluginControlISPyBv1_1.checkParameters")
+        self.DEBUG("EDPluginControlISPyBv1_1.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
         self.checkMandatoryParameters(self.getDataInput().getCharacterisationResult(), "characterisationResult")
 
@@ -70,7 +70,7 @@ class EDPluginControlISPyBv1_1(EDPluginControl):
         Loads the ISPyB execution plugin and prepares the input data
         """
         EDPluginControl.preProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlISPyBv1_1.preProcess...")
+        self.DEBUG("EDPluginControlISPyBv1_1.preProcess...")
 
         if (self.hasDataInput("shortComments")):
             self.__strShortComments = self.getDataInput("shortComments")[0].getValue()
@@ -93,7 +93,7 @@ class EDPluginControlISPyBv1_1(EDPluginControl):
         except Exception, error:
             # This exception handling needs to be rethought, see bug #43.
             errorMessage = EDMessage.ERROR_DATA_HANDLER_02 % ("EDPluginControlISPyBv1_1.preProcess: Unexpected error in ISPyB handler: ", error)
-            EDVerbose.error(errorMessage)
+            self.error(errorMessage)
             self.addErrorMessage(errorMessage)
             raise RuntimeError, errorMessage
 
@@ -109,7 +109,7 @@ class EDPluginControlISPyBv1_1(EDPluginControl):
         Executes the ISPyB execution plugin
         """
         EDPluginControl.process(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlISPyBv1_1.process")
+        self.DEBUG("EDPluginControlISPyBv1_1.process")
         if (self.m_edPluginExecISPyB is not None):
             self.m_edPluginExecISPyB.connectSUCCESS(self.doSuccessGeneratePrediction)
             self.m_edPluginExecISPyB.connectFAILURE(self.doFailureGeneratePrediction)
@@ -117,17 +117,17 @@ class EDPluginControlISPyBv1_1(EDPluginControl):
 
 
     def doSuccessGeneratePrediction(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlISPyBv1_1.doSuccessGeneratePrediction")
+        self.DEBUG("EDPluginControlISPyBv1_1.doSuccessGeneratePrediction")
         self.retrieveSuccessMessages(self.m_edPluginExecISPyB, "EDPluginControlISPyBv1_1.doSuccessGeneratePrediction")
 
 
     def doFailureGeneratePrediction(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlISPyBv1_1.doFailureGeneratePrediction")
+        self.DEBUG("EDPluginControlISPyBv1_1.doFailureGeneratePrediction")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlISPyBv1_1.doFailureGeneratePrediction")
 
 
     def postProcess(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlISPyBv1_1.postProcess")
+        self.DEBUG("EDPluginControlISPyBv1_1.postProcess")
         # For the moment just an empty result object
         xsDataResultControlISPyB = XSDataResultControlISPyB()
         self.setDataOutput(xsDataResultControlISPyB)

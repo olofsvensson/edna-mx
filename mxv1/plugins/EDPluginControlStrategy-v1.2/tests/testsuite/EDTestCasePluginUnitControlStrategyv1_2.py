@@ -267,7 +267,7 @@ class EDTestCasePluginUnitControlStrategyv1_2(EDTestCasePluginUnit):
         updatedChemicalComposition = edPluginStrategy.updateChemicalComposition(xsDataComposition)
         heavyAtoms = updatedChemicalComposition.getStructure().getChain()[0].getHeavyAtoms().getAtom()
         for heavyAtom in heavyAtoms:
-            EDVerbose.unitTest(heavyAtom.getSymbol().getValue() + " : " + str(heavyAtom.getNumberOf().getValue()))
+            self.unitTest(heavyAtom.getSymbol().getValue() + " : " + str(heavyAtom.getNumberOf().getValue()))
             if(heavyAtom.getSymbol().getValue() == "S"):
                 EDAssert.equal(3, heavyAtom.getNumberOf().getValue())
 
@@ -279,7 +279,7 @@ class EDTestCasePluginUnitControlStrategyv1_2(EDTestCasePluginUnit):
         xsDataStrategyResult = XSDataResultStrategy.parseString(strXML)
         edPluginStrategy.generateStrategyShortSummary(xsDataStrategyResult)
         for strLine in edPluginStrategy.getDataOutput("strategyShortSummary")[0].getValue().split("\n"):
-            EDVerbose.unitTest(strLine)
+            self.unitTest(strLine)
 
 
     def process(self):

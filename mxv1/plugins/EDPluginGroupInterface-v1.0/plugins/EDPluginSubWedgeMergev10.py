@@ -57,14 +57,14 @@ class EDPluginSubWedgeMergev10(EDPluginExec):
         """
         Checks the mandatory parameters.
         """
-        EDVerbose.DEBUG("EDPluginSubWedgeMergev10.checkParameters")
+        self.DEBUG("EDPluginSubWedgeMergev10.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
         self.checkMandatoryParameters(self.getDataInput().getSubWedge(), "No subwedges provided")
 
 
     def process(self, _edObject=None):
         EDPluginExec.process(self, _edObject)
-        EDVerbose.DEBUG("EDPluginSubWedgeMergev10.process...")
+        self.DEBUG("EDPluginSubWedgeMergev10.process...")
 
         xsDataInputSubWedgeMerge = self.getDataInput()
 
@@ -79,7 +79,7 @@ class EDPluginSubWedgeMergev10(EDPluginExec):
 
     def postProcess(self, _edObject=None):
         EDPluginExec.postProcess(self)
-        EDVerbose.DEBUG("EDPluginSubWedgeMergev10.postProcess")
+        self.DEBUG("EDPluginSubWedgeMergev10.postProcess")
         xsDataResultSubWedgeMerge = XSDataResultSubWedgeMerge()
         for xsDataSubWedgeMerge in self.__listResultSubWedgeMerge:
             xsDataResultSubWedgeMerge.addSubWedge(xsDataSubWedgeMerge)
@@ -100,7 +100,7 @@ class EDPluginSubWedgeMergev10(EDPluginExec):
                 bReturnValue = True
         elif (type (_value1) != type(_value2)):
             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginSubWedgeMergev10.compareTwoValues', self.getClassName(), "Types of values different : value1=%r, value2=%r" % (type(_value1), type(_value2)))
-            EDVerbose.error(strErrorMessage)
+            self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             raise Exception, strErrorMessage
         elif (type(_value1) == type(0.1)):
@@ -114,7 +114,7 @@ class EDPluginSubWedgeMergev10(EDPluginExec):
                 bReturnValue = True
         else:
             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginSubWedgeMergev10.compareTwoValues', self.getClassName(), "Unknown value type : %r for value %r" % (type(_value1), _value1))
-            EDVerbose.error(strErrorMessage)
+            self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             raise Exception, strErrorMessage
         return bReturnValue
@@ -137,7 +137,7 @@ class EDPluginSubWedgeMergev10(EDPluginExec):
         goniostat.oscillationWidth [degrees], tolerance 0.001
         goniostat.rotationAxis [string]
         """
-        EDVerbose.DEBUG("EDPluginSubWedgeMergev10.isSameExperimentalCondition")
+        self.DEBUG("EDPluginSubWedgeMergev10.isSameExperimentalCondition")
         bReturnValue = True
         if (self.compareTwoValues(_xsDataExperimentalCondition1.getBeam().getExposureTime().getValue(),
                                     _xsDataExperimentalCondition2.getBeam().getExposureTime().getValue(),
@@ -275,7 +275,7 @@ class EDPluginSubWedgeMergev10(EDPluginExec):
         This method sorts a list of sub wedges into a new list containing lists of
         sub wegdes with identical experimental conditions.
         """
-        EDVerbose.DEBUG("EDPluginSubWedgeMergev10.sortSubWedgesOnExperimentalCondition")
+        self.DEBUG("EDPluginSubWedgeMergev10.sortSubWedgesOnExperimentalCondition")
         # Create a list with all incoming sub wedges
         listSubWedge = _xsDataInputSubWedgeMerge.getSubWedge()
         # Sort it
@@ -289,7 +289,7 @@ class EDPluginSubWedgeMergev10(EDPluginExec):
         This method takes as input two sub wedges and merges them to an unique subwedge, if possible,
         and returns the resulting merged sub wedge. If the merge is not possible a None is returned.
         """
-        EDVerbose.DEBUG("EDPluginSubWedgeMergev10.mergeTwoSubWedgesAdjascentInRotationAxis")
+        self.DEBUG("EDPluginSubWedgeMergev10.mergeTwoSubWedgesAdjascentInRotationAxis")
         xsDataSubWedgeMerged = None
         # First check that the two sub wedges have identical experimental conditions
         if (self.isSameExperimentalConditionInSubWedge(_subWedge1, _subWedge2)):
@@ -312,7 +312,7 @@ class EDPluginSubWedgeMergev10(EDPluginExec):
         """
         This method merges sub wedges in a list if they are adjascent in phi.
         """
-        EDVerbose.DEBUG("EDPluginSubWedgeMergev10.mergeSubWedgesWithAdjascentRotationAxis")
+        self.DEBUG("EDPluginSubWedgeMergev10.mergeSubWedgesWithAdjascentRotationAxis")
         # Copy the incoming list to a new list
         listOfSubWedgesWithIdenticalExperimentalConditions = []
         for xsDataSubWedge in _listOfSubWedgesWithIdenticalExperimentalConditions:

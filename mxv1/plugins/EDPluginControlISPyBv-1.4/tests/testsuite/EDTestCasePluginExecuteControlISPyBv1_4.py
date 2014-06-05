@@ -54,7 +54,7 @@ class EDTestCasePluginExecuteControlISPyBv1_4(EDTestCasePluginExecute):
         plugin = self.getPlugin()
 
         # Checks the expected result
-        EDVerbose.DEBUG("Checking obtained result...")
+        self.DEBUG("Checking obtained result...")
 
         xsDataResultControlISPyB = plugin.dataOutput
         bExistScreeningId = False

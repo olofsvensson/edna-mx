@@ -111,7 +111,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
         Gets the Configuration Parameters, if found, overrides default parameters
         """
         EDPluginControl.preProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.preProcess...")
+        self.DEBUG("EDPluginControlStrategyv1_2.preProcess...")
         self._edPluginRaddose = None
 
         xsDataSampleCrystalMM = self.getDataInput().getSample()
@@ -154,7 +154,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
             # "Force" the estimation of radiation damage if the flux is present
             if self.getDataInput().getExperimentalCondition().getBeam().getFlux() is None:
                 strWarningMessage = "EDPluginControlStrategyv1_2: Missing flux input - cannot estimate radiation damage."
-                EDVerbose.WARNING(strWarningMessage)
+                self.WARNING(strWarningMessage)
                 self.addWarningMessage(strWarningMessage)
                 self._bEstimateRadiationDamage = False
             else:
@@ -164,7 +164,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
         if self._bEstimateRadiationDamage:
             if self.getDataInput().getExperimentalCondition().getBeam().getFlux() is None:
                 strErrorMessage = "EDPluginControlStrategyv1_2: Missing flux input. Cannot estimate radiation damage"
-                EDVerbose.ERROR(strErrorMessage)
+                self.ERROR(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
                 self.setFailure()
 
@@ -173,7 +173,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
             self._edPluginRaddose = self.loadPlugin(self._strPluginRaddoseName)
 
             if (self._edPluginRaddose is not None):
-                EDVerbose.DEBUG("EDPluginControlStrategyv1_2.preProcess: " + self._strPluginRaddoseName + " Found... setting Data Input")
+                self.DEBUG("EDPluginControlStrategyv1_2.preProcess: " + self._strPluginRaddoseName + " Found... setting Data Input")
 
                 strFileSymop = os.path.join(self.getSymopHome(), "symop.lib")
 
@@ -184,13 +184,13 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
                 if(xsDataStringSpaceGroup is not None):
                     strSpaceGroup = xsDataStringSpaceGroup.getValue().upper().replace(" ", "")
                     if strSpaceGroup != "":
-                        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.preProcess: Forced Space Group Found: " + strSpaceGroup)
+                        self.DEBUG("EDPluginControlStrategyv1_2.preProcess: Forced Space Group Found: " + strSpaceGroup)
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup, strFileSymop)
                             bSpaceGroupForced = True
                         except Exception, detail:
                             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlStrategyv1_2.preProcess', "Problem to calculate Number of symmetry operators", detail)
-                            EDVerbose.error(strErrorMessage)
+                            self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
                             raise RuntimeError, strErrorMessage
                 if not bSpaceGroupForced:
@@ -199,23 +199,23 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
                     if (xsDataStringSpaceGroup is not None):
                         # Prepare chemical composition calculation with the Space Group calculated by indexing (Space Group Name)
                         strSpaceGroupName = self._xsDataSampleCopy.getCrystal().getSpaceGroup().getName().getValue()
-                        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.preProcess: Space Group IT Name found by indexing: " + strSpaceGroupName)
+                        self.DEBUG("EDPluginControlStrategyv1_2.preProcess: Space Group IT Name found by indexing: " + strSpaceGroupName)
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroupName, strFileSymop)
                         except Exception, detail:
                             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlStrategyv1_2.preProcess', "Problem to calculate Number of symmetry operators", detail)
-                            EDVerbose.error(strErrorMessage)
+                            self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
                             raise RuntimeError, strErrorMessage
                     else:
                         # Prepare chemical composition calculation with the Space Group calculated by indexing (Space Group IT number)
                         iSpaceGroupITNumber = self._xsDataSampleCopy.getCrystal().getSpaceGroup().getITNumber().getValue()
-                        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.preProcess: Space Group IT Number Found by indexing: %d" % iSpaceGroupITNumber)
+                        self.DEBUG("EDPluginControlStrategyv1_2.preProcess: Space Group IT Number Found by indexing: %d" % iSpaceGroupITNumber)
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupITNumber(str(iSpaceGroupITNumber), strFileSymop)
                         except Exception, detail:
                             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlStrategyv1_2.preProcess', "Problem to calculate Number of symmetry operators", detail)
-                            EDVerbose.error(strErrorMessage)
+                            self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
                             raise RuntimeError, strErrorMessage
 
@@ -223,7 +223,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
                     iNumOperators = int(strNumOperators)
                 else:
                     strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlStrategyv1_2.preProcess', "No symmetry operators found for Space Group: ", strNumOperators)
-                    EDVerbose.error(strErrorMessage)
+                    self.error(strErrorMessage)
                     self.addErrorMessage(strErrorMessage)
                     raise RuntimeError, strErrorMessage
 
@@ -268,11 +268,11 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
 
     def configure(self):
         EDPluginControl.configure(self)
-        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.configure")
+        self.DEBUG("EDPluginControlStrategyv1_2.configure")
         strSymopHome = self.config.get(self._strCONF_SYMOP_HOME)
         if strSymopHome is None:
             strWarningMessage = EDMessage.WARNING_NO_PARAM_CONFIGURATION_ITEM_FOUND_03 % ('EDPluginControlStrategyv1_2.configure', self._strCONF_SYMOP_HOME, self.getPluginName())
-            EDVerbose.warning(strWarningMessage)
+            self.warning(strWarningMessage)
             self.addWarningMessage(strWarningMessage)
         else:
             self.setSymopHome(strSymopHome)
@@ -280,7 +280,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
 
     def process(self, _edObject=None):
         EDPluginControl.process(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.process...")
+        self.DEBUG("EDPluginControlStrategyv1_2.process...")
         self._edPluginBest.connectSUCCESS(self.doSuccessActionBest)
         self._edPluginBest.connectFAILURE(self.doFailureActionBest)
         if self._bEstimateRadiationDamage:
@@ -294,7 +294,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
 
     def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.postProcess...")
+        self.DEBUG("EDPluginControlStrategyv1_2.postProcess...")
 
         #
         # Create the BEST graphs from the plot mtv file
@@ -317,7 +317,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
 
     def finallyProcess(self, _edObject=None):
         EDPluginControl.finallyProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.finallyProcess")
+        self.DEBUG("EDPluginControlStrategyv1_2.finallyProcess")
         xsDataResultStrategy = None
         xsDataResultBest = self._edPluginBest.getDataOutput()
         if(xsDataResultBest is not None and self.getDataInput().getDiffractionPlan().getStrategyOption() is not None):
@@ -339,7 +339,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
 
 
     def doRaddoseToBestTransition(self, _edPlugin):
-        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.doRaddoseToBestTransition")
+        self.DEBUG("EDPluginControlStrategyv1_2.doRaddoseToBestTransition")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlStrategyv1_2.doRaddoseToBestTransition")
 
         xsDataRaddoseOutput = self._edPluginRaddose.getDataOutput()
@@ -368,10 +368,10 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
         retrieve the potential warning messages
         retrieve the potential error messages
         """
-        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.doFailureActionRaddose")
+        self.DEBUG("EDPluginControlStrategyv1_2.doFailureActionRaddose")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlStrategyv1_2.doFailureActionRaddose")
         strWarningMessage = EDMessage.WARNING_CANNOT_USE_PLUGIN_03 % ('EDPluginControlStrategyv1_2.doFailureActionRaddose', self._strPluginRaddoseName, "Raddose failure")
-        EDVerbose.warning(strWarningMessage)
+        self.warning(strWarningMessage)
         self.addWarningMessage(strWarningMessage)
         self.executeBest(self)
 
@@ -392,7 +392,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
         """
         retrieve the potential warning messages
         """
-        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.doSuccessActionBest")
+        self.DEBUG("EDPluginControlStrategyv1_2.doSuccessActionBest")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlStrategyv1_2.doSuccessActionBest")
 
 
@@ -401,7 +401,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
         retrieve the potential warning messages
         retrieve the potential error messages
         """
-        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.doFailureActionBest")
+        self.DEBUG("EDPluginControlStrategyv1_2.doFailureActionBest")
         self.retrieveFailureMessages(_edPlugin, "BEST failure:")
         self.generateExecutiveSummary(self)
         self.setFailure()
@@ -486,7 +486,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
         """
         Generates a summary of the execution of the plugin.
         """
-        EDVerbose.DEBUG("EDPluginControlStrategyv1_2.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlStrategyv1_2.generateExecutiveSummary")
         self.addExecutiveSummaryLine("Summary of Strategy:")
         self.addErrorWarningMessagesToExecutiveSummary()
 
@@ -558,7 +558,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
         """
         Generates a short summary of the BEST strategy
         """
-        EDVerbose.DEBUG("EDPluginControlIntegrationv10.generateIntegrationShortSummary")
+        self.DEBUG("EDPluginControlIntegrationv10.generateIntegrationShortSummary")
         strStrategyShortSummary = ""
         iTotalNoImages = 0
         fTotalExposureTime = 0.0

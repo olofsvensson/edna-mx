@@ -73,7 +73,7 @@ class EDTestCasePluginExecuteControlIntegrationv10(EDTestCasePluginExecute):
             if ((xsDataIntegrationSubWedgeResult.getBestfileDat() is None) or \
                  (xsDataIntegrationSubWedgeResult.getBestfilePar() is None) or \
                  (xsDataIntegrationSubWedgeResult.getBestfileHKL() is None)):
-                EDVerbose.unitTest("Missing BEST output data in the integration subwedge results!")
+                self.unitTest("Missing BEST output data in the integration subwedge results!")
                 EDAssert.equal(True, False)
 
 

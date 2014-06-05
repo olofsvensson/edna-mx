@@ -47,23 +47,23 @@ class EDPluginExecCreateDNAFilesDirectoryv1_0( EDPluginExec ):
         """
         Checks the mandatory parameters.
         """
-        EDVerbose.DEBUG( "EDPluginExecCreateDNAFilesDirectoryv1_0.checkParameters" )
+        self.DEBUG( "EDPluginExecCreateDNAFilesDirectoryv1_0.checkParameters" )
         self.checkMandatoryParameters( self.getDataInput(), "Data Input is None" )
 
 
     def preProcess( self, _edObject=None ):
         EDPluginExec.preProcess( self )
-        EDVerbose.DEBUG( "EDPluginExecCreateDNAFilesDirectoryv1_0.postProcess" )
+        self.DEBUG( "EDPluginExecCreateDNAFilesDirectoryv1_0.postProcess" )
 
 
     def process( self, _edObject=None ):
         EDPluginExec.process( self )
-        EDVerbose.DEBUG( "EDPluginExecCreateDNAFilesDirectoryv1_0.process" )
+        self.DEBUG( "EDPluginExecCreateDNAFilesDirectoryv1_0.process" )
 
 
     def postProcess( self, _edObject=None ):
         EDPluginExec.postProcess( self )
-        EDVerbose.DEBUG( "EDPluginExecCreateDNAFilesDirectoryv1_0.postProcess" )
+        self.DEBUG( "EDPluginExecCreateDNAFilesDirectoryv1_0.postProcess" )
         # Create some output data
         xsDataResult = < xsDataResultName > ()
         self.setDataOutput( xsDataResult )

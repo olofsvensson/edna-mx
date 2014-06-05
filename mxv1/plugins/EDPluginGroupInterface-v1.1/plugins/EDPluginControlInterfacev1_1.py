@@ -53,10 +53,10 @@ class EDPluginControlInterfacev1_1(EDPluginControl):
         Gets the configuration parameters (if any).
         """
         EDPluginControl.configure(self)
-        EDVerbose.DEBUG("EDPluginControlInterfacev1_1.configure")
+        self.DEBUG("EDPluginControlInterfacev1_1.configure")
         pluginConfiguration = self.getConfiguration()
         if (pluginConfiguration is None):
-            EDVerbose.DEBUG("No plugin configuration found for EDPluginControlInterfacev1_2.")
+            self.DEBUG("No plugin configuration found for EDPluginControlInterfacev1_2.")
         else:
             if (self.getControlledPluginName("characterisationPlugin") is not None):
                 self.__strPluginCharacterisationName = self.getControlledPluginName("characterisationPlugin")
@@ -67,7 +67,7 @@ class EDPluginControlInterfacev1_1(EDPluginControl):
         Gets the Configuration Parameters, if found, overrides default parameters
         """
         EDPluginControl.preProcess(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlInterfacev1_1.preProcess...")
+        self.DEBUG("EDPluginControlInterfacev1_1.preProcess...")
 
         xsDataCollection = self.buildInput()
 
@@ -87,7 +87,7 @@ class EDPluginControlInterfacev1_1(EDPluginControl):
         """
         """
         EDPluginControl.process(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlInterfacev1_1.process...")
+        self.DEBUG("EDPluginControlInterfacev1_1.process...")
 
         if(self.__edPluginCharacterisation is not None):
             self.connectProcess(self.__edPluginCharacterisation.executeSynchronous)
@@ -100,7 +100,7 @@ class EDPluginControlInterfacev1_1(EDPluginControl):
         To be overridden by sub classes. This method should return an XSDataCollection object.
         """
         errorMessage = EDMessage.ERROR_ABSTRACT_METHOD_02 % (self.getPluginName(), 'buildInput')
-        EDVerbose.error(errorMessage)
+        self.error(errorMessage)
         self.addErrorMessage(errorMessage)
         raise RuntimeError, errorMessage
 
@@ -109,7 +109,7 @@ class EDPluginControlInterfacev1_1(EDPluginControl):
         """
         """
         EDPluginControl.postProcess(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlInterfacev1_1.postProcess...")
+        self.DEBUG("EDPluginControlInterfacev1_1.postProcess...")
 
 
     def doFailureActionCharacterisation(self, _edPlugin=None):
@@ -117,7 +117,7 @@ class EDPluginControlInterfacev1_1(EDPluginControl):
         retrieve the potential warning messages
         retrieve the potential error messages
         """
-        EDVerbose.DEBUG("EDPluginControlInterfacev1_1.doFailureActionCharacterisation")
+        self.DEBUG("EDPluginControlInterfacev1_1.doFailureActionCharacterisation")
         self.generateExecutiveSummary(self)
         self.setFailure()
 
@@ -126,7 +126,7 @@ class EDPluginControlInterfacev1_1(EDPluginControl):
         """
         retrieve the potential warning messages
         """
-        EDVerbose.DEBUG("EDPluginControlInterfacev1_1.doSuccessActionCharacterisation")
+        self.DEBUG("EDPluginControlInterfacev1_1.doSuccessActionCharacterisation")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlInterfacev1_1.doSuccessActionCharacterisation")
 
 
@@ -134,7 +134,7 @@ class EDPluginControlInterfacev1_1(EDPluginControl):
         """
         Prints the executive summary from the plugin
         """
-        EDVerbose.DEBUG("EDPluginControlInterfacev1_1.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlInterfacev1_1.generateExecutiveSummary")
         self.addExecutiveSummaryLine("Summary of plugin %s:" % self.__strPluginCharacterisationName)
         if (self.__edPluginCharacterisation is not None):
             self.appendExecutiveSummary(self.__edPluginCharacterisation)

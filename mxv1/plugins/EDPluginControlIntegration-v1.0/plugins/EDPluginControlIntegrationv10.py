@@ -73,7 +73,7 @@ class EDPluginControlIntegrationv10(EDPluginControl):
         """
         Checks the mandatory parameters
         """
-        EDVerbose.DEBUG("EDPluginControlIntegrationv10.checkParameters")
+        self.DEBUG("EDPluginControlIntegrationv10.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
         self.checkMandatoryParameters(self.getDataInput().getDataCollection(), "dataCollection")
         self.checkMandatoryParameters(self.getDataInput().getSelectedIndexingSolution(), "selectedIndexingSolution")
@@ -81,10 +81,10 @@ class EDPluginControlIntegrationv10(EDPluginControl):
 
     def configure(self):
         EDPluginControl.configure(self)
-        EDVerbose.DEBUG("EDPluginControlIntegrationv10.configure")
+        self.DEBUG("EDPluginControlIntegrationv10.configure")
         strMaxRMSSpotDeviation = self.config.get(self.__strCONF_CONTROL_INTEGRATION_MAX_RMS)
         if(strMaxRMSSpotDeviation == None):
-            EDVerbose.DEBUG("EDPluginControlIntegrationv10.configure: No configuration parameter found for: " + self.__strCONF_CONTROL_INTEGRATION_MAX_RMS + ", no default value.")
+            self.DEBUG("EDPluginControlIntegrationv10.configure: No configuration parameter found for: " + self.__strCONF_CONTROL_INTEGRATION_MAX_RMS + ", no default value.")
         else:
             self.setMaxRMSSpotDeviation(float(strMaxRMSSpotDeviation))
 
@@ -101,7 +101,7 @@ class EDPluginControlIntegrationv10(EDPluginControl):
         Gets the Configuration Parameters, if found, overrides default parameters
         """
         EDPluginControl.preProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlIntegrationv10.preProcess...")
+        self.DEBUG("EDPluginControlIntegrationv10.preProcess...")
 
         xsDataIntegrationInput = self.getDataInput()
         xsDataSelectedIndexingSolution = xsDataIntegrationInput.getSelectedIndexingSolution()
@@ -142,11 +142,11 @@ class EDPluginControlIntegrationv10(EDPluginControl):
                     self.__edPluginIntegrationList.append([iSubWedgeNumber, edPluginIntegration])
                 except Exception, strErrorMessage:
                     self.addErrorMessage(strErrorMessage)
-                    EDVerbose.ERROR(strErrorMessage)
+                    self.ERROR(strErrorMessage)
                     self.setFailure()
             else:
                 strErrorMessage = "EDPluginControlIntegrationv10.preProcess: could not load plugin %s" % self.__strPluginIntegrationName
-                EDVerbose.error(strErrorMessage)
+                self.error(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
                 self.setFailure()
 
@@ -155,7 +155,7 @@ class EDPluginControlIntegrationv10(EDPluginControl):
         """
         """
         EDPluginControl.process(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlIntegrationv10.process")
+        self.DEBUG("EDPluginControlIntegrationv10.process")
         for (iSubWedgeNumber, edPluginIntegration) in self.__edPluginIntegrationList:
             self.addPluginToActionCluster(edPluginIntegration)
         self.executeActionCluster()
@@ -166,26 +166,26 @@ class EDPluginControlIntegrationv10(EDPluginControl):
 
 
     def doSuccessActionIntegration(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlIntegrationv10.doSuccessActionIntegration")
+        self.DEBUG("EDPluginControlIntegrationv10.doSuccessActionIntegration")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlIntegrationv10.doSuccessActionIntegration")
 
 
     def doFailureActionIntegration(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlIntegrationv10.doFailureActionIntegration")
+        self.DEBUG("EDPluginControlIntegrationv10.doFailureActionIntegration")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlIntegrationv10.doFailureActionIntegration")
         self.setFailure()
 
 
     def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlIntegrationv10.postProcess")
+        self.DEBUG("EDPluginControlIntegrationv10.postProcess")
         from EDHandlerXSDataMOSFLMv10 import EDHandlerXSDataMOSFLMv10
         for (iSubWedgeNumber, edPluginIntegration) in self.__edPluginIntegrationList:
             xsDataMOSFLMOutputIntegration = edPluginIntegration.getDataOutput()
             if (xsDataMOSFLMOutputIntegration is None):
                 strError = "MOSFLM integration error : no integration results obtained."
                 self.addExecutiveSummaryLine(strError)
-                EDVerbose.ERROR(strError)
+                self.ERROR(strError)
                 self.setFailure()
             else:
                 xsDataIntegrationSubWedgeResult = None
@@ -193,12 +193,12 @@ class EDPluginControlIntegrationv10(EDPluginControl):
                     xsDataIntegrationSubWedgeResult = EDHandlerXSDataMOSFLMv10.generateXSDataIntegrationSubWedgeResult(xsDataMOSFLMOutputIntegration, self.__xsDataExperimentalConditionRefined)
                 except Exception, strErrorMessage:
                     self.addErrorMessage(strErrorMessage)
-                    EDVerbose.ERROR(strErrorMessage)
+                    self.ERROR(strErrorMessage)
                     self.setFailure()
                 if (xsDataIntegrationSubWedgeResult is None):
                     strError = "MOSFLM integration error : no integration results obtained."
                     self.addExecutiveSummaryLine(strError)
-                    EDVerbose.ERROR(strError)
+                    self.ERROR(strError)
                     self.setFailure()
                 else:
                     xsDataIntegrationSubWedgeResult.setSubWedgeNumber(XSDataInteger(iSubWedgeNumber))
@@ -211,7 +211,7 @@ class EDPluginControlIntegrationv10(EDPluginControl):
                             errorMessage = EDMessage.ERROR_DATA_HANDLER_02 % ("EDPluginControlIntegrationv10.postProcess", \
                                                                                "MOSFLM Integration : RMS spot deviation (%.3f [mm]) larger than max value from configuration (%.3f [mm]) for images %d to %d" % \
                                                                                (fRMSSpotDeviation, self.__fMaxRMSSpotDeviation, iImageStart, iImageEnd))
-                            EDVerbose.error(errorMessage)
+                            self.error(errorMessage)
                             self.addErrorMessage(errorMessage)
                     if (xsDataIntegrationSubWedgeResult is not None):
                         if (self.__xsDataIntegrationResult is None):
@@ -226,7 +226,7 @@ class EDPluginControlIntegrationv10(EDPluginControl):
         """
         Generates a summary of the execution of the plugin.
         """
-        EDVerbose.DEBUG("EDPluginControlIntegrationv10.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlIntegrationv10.generateExecutiveSummary")
         self.addExecutiveSummaryLine("Summary of integration:")
         self.addErrorWarningMessagesToExecutiveSummary("Integration warning/error messages:")
         for (iSubWedgeNumber, edPluginIntegration) in self.__edPluginIntegrationList:
@@ -239,7 +239,7 @@ class EDPluginControlIntegrationv10(EDPluginControl):
         """
         Generates a short summary of the MOSFLM integration(s)
         """
-        EDVerbose.DEBUG("EDPluginControlIntegrationv10.generateIntegrationShortSummary")
+        self.DEBUG("EDPluginControlIntegrationv10.generateIntegrationShortSummary")
         strIntegrationShortSummary = ""
         for xsDataIntegrationSubWedgeResult in _xsDataIntegrationResult.getIntegrationSubWedgeResult():
             iSubWedgeNumber = xsDataIntegrationSubWedgeResult.getSubWedgeNumber().getValue()
@@ -261,6 +261,6 @@ class EDPluginControlIntegrationv10(EDPluginControl):
             strIntegrationShortSummary += "at highest res %.1f" % fIOverSigmaAtHighestResolution
             strIntegrationShortSummary += "\n"
         for strLine in strIntegrationShortSummary.split("\n"):
-            EDVerbose.screen(strLine)
+            self.screen(strLine)
         self.setDataOutput(XSDataString(strIntegrationShortSummary), "integrationShortSummary")
 

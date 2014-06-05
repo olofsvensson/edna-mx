@@ -67,7 +67,7 @@ class EDPluginExecEvaluationIndexingv10(EDPluginExec):
 
     def process(self, _edObject=None):
         EDPluginExec.process(self)
-        EDVerbose.DEBUG("EDPluginExecEvaluationIndexingv10.process")
+        self.DEBUG("EDPluginExecEvaluationIndexingv10.process")
         #
         # Check for eventual warning messages due to few number of spots, ice rings etc:
         #

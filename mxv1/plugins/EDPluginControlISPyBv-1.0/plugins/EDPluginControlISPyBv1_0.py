@@ -55,7 +55,7 @@ class EDPluginControlISPyBv1_0(EDPluginControl):
         """
         Checks the mandatory parameters
         """
-        EDVerbose.DEBUG("EDPluginControlISPyBv1_0.checkParameters")
+        self.DEBUG("EDPluginControlISPyBv1_0.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
         self.checkMandatoryParameters(self.getDataInput().getCharacterisationResult(), "characterisationResult")
 
@@ -65,7 +65,7 @@ class EDPluginControlISPyBv1_0(EDPluginControl):
         Loads the ISPyB execution plugin and prepares the input data
         """
         EDPluginControl.preProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlISPyBv1_0.preProcess...")
+        self.DEBUG("EDPluginControlISPyBv1_0.preProcess...")
         self.__edPluginExecISPyB = self.loadPlugin(self.__strPluginExecISPyBName)
         from EDHandlerXSDataISPyBv1_1 import EDHandlerXSDataISPyBv1_1
 	strStatusMessage = None
@@ -80,7 +80,7 @@ class EDPluginControlISPyBv1_0(EDPluginControl):
         Executes the ISPyB execution plugin
         """
         EDPluginControl.process(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlISPyBv1_0.process")
+        self.DEBUG("EDPluginControlISPyBv1_0.process")
         if (self.__edPluginExecISPyB is not None):
             self.__edPluginExecISPyB.connectSUCCESS(self.doSuccessExecuteISPyBPlugin)
             self.__edPluginExecISPyB.connectFAILURE(self.doFailureExecuteISPyBPlugin)
@@ -88,18 +88,18 @@ class EDPluginControlISPyBv1_0(EDPluginControl):
 
 
     def doSuccessExecuteISPyBPlugin(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlISPyBv1_0.doSuccessExecuteISPyBPlugin")
+        self.DEBUG("EDPluginControlISPyBv1_0.doSuccessExecuteISPyBPlugin")
         self.retrieveSuccessMessages(self.__edPluginExecISPyB, "EDPluginControlISPyBv1_0.doSuccessExecuteISPyBPlugin")
 
 
     def doFailureExecuteISPyBPlugin(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlISPyBv1_0.doFailureExecuteISPyBPlugin")
+        self.DEBUG("EDPluginControlISPyBv1_0.doFailureExecuteISPyBPlugin")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlISPyBv1_0.doFailureExecuteISPyBPlugin")
         self.setFailure()
 
 
     def postProcess(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlISPyBv1_0.postProcess")
+        self.DEBUG("EDPluginControlISPyBv1_0.postProcess")
         # For the moment just an empty result object
         xsDataResultControlISPyB = XSDataResultControlISPyB()
         self.setDataOutput(xsDataResultControlISPyB)

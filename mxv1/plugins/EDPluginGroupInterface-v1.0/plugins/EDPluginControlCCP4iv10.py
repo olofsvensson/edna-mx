@@ -66,7 +66,7 @@ class EDPluginControlCCP4iv10(EDPluginControlInterfacev10):
         After having retrieved an initial XSDataCollection object, it then uses the method "updateDataCollection" for
         updating certain parameters.
         """
-        EDVerbose.DEBUG("EDPluginControlCCP4iv10.buildInput...")
+        self.DEBUG("EDPluginControlCCP4iv10.buildInput...")
         xsDataCollection = None
         xsDataInputCCP4i = self.getDataInput()
         pyListXSDataFile = xsDataInputCCP4i.getDataFile()
@@ -79,7 +79,7 @@ class EDPluginControlCCP4iv10(EDPluginControlInterfacev10):
             if (pyListXSDataCCP4iDataSet is None):
                 strErrorMessage = "No input data!"
                 errorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlCCP4iv10.buildInput', 'EDPluginControlCCP4iv10', strErrorMessage)
-                EDVerbose.error(errorMessage)
+                self.error(errorMessage)
                 self.addErrorMessage(errorMessage)
                 self.setFailure()
             else:
@@ -96,7 +96,7 @@ class EDPluginControlCCP4iv10(EDPluginControlInterfacev10):
         This method takes as input a list of paths to XML data files. It parses
         these files and create a single XSDataCollection object.
         """
-        EDVerbose.DEBUG("EDPluginControlCCP4iv10.createDataCollectionFromDataFiles")
+        self.DEBUG("EDPluginControlCCP4iv10.createDataCollectionFromDataFiles")
         xsDataCollection = None
         xsDataCollectionCurrent = None
         for xsDataInputFile in _pyListXSDataFile:
@@ -105,12 +105,12 @@ class EDPluginControlCCP4iv10(EDPluginControlInterfacev10):
                 xsDataCollectionCurrent = XSDataCollection.parseString(strInputFileContent)
             except Exception, detail:
                 errorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlCCP4iv10.preProcess', 'EDPluginControlCCP4iv10', detail)
-                EDVerbose.error(errorMessage)
+                self.error(errorMessage)
                 self.addErrorMessage(errorMessage)
                 self.setFailure()
             if (xsDataCollectionCurrent is None):
                 errorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlCCP4iv10.preProcess', 'EDPluginControlCCP4iv10', "None data collection")
-                EDVerbose.error(errorMessage)
+                self.error(errorMessage)
                 self.addErrorMessage(errorMessage)
                 self.setFailure()
             else:
@@ -128,7 +128,7 @@ class EDPluginControlCCP4iv10(EDPluginControlInterfacev10):
         paths to image files. It runs the EDPluginControlSubWedgeAssemble plugin to read the
         experimental information from the image headers and then creates a single XSDataCollection object.
         """
-        EDVerbose.DEBUG("EDPluginControlCCP4iv10.createDataCollectionFromDataSets")
+        self.DEBUG("EDPluginControlCCP4iv10.createDataCollectionFromDataSets")
         xsDataCollection = None
         # We might have to run the plugin several times
         edActionCluster = EDActionCluster()
@@ -162,12 +162,12 @@ class EDPluginControlCCP4iv10(EDPluginControlInterfacev10):
 
 
     def doSuccessActionSubWedgeAssemble(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCCP4iv10.doSuccessActionSubWedgeAssemble...")
+        self.DEBUG("EDPluginControlCCP4iv10.doSuccessActionSubWedgeAssemble...")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCCP4iv10.doSuccessActionSubWedgeAssemble")
 
 
     def doFailureActionSubWedgeAssemble(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCCP4iv10.doFailureActionSubWedgeAssemble...")
+        self.DEBUG("EDPluginControlCCP4iv10.doFailureActionSubWedgeAssemble...")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlCCP4iv10.doFailureActionSubWedgeAssemble")
 
 
@@ -183,7 +183,7 @@ class EDPluginControlCCP4iv10(EDPluginControlInterfacev10):
         - Min oscillation width
         - Sample information
         """
-        EDVerbose.DEBUG("EDPluginControlCCP4iv10.createDataCollectionFromDataSets")
+        self.DEBUG("EDPluginControlCCP4iv10.createDataCollectionFromDataSets")
         if (_xsDataCollection is not None):
             xsDataInputCCP4i = self.getDataInput()
             # Update with diffraction plan

@@ -86,7 +86,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
         """
         Checks the mandatory parameters.
         """
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.checkParameters")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
         self.checkMandatoryParameters(self.getDataInput().getDataCollection(), "dataCollection")
         self.checkMandatoryParameters(self.getDataInput().getDataCollection().getDiffractionPlan(), "diffractionPlan")
@@ -94,7 +94,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.preProcess")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.preProcess")
         # Load the plugins
         self._edPluginControlIndexingIndicators = self.loadPlugin(self._strPluginControlIndexingIndicators, \
                                                                    "Indexing")
@@ -113,7 +113,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
         self._edPluginControlStrategy = self.loadPlugin(self._strPluginControlStrategy, \
                                                          "Strategy")
         if (self._edPluginControlIndexingIndicators is not None):
-            EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.preProcess: " + self._strPluginControlIndexingIndicators + " Found... setting Data Input")
+            self.DEBUG("EDPluginControlCharacterisationv1_3.preProcess: " + self._strPluginControlIndexingIndicators + " Found... setting Data Input")
             # create Data Input for indexing
             xsDataInputCharacterisation = self.getDataInput()
             self._xsDataCollection = xsDataInputCharacterisation.getDataCollection()
@@ -138,7 +138,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
             xsDataSubWedgeList = self._xsDataCollection.getSubWedge()
             if ((xsDataSubWedgeList is None) or (xsDataSubWedgeList == [])):
                 strError = "EDPluginControlCharacterisationv1_3.preProcess: No subwedges in input data."
-                EDVerbose.ERROR(strError)
+                self.ERROR(strError)
                 self.setFailure()
             else:
                 xsDataExperimentalCondition = xsDataSubWedgeList[0].getExperimentalCondition()
@@ -148,7 +148,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
                 if (xsDataDoubleFlux is not None):
                     if (xsDataDoubleFlux.getValue() < 0.1):
                         strErrorMessage = "Input flux is negative or close to zero. Execution of characterisation aborted."
-                        EDVerbose.ERROR(strErrorMessage)
+                        self.ERROR(strErrorMessage)
                         self.addErrorMessage("EDPluginControlCharacterisationv1_3.preProcess ERROR: " + strErrorMessage)
                         #self.addComment(strErrorMessage)
                         self.setFailure()
@@ -172,7 +172,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
     def process(self, _edObject=None):
         EDPluginControl.process(self)
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.process")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.process")
         self._edPluginControlIndexingIndicators.connectSUCCESS(self.doSuccessIndexingIndicators)
         self._edPluginControlIndexingIndicators.connectFAILURE(self.doFailureIndexingIndicators)
         self._edPluginControlIndexingLabelit.connectSUCCESS(self.doSuccessIndexingLabelit)
@@ -194,7 +194,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
     def finallyProcess(self, _edObject=None):
         EDPluginControl.finallyProcess(self)
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.finallyProcess")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.finallyProcess")
         if self._edPluginControlGeneratePrediction.isRunning():
             self._edPluginControlGeneratePrediction.synchronize()
         if self._strStatusMessage != None:
@@ -208,7 +208,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
     def doSuccessIndexingIndicators(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessIndexingIndicators")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessIndexingIndicators")
         #self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv1_3.doSuccessIndexingIndicators")
         if self._edPluginControlIndexingIndicators.hasDataOutput("indexingResult"):
             xsDataIndexingResult = self._edPluginControlIndexingIndicators.getDataOutput("indexingResult")[0]
@@ -225,9 +225,9 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
     def doFailureIndexingIndicators(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doFailureIndexingIndicators")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doFailureIndexingIndicators")
         strErrorMessage = "Execution of Indexing and Indicators plugin failed. Execution of characterisation aborted."
-        EDVerbose.ERROR(strErrorMessage)
+        self.ERROR(strErrorMessage)
         self.addErrorMessage(strErrorMessage)
         if self._xsDataResultCharacterisation is not None:
             self.setDataOutput(self._xsDataResultCharacterisation)
@@ -238,7 +238,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
 #    def doSuccessIndexingLabelit(self, _edPlugin=None):
-#        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessIndexingLabelit")
+#        self.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessIndexingLabelit")
 #        self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv1_3.doSuccessIndexingLabelit")
 #        # Retrieve the indexing result
 #        xsDataIndexingResult = self._edPluginControlIndexingLabelit.getDataOutput()
@@ -250,7 +250,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
     def doSuccessIndexingLabelit(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessIndexingLabelit")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessIndexingLabelit")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv1_3.doSuccessIndexingLabelit")
         if self._edPluginControlIndexingLabelit.hasDataOutput("indexingShortSummary"):
             self._strCharacterisationShortSummary += self._edPluginControlIndexingLabelit.getDataOutput("indexingShortSummary")[0].getValue()
@@ -263,13 +263,13 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
     def doFailureIndexingLabelit(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doFailureIndexingLabelit")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doFailureIndexingLabelit")
         self.addStatusMessage("Labelit: Indexing FAILURE.")
         if self._xsDataResultCharacterisation is not None:
             self.setDataOutput(self._xsDataResultCharacterisation)
         if self._xsDataIndexingResultMOSFLM == None:
             strErrorMessage = "Execution of indexing with both MOSFLM and Labelit failed. Execution of characterisation aborted."
-            EDVerbose.ERROR(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             self.generateExecutiveSummary(self)
             self.setFailure()
@@ -294,7 +294,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
     def doSuccessEvaluationIndexingMOSFLM(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessEvaluationIndexingMOSFLM")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessEvaluationIndexingMOSFLM")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv1_3.doSuccessEvaluationIndexing")
         # Retrieve status messages (if any)
         if self._edPluginExecEvaluationIndexingMOSFLM.hasDataOutput("statusMessageImageQualityIndicators"):
@@ -319,12 +319,12 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
                 if self._xsDataCollection.getDiffractionPlan() is not None:
                     if self._xsDataCollection.getDiffractionPlan().getForcedSpaceGroup() is not None:
                         if self._xsDataCollection.getDiffractionPlan().getForcedSpaceGroup().getValue().upper() == "P1":
-                            EDVerbose.screen("P1 space forced by diffraction plan")
+                            self.screen("P1 space forced by diffraction plan")
                             bIndexWithLabelit = False
             if bIndexWithLabelit:
-                EDVerbose.screen("P1 space group choosed - reindexing with Labelit")
+                self.screen("P1 space group choosed - reindexing with Labelit")
             else:
-                EDVerbose.screen("MOSFLM indexing successful!")
+                self.screen("MOSFLM indexing successful!")
                 if self._edPluginControlIndexingIndicators.hasDataOutput("indexingShortSummary"):
                     self._strCharacterisationShortSummary += self._edPluginControlIndexingIndicators.getDataOutput("indexingShortSummary")[0].getValue()
                 # Generate prediction images
@@ -339,11 +339,11 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
                 # Then start the integration of the reference images
                 self.indexingToIntegration()
         else:
-            EDVerbose.screen("Indexing with MOSFLM failed!")
+            self.screen("Indexing with MOSFLM failed!")
             bIndexWithLabelit = True
         if bIndexWithLabelit:
             # Execute Labelit indexing
-            EDVerbose.screen("Now trying to index with Labelit - please be patient...")
+            self.screen("Now trying to index with Labelit - please be patient...")
             xsDataIndexingInput = XSDataIndexingInput()
             xsDataSubWedgeList = self._xsDataCollection.getSubWedge()
             xsDataExperimentalCondition = xsDataSubWedgeList[0].getExperimentalCondition()
@@ -356,7 +356,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
     def doSuccessEvaluationIndexingLABELIT(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessEvaluationIndexingLABELIT")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessEvaluationIndexingLABELIT")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv1_3.doSuccessEvaluationIndexingLABELIT")
         # Retrieve status messages (if any)
         if self._edPluginExecEvaluationIndexingLABELIT.hasDataOutput("statusMessageIndexing"):
@@ -369,7 +369,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
             # Then start the integration of the reference images
             self.indexingToIntegration()
         else:
-            EDVerbose.screen("Indexing with LABELIT failed!")
+            self.screen("Indexing with LABELIT failed!")
             self.setFailure()
 
 
@@ -391,25 +391,25 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
     def doFailureEvaluationIndexingMOSFLM(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doFailureEvaluationIndexing")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doFailureEvaluationIndexing")
         strWarningMessage = "Execution of indexing evaluation plugin failed."
-        EDVerbose.WARNING(strWarningMessage)
+        self.WARNING(strWarningMessage)
         self.addWarningMessage(strWarningMessage)
         if self._xsDataResultCharacterisation is not None:
             self.setDataOutput(self._xsDataResultCharacterisation)
 
 
     def doFailureEvaluationIndexingLABELIT(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doFailureEvaluationIndexing")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doFailureEvaluationIndexing")
         strWarningMessage = "Execution of indexing evaluation plugin failed."
-        EDVerbose.WARNING(strWarningMessage)
+        self.WARNING(strWarningMessage)
         self.addWarningMessage(strWarningMessage)
         if self._xsDataResultCharacterisation is not None:
             self.setDataOutput(self._xsDataResultCharacterisation)
 
 
     def doSuccessGeneratePrediction(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessGeneratePrediction")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessGeneratePrediction")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv1_3.doSuccessGeneratePrediction")
         xsDataGeneratePredictionResult = _edPlugin.getDataOutput()
         xsDataIndexingResult = self._xsDataResultCharacterisation.getIndexingResult()
@@ -417,9 +417,9 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
     def doFailureGeneratePrediction(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doFailureGeneratePrediction")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doFailureGeneratePrediction")
         strWarningMessage = "Execution of generate prediction plugin failed."
-        EDVerbose.WARNING(strWarningMessage)
+        self.WARNING(strWarningMessage)
         self.addWarningMessage(strWarningMessage)
         if self._xsDataResultCharacterisation is not None:
             self.setDataOutput(self._xsDataResultCharacterisation)
@@ -427,7 +427,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
     def doSuccessIntegration(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessIntegration")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessIntegration")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv1_3.doSuccessIntegration")
         # Wait for XDS plugin if necessary
         self._edPluginControlXDSGenerateBackgroundImage.synchronize()
@@ -437,7 +437,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
         # Integration short summary
         if self._edPluginControlIntegration.hasDataOutput("integrationShortSummary"):
             self._strCharacterisationShortSummary += self._edPluginControlIntegration.getDataOutput("integrationShortSummary")[0].getValue()
-        #EDVerbose.DEBUG( self._xsDataExperimentCharacterisation.marshal() )
+        #self.DEBUG( self._xsDataExperimentCharacterisation.marshal() )
         if self._bDoStrategyCalculation:
             xsDataInputStrategy = XSDataInputStrategy()
             xsDataSolutionSelected = self._xsDataResultCharacterisation.getIndexingResult().getSelectedSolution()
@@ -458,10 +458,10 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
     def doFailureIntegration(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doFailureIntegration")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doFailureIntegration")
         strErrorMessage = "Execution of integration plugin failed."
         self.addStatusMessage("Integration FAILURE.")
-        EDVerbose.ERROR(strErrorMessage)
+        self.ERROR(strErrorMessage)
         self.addErrorMessage(strErrorMessage)
         #self.addComment("integration failure")
         if self._xsDataResultCharacterisation is not None:
@@ -474,18 +474,18 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
     def doSuccessXDSGenerateBackgroundImage(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessXDSGenerateBackgroundImage")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessXDSGenerateBackgroundImage")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv1_3.doSuccessXDSGenerateBackgroundImage")
         self._xsDataFileXdsBackgroundImage = self._edPluginControlXDSGenerateBackgroundImage.getDataOutput().getXdsBackgroundImage()
         self._xsDataResultCharacterisation.setXdsBackgroundImage(self._xsDataFileXdsBackgroundImage)
 
 
     def doFailureXDSGenerateBackgroundImage(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doFailureXDSGenerateBackgroundImage")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doFailureXDSGenerateBackgroundImage")
 
 
     def doSuccessStrategy(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessStrategy")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doSuccessStrategy")
         self.retrieveSuccessMessages(self._edPluginControlStrategy, "EDPluginControlCharacterisationv1_3.doSuccessStrategy")
         xsDataStrategyResult = self._edPluginControlStrategy.getDataOutput()
         self._xsDataResultCharacterisation.setStrategyResult(xsDataStrategyResult)
@@ -495,9 +495,9 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
 
     def doFailureStrategy(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.doFailureStrategy")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.doFailureStrategy")
         strErrorMessage = "Execution of strategy plugin failed."
-        EDVerbose.ERROR(strErrorMessage)
+        self.ERROR(strErrorMessage)
         self.addErrorMessage(strErrorMessage)
         xsDataStrategyResult = self._edPluginControlStrategy.getDataOutput()
         self._xsDataResultCharacterisation.setStrategyResult(xsDataStrategyResult)
@@ -517,7 +517,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
         """
         Generates a summary of the execution of the plugin.
         """
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv1_3.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlCharacterisationv1_3.generateExecutiveSummary")
         self.addExecutiveSummaryLine("Summary of characterisation:")
         xsDataInputStrategy = self.getDataInput()
         xsDataCollection = xsDataInputStrategy.getDataCollection()

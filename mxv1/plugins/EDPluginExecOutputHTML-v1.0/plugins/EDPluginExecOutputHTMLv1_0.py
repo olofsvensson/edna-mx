@@ -93,7 +93,7 @@ class EDPluginExecOutputHTMLv1_0(EDPluginExec):
 
     def configure(self):
         EDPluginExec.configure(self)
-        EDVerbose.DEBUG("EDPluginExecOutputHTMLv1_0.configure")
+        self.DEBUG("EDPluginExecOutputHTMLv1_0.configure")
         self.strEDNA2html = self.config.get(self.CONF_EDNA2html)
         if self.strEDNA2html is None and os.environ.has_key("EDNA2html"):
             self.strEDNA2html = os.environ["EDNA2html"]
@@ -104,12 +104,12 @@ class EDPluginExecOutputHTMLv1_0(EDPluginExec):
 
     def process(self, _edObject=None):
         EDPluginExec.process(self)
-        EDVerbose.DEBUG("EDPluginExecOutputHTMLv1_0.process")
+        self.DEBUG("EDPluginExecOutputHTMLv1_0.process")
         dictEnv = os.environ.copy()
         dictEnv["PATH"] = self.strPath + ":" + dictEnv["PATH"]
         
         if self.strEDNA2html is None:
-            EDVerbose.ERROR("Cannot find EDNA2html directory!")
+            self.ERROR("Cannot find EDNA2html directory!")
             self.setFailure()
         else:
             strCommandArgs = os.path.join(self.strEDNA2html, "EDNA2html")
@@ -146,7 +146,7 @@ class EDPluginExecOutputHTMLv1_0(EDPluginExec):
                     strBaseDir = self.getWorkingDirectory()
                     for j in range(iLevels):
                         strBaseDir = os.path.abspath(os.path.join(strBaseDir, ".."))
-                    EDVerbose.DEBUG("strBaseDir: " + strBaseDir)
+                    self.DEBUG("strBaseDir: " + strBaseDir)
                     # Now search for a .log file...
                     for strFileName in os.listdir(strBaseDir):
                     
@@ -171,7 +171,7 @@ class EDPluginExecOutputHTMLv1_0(EDPluginExec):
 
     def postProcess(self, _edObject=None):
         EDPluginExec.postProcess(self)
-        EDVerbose.DEBUG("EDPluginExecOutputHTMLv1_0.postProcess")
+        self.DEBUG("EDPluginExecOutputHTMLv1_0.postProcess")
         if self.strWorkingDir != None:
             xsDataFileHTMLFile = XSDataFile()
             xsDataFileHTMLDir = XSDataFile()
@@ -196,6 +196,6 @@ class EDPluginExecOutputHTMLv1_0(EDPluginExec):
                 self.setDataOutput(xsDataFileHTMLFile, "htmlFile")
                 self.setDataOutput(xsDataFileHTMLDir, "htmlDir")
             else:
-                EDVerbose.ERROR("EDPluginExecOutputHTMLv1_0.postProcess: file doesn't exist: " + strHTMLFilePath)
+                self.ERROR("EDPluginExecOutputHTMLv1_0.postProcess: file doesn't exist: " + strHTMLFilePath)
 
 

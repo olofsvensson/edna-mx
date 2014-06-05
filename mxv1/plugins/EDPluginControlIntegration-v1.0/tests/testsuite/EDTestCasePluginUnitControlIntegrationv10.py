@@ -76,7 +76,7 @@ class EDTestCasePluginUnitControlIntegrationv10(EDTestCasePluginUnit):
         xsDataIntegrationResult = XSDataIntegrationResult.parseString(strXML)
         edPluginControlIntegrationv10.generateIntegrationShortSummary(xsDataIntegrationResult)
         for strLine in edPluginControlIntegrationv10.getDataOutput("integrationShortSummary")[0].getValue().split("\n"):
-            EDVerbose.unitTest(strLine)
+            self.unitTest(strLine)
 
 
     def process(self):

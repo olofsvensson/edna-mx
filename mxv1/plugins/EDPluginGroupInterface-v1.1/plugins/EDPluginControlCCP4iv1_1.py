@@ -68,7 +68,7 @@ class EDPluginControlCCP4iv1_1(EDPluginControlInterfacev1_1):
         After having retrieved an initial XSDataInputCharacterisation object, it then uses the method "updateDataInputCharacterisation" for
         updating certain parameters.
         """
-        EDVerbose.DEBUG("EDPluginControlCCP4iv1_1.buildInput...")
+        self.DEBUG("EDPluginControlCCP4iv1_1.buildInput...")
         xsDataInputCCP4i = self.getDataInput()
         pyListXSDataFile = xsDataInputCCP4i.getDataFile()
         if(len(pyListXSDataFile) > 0):
@@ -80,7 +80,7 @@ class EDPluginControlCCP4iv1_1(EDPluginControlInterfacev1_1):
             if (pyListXSDataCCP4iDataSet is None):
                 pyStrErrorMessage = "No input data!"
                 errorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlCCP4iv1_1.buildInput', 'EDPluginControlCCP4iv1_1', pyStrErrorMessage)
-                EDVerbose.error(errorMessage)
+                self.error(errorMessage)
                 self.addErrorMessage(errorMessage)
                 raise RuntimeError, errorMessage
             else:
@@ -88,7 +88,7 @@ class EDPluginControlCCP4iv1_1(EDPluginControlInterfacev1_1):
         # Update the data collection with other parameters
         if (xsDataInputCharacterisation is None):
             strError = "EDPluginControlCCP4iv1_1.buildInput: failed when building input."
-            EDVerbose.ERROR(strError)
+            self.ERROR(strError)
             self.addErrorMessage(strError)
             self.setFailure()
         else:
@@ -101,7 +101,7 @@ class EDPluginControlCCP4iv1_1(EDPluginControlInterfacev1_1):
         This method takes as input a list of paths to XML data files. It parses
         these files and create a single XSDataInputCharacterisation object.
         """
-        EDVerbose.DEBUG("EDPluginControlCCP4iv1_1.createDataInputCharacterisationFromDataFiles")
+        self.DEBUG("EDPluginControlCCP4iv1_1.createDataInputCharacterisationFromDataFiles")
         xsDataInputCharacterisation = None
         for xsDataInputFile in _pyListXSDataFile:
             try:
@@ -109,12 +109,12 @@ class EDPluginControlCCP4iv1_1(EDPluginControlInterfacev1_1):
                 xsDataInputCharacterisationCurrent = XSDataInputCharacterisation.parseString(pyStrInputFileContent)
             except Exception, detail:
                 errorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlCCP4iv1_1.preProcess', 'EDPluginControlCCP4iv1_1', detail)
-                EDVerbose.error(errorMessage)
+                self.error(errorMessage)
                 self.addErrorMessage(errorMessage)
                 raise RuntimeError, errorMessage
             if (xsDataInputCharacterisationCurrent is None):
                 errorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlCCP4iv1_1.preProcess', 'EDPluginControlCCP4iv1_1', "None data collection")
-                EDVerbose.error(errorMessage)
+                self.error(errorMessage)
                 self.addErrorMessage(errorMessage)
                 raise RuntimeError, errorMessage
             else:
@@ -131,7 +131,7 @@ class EDPluginControlCCP4iv1_1(EDPluginControlInterfacev1_1):
         paths to image files. It runs the EDPluginControlSubWedgeAssemble plugin to read the
         experimental information from the image headers and then creates a single XSDataInputCharacterisation object.
         """
-        EDVerbose.DEBUG("EDPluginControlCCP4iv1_1.createDataInputCharacterisationFromDataSets")
+        self.DEBUG("EDPluginControlCCP4iv1_1.createDataInputCharacterisationFromDataSets")
         xsDataInputCharacterisation = None
         # We might have to run the plugin several times
         edActionCluster = EDActionCluster()
@@ -174,12 +174,12 @@ class EDPluginControlCCP4iv1_1(EDPluginControlInterfacev1_1):
 
 
     def doSuccessActionSubWedgeAssemble(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCCP4iv1_1.doSuccessActionSubWedgeAssemble...")
+        self.DEBUG("EDPluginControlCCP4iv1_1.doSuccessActionSubWedgeAssemble...")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCCP4iv1_1.doSuccessActionSubWedgeAssemble")
 
 
     def doFailureActionSubWedgeAssemble(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCCP4iv1_1.doFailureActionSubWedgeAssemble...")
+        self.DEBUG("EDPluginControlCCP4iv1_1.doFailureActionSubWedgeAssemble...")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlCCP4iv1_1.doFailureActionSubWedgeAssemble")
         self.setFailure()
 
@@ -196,7 +196,7 @@ class EDPluginControlCCP4iv1_1(EDPluginControlInterfacev1_1):
         - Min oscillation width
         - Sample information
         """
-        EDVerbose.DEBUG("EDPluginControlCCP4iv1_1.createDataInputCharacterisationFromDataSets")
+        self.DEBUG("EDPluginControlCCP4iv1_1.createDataInputCharacterisationFromDataSets")
         xsDataCollection = _xsDataInputCharacterisation.getDataCollection()
         if (_xsDataInputCharacterisation is not None):
             xsDataInputCCP4i = self.getDataInput()

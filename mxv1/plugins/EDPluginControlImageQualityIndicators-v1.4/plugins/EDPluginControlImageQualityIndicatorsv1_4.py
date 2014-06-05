@@ -96,7 +96,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         """
         Checks the mandatory parameters
         """
-        EDVerbose.DEBUG("EDPluginControlImageQualityIndicatorsv1_4.checkParameters")
+        self.DEBUG("EDPluginControlImageQualityIndicatorsv1_4.checkParameters")
         self.checkMandatoryParameters(self.getDataInput().getImage(), "Image")
 
 
@@ -112,7 +112,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         Executes the execution plugins
         """
         EDPluginControl.process(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlImageQualityIndicatorsv1_4.process")
+        self.DEBUG("EDPluginControlImageQualityIndicatorsv1_4.process")
         EDUtilsParallel.initializeNbThread()
         # Check if we should do distlSignalStrength:
         bDoDistlSignalStrength = True
@@ -250,18 +250,18 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         EDPluginControl.finallyProcess(self, _edPlugin)
         if self.edPluginISPyB is not None:
             # Synchronize ISPyB plugin
-            EDVerbose.DEBUG("EDPluginControlImageQualityIndicatorsv1_4.finallyProcess")
+            self.DEBUG("EDPluginControlImageQualityIndicatorsv1_4.finallyProcess")
             self.edPluginISPyB.synchronize()
             listId = []
             for xsDataInteger in self.edPluginISPyB.dataOutput.imageQualityIndicatorsId:
                 listId.append(xsDataInteger.value)
-            EDVerbose.DEBUG("ISPyB imageQualityIndicatorIds = %r" % listId) 
+            self.DEBUG("ISPyB imageQualityIndicatorIds = %r" % listId) 
         self.setDataOutput(self.xsDataResultControlImageQualityIndicators)
 
 
 
     def generateExecutiveSummary(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlImageQualityIndicatorsv1_4.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlImageQualityIndicatorsv1_4.generateExecutiveSummary")
         self.addErrorWarningMessagesToExecutiveSummary("Image quality indicator plugin execution failure! Error messages: ")
         self.addExecutiveSummaryLine("Summary of image quality indicators with %s :" % self.strPluginName)
         for edPluginPluginExecImageQualityIndicator in self.listPluginExecImageQualityIndicator:

@@ -68,7 +68,7 @@ class EDPluginControlSubWedgeAssemblev10(EDPluginControl):
         """
         Checks the mandatory parameters
         """
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblev10.checkParameters")
+        self.DEBUG("EDPluginControlSubWedgeAssemblev10.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
         self.checkMandatoryParameters(self.getDataInput().getFile(), "file")
 
@@ -78,7 +78,7 @@ class EDPluginControlSubWedgeAssemblev10(EDPluginControl):
         Gets the Configuration Parameters, if found, overrides default parameters
         """
         EDPluginControl.preProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblev10.preProcess")
+        self.DEBUG("EDPluginControlSubWedgeAssemblev10.preProcess")
 
         self.__edPluginReadImageHeader = self.loadPlugin(self.__strPluginReadImageHeaderName)
         self.__edPluginSubWedgeMerge = self.loadPlugin(self.__strPluginSubWedgeMergeName)
@@ -88,7 +88,7 @@ class EDPluginControlSubWedgeAssemblev10(EDPluginControl):
         """
         """
         EDPluginControl.process(self, _oedObject)
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblev10.process")
+        self.DEBUG("EDPluginControlSubWedgeAssemblev10.process")
         if (self.__edPluginReadImageHeader is not None and self.__edPluginSubWedgeMerge is not None):
             self.connectProcess(self.createDataCollectionFromImageHeaders)
             self.__edPluginSubWedgeMerge.connectSUCCESS(self.doSuccessActionSubWedgeMerge)
@@ -97,7 +97,7 @@ class EDPluginControlSubWedgeAssemblev10(EDPluginControl):
 
     def postProcess(self, _oedObject=None):
         EDPluginControl.postProcess(self, _oedObject)
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblev10.postProcess")
+        self.DEBUG("EDPluginControlSubWedgeAssemblev10.postProcess")
         if (self.__xsDataResultSubWedgeMerge is not None):
             xsDataResultSubWedgeAssemble = XSDataResultSubWedgeAssemble()
             xsDataResultSubWedgeAssemble.setSubWedge(self.__xsDataResultSubWedgeMerge.getSubWedge())
@@ -110,7 +110,7 @@ class EDPluginControlSubWedgeAssemblev10(EDPluginControl):
         This method creates a list of XSDataSubwedges by reading the header of the images
         given as a list of paths as input.
         """
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblev10.createDataCollectionFromImageHeaders")
+        self.DEBUG("EDPluginControlSubWedgeAssemblev10.createDataCollectionFromImageHeaders")
         xsDataInputSubWedgeAssemble = _edPlugin.getDataInput()
         listXSDataFile = xsDataInputSubWedgeAssemble.getFile()
         if (len(listXSDataFile) > 0):
@@ -130,7 +130,7 @@ class EDPluginControlSubWedgeAssemblev10(EDPluginControl):
                     errorMessage = EDMessage.ERROR_EXECUTION_03 % ("EDPluginControlSubWedgeAssemblev10.createDataCollectionFromImageHeaders", \
                                                                     self.__strPluginReadImageHeaderName, \
                                                                     "Could not read header from image %s" % xsDataFileCopy.getPath().getValue())
-                    EDVerbose.error(errorMessage)
+                    self.error(errorMessage)
                     self.addErrorMessage(errorMessage)
                     raise RuntimeError, errorMessage
                 else:
@@ -144,14 +144,14 @@ class EDPluginControlSubWedgeAssemblev10(EDPluginControl):
 
 
     def doSuccessActionSubWedgeMerge(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblev10.doSuccessActionSubWedgeMerge")
+        self.DEBUG("EDPluginControlSubWedgeAssemblev10.doSuccessActionSubWedgeMerge")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlSubWedgeAssemblev10.doSuccessActionSubWedgeMerge")
         self.__xsDataResultSubWedgeMerge = _edPlugin.getDataOutput()
 
 
     def doFailureActionSubWedgeMerge(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblev10.doFailureActionSubWedgeMerge")
-        EDVerbose.screen("Execution of " + self.__strPluginSubWedgeMergeName + "  failed.")
-        EDVerbose.screen("Please inspect the log file for further information.")
+        self.DEBUG("EDPluginControlSubWedgeAssemblev10.doFailureActionSubWedgeMerge")
+        self.screen("Execution of " + self.__strPluginSubWedgeMergeName + "  failed.")
+        self.screen("Please inspect the log file for further information.")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlSubWedgeAssemblev10.doFailureActionSubWedgeMerge")
 

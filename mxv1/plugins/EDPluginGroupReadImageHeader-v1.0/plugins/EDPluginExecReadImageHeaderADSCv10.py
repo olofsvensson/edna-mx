@@ -66,13 +66,13 @@ class EDPluginExecReadImageHeaderADSCv10(EDPluginExec):
         """
         Checks the mandatory parameters.
         """
-        EDVerbose.DEBUG("*** EDPluginExecReadImageHeaderADSCv10.checkParameters")
+        self.DEBUG("*** EDPluginExecReadImageHeaderADSCv10.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
 
 
     def process(self, _edObject=None):
         EDPluginExec.process(self)
-        EDVerbose.DEBUG("*** EDPluginExecReadImageHeaderADSCv10.process")
+        self.DEBUG("*** EDPluginExecReadImageHeaderADSCv10.process")
         xsDataInputReadImageHeader = self.getDataInput()
         xsDataFile = xsDataInputReadImageHeader.getImage()
         strPath = xsDataFile.getPath().getValue()
@@ -80,7 +80,7 @@ class EDPluginExecReadImageHeaderADSCv10(EDPluginExec):
         dictHeader = self.readHeaderADSC(strPath)
         if (dictHeader is None):
             strErrorMessage = "EDPluginExecReadImageHeaderADSCv10.process : error when reading header from %s" % strAbsolutePath
-            EDVerbose.error(strErrorMessage)
+            self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             self.setFailure()
         else:
@@ -128,7 +128,7 @@ class EDPluginExecReadImageHeaderADSCv10(EDPluginExec):
                 xsDataDetector.setType(XSDataString("q315-2x"))
             else:
                 strErrorMessage = EDMessage.ERROR_DATA_HANDLER_02 % ("EDPluginExecReadImageHeaderADSCv10.process", "Unknown detector type")
-                EDVerbose.error(strErrorMessage)
+                self.error(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
                 raise RuntimeError, strErrorMessage
 
@@ -155,7 +155,7 @@ class EDPluginExecReadImageHeaderADSCv10(EDPluginExec):
                 strRotationAxis = dictHeader[ "OSC_AXIS" ]
             else:
                 strErrorMessage = "EDPluginExecReadImageHeaderADSCv10.process : Neither AXIS nor OSC_AXIS header item found."
-                EDVerbose.error(strErrorMessage)
+                self.error(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
                 self.setFailure()
             xsDataGoniostat.setRotationAxis(XSDataString(strRotationAxis))
@@ -180,7 +180,7 @@ class EDPluginExecReadImageHeaderADSCv10(EDPluginExec):
 
     def postProcess(self, _edObject=None):
         EDPlugin.postProcess(self)
-        EDVerbose.DEBUG("*** EDPluginExecReadImageHeaderADSCv10.postProcess")
+        self.DEBUG("*** EDPluginExecReadImageHeaderADSCv10.postProcess")
         if (self.__xsDataResultReadImageHeader is not None):
             self.setDataOutput(self.__xsDataResultReadImageHeader)
 
@@ -195,10 +195,10 @@ class EDPluginExecReadImageHeaderADSCv10(EDPluginExec):
         try:
             pyFile = open(_strImageFileName, "r")
         except:
-            EDVerbose.warning("**** EDPluginExecReadImageHeaderADSCv10.readHeaderADSC: couldn't open file: " + _strImageFileName)
+            self.warning("**** EDPluginExecReadImageHeaderADSCv10.readHeaderADSC: couldn't open file: " + _strImageFileName)
 
         if (pyFile != None):
-            EDVerbose.DEBUG("EDPluginExecReadImageHeaderADSCv10.readHeaderADSC: Reading header from image " + _strImageFileName)
+            self.DEBUG("EDPluginExecReadImageHeaderADSCv10.readHeaderADSC: Reading header from image " + _strImageFileName)
             pyFile.seek(0, 0)
             strLine = pyFile.readline()
             if strLine[0] == "{":

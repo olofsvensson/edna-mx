@@ -68,7 +68,7 @@ class EDPluginControlGeneratePredictionv10(EDPluginControl):
         """
         Checks the mandatory parameters
         """
-        EDVerbose.DEBUG("EDPluginControlGeneratePredictionv10.checkParameters")
+        self.DEBUG("EDPluginControlGeneratePredictionv10.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
         self.checkMandatoryParameters(self.getDataInput().getDataCollection(), "dataCollection")
         self.checkMandatoryParameters(self.getDataInput().getSelectedIndexingSolution(), "selectedIndexingSolution")
@@ -79,7 +79,7 @@ class EDPluginControlGeneratePredictionv10(EDPluginControl):
         Gets the Configuration Parameters, if found, overrides default parameters
         """
         EDPluginControl.preProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlGeneratePredictionv10.preProcess...")
+        self.DEBUG("EDPluginControlGeneratePredictionv10.preProcess...")
 
         xsDataGeneratePredictionInput = self.getDataInput()
 
@@ -136,7 +136,7 @@ class EDPluginControlGeneratePredictionv10(EDPluginControl):
         """
         """
         EDPluginControl.process(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlGeneratePredictionv10.process")
+        self.DEBUG("EDPluginControlGeneratePredictionv10.process")
         # Prepare the action cluster
         for edPluginGeneratePrediction in self.__listPluginGeneratePrediction:
             edPluginGeneratePrediction.connectSUCCESS(self.doSuccessGeneratePrediction)
@@ -148,7 +148,7 @@ class EDPluginControlGeneratePredictionv10(EDPluginControl):
 
 
     def doSuccessGeneratePrediction(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlGeneratePredictionv10.doSuccessGeneratePrediction")
+        self.DEBUG("EDPluginControlGeneratePredictionv10.doSuccessGeneratePrediction")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlGeneratePredictionv10.doSuccessGeneratePrediction")
         if (self.__xsDataGeneratePredictionResult is None):
             self.__xsDataGeneratePredictionResult = XSDataGeneratePredictionResult()
@@ -158,12 +158,12 @@ class EDPluginControlGeneratePredictionv10(EDPluginControl):
 
 
     def doFailureGeneratePrediction(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlGeneratePredictionv10.doFailureGeneratePrediction")
+        self.DEBUG("EDPluginControlGeneratePredictionv10.doFailureGeneratePrediction")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlGeneratePredictionv10.doFailureGeneratePrediction")
 
 
     def postProcess(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlGeneratePredictionv10.postProcess")
+        self.DEBUG("EDPluginControlGeneratePredictionv10.postProcess")
         self.setDataOutput(self.__xsDataGeneratePredictionResult)
 
 
@@ -171,7 +171,7 @@ class EDPluginControlGeneratePredictionv10(EDPluginControl):
         """
         Generates a summary of the execution of the plugin.
         """
-        EDVerbose.DEBUG("EDPluginControlGeneratePredictionv10.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlGeneratePredictionv10.generateExecutiveSummary")
         self.addExecutiveSummaryLine("Summary of generation of image(s) with prediction:")
         self.addErrorWarningMessagesToExecutiveSummary("Generation of prediction failure! Error messages: ")
         xsDataGeneratePredictionResult = self.getDataOutput()
