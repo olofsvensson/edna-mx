@@ -209,7 +209,7 @@ class EDAction(EDLogging, Thread):
         because the extra second is only used for time-outs. The method
         returns immediately once the thread has finished.
         """
-        EDVerbose.DEBUG("EDAction.synchronize() for %s" % self.getName())
+        self.DEBUG("EDAction.synchronize() for %s" % self.getName())
 #        fTimeOut = self.__fTimeOutInSeconds
         if self.__fTimeOutInSeconds is None:
             self.__fTimeOutInSeconds = self.__fDefaultTimeOutInSeconds
@@ -222,8 +222,8 @@ class EDAction(EDLogging, Thread):
                 if time.time() - tStartWait > self.__fTimeOutInSeconds:
                     self.__bIsTimeOut = True
                     strErrorMessage = "Timeout when waiting for %s to start!" % self.getClassName()
-                    EDVerbose.DEBUG("EDAction.synchronize: " + strErrorMessage)
-                    EDVerbose.ERROR(strErrorMessage)
+                    self.DEBUG("EDAction.synchronize: " + strErrorMessage)
+                    self.ERROR(strErrorMessage)
                     self.setFailure()
                     return
         # We add an extra second in order to allow execution plugin to finish
@@ -234,9 +234,9 @@ class EDAction(EDLogging, Thread):
         if self.isAlive():
             # Timeout!
             self.__bIsTimeOut = True
-            EDVerbose.DEBUG("EDAction.synchronize: Timeout!")
+            self.DEBUG("EDAction.synchronize: Timeout!")
             strErrorMessage = "Timeout when waiting for %s to terminate." % self.getClassName()
-            EDVerbose.ERROR(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.setFailure()
 
 
@@ -319,11 +319,11 @@ class EDAction(EDLogging, Thread):
         return self.isAlive()
 
     def isEnded(self):
-        EDVerbose.DEBUG("%s.isEnded return %s" % (self.getName(), (self.getTimeEnd() is not None)))
+        self.DEBUG("%s.isEnded return %s" % (self.getName(), (self.getTimeEnd() is not None)))
         return (self.getTimeEnd() is not None)
 
     def isStarted(self):
-        EDVerbose.DEBUG("%s.isStarted return %s, %s " % (self.getName(), (self.getTimeInit() is not None), self.getTimeInit()))
+        self.DEBUG("%s.isStarted return %s, %s " % (self.getName(), (self.getTimeInit() is not None), self.getTimeInit()))
         return (self.getTimeInit() is not None)
 
 
@@ -331,7 +331,7 @@ class EDAction(EDLogging, Thread):
         """
         Sets the time out
         """
-        EDVerbose.DEBUG("EDAction.setTimeOut called with value %s" % _fTimeOut)
+        self.DEBUG("EDAction.setTimeOut called with value %s" % _fTimeOut)
         self.__fTimeOutInSeconds = float(_fTimeOut)
 
 

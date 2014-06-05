@@ -216,13 +216,13 @@ class EDJob(EDLogging):
         """
         Wait for all jobs to finish.
         """
-        EDVerbose.DEBUG("EDJob.synchronizeAll class method ")
+        self.DEBUG("EDJob.synchronizeAll class method ")
         listJob = cls.__dictJobs.keys()
         for jobid in listJob:
             job = cls.__dictJobs[jobid]
             job.synchronize()
         if len(cls.__dictJobs) != len(listJob):
-            EDVerbose.WARNING("EDJob.synchronizeAll: New jobs have been launched while synchronizing")
+            self.WARNING("EDJob.synchronizeAll: New jobs have been launched while synchronizing")
 
 
     def successPluginExecution(self, _edObject=None):
@@ -362,7 +362,7 @@ class EDJob(EDLogging):
             strRet = cls.__dictJobs[jobId].getStatus()
         else:
             strRet = "Unable to retrieve such job: %s" % jobId
-            EDVerbose.WARNING(strRet)
+            self.WARNING(strRet)
         return strRet
     getStatusFromId = getStatusFromID
 
@@ -380,7 +380,7 @@ class EDJob(EDLogging):
         if jobId in cls.__dictJobs:
             return cls.__dictJobs[jobId]
         else:
-            EDVerbose.WARNING("Unable to retrieve such EDJob: %s" % jobId)
+            self.WARNING("Unable to retrieve such EDJob: %s" % jobId)
     getJobFromId = getJobFromID
 
 
@@ -423,7 +423,7 @@ class EDJob(EDLogging):
             strRet = "Job %s cleaned" % jobId
         else:
             strRet = "Unable to retrieve such EDJob: %s" % jobId
-            EDVerbose.WARNING(strRet)
+            self.WARNING(strRet)
         return strRet
     cleanJobfromID = cleanJobfromId
 
@@ -503,6 +503,6 @@ class EDJob(EDLogging):
             fOrd = fWall
         lstStrOut.append("Regression of execution time: ExecTime = %.3f + %f * NbJob" % (fOrd, fSlope))
         strOutput = os.linesep.join(lstStrOut)
-        EDVerbose.screen(strOutput)
+        self.screen(strOutput)
         return strOutput
 

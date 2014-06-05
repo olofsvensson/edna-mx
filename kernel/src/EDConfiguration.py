@@ -344,7 +344,7 @@ class EDConfiguration(EDLogging):
         except TypeError:
             return
         except ValueError:
-            EDVerbose.ERROR("invalid literal for int(), got %s" % strParamValue)
+            self.ERROR("invalid literal for int(), got %s" % strParamValue)
 
 
 

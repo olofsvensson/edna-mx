@@ -76,7 +76,7 @@ class EDPluginControl(EDPlugin):
         Gets the EDPluginControl parameters from the configuration file and stores them in class member attributes.
         """
         EDPlugin.configure(self)
-        EDVerbose.DEBUG("EDPluginControl.configure")
+        self.DEBUG("EDPluginControl.configure")
         strControlledPlugins = self.config.get("controlledPlugins", None)
         if strControlledPlugins is not None:
             pyListControlledPlugins = strControlledPlugins.split(",")
@@ -84,11 +84,11 @@ class EDPluginControl(EDPlugin):
                 strControlledPluginName = self.config.get(strControlledPlugin)
                 if strControlledPluginName != None:
                     self.setControlledPluginName(strControlledPlugin, strControlledPluginName)
-                    EDVerbose.DEBUG("EDPluginControl.configure: setting controlled plugin %s to specific plugin %s" % (strControlledPlugin, strControlledPluginName))
+                    self.DEBUG("EDPluginControl.configure: setting controlled plugin %s to specific plugin %s" % (strControlledPlugin, strControlledPluginName))
         strClusterSize = self.config.get("clusterSize", None)
         if strClusterSize is not None:
             self.__iClusterSize = int(strClusterSize)
-            EDVerbose.DEBUG("EDPluginControl.configure: setting cluster size to %d" % self.__iClusterSize)
+            self.DEBUG("EDPluginControl.configure: setting cluster size to %d" % self.__iClusterSize)
 
 
     def emptyListOfLoadedPlugin(self):
@@ -120,7 +120,7 @@ class EDPluginControl(EDPlugin):
 
 
     def synchronizePlugins(self):
-        EDVerbose.DEBUG("EDPluginControl.synchronizePlugins")
+        self.DEBUG("EDPluginControl.synchronizePlugins")
         bSynchronized = False
         while not bSynchronized:
             listPluginOrig = self.__listOfLoadedPlugins[:]
@@ -143,7 +143,7 @@ class EDPluginControl(EDPlugin):
         directory name of the plugin in question. The name of the plugin is used as 
         base name. 
         """
-        EDVerbose.DEBUG("EDPluginControl.loadPlugins")
+        self.DEBUG("EDPluginControl.loadPlugins")
         listKeys = self.__dictControlledPlugins.keys()
         listLoadedPlugins = []
         for strKey in listKeys:
@@ -169,7 +169,7 @@ class EDPluginControl(EDPlugin):
         several plugins to be launched simultaneously, the base name should be
         different for each plugin and hence must be provided explicitly.
         """
-        EDVerbose.DEBUG("EDPluginControl.loadPlugin")
+        self.DEBUG("EDPluginControl.loadPlugin")
         if (_strPluginToBeControlledName is None):
             strPluginName = self.__strPluginToBeControlledName
         else:
@@ -177,7 +177,7 @@ class EDPluginControl(EDPlugin):
         edPlugin = EDFactoryPluginStatic.loadPlugin(strPluginName)
         if (edPlugin is None):
             strErrorMessage = "EDPluginControl.loadPlugin : Cannot load plugin %s" % strPluginName
-            EDVerbose.error(strErrorMessage)
+            self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             raise RuntimeError, strErrorMessage
         else:
@@ -218,7 +218,7 @@ class EDPluginControl(EDPlugin):
         """
         Adds a list of warning messages in the existing list of warning messages
         """
-        EDVerbose.DEBUG("EDPluginControl.addWarningMessages")
+        self.DEBUG("EDPluginControl.addWarningMessages")
         for strWarningMessage in _listWarningMessages:
             self.addWarningMessage(strWarningMessage)
 
@@ -227,7 +227,7 @@ class EDPluginControl(EDPlugin):
         """
         Adds a list of error messages in the existing list of error messages
         """
-        EDVerbose.DEBUG("EDPluginControl.addErrorMessages")
+        self.DEBUG("EDPluginControl.addErrorMessages")
         for strErrorMessage in _listErrorMessages:
             self.addErrorMessage(strErrorMessage)
 
@@ -237,7 +237,7 @@ class EDPluginControl(EDPlugin):
         Propagates failure messages from a plugin including unexpected errors
         Should be called in the plugin control method invoked when a plugin exec fails (doActionFailure<>)
         """
-        EDVerbose.DEBUG("EDPluginControl.retrieveFailureMessages")
+        self.DEBUG("EDPluginControl.retrieveFailureMessages")
         self.retrieveWarningMessages(_edPlugin)
         self.retrieveErrorMessages(_edPlugin, _strMethodCaller, True)
 
@@ -248,7 +248,7 @@ class EDPluginControl(EDPlugin):
         Error messages are retrieved because a plugin could end successfully with errors (depending on the use case)
         In this case, there is no check for unexpected errors
         """
-        EDVerbose.DEBUG("EDPluginControl.retrieveSuccessMessages")
+        self.DEBUG("EDPluginControl.retrieveSuccessMessages")
         self.retrieveWarningMessages(_edPlugin)
         self.retrieveErrorMessages(_edPlugin, _strMethodCaller, False)
 
@@ -259,11 +259,11 @@ class EDPluginControl(EDPlugin):
         if _bFailure is true, this method has been called from retrieveFailureMessages
         in this case, checks for potential unexpected errors coming from the EDPluginExec
         """
-        EDVerbose.DEBUG("EDPluginControl.retrieveErrorMessages")
+        self.DEBUG("EDPluginControl.retrieveErrorMessages")
         listErrorMessages = _edPlugin.getListOfErrorMessages()
         if (len(listErrorMessages) == 0) and (_bFailure is True):
             strErrorMessage = "%s : Adding Unexpected error" % _strMethodCaller
-            EDVerbose.DEBUG(strErrorMessage)
+            self.DEBUG(strErrorMessage)
             listErrorMessages.append(strErrorMessage)
         self.addErrorMessages(listErrorMessages)
 
@@ -272,7 +272,7 @@ class EDPluginControl(EDPlugin):
         """
         Propagates warning messages from a plugin
         """
-        EDVerbose.DEBUG("EDPluginControl.retrieveWarningMessages")
+        self.DEBUG("EDPluginControl.retrieveWarningMessages")
         self.addWarningMessages(_edPlugin.getListOfWarningMessages())
 
 
@@ -280,7 +280,7 @@ class EDPluginControl(EDPlugin):
         """
         Appends the executive summary from a plugin.
         """
-        EDVerbose.DEBUG("EDPluginControl.appendExecutiveSummary")
+        self.DEBUG("EDPluginControl.appendExecutiveSummary")
         if (_bAddSeparator):
             self.addExecutiveSummarySeparator()
         for strLine in _edPlugin.getListExecutiveSummaryLines():
@@ -368,22 +368,22 @@ class EDPluginControl(EDPlugin):
         _edPlugin.executeSynchronous()
 
         if (not _edPlugin.isFailure()):
-            EDVerbose.DEBUG("EDControlPlugin.executeSynchronous slotSUCCESS")
+            self.DEBUG("EDControlPlugin.executeSynchronous slotSUCCESS")
             # Check that something doesn't go wrong in the success method!
             try:
                 _edControlSlotSUCCESS.call(_edPlugin)
 
             except Exception:
-                EDVerbose.DEBUG("EDControlPlugin.executeSynchronous: ERROR in slotSUCCESS!")
-                EDVerbose.writeErrorTrace()
+                self.DEBUG("EDControlPlugin.executeSynchronous: ERROR in slotSUCCESS!")
+                self.writeErrorTrace()
                 _edPlugin.setFailure()
 
         if (_edPlugin.isFailure()):
-            EDVerbose.DEBUG("EDControlPlugin.executeSynchronous slotFAILURE")
+            self.DEBUG("EDControlPlugin.executeSynchronous slotFAILURE")
             # Check that something doesn't go wrong in the success method!
             try:
                 _edControlSlotFAILURE.call(_edPlugin)
 
             except Exception:
-                EDVerbose.DEBUG("EDControlPlugin.executeSynchronous: ERROR in slotFAILURE!")
-                EDVerbose.writeErrorTrace()
+                self.DEBUG("EDControlPlugin.executeSynchronous: ERROR in slotFAILURE!")
+                self.writeErrorTrace()

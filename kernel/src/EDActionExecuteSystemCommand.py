@@ -69,7 +69,7 @@ class EDActionExecuteSystemCommand(EDAction):
         Executes the command line using the standard Python os.system command.
         The result of the os.system command is converted into an str.
         """
-        EDVerbose.DEBUG("*** EDActionExecuteSystemCommand.process")
+        self.DEBUG("*** EDActionExecuteSystemCommand.process")
         self.__subprocess = subprocess.Popen (self.__strCommand, shell=True)
         self.__iPID = self.__subprocess.pid
         executionStatus = self.__subprocess.wait()
@@ -92,6 +92,6 @@ class EDActionExecuteSystemCommand(EDAction):
         This method can be used to abort the process, for example when
         the execution time has exceeded the maximum allowed execution time.
         """
-        EDVerbose.DEBUG("*** EDActionExecuteSystemCommand.abort")
+        self.DEBUG("*** EDActionExecuteSystemCommand.abort")
         os.kill(self.__iPID, signal.SIGKILL)
         self.m_bIsAbort = True
