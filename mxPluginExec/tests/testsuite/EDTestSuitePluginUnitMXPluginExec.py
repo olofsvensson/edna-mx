@@ -39,10 +39,6 @@ class EDTestSuitePluginUnitMXPluginExec(EDTestSuite):
 
     def process(self):
         self.addTestSuiteFromName("EDTestSuitePluginUnitBestv1_2")
-        self.addTestSuiteFromName("EDTestSuitePluginUnitISPyBv10")
-        self.addTestSuiteFromName("EDTestSuitePluginUnitISPyBv1_1")
-        self.addTestSuiteFromName("EDTestSuitePluginUnitISPyBv1_2")
-        self.addTestSuiteFromName("EDTestSuitePluginUnitLabelitv10")
         self.addTestSuiteFromName("EDTestSuitePluginUnitMOSFLMv10")
         self.addTestSuiteFromName("EDTestSuitePluginUnitRaddosev10")
         self.addTestSuiteFromName("EDTestSuitePluginUnitSTACv2_0")
