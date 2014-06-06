@@ -73,11 +73,6 @@ class EDLoggingPyLogging(EDObject):
             else:
                 self.logger = logging.getLogger("EDNA")
                 self.logger.setLevel(logging.DEBUG)
-                root_logger = logging.getLogger()
-                while len(root_logger.handlers) > 0:
-                    h = root_logger.handlers[0]
-                    self.logger.debug('EDLoggingPyLogging: removing handler %s'%str(h))
-                    root_logger.removeHandler(h)
                 self.stream_hdlr = None
         self.__bIsTest = False
         self.__bIsVerboseDebug = False

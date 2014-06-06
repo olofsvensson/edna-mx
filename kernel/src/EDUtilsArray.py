@@ -51,6 +51,15 @@ EDFactoryPluginStatic.preImport("Image", imagingPath)
 numpy = EDFactoryPluginStatic.preImport("numpy", numpyPath, _strForceVersion="1.2", _strMethodVersion="version.version")
 fabio = EDFactoryPluginStatic.preImport("fabio", fabioPath, _strForceVersion="0.0.7", _strMethodVersion="version")
 
+# reset logging handlers
+import logging
+root_logger = logging.getLogger()
+while len(root_logger.handlers) > 0:
+    h = root_logger.handlers[0]
+    EDVerbose.DEBUG('EDUtilsArray: removing handler %s'%str(h))
+    root_logger.removeHandler(h)
+
+
 if (numpy is not None) and ("floating" in dir(numpy)):
     bHaveNumpy = True
     floatType = (float, numpy.floating)

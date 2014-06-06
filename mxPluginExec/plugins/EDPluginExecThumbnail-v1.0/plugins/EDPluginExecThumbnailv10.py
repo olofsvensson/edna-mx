@@ -57,11 +57,20 @@ EDFactoryPluginStatic.preImport("scipy.ndimage.morphology", scipyPath)
 
 try:
     import numpy, Image, fabio, scipy, scipy.ndimage.morphology
+    
 except Exception:
     EDVerbose.ERROR("Error in loading numpy, PIL, fabio or scipy,\n\
     Please re-run the test suite for EDTestSuitePluginExecThumbnailv10 \
     to ensure that all modules are compiled for you computer as they don't seem to be installed")
     raise
+
+# reset logging handlers
+import logging
+root_logger = logging.getLogger()
+while len(root_logger.handlers) > 0:
+    h = root_logger.handlers[0]
+    EDVerbose.debug('EDPluginExecThumbnailv10: removing handler %s'%str(h))
+    root_logger.removeHandler(h)
 
 import ImageFile, ImageOps
 ImageFile.MAXBLOCK = 1000000 # default is 64k
