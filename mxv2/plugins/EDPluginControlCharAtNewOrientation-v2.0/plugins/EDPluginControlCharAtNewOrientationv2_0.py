@@ -110,14 +110,14 @@ class EDPluginControlCharAtNewOrientationv2_0(EDPluginControl):
 
     def process(self, _edObject=None):
         EDPluginControl.process(self,_edObject)        
-        EDVerbose.DEBUG("EDPluginControlCharAtNewOrientationv2_0.process...")
+        self.DEBUG("EDPluginControlCharAtNewOrientationv2_0.process...")
         self.edPluginControlCharacterisation.connectSUCCESS(self.doCharacterisationSuccess)
         self.edPluginControlCharacterisation.connectFAILURE(self.doCharacterisationFailure)
         self.executePluginSynchronous(self.edPluginControlCharacterisation)
 
         
     def doCharacterisationSuccess(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharAtNewOrientationv2_0.doCharacterisationSuccess")
+        self.DEBUG("EDPluginControlCharAtNewOrientationv2_0.doCharacterisationSuccess")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doCharacterisationSuccess")
         self.xsDataResultCharacterisation = self.edPluginControlCharacterisation.dataOutput
         self.suggestedStrategy=None
@@ -152,7 +152,7 @@ class EDPluginControlCharAtNewOrientationv2_0(EDPluginControl):
             else:
                 simple=True
         except:
-            EDVerbose.WARNING("Problem in suggesting the strategy")
+            self.WARNING("Problem in suggesting the strategy")
             simple=True
             raise
         
@@ -180,7 +180,7 @@ class EDPluginControlCharAtNewOrientationv2_0(EDPluginControl):
 
 
     def doCharacterisationFailure(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharForReorientationv2_0.doCharacterisationFailure")
+        self.DEBUG("EDPluginControlCharForReorientationv2_0.doCharacterisationFailure")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doFailureActionIndexing")
         #add the new outputs
         self.xsDataResultCharacterisation = self.edPluginControlCharacterisation.dataOutput
@@ -193,7 +193,7 @@ class EDPluginControlCharAtNewOrientationv2_0(EDPluginControl):
         Generates a summary of the execution of the plugin.
         """
         EDPluginControl.generateExecutiveSummary(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlCharForReorientationv2_0.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlCharForReorientationv2_0.generateExecutiveSummary")
         if (self.edPluginControlCharacterisation is not None):
             self.appendExecutiveSummary(self.edPluginControlCharacterisation, "Strategy : ")
             self.addExecutiveSummaryLine("") 

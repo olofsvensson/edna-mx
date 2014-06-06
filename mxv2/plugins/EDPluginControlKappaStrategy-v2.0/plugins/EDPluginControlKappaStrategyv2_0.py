@@ -116,7 +116,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         Gets the Configuration Parameters, if found, overrides default parameters
         """
         EDPluginControl.preProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess...")
+        self.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess...")
         self.edPluginRaddose = None
 
         xsDataSampleCrystalMM = self.getDataInput("mxv1InputStrategy")[0].getSample()
@@ -135,14 +135,14 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         # Raddose is enabled only if the beam flux is set
         if(self.getDataInput("mxv1InputStrategy")[0].getExperimentalCondition().getBeam().getFlux() is None):
             strWarningMessage = EDMessage.WARNING_CANNOT_USE_PLUGIN_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', self.strPluginRaddoseName, "Beam Flux not set")
-            EDVerbose.warning(strWarningMessage)
+            self.warning(strWarningMessage)
             self.addWarningMessage(strWarningMessage)
 
         else:
             self.edPluginRaddose = self.loadPlugin(self.strPluginRaddoseName)
 
             if (self.edPluginRaddose is not None):
-                EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: " + self.strPluginRaddoseName + " Found... setting Data Input")
+                self.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: " + self.strPluginRaddoseName + " Found... setting Data Input")
 
                 strFileSymop = os.path.join(self.getSymopHome(), "symop.lib")
 
@@ -153,12 +153,12 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
                 strSpaceGroup = None
                 if(xsDataStringSpaceGroup is not None):
                     strSpaceGroup = xsDataStringSpaceGroup.getValue()
-                    EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: Forced Space Group Found: " + strSpaceGroup)
+                    self.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: Forced Space Group Found: " + strSpaceGroup)
                     try:
                         strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup, strFileSymop)
                     except Exception, detail:
                         strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', "Problem to calculate Number of symmetry operators", detail)
-                        EDVerbose.error(strErrorMessage)
+                        self.error(strErrorMessage)
                         self.addErrorMessage(strErrorMessage)
                         raise RuntimeError, strErrorMessage
                 # Space Group has NOT been forced
@@ -167,23 +167,23 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
                     if (xsDataStringSpaceGroup is not None):
                         # Prepare chemical composition calculation with the Space Group calculated by indexing (Space Group Name)
                         strSpaceGroup = self.xsDataSampleCopy.getCrystal().getSpaceGroup().getName().getValue()
-                        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: Space Group IT Name found by indexing: " + strSpaceGroup)
+                        self.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: Space Group IT Name found by indexing: " + strSpaceGroup)
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup, strFileSymop)
                         except Exception, detail:
                             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', "Problem to calculate Number of symmetry operators", detail)
-                            EDVerbose.error(strErrorMessage)
+                            self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
                             raise RuntimeError, strErrorMessage
                     else:
                         # Prepare chemical composition calculation with the Space Group calculated by indexing (Space Group IT number)
                         dSpaceGroupITNumber = self.xsDataSampleCopy.getCrystal().getSpaceGroup().getITNumber().getValue()
-                        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: Space Group IT Number Found by indexing: %d" % dSpaceGroupITNumber)
+                        self.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: Space Group IT Number Found by indexing: %d" % dSpaceGroupITNumber)
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupITNumber(str(dSpaceGroupITNumber), strFileSymop)
                         except Exception, detail:
                             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', "Problem to calculate Number of symmetry operators", detail)
-                            EDVerbose.error(strErrorMessage)
+                            self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
                             raise RuntimeError, strErrorMessage
 
@@ -191,7 +191,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
                     iNumOperators = int(strNumOperators)
                 else:
                     strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', "No symmetry operators found for Space Group: ", strSpaceGroup)
-                    EDVerbose.error(strErrorMessage)
+                    self.error(strErrorMessage)
                     self.addErrorMessage(strErrorMessage)
                     raise RuntimeError, strErrorMessage
 
@@ -219,7 +219,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
 
                 except Exception, detail:
                     strWarningMessage = EDMessage.WARNING_CANNOT_USE_PLUGIN_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', self.strPluginRaddoseName, "EDHandlerXSDataRaddose : " + detail)
-                    EDVerbose.warning(strWarningMessage)
+                    self.warning(strWarningMessage)
                     self.addWarningMessage(strWarningMessage)
 
                 if(xsDataRaddoseInput is not None):
@@ -235,19 +235,19 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
 #                        
 #                    except Exception, detail:
 #                        strWarningMessage = EDMessage.WARNING_CANNOT_USE_PLUGIN_03 % ('EDPluginControlStrategyv1_1.preProcess', self.strPluginRaddoseName,  detail ) )
-#                        EDVerbose.warning( strWarningMessage )
+#                        self.warning( strWarningMessage )
 #                        self.addWarningMessage( strWarningMessage )
 
             else:
                 strErrorMessage = EDMessage.ERROR_PLUGIN_NOT_LOADED_02 % ('EDPluginControlKappaStrategyv2_0.preProcess', self.strPluginRaddoseName)
-                EDVerbose.error(strErrorMessage)
+                self.error(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
                 raise RuntimeError, strErrorMessage
 
         self.edPluginBest = self.loadPlugin(self.strPluginBestName)
         if (self.edPluginBest is None):
             strErrorMessage = EDMessage.ERROR_PLUGIN_NOT_LOADED_02 % ('EDPluginControlKappaStrategyv2_0.preProcess', self.strPluginBestName)
-            EDVerbose.error(strErrorMessage)
+            self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             raise RuntimeError, strErrorMessage
         else:
@@ -259,7 +259,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
             self.edPluginAlignment = self.loadPlugin(self.strPluginAlignmentName)
             if (self.edPluginAlignment is None):
                 errorMessage = EDMessage.ERROR_PLUGIN_NOT_LOADED_02 % ('EDPluginControlKappaStrategyv2_0.preProcess', self.strPluginAlignmentName)
-                EDVerbose.error(errorMessage)
+                self.error(errorMessage)
                 self.addErrorMessage(errorMessage)
                 #do not kill the application just because this feature is not available
                 #raise RuntimeError, errorMessage
@@ -271,7 +271,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
             self.edPluginKappaStrategy = self.loadPlugin(self.strPluginKappaStrategyName)
             if (self.edPluginKappaStrategy is None):
                 errorMessage = EDMessage.ERROR_PLUGIN_NOT_LOADED_02 % ('EDPluginControlKappaStrategyv2_0.preProcess', self.strPluginKappaStrategyName)
-                EDVerbose.error(errorMessage)
+                self.error(errorMessage)
                 self.addErrorMessage(errorMessage)
                 #raise RuntimeError, errorMessage
             else:
@@ -281,11 +281,11 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
 
     def configure(self):
         EDPluginControl.configure(self)
-        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.configure")
+        self.DEBUG("EDPluginControlKappaStrategyv2_0.configure")
         strSymopHome = self.config.get(self.strCONF_SYMOP_HOME)
         if strSymopHome is None:
             strWarningMessage = EDMessage.WARNING_NO_PARAM_CONFIGURATION_ITEM_FOUND_03 % ('EDPluginControlKappaStrategyv2_0.configure', self.strCONF_SYMOP_HOME, self.getPluginName())
-            EDVerbose.warning(strWarningMessage)
+            self.warning(strWarningMessage)
             self.addWarningMessage(strWarningMessage)
         else:
             strSymopHomeNorm = os.path.normpath(strSymopHome)
@@ -304,7 +304,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         """
         """
         EDPluginControl.process(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.process...")
+        self.DEBUG("EDPluginControlKappaStrategyv2_0.process...")
 
         # In case Beam Flux has not been set, The plugin Raddose has not been created, so it could be None
         # and it won't be launched in this case
@@ -343,7 +343,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         """
         """
         EDPluginControl.postProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.postProcess...")
+        self.DEBUG("EDPluginControlKappaStrategyv2_0.postProcess...")
 
         xsDataResultBest = self.edPluginBest.getDataOutput()
         xsDataResultStrategy = None
@@ -357,13 +357,13 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         try:
             self.setDataOutput(self.edPluginAlignment.getDataOutput(), "possibleOrientations")
         except:
-            EDVerbose.WARNING("Could not get the list of Possible orientations.")
+            self.WARNING("Could not get the list of Possible orientations.")
 
 
     def doRaddoseToBestTransition(self, _edPlugin):
         """
         """
-        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.doRaddoseToBestTransition")
+        self.DEBUG("EDPluginControlKappaStrategyv2_0.doRaddoseToBestTransition")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlKappaStrategyv2_0.doRaddoseToBestTransition")
 
         xsDataRaddoseOutput = self.edPluginRaddose.getDataOutput()
@@ -384,7 +384,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
     def doBestToAlignmentTransition(self, _edPlugin):
         """
         """
-        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.doBestToAlignmentTransition")
+        self.DEBUG("EDPluginControlKappaStrategyv2_0.doBestToAlignmentTransition")
         #self.retrieveSuccessMessages( _edPlugin, "EDPluginControlStrategyv01.doRaddoseToBestTransition" )
 
 
@@ -403,7 +403,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
     def doAlignmentToStrategyTransition(self, _edPlugin):
         """
         """
-        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.doAlignmentToStrategy")
+        self.DEBUG("EDPluginControlKappaStrategyv2_0.doAlignmentToStrategy")
         #self.retrieveSuccessMessages( _edPlugin, "EDPluginControlStrategyv01.doRaddoseToBestTransition" )
 
         # Call the Best Translator layer
@@ -434,10 +434,10 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         retrieve the potential warning messages
         retrieve the potential error messages
         """
-        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.doFailureActionRaddose")
+        self.DEBUG("EDPluginControlKappaStrategyv2_0.doFailureActionRaddose")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlKappaStrategyv2_0.doFailureActionRaddose")
         strWarningMessage = EDMessage.WARNING_CANNOT_USE_PLUGIN_03 % ('EDPluginControlKappaStrategyv2_0.doFailureActionRaddose', self.strPluginRaddoseName, "Raddose failure")
-        EDVerbose.warning(strWarningMessage)
+        self.warning(strWarningMessage)
         self.addWarningMessage(strWarningMessage)
         self.executeBest(self)
 
@@ -459,7 +459,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         """
         retrieve the potential warning messages
         """
-        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.doSuccessActionBest")
+        self.DEBUG("EDPluginControlKappaStrategyv2_0.doSuccessActionBest")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlKappaStrategyv2_0.doSuccessActionBest")
 
 
@@ -468,7 +468,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         retrieve the potential warning messages
         retrieve the potential error messages
         """
-        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.doFailureActionBest")
+        self.DEBUG("EDPluginControlKappaStrategyv2_0.doFailureActionBest")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlKappaStrategyv2_0.doFailureActionBest")
 
 
@@ -552,7 +552,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         """
         Generates a summary of the execution of the plugin.
         """
-        EDVerbose.DEBUG("EDPluginControlKappaStrategyv2_0.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlKappaStrategyv2_0.generateExecutiveSummary")
         self.addExecutiveSummaryLine("Summary of kappa strategy:")
         self.addErrorWarningMessagesToExecutiveSummary()
 

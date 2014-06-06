@@ -77,11 +77,11 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
         """
         Checks the mandatory parameters
         """
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.checkParameters")
+        self.DEBUG("EDPluginControlCharacterisationv2_0.checkParameters")
         # Check for mxv1InputCharacterisation:
         if self.hasDataInput():
             if self.hasDataInput("mxv1InputCharacterisation") or self.hasDataInput("mxv2DataCollection"):
-                EDVerbose.WARNING("Ambiguous input! Both XSDataInputCharacterisatiov2_0 input, and mxv1InputCharacterisation or mxv2DataCollection input(s), are given")
+                self.WARNING("Ambiguous input! Both XSDataInputCharacterisatiov2_0 input, and mxv1InputCharacterisation or mxv2DataCollection input(s), are given")
             self.setDataInput(self.getDataInput().getMxv1InputCharacterisation().marshal(), "mxv1InputCharacterisation")
             self.setDataInput(self.getDataInput().getMxv2DataCollection().marshal(), "mxv2DataCollection")
         # Check for mxv1InputCharacterisation
@@ -96,14 +96,14 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
         Gets the Configuration Parameters, if found, overrides default parameters
         """
         EDPluginControl.preProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.preProcess...")
+        self.DEBUG("EDPluginControlCharacterisationv2_0.preProcess...")
 
         self.edPluginIndexing = self.loadPlugin(self.strPluginIndexingName   , "Indexing")
         self.edPluginIntegration = self.loadPlugin(self.strPluginIntegrationName, "Integration")
         self.edPluginStrategy = self.loadPlugin(self.strPluginStrategyName   , "Strategy")
 
         if (self.edPluginIndexing is not None):
-            EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.preProcess: " + self.strPluginIndexingName + " Found... setting Data Input")
+            self.DEBUG("EDPluginControlCharacterisationv2_0.preProcess: " + self.strPluginIndexingName + " Found... setting Data Input")
             # create Data Input for indexing
             xsDataInputStrategy = self.getDataInput("mxv1InputCharacterisation")[0]
             xsDataCollection = xsDataInputStrategy.getDataCollection()
@@ -136,7 +136,7 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
 
     def process(self, _edObject=None):
         EDPluginControl.process(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.process")
+        self.DEBUG("EDPluginControlCharacterisationv2_0.process")
         self.connectProcess(self.edPluginIndexing.executeSynchronous)
         self.edPluginIndexing.connectSUCCESS(self.doIndexingToIntegrationTransition)
         self.edPluginIndexing.connectFAILURE(self.doFailureActionIndexing)
@@ -150,13 +150,13 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
         """
         """
         EDPluginControl.postProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.postProcess")
+        self.DEBUG("EDPluginControlCharacterisationv2_0.postProcess")
         if (self.xsDataResultCharacterisationv2_0 is not None):
             self.setDataOutput(self.xsDataResultCharacterisationv2_0)
 
 
     def doIndexingToIntegrationTransition(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.doIndexingToIntegrationTransition")
+        self.DEBUG("EDPluginControlCharacterisationv2_0.doIndexingToIntegrationTransition")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doIntegrationToStrategyTransition")
         xsDataIndexingResult = self.edPluginIndexing.getDataOutput()
         self.xsDataResultCharacterisation.setIndexingResult(xsDataIndexingResult)
@@ -170,12 +170,12 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
 
 
     def doIntegrationToStrategyTransition(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.doIntegrationToStrategyTransition")
+        self.DEBUG("EDPluginControlCharacterisationv2_0.doIntegrationToStrategyTransition")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doIntegrationToStrategyTransition")
 
         xsDataIntegrationOutput = self.edPluginIntegration.getDataOutput()
         self.xsDataResultCharacterisation.setIntegrationResult(xsDataIntegrationOutput)
-        #EDVerbose.DEBUG( self.xsDataExperimentCharacterisation.marshal() )
+        #self.DEBUG( self.xsDataExperimentCharacterisation.marshal() )
         from XSDataMXv1 import XSDataInputStrategy
         xsDataInputStrategyOLD = XSDataInputStrategy()
 
@@ -206,17 +206,17 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
 
 
     def doFailureActionIndexing(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.doFailureActionIndexing")
+        self.DEBUG("EDPluginControlCharacterisationv2_0.doFailureActionIndexing")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doFailureActionIndexing")
 
 
     def doFailureActionIntegration(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.doFailureActionIntegration")
+        self.DEBUG("EDPluginControlCharacterisationv2_0.doFailureActionIntegration")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doFailureActionIntegration")
 
 
     def doFailureActionStrategy(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.doFailureActionStrategy")
+        self.DEBUG("EDPluginControlCharacterisationv2_0.doFailureActionStrategy")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doFailureActionStrategy")
 
 
@@ -224,7 +224,7 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
         """
         retrieve the potential warning messages
         """
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.doSuccessActionStrategy")
+        self.DEBUG("EDPluginControlCharacterisationv2_0.doSuccessActionStrategy")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doSuccessActionStrategy")
         xsDataResultStrategy = self.edPluginStrategy.getDataOutput()
         self.xsDataResultCharacterisation.setStrategyResult(xsDataResultStrategy)
@@ -232,7 +232,7 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
 
     def configure(self):
         EDPluginControl.configure(self)
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.configure")
+        self.DEBUG("EDPluginControlCharacterisationv2_0.configure")
         pluginConfiguration = self.getConfiguration()
 
         if(pluginConfiguration != None):
@@ -249,7 +249,7 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
         """
         Generates a summary of the execution of the plugin.
         """
-        EDVerbose.DEBUG("EDPluginControlCharacterisationv2_0.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlCharacterisationv2_0.generateExecutiveSummary")
         self.addExecutiveSummaryLine("Summary of characterisation:")
         self.addErrorWarningMessagesToExecutiveSummary("Characterisation failure! Error messages: ")
         self.addExecutiveSummarySeparator()

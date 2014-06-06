@@ -46,12 +46,12 @@ class EDPluginControlCharForReorientInterfacev2_0(EDPluginControlInterfacev2_0):
         the private variables of the parent class.
         """
         EDPluginControl.configure(self)
-        EDVerbose.DEBUG("EDPluginControlCharForReorientInterfacev2_0.configure")
+        self.DEBUG("EDPluginControlCharForReorientInterfacev2_0.configure")
         pluginConfiguration = self.getConfiguration()
         strUseISPyBPlugin = "false"
 
         if (pluginConfiguration is None):
-            EDVerbose.DEBUG("No plugin configuration found for EDPluginControlCharForReorientInterfacev2_0.")
+            self.DEBUG("No plugin configuration found for EDPluginControlCharForReorientInterfacev2_0.")
         else:
             if (self.getControlledPluginName("subWedgeAssemblePlugin") is not None):
                 self._EDPluginControlInterfacev2_0__strEDPluginControlSubWedgeAssembleName = self.getControlledPluginName("subWedgeAssemblePlugin")

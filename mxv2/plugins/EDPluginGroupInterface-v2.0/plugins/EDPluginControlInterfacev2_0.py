@@ -128,7 +128,7 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
         Gets the configuration parameters (if any).
         """
         EDPluginControl.configure(self)
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.configure")
+        self.DEBUG("EDPluginControlInterfacev2_0.configure")
         if (self.getControlledPluginName("subWedgeAssemblePlugin") is not None):
             self.strEDPluginControlSubWedgeAssembleName = self.getControlledPluginName("subWedgeAssemblePlugin")
         if (self.getControlledPluginName("characterisationPlugin") is not None):
@@ -145,7 +145,7 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
         Gets the Configuration Parameters, if found, overrides default parameters
         """
         EDPluginControl.preProcess(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.preProcess...")
+        self.DEBUG("EDPluginControlInterfacev2_0.preProcess...")
 
         self.listImagePaths = []
 
@@ -213,7 +213,7 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
         """
         """
         EDPluginControl.process(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.process...")
+        self.DEBUG("EDPluginControlInterfacev2_0.process...")
 
         if (self.edPluginControlSubWedgeAssemble is not None):
             if(self.bTemplateMode == True):
@@ -240,7 +240,7 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
         """
         """
         EDPluginControl.postProcess(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.postProcess...")
+        self.DEBUG("EDPluginControlInterfacev2_0.postProcess...")
 
         if (not self.edPluginControlCharacterisation is None):
             if (self.edPluginControlCharacterisation.hasDataOutput()):
@@ -253,7 +253,7 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
     def createInputCharacterisationFromImageHeaders(self, _edPlugin):
         """
         """
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.createInputCharacterisationFromImageHeaders")
+        self.DEBUG("EDPluginControlInterfacev2_0.createInputCharacterisationFromImageHeaders")
         xsDataInputSubWedgeAssemble = XSDataInputSubWedgeAssemble()
         for xsDataStringImagePath in self.listImagePaths:
             xsDataFile = XSDataFile()
@@ -264,7 +264,7 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
 
 
     def runCharacterisationPlugin(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.runCharacterisationPlugin")
+        self.DEBUG("EDPluginControlInterfacev2_0.runCharacterisationPlugin")
         self.edPluginControlCharacterisation.setDataInput(self.xsDataInputCharacterisation, "mxv1InputCharacterisation")
         if self.xsDataCollectionMXv2 != None:
             self.edPluginControlCharacterisation.setDataInput(self.xsDataCollectionMXv2, "mxv2DataCollection")
@@ -272,7 +272,7 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
 
 
     def storeResultsInISPyB(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.storeResultsInISPyB")
+        self.DEBUG("EDPluginControlInterfacev2_0.storeResultsInISPyB")
         if (self.edPluginControlISPyB is not None):
             # Execute the ISPyB control plugin
             xsDataInputControlISPyB = XSDataInputControlISPyB()
@@ -288,7 +288,7 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
 
 
     def createInputCharacterisationFromSubWedges(self):
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.createInputCharacterisationFromSubWedges")
+        self.DEBUG("EDPluginControlInterfacev2_0.createInputCharacterisationFromSubWedges")
         xsDataResultSubWedgeAssemble = self.edPluginControlSubWedgeAssemble.getDataOutput()
         self.xsDataInputCharacterisation = XSDataInputCharacterisation()
         xsDataCollection = XSDataCollection()
@@ -327,21 +327,21 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
 
 
     def generateTemplateFile(self, _edPlugin):
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.generateTemplateFile")
+        self.DEBUG("EDPluginControlInterfacev2_0.generateTemplateFile")
         self.createInputCharacterisationFromSubWedges()
         if self.strGeneratedTemplateFile is not None:
             if(self.strGeneratedTemplateFile is None):
-                EDVerbose.screen("No argument for command line --generateTemplate key word found!")
+                self.screen("No argument for command line --generateTemplate key word found!")
             elif (self.xsDataInputCharacterisation is None):
-                EDVerbose.screen("ERROR! Cannot generate template file %s, please check the log files." % self.strGeneratedTemplateFile)
+                self.screen("ERROR! Cannot generate template file %s, please check the log files." % self.strGeneratedTemplateFile)
             else:
-                EDVerbose.screen("Generating MXv1 xml template input file: " + self.strGeneratedTemplateFile + "...")
+                self.screen("Generating MXv1 xml template input file: " + self.strGeneratedTemplateFile + "...")
                 self.xsDataInputCharacterisation.outputFile(self.strGeneratedTemplateFile)
         if self.strGeneratedTemplateFileMXv2 is not None:
             if(self.strGeneratedTemplateFileMXv2 is None):
-                EDVerbose.screen("No argument for command line --generateTemplateMXv2 key word found!")
+                self.screen("No argument for command line --generateTemplateMXv2 key word found!")
             elif (self.xsDataInputCharacterisation is None):
-                EDVerbose.screen("ERROR! Cannot generate template file %s, please check the log files." % self.strGeneratedTemplateFileMXv2)
+                self.screen("ERROR! Cannot generate template file %s, please check the log files." % self.strGeneratedTemplateFileMXv2)
             else:
                 # TEMP: generates the file to be read in
                 ##PARAMS
@@ -363,19 +363,19 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
                 for xsDataImage in xsDataResultSubWedgeAssemble.getSubWedge()[0].getImage():
                     imgFnames.append(xsDataImage.getPath().getValue())
                 xsDC_v2 = self.generateDataCollectionDescriptorForSubWedge(calibDate, omegaR, kappaR, phiR, beamD, polarisationP, exposuretime, imagewidth, numberimages, wavelength, OmegaV, KappaV, PhiV, imgFnames)
-                EDVerbose.screen("Generating MXv2 xml template input file: " + self.strGeneratedTemplateFileMXv2 + "...")
+                self.screen("Generating MXv2 xml template input file: " + self.strGeneratedTemplateFileMXv2 + "...")
                 xsDC_v2.outputFile(self.strGeneratedTemplateFileMXv2)
 
 
     def doSubWedgeAssembleSUCCESS(self, _edPlugin):
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.doSubWedgeAssembleSUCCESS")
+        self.DEBUG("EDPluginControlInterfacev2_0.doSubWedgeAssembleSUCCESS")
         self.createInputCharacterisationFromSubWedges()
         self.runCharacterisationPlugin(_edPlugin)
 
     def doSubWedgeAssembleFAILURE(self, _edPlugin):
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.doSubWedgeAssembleFAILURE")
-        EDVerbose.screen("Execution of " + self.strEDPluginControlSubWedgeAssembleName + "  failed.")
-        EDVerbose.screen("Please inspect the log file for further information.")
+        self.DEBUG("EDPluginControlInterfacev2_0.doSubWedgeAssembleFAILURE")
+        self.screen("Execution of " + self.strEDPluginControlSubWedgeAssembleName + "  failed.")
+        self.screen("Please inspect the log file for further information.")
         self.setFailure()
 
     def doFailureActionCharacterisation(self, _edPlugin=None):
@@ -383,7 +383,7 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
         retrieve the potential warning messages
         retrieve the potential error messages
         """
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.doFailureActionCharacterisation")
+        self.DEBUG("EDPluginControlInterfacev2_0.doFailureActionCharacterisation")
         self.retrieveFailureMessages(self.edPluginControlCharacterisation, "EDPluginControlInterfacev2_0.doSuccessActionISPyB")
         self.generateExecutiveSummary(self)
         self.setFailure()
@@ -392,7 +392,7 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
         """
         retrieve the potential warning messages
         """
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.doSuccessActionCharacterisation")
+        self.DEBUG("EDPluginControlInterfacev2_0.doSuccessActionCharacterisation")
         # Store the results if requested
         if (self.strResultsFilePath is not None):
             xsDataCharacterisationResult = _edPlugin.getDataOutput()
@@ -401,11 +401,11 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
         self.storeResultsInISPyB(_edPlugin)
 
     def doSuccessActionISPyB(self, _edPlugin):
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.doSuccessActionISPyB...")
+        self.DEBUG("EDPluginControlInterfacev2_0.doSuccessActionISPyB...")
         self.retrieveSuccessMessages(self.edPluginControlISPyB, "EDPluginControlInterfacev2_0.doSuccessActionISPyB")
 
     def doFailureActionISPyB(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.doFailureActionISpyB...")
+        self.DEBUG("EDPluginControlInterfacev2_0.doFailureActionISpyB...")
         self.generateExecutiveSummary(self)
         self.setFailure()
 
@@ -413,7 +413,7 @@ class EDPluginControlInterfacev2_0(EDPluginControl):
         """
         Prints the executive summary from the plugin
         """
-        EDVerbose.DEBUG("EDPluginControlInterfacev2_0.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlInterfacev2_0.generateExecutiveSummary")
         if (self.edPluginControlSubWedgeAssemble is not None):
             if self.edPluginControlSubWedgeAssemble.getListExecutiveSummaryLines() != []:
                 self.addExecutiveSummaryLine("Summary of plugin %s:" % self.strEDPluginControlSubWedgeAssembleName)

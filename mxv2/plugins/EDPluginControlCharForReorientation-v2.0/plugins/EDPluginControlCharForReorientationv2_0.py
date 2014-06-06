@@ -135,7 +135,7 @@ class EDPluginControlCharForReorientationv2_0(EDPluginControl):
         
         
     def doCharacterisationSuccess(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharForReorientationv2_0.doCharacterisationSuccess")
+        self.DEBUG("EDPluginControlCharForReorientationv2_0.doCharacterisationSuccess")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doCharacterisationSuccess")
         self.xsDataResultCharacterisation = self.edPluginControlCharacterisation.getDataOutput()
         # Check if kappa strategy is requested:
@@ -163,14 +163,14 @@ class EDPluginControlCharForReorientationv2_0(EDPluginControl):
             self.executePluginSynchronous(self.edPluginControlStrategy)
     
     def doCharacterisationFailure(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharForReorientationv2_0.doCharacterisationFailure")
+        self.DEBUG("EDPluginControlCharForReorientationv2_0.doCharacterisationFailure")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doFailureActionIndexing")
         self.xsDataResultCharacterisation = self.edPluginControlCharacterisation.getDataOutput()
 
     
             
     def doStrategySuccess(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharForReorientationv2_0.doStrategySuccess")
+        self.DEBUG("EDPluginControlCharForReorientationv2_0.doStrategySuccess")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doStrategySuccess")
         xsDataResultStrategy = self.edPluginControlStrategy.getDataOutput()
         self.xsDataResultCharacterisation.setStrategyResult(xsDataResultStrategy)
@@ -178,7 +178,7 @@ class EDPluginControlCharForReorientationv2_0(EDPluginControl):
         self.suggestedOrientation = None
         self.newpossibleOrientations = None
         if self.edPluginControlStrategy.hasDataOutput("possibleOrientations"):
-            EDVerbose.DEBUG("EDPluginControlCharForReorientationv2_0.doStrategySuccess: With possible orientations")
+            self.DEBUG("EDPluginControlCharForReorientationv2_0.doStrategySuccess: With possible orientations")
             #get the next orientation
             #create new ref data coll plan at new orirntation
             #remove the currently offered orientation from the list            
@@ -192,7 +192,7 @@ class EDPluginControlCharForReorientationv2_0(EDPluginControl):
                 self.suggestedOrientation = allPossibleOrientations.possible_orientation[0]
                 self.newpossibleOrientations=EDHandlerXSDataSTACv2_0.removeOrientation(allPossibleOrientations,kappa,phi)
         if self.suggestedStrategy is None:
-            EDVerbose.DEBUG("EDPluginControlCharForReorientationv2_0.doStrategySuccess: Without possible orientations")
+            self.DEBUG("EDPluginControlCharForReorientationv2_0.doStrategySuccess: Without possible orientations")
             #set the orientation for the actual strategy
             #we suggest the currently calculated strategy
             #and we have to add the actual orientation
@@ -202,7 +202,7 @@ class EDPluginControlCharForReorientationv2_0(EDPluginControl):
             self.suggestedStrategy=EDHandlerXSDataMXv1v1_0.copyStrategyToNewOrientation(xsDataResultStrategy,'%.2f'%omega.getValue(),'%.2f'%kappa.getValue(),'%.2f'%phi.getValue(), "NO_POSSIBLE_ORIENTATIONS")
     
     def doStrategyFailure(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlCharForReorientationv2_0.doStrategyFailure")
+        self.DEBUG("EDPluginControlCharForReorientationv2_0.doStrategyFailure")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doFailureActionIndexing")
     
     
@@ -211,7 +211,7 @@ class EDPluginControlCharForReorientationv2_0(EDPluginControl):
         Generates a summary of the execution of the plugin.
         """
         EDPluginControl.generateExecutiveSummary(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlCharForReorientationv2_0.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlCharForReorientationv2_0.generateExecutiveSummary")
         if (self.edPluginControlCharacterisation is not None):
             self.appendExecutiveSummary(self.edPluginControlCharacterisation, "Strategy : ")
             self.addExecutiveSummaryLine("") 

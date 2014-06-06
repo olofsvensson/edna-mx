@@ -83,7 +83,7 @@ class EDPluginControlSubWedgeAssemblyv2_0(EDPluginControl):
         """
         Checks the mandatory parameters
         """
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.checkParameters")
+        self.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.checkParameters")
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
         self.checkMandatoryParameters(self.getDataInput().getFile(), "file")
 
@@ -93,14 +93,14 @@ class EDPluginControlSubWedgeAssemblyv2_0(EDPluginControl):
         Gets the Configuration Parameters, if found, overrides default parameters
         """
         EDPluginControl.preProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.preProcess")
+        self.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.preProcess")
 
         self.edPluginControlSubwedgeAssembleOLD = self.loadPlugin(self.strPluginControlSubwedgeAssembleOLDName)
 
 
     def process(self, _edObject=None):
         EDPluginControl.process(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.process")
+        self.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.process")
         if (self.edPluginControlSubwedgeAssembleOLD is not None):
             self.connectProcess(self.callOldSubWedgeAssembler)
             self.edPluginControlSubwedgeAssembleOLD.connectSUCCESS (self.doSuccessActionOldSubWedgeAssemble)
@@ -109,7 +109,7 @@ class EDPluginControlSubWedgeAssemblyv2_0(EDPluginControl):
 
     def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.postProcess")
+        self.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.postProcess")
         if (self.xsDataResultSubWedgeAssemble is not None):
             self.setDataOutput(self.xsDataResultSubWedgeAssemble , "mxv1Assemble")
             if self.xsDatacollection_v2 != None:
@@ -120,7 +120,7 @@ class EDPluginControlSubWedgeAssemblyv2_0(EDPluginControl):
         This method calls the old assembler that will be then converted to new DM and also extended 
         by info fetched from DC data collection descriptior file created by the BCM next to the data images.
         """
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.callOldSubWedgeAssembler")
+        self.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.callOldSubWedgeAssembler")
         xsDataInputSubWedgeAssemble = _edPlugin.getDataInput()
         self.edPluginControlSubwedgeAssembleOLD.setDataInput(xsDataInputSubWedgeAssemble)
         self.edPluginControlSubwedgeAssembleOLD.executeSynchronous()
@@ -255,7 +255,7 @@ class EDPluginControlSubWedgeAssemblyv2_0(EDPluginControl):
         - reads DC descriptor file prepared by the BCM
         - merges the info together
         """
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.doSuccessActionSubWedgeMerge")
+        self.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.doSuccessActionSubWedgeMerge")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlSubWedgeAssemblyv2_0.doSuccessActionOldSubWedgeAssemble")
         if not _edPlugin.isFailure():
             # getting the result from the old assembler
@@ -303,8 +303,8 @@ class EDPluginControlSubWedgeAssemblyv2_0(EDPluginControl):
             # merges the info together
 
     def doFailureActionOldSubWedgeAssemble(self, _edPlugin=None):
-        EDVerbose.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.doFailureActionSubWedgeMerge")
-        EDVerbose.screen("Execution of " + self.strPluginControlSubwedgeAssembleOLDName + "  failed.")
-        EDVerbose.screen("Please inspect the log file for further information.")
+        self.DEBUG("EDPluginControlSubWedgeAssemblyv2_0.doFailureActionSubWedgeMerge")
+        self.screen("Execution of " + self.strPluginControlSubwedgeAssembleOLDName + "  failed.")
+        self.screen("Please inspect the log file for further information.")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlSubWedgeAssemblyv2_0.doFailureActionOldSubWedgeAssemble")
 

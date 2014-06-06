@@ -57,7 +57,7 @@ class EDTestCasePluginExecuteControlKappaStrategyv2_0(EDTestCasePluginExecute):
         # Checks the expected result
         #strExpectedOutput = EDUtilsTest.readAndParseFile (self.getReferenceDataOutputFile())
         #strObtainedOutput = EDUtilsTest.readAndParseFile (self.edObtainedOutputDataFile)
-        #EDVerbose.DEBUG("Checking obtained result...")
+        #self.DEBUG("Checking obtained result...")
 
         #from XSDataMXv1 import XSDataStrategyResult
 

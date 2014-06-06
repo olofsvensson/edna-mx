@@ -55,7 +55,7 @@ class EDTestCasePluginExecuteControlSubWedgeAssemblyv2_0(EDTestCasePluginExecute
 #        from XSDataMXv1 import XSDataSubWedge
 #        xsDataSubWedgeObtained = edPlugin.getDataOutput()
 #        xsDataSubWedgeReference = XSDataSubWedge.parseString(strExpectedOutput)
-#        EDVerbose.DEBUG("Checking obtained result...")
+#        self.DEBUG("Checking obtained result...")
 #        EDAssert.equal(xsDataSubWedgeReference.marshal(), xsDataSubWedgeObtained.marshal())
 
 

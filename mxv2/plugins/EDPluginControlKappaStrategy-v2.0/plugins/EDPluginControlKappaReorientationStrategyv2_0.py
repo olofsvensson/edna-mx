@@ -61,7 +61,7 @@ class EDPluginControlKappaReorientationStrategyv2_0(EDPluginControlKappaStrategy
 
     def __init__ (self):
         EDPluginControlKappaStrategyv2_0.__init__(self)
-        EDVerbose.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.__init__...")
+        self.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.__init__...")
 
         self.strPluginOrientationName = "EDPluginSTACOrientationv2_0"
         self.edPluginOrientation = None
@@ -77,7 +77,7 @@ class EDPluginControlKappaReorientationStrategyv2_0(EDPluginControlKappaStrategy
         Gets the Configuration Parameters, if found, overrides default parameters
         """
         EDPluginControlKappaStrategyv2_0.preProcess(self)
-        EDVerbose.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.preProcess...")
+        self.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.preProcess...")
 
         if (self.KappaStrategy):
             #Orientation
@@ -96,7 +96,7 @@ class EDPluginControlKappaReorientationStrategyv2_0(EDPluginControlKappaStrategy
         """
         """
         EDPluginControl.process(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.process...")
+        self.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.process...")
 
         #call KAPPA orientation
         if self.edPluginOrientation is not None:
@@ -114,7 +114,7 @@ class EDPluginControlKappaReorientationStrategyv2_0(EDPluginControlKappaStrategy
     def executeOrientation(self, _edPlugin):
         """
         """
-        EDVerbose.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.executeOrientation")
+        self.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.executeOrientation")
 
         xsDataBestInput = self.edHandlerXSDataBest.getXSDataInputBest(self.getDataInput("mxv1InputStrategy")[0])
         self.edPluginOrientation.setDataInput(xsDataBestInput, "inputBest")
@@ -130,7 +130,7 @@ class EDPluginControlKappaReorientationStrategyv2_0(EDPluginControlKappaStrategy
     def doOrientationToAlignmentTransition(self, _edPlugin):
         """
         """
-        EDVerbose.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.doOrientationToAlignmentTransition")
+        self.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.doOrientationToAlignmentTransition")
 
         xsDataBestInput = self.edHandlerXSDataBest.getXSDataInputBest(self.getDataInput("mxv1InputStrategy")[0])
         self.edPluginAlignment.setDataInput(xsDataBestInput, "inputBest")
@@ -147,7 +147,7 @@ class EDPluginControlKappaReorientationStrategyv2_0(EDPluginControlKappaStrategy
     def doAlignmentToStrategyTransition(self, _edPlugin):
         """
         """
-        EDVerbose.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.doAlignmentToStrategyTransition")
+        self.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.doAlignmentToStrategyTransition")
 
         #here we could modify bestfile.par to get the strategy (and statistics) for a prefered orientation
 
@@ -160,10 +160,10 @@ class EDPluginControlKappaReorientationStrategyv2_0(EDPluginControlKappaStrategy
         retrieve the potential warning messages
         retrieve the potential error messages
         """
-        EDVerbose.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.doFailureActionOrientation")
+        self.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.doFailureActionOrientation")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlKappaReorientationStrategyv2_0.doFailureActionOrientation")
         strWarningMessage = EDMessage.WARNING_CANNOT_USE_PLUGIN_03 % ('EDPluginControlKappaReorientationStrategyv2_0.doFailureActionOrientation', self.strPluginOrientationName, "STACOrientation failure")
-        EDVerbose.warning(strWarningMessage)
+        self.warning(strWarningMessage)
         self.addWarningMessage(strWarningMessage)
         self.executeSimpleStrategy(_edPlugin)
 
@@ -173,10 +173,10 @@ class EDPluginControlKappaReorientationStrategyv2_0(EDPluginControlKappaStrategy
         retrieve the potential warning messages
         retrieve the potential error messages
         """
-        EDVerbose.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.doFailureActionAlignment")
+        self.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.doFailureActionAlignment")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlKappaReorientationStrategyv2_0.doFailureActionAlignment")
         strWarningMessage = EDMessage.WARNING_CANNOT_USE_PLUGIN_03 % ('EDPluginControlKappaReorientationStrategyv2_0.doFailureActionAlignment', self.strPluginAlignmentName, "STACAlignment failure")
-        EDVerbose.warning(strWarningMessage)
+        self.warning(strWarningMessage)
         self.addWarningMessage(strWarningMessage)
         self.executeSimpleStrategy(_edPlugin)
 
@@ -198,7 +198,7 @@ class EDPluginControlKappaReorientationStrategyv2_0(EDPluginControlKappaStrategy
 
         #get reference statistics from the BEST run
         EDPluginControl.postProcess(self, _edObject)
-        EDVerbose.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.postProcess...")
+        self.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.postProcess...")
 
         #referenceCollectionStrategyAtNewOrientation
         #for now, it is:
@@ -208,7 +208,7 @@ class EDPluginControlKappaReorientationStrategyv2_0(EDPluginControlKappaStrategy
         try:
             self.setDataOutput(self.edPluginAlignment.getDataOutput(), "possibleOrientations")
         except:
-            EDVerbose.WARNING("Could not get the list of Possible orientations.")
+            self.WARNING("Could not get the list of Possible orientations.")
 
 
 
@@ -217,7 +217,7 @@ class EDPluginControlKappaReorientationStrategyv2_0(EDPluginControlKappaStrategy
         Generates a summary of the execution of the plugin.
         """
         EDPluginControlKappaStrategyv2_0.generateExecutiveSummary(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.generateExecutiveSummary")
+        self.DEBUG("EDPluginControlKappaReorientationStrategyv2_0.generateExecutiveSummary")
         if (self.edPluginOrientation is not None):
             #if ( self.edPluginAlignment.getDataOutput() is not None ):
             self.appendExecutiveSummary(self.edPluginOrientation, "STAC - Orientation : ")
