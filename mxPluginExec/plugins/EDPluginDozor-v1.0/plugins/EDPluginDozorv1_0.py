@@ -63,6 +63,20 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.defaultFractionPolarization = 0.99
         self.defaultImageStep = 1
         self.startingAngle = 0.0
+        self.ix_min = None
+        self.iy_min = None
+        self.ix_max = None
+        self.iy_max = None
+        # Default values for ESRF Pilatus6M
+        self.ix_min_pilatus6m = 1 
+        self.ix_max_pilatus6m = 1270
+        self.iy_min_pilatus6m = 1190
+        self.iy_max_pilatus6m = 1310
+        # Default values for ESRF Pilatus2M
+        self.ix_min_pilatus2m = 1 
+        self.ix_max_pilatus2m = 840
+        self.iy_min_pilatus2m = 776
+        self.iy_max_pilatus2m = 852
 
     def checkParameters(self):
         """
@@ -76,6 +90,23 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginDozorv1_0.preProcess")
         xsDataInputDozor = self.getDataInput()
+        # Retrieve config (if any)
+        self.ix_min = self.config.get("ix_min")
+        self.ix_max = self.config.get("ix_max")
+        self.iy_min = self.config.get("iy_min")
+        self.iy_max = self.config.get("iy_max")
+        if self.ix_min is None or self.ix_max is None or self.iy_min is None or self.iy_max is None:
+            # One configuration value is missing - use default values
+            if xsDataInputDozor.detectorType.value == "pilatus2m":
+                self.ix_min = self.ix_min_pilatus2m
+                self.ix_max = self.ix_max_pilatus2m
+                self.iy_min = self.iy_min_pilatus2m
+                self.iy_max = self.iy_max_pilatus2m
+            else:
+                self.ix_min = self.ix_min_pilatus6m                
+                self.ix_max = self.ix_max_pilatus6m
+                self.iy_min = self.iy_min_pilatus6m
+                self.iy_max = self.iy_max_pilatus6m
         self.setScriptCommandline("dozor.dat")
         strCommands = self.generateCommands(xsDataInputDozor)
         self.createImageLinks(xsDataInputDozor)
@@ -111,10 +142,10 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "fraction_polarization %.3f\n" % fractionPolarization
             strCommandText += "pixel_min -1\n"
             strCommandText += "pixel_max 64000\n"
-            strCommandText += "ix_min 1\n"
-            strCommandText += "ix_max 1270\n"
-            strCommandText += "iy_min 1190\n"
-            strCommandText += "iy_max 1310\n"
+            strCommandText += "ix_min %d\n" % self.ix_min
+            strCommandText += "ix_max %d\n" % self.ix_max
+            strCommandText += "iy_min %d\n" % self.iy_min
+            strCommandText += "iy_max %d\n" % self.iy_max
             strCommandText += "orgx %.1f\n" % _xsDataInputDozor.orgx.value
             strCommandText += "orgy %.1f\n" % _xsDataInputDozor.orgy.value
             strCommandText += "oscillation_range %.3f\n" % _xsDataInputDozor.oscillationRange.value
