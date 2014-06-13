@@ -122,7 +122,11 @@ class EDPluginISPyBSetImagesPositionsv1_4(EDPluginExec):
             xsDataISPyBImageCreation = XSDataISPyBImageCreation()
             xsDataISPyBImageCreation.fileLocation = XSDataString(imageCreation.fileLocation)
             xsDataISPyBImageCreation.fileName = XSDataString(imageCreation.fileName)
-            xsDataISPyBImageCreation.imageId = XSDataInteger(imageCreation.imageId)
+            try:
+                xsDataISPyBImageCreation.imageId = XSDataInteger(imageCreation.imageId)
+            except AttributeError:
+                self.WARNING("Image %s/%s does not have any image id" % 
+                             (imageCreation.fileLocation, imageCreation.fileName))
             xsDataISPyBImageCreation.isCreated = XSDataBoolean(imageCreation.isCreated)
             xsDataResultISPyBSetImagesPositions.addImageCreation(xsDataISPyBImageCreation)
         self.setDataOutput(xsDataResultISPyBSetImagesPositions)
