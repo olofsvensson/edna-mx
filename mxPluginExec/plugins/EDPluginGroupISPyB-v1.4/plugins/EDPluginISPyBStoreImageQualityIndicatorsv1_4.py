@@ -146,7 +146,7 @@ class EDPluginISPyBStoreImageQualityIndicatorsv1_4(EDPluginExec):
         iInResolutionOvrlSpots = self.getXSValue(xsDataImageQualityIndicators.inResolutionOvrlSpots)
         fBinPopCutOffMethod2res = self.getXSValue(xsDataImageQualityIndicators.binPopCutOffMethod2Res)
         fTotalIntegratedSignal = self.getXSValue(xsDataImageQualityIndicators.totalIntegratedSignal)
-        fBackground3D_score = self.getXSValue(xsDataImageQualityIndicators.background3D_score)
+        fDozor_score = self.getXSValue(xsDataImageQualityIndicators.dozor_score)
 
         providedDate = DateTime(datetime.datetime.now())
         self.iImageQualityIndicatorsId = clientToolsForAutoprocessingWebService.service.storeOrUpdateImageQualityIndicatorsForFileName(
@@ -165,7 +165,7 @@ class EDPluginISPyBStoreImageQualityIndicatorsv1_4(EDPluginExec):
                 inResolutionOvrlSpots=iInResolutionOvrlSpots, \
                 binPopCutOffMethod2Res=fBinPopCutOffMethod2res, \
                 totalIntegratedSignal=fTotalIntegratedSignal, \
-                background3D_score=fBackground3D_score)
+                dozor_score=fDozor_score)
         self.DEBUG("EDPluginISPyBStoreImageQualityIndicatorsv1_4.process: imageQualityIndicatorsId=%r" % self.iImageQualityIndicatorsId)
             
              
