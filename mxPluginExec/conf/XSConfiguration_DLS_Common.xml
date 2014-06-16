@@ -18,7 +18,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/bin/ccp4.setup-sh</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -47,7 +47,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/bin/ccp4.setup-sh</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -93,7 +93,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/bin/ccp4.setup-sh</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -118,7 +118,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/bin/ccp4.setup-sh</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -143,7 +143,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/bin/ccp4.setup-sh</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -168,7 +168,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/bin/ccp4.setup-sh</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -193,7 +193,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/bin/ccp4.setup-sh</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -222,7 +222,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/bin/ccp4.setup-sh</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -386,7 +386,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/bin/ccp4.setup-sh</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
