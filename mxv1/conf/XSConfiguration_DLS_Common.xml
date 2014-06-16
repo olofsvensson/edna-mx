@@ -2,11 +2,20 @@
 <XSConfiguration> 
 	<XSPluginList>
 		<XSPluginItem>
+			<name>EDPluginControlIndexingLabelitv10</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>symopHome</name>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/lib/data</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginControlStrategyv10</name>  
 			<XSParamList>
 				<XSParamItem>
 					<name>symopHome</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/lib/data</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/lib/data</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -15,7 +24,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>symopHome</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/lib/data</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/lib/data</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -24,7 +33,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>symopHome</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/lib/data</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/lib/data</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -42,7 +51,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>symopHome</name>
-					<value>/dls_sw/apps/ccp4/x86_64/6.3.0/14aug2012/ccp4-6.3.0/lib/data</value>
+					<value>/dls_sw/apps/ccp4/x86_64/6.4.0/8apr2014/ccp4-6.4.0/lib/data</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
