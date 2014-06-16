@@ -45,7 +45,7 @@ class EDTestCasePluginExecuteExecSimpleHTMLPagev1_0(EDTestCasePluginExecute):
 
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "ref-testscale_1_001_pred.jpg", "ref-testscale_1_002_pred.jpg" ])
+        self.loadTestImage([ "ref-testscale_1_001_pred.jpg", "ref-testscale_1_002_pred.jpg", "B.jpg", "phi_overlap.jpg", "compl.jpg", "I2D.jpg" ])
 
 
     def testExecute(self):
