@@ -149,6 +149,7 @@ class EDPluginISPyBStoreListOfImageQualityIndicatorsv1_4(EDPluginExec):
             imageQualityIndicatorsWS3VO.inResolutionOvrlSpots         = self.getXSValue(xsDataImageQualityIndicators.inResolutionOvrlSpots)
             imageQualityIndicatorsWS3VO.binPopCutOffMethod2Res        = self.getXSValue(xsDataImageQualityIndicators.binPopCutOffMethod2Res)
             imageQualityIndicatorsWS3VO.totalIntegratedSignal         = self.getXSValue(xsDataImageQualityIndicators.totalIntegratedSignal)
+            imageQualityIndicatorsWS3VO.dozor_score                   = self.getXSValue(xsDataImageQualityIndicators.dozor_score)
             imageQualityIndicatorsWS3VO.recordTimeStamp               = DateTime(datetime.datetime.now())
             listImageQualityIndicatorsForWS.append(imageQualityIndicatorsWS3VO)
         self.listImageQualityIndicatorsId = clientToolsForAutoprocessingWebService.service.storeOrUpdateImageQualityIndicatorsForFileNames(

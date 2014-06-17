@@ -36,6 +36,9 @@
         <totalIntegratedSignal>
             <value>6.830000e+02</value>
         </totalIntegratedSignal>
+        <dozor_score>
+            <value>123.45</value>
+        </dozor_score>
     </imageQualityIndicators>
     <imageQualityIndicators>
         <goodBraggCandidates>
@@ -73,5 +76,8 @@
         <totalIntegratedSignal>
             <value>6.830000e+02</value>
         </totalIntegratedSignal>
+        <dozor_score>
+            <value>678.90</value>
+        </dozor_score>
     </imageQualityIndicators>
 </XSDataInputStoreListOfImageQualityIndicators>
