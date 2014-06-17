@@ -187,7 +187,8 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
     def doFailureActionInterface(self, _edPlugin=None):
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.doFailureActionInterface...")
         # Send failure email message (MXSUP-183):
-        strSubject = "%s : FAILURE!" % EDUtilsPath.getEdnaSite()
+        self.tStop = time.time()
+        strSubject = "%s : FAILURE! (%.1f s)" % (EDUtilsPath.getEdnaSite(), self.tStop - self.tStart)
         strMessage = "Characterisation FAILURE!"
         self.storeResultsInISPyB(strSubject, strMessage)
         # self.setFailure()
