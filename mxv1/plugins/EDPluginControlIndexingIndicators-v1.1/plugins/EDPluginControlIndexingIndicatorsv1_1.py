@@ -153,6 +153,7 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         self.addExecutiveSummaryLine("Summary of indexing with %s :" % self.strControlledIndicatorsPluginName)
         self.addExecutiveSummaryLine("")
         self.appendExecutiveSummary(self.edPluginControlIndexingLabelit, "Labelit : ", _bAddSeparator=False)
+        self.generateIndexingShortSummary(xsDataIndexingResult)
         self.synchronizeOff()
 
 
