@@ -41,7 +41,7 @@ class EDTestCasePluginExecuteControlInterfaceToMXCuBEv1_3_bestBFactorFailed(EDTe
 
     def preProcess(self):
         EDTestCasePluginExecuteControlInterfaceToMXCuBEv1_3.preProcess(self)
-        self.loadTestImage([ "bestBFactorFailed_2_001.img" ])
+        self.loadTestImage([ "ref-fx44_3_bis_1_0001.cbf", "ref-fx44_3_bis_1_0002.cbf"])
 
 
     def testExecute(self):
