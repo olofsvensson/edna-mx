@@ -186,6 +186,8 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
                     xsDataLabelitScreenSolution.setHappy(XSDataBoolean(False))
                 elif (listStringLabelitSolution[0] == ";("):
                     xsDataLabelitScreenSolution.setHappy(XSDataBoolean(False))
+                elif (listStringLabelitSolution[0] == "xx"):
+                    xsDataLabelitScreenSolution.setHappy(XSDataBoolean(False))
                 else:
                     # We have an error...
                     strErrorMessage = "Indexing with labelit.screen failed! Log file:"
