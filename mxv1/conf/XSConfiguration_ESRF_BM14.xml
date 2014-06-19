@@ -3,4 +3,27 @@
 	<XSImportConfiguration>
 		<name>XSConfiguration_ESRF_Beamline</name>
 	</XSImportConfiguration>	
+	<XSPluginList>
+		<XSPluginItem>
+			<name>EDPluginControlInterfacev1_3</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>controlledPlugins</name>
+					<value>characterisationPlugin,ispybPlugin</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>characterisationPlugin</name>
+					<value>EDPluginControlCharacterisationv1_2</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>ispybPlugin</name>
+					<value>EDPluginControlISPyBv1_4</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>useISPyBPlugin</name>
+					<value>True</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+	</XSPluginList>
 </XSConfiguration> 
