@@ -235,10 +235,6 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
                         selectedSolution = xsDataIndexingResult.selectedSolution
                         if selectedSolution is not None:
                             xsDataResultControlImageQualityIndicator.selectedIndexingSolution = selectedSolution
-                            print xsDataResultControlImageQualityIndicator.marshal()
-#                xsDataResultISPyB = edPluginISPyB.dataOutput
-#                if xsDataResultISPyB is not None:
-                # print xsDataResultISPyB.marshal()
             
         
 
