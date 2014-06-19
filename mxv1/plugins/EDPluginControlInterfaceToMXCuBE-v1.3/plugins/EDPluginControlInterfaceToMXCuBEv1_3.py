@@ -610,14 +610,17 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
             try:
                 self.DEBUG("Sending message to %s." % self.strEDNAContactEmail)
                 self.DEBUG("Message: %s" % _strMessage)
-                strMessage = """
-EDNA_HOME = %s
-EDNA_SITE = %s
-PLUGIN_NAME = %s
-working_dir = %s
-%s
-
-""" % (EDUtilsPath.getEdnaHome(), EDUtilsPath.getEdnaSite(), self.getPluginName(), self.getWorkingDirectory(), _strMessage)
+                strMessage = "EDNA_HOME = %s\n" %  EDUtilsPath.getEdnaSite()
+                strMessage += "EDNA_SITE = %s\n" % EDUtilsPath.getEdnaSite()
+                strMessage += "PLUGIN_NAME = %s\n" % self.getPluginName()
+                strMessage += "working_dir = %s\n\n" % self.getWorkingDirectory()
+                strMessage += "Reference images:\n"
+                xsDataInputMXCuBE = self.getDataInput()
+                for xsDataSetMXCuBE in xsDataInputMXCuBE.getDataSet():
+                    for xsDataFile in xsDataSetMXCuBE.getImageFile():
+                        strMessage += "%s\n" % xsDataFile.getPath().getValue()
+                strMessage += "\n"
+                strMessage += _strMessage
                 strEmailMsg = ("From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s" % (self.strEDNAEmailSender, \
                                                                                 self.strEDNAContactEmail, \
                                                                                 _strSubject, strMessage))
