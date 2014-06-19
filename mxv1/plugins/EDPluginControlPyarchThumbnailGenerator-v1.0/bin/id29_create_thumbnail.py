@@ -64,7 +64,7 @@ from XSDataPyarchThumbnailGeneratorv1_0 import XSDataInputPyarchThumbnailGenerat
 if __name__ == '__main__':
     EDVerbose.setVerboseDebugOn()
     # Sleep a random time 0-2s in order to avoid problems if many instances started at the same time
-    fSleepTime = random.random()*2.0
+    fSleepTime = random.random()*5.0 + 2.0
     EDVerbose.DEBUG("Sleeping for %.2f s" % fSleepTime)
     time.sleep(fSleepTime)
     # Popolate input data
@@ -74,7 +74,11 @@ if __name__ == '__main__':
         EDVerbose.screen("Usage: id29_create_thumbnail image_directory_path image1 [image2]" )
         sys.exit(1)
     EDVerbose.screen("Arguments: %r" % sys.argv)
-    strPathToTempDir = tempfile.mkdtemp(prefix="id29_create_thumbnail_")
+    # Check if a temp working directory should be created
+    if "CREATE_THUMBNAIL_WORKING_DIR" in os.environ:
+        strPathToTempDir = tempfile.mkdtemp(prefix="id29_create_thumbnail_", dir=os.environ["CREATE_THUMBNAIL_WORKING_DIR"])
+    else:
+        strPathToTempDir = tempfile.mkdtemp(prefix="id29_create_thumbnail_")
     os.chdir(strPathToTempDir)
     EDVerbose.setLogFileName(os.path.join(strPathToTempDir, "id29_create_thumbnail.log"))
     strImageDirectory = sys.argv[1]
