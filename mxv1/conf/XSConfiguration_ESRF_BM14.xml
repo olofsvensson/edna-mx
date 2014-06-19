@@ -5,7 +5,7 @@
 	</XSImportConfiguration>	
 	<XSPluginList>
 		<XSPluginItem>
-			<name>EDPluginControlInterfacev1_3</name>  
+			<name>EDPluginControlInterfacev1_2</name>  
 			<XSParamList>
 				<XSParamItem>
 					<name>controlledPlugins</name>
@@ -13,7 +13,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>characterisationPlugin</name>
-					<value>EDPluginControlCharacterisationv1_2</value>
+					<value>EDPluginControlCharacterisationv1_3</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>ispybPlugin</name>
