@@ -142,6 +142,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         if self.xsDataResultCharacterisation.dataCollection.diffractionPlan is not None:
             if self.xsDataResultCharacterisation.dataCollection.diffractionPlan.forcedSpaceGroup is not None:
                 strForcedSpaceGroup = self.xsDataResultCharacterisation.dataCollection.diffractionPlan.forcedSpaceGroup.value
+                if strForcedSpaceGroup == "":
+                    strForcedSpaceGroup = None
         if xsDataResultIndexing:
             # Table containg indexing results and thumbnail images
             self.page.table( class_='indexResultsAndThumbnails', border_="0", cellpadding_="0")
