@@ -77,7 +77,7 @@ class EDPluginControlIndexingIndicatorsv10(EDPluginControl):
         self.setXSDataInputClass(XSDataExperimentalCondition, "refinedExperimentalCondition")
         self.__strMOSFLMIndexingPluginName = "EDPluginMOSFLMIndexingv10"
         self.__edPluginMOSFLMIndexing = None
-        self.__strControlledIndicatorsPluginName = "EDPluginControlImageQualityIndicatorsv1_1"
+        self.__strControlledIndicatorsPluginName = "EDPluginControlImageQualityIndicatorsv1_5"
         self.__edPluginControlIndicators = None
 
 
@@ -286,9 +286,9 @@ class EDPluginControlIndexingIndicatorsv10(EDPluginControl):
                 strIndicatorsShortSummary += "good bragg %d, " % iNoGoodBraggCandidates
                 fResMethod1 = xsDataQualityIndicators.getMethod1Res().getValue()
                 strIndicatorsShortSummary += "r1 %.1f [A], " % fResMethod1
-                if xsDataQualityIndicators.getMethod2Res() is not None:
-                    fResMethod2 = xsDataQualityIndicators.getMethod2Res().getValue()
-                    strIndicatorsShortSummary += "r2 %.1f [A], " % fResMethod2
+#                if xsDataQualityIndicators.getMethod2Res() is not None:
+#                    fResMethod2 = xsDataQualityIndicators.getMethod2Res().getValue()
+#                    strIndicatorsShortSummary += "r2 %.1f [A], " % fResMethod2
                 if xsDataQualityIndicators.getMaxUnitCell() is not None:
                     fMaxCell = xsDataQualityIndicators.getMaxUnitCell().getValue()
                     strIndicatorsShortSummary += "max cell %.1f [A], " % fMaxCell
@@ -296,7 +296,12 @@ class EDPluginControlIndexingIndicatorsv10(EDPluginControl):
                 strIndicatorsShortSummary += "ice rings %d" % iIceRings
                 if xsDataQualityIndicators.getTotalIntegratedSignal() is not None:
                     fTotalIntegratedSignal = xsDataQualityIndicators.getTotalIntegratedSignal().getValue()
-                    strIndicatorsShortSummary += ", total integrated signal %.0f\n" % fTotalIntegratedSignal
+                    strIndicatorsShortSummary += ", TIS %.0f" % fTotalIntegratedSignal
+                if xsDataQualityIndicators.getDozor_score() is None:
+                    strIndicatorsShortSummary += "\n"
+                else:
+                    fDozorScore = xsDataQualityIndicators.getDozor_score().getValue()
+                    strIndicatorsShortSummary += ", Dozor %.1f\n" % fDozorScore
             for strLine in strIndicatorsShortSummary.split("\n"):
                 self.screen(strLine)
             self.setDataOutput(XSDataString(strIndicatorsShortSummary), "indicatorsShortSummary")

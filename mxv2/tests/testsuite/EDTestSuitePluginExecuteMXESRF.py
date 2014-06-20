@@ -35,7 +35,7 @@ class EDTestSuitePluginExecuteMXESRF(EDTestSuite):
 
     def process(self):
         # From execPlugins:
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteWaitFile")
+        self.addTestSuiteFromName("EDTestSuitePluginMXWaitFilev1_0")
         self.addTestSuiteFromName("EDTestSuitePluginExecThumbnailv10")
         # From mxPluginExec:
         self.addTestSuiteFromName("EDTestSuitePluginUnitMXPluginExec")
@@ -53,9 +53,9 @@ class EDTestSuitePluginExecuteMXESRF(EDTestSuite):
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlCharacterisationv1_3")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlCharacterisationv1_4")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlInterfaceToMXCuBEv1_3")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_2")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_3")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_4")
+        self.addTestSuiteFromName("EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_5")
         # From mxv2:
         self.addTestSuiteFromName("EDTestSuitePluginExecuteMXv2")
 

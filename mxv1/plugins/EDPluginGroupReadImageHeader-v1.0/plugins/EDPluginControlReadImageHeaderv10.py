@@ -44,8 +44,8 @@ from XSDataCommon import XSDataString
 from XSDataMXv1 import XSDataInputReadImageHeader
 from XSDataMXv1 import XSDataResultReadImageHeader
 
-EDFactoryPluginStatic.loadModule("XSDataWaitFilev1_0")
-from XSDataWaitFilev1_0 import XSDataInputWaitFile
+EDFactoryPluginStatic.loadModule("XSDataMXWaitFilev1_0")
+from XSDataMXWaitFilev1_0 import XSDataInputMXWaitFile
 
 class EDPluginControlReadImageHeaderv10(EDPluginControl):
 
@@ -58,7 +58,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.xsDataResultReadImageHeader = None
         self.strFileImagePath = None
         # Default time out for wait file
-        self.fWaitFileTimeOut = 30  # s
+        self.fMXWaitFileTimeOut = 30  # s
         # Map between image suffix and image type
         self.strSuffixADSC = "img"
         self.strSuffixMARCCD1 = "mccd"
@@ -71,7 +71,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.strPilatus2M = "Pilatus2M"
         self.strPilatus6M = "Pilatus6M"
         #
-        self.strPluginExecWaitFile = "EDPluginWaitFile"
+        self.strPluginExecMXWaitFile = "EDPluginMXWaitFilev1_0"
         self.strPluginExecReadImageHeaderADSC = "EDPluginExecReadImageHeaderADSCv10"
         self.strPluginExecReadImageHeaderMARCCD = "EDPluginExecReadImageHeaderMARCCDv10"
         self.strPluginExecReadImageHeaderPilatus2M = "EDPluginExecReadImageHeaderPilatus2Mv10"
@@ -103,7 +103,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
     def configure(self, _edPlugin=None):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlReadImageHeaderv10.configure")
-        self.fWaitFileTimeOut = float(self.config.get("waitFileTimeOut", self.fWaitFileTimeOut))
+        self.fMXWaitFileTimeOut = float(self.config.get("MXWaitFileTimeOut", self.fMXWaitFileTimeOut))
         
         
 
@@ -117,21 +117,21 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         xsDataFileImage = xsDataInputReadImageHeader.getImage()
         self.strFileImagePath = xsDataFileImage.getPath().getValue()
         # Plugin for waiting for files
-        self.edPluginExecWaitFile = self.loadPlugin(self.strPluginExecWaitFile)
-        xsDataInputWaitFile = XSDataInputWaitFile()
-        xsDataInputWaitFile.setExpectedFile(XSDataFile(XSDataString(self.strFileImagePath)))
-        xsDataInputWaitFile.setExpectedSize(XSDataInteger(100000))
-        xsDataInputWaitFile.setTimeOut(XSDataTime(self.fWaitFileTimeOut))
-        self.edPluginExecWaitFile.setDataInput(xsDataInputWaitFile)
+        self.edPluginExecMXWaitFile = self.loadPlugin(self.strPluginExecMXWaitFile)
+        xsDataInputMXWaitFile = XSDataInputMXWaitFile()
+        xsDataInputMXWaitFile.setExpectedFile(XSDataFile(XSDataString(self.strFileImagePath)))
+        xsDataInputMXWaitFile.setExpectedSize(XSDataInteger(100000))
+        xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
+        self.edPluginExecMXWaitFile.setDataInput(xsDataInputMXWaitFile)
 
 
     def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlReadImageHeaderv10.process")
-        if self.edPluginExecWaitFile is not None:
-            self.edPluginExecWaitFile.connectSUCCESS(self.doSuccessWaitFile)
-            self.edPluginExecWaitFile.connectFAILURE(self.doFailureWaitFile)
-            self.executePluginSynchronous(self.edPluginExecWaitFile)
+        if self.edPluginExecMXWaitFile is not None:
+            self.edPluginExecMXWaitFile.connectSUCCESS(self.doSuccessMXWaitFile)
+            self.edPluginExecMXWaitFile.connectFAILURE(self.doFailureMXWaitFile)
+            self.executePluginSynchronous(self.edPluginExecMXWaitFile)
 
 
     def finallyProcess(self, _edObject=None):
@@ -143,16 +143,16 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.setDataOutput(self.xsDataResultReadImageHeader)
 
 
-    def doSuccessWaitFile(self, _edPlugin):
+    def doSuccessMXWaitFile(self, _edPlugin):
         """
         The file has appeared on the disk 
         """
-        self.DEBUG("EDPluginControlReadImageHeaderv10.doSuccessWaitFile")
-        self.retrieveSuccessMessages(_edPlugin, "EDPluginControlReadImageHeaderv10.doSuccessWaitFile")
+        self.DEBUG("EDPluginControlReadImageHeaderv10.doSuccessMXWaitFile")
+        self.retrieveSuccessMessages(_edPlugin, "EDPluginControlReadImageHeaderv10.doSuccessMXWaitFile")
         # Check that we have some output
-        if self.edPluginExecWaitFile.getDataOutput().getActualFile():
+        if self.edPluginExecMXWaitFile.getDataOutput().getActualFile():
             # Read image header plugin
-            strFileImagePath = self.edPluginExecWaitFile.getDataOutput().getActualFile().getPath().getValue()
+            strFileImagePath = self.edPluginExecMXWaitFile.getDataOutput().getActualFile().getPath().getValue()
             strImageType = self.determineImageType(strFileImagePath)
             if (strImageType is not None):
                 strReadImageHeaderPluginName = self.determineExecReadImageHeaderPluginName(strImageType)
@@ -163,15 +163,15 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
                 self.edPluginExecReadImageHeader.setDataInput(self.getDataInput())
                 self.executePluginSynchronous(self.edPluginExecReadImageHeader)
         else:
-            self.doFailureWaitFile(_edPlugin)
+            self.doFailureMXWaitFile(_edPlugin)
 
     
-    def doFailureWaitFile(self, _edPlugin):
+    def doFailureMXWaitFile(self, _edPlugin):
         """
         The file has not appeared on the disk 
         """
-        self.DEBUG("EDPluginControlReadImageHeaderv10.doFailureWaitFile")
-        self.retrieveFailureMessages(_edPlugin, "EDPluginControlReadImageHeaderv10.doFailureWaitFile")
+        self.DEBUG("EDPluginControlReadImageHeaderv10.doFailureMXWaitFile")
+        self.retrieveFailureMessages(_edPlugin, "EDPluginControlReadImageHeaderv10.doFailureMXWaitFile")
         self.ERROR("Timeout when waiting for image %s" % self.strFileImagePath)
         self.setFailure()
 

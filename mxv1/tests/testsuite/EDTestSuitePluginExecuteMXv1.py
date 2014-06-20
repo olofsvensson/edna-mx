@@ -41,7 +41,7 @@ class EDTestSuitePluginExecuteMXv1(EDTestSuite):
 
     def process(self):
         self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingIndicatorsv10")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_1")
+        self.addTestSuiteFromName("EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_2")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlIndexingv10")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlGeneratePredictionv10")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlIntegrationv10")

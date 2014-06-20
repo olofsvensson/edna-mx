@@ -43,17 +43,16 @@ class EDTestCasePluginExecuteControlIndexingIndicatorsv10(EDTestCasePluginExecut
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
                                            "XSDataCollection_reference.xml"), "dataCollection")
 
+    def preProcess(self):
+        EDTestCasePluginExecute.preProcess(self)
+        self.loadTestImage([ "ref-2m_RNASE_1_0002.cbf", "ref-2m_RNASE_1_0001.cbf" ])
+
 
     def testExecute(self):
-        """
-        """
         self.run()
 
 
-
     def process(self):
-        """
-        """
         self.addTestMethod(self.testExecute)
 
 

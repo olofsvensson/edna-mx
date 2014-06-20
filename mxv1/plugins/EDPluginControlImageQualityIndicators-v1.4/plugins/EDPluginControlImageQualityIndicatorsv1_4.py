@@ -48,8 +48,8 @@ from XSDataMXv1 import XSDataIndexingInput
 
 from EDHandlerXSDataMOSFLMv10 import EDHandlerXSDataMOSFLMv10
 
-EDFactoryPluginStatic.loadModule("XSDataWaitFilev1_0")
-from XSDataWaitFilev1_0 import XSDataInputWaitFile
+EDFactoryPluginStatic.loadModule("XSDataMXWaitFilev1_0")
+from XSDataMXWaitFilev1_0 import XSDataInputMXWaitFile
 
 EDFactoryPluginStatic.loadModule("XSDataLabelitv1_1")
 from XSDataLabelitv1_1 import XSDataInputDistlSignalStrength
@@ -69,7 +69,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
 
     def __init__ (self):
         EDPluginControl.__init__(self)
-        self.strPluginWaitFileName = "EDPluginWaitFile"
+        self.strPluginMXWaitFileName = "EDPluginMXWaitFilev1_0"
         self.strPluginName = "EDPluginDistlSignalStrengthv1_1"
         self.strPluginNameThinClient = "EDPluginDistlSignalStrengthThinClientv1_1"
         self.strPluginNameControlDozor = "EDPluginControlDozorv1_0"
@@ -83,9 +83,9 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         self.listPluginExecImageQualityIndicator = []
         self.listPluginControlDozor = []
         self.xsDataResultControlImageQualityIndicators = None
-        self.edPluginWaitFile = None
+        self.edPluginMXWaitFile = None
         # Default time out for wait file
-        self.fWaitFileTimeOut = 30  # s
+        self.fMXWaitFileTimeOut = 30  # s
         # Flag for using the thin client
         self.bUseThinClient = True
         self.edPluginISPyB = None
@@ -103,7 +103,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
     def configure(self, _edPlugin=None):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlReadImageHeaderv10.configure")
-        self.fWaitFileTimeOut = float(self.config.get("waitFileTimeOut", self.fWaitFileTimeOut))
+        self.fMXWaitFileTimeOut = float(self.config.get("MXWaitFileTimeOut", self.fMXWaitFileTimeOut))
 
     
 
@@ -126,19 +126,19 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                  bDoIndexing = True
         # Loop through all the incoming reference images
         listXSDataImage = self.dataInput.image
-        xsDataInputWaitFile = XSDataInputWaitFile()
+        xsDataInputMXWaitFile = XSDataInputMXWaitFile()
         self.xsDataResultControlImageQualityIndicators = XSDataResultControlImageQualityIndicators()
         listPlugin = []
         for xsDataImage in listXSDataImage:
             if not os.path.exists(xsDataImage.path.value):
                 self.screen("Waiting for image %s" % xsDataImage.path.value)
-                self.edPluginWaitFile = self.loadPlugin(self.strPluginWaitFileName)
-                xsDataInputWaitFile.expectedFile = XSDataFile(xsDataImage.path)
-                xsDataInputWaitFile.setExpectedSize(XSDataInteger(100000))
-                xsDataInputWaitFile.setTimeOut(XSDataTime(self.fWaitFileTimeOut))
-                self.DEBUG("Wait file timeOut set to %f" % self.fWaitFileTimeOut)
-                self.edPluginWaitFile.setDataInput(xsDataInputWaitFile)
-                self.edPluginWaitFile.executeSynchronous()
+                self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
+                xsDataInputMXWaitFile.expectedFile = XSDataFile(xsDataImage.path)
+                xsDataInputMXWaitFile.setExpectedSize(XSDataInteger(100000))
+                xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
+                self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
+                self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
+                self.edPluginMXWaitFile.executeSynchronous()
             if not os.path.exists(xsDataImage.path.value):
                 strError = "Time-out while waiting for image %s" % xsDataImage.path.value
                 self.error(strError)
