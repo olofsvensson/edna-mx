@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Jun 20 02:25::00 2014 by EDGenerateDS.
+# Generated Mon Jun 23 11:03::42 2014 by EDGenerateDS.
 #
 
 import os, sys
@@ -123,21 +123,21 @@ class MixedContainer(object):
 
 
 class XSDataInputMXWaitFile(XSDataInput):
-    def __init__(self, configuration=None, timeOut=None, expectedSize=None, expectedFile=None):
+    def __init__(self, configuration=None, timeOut=None, size=None, file=None):
         XSDataInput.__init__(self, configuration)
-        if expectedFile is None:
-            self._expectedFile = None
-        elif expectedFile.__class__.__name__ == "XSDataFile":
-            self._expectedFile = expectedFile
+        if file is None:
+            self._file = None
+        elif file.__class__.__name__ == "XSDataFile":
+            self._file = file
         else:
-            strMessage = "ERROR! XSDataInputMXWaitFile constructor argument 'expectedFile' is not XSDataFile but %s" % self._expectedFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputMXWaitFile constructor argument 'file' is not XSDataFile but %s" % self._file.__class__.__name__
             raise BaseException(strMessage)
-        if expectedSize is None:
-            self._expectedSize = None
-        elif expectedSize.__class__.__name__ == "XSDataInteger":
-            self._expectedSize = expectedSize
+        if size is None:
+            self._size = None
+        elif size.__class__.__name__ == "XSDataInteger":
+            self._size = size
         else:
-            strMessage = "ERROR! XSDataInputMXWaitFile constructor argument 'expectedSize' is not XSDataInteger but %s" % self._expectedSize.__class__.__name__
+            strMessage = "ERROR! XSDataInputMXWaitFile constructor argument 'size' is not XSDataInteger but %s" % self._size.__class__.__name__
             raise BaseException(strMessage)
         if timeOut is None:
             self._timeOut = None
@@ -146,30 +146,30 @@ class XSDataInputMXWaitFile(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputMXWaitFile constructor argument 'timeOut' is not XSDataTime but %s" % self._timeOut.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'expectedFile' attribute
-    def getExpectedFile(self): return self._expectedFile
-    def setExpectedFile(self, expectedFile):
-        if expectedFile is None:
-            self._expectedFile = None
-        elif expectedFile.__class__.__name__ == "XSDataFile":
-            self._expectedFile = expectedFile
+    # Methods and properties for the 'file' attribute
+    def getFile(self): return self._file
+    def setFile(self, file):
+        if file is None:
+            self._file = None
+        elif file.__class__.__name__ == "XSDataFile":
+            self._file = file
         else:
-            strMessage = "ERROR! XSDataInputMXWaitFile.setExpectedFile argument is not XSDataFile but %s" % expectedFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputMXWaitFile.setFile argument is not XSDataFile but %s" % file.__class__.__name__
             raise BaseException(strMessage)
-    def delExpectedFile(self): self._expectedFile = None
-    expectedFile = property(getExpectedFile, setExpectedFile, delExpectedFile, "Property for expectedFile")
-    # Methods and properties for the 'expectedSize' attribute
-    def getExpectedSize(self): return self._expectedSize
-    def setExpectedSize(self, expectedSize):
-        if expectedSize is None:
-            self._expectedSize = None
-        elif expectedSize.__class__.__name__ == "XSDataInteger":
-            self._expectedSize = expectedSize
+    def delFile(self): self._file = None
+    file = property(getFile, setFile, delFile, "Property for file")
+    # Methods and properties for the 'size' attribute
+    def getSize(self): return self._size
+    def setSize(self, size):
+        if size is None:
+            self._size = None
+        elif size.__class__.__name__ == "XSDataInteger":
+            self._size = size
         else:
-            strMessage = "ERROR! XSDataInputMXWaitFile.setExpectedSize argument is not XSDataInteger but %s" % expectedSize.__class__.__name__
+            strMessage = "ERROR! XSDataInputMXWaitFile.setSize argument is not XSDataInteger but %s" % size.__class__.__name__
             raise BaseException(strMessage)
-    def delExpectedSize(self): self._expectedSize = None
-    expectedSize = property(getExpectedSize, setExpectedSize, delExpectedSize, "Property for expectedSize")
+    def delSize(self): self._size = None
+    size = property(getSize, setSize, delSize, "Property for size")
     # Methods and properties for the 'timeOut' attribute
     def getTimeOut(self): return self._timeOut
     def setTimeOut(self, timeOut):
@@ -190,14 +190,14 @@ class XSDataInputMXWaitFile(XSDataInput):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataInputMXWaitFile'):
         XSDataInput.exportChildren(self, outfile, level, name_)
-        if self._expectedFile is not None:
-            self.expectedFile.export(outfile, level, name_='expectedFile')
+        if self._file is not None:
+            self.file.export(outfile, level, name_='file')
         else:
-            warnEmptyAttribute("expectedFile", "XSDataFile")
-        if self._expectedSize is not None:
-            self.expectedSize.export(outfile, level, name_='expectedSize')
+            warnEmptyAttribute("file", "XSDataFile")
+        if self._size is not None:
+            self.size.export(outfile, level, name_='size')
         else:
-            warnEmptyAttribute("expectedSize", "XSDataInteger")
+            warnEmptyAttribute("size", "XSDataInteger")
         if self._timeOut is not None:
             self.timeOut.export(outfile, level, name_='timeOut')
     def build(self, node_):
@@ -206,15 +206,15 @@ class XSDataInputMXWaitFile(XSDataInput):
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'expectedFile':
+            nodeName_ == 'file':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setExpectedFile(obj_)
+            self.setFile(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'expectedSize':
+            nodeName_ == 'size':
             obj_ = XSDataInteger()
             obj_.build(child_)
-            self.setExpectedSize(obj_)
+            self.setSize(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'timeOut':
             obj_ = XSDataTime()
@@ -266,22 +266,8 @@ class XSDataInputMXWaitFile(XSDataInput):
 
 
 class XSDataResultMXWaitFile(XSDataResult):
-    def __init__(self, status=None, timedOut=None, actualSize=None, actualFile=None):
+    def __init__(self, status=None, timedOut=None):
         XSDataResult.__init__(self, status)
-        if actualFile is None:
-            self._actualFile = None
-        elif actualFile.__class__.__name__ == "XSDataFile":
-            self._actualFile = actualFile
-        else:
-            strMessage = "ERROR! XSDataResultMXWaitFile constructor argument 'actualFile' is not XSDataFile but %s" % self._actualFile.__class__.__name__
-            raise BaseException(strMessage)
-        if actualSize is None:
-            self._actualSize = None
-        elif actualSize.__class__.__name__ == "XSDataInteger":
-            self._actualSize = actualSize
-        else:
-            strMessage = "ERROR! XSDataResultMXWaitFile constructor argument 'actualSize' is not XSDataInteger but %s" % self._actualSize.__class__.__name__
-            raise BaseException(strMessage)
         if timedOut is None:
             self._timedOut = None
         elif timedOut.__class__.__name__ == "XSDataBoolean":
@@ -289,30 +275,6 @@ class XSDataResultMXWaitFile(XSDataResult):
         else:
             strMessage = "ERROR! XSDataResultMXWaitFile constructor argument 'timedOut' is not XSDataBoolean but %s" % self._timedOut.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'actualFile' attribute
-    def getActualFile(self): return self._actualFile
-    def setActualFile(self, actualFile):
-        if actualFile is None:
-            self._actualFile = None
-        elif actualFile.__class__.__name__ == "XSDataFile":
-            self._actualFile = actualFile
-        else:
-            strMessage = "ERROR! XSDataResultMXWaitFile.setActualFile argument is not XSDataFile but %s" % actualFile.__class__.__name__
-            raise BaseException(strMessage)
-    def delActualFile(self): self._actualFile = None
-    actualFile = property(getActualFile, setActualFile, delActualFile, "Property for actualFile")
-    # Methods and properties for the 'actualSize' attribute
-    def getActualSize(self): return self._actualSize
-    def setActualSize(self, actualSize):
-        if actualSize is None:
-            self._actualSize = None
-        elif actualSize.__class__.__name__ == "XSDataInteger":
-            self._actualSize = actualSize
-        else:
-            strMessage = "ERROR! XSDataResultMXWaitFile.setActualSize argument is not XSDataInteger but %s" % actualSize.__class__.__name__
-            raise BaseException(strMessage)
-    def delActualSize(self): self._actualSize = None
-    actualSize = property(getActualSize, setActualSize, delActualSize, "Property for actualSize")
     # Methods and properties for the 'timedOut' attribute
     def getTimedOut(self): return self._timedOut
     def setTimedOut(self, timedOut):
@@ -333,10 +295,6 @@ class XSDataResultMXWaitFile(XSDataResult):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataResultMXWaitFile'):
         XSDataResult.exportChildren(self, outfile, level, name_)
-        if self._actualFile is not None:
-            self.actualFile.export(outfile, level, name_='actualFile')
-        if self._actualSize is not None:
-            self.actualSize.export(outfile, level, name_='actualSize')
         if self._timedOut is not None:
             self.timedOut.export(outfile, level, name_='timedOut')
         else:
@@ -347,16 +305,6 @@ class XSDataResultMXWaitFile(XSDataResult):
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'actualFile':
-            obj_ = XSDataFile()
-            obj_.build(child_)
-            self.setActualFile(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'actualSize':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setActualSize(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'timedOut':
             obj_ = XSDataBoolean()
             obj_.build(child_)

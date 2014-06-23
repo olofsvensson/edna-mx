@@ -45,7 +45,7 @@ class EDTestCasePluginExecuteControlIndexingIndicatorsv10(EDTestCasePluginExecut
 
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "ref-2m_RNASE_1_0002.cbf", "ref-2m_RNASE_1_0001.cbf" ])
+        self.loadTestImage([ "ref-ms18_6_1_0001.cbf", "ref-ms18_6_1_0004.cbf" ])
 
 
     def testExecute(self):

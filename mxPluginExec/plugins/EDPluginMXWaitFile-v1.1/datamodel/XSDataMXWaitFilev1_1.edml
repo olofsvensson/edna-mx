@@ -10,13 +10,11 @@ import XSDataCommon.XSDataTime
 
 
 complex type XSDataInputMXWaitFile extends XSDataInput {
-	expectedFile : XSDataFile
-	expectedSize : XSDataInteger
+	file : XSDataFile
+	size : XSDataInteger
 	timeOut : XSDataTime optional
 }
 
 complex type XSDataResultMXWaitFile extends XSDataResult {
-	actualFile : XSDataFile optional
-	actualSize : XSDataInteger optional
 	timedOut : XSDataBoolean
 }

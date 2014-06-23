@@ -50,22 +50,19 @@ class EDTestCasePluginExecuteControlCharacterisationv1_4(EDTestCasePluginExecute
                                                      "XSDataResultCharacterisation_reference.xml"))
 
 
+    def preProcess(self):
+        EDTestCasePluginExecute.preProcess(self)
+        self.loadTestImage([ "ref-testscale_1_001.img", "ref-testscale_1_002.img" ])
+
+
+
+
     def testExecute(self):
-        """
-        """
         self.run()
 
 
 
     def process(self):
-        """
-        """
         self.addTestMethod(self.testExecute)
 
 
-
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteControlCharacterisationv1_4 = EDTestCasePluginExecuteControlCharacterisationv1_4("EDTestCasePluginExecuteControlCharacterisationv1_4")
-    edTestCasePluginExecuteControlCharacterisationv1_4.execute()

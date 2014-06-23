@@ -45,8 +45,8 @@ class EDTestCasePluginExecuteControlPyarchThumbnailGeneratorParallelv1_0(EDTestC
                                            "XSDataInputPyarchThumbnailGeneratorParallel_reference.xml"))
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "FAE_1_1_00001.cbf", "ref-testscale_1_0001.img", "ref-testscale_1_0001.img",
-                            "ref-thermo1_1_001.img", "ref-thermo1_1_001.img" ])
+        self.loadTestImage([ "FAE_1_1_00001.cbf", "ref-testscale_1_0001.img", "ref-testscale_1_0002.img",
+                            "ref-thermo1_1_001.img", "ref-thermo1_1_002.img" ])
 
 
     def readAndParseFile(self, _strFileName):

@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<XSDataInputMXWaitFile>
+	<file>
+		<path>
+			<value>/file/that/never/will/exist_1_001.cbf</value>
+		</path>
+	</file>
+</XSDataInputMXWaitFile>

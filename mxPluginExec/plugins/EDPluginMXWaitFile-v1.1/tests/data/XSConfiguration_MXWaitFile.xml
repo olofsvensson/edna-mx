@@ -2,11 +2,11 @@
 <XSConfiguration> 
 	<XSPluginList>
    		<XSPluginItem>
-			<name>EDPluginMXWaitFilev1_0</name>  
+			<name>EDPluginMXWaitFilev1_1</name>  
 			<XSParamList>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>2</value>
+					<value>5</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>		

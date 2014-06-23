@@ -47,9 +47,9 @@ from XSDataPyarchThumbnailGeneratorv1_0 import XSDataResultPyarchThumbnailGenera
 EDFactoryPluginStatic.loadModule("XSDataExecThumbnail")
 from XSDataExecThumbnail import XSDataInputExecThumbnail
 
-EDFactoryPluginStatic.loadModule("EDPluginMXWaitFilev1_0")
-from EDPluginMXWaitFilev1_0 import EDPluginMXWaitFilev1_0
-from XSDataMXWaitFilev1_0 import XSDataInputMXWaitFile
+EDFactoryPluginStatic.loadModule("EDPluginMXWaitFilev1_1")
+from EDPluginMXWaitFilev1_1 import EDPluginMXWaitFilev1_1
+from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
 
 class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
@@ -65,7 +65,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         self.setDataOutput(XSDataResultPyarchThumbnailGenerator())
         self.strExecThumbnailPluginName = "EDPluginExecThumbnailv10"
         self.edPluginExecThumbnail = None
-        self.strMXWaitFilePluginName = "EDPluginMXWaitFilev1_0"
+        self.strMXWaitFilePluginName = "EDPluginMXWaitFilev1_1"
         self.edPluginMXWaitFile = None
         self.strOutputPath = None
         self.strOutputPathWithoutExtension = None
@@ -97,11 +97,11 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         else:
             # Load the MXWaitFile plugin
             xsDataInputMXWaitFile = XSDataInputMXWaitFile()
-            xsDataInputMXWaitFile.setExpectedSize(XSDataInteger(self.iExpectedSize))
-            xsDataInputMXWaitFile.setExpectedFile(self.getDataInput().getDiffractionImage())
+            xsDataInputMXWaitFile.setSize(XSDataInteger(self.iExpectedSize))
+            xsDataInputMXWaitFile.setFile(self.getDataInput().getDiffractionImage())
             if self.getDataInput().getWaitForFileTimeOut():
                 xsDataInputMXWaitFile.setTimeOut(self.getDataInput().getWaitForFileTimeOut())
-            self.edPluginMXWaitFile = EDPluginMXWaitFilev1_0()
+            self.edPluginMXWaitFile = EDPluginMXWaitFilev1_1()
             self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
             # Load the execution plugin
             self.edPluginExecThumbnail = self.loadPlugin(self.strExecThumbnailPluginName)

@@ -48,8 +48,8 @@ from XSDataMXv1 import XSDataIndexingInput
 
 from EDHandlerXSDataMOSFLMv10 import EDHandlerXSDataMOSFLMv10
 
-EDFactoryPluginStatic.loadModule("XSDataMXWaitFilev1_0")
-from XSDataMXWaitFilev1_0 import XSDataInputMXWaitFile
+EDFactoryPluginStatic.loadModule("XSDataMXWaitFilev1_1")
+from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
 EDFactoryPluginStatic.loadModule("XSDataLabelitv1_1")
 from XSDataLabelitv1_1 import XSDataInputDistlSignalStrength
@@ -69,7 +69,7 @@ class EDPluginControlImageQualityIndicatorsv1_3(EDPluginControl):
 
     def __init__ (self):
         EDPluginControl.__init__(self)
-        self.strPluginMXWaitFileName = "EDPluginMXWaitFilev1_0"
+        self.strPluginMXWaitFileName = "EDPluginMXWaitFilev1_1"
         self.strPluginName = "EDPluginDistlSignalStrengthv1_1"
         self.strPluginNameThinClient = "EDPluginDistlSignalStrengthThinClientv1_1"
         self.strPluginNameControlBackground3D = "EDPluginControlBackground3Dv1_0"
@@ -126,10 +126,9 @@ class EDPluginControlImageQualityIndicatorsv1_3(EDPluginControl):
         listPlugin = []
         for xsDataImage in listXSDataImage:
             if not os.path.exists(xsDataImage.path.value):
-                self.screen("Waiting for image %s" % xsDataImage.path.value)
                 self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
-                xsDataInputMXWaitFile.expectedFile = XSDataFile(xsDataImage.path)
-                xsDataInputMXWaitFile.setExpectedSize(XSDataInteger(100000))
+                xsDataInputMXWaitFile.file = XSDataFile(xsDataImage.path)
+                xsDataInputMXWaitFile.setSize(XSDataInteger(100000))
                 xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
                 self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
                 self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)

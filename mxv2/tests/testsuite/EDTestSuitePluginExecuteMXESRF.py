@@ -35,7 +35,7 @@ class EDTestSuitePluginExecuteMXESRF(EDTestSuite):
 
     def process(self):
         # From execPlugins:
-        self.addTestSuiteFromName("EDTestSuitePluginMXWaitFilev1_0")
+        self.addTestSuiteFromName("EDTestSuitePluginExecuteMXWaitFilev1_1")
         self.addTestSuiteFromName("EDTestSuitePluginExecThumbnailv10")
         # From mxPluginExec:
         self.addTestSuiteFromName("EDTestSuitePluginUnitMXPluginExec")

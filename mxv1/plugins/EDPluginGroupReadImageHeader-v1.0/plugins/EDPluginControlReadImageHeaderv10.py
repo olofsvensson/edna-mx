@@ -44,8 +44,8 @@ from XSDataCommon import XSDataString
 from XSDataMXv1 import XSDataInputReadImageHeader
 from XSDataMXv1 import XSDataResultReadImageHeader
 
-EDFactoryPluginStatic.loadModule("XSDataMXWaitFilev1_0")
-from XSDataMXWaitFilev1_0 import XSDataInputMXWaitFile
+EDFactoryPluginStatic.loadModule("XSDataMXWaitFilev1_1")
+from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
 class EDPluginControlReadImageHeaderv10(EDPluginControl):
 
@@ -71,7 +71,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.strPilatus2M = "Pilatus2M"
         self.strPilatus6M = "Pilatus6M"
         #
-        self.strPluginExecMXWaitFile = "EDPluginMXWaitFilev1_0"
+        self.strPluginExecMXWaitFile = "EDPluginMXWaitFilev1_1"
         self.strPluginExecReadImageHeaderADSC = "EDPluginExecReadImageHeaderADSCv10"
         self.strPluginExecReadImageHeaderMARCCD = "EDPluginExecReadImageHeaderMARCCDv10"
         self.strPluginExecReadImageHeaderPilatus2M = "EDPluginExecReadImageHeaderPilatus2Mv10"
@@ -119,8 +119,8 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         # Plugin for waiting for files
         self.edPluginExecMXWaitFile = self.loadPlugin(self.strPluginExecMXWaitFile)
         xsDataInputMXWaitFile = XSDataInputMXWaitFile()
-        xsDataInputMXWaitFile.setExpectedFile(XSDataFile(XSDataString(self.strFileImagePath)))
-        xsDataInputMXWaitFile.setExpectedSize(XSDataInteger(100000))
+        xsDataInputMXWaitFile.setFile(XSDataFile(XSDataString(self.strFileImagePath)))
+        xsDataInputMXWaitFile.setSize(XSDataInteger(100000))
         xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
         self.edPluginExecMXWaitFile.setDataInput(xsDataInputMXWaitFile)
 
@@ -150,10 +150,9 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.DEBUG("EDPluginControlReadImageHeaderv10.doSuccessMXWaitFile")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlReadImageHeaderv10.doSuccessMXWaitFile")
         # Check that we have some output
-        if self.edPluginExecMXWaitFile.getDataOutput().getActualFile():
+        if not self.edPluginExecMXWaitFile.dataOutput.timedOut.value:
             # Read image header plugin
-            strFileImagePath = self.edPluginExecMXWaitFile.getDataOutput().getActualFile().getPath().getValue()
-            strImageType = self.determineImageType(strFileImagePath)
+            strImageType = self.determineImageType(self.strFileImagePath)
             if (strImageType is not None):
                 strReadImageHeaderPluginName = self.determineExecReadImageHeaderPluginName(strImageType)
                 # Will be changed once code review #240 is ready
