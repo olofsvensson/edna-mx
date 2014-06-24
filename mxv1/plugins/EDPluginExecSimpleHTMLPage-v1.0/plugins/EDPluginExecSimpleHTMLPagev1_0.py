@@ -569,10 +569,16 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         
     def imageQualityIndicatorResults(self):
         listXSDataResultImageQualityIndicators = self.xsDataResultCharacterisation.imageQualityIndicators
+        bDozor = False
+        for xsDataResultImageQualityIndicators in listXSDataResultImageQualityIndicators:
+            if xsDataResultImageQualityIndicators.dozor_score is not None:
+                bDozor = True
         self.page.h3("Image quality indicators")
         self.page.table( class_='imageQualityIndicatorResults', border_="1", cellpadding_="0")
         self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle2  )
         self.page.th("File")
+        if bDozor:
+            self.page.th("Dozor score")
         self.page.th("Tot integr signal")
         self.page.th("Spot total")
         self.page.th("In-Res Total")
@@ -585,6 +591,11 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         for xsDataResultImageQualityIndicators in listXSDataResultImageQualityIndicators:
             self.page.tr( align_="CENTER", bgcolor_=self.strTableColourRows )
             self.page.td("%s" % os.path.basename(xsDataResultImageQualityIndicators.image.path.value))
+            if bDozor:
+                if xsDataResultImageQualityIndicators.dozor_score:
+                    self.page.td("%.1f" % xsDataResultImageQualityIndicators.dozor_score.value)
+                else:
+                    self.page.td("NA")                    
             if xsDataResultImageQualityIndicators.totalIntegratedSignal:
                 self.page.td("%.0f" % xsDataResultImageQualityIndicators.totalIntegratedSignal.value)
             else:

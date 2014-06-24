@@ -371,6 +371,9 @@
             </subWedge>
         </dataCollection>
         <imageQualityIndicators>
+        	<dozor_score>
+        		<value>15.4</value>
+        	</dozor_score>
             <binPopCutOffMethod2Res>
                 <value>2.000000e+01</value>
             </binPopCutOffMethod2Res>
