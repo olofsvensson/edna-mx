@@ -53,9 +53,9 @@ from XSDataMXv1                        import XSDataStructure
 from XSDataMXv1                        import XSDataSolvent
 from XSDataMXv1                        import XSDataChemicalCompositionMM
 
-EDFactoryPluginStatic.loadModule("XSDataPlotGlev1_0")
-from XSDataPlotGlev1_0 import XSDataInputPlotGle
-from XSDataPlotGlev1_0 import XSDataGlePlot
+EDFactoryPluginStatic.loadModule("XSDataPlotGlev1_1")
+from XSDataPlotGlev1_1 import XSDataInputPlotGle
+from XSDataPlotGlev1_1 import XSDataGlePlot
 
 class EDPluginControlStrategyv1_2(EDPluginControl):
     """
@@ -76,7 +76,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
         self._edPluginBest = None
         self._edHandlerXSDataBest = None
 
-        self._strPluginPlotGleName = "EDPluginExecPlotGlev1_0"
+        self._strPluginPlotGleName = "EDPluginExecPlotGlev1_1"
         self._edPluginPlotGle = None
 
         self._strCONF_SYMOP_HOME = "symopHome"

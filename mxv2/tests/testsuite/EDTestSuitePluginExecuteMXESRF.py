@@ -36,13 +36,13 @@ class EDTestSuitePluginExecuteMXESRF(EDTestSuite):
     def process(self):
         # From execPlugins:
         self.addTestSuiteFromName("EDTestSuitePluginExecuteMXWaitFilev1_1")
-        self.addTestSuiteFromName("EDTestSuitePluginExecThumbnailv10")
+        self.addTestSuiteFromName("EDTestSuitePluginExecuteMXThumbnailv1_1")
         # From mxPluginExec:
         self.addTestSuiteFromName("EDTestSuitePluginUnitMXPluginExec")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteMXPluginExec")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteISPyBv1_4")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteSTACv2_0")
-        self.addTestSuiteFromName("EDTestSuitePluginPlotGlev1_0")
+        self.addTestSuiteFromName("EDTestSuitePluginPlotGlev1_1")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteXdsBurnStrategy")
         self.addTestCaseFromName("EDTestCasePluginExecuteDistlSignalStrengthThinClientv1_1")
         # From mxv1:

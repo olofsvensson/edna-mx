@@ -64,19 +64,9 @@ class EDTestCasePluginExecutePluginControlReadImageHeaderv10_ADSC_waitFile(EDTes
         pyTimer.start()
         self.run()
         pyTimer.cancel()
+        shutil.rmtree(self.strTmpDir)
 
 
     def process(self):
         self.addTestMethod(self.testExecute)
 
-    def postProcess(self):
-        EDTestCasePluginExecutePluginControlReadImageHeaderv10.postProcess(self)
-        shutil.rmtree(self.strTmpDir)
-
-
-
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecutePluginControlReadImageHeaderv10_ADSC_waitFile = EDTestCasePluginExecutePluginControlReadImageHeaderv10_ADSC_waitFile("EDTestCasePluginExecutePluginControlReadImageHeaderv10_ADSC_waitFile")
-    edTestCasePluginExecutePluginControlReadImageHeaderv10_ADSC_waitFile.execute()

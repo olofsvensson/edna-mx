@@ -47,13 +47,11 @@ class EDTestSuiteKernelUnit(EDTestSuite):
         self.addTestCaseFromName("EDTestCaseEDUtilsImage")
         self.addTestCaseFromName("EDTestCaseEDUtilsTable")
         self.addTestCaseFromName("EDTestCaseEDUtilsSymmetry")
-        self.addTestCaseFromName("EDTestCaseEDUtilsArray")
         self.addTestCaseFromName("EDTestCaseEDUtilsUnit")
         self.addTestCaseFromName("EDTestCaseEDUtilsPlatform")
         self.addTestCaseFromName("EDTestCaseEDFactoryPlugin")
         self.addTestCaseFromName("EDTestCaseEDFactoryPluginTest")
         self.addTestCaseFromName("EDTestCaseEDStatus")
-        self.addTestCaseFromName("EDTestCaseEDShare")
 
 
 if __name__ == '__main__':

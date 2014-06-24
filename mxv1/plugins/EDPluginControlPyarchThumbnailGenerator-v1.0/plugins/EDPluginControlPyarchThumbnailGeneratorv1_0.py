@@ -25,7 +25,7 @@ __author__ = "Olof Svensson"
 __license__ = "GPLv3+"
 __copyright__ = "Copyrigth (c) 2010 ESRF"
 
-import os, tempfile
+import os, tempfile, Image
 
 from EDVerbose import EDVerbose
 from EDPluginControl import EDPluginControl
@@ -44,8 +44,8 @@ from XSDataCommon import XSDataString
 from XSDataPyarchThumbnailGeneratorv1_0 import XSDataInputPyarchThumbnailGenerator
 from XSDataPyarchThumbnailGeneratorv1_0 import XSDataResultPyarchThumbnailGenerator
 
-EDFactoryPluginStatic.loadModule("XSDataExecThumbnail")
-from XSDataExecThumbnail import XSDataInputExecThumbnail
+EDFactoryPluginStatic.loadModule("XSDataMXThumbnailv1_1")
+from XSDataMXThumbnailv1_1 import XSDataInputMXThumbnail
 
 EDFactoryPluginStatic.loadModule("EDPluginMXWaitFilev1_1")
 from EDPluginMXWaitFilev1_1 import EDPluginMXWaitFilev1_1
@@ -54,7 +54,7 @@ from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
 class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
     """
-    This control plugin uses EDPluginExecThumbnailv10 for creating two JPEG images from
+    This control plugin uses EDPluginMXThumbnailv1_1 for creating two JPEG images from
     a diffraction image: one 1024x1024 (imagename.jpeg) and one 256x256 (imagename.thumb.jpeg).    
     """
 
@@ -63,7 +63,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataInputPyarchThumbnailGenerator)
         self.setDataOutput(XSDataResultPyarchThumbnailGenerator())
-        self.strExecThumbnailPluginName = "EDPluginExecThumbnailv10"
+        self.strExecThumbnailPluginName = "EDPluginMXThumbnailv1_1"
         self.edPluginExecThumbnail = None
         self.strMXWaitFilePluginName = "EDPluginMXWaitFilev1_1"
         self.edPluginMXWaitFile = None
@@ -105,18 +105,10 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
             self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
             # Load the execution plugin
             self.edPluginExecThumbnail = self.loadPlugin(self.strExecThumbnailPluginName)
-            xsDataInputExecThumbnail = XSDataInputExecThumbnail()
-            xsDataInputExecThumbnail.setInputImagePath(self.getDataInput().getDiffractionImage())
-            xsDataInputExecThumbnail.setLevelsInvert(XSDataBoolean(True))
-            xsDataInputExecThumbnail.setLevelsMin(XSDataDoubleWithUnit(0.0))
-            xsDataDoubleWithUnitLevelsMax = XSDataDoubleWithUnit(99.95)
-            xsDataDoubleWithUnitLevelsMax.setUnit(XSDataString("%"))
-            xsDataInputExecThumbnail.setLevelsMax(xsDataDoubleWithUnitLevelsMax)
-            xsDataInputExecThumbnail.setFilterDilatation([XSDataInteger(4)])
-            xsDataInputExecThumbnail.setLevelsColorize(XSDataBoolean(False))
-            xsDataInputExecThumbnail.setThumbHeight(XSDataInteger(1024))
-            xsDataInputExecThumbnail.setThumbWidth(XSDataInteger(1024))
-            xsDataInputExecThumbnail.setKeepRatio(XSDataBoolean(False))
+            xsDataInputMXThumbnail = XSDataInputMXThumbnail()
+            xsDataInputMXThumbnail.image = self.getDataInput().getDiffractionImage()
+            xsDataInputMXThumbnail.height = XSDataInteger(1024)
+            xsDataInputMXThumbnail.width = XSDataInteger(1024)
             # Output path
             strImageNameWithoutExt = os.path.basename(os.path.splitext(strPathToDiffractionImage)[0])
             strImageDirname = os.path.dirname(strPathToDiffractionImage)
@@ -148,8 +140,8 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
                     self.warning("Writing thumbnail images to: %s" % strOutputDirname)
                 self.strOutputPathWithoutExtension = os.path.join(strOutputDirname, strImageNameWithoutExt)
             self.strOutputPath = os.path.join(self.strOutputPathWithoutExtension + ".jpeg")
-            xsDataInputExecThumbnail.setOutputPath(XSDataFile(XSDataString(self.strOutputPath)))
-            self.edPluginExecThumbnail.setDataInput(xsDataInputExecThumbnail)
+            xsDataInputMXThumbnail.setOutputPath(XSDataFile(XSDataString(self.strOutputPath)))
+            self.edPluginExecThumbnail.setDataInput(xsDataInputMXThumbnail)
 
 
     def process(self, _edObject=None):
@@ -198,21 +190,15 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
     def doSuccessExecThumbnail(self, _edPlugin=None):
         self.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.doSuccessExecThumbnail")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlPyarchThumbnailGeneratorv1_0.doSuccessExecThumbnail")
+        self.xsDataFilePathToThumbnail = self.edPluginExecThumbnail.dataOutput.thumbnail
         # Retrieve the output path
-        self.xsDataFilePathToThumbnail = self.edPluginExecThumbnail.getDataOutput().getThumbnailPath()
-        # Run the plugin again, this time with the first thumbnail as input
-        self.edPluginExecThumbnail2 = self.loadPlugin(self.strExecThumbnailPluginName)
-        xsDataInputExecThumbnail = XSDataInputExecThumbnail()
-        xsDataInputExecThumbnail.setInputImagePath(self.edPluginExecThumbnail.getDataOutput().getThumbnailPath())
-        xsDataInputExecThumbnail.setThumbHeight(XSDataInteger(256))
-        xsDataInputExecThumbnail.setThumbWidth(XSDataInteger(256))
-        xsDataInputExecThumbnail.setKeepRatio(XSDataBoolean(False))
-        xsDataInputExecThumbnail.setOutputPath(XSDataFile(XSDataString(self.strOutputPathWithoutExtension + ".thumb.jpeg")))
-        self.edPluginExecThumbnail2.setDataInput(xsDataInputExecThumbnail)
-        self.edPluginExecThumbnail2.connectSUCCESS(self.doSuccessExecThumbnail2)
-        self.edPluginExecThumbnail2.connectFAILURE(self.doFailureExecThumbnail2)
-        self.edPluginExecThumbnail2.executeSynchronous()
-
+        pathToThumbnail = self.xsDataFilePathToThumbnail.path.value
+        outfile = os.path.splitext(pathToThumbnail)[0] + ".thumbnail.jpg"
+        size = [256, 256]
+        im = Image.open(pathToThumbnail)
+        im.thumbnail(size, Image.ANTIALIAS)
+        im.save(outfile, "JPEG")
+        self.xsDataFilePathToThumbnail2 = XSDataFile(XSDataString(outfile))
 
 
     def doFailureExecThumbnail(self, _edPlugin=None):
@@ -221,16 +207,4 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         # To be removed if failure of the exec plugin shouldn't make the control plugin to fail:
         self.setFailure()
 
-
-    def doSuccessExecThumbnail2(self, _edPlugin=None):
-        self.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.doSuccessExecThumbnail2")
-        self.retrieveSuccessMessages(_edPlugin, "EDPluginControlPyarchThumbnailGeneratorv1_0.doSuccessExecThumbnail2")
-        self.xsDataFilePathToThumbnail2 = self.edPluginExecThumbnail2.getDataOutput().getThumbnailPath()
-
-
-    def doFailureExecThumbnail2(self, _edPlugin=None):
-        self.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.doFailureExecThumbnail2")
-        self.retrieveFailureMessages(_edPlugin, "EDPluginControlPyarchThumbnailGeneratorv1_0.doFailureExecThumbnail2")
-        # To be removed if failure of the exec plugin shouldn't make the control plugin to fail:
-        self.setFailure()
 

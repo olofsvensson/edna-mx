@@ -73,7 +73,7 @@ from EDThreading            import Semaphore
 
 
 #As an example, you can define the plugin name here
-EDNAPluginName = "EDPluginExecThumbnailv10"
+EDNAPluginName = "EDPluginMXThumbnailv1_1"
 
 #Here we defile three functions for managing XML strings
 def fnXMLinExample(_strFilename):

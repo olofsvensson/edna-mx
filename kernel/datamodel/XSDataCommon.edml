@@ -39,16 +39,6 @@ package XSDataCommon {
 
 	package CommonComplexTypes {
 
-		complex type XSDataArray extends XSData {
-			"md5 checksum has to be calculated on the decoded data, not the encoded one. Default encoding is \"base64\" default byte order is \"little-endian\" (intel) not \"big-endian\" (java)"
-			coding : XSDataString optional
-			data : string
-			dtype : string
-			md5sum : XSDataString optional
-			shape : integer []
-			size : integer
-		}
-
 		complex type XSDataDictionary {
 			keyValuePair : XSDataKeyValuePair [] optional
 		}
@@ -62,13 +52,6 @@ package XSDataCommon {
 			"These objects use the simple objects described above to create useful structures for the rest for the data model."
 			date : XSDataString optional
 			number : XSDataInteger optional
-		}
-
-		complex type XSDataImageExt extends XSDataImage {
-			"Represents an image that can either be in a file (path), either inside the XML (array) or as a reference for EDShare (shared) "
-			array : XSDataArray optional
-			exposureTime : XSDataTime optional
-			shared : XSDataString optional
 		}
 
 		complex type XSDataKeyValuePair {

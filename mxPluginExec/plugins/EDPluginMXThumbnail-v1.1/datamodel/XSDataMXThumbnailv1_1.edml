@@ -1,0 +1,17 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+
+complex type XSDataInputMXThumbnail extends XSDataInput {
+	image: XSDataFile
+	height: XSDataInteger optional
+	width: XSDataInteger optional
+	outputPath: XSDataFile optional
+}
+
+complex type XSDataResultMXThumbnail extends XSDataResult {
+	thumbnail: XSDataFile
+}

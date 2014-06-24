@@ -77,14 +77,11 @@ class EDTestCasePluginExecuteControlImageQualityIndicatorsv1_4_waitFile(EDTestCa
         pyTimer.start()
         self.run()
         pyTimer.cancel()
+        shutil.rmtree(self.strTmpDir)
+        if self.strTmpDirOrig is not None:
+            os.environ["EDNA_TMP_DIR"] = self.strTmpDirOrig
 
 
     def process(self):
         self.addTestMethod(self.testExecute)
-
-    def finallyProcess(self):
-        EDTestCasePluginExecute.finallyProcess(self)
-        shutil.rmtree(self.strTmpDir)
-        if self.strTmpDirOrig is not None:
-            os.environ["EDNA_TMP_DIR"] = self.strTmpDirOrig
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<XSDataInputMXThumbnail>
+	<image>
+		<path>
+			<value>${EDNA_TESTIMAGES}/ref-testscale_1_001.img</value>
+		</path>
+	</image>
+	<height>
+		<value>256</value>
+	</height>
+	<width>
+		<value>256</value>
+	</width>
+</XSDataInputMXThumbnail>
