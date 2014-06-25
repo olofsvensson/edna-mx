@@ -57,6 +57,8 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
         self.strMOSFLMNewmatFileName = None
         self.strMOSFLMMatrixFileName = None
         self.bReversephi = False
+        self.fPolarization = None
+        self.iOmega = None
         self.strRaster = None
 
     def process(self, _edObject=None):
@@ -82,7 +84,12 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
         self.setScriptCommandline(" DNA " + self.getScriptBaseName() + "_dnaTables.xml")
         # Check for reversephi configuration option
         self.bReversephi = self.config.get("reversephi")
-        self.fPolarization = float(self.config.get("polarization"))
+        self.fPolarization = self.config.get("polarization")
+        if self.fPolarization is not None:
+            self.fPolarization = float(self.fPolarization)
+        self.iOmega = self.config.get("omega")
+        if self.iOmega is not None:
+            self.iOmega = int(self.iOmega)
         self.strRaster = self.config.get("raster")
 
 
@@ -128,7 +135,13 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
             if (xsDataMOSFLMDetector is not None):
                 strDetectorType = xsDataMOSFLMDetector.getType()
                 if (strDetectorType is not None):
-                    self.addListCommandExecution("DETECTOR " + strDetectorType.getValue())
+                    # Check if reversephi and omega are configured
+                    strExtraCommand = ""
+                    if (self.iOmega is not None):
+                        strExtraCommand += " OMEGA %d" % self.iOmega
+                    if self.bReversephi:
+                        strExtraCommand += " REVERSEPHI"
+                    self.addListCommandExecution("DETECTOR " + strDetectorType.getValue() + strExtraCommand)
 
             xsDataStringDirectory = xsDataMOSFLMInput.getDirectory()
             if (xsDataStringDirectory is not None):
@@ -187,9 +200,6 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
                     self.addListCommandExecution("LIMITS EXCLUDE  70.00  0.0 73.10  423.6")
                     self.addListCommandExecution("LIMITS EXCLUDE  33.54  0.0 36.64  423.6")
             
-            # Check if reversephi is configured
-            if self.bReversephi:
-                self.addListCommandExecution("DETECTOR REVERSEPHI")
 
             # Check if raster is configured
             if self.strRaster:
