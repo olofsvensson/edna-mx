@@ -370,6 +370,50 @@
                 </subWedgeNumber>
             </subWedge>
         </dataCollection>
+	    <jpegImage>
+	        <path>
+	            <value>${EDNA_TESTIMAGES}/ref-testscale_1_001.jpg</value>
+	        </path>
+	        <date>
+	            <value>Mon Mar 20 12:38:23 2006</value>
+	        </date>
+	        <number>
+	            <value>1</value>
+	        </number>
+	    </jpegImage>
+	    <jpegImage>
+	        <path>
+	            <value>${EDNA_TESTIMAGES}/ref-testscale_1_002.jpg</value>
+	        </path>
+	        <date>
+	            <value>Mon Mar 20 12:38:28 2006</value>
+	        </date>
+	        <number>
+	            <value>2</value>
+	        </number>
+	    </jpegImage>
+	    <thumbnailImage>
+	        <path>
+	            <value>${EDNA_TESTIMAGES}/ref-testscale_1_001.thumbnail.jpg</value>
+	        </path>
+	        <date>
+	            <value>Mon Mar 20 12:38:23 2006</value>
+	        </date>
+	        <number>
+	            <value>1</value>
+	        </number>
+	    </thumbnailImage>
+	    <thumbnailImage>
+	        <path>
+	            <value>${EDNA_TESTIMAGES}/ref-testscale_1_002.thumbnail.jpg</value>
+	        </path>
+	        <date>
+	            <value>Mon Mar 20 12:38:28 2006</value>
+	        </date>
+	        <number>
+	            <value>2</value>
+	        </number>
+	    </thumbnailImage>
         <imageQualityIndicators>
         	<dozor_score>
         		<value>15.4</value>
