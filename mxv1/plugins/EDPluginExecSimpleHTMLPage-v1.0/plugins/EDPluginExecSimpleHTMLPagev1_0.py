@@ -732,7 +732,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 im.thumbnail(size, Image.ANTIALIAS)
                 im.save(outfile, "JPEG")
                 self.page.a( href=strPageGraphFileName)
-                self.page.img( src=outfile, title=strFileName )
+                self.page.img( src=os.path.basename(outfile), title=strFileName )
                 self.page.a.close()
                 self.page.td.close()
                 iIndex += 1
