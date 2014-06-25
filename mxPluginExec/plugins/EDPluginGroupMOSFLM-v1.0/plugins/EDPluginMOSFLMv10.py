@@ -82,6 +82,7 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
         self.setScriptCommandline(" DNA " + self.getScriptBaseName() + "_dnaTables.xml")
         # Check for reversephi configuration option
         self.bReversephi = self.config.get("reversephi")
+        self.fPolarization = float(self.config.get("polarization"))
         self.strRaster = self.config.get("raster")
 
 
@@ -194,6 +195,9 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
             if self.strRaster:
                 self.addListCommandExecution("RASTER %s" % self.strRaster)
 
+            # Check if polarization is configured
+            if self.fPolarization is not None:
+                self.addListCommandExecution("POLARIZATION %f" % self.fPolarization )
 
 
     def getNewmatFileName(self):
