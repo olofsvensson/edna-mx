@@ -570,8 +570,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                         self.page.tr.close()
                         self.page.table.close()
                         self.page.td.close()
-                self.page.table.close()
-                self.page.div.close()
+            self.page.table.close()
+            self.page.div.close()
 
 
     def createTableWithIndexResults(self, _xsDataResultIndexing, _strForcedSpaceGroup):
