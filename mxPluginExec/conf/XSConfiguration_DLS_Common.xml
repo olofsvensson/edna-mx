@@ -262,7 +262,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/dls_sw/apps/XDS/dec12c/xds</value>
+					<value>/dls_sw/apps/XDS/10jan2014/xds</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessWorkingDirectory</name>
@@ -307,7 +307,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>BCMDEF</name>
-					<value>/dls_sw/$BEAMLINE/etc/stac/BCM.dat_dls</value>
+					<value>$EDNA_HOME/mxPluginExec/plugins/EDPluginGroupSTAC-v2.0/config/BCM_$EDNA_SITE.dat</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -336,7 +336,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>BCMDEF</name>
-					<value>/dls_sw/$BEAMLINE/etc/stac/BCM.dat_dls</value>
+					<value>$EDNA_HOME/mxPluginExec/plugins/EDPluginGroupSTAC-v2.0/config/BCM_$EDNA_SITE.dat</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -365,7 +365,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>BCMDEF</name>
-					<value>/dls_sw/$BEAMLINE/etc/stac/BCM.dat_dls</value>
+					<value>$EDNA_HOME/mxPluginExec/plugins/EDPluginGroupSTAC-v2.0/config/BCM_$EDNA_SITE.dat</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>

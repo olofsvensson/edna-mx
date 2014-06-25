@@ -37,5 +37,5 @@ class EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_2(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_2")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_2_waitFile")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_2_timeOut")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_2_mesh4x4")
+#         self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_2_mesh4x4")
 
