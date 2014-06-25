@@ -41,6 +41,7 @@ class EDTestCasePluginExecutePluginControlReadImageHeaderv10_failure(EDTestCaseP
         self.setConfigurationFile(os.path.join(self.getPluginTestsDataHome(), "XSConfiguration.xml"))
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputReadImageHeader_failure.xml"))
         self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultReadImageHeader_failure.xml"))
+        self.setNoExpectedWarningMessages(1)
         self.setNoExpectedErrorMessages(1)
         self.setAcceptPluginFailure(True)
 

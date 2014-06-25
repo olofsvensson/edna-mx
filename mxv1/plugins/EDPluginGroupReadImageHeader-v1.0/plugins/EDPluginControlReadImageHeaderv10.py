@@ -148,9 +148,9 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         The file has appeared on the disk 
         """
         self.DEBUG("EDPluginControlReadImageHeaderv10.doSuccessMXWaitFile")
-        self.retrieveSuccessMessages(_edPlugin, "EDPluginControlReadImageHeaderv10.doSuccessMXWaitFile")
         # Check that we have some output
         if not self.edPluginExecMXWaitFile.dataOutput.timedOut.value:
+            self.retrieveSuccessMessages(_edPlugin, "EDPluginControlReadImageHeaderv10.doSuccessMXWaitFile")
             # Read image header plugin
             strImageType = self.determineImageType(self.strFileImagePath)
             if (strImageType is not None):
