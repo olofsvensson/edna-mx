@@ -232,7 +232,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
             self._xsDataResultCharacterisation.addJpegImage(jpegImage)        
             tuplePlugin[2].synchronize()
             thumbnailImage = image.copy()
-            thumbnailImage.path = tuplePlugin[1].dataOutput.thumbnail.path
+            thumbnailImage.path = tuplePlugin[2].dataOutput.thumbnail.path
             self._xsDataResultCharacterisation.addThumbnailImage(thumbnailImage)        
         if self._edPluginControlGeneratePrediction.isRunning():
             self._edPluginControlGeneratePrediction.synchronize()
