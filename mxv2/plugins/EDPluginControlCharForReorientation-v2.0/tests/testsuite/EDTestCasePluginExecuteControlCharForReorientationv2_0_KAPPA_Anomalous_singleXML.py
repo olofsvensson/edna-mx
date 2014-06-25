@@ -66,17 +66,17 @@ class EDTestCasePluginExecuteControlCharForReorientationv2_0_KAPPA_Anomalous_sin
 
         xsDataResultCharacterisationv2_0 = plugin.getDataOutput()
 
-        EDAssert.equal(True, xsDataResultCharacterisationv2_0.getMxv1ResultCharacterisation_Reference()    is not None)
-        EDAssert.equal(True, xsDataResultCharacterisationv2_0.getMxv1ResultCharacterisation()    is not None)
-        EDAssert.equal(True, xsDataResultCharacterisationv2_0.getSuggestedStrategy()    is not None)
-        EDAssert.equal(True, xsDataResultCharacterisationv2_0.getPossibleOrientations()    is not None)
+        EDAssert.equal(True, xsDataResultCharacterisationv2_0.getMxv1ResultCharacterisation_Reference()    is not None, "Mxv1ResultCharacterisation_Reference")
+        EDAssert.equal(True, xsDataResultCharacterisationv2_0.getMxv1ResultCharacterisation()    is not None, "Mxv1ResultCharacterisation")
+        EDAssert.equal(True, xsDataResultCharacterisationv2_0.getSuggestedStrategy()    is not None, "SuggestedStrategy")
+        EDAssert.equal(True, xsDataResultCharacterisationv2_0.getPossibleOrientations()    is not None, "PossibleOrientations")
 
         xsDataResultCharacterisation = xsDataResultCharacterisationv2_0.getMxv1ResultCharacterisation()
 
         # There should be indexing results, integration results and strategy results
-        EDAssert.equal(True, xsDataResultCharacterisation.getIndexingResult()    is not None)
-        EDAssert.equal(True, xsDataResultCharacterisation.getIntegrationResult() is not None)
-        EDAssert.equal(True, xsDataResultCharacterisation.getStrategyResult()    is not None)
+        EDAssert.equal(True, xsDataResultCharacterisation.getIndexingResult()    is not None, "Indexing results")
+        EDAssert.equal(True, xsDataResultCharacterisation.getIntegrationResult() is not None, "Integration results")
+        EDAssert.equal(True, xsDataResultCharacterisation.getStrategyResult()    is not None, "Strategy results")
 
 
 

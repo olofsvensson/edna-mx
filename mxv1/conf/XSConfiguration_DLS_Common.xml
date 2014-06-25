@@ -111,5 +111,14 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginControlImageQualityIndicatorsv1_2</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>do_ispyb_upload</name>
+					<value>false</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
 	</XSPluginList> 
 </XSConfiguration> 

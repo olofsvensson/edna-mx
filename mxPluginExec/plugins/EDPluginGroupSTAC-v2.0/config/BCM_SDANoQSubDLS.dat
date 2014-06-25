@@ -1,0 +1,93 @@
+# GONIO Calibration Settings
+OmegaRot -4.6E-4 7.9E-4 1.0
+KappaRot 0.29384 0.2818 0.91337
+PhiRot -0.0124 0.01037 0.99987
+KappaTrans 2.86846 0.01586 -0.29043
+PhiTrans 2.79688 -0.07062 -0.3294
+KappaTransD -0.91165 -0.291 -0.2902
+PhiTransD -0.99997 0.00425 -0.00659
+
+SECTION STAC_GUI
+##################################
+STAC_GUI_language English
+
+SECTION STAC_GUI_English
+##################################
+V1 vSpindle
+V2 vBeam
+V1_TOOLTIP Vector vSpindle along the Spindle \n Vector vBeam in the plane of spindle and beam
+NEW_XTAL New Xtal
+NEW_XTAL_TOOLTIP Start to work with a new crystal \n Start with this button when a new crystal is mounted!
+
+SECTION STAC_GUI_Magyar
+##################################
+V1 vForgas
+V2 vSugar
+V1_TOOLTIP A vForgas vektor keruljon a forgastengellyel parhuzamos helyzetbe \n A vSugar vektor keruljon a Sugar es a forgastengely sikjaba. \n Amennyiben a Kozel be van kapcsolva, akkor iterativ kozelito szamitas vegzese szukseg eseten.
+NEW_XTAL UJ!
+NEW_XTAL_TOOLTIP Kiserlet kezdese egy uj kristallyal 
+
+SECTION Alignment_Plugins
+##################################
+Alignment_Plugin AlignmentPlugin_gonset
+
+SECTION Strategy_Plugins
+##################################
+Strategy_Plugin StrategyPlugin_strategy
+
+SECTION BCM_Plugins
+##################################
+BCM_Plugin BCMplugin_base
+#vBCM_configuration vBCM.dat_esrf
+
+SECTION Stac_BCMplugin_gda
+##################################
+#source:
+#  CACHE        - 0
+#  CACHE_DEVICE - 1
+#  DEVICE       - 2
+SOURCE 1
+# motorDescriptor:
+# eg:
+# motorName   motorName  multiplication factor    offset
+# (in STAC)   (in gda) (gdaValue=StacValue*f+offset)
+#
+X gonx_mm 1 0.0
+Y samy_mm 1 0.0
+Z samz_mm 1 0.0
+Omega gonomega 1 0
+Kappa gonkappa 1 0
+Phi gonphi 1 0
+#
+# remark:
+# mulfac assumes that calibration has been done, and the
+# motors are aligned to the lab axes, otherwise
+# [XYZ] <-> [spec translation] would require a 3d transformation
+#
+SYNC_MOVE SyncMoveMotors 0 0
+CENTER_NEEDLE CenterNeedle 0 0
+CENTERNEEDLERADIUS CenterNeedleRadius 0 0
+STATUSREQUEST State 0 0
+STATUSOK STANDBY 0 0
+STATUSMOVE MOVING 0 0
+
+SECTION Stac_BCMplugin_vBCM_vBCM.dat_esrf
+##################################
+# motorDescriptor:
+# eg:
+# motorName   motorName  multiplication factor    offset
+# (in STAC)   (in tango) (tangoValue=StacValue*f+offset)
+#
+X   X   .001000   0.0010000000000004148   
+Y   Y   .001000   0.0048000000000002286   
+Z   Z   .001000   -0.007300000000000717   
+Omega     Omega                 1           0
+Kappa     Kappa                1           0
+Phi       Phi                   1           0
+#
+# remark:
+# mulfac assumes that calibration has been done, and the
+# motors are aligned to the lab axes, otherwise
+# [XYZ] <-> [spec translation] would require a 3d transformation
+#
+
