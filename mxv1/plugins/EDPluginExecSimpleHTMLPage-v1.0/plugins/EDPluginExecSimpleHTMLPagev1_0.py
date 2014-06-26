@@ -620,13 +620,13 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.page.table.close()
         # Some info about Dozor and Labelit
         if bDozor:
-            self.page.strong("1. Dozor score: criteria of diffractuion signal strength that uses intensities over background vs resolution. Popov 2014, to be published.")
+            self.page.strong("1. Dozor score: criteria of diffraction signal strength that uses intensities over background vs resolution. Popov 2014, to be published.")
             self.page.br()
-            self.page.strong("2. Total integrated signal, spot total etc: Results from ")
+            self.page.strong("2. Total integrated signal, spot total etc: results from ")
             self.page.a("cctbx Spotfinder", href="http://cci.lbl.gov/publications/download/ccn_jul2010_page18.pdf")
             self.page.br()
         else:
-            self.page.strong("1. Total integrated signal, spot total etc: Results from ")
+            self.page.strong("1. Total integrated signal, spot total etc: results from ")
             self.page.a("cctbx Spotfinder", href="http://cci.lbl.gov/publications/download/ccn_jul2010_page18.pdf")
             self.page.br()
 
