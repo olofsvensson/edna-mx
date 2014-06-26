@@ -77,7 +77,7 @@ class EDPluginControlIndexingIndicatorsv10(EDPluginControl):
         self.setXSDataInputClass(XSDataExperimentalCondition, "refinedExperimentalCondition")
         self.__strMOSFLMIndexingPluginName = "EDPluginMOSFLMIndexingv10"
         self.__edPluginMOSFLMIndexing = None
-        self.__strControlledIndicatorsPluginName = "EDPluginControlImageQualityIndicatorsv1_5"
+        self.__strControlledIndicatorsPluginName = "EDPluginControlImageQualityIndicatorsv1_2"
         self.__edPluginControlIndicators = None
 
 

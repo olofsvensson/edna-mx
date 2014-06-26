@@ -68,7 +68,7 @@ class EDPluginControlImageQualityIndicatorsv1_2(EDPluginControl):
         EDPluginControl.__init__(self)
         self.strPluginMXWaitFileName = "EDPluginMXWaitFilev1_1"
         self.strPluginName = "EDPluginDistlSignalStrengthv1_1"
-        self.strPluginNameThinClient = "EDPluginDistlSignalStrengthThinClientv1_1"
+        self.strPluginNameThinClient = "EDPluginDistlSignalStrengthv1_1"
         self.strISPyBPluginName = "EDPluginISPyBStoreListOfImageQualityIndicatorsv1_4"
         self.strIndexingMOSFLMPluginName = "EDPluginMOSFLMIndexingv10"
         self.edPluginMOSFLMIndexing = None
@@ -84,6 +84,7 @@ class EDPluginControlImageQualityIndicatorsv1_2(EDPluginControl):
         self.bUseThinClient = True
         self.edPluginISPyB = None
         self.listPluginMOSFLM = []
+        self.bDoISPyBUpload = True
         
 
     def checkParameters(self):
@@ -98,6 +99,9 @@ class EDPluginControlImageQualityIndicatorsv1_2(EDPluginControl):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlReadImageHeaderv10.configure")
         self.fMXWaitFileTimeOut = float(self.config.get("MXWaitFileTimeOut", self.fMXWaitFileTimeOut))
+        self.bDoISPyBUpload = self.config.get("do_ispyb_upload")
+        if self.bDoISPyBUpload is None or self.bDoISPyBUpload == "false":
+            self.bDoISPyBUpload = False
 
     
 
@@ -156,9 +160,10 @@ class EDPluginControlImageQualityIndicatorsv1_2(EDPluginControl):
                 XSDataISPyBImageQualityIndicators.parseString(xsDataImageQualityIndicators.marshal())
             xsDataInputStoreListOfImageQualityIndicators.addImageQualityIndicators(xsDataISPyBImageQualityIndicators)
 #        print xsDataInputStoreListOfImageQualityIndicators.marshal()
-        self.edPluginISPyB = self.loadPlugin(self.strISPyBPluginName)
-        self.edPluginISPyB.dataInput = xsDataInputStoreListOfImageQualityIndicators
-        self.edPluginISPyB.execute()
+        if self.bDoISPyBUpload:
+            self.edPluginISPyB = self.loadPlugin(self.strISPyBPluginName)
+            self.edPluginISPyB.dataInput = xsDataInputStoreListOfImageQualityIndicators
+            self.edPluginISPyB.execute()
         #
         if bDoIndexing:
             # Find the 5 most intensive images (TIS):
@@ -206,11 +211,12 @@ class EDPluginControlImageQualityIndicatorsv1_2(EDPluginControl):
         EDPluginControl.finallyProcess(self, _edPlugin)
         # Synchronize ISPyB plugin
         self.DEBUG("EDPluginControlImageQualityIndicatorsv1_2.finallyProcess")
-        self.edPluginISPyB.synchronize()
-        listId = []
-        for xsDataInteger in self.edPluginISPyB.dataOutput.imageQualityIndicatorsId:
-            listId.append(xsDataInteger.value)
-        self.DEBUG("ISPyB imageQualityIndicatorIds = %r" % listId) 
+        if self.bDoISPyBUpload:
+            self.edPluginISPyB.synchronize()
+            listId = []
+            for xsDataInteger in self.edPluginISPyB.dataOutput.imageQualityIndicatorsId:
+                listId.append(xsDataInteger.value)
+            self.DEBUG("ISPyB imageQualityIndicatorIds = %r" % listId) 
         self.setDataOutput(self.xsDataResultControlImageQualityIndicators)
 
 
