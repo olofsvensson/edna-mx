@@ -579,7 +579,9 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.page.th("File")
         if bDozor:
             self.page.th("Dozor score (1)")
-        self.page.th("Tot integr signal (2)")
+            self.page.th("Tot integr signal (2)")
+        else:
+            self.page.th("Tot integr signal (1)")            
         self.page.th("Spot total")
         self.page.th("In-Res Total")
         self.page.th("Good Bragg")
@@ -617,11 +619,16 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.page.tr.close()
         self.page.table.close()
         # Some info about Dozor and Labelit
-        self.page.strong("1. Dozor score: criteria of diffractuion signal strength that uses intensities over background vs resolution. Popov 2014, to be published.")
-        self.page.br()
-        self.page.strong("2. Total integrated signal, spot total etc: Results from ")
-        self.page.a("cctbx Spotfinder", href="http://cci.lbl.gov/publications/download/ccn_jul2010_page18.pdf")
-        self.page.br()
+        if bDozor:
+            self.page.strong("1. Dozor score: criteria of diffractuion signal strength that uses intensities over background vs resolution. Popov 2014, to be published.")
+            self.page.br()
+            self.page.strong("2. Total integrated signal, spot total etc: Results from ")
+            self.page.a("cctbx Spotfinder", href="http://cci.lbl.gov/publications/download/ccn_jul2010_page18.pdf")
+            self.page.br()
+        else:
+            self.page.strong("1. Total integrated signal, spot total etc: Results from ")
+            self.page.a("cctbx Spotfinder", href="http://cci.lbl.gov/publications/download/ccn_jul2010_page18.pdf")
+            self.page.br()
 
 
     def findEDNALogFile(self):
