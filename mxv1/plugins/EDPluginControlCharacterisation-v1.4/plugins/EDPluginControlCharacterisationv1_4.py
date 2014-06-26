@@ -28,12 +28,15 @@ __contact__ = "svensson@esrf.fr"
 __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
-
+import os
 
 from EDVerbose import EDVerbose
 from EDPluginControl import EDPluginControl
+from EDFactoryPluginStatic import EDFactoryPluginStatic
 
 from XSDataCommon import XSDataString
+from XSDataCommon import XSDataInteger
+from XSDataCommon import XSDataFile
 
 from XSDataMXv1 import XSDataCollection
 from XSDataMXv1 import XSDataCrystal
@@ -46,6 +49,9 @@ from XSDataMXv1 import XSDataIndexingSolutionSelected
 from XSDataMXv1 import XSDataIntegrationInput
 from XSDataMXv1 import XSDataInputStrategy
 from XSDataMXv1 import XSDataInputControlXDSGenerateBackgroundImage
+
+EDFactoryPluginStatic.loadModule("XSDataMXThumbnailv1_1")
+from XSDataMXThumbnailv1_1 import XSDataInputMXThumbnail
 
 class EDPluginControlCharacterisationv1_4(EDPluginControl):
     """
@@ -62,6 +68,8 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._strPluginControlIntegration = "EDPluginControlIntegrationv10"
         self._strPluginControlXDSGenerateBackgroundImage = "EDPluginControlXDSGenerateBackgroundImagev1_0"
         self._strPluginControlStrategy = "EDPluginControlStrategyv1_2"
+        self._strPluginGenerateThumbnailName = "EDPluginMXThumbnailv1_1"
+        self._listPluginGenerateThumbnail = []
         self._edPluginControlIndexingIndicators = None
         self._edPluginExecEvaluationIndexingMOSFLM = None
         self._edPluginExecEvaluationIndexingLABELIT = None
@@ -162,6 +170,26 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
                 # Populate characterisation object
                 self._xsDataResultCharacterisation = XSDataResultCharacterisation()
                 self._xsDataResultCharacterisation.setDataCollection(XSDataCollection.parseString(self._xsDataCollection.marshal()))
+            # Load the thumbnail plugins
+            for subWedge in xsDataInputCharacterisation.dataCollection.subWedge:
+                for image in subWedge.image:
+                    edPluginJpeg = self.loadPlugin(self._strPluginGenerateThumbnailName)
+                    xsDataInputMXThumbnail = XSDataInputMXThumbnail()
+                    xsDataInputMXThumbnail.image = XSDataFile(image.path)
+                    xsDataInputMXThumbnail.height = XSDataInteger(1024)
+                    xsDataInputMXThumbnail.width = XSDataInteger(1024)
+                    jpegFilename = os.path.splitext(os.path.basename(image.path.value))[0]+".jpg"
+                    xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), jpegFilename)))
+                    edPluginJpeg.dataInput = xsDataInputMXThumbnail
+                    edPluginThumnail = self.loadPlugin(self._strPluginGenerateThumbnailName)
+                    xsDataInputMXThumbnail = XSDataInputMXThumbnail()
+                    xsDataInputMXThumbnail.image = XSDataFile(image.path)
+                    xsDataInputMXThumbnail.height = XSDataInteger(256)
+                    xsDataInputMXThumbnail.width = XSDataInteger(256)
+                    thumbnailFilename = os.path.splitext(os.path.basename(image.path.value))[0]+".thumbnail.jpg"
+                    xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), thumbnailFilename)))
+                    edPluginThumnail.dataInput = xsDataInputMXThumbnail
+                    self._listPluginGenerateThumbnail.append((image, edPluginJpeg, edPluginThumnail))
 
 
     def process(self, _edObject=None):
@@ -185,6 +213,17 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
     def finallyProcess(self, _edObject=None):
         EDPluginControl.finallyProcess(self)
         self.DEBUG("EDPluginControlCharacterisationv1_4.finallyProcess")
+        # Synchronize thumbnail plugins
+        for tuplePlugin in self._listPluginGenerateThumbnail:
+            image = tuplePlugin[0]
+            tuplePlugin[1].synchronize()
+            jpegImage = image.copy()
+            jpegImage.path = tuplePlugin[1].dataOutput.thumbnail.path
+            self._xsDataResultCharacterisation.addJpegImage(jpegImage)        
+            tuplePlugin[2].synchronize()
+            thumbnailImage = image.copy()
+            thumbnailImage.path = tuplePlugin[2].dataOutput.thumbnail.path
+            self._xsDataResultCharacterisation.addThumbnailImage(thumbnailImage)        
         if self._edPluginControlGeneratePrediction.isRunning():
             self._edPluginControlGeneratePrediction.synchronize()
         if self._strStatusMessage != None:
@@ -211,6 +250,9 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
                 self._edPluginExecEvaluationIndexingLABELIT.setDataInput(xsDataImageQualityIndicators, "imageQualityIndicators")
         if self._edPluginControlIndexingIndicators.hasDataOutput("indicatorsShortSummary"):
             self._strCharacterisationShortSummary += self._edPluginControlIndexingIndicators.getDataOutput("indicatorsShortSummary")[0].getValue()
+        for tuplePlugin in self._listPluginGenerateThumbnail:
+            tuplePlugin[1].execute()
+            tuplePlugin[2].execute()
         self.executePluginSynchronous(self._edPluginExecEvaluationIndexingLABELIT)
 
 
