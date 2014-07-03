@@ -32,7 +32,7 @@ import os
 from EDVerbose                           import EDVerbose
 from EDAssert                            import EDAssert
 from EDTestCasePluginExecute             import EDTestCasePluginExecute
-from XSDataAutoproc import XSDataXscaleInput, XSDataXscaleOutput
+from XSDataAutoprocv1_0 import XSDataXscaleInput, XSDataXscaleOutput
 
 
 class EDTestCasePluginExecuteExecXscale(EDTestCasePluginExecute):

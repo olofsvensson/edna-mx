@@ -41,9 +41,9 @@ from EDPlugin import EDPlugin
 from EDVerbose import EDVerbose
 from XSDataCommon import XSDataBoolean, XSDataInteger, XSDataFloat
 from XSDataCommon import XSDataVectorDouble, XSDataString
-from XSDataAutoproc import XSDataXscaleCompletenessEntry
+from XSDataAutoprocv1_0 import XSDataXscaleCompletenessEntry
 
-from XSDataAutoproc import XSDataXscaleParsingInput, XSDataXscaleParsedOutput
+from XSDataAutoprocv1_0 import XSDataXscaleParsingInput, XSDataXscaleParsedOutput
 
 class EDPluginParseXscaleOutput(EDPlugin):
     """

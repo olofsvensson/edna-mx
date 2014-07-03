@@ -37,7 +37,7 @@ from EDPluginExecProcessScript import EDPluginExecProcessScript
 from EDVerbose import EDVerbose
 
 from XSDataCommon import XSDataBoolean, XSDataString
-from XSDataAutoproc import XSDataXscaleInput, XSDataXscaleOutput
+from XSDataAutoprocv1_0 import XSDataXscaleInput, XSDataXscaleOutput
 
 
 # XScale input files can be quite complex and our needs simple so

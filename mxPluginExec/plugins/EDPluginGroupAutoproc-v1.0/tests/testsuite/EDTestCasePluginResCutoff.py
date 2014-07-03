@@ -32,7 +32,7 @@ import os
 from EDVerbose import EDVerbose
 from EDAssert import EDAssert
 from EDTestCasePluginExecute import EDTestCasePluginExecute
-from XSDataAutoproc import XSDataResCutoff, XSDataResCutoffResult
+from XSDataAutoprocv1_0 import XSDataResCutoff, XSDataResCutoffResult
 
 
 class EDTestCasePluginResCutoff(EDTestCasePluginExecute):

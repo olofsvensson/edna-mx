@@ -42,7 +42,7 @@ class EDTestCasePluginControlFileConversion(EDTestCasePluginExecute):
     def __init__(self, _strTestName = None):
         """
         """
-        EDTestCasePluginExecute.__init__(self, "EDPluginControlFileConversion")
+        EDTestCasePluginExecute.__init__(self, "EDPluginControlFileConversionv1_0")
 
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
                                            "XSDataFileConversionInput_reference.xml"))

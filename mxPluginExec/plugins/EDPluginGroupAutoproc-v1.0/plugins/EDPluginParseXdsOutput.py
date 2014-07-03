@@ -41,8 +41,8 @@ from EDPlugin import EDPlugin
 from EDVerbose import EDVerbose
 from XSDataCommon import XSDataBoolean, XSDataInteger, XSDataFloat
 from XSDataCommon import XSDataVectorDouble, XSDataString
-from XSDataAutoproc import XSDataXdsOutputFile, XSDataXdsOutput
-from XSDataAutoproc import XSData2DCoordinates, XSDataXdsCompletenessEntry
+from XSDataAutoprocv1_0 import XSDataXdsOutputFile, XSDataXdsOutput
+from XSDataAutoprocv1_0 import XSData2DCoordinates, XSDataXdsCompletenessEntry
 
 
 # Stuff we are interested about is (extract from output file):

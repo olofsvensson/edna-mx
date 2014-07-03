@@ -58,15 +58,15 @@ import suds
 from XSDataCommon import XSDataFile, XSDataBoolean, XSDataString
 from XSDataCommon import  XSDataInteger, XSDataTime, XSDataFloat
 
-from XSDataAutoproc import XSDataAutoprocInput
-from XSDataAutoproc import XSDataResCutoff
-from XSDataAutoproc import XSDataMinimalXdsIn
-from XSDataAutoproc import XSDataXdsGenerateInput
-from XSDataAutoproc import XSDataXdsOutputFile
-from XSDataAutoproc import XSDataXscaleInput
-from XSDataAutoproc import XSDataXscaleInputFile
-from XSDataAutoproc import XSDataAutoprocInput
-from XSDataAutoproc import XSDataAutoprocImport
+from XSDataAutoprocv1_0 import XSDataAutoprocInput
+from XSDataAutoprocv1_0 import XSDataResCutoff
+from XSDataAutoprocv1_0 import XSDataMinimalXdsIn
+from XSDataAutoprocv1_0 import XSDataXdsGenerateInput
+from XSDataAutoprocv1_0 import XSDataXdsOutputFile
+from XSDataAutoprocv1_0 import XSDataXscaleInput
+from XSDataAutoprocv1_0 import XSDataXscaleInputFile
+from XSDataAutoprocv1_0 import XSDataAutoprocInput
+from XSDataAutoprocv1_0 import XSDataAutoprocImport
 
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 # plugin input/output
@@ -108,7 +108,7 @@ WAIT_FOR_FRAME_TIMEOUT=240 #max uses 50*5
 # discriminate by extension for now
 ISPYB_UPLOAD_EXTENSIONS=['.lp', '.mtz', '.log', '.inp', '.mtz.gz']
 
-class EDPluginControlAutoproc(EDPluginControl):
+class EDPluginControlAutoprocv1_0(EDPluginControl):
     """
     Runs the part of the autoproc pipeline that has to be run on the
     cluster.
@@ -131,7 +131,7 @@ class EDPluginControlAutoproc(EDPluginControl):
         """
         Checks the mandatory parameters.
         """
-        self.DEBUG("EDPluginControlAutoproc.checkParameters")
+        self.DEBUG("EDPluginControlAutoprocv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
         self.checkMandatoryParameters(self.dataInput.input_file, "No XDS input file")
 
@@ -156,7 +156,7 @@ class EDPluginControlAutoproc(EDPluginControl):
 
     def preProcess(self, _edObject = None):
         EDPluginControl.preProcess(self)
-        self.DEBUG('EDPluginControlAutoproc.preProcess starting')
+        self.DEBUG('EDPluginControlAutoprocv1_0.preProcess starting')
         self.DEBUG('running on {0}'.format(socket.gethostname()))
         try:
             self.DEBUG('system load avg: {0}'.format(os.getloadavg()))
@@ -208,7 +208,7 @@ class EDPluginControlAutoproc(EDPluginControl):
         try:
             os.makedirs(self.results_dir)
         except OSError: # it most likely exists
-            EDVerbose.ERROR('Error creating the results directory: {0}'.format(traceback.format_exc()))
+            EDVerbose.WARNING('Error creating the results directory: {0}'.format(traceback.format_exc()))
 
         # Copy the vanilla XDS input file to the results dir
         infile_dest = os.path.join(self.results_dir, self.image_prefix + '_input_XDS.INP')
@@ -220,7 +220,7 @@ class EDPluginControlAutoproc(EDPluginControl):
         try:
             os.makedirs(self.autoproc_ids_dir)
         except OSError: # it's there
-            EDVerbose.ERROR('Error creating the autoproc ids directory: {0}'.format(traceback.format_exc()))
+            EDVerbose.WARNING('Error creating the autoproc ids directory: {0}'.format(traceback.format_exc()))
 
 
         # we'll need the low res limit later on
@@ -300,7 +300,7 @@ class EDPluginControlAutoproc(EDPluginControl):
 
         first_image = _template_to_image(template, start_image)
 
-        self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProc")
+        self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProcv1_0")
         self.xds_first.dataInput = xds_in
 
         self.generate = self.loadPlugin("EDPluginXDSGenerate")
@@ -317,15 +317,15 @@ class EDPluginControlAutoproc(EDPluginControl):
         self.store_autoproc_anom = self.loadPlugin('EDPluginISPyBStoreAutoProcv1_4')
         self.store_autoproc_noanom = self.loadPlugin('EDPluginISPyBStoreAutoProcv1_4')
 
-        self.file_conversion = self.loadPlugin('EDPluginControlAutoprocImport')
+        self.file_conversion = self.loadPlugin('EDPluginControlAutoprocImportv1_0')
 
 #        self.dimple = self.loadPlugin('EDPluginControlDIMPLEPipelineCalcDiffMapv10')
 
-        self.DEBUG('EDPluginControlAutoproc.preProcess finished')
+        self.DEBUG('EDPluginControlAutoprocv1_0.preProcess finished')
 
     def process(self, _edObject = None):
         EDPluginControl.process(self)
-        self.DEBUG('EDPluginControlAutoproc.process starting')
+        self.DEBUG('EDPluginControlAutoprocv1_0.process starting')
 
         process_start = time.time()
 
@@ -830,7 +830,7 @@ fi
 
     def postProcess(self, _edObject = None):
         EDPluginControl.postProcess(self)
-        self.DEBUG("EDPluginControlAutoproc.postProcess")
+        self.DEBUG("EDPluginControlAutoprocv1_0.postProcess")
 
         # Create a file in the results directory to indicate all files have been
         # populated in it already so Max's code can be aware of that

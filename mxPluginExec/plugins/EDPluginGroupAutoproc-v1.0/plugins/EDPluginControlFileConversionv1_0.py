@@ -42,11 +42,11 @@ from stat import *
 from EDPluginControl import EDPluginControl
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult, XSDataString
-from XSDataAutoproc import XSDataFileConversion, XSDataFileConversionOut
-from XSDataAutoproc import XSDataPointless, XSDataAimless
-from XSDataAutoproc import XSDataTruncate, XSDataUniqueify
+from XSDataAutoprocv1_0 import XSDataFileConversion, XSDataFileConversionOut
+from XSDataAutoprocv1_0 import XSDataPointless, XSDataAimless
+from XSDataAutoprocv1_0 import XSDataTruncate, XSDataUniqueify
 
-class EDPluginControlFileConversion(EDPluginControl):
+class EDPluginControlFileConversionv1_0(EDPluginControl):
     def __init__(self):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataFileConversion)

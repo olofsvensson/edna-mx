@@ -35,7 +35,7 @@ from XSDataCommon import XSDataBoolean, XSDataString
 
 # we reuse the vanilla xscale input and will just ignore the friedel's
 # law and merge boolean parameters
-from XSDataAutoproc import XSDataXscaleInput, XSDataXscaleGeneratedFiles, XSDataXscaleParsingInput
+from XSDataAutoprocv1_0 import XSDataXscaleInput, XSDataXscaleGeneratedFiles, XSDataXscaleParsingInput
 
 class EDPluginControlXscaleGenerate(EDPluginControl):
     """

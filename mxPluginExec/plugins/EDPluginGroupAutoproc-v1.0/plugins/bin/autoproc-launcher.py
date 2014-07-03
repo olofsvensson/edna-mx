@@ -219,7 +219,7 @@ script_template = '''#!/bin/sh
 export EDNA_SITE=ESRF
 
 cd {path}
-/opt/pxsoft/tools/python/v2.6.6_20110210/centos5-x86_64/bin/python {edna_path}/kernel/bin/edna-plugin-launcher.py --inputFile {dm_path} --conf {config_path} --execute EDPluginControlAutoproc --debug
+/opt/pxsoft/tools/python/v2.6.6_20110210/centos5-x86_64/bin/python {edna_path}/kernel/bin/edna-plugin-launcher.py --inputFile {dm_path} --conf {config_path} --execute EDPluginControlAutoprocv1_0 --debug
 '''
 
 script_file.file.write(script_template.format(path=path, dm_path=dm_path, edna_path=EDNA_PATH, config_path=CONFIG_PATH))

@@ -36,12 +36,12 @@ import tempfile
 from EDPluginControl import EDPluginControl
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult, XSDataString
-from XSDataAutoproc import XSDataAutoprocImport, XSDataAutoprocImportOut
-from XSDataAutoproc import XSDataFileConversion
+from XSDataAutoprocv1_0 import XSDataAutoprocImport, XSDataAutoprocImportOut
+from XSDataAutoprocv1_0 import XSDataFileConversion
 
 OUTFILE_TEMPLATE = 'unmerged_{0}.mtz'
 
-class EDPluginControlAutoprocImport(EDPluginControl):
+class EDPluginControlAutoprocImportv1_0(EDPluginControl):
     def __init__(self):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataAutoprocImport)
@@ -52,8 +52,8 @@ class EDPluginControlAutoprocImport(EDPluginControl):
     def preProcess(self):
         EDPluginControl.preProcess(self)
         self.DEBUG('Import : preprocess')
-        self.anom = self.loadPlugin('EDPluginControlFileConversion')
-        self.noanom = self.loadPlugin('EDPluginControlFileConversion')
+        self.anom = self.loadPlugin('EDPluginControlFileConversionv1_0')
+        self.noanom = self.loadPlugin('EDPluginControlFileConversionv1_0')
         tocopy = ['dataCollectionID', 'start_image', 'end_image',
                   'res', 'nres', 'image_prefix']
 

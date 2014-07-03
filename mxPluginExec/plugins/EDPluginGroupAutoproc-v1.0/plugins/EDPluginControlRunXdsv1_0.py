@@ -34,9 +34,9 @@ from EDVerbose import EDVerbose
 
 from XSDataCommon import XSDataFile, XSDataString
 
-from XSDataAutoproc  import XSDataMinimalXdsIn, XSDataXdsOutputFile
+from XSDataAutoprocv1_0  import XSDataMinimalXdsIn, XSDataXdsOutputFile
 
-class EDPluginControlRunXds( EDPluginControl ):
+class EDPluginControlRunXdsv1_0( EDPluginControl ):
     """
     Runx XDS 3 times like Max's autoproc does.
     1. First run is a vanilla run
@@ -65,7 +65,7 @@ class EDPluginControlRunXds( EDPluginControl ):
         """
         Checks the mandatory parameters.
         """
-        self.DEBUG("EDPluginControlRunXds.checkParameters")
+        self.DEBUG("EDPluginControlRunXdsv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
         self.checkMandatoryParameters(self.dataInput.input_file, "No XDS input file")
 
@@ -79,7 +79,7 @@ class EDPluginControlRunXds( EDPluginControl ):
 
     def process(self, _edObject = None):
         EDPluginControl.process(self)
-        self.DEBUG("EDPluginControlRunXds.process")
+        self.DEBUG("EDPluginControlRunXdsv1_0.process")
         # First run is vanilla without any modification
         params = XSDataMinimalXdsIn()
         params.input_file = self.dataInput.input_file
@@ -177,5 +177,5 @@ class EDPluginControlRunXds( EDPluginControl ):
 
     def postProcess(self, _edObject = None):
         EDPluginControl.postProcess(self)
-        self.DEBUG("EDPluginControlRunXds.postProcess")
+        self.DEBUG("EDPluginControlRunXdsv1_0.postProcess")
         # XXX: maybe move the XDS output parsing there?

@@ -36,7 +36,7 @@ from EDVerbose import EDVerbose
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult
-from XSDataAutoproc import XSDataTruncate
+from XSDataAutoprocv1_0 import XSDataTruncate
 
 class EDPluginExecTruncate(EDPluginExecProcessScript):
     def __init__(self):

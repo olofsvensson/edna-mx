@@ -32,7 +32,7 @@ import os
 from EDVerbose                           import EDVerbose
 from EDAssert                            import EDAssert
 from EDTestCasePluginExecute             import EDTestCasePluginExecute
-from XSDataAutoproc import XSDataMinimalXDSOut
+from XSDataAutoprocv1_0 import XSDataMinimalXDSOut
 
 
 class EDTestCasePluginExecuteExecMinimalXds(EDTestCasePluginExecute):

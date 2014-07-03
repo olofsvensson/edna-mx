@@ -42,7 +42,7 @@ class EDTestCasePluginControlAutoproc_id29_20140505(EDTestCasePluginExecute):
     def __init__(self, _strTestName = None):
         """
         """
-        EDTestCasePluginExecute.__init__(self, "EDPluginControlAutoproc")
+        EDTestCasePluginExecute.__init__(self, "EDPluginControlAutoprocv1_0")
 #        self.setConfigurationFile(os.path.join(self.getPluginTestsDataHome(),
 #                                               "XSConfiguration_SolveContent.xml"))
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(),

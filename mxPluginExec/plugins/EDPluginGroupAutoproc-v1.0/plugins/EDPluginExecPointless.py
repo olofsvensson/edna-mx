@@ -37,7 +37,7 @@ from EDPluginExecProcessScript import EDPluginExecProcessScript
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult
 from XSDataCommon import XSDataInteger, XSDataString
-from XSDataAutoproc import XSDataPointless, XSDataPointlessOut
+from XSDataAutoprocv1_0 import XSDataPointless, XSDataPointlessOut
 
 class EDPluginExecPointless(EDPluginExecProcessScript):
     def __init__(self):

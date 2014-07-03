@@ -36,9 +36,9 @@ from EDVerbose import EDVerbose
 
 from XSDataCommon import XSDataString, XSDataFloat, XSDataBoolean
 
-from XSDataAutoproc import XSDataMinimalXdsIn
-from XSDataAutoproc import XSDataXdsGenerateInput
-from XSDataAutoproc import XSDataXdsGenerateOutput
+from XSDataAutoprocv1_0 import XSDataMinimalXdsIn
+from XSDataAutoprocv1_0 import XSDataXdsGenerateInput
+from XSDataAutoprocv1_0 import XSDataXdsGenerateOutput
 from xdscfgparser import parse_xds_file, dump_xds_file
 
 class EDPluginXDSGenerate(EDPluginControl):

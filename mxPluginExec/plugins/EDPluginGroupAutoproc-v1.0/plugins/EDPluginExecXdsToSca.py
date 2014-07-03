@@ -36,7 +36,7 @@ from EDVerbose import EDVerbose
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult
-from XSDataAutoproc import XSDataXdsToSca
+from XSDataAutoprocv1_0 import XSDataXdsToSca
 
 class EDPluginExecXdsToSca(EDPluginExecProcessScript):
     def __init__(self):

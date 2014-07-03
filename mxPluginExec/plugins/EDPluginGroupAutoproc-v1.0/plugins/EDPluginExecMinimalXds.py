@@ -37,7 +37,7 @@ from EDPluginExecProcessScript import EDPluginExecProcessScript
 from EDVerbose import EDVerbose
 
 from XSDataCommon import XSDataBoolean
-from XSDataAutoproc import XSDataMinimalXdsIn, XSDataMinimalXdsOut
+from XSDataAutoprocv1_0 import XSDataMinimalXdsIn, XSDataMinimalXdsOut
 from xdscfgparser import parse_xds_file, dump_xds_file
 
 

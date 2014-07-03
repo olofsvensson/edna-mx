@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Jul 3 08:56::45 2014 by EDGenerateDS.
+# Generated Thu Jul 3 09:03::22 2014 by EDGenerateDS.
 #
 
 import os, sys
@@ -3377,328 +3377,6 @@ class XSDataPointlessOut(XSDataResult):
 # end class XSDataPointlessOut
 
 
-class XSDataResCutoff(XSDataInput):
-    def __init__(self, configuration=None, cc_half_cutoff=None, r_value_cutoff=None, isig_cutoff=None, completeness_cutoff=None, res_override=None, total_completeness=None, detector_max_res=None, completeness_entries=None, xds_res=None):
-        XSDataInput.__init__(self, configuration)
-        if xds_res is None:
-            self._xds_res = None
-        elif xds_res.__class__.__name__ == "XSDataXdsOutput":
-            self._xds_res = xds_res
-        else:
-            strMessage = "ERROR! XSDataResCutoff constructor argument 'xds_res' is not XSDataXdsOutput but %s" % self._xds_res.__class__.__name__
-            raise BaseException(strMessage)
-        if completeness_entries is None:
-            self._completeness_entries = []
-        elif completeness_entries.__class__.__name__ == "list":
-            self._completeness_entries = completeness_entries
-        else:
-            strMessage = "ERROR! XSDataResCutoff constructor argument 'completeness_entries' is not list but %s" % self._completeness_entries.__class__.__name__
-            raise BaseException(strMessage)
-        if detector_max_res is None:
-            self._detector_max_res = None
-        elif detector_max_res.__class__.__name__ == "XSDataFloat":
-            self._detector_max_res = detector_max_res
-        else:
-            strMessage = "ERROR! XSDataResCutoff constructor argument 'detector_max_res' is not XSDataFloat but %s" % self._detector_max_res.__class__.__name__
-            raise BaseException(strMessage)
-        if total_completeness is None:
-            self._total_completeness = None
-        elif total_completeness.__class__.__name__ == "XSDataXdsCompletenessEntry":
-            self._total_completeness = total_completeness
-        else:
-            strMessage = "ERROR! XSDataResCutoff constructor argument 'total_completeness' is not XSDataXdsCompletenessEntry but %s" % self._total_completeness.__class__.__name__
-            raise BaseException(strMessage)
-        if res_override is None:
-            self._res_override = None
-        elif res_override.__class__.__name__ == "XSDataFloat":
-            self._res_override = res_override
-        else:
-            strMessage = "ERROR! XSDataResCutoff constructor argument 'res_override' is not XSDataFloat but %s" % self._res_override.__class__.__name__
-            raise BaseException(strMessage)
-        if completeness_cutoff is None:
-            self._completeness_cutoff = None
-        elif completeness_cutoff.__class__.__name__ == "XSDataFloat":
-            self._completeness_cutoff = completeness_cutoff
-        else:
-            strMessage = "ERROR! XSDataResCutoff constructor argument 'completeness_cutoff' is not XSDataFloat but %s" % self._completeness_cutoff.__class__.__name__
-            raise BaseException(strMessage)
-        if isig_cutoff is None:
-            self._isig_cutoff = None
-        elif isig_cutoff.__class__.__name__ == "XSDataFloat":
-            self._isig_cutoff = isig_cutoff
-        else:
-            strMessage = "ERROR! XSDataResCutoff constructor argument 'isig_cutoff' is not XSDataFloat but %s" % self._isig_cutoff.__class__.__name__
-            raise BaseException(strMessage)
-        if r_value_cutoff is None:
-            self._r_value_cutoff = None
-        elif r_value_cutoff.__class__.__name__ == "XSDataFloat":
-            self._r_value_cutoff = r_value_cutoff
-        else:
-            strMessage = "ERROR! XSDataResCutoff constructor argument 'r_value_cutoff' is not XSDataFloat but %s" % self._r_value_cutoff.__class__.__name__
-            raise BaseException(strMessage)
-        if cc_half_cutoff is None:
-            self._cc_half_cutoff = None
-        elif cc_half_cutoff.__class__.__name__ == "XSDataFloat":
-            self._cc_half_cutoff = cc_half_cutoff
-        else:
-            strMessage = "ERROR! XSDataResCutoff constructor argument 'cc_half_cutoff' is not XSDataFloat but %s" % self._cc_half_cutoff.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'xds_res' attribute
-    def getXds_res(self): return self._xds_res
-    def setXds_res(self, xds_res):
-        if xds_res is None:
-            self._xds_res = None
-        elif xds_res.__class__.__name__ == "XSDataXdsOutput":
-            self._xds_res = xds_res
-        else:
-            strMessage = "ERROR! XSDataResCutoff.setXds_res argument is not XSDataXdsOutput but %s" % xds_res.__class__.__name__
-            raise BaseException(strMessage)
-    def delXds_res(self): self._xds_res = None
-    xds_res = property(getXds_res, setXds_res, delXds_res, "Property for xds_res")
-    # Methods and properties for the 'completeness_entries' attribute
-    def getCompleteness_entries(self): return self._completeness_entries
-    def setCompleteness_entries(self, completeness_entries):
-        if completeness_entries is None:
-            self._completeness_entries = []
-        elif completeness_entries.__class__.__name__ == "list":
-            self._completeness_entries = completeness_entries
-        else:
-            strMessage = "ERROR! XSDataResCutoff.setCompleteness_entries argument is not list but %s" % completeness_entries.__class__.__name__
-            raise BaseException(strMessage)
-    def delCompleteness_entries(self): self._completeness_entries = None
-    completeness_entries = property(getCompleteness_entries, setCompleteness_entries, delCompleteness_entries, "Property for completeness_entries")
-    def addCompleteness_entries(self, value):
-        if value is None:
-            strMessage = "ERROR! XSDataResCutoff.addCompleteness_entries argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXdsCompletenessEntry":
-            self._completeness_entries.append(value)
-        else:
-            strMessage = "ERROR! XSDataResCutoff.addCompleteness_entries argument is not XSDataXdsCompletenessEntry but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertCompleteness_entries(self, index, value):
-        if index is None:
-            strMessage = "ERROR! XSDataResCutoff.insertCompleteness_entries argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! XSDataResCutoff.insertCompleteness_entries argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXdsCompletenessEntry":
-            self._completeness_entries[index] = value
-        else:
-            strMessage = "ERROR! XSDataResCutoff.addCompleteness_entries argument is not XSDataXdsCompletenessEntry but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'detector_max_res' attribute
-    def getDetector_max_res(self): return self._detector_max_res
-    def setDetector_max_res(self, detector_max_res):
-        if detector_max_res is None:
-            self._detector_max_res = None
-        elif detector_max_res.__class__.__name__ == "XSDataFloat":
-            self._detector_max_res = detector_max_res
-        else:
-            strMessage = "ERROR! XSDataResCutoff.setDetector_max_res argument is not XSDataFloat but %s" % detector_max_res.__class__.__name__
-            raise BaseException(strMessage)
-    def delDetector_max_res(self): self._detector_max_res = None
-    detector_max_res = property(getDetector_max_res, setDetector_max_res, delDetector_max_res, "Property for detector_max_res")
-    # Methods and properties for the 'total_completeness' attribute
-    def getTotal_completeness(self): return self._total_completeness
-    def setTotal_completeness(self, total_completeness):
-        if total_completeness is None:
-            self._total_completeness = None
-        elif total_completeness.__class__.__name__ == "XSDataXdsCompletenessEntry":
-            self._total_completeness = total_completeness
-        else:
-            strMessage = "ERROR! XSDataResCutoff.setTotal_completeness argument is not XSDataXdsCompletenessEntry but %s" % total_completeness.__class__.__name__
-            raise BaseException(strMessage)
-    def delTotal_completeness(self): self._total_completeness = None
-    total_completeness = property(getTotal_completeness, setTotal_completeness, delTotal_completeness, "Property for total_completeness")
-    # Methods and properties for the 'res_override' attribute
-    def getRes_override(self): return self._res_override
-    def setRes_override(self, res_override):
-        if res_override is None:
-            self._res_override = None
-        elif res_override.__class__.__name__ == "XSDataFloat":
-            self._res_override = res_override
-        else:
-            strMessage = "ERROR! XSDataResCutoff.setRes_override argument is not XSDataFloat but %s" % res_override.__class__.__name__
-            raise BaseException(strMessage)
-    def delRes_override(self): self._res_override = None
-    res_override = property(getRes_override, setRes_override, delRes_override, "Property for res_override")
-    # Methods and properties for the 'completeness_cutoff' attribute
-    def getCompleteness_cutoff(self): return self._completeness_cutoff
-    def setCompleteness_cutoff(self, completeness_cutoff):
-        if completeness_cutoff is None:
-            self._completeness_cutoff = None
-        elif completeness_cutoff.__class__.__name__ == "XSDataFloat":
-            self._completeness_cutoff = completeness_cutoff
-        else:
-            strMessage = "ERROR! XSDataResCutoff.setCompleteness_cutoff argument is not XSDataFloat but %s" % completeness_cutoff.__class__.__name__
-            raise BaseException(strMessage)
-    def delCompleteness_cutoff(self): self._completeness_cutoff = None
-    completeness_cutoff = property(getCompleteness_cutoff, setCompleteness_cutoff, delCompleteness_cutoff, "Property for completeness_cutoff")
-    # Methods and properties for the 'isig_cutoff' attribute
-    def getIsig_cutoff(self): return self._isig_cutoff
-    def setIsig_cutoff(self, isig_cutoff):
-        if isig_cutoff is None:
-            self._isig_cutoff = None
-        elif isig_cutoff.__class__.__name__ == "XSDataFloat":
-            self._isig_cutoff = isig_cutoff
-        else:
-            strMessage = "ERROR! XSDataResCutoff.setIsig_cutoff argument is not XSDataFloat but %s" % isig_cutoff.__class__.__name__
-            raise BaseException(strMessage)
-    def delIsig_cutoff(self): self._isig_cutoff = None
-    isig_cutoff = property(getIsig_cutoff, setIsig_cutoff, delIsig_cutoff, "Property for isig_cutoff")
-    # Methods and properties for the 'r_value_cutoff' attribute
-    def getR_value_cutoff(self): return self._r_value_cutoff
-    def setR_value_cutoff(self, r_value_cutoff):
-        if r_value_cutoff is None:
-            self._r_value_cutoff = None
-        elif r_value_cutoff.__class__.__name__ == "XSDataFloat":
-            self._r_value_cutoff = r_value_cutoff
-        else:
-            strMessage = "ERROR! XSDataResCutoff.setR_value_cutoff argument is not XSDataFloat but %s" % r_value_cutoff.__class__.__name__
-            raise BaseException(strMessage)
-    def delR_value_cutoff(self): self._r_value_cutoff = None
-    r_value_cutoff = property(getR_value_cutoff, setR_value_cutoff, delR_value_cutoff, "Property for r_value_cutoff")
-    # Methods and properties for the 'cc_half_cutoff' attribute
-    def getCc_half_cutoff(self): return self._cc_half_cutoff
-    def setCc_half_cutoff(self, cc_half_cutoff):
-        if cc_half_cutoff is None:
-            self._cc_half_cutoff = None
-        elif cc_half_cutoff.__class__.__name__ == "XSDataFloat":
-            self._cc_half_cutoff = cc_half_cutoff
-        else:
-            strMessage = "ERROR! XSDataResCutoff.setCc_half_cutoff argument is not XSDataFloat but %s" % cc_half_cutoff.__class__.__name__
-            raise BaseException(strMessage)
-    def delCc_half_cutoff(self): self._cc_half_cutoff = None
-    cc_half_cutoff = property(getCc_half_cutoff, setCc_half_cutoff, delCc_half_cutoff, "Property for cc_half_cutoff")
-    def export(self, outfile, level, name_='XSDataResCutoff'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataResCutoff'):
-        XSDataInput.exportChildren(self, outfile, level, name_)
-        if self._xds_res is not None:
-            self.xds_res.export(outfile, level, name_='xds_res')
-        else:
-            warnEmptyAttribute("xds_res", "XSDataXdsOutput")
-        for completeness_entries_ in self.getCompleteness_entries():
-            completeness_entries_.export(outfile, level, name_='completeness_entries')
-        if self.getCompleteness_entries() == []:
-            warnEmptyAttribute("completeness_entries", "XSDataXdsCompletenessEntry")
-        if self._detector_max_res is not None:
-            self.detector_max_res.export(outfile, level, name_='detector_max_res')
-        if self._total_completeness is not None:
-            self.total_completeness.export(outfile, level, name_='total_completeness')
-        else:
-            warnEmptyAttribute("total_completeness", "XSDataXdsCompletenessEntry")
-        if self._res_override is not None:
-            self.res_override.export(outfile, level, name_='res_override')
-        if self._completeness_cutoff is not None:
-            self.completeness_cutoff.export(outfile, level, name_='completeness_cutoff')
-        if self._isig_cutoff is not None:
-            self.isig_cutoff.export(outfile, level, name_='isig_cutoff')
-        if self._r_value_cutoff is not None:
-            self.r_value_cutoff.export(outfile, level, name_='r_value_cutoff')
-        if self._cc_half_cutoff is not None:
-            self.cc_half_cutoff.export(outfile, level, name_='cc_half_cutoff')
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'xds_res':
-            obj_ = XSDataXdsOutput()
-            obj_.build(child_)
-            self.setXds_res(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'completeness_entries':
-            obj_ = XSDataXdsCompletenessEntry()
-            obj_.build(child_)
-            self.completeness_entries.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'detector_max_res':
-            obj_ = XSDataFloat()
-            obj_.build(child_)
-            self.setDetector_max_res(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'total_completeness':
-            obj_ = XSDataXdsCompletenessEntry()
-            obj_.build(child_)
-            self.setTotal_completeness(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'res_override':
-            obj_ = XSDataFloat()
-            obj_.build(child_)
-            self.setRes_override(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'completeness_cutoff':
-            obj_ = XSDataFloat()
-            obj_.build(child_)
-            self.setCompleteness_cutoff(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'isig_cutoff':
-            obj_ = XSDataFloat()
-            obj_.build(child_)
-            self.setIsig_cutoff(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'r_value_cutoff':
-            obj_ = XSDataFloat()
-            obj_.build(child_)
-            self.setR_value_cutoff(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'cc_half_cutoff':
-            obj_ = XSDataFloat()
-            obj_.build(child_)
-            self.setCc_half_cutoff(obj_)
-        XSDataInput.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataResCutoff" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataResCutoff' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataResCutoff is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataResCutoff.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataResCutoff()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataResCutoff" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataResCutoff()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataResCutoff
-
-
 class XSDataResCutoffResult(XSDataResult):
     def __init__(self, status=None, total_isig=None, total_rfactor=None, total_complete=None, bins=None, res=None):
         XSDataResult.__init__(self, status)
@@ -5242,6 +4920,328 @@ class XSDataXdsOutput(XSDataResult):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataXdsOutput
+
+
+class XSDataResCutoff(XSDataInput):
+    def __init__(self, configuration=None, cc_half_cutoff=None, r_value_cutoff=None, isig_cutoff=None, completeness_cutoff=None, res_override=None, total_completeness=None, detector_max_res=None, completeness_entries=None, xds_res=None):
+        XSDataInput.__init__(self, configuration)
+        if xds_res is None:
+            self._xds_res = None
+        elif xds_res.__class__.__name__ == "XSDataXdsOutput":
+            self._xds_res = xds_res
+        else:
+            strMessage = "ERROR! XSDataResCutoff constructor argument 'xds_res' is not XSDataXdsOutput but %s" % self._xds_res.__class__.__name__
+            raise BaseException(strMessage)
+        if completeness_entries is None:
+            self._completeness_entries = []
+        elif completeness_entries.__class__.__name__ == "list":
+            self._completeness_entries = completeness_entries
+        else:
+            strMessage = "ERROR! XSDataResCutoff constructor argument 'completeness_entries' is not list but %s" % self._completeness_entries.__class__.__name__
+            raise BaseException(strMessage)
+        if detector_max_res is None:
+            self._detector_max_res = None
+        elif detector_max_res.__class__.__name__ == "XSDataFloat":
+            self._detector_max_res = detector_max_res
+        else:
+            strMessage = "ERROR! XSDataResCutoff constructor argument 'detector_max_res' is not XSDataFloat but %s" % self._detector_max_res.__class__.__name__
+            raise BaseException(strMessage)
+        if total_completeness is None:
+            self._total_completeness = None
+        elif total_completeness.__class__.__name__ == "XSDataXdsCompletenessEntry":
+            self._total_completeness = total_completeness
+        else:
+            strMessage = "ERROR! XSDataResCutoff constructor argument 'total_completeness' is not XSDataXdsCompletenessEntry but %s" % self._total_completeness.__class__.__name__
+            raise BaseException(strMessage)
+        if res_override is None:
+            self._res_override = None
+        elif res_override.__class__.__name__ == "XSDataFloat":
+            self._res_override = res_override
+        else:
+            strMessage = "ERROR! XSDataResCutoff constructor argument 'res_override' is not XSDataFloat but %s" % self._res_override.__class__.__name__
+            raise BaseException(strMessage)
+        if completeness_cutoff is None:
+            self._completeness_cutoff = None
+        elif completeness_cutoff.__class__.__name__ == "XSDataFloat":
+            self._completeness_cutoff = completeness_cutoff
+        else:
+            strMessage = "ERROR! XSDataResCutoff constructor argument 'completeness_cutoff' is not XSDataFloat but %s" % self._completeness_cutoff.__class__.__name__
+            raise BaseException(strMessage)
+        if isig_cutoff is None:
+            self._isig_cutoff = None
+        elif isig_cutoff.__class__.__name__ == "XSDataFloat":
+            self._isig_cutoff = isig_cutoff
+        else:
+            strMessage = "ERROR! XSDataResCutoff constructor argument 'isig_cutoff' is not XSDataFloat but %s" % self._isig_cutoff.__class__.__name__
+            raise BaseException(strMessage)
+        if r_value_cutoff is None:
+            self._r_value_cutoff = None
+        elif r_value_cutoff.__class__.__name__ == "XSDataFloat":
+            self._r_value_cutoff = r_value_cutoff
+        else:
+            strMessage = "ERROR! XSDataResCutoff constructor argument 'r_value_cutoff' is not XSDataFloat but %s" % self._r_value_cutoff.__class__.__name__
+            raise BaseException(strMessage)
+        if cc_half_cutoff is None:
+            self._cc_half_cutoff = None
+        elif cc_half_cutoff.__class__.__name__ == "XSDataFloat":
+            self._cc_half_cutoff = cc_half_cutoff
+        else:
+            strMessage = "ERROR! XSDataResCutoff constructor argument 'cc_half_cutoff' is not XSDataFloat but %s" % self._cc_half_cutoff.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'xds_res' attribute
+    def getXds_res(self): return self._xds_res
+    def setXds_res(self, xds_res):
+        if xds_res is None:
+            self._xds_res = None
+        elif xds_res.__class__.__name__ == "XSDataXdsOutput":
+            self._xds_res = xds_res
+        else:
+            strMessage = "ERROR! XSDataResCutoff.setXds_res argument is not XSDataXdsOutput but %s" % xds_res.__class__.__name__
+            raise BaseException(strMessage)
+    def delXds_res(self): self._xds_res = None
+    xds_res = property(getXds_res, setXds_res, delXds_res, "Property for xds_res")
+    # Methods and properties for the 'completeness_entries' attribute
+    def getCompleteness_entries(self): return self._completeness_entries
+    def setCompleteness_entries(self, completeness_entries):
+        if completeness_entries is None:
+            self._completeness_entries = []
+        elif completeness_entries.__class__.__name__ == "list":
+            self._completeness_entries = completeness_entries
+        else:
+            strMessage = "ERROR! XSDataResCutoff.setCompleteness_entries argument is not list but %s" % completeness_entries.__class__.__name__
+            raise BaseException(strMessage)
+    def delCompleteness_entries(self): self._completeness_entries = None
+    completeness_entries = property(getCompleteness_entries, setCompleteness_entries, delCompleteness_entries, "Property for completeness_entries")
+    def addCompleteness_entries(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataResCutoff.addCompleteness_entries argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXdsCompletenessEntry":
+            self._completeness_entries.append(value)
+        else:
+            strMessage = "ERROR! XSDataResCutoff.addCompleteness_entries argument is not XSDataXdsCompletenessEntry but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertCompleteness_entries(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataResCutoff.insertCompleteness_entries argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataResCutoff.insertCompleteness_entries argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXdsCompletenessEntry":
+            self._completeness_entries[index] = value
+        else:
+            strMessage = "ERROR! XSDataResCutoff.addCompleteness_entries argument is not XSDataXdsCompletenessEntry but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'detector_max_res' attribute
+    def getDetector_max_res(self): return self._detector_max_res
+    def setDetector_max_res(self, detector_max_res):
+        if detector_max_res is None:
+            self._detector_max_res = None
+        elif detector_max_res.__class__.__name__ == "XSDataFloat":
+            self._detector_max_res = detector_max_res
+        else:
+            strMessage = "ERROR! XSDataResCutoff.setDetector_max_res argument is not XSDataFloat but %s" % detector_max_res.__class__.__name__
+            raise BaseException(strMessage)
+    def delDetector_max_res(self): self._detector_max_res = None
+    detector_max_res = property(getDetector_max_res, setDetector_max_res, delDetector_max_res, "Property for detector_max_res")
+    # Methods and properties for the 'total_completeness' attribute
+    def getTotal_completeness(self): return self._total_completeness
+    def setTotal_completeness(self, total_completeness):
+        if total_completeness is None:
+            self._total_completeness = None
+        elif total_completeness.__class__.__name__ == "XSDataXdsCompletenessEntry":
+            self._total_completeness = total_completeness
+        else:
+            strMessage = "ERROR! XSDataResCutoff.setTotal_completeness argument is not XSDataXdsCompletenessEntry but %s" % total_completeness.__class__.__name__
+            raise BaseException(strMessage)
+    def delTotal_completeness(self): self._total_completeness = None
+    total_completeness = property(getTotal_completeness, setTotal_completeness, delTotal_completeness, "Property for total_completeness")
+    # Methods and properties for the 'res_override' attribute
+    def getRes_override(self): return self._res_override
+    def setRes_override(self, res_override):
+        if res_override is None:
+            self._res_override = None
+        elif res_override.__class__.__name__ == "XSDataFloat":
+            self._res_override = res_override
+        else:
+            strMessage = "ERROR! XSDataResCutoff.setRes_override argument is not XSDataFloat but %s" % res_override.__class__.__name__
+            raise BaseException(strMessage)
+    def delRes_override(self): self._res_override = None
+    res_override = property(getRes_override, setRes_override, delRes_override, "Property for res_override")
+    # Methods and properties for the 'completeness_cutoff' attribute
+    def getCompleteness_cutoff(self): return self._completeness_cutoff
+    def setCompleteness_cutoff(self, completeness_cutoff):
+        if completeness_cutoff is None:
+            self._completeness_cutoff = None
+        elif completeness_cutoff.__class__.__name__ == "XSDataFloat":
+            self._completeness_cutoff = completeness_cutoff
+        else:
+            strMessage = "ERROR! XSDataResCutoff.setCompleteness_cutoff argument is not XSDataFloat but %s" % completeness_cutoff.__class__.__name__
+            raise BaseException(strMessage)
+    def delCompleteness_cutoff(self): self._completeness_cutoff = None
+    completeness_cutoff = property(getCompleteness_cutoff, setCompleteness_cutoff, delCompleteness_cutoff, "Property for completeness_cutoff")
+    # Methods and properties for the 'isig_cutoff' attribute
+    def getIsig_cutoff(self): return self._isig_cutoff
+    def setIsig_cutoff(self, isig_cutoff):
+        if isig_cutoff is None:
+            self._isig_cutoff = None
+        elif isig_cutoff.__class__.__name__ == "XSDataFloat":
+            self._isig_cutoff = isig_cutoff
+        else:
+            strMessage = "ERROR! XSDataResCutoff.setIsig_cutoff argument is not XSDataFloat but %s" % isig_cutoff.__class__.__name__
+            raise BaseException(strMessage)
+    def delIsig_cutoff(self): self._isig_cutoff = None
+    isig_cutoff = property(getIsig_cutoff, setIsig_cutoff, delIsig_cutoff, "Property for isig_cutoff")
+    # Methods and properties for the 'r_value_cutoff' attribute
+    def getR_value_cutoff(self): return self._r_value_cutoff
+    def setR_value_cutoff(self, r_value_cutoff):
+        if r_value_cutoff is None:
+            self._r_value_cutoff = None
+        elif r_value_cutoff.__class__.__name__ == "XSDataFloat":
+            self._r_value_cutoff = r_value_cutoff
+        else:
+            strMessage = "ERROR! XSDataResCutoff.setR_value_cutoff argument is not XSDataFloat but %s" % r_value_cutoff.__class__.__name__
+            raise BaseException(strMessage)
+    def delR_value_cutoff(self): self._r_value_cutoff = None
+    r_value_cutoff = property(getR_value_cutoff, setR_value_cutoff, delR_value_cutoff, "Property for r_value_cutoff")
+    # Methods and properties for the 'cc_half_cutoff' attribute
+    def getCc_half_cutoff(self): return self._cc_half_cutoff
+    def setCc_half_cutoff(self, cc_half_cutoff):
+        if cc_half_cutoff is None:
+            self._cc_half_cutoff = None
+        elif cc_half_cutoff.__class__.__name__ == "XSDataFloat":
+            self._cc_half_cutoff = cc_half_cutoff
+        else:
+            strMessage = "ERROR! XSDataResCutoff.setCc_half_cutoff argument is not XSDataFloat but %s" % cc_half_cutoff.__class__.__name__
+            raise BaseException(strMessage)
+    def delCc_half_cutoff(self): self._cc_half_cutoff = None
+    cc_half_cutoff = property(getCc_half_cutoff, setCc_half_cutoff, delCc_half_cutoff, "Property for cc_half_cutoff")
+    def export(self, outfile, level, name_='XSDataResCutoff'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataResCutoff'):
+        XSDataInput.exportChildren(self, outfile, level, name_)
+        if self._xds_res is not None:
+            self.xds_res.export(outfile, level, name_='xds_res')
+        else:
+            warnEmptyAttribute("xds_res", "XSDataXdsOutput")
+        for completeness_entries_ in self.getCompleteness_entries():
+            completeness_entries_.export(outfile, level, name_='completeness_entries')
+        if self.getCompleteness_entries() == []:
+            warnEmptyAttribute("completeness_entries", "XSDataXdsCompletenessEntry")
+        if self._detector_max_res is not None:
+            self.detector_max_res.export(outfile, level, name_='detector_max_res')
+        if self._total_completeness is not None:
+            self.total_completeness.export(outfile, level, name_='total_completeness')
+        else:
+            warnEmptyAttribute("total_completeness", "XSDataXdsCompletenessEntry")
+        if self._res_override is not None:
+            self.res_override.export(outfile, level, name_='res_override')
+        if self._completeness_cutoff is not None:
+            self.completeness_cutoff.export(outfile, level, name_='completeness_cutoff')
+        if self._isig_cutoff is not None:
+            self.isig_cutoff.export(outfile, level, name_='isig_cutoff')
+        if self._r_value_cutoff is not None:
+            self.r_value_cutoff.export(outfile, level, name_='r_value_cutoff')
+        if self._cc_half_cutoff is not None:
+            self.cc_half_cutoff.export(outfile, level, name_='cc_half_cutoff')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'xds_res':
+            obj_ = XSDataXdsOutput()
+            obj_.build(child_)
+            self.setXds_res(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'completeness_entries':
+            obj_ = XSDataXdsCompletenessEntry()
+            obj_.build(child_)
+            self.completeness_entries.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'detector_max_res':
+            obj_ = XSDataFloat()
+            obj_.build(child_)
+            self.setDetector_max_res(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'total_completeness':
+            obj_ = XSDataXdsCompletenessEntry()
+            obj_.build(child_)
+            self.setTotal_completeness(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'res_override':
+            obj_ = XSDataFloat()
+            obj_.build(child_)
+            self.setRes_override(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'completeness_cutoff':
+            obj_ = XSDataFloat()
+            obj_.build(child_)
+            self.setCompleteness_cutoff(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'isig_cutoff':
+            obj_ = XSDataFloat()
+            obj_.build(child_)
+            self.setIsig_cutoff(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'r_value_cutoff':
+            obj_ = XSDataFloat()
+            obj_.build(child_)
+            self.setR_value_cutoff(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cc_half_cutoff':
+            obj_ = XSDataFloat()
+            obj_.build(child_)
+            self.setCc_half_cutoff(obj_)
+        XSDataInput.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataResCutoff" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataResCutoff' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataResCutoff is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataResCutoff.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataResCutoff()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataResCutoff" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataResCutoff()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataResCutoff
 
 
 class XSDataXdsOutputFile(XSDataInput):

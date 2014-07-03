@@ -41,8 +41,8 @@ import math
 from EDPlugin import EDPlugin
 from EDVerbose import EDVerbose
 from XSDataCommon import XSDataBoolean, XSDataFloat, XSDataVectorDouble
-from XSDataAutoproc import XSDataResCutoff, XSDataResCutoffResult
-from XSDataAutoproc import XSData2DCoordinates, XSDataXdsCompletenessEntry
+from XSDataAutoprocv1_0 import XSDataResCutoff, XSDataResCutoffResult
+from XSDataAutoprocv1_0 import XSData2DCoordinates, XSDataXdsCompletenessEntry
 
 
 class EDPluginResCutoff(EDPlugin):

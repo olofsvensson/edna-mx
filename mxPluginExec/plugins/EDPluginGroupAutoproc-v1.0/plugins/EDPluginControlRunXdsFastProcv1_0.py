@@ -36,11 +36,11 @@ from EDVerbose import EDVerbose
 
 from XSDataCommon import XSDataFile, XSDataString
 
-from XSDataAutoproc  import XSDataMinimalXdsIn, XSDataXdsOutputFile, XSDataRange
+from XSDataAutoprocv1_0  import XSDataMinimalXdsIn, XSDataXdsOutputFile, XSDataRange
 
 from xdscfgparser import parse_xds_file
 
-class EDPluginControlRunXdsFastProc( EDPluginControl ):
+class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
     """
     Run XDS up to three times, extending the SPOT_RANGE after each
     failure.
@@ -64,14 +64,14 @@ class EDPluginControlRunXdsFastProc( EDPluginControl ):
         """
         Checks the mandatory parameters.
         """
-        self.DEBUG("EDPluginControlRunXdsFastProc.checkParameters")
+        self.DEBUG("EDPluginControlRunXdsFastProcv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
         self.checkMandatoryParameters(self.dataInput.input_file, "No XDS input file")
 
 
     def preProcess(self, _edObject = None):
         EDPluginControl.preProcess(self)
-        self.DEBUG("EDPluginControlRunXdsFastProc.preProcess")
+        self.DEBUG("EDPluginControlRunXdsFastProcv1_0.preProcess")
         # Load the execution plugin
         self.first_run = self.loadPlugin(self.controlled_plugin_name)
 
@@ -95,7 +95,7 @@ class EDPluginControlRunXdsFastProc( EDPluginControl ):
 
     def process(self, _edObject = None):
         EDPluginControl.process(self)
-        self.DEBUG("EDPluginControlRunXdsFastProc.process")
+        self.DEBUG("EDPluginControlRunXdsFastProcv1_0.process")
         # First run is vanilla without any modification
         params = XSDataMinimalXdsIn()
         params.input_file = self.dataInput.input_file
@@ -215,7 +215,7 @@ class EDPluginControlRunXdsFastProc( EDPluginControl ):
 
     def postProcess(self, _edObject = None):
         EDPluginControl.postProcess(self)
-        self.DEBUG("EDPluginControlRunXdsFastProc.postProcess")
+        self.DEBUG("EDPluginControlRunXdsFastProcv1_0.postProcess")
         # XXX: maybe move the XDS output parsing there?
 
 def copy_xds_files(source_dir, dest_dir):
