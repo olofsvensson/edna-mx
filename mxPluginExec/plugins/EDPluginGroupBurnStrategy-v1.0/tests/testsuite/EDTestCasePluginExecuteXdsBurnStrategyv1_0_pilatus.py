@@ -35,11 +35,11 @@ from EDAssert                            import EDAssert
 from EDTestCasePluginExecute             import EDTestCasePluginExecute
 
 
-class EDTestCasePluginExecuteXdsBurnStrategy_pilatus(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteXdsBurnStrategyv1_0_pilatus(EDTestCasePluginExecute):
 
 
     def __init__(self, _oalStringTestName=None):
-        EDTestCasePluginExecute.__init__(self, "EDPluginControlXdsBurnStrategy")
+        EDTestCasePluginExecute.__init__(self, "EDPluginControlXdsBurnStrategyv1_0")
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputXdsBurnStrategy_pilatus.xml"))
 
 

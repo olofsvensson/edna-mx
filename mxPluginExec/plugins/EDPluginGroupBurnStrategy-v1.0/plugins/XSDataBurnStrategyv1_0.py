@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Nov 5 02:24::56 2012 by EDGenerateDS.
+# Generated Thu Jul 3 10:21::17 2014 by EDGenerateDS.
 #
 
 import os, sys
@@ -12,11 +12,11 @@ from xml.dom import Node
 strEdnaHome = os.environ.get("EDNA_HOME", None)
 
 dictLocation = { \
- "XSDataCommon": "Code/repos/edna/kernel/datamodel", \
- "XSDataCommon": "Code/repos/edna/kernel/datamodel", \
- "XSDataCommon": "Code/repos/edna/kernel/datamodel", \
- "XSDataCommon": "Code/repos/edna/kernel/datamodel", \
- "XSDataCommon": "Code/repos/edna/kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:

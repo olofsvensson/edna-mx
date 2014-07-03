@@ -27,7 +27,7 @@
 #
 import os, sys, subprocess, tempfile
 
-xsDataName = "XSDataBurnStrategy.edml"
+xsDataName = "XSDataBurnStrategyv1_0.edml"
 
 if "EDNA_HOME" not in os.environ:
     full_path = os.path.abspath(sys.argv[0])

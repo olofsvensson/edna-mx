@@ -34,15 +34,15 @@ from EDPluginControl import EDPluginControl
 from EDVerbose import EDVerbose
 
 from XSDataCommon import XSDataString, XSDataBoolean, XSDataStatus
-from XSDataBurnStrategy import XSDataInputXdsBurnStrategy, XSDataOutputXdsBurnStrategy
+from XSDataBurnStrategyv1_0 import XSDataInputXdsBurnStrategy, XSDataOutputXdsBurnStrategy
 from EDFactoryPlugin import edFactoryPlugin
 
 edFactoryPlugin.loadPlugin('EDPluginExecMinimalXdsv1_0')
-from XSDataAutoproc import XSDataMinimalXdsIn
+from XSDataAutoprocv1_0 import XSDataMinimalXdsIn
 
 from xdscfgparser import parse_xds_file, dump_xds_file
 
-class EDPluginControlXdsBurnStrategy(EDPluginControl):
+class EDPluginControlXdsBurnStrategyv1_0(EDPluginControl):
     """
     This plugin runs XDS with the specified input file, unit cell
     constants and spacegroup
