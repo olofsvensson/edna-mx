@@ -9,29 +9,6 @@ import XSDataCommon.XSDataResult
 import XSDataCommon.XSDataBoolean
 import XSDataCommon.XSDataFile
 
-complex type XSDataMatthewsCoeffIn extends XSDataInput {
-        a     : XSDataDouble
-        b     : XSDataDouble
-        c     : XSDataDouble
-        alpha : XSDataDouble
-        beta  : XSDataDouble
-        gamma : XSDataDouble
-        symm  : XSDataString
-}
-
-complex type XSDataMatthewsCoeffOut extends XSDataResult {
-        best_p   : XSDataDouble
-        best_sol : XSDataString
-}
-
-complex type XSDataRBinsIn extends XSDataInput {
-        low  : XSDataDouble
-        high : XSDataDouble
-}
-
-complex type XSDataRBinsOut extends XSDataResult {
-        bins : XSDataDouble[]
-}
 
 complex type XSDataRange {
         begin : integer
@@ -220,10 +197,6 @@ complex type XSDataAutoprocInput extends XSDataInput {
         output_file		: XSDataFile
 }
 
-complex type XSDataXdsToSca extends XSDataInput {
-        hkl_file : XSDataFile
-        sca_file : XSDataFile
-}
 
 // these are use by the subplugins of the general file conversion
 // control plugin
@@ -301,4 +274,19 @@ complex type XSDataAutoprocImportOut extends XSDataResult {
 	pointless_sgstring	: XSDataString
 	aimless_log_anom        : XSDataString
 	aimless_log_noanom	: XSDataString
+}
+
+complex type XSDataDimpleIn extends XSDataInput {
+	input_pdb	: XSDataString
+	input_mtz	: XSDataString
+	icol		: XSDataString optional
+	sigi_col	: XSDataString optional
+	output_dir	: XSDataString
+	output_mtz	: XSDataString optional
+	output_pdb	: XSDataString optional
+
+}
+
+complex type XSDataDimpleOut extends XSDataResult {
+
 }

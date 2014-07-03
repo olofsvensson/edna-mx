@@ -144,7 +144,7 @@ class EDPluginExecMinimalXds(EDPluginExecProcessScript):
         # unit cell might be an empty string or some other crazy stuff
         # we need 6 floats/ints
         if unit_cell is not None:
-            ucells = unit_cell.value.split()
+            ucells = unit_cell.value.split(',')
             if len(ucells) != 6:
                 unit_cell = None
             else:

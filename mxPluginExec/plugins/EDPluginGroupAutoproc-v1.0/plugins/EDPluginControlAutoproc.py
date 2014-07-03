@@ -120,6 +120,7 @@ class EDPluginControlAutoproc(EDPluginControl):
         """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataAutoprocInput)
+        self.dataOutput = XSDataResultStoreAutoProc()
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -719,6 +720,7 @@ class EDPluginControlAutoproc(EDPluginControl):
 
 
         self.custom_stats['total_time']=time.time() - process_start
+        return
         try:
             autoproclog.log(**self.custom_stats)
         except Exception, e:

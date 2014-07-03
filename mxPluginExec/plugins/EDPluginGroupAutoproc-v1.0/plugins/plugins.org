@@ -3,6 +3,22 @@ The master plugin that runs all the other ones in sequence. This
 plugin's /process/ method corresponds to the whole fastproc
 autoprocessing pipeline.
 
+There are a few operations that could have been plugins but are only
+functions in the EDPluginControlAutoproc module, for example the
+_parse_aimless function, that is used to parse aimless output.
+
+Other particular things are the way the autoproc status is
+handled. Rather than instantiating the right number of
+(EDPluginISPyBStoreAutoProcStatusv1_4) plugins from
+the start, there's a group of functions that work like this:
+- create_integration_id: instantiate the autoproc status plugin to
+  create an integration id
+- log_to_ispyb: takes either a single integration id or a list of them
+  (because we have both the anom/noanom paths, so 2 integration ids
+  after a certain point in the autoproc) and calls log_to_ispyb_impl
+- log_to_ispyb_impl: instantiate the autoproc status plugin and use it
+  to log the supplied information.
+
 ** EDPluginControlFileConversion.py
 This plugin implements the different file conversions at the end of
 the pipeline. It uses the some of the following plugins to generate
@@ -15,8 +31,6 @@ Runs pointless.
 Runs truncate.
 *** EDPluginExecUniqueify.py
 Runs uniqueify.
-*** EDPluginExecXdsToSca.py
-Converts a XDS ASCII file to a .sca file
 
 ** EDPluginControlRunXdsFastProc.py
 This plugin runs XDS up to four times, increasing the spot range at
