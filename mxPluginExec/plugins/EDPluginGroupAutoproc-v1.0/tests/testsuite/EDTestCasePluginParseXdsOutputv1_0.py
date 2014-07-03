@@ -29,49 +29,37 @@ __copyright__ = "<copyright>"
 
 import os
 
-from EDVerbose                           import EDVerbose
-from EDAssert                            import EDAssert
-from EDTestCasePluginExecute             import EDTestCasePluginExecute
-from XSDataAutoprocv1_0 import XSDataMinimalXDSOut
+from EDVerbose import EDVerbose
+from EDAssert import EDAssert
+from EDTestCasePluginExecute import EDTestCasePluginExecute
+from XSDataAutoprocv1_0 import XSDataXdsOutputFile, XSDataXdsOutput
 
 
-class EDTestCasePluginExecuteExecMinimalXds(EDTestCasePluginExecute):
+class EDTestCasePluginParseXdsOutputv1_0(EDTestCasePluginExecute):
     """
     Those are all execution tests for the EDNA Exec plugin MinimalXds
     """
 
     def __init__(self, _strTestName = None):
-        """
-        """
-        EDTestCasePluginExecute.__init__(self, "EDPluginExecMinimalXdsv1_0")
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
-                                           "XSDataInputMinimalXds_reference.xml"))
-        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \
-                                                     "XSDataResultMinimalXds_reference.xml"))
+        EDTestCasePluginExecute.__init__(self, "EDPluginParseXdsOutputv1_0")
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(),
+                                           "XSDataXdsOutputFile_reference.xml"))
 
 
     def testExecute(self):
-        """
-        """
+
         self.run()
 
         plugin = self.getPlugin()
         output = plugin.dataOutput
-        reference = XSDataMinimalXDSOut.parseFile(self.getReferenceDataOutputFile())
-
-        EDAssert.equal(output.succeeded.value,
-                       reference.succeeded.value,
-                       "'succeeded' values match")
-
+        EDAssert.equal(True, output.completeness_entries != [], "completeness_entries")
+        EDAssert.equal(True, output.total_completeness is not None, "total_completeness")
+        EDAssert.equal(True, output.crystal_mosaicity is not None, "crystal_mosaicity")
+        EDAssert.equal(True, output.direct_beam_coordinates is not None, "direct_beam_coordinates")
+        EDAssert.equal(True, output.direct_beam_detector_coordinates is not None, "direct_beam_detector_coordinates")
+        EDAssert.equal(True, output.detector_origin is not None, "detector_origin")
+        EDAssert.equal(True, output.coordinates_of_unit_cell_a_axis is not None, "coordinates_of_unit_cell_a_axis")
+        EDAssert.equal(True, output.cell_a is not None, "cell_a")
 
     def process(self):
-        """
-        """
         self.addTestMethod(self.testExecute)
-
-
-
-if __name__ == '__main__':
-
-    testMinimalXdsinstance = EDTestCasePluginExecuteControlMinimalXds("EDTestCasePluginExecuteExecMinimalXds")
-    testMinimalXdsinstance.execute()

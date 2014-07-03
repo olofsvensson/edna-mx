@@ -34,30 +34,32 @@ from EDAssert                            import EDAssert
 from EDTestCasePluginExecute             import EDTestCasePluginExecute
 
 
-class EDTestCasePluginExecuteExecSolveContent(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteExecMinimalXdsv1_0(EDTestCasePluginExecute):
     """
-    Those are all execution tests for the EDNA Exec plugin SolveContent
+    Those are all execution tests for the EDNA Exec plugin MinimalXds
     """
 
     def __init__(self, _strTestName = None):
-        """
-        """
-        EDTestCasePluginExecute.__init__(self, "EDPluginSolveContentv1_0")
-#        self.setConfigurationFile(os.path.join(self.getPluginTestsDataHome(),
-#                                               "XSConfiguration_SolveContent.xml"))
+        EDTestCasePluginExecute.__init__(self, "EDPluginExecMinimalXdsv1_0")
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
-                                           "XSDataInputSolveContent_reference.xml"))
+                                           "XSDataInputMinimalXds_reference.xml"))
         self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \
-                                                     "XSDataResultSolveContent_reference.xml"))
+                                                     "XSDataResultMinimalXds_reference.xml"))
 
 
     def testExecute(self):
-        """
-        """
         self.run()
+
+        plugin = self.getPlugin()
+        output = plugin.dataOutput
+        reference = XSDataMinimalXDSOut.parseFile(self.getReferenceDataOutputFile())
+
+        EDAssert.equal(output.succeeded.value,
+                       reference.succeeded.value,
+                       "'succeeded' values match")
 
 
     def process(self):
-        """
-        """
         self.addTestMethod(self.testExecute)
+
+

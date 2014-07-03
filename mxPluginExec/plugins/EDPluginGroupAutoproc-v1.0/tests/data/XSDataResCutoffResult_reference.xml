@@ -1,37 +1,33 @@
 <?xml version="1.0" ?>
 <XSDataResCutoffResult>
     <res>
-        <value>1.600000e+00</value>
+        <value>1.900000e+00</value>
     </res>
     <bins>
-        <value>4.230000e+00</value>
+        <value>4.630000e+00</value>
     </bins>
     <bins>
-        <value>3.000000e+00</value>
+        <value>3.290000e+00</value>
     </bins>
     <bins>
-        <value>2.450000e+00</value>
+        <value>2.690000e+00</value>
     </bins>
     <bins>
-        <value>2.120000e+00</value>
+        <value>2.330000e+00</value>
+    </bins>
+    <bins>
+        <value>2.080000e+00</value>
     </bins>
     <bins>
         <value>1.900000e+00</value>
     </bins>
-    <bins>
-        <value>1.730000e+00</value>
-    </bins>
-    <bins>
-        <value>1.600000e+00</value>
-    </bins>
     <total_complete>
-        <value>7.960000e+01</value>
+        <value>1.540000e+01</value>
     </total_complete>
     <total_rfactor>
-        <value>4.000000e+00</value>
+        <value>1.110000e+01</value>
     </total_rfactor>
     <total_isig>
-        <value>2.307000e+01</value>
+        <value>3.720000e+00</value>
     </total_isig>
 </XSDataResCutoffResult>
-

@@ -4,74 +4,59 @@
         <value>true</value>
     </merge>
     <friedels_law>
-        <value>false</value>
-    </friedels_law>
-    <xds_files>
-        <path>
-            <value>/tmp/plop</value>
-        </path>
-        <res>
-            <value>5.400000e+00</value>
-        </res>
-    </xds_files>
-    <unit_cell_constants>
-        <value>1.100000e+00</value>
-    </unit_cell_constants>
-    <unit_cell_constants>
-        <value>2.200000e+00</value>
-    </unit_cell_constants>
-    <unit_cell_constants>
-        <value>3.300000e+00</value>
-    </unit_cell_constants>
-    <unit_cell_constants>
-        <value>4.400000e+00</value>
-    </unit_cell_constants>
-    <unit_cell_constants>
-        <value>5.500000e+00</value>
-    </unit_cell_constants>
-    <unit_cell_constants>
-        <value>6.600000e+00</value>
-    </unit_cell_constants>
-    <sg_number>
-        <value>3</value>
-    </sg_number>
-    <bins>
-        <value>1.100000e+00</value>
-    </bins>
-    <bins>
-        <value>2.200000e+00</value>
-    </bins>
-    <bins>
-        <value>3.300000e+00</value>
-    </bins>
-    <bins>
-        <value>4.400000e+00</value>
-    </bins>
-</XSDataXscaleInput>
-
-<!--
-
-<?xml version="1.0" ?>
-<XSDataXscaleInput>
-    <merge>
-        <value>true</value>
-    </merge>
-    <friedels_law>
         <value>true</value>
     </friedels_law>
     <xds_files>
-        <path>
-            <value>/tmp/plop</value>
-        </path>
+        <path_anom>
+            <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/XDS_ANOM.HKL</value>
+        </path_anom>
+        <path_noanom>
+            <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/XDS_NOANOM.HKL</value>
+        </path_noanom>
         <res>
-            <value>3.140000e+00</value>
+            <value>2.150000e+00</value>
         </res>
     </xds_files>
+    <unit_cell_constants>
+        <value>5.085030e+01</value>
+    </unit_cell_constants>
+    <unit_cell_constants>
+        <value>6.172960e+01</value>
+    </unit_cell_constants>
+    <unit_cell_constants>
+        <value>6.790260e+01</value>
+    </unit_cell_constants>
+    <unit_cell_constants>
+        <value>9.000000e+01</value>
+    </unit_cell_constants>
+    <unit_cell_constants>
+        <value>9.000000e+01</value>
+    </unit_cell_constants>
+    <unit_cell_constants>
+        <value>9.000000e+01</value>
+    </unit_cell_constants>
     <sg_number>
-        <value>3</value>
+        <value>16</value>
     </sg_number>
-    <input_cell_constants>
-        <value>1 2 3 4 5 6</value>
-    </input_cell_constants>
+    <bins>
+        <value>5.630000e+00</value>
+    </bins>
+    <bins>
+        <value>4.000000e+00</value>
+    </bins>
+    <bins>
+        <value>3.270000e+00</value>
+    </bins>
+    <bins>
+        <value>2.840000e+00</value>
+    </bins>
+    <bins>
+        <value>2.540000e+00</value>
+    </bins>
+    <bins>
+        <value>2.320000e+00</value>
+    </bins>
+    <bins>
+        <value>2.150000e+00</value>
+    </bins>
 </XSDataXscaleInput>
--->

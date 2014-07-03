@@ -37,4 +37,7 @@ class EDTestSuitePluginControlAutoprocv1_0(EDTestSuite):
 
     def process(self):
         self.addTestCaseFromName("EDTestCasePluginControlFileConversionv1_0")
+        self.addTestCaseFromName("EDTestCasePluginExecuteExecXscalev1_0")
+        self.addTestCaseFromName("EDTestCasePluginParseXdsOutputv1_0")
+        self.addTestCaseFromName("EDTestCasePluginResCutoffv1_0")
         self.addTestCaseFromName("EDTestCasePluginControlAutoprocv1_0_id29_20140505")

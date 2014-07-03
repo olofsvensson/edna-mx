@@ -32,46 +32,32 @@ import os
 from EDVerbose import EDVerbose
 from EDAssert import EDAssert
 from EDTestCasePluginExecute import EDTestCasePluginExecute
-from XSDataAutoprocv1_0 import XSDataXdsOutputFile, XSDataXdsOutput
+from XSDataAutoprocv1_0 import XSDataResCutoff, XSDataResCutoffResult
 
 
-class EDTestCasePluginParseXdsOutput(EDTestCasePluginExecute):
-    """
-    Those are all execution tests for the EDNA Exec plugin MinimalXds
-    """
+class EDTestCasePluginResCutoffv1_0(EDTestCasePluginExecute):
 
     def __init__(self, _strTestName = None):
-        """
-        """
-        EDTestCasePluginExecute.__init__(self, "EDPluginParseXdsOutputv1_0")
+        EDTestCasePluginExecute.__init__(self, "EDPluginResCutoffv1_0")
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(),
-                                           "XSDataXdsOutputFile_reference.xml"))
+                                           "XSDataResCutoff_reference.xml"))
         self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(),
-                                                     "XSDataXdsOutput_reference.xml"))
+                                                     "XSDataResCutoffResult_reference.xml"))
 
 
     def testExecute(self):
-        """
-        """
-
         self.run()
 
         plugin = self.getPlugin()
         output = plugin.dataOutput
-        reference = XSDataXdsOutput.parseFile(self.getReferenceDataOutputFile())
+        reference = XSDataResCutoffResult.parseFile(self.getReferenceDataOutputFile())
+
         EDAssert.strAlmostEqual(output.marshal(),
                                 reference.marshal(),
                                 "output looks good")
 
 
     def process(self):
-        """
-        """
         self.addTestMethod(self.testExecute)
 
 
-
-if __name__ == '__main__':
-
-    t = EDTestCasePluginParseXdsOutput("EDTestCasePluginParseXdsOutput")
-    t.execute()

@@ -35,43 +35,28 @@ from EDTestCasePluginExecute             import EDTestCasePluginExecute
 from XSDataAutoprocv1_0 import XSDataXscaleInput, XSDataXscaleOutput
 
 
-class EDTestCasePluginExecuteExecXscale(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteExecXscalev1_0(EDTestCasePluginExecute):
     """
     Those are all execution tests for the EDNA Exec plugin for an xscale run
     """
 
     def __init__(self, _strTestName = None):
-        """
-        """
         EDTestCasePluginExecute.__init__(self, "EDPluginExecXscalev1_0")
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
                                            "XSDataInputXScaleInput_reference.xml"))
-        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \
-                                                     "XSDataXscaleOutput_reference.xml"))
 
 
     def testExecute(self):
-        """
-        """
         self.run()
 
         plugin = self.getPlugin()
         output = plugin.dataOutput
-        reference = XSDataXscaleOutput.parseFile(self.getReferenceDataOutputFile())
 
-        EDAssert.equal(output.succeeded.value,
-                       reference.succeeded.value,
-                       "'succeeded' values match")
+        EDAssert.equal(True, output.succeeded.value, "succeeded")
+        EDAssert.equal(True, os.path.exists(output.hkl_file.value), "hkl_file")
+        EDAssert.equal(True, os.path.exists(output.lp_file.value), "lp_file")
 
 
     def process(self):
-        """
-        """
         self.addTestMethod(self.testExecute)
 
-
-
-if __name__ == '__main__':
-
-    testMinimalXdsinstance = EDTestCasePluginExecuteExecXscale("EDTestCasePluginExecuteExecXscale")
-    testMinimalXdsinstance.execute()
