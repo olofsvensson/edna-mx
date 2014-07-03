@@ -23,38 +23,45 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="Thomas Boeglin"
+__authors__=["Thomas Boeglin", "Olof Svensson"]
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
-import os
+import os, tempfile, shutil
 
 from EDVerbose import EDVerbose
 from EDAssert import EDAssert
+from EDUtilsPath import EDUtilsPath
 from EDTestCasePluginExecute import EDTestCasePluginExecute
 
 
-class EDTestCasePluginControlFileConversion(EDTestCasePluginExecute):
-    """
-    Those are all execution tests for the EDNA Exec plugin SolveContent
-    """
+class EDTestCasePluginControlFileConversionv1_0(EDTestCasePluginExecute):
 
     def __init__(self, _strTestName = None):
-        """
-        """
         EDTestCasePluginExecute.__init__(self, "EDPluginControlFileConversionv1_0")
 
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
                                            "XSDataFileConversionInput_reference.xml"))
-        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \
-                                                     "XSDataFileConversionOutput_reference.xml"))
+        self.strTmpDir = tempfile.mkdtemp(prefix="EDPluginControlFileConversionv1_0", dir=EDUtilsPath.getEdnaTestDataImagesPath())
+        if "EDNA_TMP_DIR" in os.environ.keys():
+            self.strTmpDirOrig = os.environ["EDNA_TMP_DIR"]
+        else:
+            self.strTmpDirOrig = None
+        os.environ["EDNA_TMP_DIR"] = self.strTmpDir
+
 
     def testExecute(self):
-        """
-        """
         self.run()
+        edPlugin = self.getPlugin()
+        xsDataFileConversionOut = edPlugin.dataOutput
+        EDAssert.equal(True, xsDataFileConversionOut.status.isSuccess.value, "Is success")
+        EDAssert.equal(19, xsDataFileConversionOut.pointless_sgnumber.value, "pointless_sgnumber")
+        EDAssert.equal("P 21 21 21", xsDataFileConversionOut.pointless_sgstring.value, "pointless_sgstring")
+        EDAssert.equal(True, os.path.exists(xsDataFileConversionOut.aimless_log.value), "Aimless log exists")
+        shutil.rmtree(self.strTmpDir)
+        if self.strTmpDirOrig is not None:
+            os.environ["EDNA_TMP_DIR"] = self.strTmpDirOrig
+        
 
     def process(self):
-        """
-        """
         self.addTestMethod(self.testExecute)

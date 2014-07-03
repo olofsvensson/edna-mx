@@ -34,7 +34,7 @@ from EDAssert                            import EDAssert
 from EDTestCasePluginExecute             import EDTestCasePluginExecute
 
 
-class EDTestCasePluginControlAutoproc_id29_20140505(EDTestCasePluginExecute):
+class EDTestCasePluginControlAutoprocv1_0_id29_20140505(EDTestCasePluginExecute):
     """
     Those are all execution tests for the EDNA Exec plugin SolveContent
     """

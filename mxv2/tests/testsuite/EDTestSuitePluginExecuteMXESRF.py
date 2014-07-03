@@ -43,6 +43,7 @@ class EDTestSuitePluginExecuteMXESRF(EDTestSuite):
         self.addTestSuiteFromName("EDTestSuitePluginExecuteISPyBv1_4")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteSTACv2_0")
         self.addTestSuiteFromName("EDTestSuitePluginPlotGlev1_1")
+        self.addTestSuiteFromName("EDTestSuitePluginControlAutoprocv1_0")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteXdsBurnStrategyv1_0")
         self.addTestCaseFromName("EDTestCasePluginExecuteDistlSignalStrengthThinClientv1_1")
         # From mxv1:

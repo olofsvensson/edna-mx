@@ -1,7 +1,17 @@
-<XSDataResult>
-  <XSDataStatus>
-    <isSuccess>
-      <value>true</value>
-    </isSuccess>
-  </XSDataStatus>
-</XSDataResult>
+<?xml version="1.0" ?>
+<XSDataFileConversionOut>
+    <status>
+        <isSuccess>
+            <value>true</value>
+        </isSuccess>
+    </status>
+    <pointless_sgnumber>
+        <value>19</value>
+    </pointless_sgnumber>
+    <pointless_sgstring>
+        <value>P 21 21 21</value>
+    </pointless_sgstring>
+    <aimless_log>
+        <value>${EDNA_WORKING_DIRECTORY}/Aimlessv1_0/Aimlessv1_0.log</value>
+    </aimless_log>
+</XSDataFileConversionOut>
