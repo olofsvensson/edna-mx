@@ -98,8 +98,8 @@ from XSDataISPyBv1_4 import  XSDataInputStoreAutoProcStatus
 
 from xdscfgparser import parse_xds_file, dump_xds_file
 
-import autoproclog
-autoproclog.LOG_SERVER='rnice655:5000'
+#import autoproclog
+#autoproclog.LOG_SERVER='rnice655:5000'
 
 WAIT_FOR_FRAME_TIMEOUT=240 #max uses 50*5
 
@@ -721,11 +721,11 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         self.custom_stats['total_time']=time.time() - process_start
         return
-        try:
-            autoproclog.log(**self.custom_stats)
-        except Exception, e:
-            EDVerbose.screen('could not logs stats to custom log server')
-            EDVerbose.screen(traceback.format_exc())
+#        try:
+#            autoproclog.log(**self.custom_stats)
+#        except Exception, e:
+#            EDVerbose.screen('could not logs stats to custom log server')
+#            EDVerbose.screen(traceback.format_exc())
 
 
         # Now onto DIMPLE
