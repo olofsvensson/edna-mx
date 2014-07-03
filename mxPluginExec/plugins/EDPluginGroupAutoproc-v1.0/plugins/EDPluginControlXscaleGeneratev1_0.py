@@ -37,7 +37,7 @@ from XSDataCommon import XSDataBoolean, XSDataString
 # law and merge boolean parameters
 from XSDataAutoprocv1_0 import XSDataXscaleInput, XSDataXscaleGeneratedFiles, XSDataXscaleParsingInput
 
-class EDPluginControlXscaleGenerate(EDPluginControl):
+class EDPluginControlXscaleGeneratev1_0(EDPluginControl):
     """
     Uses the XScale plugin to generate merged and unmerged and w/ and w/out anom
     """
@@ -53,16 +53,16 @@ class EDPluginControlXscaleGenerate(EDPluginControl):
         """
         Checks the mandatory parameters.
         """
-        self.DEBUG("EDPluginControlXscaleGenerate.checkParameters")
+        self.DEBUG("EDPluginControlXscaleGeneratev1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
 
     def preProcess(self, _edObject = None):
         EDPluginControl.preProcess(self)
-        self.DEBUG("EDPluginControlXscaleGenerate.preProcess")
+        self.DEBUG("EDPluginControlXscaleGeneratev1_0.preProcess")
 
         # Load the execution plugin
-        self.xscale_anom_merged  = self.loadPlugin("EDPluginExecXscale")
+        self.xscale_anom_merged  = self.loadPlugin("EDPluginExecXscalev1_0")
         anom_merged_in = self.dataInput.copyViaDict()
         anom_merged_in.friedels_law = XSDataBoolean(True)
         anom_merged_in.merge = XSDataBoolean(True)
@@ -71,7 +71,7 @@ class EDPluginControlXscaleGenerate(EDPluginControl):
         self.xscale_anom_merged.connectFAILURE(self.xscale_failure)
 
 
-        self.xscale_anom_unmerged  = self.loadPlugin("EDPluginExecXscale")
+        self.xscale_anom_unmerged  = self.loadPlugin("EDPluginExecXscalev1_0")
         anom_unmerged_in = self.dataInput.copyViaDict()
         anom_unmerged_in.friedels_law = XSDataBoolean(True)
         anom_unmerged_in.merge = XSDataBoolean(False)
@@ -79,7 +79,7 @@ class EDPluginControlXscaleGenerate(EDPluginControl):
         self.xscale_anom_unmerged.connectSUCCESS(self.xscale_success)
         self.xscale_anom_unmerged.connectFAILURE(self.xscale_failure)
 
-        self.xscale_noanom_merged  = self.loadPlugin("EDPluginExecXscale")
+        self.xscale_noanom_merged  = self.loadPlugin("EDPluginExecXscalev1_0")
         noanom_merged_in = self.dataInput.copyViaDict()
         noanom_merged_in.friedels_law = XSDataBoolean(False)
         noanom_merged_in.merge = XSDataBoolean(True)
@@ -87,7 +87,7 @@ class EDPluginControlXscaleGenerate(EDPluginControl):
         self.xscale_noanom_merged.connectSUCCESS(self.xscale_success)
         self.xscale_noanom_merged.connectFAILURE(self.xscale_failure)
 
-        self.xscale_noanom_unmerged  = self.loadPlugin("EDPluginExecXscale")
+        self.xscale_noanom_unmerged  = self.loadPlugin("EDPluginExecXscalev1_0")
         noanom_unmerged_in = self.dataInput.copyViaDict()
         noanom_unmerged_in.friedels_law = XSDataBoolean(False)
         noanom_unmerged_in.merge = XSDataBoolean(False)
@@ -97,7 +97,7 @@ class EDPluginControlXscaleGenerate(EDPluginControl):
 
     def process(self, _edObject = None):
         EDPluginControl.process(self)
-        self.DEBUG("EDPluginControlXscaleGenerate.process")
+        self.DEBUG("EDPluginControlXscaleGeneratev1_0.process")
 
         # start all plugins
         for p in self.getListOfLoadedPlugin():
@@ -109,22 +109,22 @@ class EDPluginControlXscaleGenerate(EDPluginControl):
         # this is actually quite wrong but i discovered I had to parse
         # output from xscale too late so for now I'm going to do it
         # here
-        self.xscale_anom_merged_parser = self.loadPlugin("EDPluginParseXscaleOutput")
+        self.xscale_anom_merged_parser = self.loadPlugin("EDPluginParseXscaleOutputv1_0")
         parserinput = XSDataXscaleParsingInput()
         parserinput.lp_file = XSDataString(self.xscale_anom_merged.dataOutput.lp_file.value)
         self.xscale_anom_merged_parser.dataInput = parserinput
 
-        self.xscale_anom_unmerged_parser = self.loadPlugin("EDPluginParseXscaleOutput")
+        self.xscale_anom_unmerged_parser = self.loadPlugin("EDPluginParseXscaleOutputv1_0")
         parserinput = XSDataXscaleParsingInput()
         parserinput.lp_file = XSDataString(self.xscale_anom_unmerged.dataOutput.lp_file.value)
         self.xscale_anom_unmerged_parser.dataInput = parserinput
 
-        self.xscale_noanom_merged_parser = self.loadPlugin("EDPluginParseXscaleOutput")
+        self.xscale_noanom_merged_parser = self.loadPlugin("EDPluginParseXscaleOutputv1_0")
         parserinput = XSDataXscaleParsingInput()
         parserinput.lp_file = XSDataString(self.xscale_noanom_merged.dataOutput.lp_file.value)
         self.xscale_noanom_merged_parser.dataInput = parserinput
 
-        self.xscale_noanom_unmerged_parser = self.loadPlugin("EDPluginParseXscaleOutput")
+        self.xscale_noanom_unmerged_parser = self.loadPlugin("EDPluginParseXscaleOutputv1_0")
         parserinput = XSDataXscaleParsingInput()
         parserinput.lp_file = XSDataString(self.xscale_noanom_unmerged.dataOutput.lp_file.value)
         self.xscale_noanom_unmerged_parser.dataInput = parserinput
@@ -146,7 +146,7 @@ class EDPluginControlXscaleGenerate(EDPluginControl):
 
     def postProcess(self, _edObject = None):
         EDPluginControl.postProcess(self)
-        self.DEBUG("EDPluginControlXscaleGenerate.postProcess")
+        self.DEBUG("EDPluginControlXscaleGeneratev1_0.postProcess")
 
         out = XSDataXscaleGeneratedFiles()
 

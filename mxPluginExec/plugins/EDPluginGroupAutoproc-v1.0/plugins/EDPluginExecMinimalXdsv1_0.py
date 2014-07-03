@@ -42,7 +42,7 @@ from xdscfgparser import parse_xds_file, dump_xds_file
 
 
 
-class EDPluginExecMinimalXds(EDPluginExecProcessScript):
+class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
     """
     """
 
@@ -58,7 +58,7 @@ class EDPluginExecMinimalXds(EDPluginExecProcessScript):
         """
         Checks the mandatory parameters.
         """
-        self.DEBUG("EDPluginExecMinimalXds.checkParameters")
+        self.DEBUG("EDPluginExecMinimalXdsv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput,"Data Input is None")
         self.checkMandatoryParameters(self.dataInput.input_file, "No XDS input file given")
 

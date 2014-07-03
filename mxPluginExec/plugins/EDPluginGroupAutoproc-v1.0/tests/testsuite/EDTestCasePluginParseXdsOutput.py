@@ -43,7 +43,7 @@ class EDTestCasePluginParseXdsOutput(EDTestCasePluginExecute):
     def __init__(self, _strTestName = None):
         """
         """
-        EDTestCasePluginExecute.__init__(self, "EDPluginParseXdsOutput")
+        EDTestCasePluginExecute.__init__(self, "EDPluginParseXdsOutputv1_0")
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(),
                                            "XSDataXdsOutputFile_reference.xml"))
         self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(),

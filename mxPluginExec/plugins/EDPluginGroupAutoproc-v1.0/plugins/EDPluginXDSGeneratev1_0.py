@@ -41,7 +41,7 @@ from XSDataAutoprocv1_0 import XSDataXdsGenerateInput
 from XSDataAutoprocv1_0 import XSDataXdsGenerateOutput
 from xdscfgparser import parse_xds_file, dump_xds_file
 
-class EDPluginXDSGenerate(EDPluginControl):
+class EDPluginXDSGeneratev1_0(EDPluginControl):
     """
     """
 
@@ -91,8 +91,8 @@ class EDPluginXDSGenerate(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlAutoproc.preProcess")
 
-        self.xds_anom = self.loadPlugin('EDPluginExecMinimalXds')
-        self.xds_noanom = self.loadPlugin('EDPluginExecMinimalXds')
+        self.xds_anom = self.loadPlugin('EDPluginExecMinimalXdsv1_0')
+        self.xds_noanom = self.loadPlugin('EDPluginExecMinimalXdsv1_0')
 
         path = os.path.abspath(self.dataInput.previous_run_dir.value)
 

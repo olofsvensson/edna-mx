@@ -43,7 +43,7 @@ class EDTestCasePluginExecuteExecMinimalXds(EDTestCasePluginExecute):
     def __init__(self, _strTestName = None):
         """
         """
-        EDTestCasePluginExecute.__init__(self, "EDPluginExecMinimalXds")
+        EDTestCasePluginExecute.__init__(self, "EDPluginExecMinimalXdsv1_0")
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
                                            "XSDataInputMinimalXds_reference.xml"))
         self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \

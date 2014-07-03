@@ -36,45 +36,63 @@ from EDVerbose import EDVerbose
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult
-from XSDataAutoprocv1_0 import XSDataTruncate
+from XSDataAutoprocv1_0 import XSDataAimless
 
-class EDPluginExecTruncate(EDPluginExecProcessScript):
+class EDPluginExecAimlessv1_0(EDPluginExecProcessScript):
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
         self.setRequiredToHaveConfiguration(True)
-        self.setXSDataInputClass(XSDataTruncate)
+        self.setXSDataInputClass(XSDataAimless)
 
+        self.output_file = None
+        self.input_file = None
 
     def configure(self):
         EDPluginExecProcessScript.configure(self)
 
     def preProcess(self):
         EDPluginExecProcessScript.preProcess(self)
-        self.DEBUG('Truncate: preprocess')
+        self.DEBUG('Aimless: preprocess')
         input_file = self.dataInput.input_file.value
         output_file = self.dataInput.output_file.value
-        options = 'hklin {0} hklout {1}'.format(input_file, output_file)
+        symdb = self.config.get('symdb_path')
+        if symdb is None:
+            self.ERROR('no symdb in configuration, aborting')
+            self.setFailure()
+            return
+
+        # TODO: ask Max why he forces the version to 6.2.0
+        options = 'HKLIN {0} HKLOUT {1} SYMINFO {2}'.format(input_file, output_file, symdb)
         self.setScriptCommandline(options)
         self.DEBUG('command line options set to {0}'.format(options))
 
-        nres = self.dataInput.nres
+
+        start_image = self.dataInput.start_image.value
+        end_image = self.dataInput.end_image.value
+        dcid = self.dataInput.dataCollectionID.value
+        resolution = self.dataInput.res.value
+        if resolution is None:
+            resolution = 0
         anom = self.dataInput.anom.value
-        res = self.dataInput.res.value
-        if nres is not None:
-            self.addListCommandExecution('nres {0}'.format(nres.value))
-        self.addListCommandExecution('truncate YES')
-        self.addListCommandExecution('anomalous {0}'.format(anom))
-        self.addListCommandExecution('plot OFF')
-        self.addListCommandExecution('labout F=F_xdsproc SIGF=SIGF_xdsproc')
-        self.addListCommandExecution('falloff YES')
-        self.addListCommandExecution('resolution 50 {0}'.format(res))
-        self.addListCommandExecution('PNAME foo')
-        self.addListCommandExecution('DNAME foo')
-        self.addListCommandExecution('end')
+
+        self.addListCommandExecution('bins 15')
+        self.addListCommandExecution('run 1 batch {0} to {1}'.format(start_image, end_image))
+        self.addListCommandExecution('name run 1 project {0} crystal DEFAULT dataset NATIVE'.format(dcid))
+        self.addListCommandExecution('scales constant')
+        self.addListCommandExecution('resolution 50 {0}'.format(resolution))
+        self.addListCommandExecution('cycles 100')
+        anomalous = 'ON' if anom else 'OFF'
+        self.addListCommandExecution('anomalous {0}'.format(anomalous))
+        self.addListCommandExecution('END')
+
+        self.DEBUG(self.getListCommandExecution())
+        with open(self.dataInput.command_file.value, 'w') as command_file:
+            command_file.write('\n'.join(self.getListCommandExecution()))
+
 
     def checkParameters(self):
-        self.DEBUG('Truncate: checkParameters')
-        data_input = self.getDataInput()
+        self.DEBUG('Aimless: checkParameters')
+        data_input = self.dataInput
         self.checkMandatoryParameters(data_input.input_file, 'no input file')
         self.checkMandatoryParameters(data_input.output_file, 'no output file')
 
@@ -87,11 +105,11 @@ class EDPluginExecTruncate(EDPluginExecProcessScript):
                 return
 
     def process(self):
-        self.DEBUG('Truncate: process')
+        self.DEBUG('Aimless: process')
         EDPluginExecProcessScript.process(self)
 
     def postProcess(self):
-        self.DEBUG('Truncate: postProcess')
+        self.DEBUG('Aimless: postProcess')
         EDPluginExecProcessScript.postProcess(self)
         output_file = self.dataInput.output_file.value
 

@@ -303,16 +303,16 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProcv1_0")
         self.xds_first.dataInput = xds_in
 
-        self.generate = self.loadPlugin("EDPluginXDSGenerate")
+        self.generate = self.loadPlugin("EDPluginXDSGeneratev1_0")
 
-        self.first_res_cutoff = self.loadPlugin("EDPluginResCutoff")
-        self.res_cutoff_anom = self.loadPlugin("EDPluginResCutoff")
-        self.res_cutoff_noanom = self.loadPlugin("EDPluginResCutoff")
+        self.first_res_cutoff = self.loadPlugin("EDPluginResCutoffv1_0")
+        self.res_cutoff_anom = self.loadPlugin("EDPluginResCutoffv1_0")
+        self.res_cutoff_noanom = self.loadPlugin("EDPluginResCutoffv1_0")
 
-        self.parse_xds_anom = self.loadPlugin("EDPluginParseXdsOutput")
-        self.parse_xds_noanom = self.loadPlugin("EDPluginParseXdsOutput")
+        self.parse_xds_anom = self.loadPlugin("EDPluginParseXdsOutputv1_0")
+        self.parse_xds_noanom = self.loadPlugin("EDPluginParseXdsOutputv1_0")
 
-        self.xscale_generate = self.loadPlugin("EDPluginControlXscaleGenerate")
+        self.xscale_generate = self.loadPlugin("EDPluginControlXscaleGeneratev1_0")
 
         self.store_autoproc_anom = self.loadPlugin('EDPluginISPyBStoreAutoProcv1_4')
         self.store_autoproc_noanom = self.loadPlugin('EDPluginISPyBStoreAutoProcv1_4')

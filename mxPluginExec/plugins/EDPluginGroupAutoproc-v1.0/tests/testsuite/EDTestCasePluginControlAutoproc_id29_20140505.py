@@ -27,7 +27,7 @@ __author__="<author>"
 __license__ = "GPLv3+"
 __copyright__ = "<copyright>"
 
-import os
+import os, shutil
 
 from EDVerbose                           import EDVerbose
 from EDAssert                            import EDAssert
@@ -45,14 +45,29 @@ class EDTestCasePluginControlAutoproc_id29_20140505(EDTestCasePluginExecute):
         EDTestCasePluginExecute.__init__(self, "EDPluginControlAutoprocv1_0")
 #        self.setConfigurationFile(os.path.join(self.getPluginTestsDataHome(),
 #                                               "XSConfiguration_SolveContent.xml"))
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(),
-                                           "id29_20140505",
+        self.strTestDir = os.path.join(self.getPluginTestsDataHome(), "id29_20140505")
+        self.setDataInputFile(os.path.join(self.strTestDir,
                                            "edna-autoproc-input.xml"))
 #        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \
 #                                                     "XSDataAutoproc_reference.xml"))
 
+
+    def preProcess(self, _edPlugin=None):
+        EDTestCasePluginExecute.preProcess(self)
+        # Remove files from previous runs
+        if os.path.exists(os.path.join(self.strTestDir, "results")):
+            shutil.rmtree(os.path.join(self.strTestDir, "results"))
+        if os.path.exists(os.path.join(self.strTestDir, "stats.json")):
+            os.remove(os.path.join(self.strTestDir, "stats.json"))
+
     def testExecute(self):
         self.run()
+        # Remove files from this run
+        if os.path.exists(os.path.join(self.strTestDir, "results")):
+            shutil.rmtree(os.path.join(self.strTestDir, "results"))
+        if os.path.exists(os.path.join(self.strTestDir, "stats.json")):
+            os.remove(os.path.join(self.strTestDir, "stats.json"))
 
     def process(self):
         self.addTestMethod(self.testExecute)
+

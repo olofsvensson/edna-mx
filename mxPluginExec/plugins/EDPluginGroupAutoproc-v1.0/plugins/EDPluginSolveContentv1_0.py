@@ -16,7 +16,7 @@ from XSDataCommon import XSDataFloat, XSDataString
 #close MAT;
 
 
-class EDPluginSolveContent(EDPluginExecProcessScript):
+class EDPluginSolveContentv1_0(EDPluginExecProcessScript):
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
         # the 3 regexpes used to parse the output, from max's script

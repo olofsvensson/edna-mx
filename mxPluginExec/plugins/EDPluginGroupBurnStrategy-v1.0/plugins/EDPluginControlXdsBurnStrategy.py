@@ -37,7 +37,7 @@ from XSDataCommon import XSDataString, XSDataBoolean, XSDataStatus
 from XSDataBurnStrategy import XSDataInputXdsBurnStrategy, XSDataOutputXdsBurnStrategy
 from EDFactoryPlugin import edFactoryPlugin
 
-edFactoryPlugin.loadPlugin('EDPluginExecMinimalXds')
+edFactoryPlugin.loadPlugin('EDPluginExecMinimalXdsv1_0')
 from XSDataAutoproc import XSDataMinimalXdsIn
 
 from xdscfgparser import parse_xds_file, dump_xds_file
@@ -73,7 +73,7 @@ class EDPluginControlXdsBurnStrategy(EDPluginControl):
     def preProcess(self, _edObject = None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlXdsBest.preProcess")
-        self._xds = self.loadPlugin('EDPluginExecMinimalXds')
+        self._xds = self.loadPlugin('EDPluginExecMinimalXdsv1_0')
 
         # save the root path (where the initial xds.inp is) for later use
         self.root_dir = os.path.abspath(os.path.dirname(self.dataInput.input_file.value))
@@ -139,7 +139,7 @@ class EDPluginControlXdsBurnStrategy(EDPluginControl):
         if not os.path.exists(expected):
             # Try to re-run with JOB = DEFPIX INTEGRATE CORRECT
             self.parsed_config["JOB="] = "DEFPIX INTEGRATE CORRECT"
-            self._xds2 = self.loadPlugin('EDPluginExecMinimalXds')
+            self._xds2 = self.loadPlugin('EDPluginExecMinimalXdsv1_0')
             self._xds2.setWorkingDirectory(self._xds.getWorkingDirectory())
             dump_xds_file(self.real_input_file, self.parsed_config)
             input_dm2 = XSDataMinimalXdsIn()

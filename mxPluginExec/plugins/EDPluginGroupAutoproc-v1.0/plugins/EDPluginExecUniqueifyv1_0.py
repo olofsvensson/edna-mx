@@ -36,63 +36,30 @@ from EDVerbose import EDVerbose
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult
-from XSDataAutoprocv1_0 import XSDataAimless
+from XSDataAutoprocv1_0 import XSDataUniqueify
 
-class EDPluginExecAimless(EDPluginExecProcessScript):
+class EDPluginExecUniqueifyv1_0(EDPluginExecProcessScript):
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
         self.setRequiredToHaveConfiguration(True)
-        self.setXSDataInputClass(XSDataAimless)
-
-        self.output_file = None
-        self.input_file = None
+        self.setXSDataInputClass(XSDataUniqueify)
 
     def configure(self):
         EDPluginExecProcessScript.configure(self)
 
     def preProcess(self):
         EDPluginExecProcessScript.preProcess(self)
-        self.DEBUG('Aimless: preprocess')
+        self.DEBUG('Uniqueify: preprocess')
         input_file = self.dataInput.input_file.value
         output_file = self.dataInput.output_file.value
-        symdb = self.config.get('symdb_path')
-        if symdb is None:
-            self.ERROR('no symdb in configuration, aborting')
-            self.setFailure()
-            return
-
-        # TODO: ask Max why he forces the version to 6.2.0
-        options = 'HKLIN {0} HKLOUT {1} SYMINFO {2}'.format(input_file, output_file, symdb)
+        options = '{0} {1}'.format(input_file, output_file)
         self.setScriptCommandline(options)
         self.DEBUG('command line options set to {0}'.format(options))
 
 
-        start_image = self.dataInput.start_image.value
-        end_image = self.dataInput.end_image.value
-        dcid = self.dataInput.dataCollectionID.value
-        resolution = self.dataInput.res.value
-        if resolution is None:
-            resolution = 0
-        anom = self.dataInput.anom.value
-
-        self.addListCommandExecution('bins 15')
-        self.addListCommandExecution('run 1 batch {0} to {1}'.format(start_image, end_image))
-        self.addListCommandExecution('name run 1 project {0} crystal DEFAULT dataset NATIVE'.format(dcid))
-        self.addListCommandExecution('scales constant')
-        self.addListCommandExecution('resolution 50 {0}'.format(resolution))
-        self.addListCommandExecution('cycles 100')
-        anomalous = 'ON' if anom else 'OFF'
-        self.addListCommandExecution('anomalous {0}'.format(anomalous))
-        self.addListCommandExecution('END')
-
-        self.DEBUG(self.getListCommandExecution())
-        with open(self.dataInput.command_file.value, 'w') as command_file:
-            command_file.write('\n'.join(self.getListCommandExecution()))
-
-
     def checkParameters(self):
-        self.DEBUG('Aimless: checkParameters')
-        data_input = self.dataInput
+        self.DEBUG('Uniqueify: checkParameters')
+        data_input = self.getDataInput()
         self.checkMandatoryParameters(data_input.input_file, 'no input file')
         self.checkMandatoryParameters(data_input.output_file, 'no output file')
 
@@ -105,11 +72,11 @@ class EDPluginExecAimless(EDPluginExecProcessScript):
                 return
 
     def process(self):
-        self.DEBUG('Aimless: process')
+        self.DEBUG('Uniqueify: process')
         EDPluginExecProcessScript.process(self)
 
     def postProcess(self):
-        self.DEBUG('Aimless: postProcess')
+        self.DEBUG('Uniqueify: postProcess')
         EDPluginExecProcessScript.postProcess(self)
         output_file = self.dataInput.output_file.value
 

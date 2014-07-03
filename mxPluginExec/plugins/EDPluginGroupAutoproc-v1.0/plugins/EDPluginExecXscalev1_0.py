@@ -44,7 +44,7 @@ from XSDataAutoprocv1_0 import XSDataXscaleInput, XSDataXscaleOutput
 # instead of writing a parser them like I did for XDS I'll just
 # generate the input from some data model parameters.
 
-class EDPluginExecXscale(EDPluginExecProcessScript):
+class EDPluginExecXscalev1_0(EDPluginExecProcessScript):
     """
     """
 

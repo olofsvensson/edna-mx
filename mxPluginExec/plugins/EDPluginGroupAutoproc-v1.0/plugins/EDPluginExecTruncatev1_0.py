@@ -36,29 +36,44 @@ from EDVerbose import EDVerbose
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult
-from XSDataAutoprocv1_0 import XSDataUniqueify
+from XSDataAutoprocv1_0 import XSDataTruncate
 
-class EDPluginExecUniqueify(EDPluginExecProcessScript):
+class EDPluginExecTruncatev1_0(EDPluginExecProcessScript):
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
         self.setRequiredToHaveConfiguration(True)
-        self.setXSDataInputClass(XSDataUniqueify)
+        self.setXSDataInputClass(XSDataTruncate)
+
 
     def configure(self):
         EDPluginExecProcessScript.configure(self)
 
     def preProcess(self):
         EDPluginExecProcessScript.preProcess(self)
-        self.DEBUG('Uniqueify: preprocess')
+        self.DEBUG('Truncate: preprocess')
         input_file = self.dataInput.input_file.value
         output_file = self.dataInput.output_file.value
-        options = '{0} {1}'.format(input_file, output_file)
+        options = 'hklin {0} hklout {1}'.format(input_file, output_file)
         self.setScriptCommandline(options)
         self.DEBUG('command line options set to {0}'.format(options))
 
+        nres = self.dataInput.nres
+        anom = self.dataInput.anom.value
+        res = self.dataInput.res.value
+        if nres is not None:
+            self.addListCommandExecution('nres {0}'.format(nres.value))
+        self.addListCommandExecution('truncate YES')
+        self.addListCommandExecution('anomalous {0}'.format(anom))
+        self.addListCommandExecution('plot OFF')
+        self.addListCommandExecution('labout F=F_xdsproc SIGF=SIGF_xdsproc')
+        self.addListCommandExecution('falloff YES')
+        self.addListCommandExecution('resolution 50 {0}'.format(res))
+        self.addListCommandExecution('PNAME foo')
+        self.addListCommandExecution('DNAME foo')
+        self.addListCommandExecution('end')
 
     def checkParameters(self):
-        self.DEBUG('Uniqueify: checkParameters')
+        self.DEBUG('Truncate: checkParameters')
         data_input = self.getDataInput()
         self.checkMandatoryParameters(data_input.input_file, 'no input file')
         self.checkMandatoryParameters(data_input.output_file, 'no output file')
@@ -72,11 +87,11 @@ class EDPluginExecUniqueify(EDPluginExecProcessScript):
                 return
 
     def process(self):
-        self.DEBUG('Uniqueify: process')
+        self.DEBUG('Truncate: process')
         EDPluginExecProcessScript.process(self)
 
     def postProcess(self):
-        self.DEBUG('Uniqueify: postProcess')
+        self.DEBUG('Truncate: postProcess')
         EDPluginExecProcessScript.postProcess(self)
         output_file = self.dataInput.output_file.value
 

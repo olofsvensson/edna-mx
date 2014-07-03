@@ -43,7 +43,7 @@ class EDTestCasePluginExecuteExecXscale(EDTestCasePluginExecute):
     def __init__(self, _strTestName = None):
         """
         """
-        EDTestCasePluginExecute.__init__(self, "EDPluginExecXscale")
+        EDTestCasePluginExecute.__init__(self, "EDPluginExecXscalev1_0")
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
                                            "XSDataInputXScaleInput_reference.xml"))
         self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \

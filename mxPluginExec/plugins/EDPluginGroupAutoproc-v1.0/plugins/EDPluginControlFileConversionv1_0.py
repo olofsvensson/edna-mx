@@ -60,10 +60,10 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         infile = self.dataInput.input_file.value
         outfile = self.dataInput.output_file.value
 
-        self.pointless = self.loadPlugin("EDPluginExecPointless")
-        self.aimless = self.loadPlugin("EDPluginExecAimless")
-        self.truncate = self.loadPlugin("EDPluginExecTruncate")
-        self.uniqueify = self.loadPlugin("EDPluginExecUniqueify")
+        self.pointless = self.loadPlugin("EDPluginExecPointlessv1_0")
+        self.aimless = self.loadPlugin("EDPluginExecAimlessv1_0")
+        self.truncate = self.loadPlugin("EDPluginExecTruncatev1_0")
+        self.uniqueify = self.loadPlugin("EDPluginExecUniqueifyv1_0")
 
         anom = "anom" if self.dataInput.anom.value else "noanom"
         if self.dataInput.image_prefix is not None:

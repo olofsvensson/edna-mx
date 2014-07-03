@@ -52,7 +52,7 @@ class EDPluginControlRunXdsv1_0( EDPluginControl ):
         """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataMinimalXdsIn)
-        self.controlled_plugin_name = 'EDPluginExecMinimalXds'
+        self.controlled_plugin_name = 'EDPluginExecMinimalXdsv1_0'
         self.first_run = None
         self.second_run = None
         self.third_run = None
@@ -154,7 +154,7 @@ class EDPluginControlRunXdsv1_0( EDPluginControl ):
             self.setFailure()
         else:
             # use the xds parser plugin to parse the xds output file...
-            parser = self.loadPlugin("EDPluginParseXdsOutput")
+            parser = self.loadPlugin("EDPluginParseXdsOutputv1_0")
             wd = self.successful_run.getWorkingDirectory()
             parser_input = XSDataXdsOutputFile()
             correct_lp_path = XSDataFile()

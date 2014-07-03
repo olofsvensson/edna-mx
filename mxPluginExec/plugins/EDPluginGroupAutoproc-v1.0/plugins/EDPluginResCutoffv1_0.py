@@ -45,7 +45,7 @@ from XSDataAutoprocv1_0 import XSDataResCutoff, XSDataResCutoffResult
 from XSDataAutoprocv1_0 import XSData2DCoordinates, XSDataXdsCompletenessEntry
 
 
-class EDPluginResCutoff(EDPlugin):
+class EDPluginResCutoffv1_0(EDPlugin):
     """
     """
 
@@ -60,7 +60,7 @@ class EDPluginResCutoff(EDPlugin):
         """
         Checks the mandatory parameters.
         """
-        self.DEBUG("EDPluginParseXdsOutput.checkParameters")
+        self.DEBUG("EDPluginParseXdsOutputv1_0.checkParameters")
 
         data_input = self.dataInput
         self.checkMandatoryParameters(data_input.completeness_entries,
@@ -68,7 +68,7 @@ class EDPluginResCutoff(EDPlugin):
 
     def preProcess(self, _edObject = None):
         EDPlugin.preProcess(self)
-        self.DEBUG("EDPluginResCutoff.preProcess")
+        self.DEBUG("EDPluginResCutoffv1_0.preProcess")
 
     def process(self, _edObject = None):
         EDPlugin.process(self)
@@ -155,7 +155,7 @@ Stopping""")
 
     def postProcess(self, _edObject = None):
         EDPlugin.postProcess(self)
-        self.DEBUG("EDPluginParseXdsOutput.postProcess")
+        self.DEBUG("EDPluginParseXdsOutputv1_0.postProcess")
 
 
 # straight port of max's code, reusing the same var names (pythonized)

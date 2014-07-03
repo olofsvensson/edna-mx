@@ -45,7 +45,7 @@ from XSDataAutoprocv1_0 import XSDataXscaleCompletenessEntry
 
 from XSDataAutoprocv1_0 import XSDataXscaleParsingInput, XSDataXscaleParsedOutput
 
-class EDPluginParseXscaleOutput(EDPlugin):
+class EDPluginParseXscaleOutputv1_0(EDPlugin):
     """
     """
     def __init__(self ):
@@ -58,7 +58,7 @@ class EDPluginParseXscaleOutput(EDPlugin):
         """
         Checks the mandatory parameters.
         """
-        self.DEBUG("EDPluginParseXscaleOutput.checkParameters")
+        self.DEBUG("EDPluginParseXscaleOutputv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput.lp_file, "No LP file given")
 
         # now really check it
@@ -68,7 +68,7 @@ class EDPluginParseXscaleOutput(EDPlugin):
 
     def preProcess(self, _edObject = None):
         EDPlugin.preProcess(self)
-        self.DEBUG("EDPluginParseXscaleOutput.preProcess")
+        self.DEBUG("EDPluginParseXscaleOutputv1_0.preProcess")
 
     def process(self, _edObject = None):
         EDPlugin.process(self)
@@ -113,7 +113,7 @@ class EDPluginParseXscaleOutput(EDPlugin):
 
     def postProcess(self, _edObject = None):
         EDPlugin.postProcess(self)
-        self.DEBUG("EDPluginParseXscaleOutput.postProcess")
+        self.DEBUG("EDPluginParseXscaleOutputv1_0.postProcess")
 
 
 def _extract_completeness_entries(lines, output):

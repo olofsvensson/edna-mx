@@ -81,7 +81,7 @@ from XSDataAutoprocv1_0 import XSData2DCoordinates, XSDataXdsCompletenessEntry
 
 # first approach used regexpes but it was too horrible.
 
-class EDPluginParseXdsOutput(EDPlugin):
+class EDPluginParseXdsOutputv1_0(EDPlugin):
     """
     """
 
@@ -96,7 +96,7 @@ class EDPluginParseXdsOutput(EDPlugin):
         """
         Checks the mandatory parameters.
         """
-        self.DEBUG("EDPluginParseXdsOutput.checkParameters")
+        self.DEBUG("EDPluginParseXdsOutputv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput.correct_lp, "No XDS input file given")
 
         # now really check it
@@ -106,7 +106,7 @@ class EDPluginParseXdsOutput(EDPlugin):
 
     def preProcess(self, _edObject = None):
         EDPlugin.preProcess(self)
-        self.DEBUG("EDPluginParseXdsOutput.preProcess")
+        self.DEBUG("EDPluginParseXdsOutputv1_0.preProcess")
 
     def process(self, _edObject = None):
         EDPlugin.process(self)
@@ -190,7 +190,7 @@ class EDPluginParseXdsOutput(EDPlugin):
 
     def postProcess(self, _edObject = None):
         EDPlugin.postProcess(self)
-        self.DEBUG("EDPluginParseXdsOutput.postProcess")
+        self.DEBUG("EDPluginParseXdsOutputv1_0.postProcess")
 
 
 def _extract_infos(lines, output):

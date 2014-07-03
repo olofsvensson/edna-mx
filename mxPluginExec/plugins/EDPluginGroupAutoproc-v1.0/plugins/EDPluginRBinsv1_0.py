@@ -8,7 +8,7 @@ from EDPluginExecProcessScript import EDPluginExecProcessScript
 from XSDataCommon import XSDataFloat, XSDataString
 
 
-class EDPluginRBins(EDPluginExecProcessScript):
+class EDPluginRBinsv1_0(EDPluginExecProcessScript):
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
         self.setRequiredToHaveConfiguration(True)
