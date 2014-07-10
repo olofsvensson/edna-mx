@@ -89,6 +89,8 @@ package XSDataMXv1 {
 
 		complex type XSDataResultCharacterisation extends XSDataResult {
 			dataCollection : XSDataCollection
+			jpegImage : XSDataImage [] optional
+			thumbnailImage : XSDataImage [] optional			
 			executiveSummary : XSDataString
 			imageQualityIndicators : XSDataImageQualityIndicators [] optional
 			indexingResult : XSDataIndexingResult optional

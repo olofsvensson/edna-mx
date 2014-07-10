@@ -34,13 +34,13 @@ from EDTestCasePluginExecute             import EDTestCasePluginExecute
 
 
 
-class EDTestCasePluginExecuteExecSimpleHTMLPagev1_0(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteExecSimpleHTMLPagev1_0_noIndexing(EDTestCasePluginExecute):
 
 
     def __init__(self, _edStringTestName=None):
         EDTestCasePluginExecute.__init__(self, "EDPluginExecSimpleHTMLPagev1_0")
         self.setConfigurationFile(self.getRefConfigFile())
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputSimpleHTMLPage_reference.xml"))
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputSimpleHTMLPage_noIndexing.xml"))
 
 
     def preProcess(self):

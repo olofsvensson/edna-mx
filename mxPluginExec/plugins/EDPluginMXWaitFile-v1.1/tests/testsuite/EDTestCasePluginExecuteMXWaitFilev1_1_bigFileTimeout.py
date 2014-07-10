@@ -29,16 +29,31 @@ __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20140623"
 
+import os
 
-from EDTestSuite  import EDTestSuite
+from EDAssert import EDAssert
+from EDTestCasePluginExecute import EDTestCasePluginExecute
 
-class EDTestSuitePluginExecuteMXWaitFilev1_1(EDTestSuite):
+
+class EDTestCasePluginExecuteMXWaitFilev1_1_bigFileTimeout(EDTestCasePluginExecute):
+
+    def __init__(self, _strTestName=None):
+        EDTestCasePluginExecute.__init__(self, "EDPluginMXWaitFilev1_1")
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
+                                           "XSDataInputMXWaitFile_bigFileTimeout.xml"))
+        self.setNoExpectedWarningMessages(1)
+        
+    def preProcess(self):
+        EDTestCasePluginExecute.preProcess(self)
+        self.loadTestImage([ "ref-testscale_1_0001.img" ])
+
+    def testExecute(self):
+        self.run()
+        # Check timeout
+        edPlugin = self.getPlugin()
+        EDAssert.equal(True, edPlugin.dataOutput.timedOut.value, "TimedOut should be False")
 
     def process(self):
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1")
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1_waitFile")
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1_timeout")
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1_timeout_config")
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1_bigFileTimeout")
+        self.addTestMethod(self.testExecute)
 
 

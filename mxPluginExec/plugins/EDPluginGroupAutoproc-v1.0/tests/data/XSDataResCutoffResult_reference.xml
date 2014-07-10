@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<XSDataResCutoffResult>
+    <res>
+        <value>1.900000e+00</value>
+    </res>
+    <bins>
+        <value>4.630000e+00</value>
+    </bins>
+    <bins>
+        <value>3.290000e+00</value>
+    </bins>
+    <bins>
+        <value>2.690000e+00</value>
+    </bins>
+    <bins>
+        <value>2.330000e+00</value>
+    </bins>
+    <bins>
+        <value>2.080000e+00</value>
+    </bins>
+    <bins>
+        <value>1.900000e+00</value>
+    </bins>
+    <total_complete>
+        <value>1.540000e+01</value>
+    </total_complete>
+    <total_rfactor>
+        <value>1.110000e+01</value>
+    </total_rfactor>
+    <total_isig>
+        <value>3.720000e+00</value>
+    </total_isig>
+</XSDataResCutoffResult>

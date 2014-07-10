@@ -2,7 +2,7 @@
 #    Project: mxPluginExec
 #             http://www.edna-site.org
 #
-#    Copyright (C) 2011-2013 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2013 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal authors:      Olof Svensson (svensson@esrf.fr) 
@@ -22,23 +22,22 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
-
 __author__ = "Olof Svensson"
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20140623"
+__date__ = "20130328"
+__status__ = "production"
 
 
-from EDTestSuite  import EDTestSuite
+from EDTestSuite                                  import EDTestSuite
 
-class EDTestSuitePluginExecuteMXWaitFilev1_1(EDTestSuite):
+class EDTestSuitePluginControlAutoprocv1_0(EDTestSuite):
+
 
     def process(self):
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1")
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1_waitFile")
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1_timeout")
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1_timeout_config")
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1_bigFileTimeout")
-
-
+        self.addTestCaseFromName("EDTestCasePluginControlFileConversionv1_0")
+        self.addTestCaseFromName("EDTestCasePluginExecuteExecXscalev1_0")
+        self.addTestCaseFromName("EDTestCasePluginParseXdsOutputv1_0")
+        self.addTestCaseFromName("EDTestCasePluginResCutoffv1_0")
+        self.addTestCaseFromName("EDTestCasePluginControlAutoprocv1_0_id29_20140505")

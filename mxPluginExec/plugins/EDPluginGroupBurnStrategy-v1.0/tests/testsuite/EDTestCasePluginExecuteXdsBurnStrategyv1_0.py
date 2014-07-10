@@ -2,7 +2,7 @@
 #    Project: mxPluginExec
 #             http://www.edna-site.org
 #
-#    Copyright (C) 2011-2013 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2013 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal authors:      Olof Svensson (svensson@esrf.fr) 
@@ -22,23 +22,34 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
-
 __author__ = "Olof Svensson"
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20140623"
+__date__ = "20130328"
+__status__ = "production"
+
+import os
+
+from EDAssert                            import EDAssert
+from EDTestCasePluginExecute             import EDTestCasePluginExecute
 
 
-from EDTestSuite  import EDTestSuite
+class EDTestCasePluginExecuteXdsBurnStrategyv1_0(EDTestCasePluginExecute):
 
-class EDTestSuitePluginExecuteMXWaitFilev1_1(EDTestSuite):
+
+    def __init__(self, _oalStringTestName=None):
+        EDTestCasePluginExecute.__init__(self, "EDPluginControlXdsBurnStrategyv1_0")
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputXdsBurnStrategy_reference.xml"))
+
+
+    def testExecute(self):
+        self.run()
+        # Check that we have result HKL file
+        xsDataOutput = self.getPlugin().dataOutput
+        EDAssert.equal(True, os.path.exists(xsDataOutput.xds_hkl.value), "XDS HKL file is present")
+
 
     def process(self):
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1")
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1_waitFile")
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1_timeout")
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1_timeout_config")
-        self.addTestCaseFromName("EDTestCasePluginExecuteMXWaitFilev1_1_bigFileTimeout")
-
+        self.addTestMethod(self.testExecute)
 

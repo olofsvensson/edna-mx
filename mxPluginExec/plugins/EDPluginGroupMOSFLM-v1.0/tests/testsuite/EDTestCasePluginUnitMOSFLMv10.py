@@ -179,7 +179,7 @@ class EDTestCasePluginUnitMOSFLMv10(EDTestCasePluginUnit):
         edPluginMOSFLMv10.setDataInput(xsDataMOSFLMInput)
         edPluginMOSFLMv10.generateMOSFLMCommands()
         edListCommands = edPluginMOSFLMv10.getListCommandExecution()
-        edListCommandsReference = ['WAVELENGTH 1.1111', 'DISTANCE 222.22', 'BEAM 1.0 2.0', 'DETECTOR ADSC', 'DIRECTORY /tmp', 'TEMPLATE testdata_1_###.img', 'DETECTOR REVERSEPHI']
+        edListCommandsReference = ['WAVELENGTH 1.1111', 'DISTANCE 222.22', 'BEAM 1.0 2.0', 'DETECTOR ADSC REVERSEPHI', 'DIRECTORY /tmp', 'TEMPLATE testdata_1_###.img']
         EDAssert.equal(edListCommandsReference, edListCommands, "MOSFLM commands with reversephi configured")
 
 
