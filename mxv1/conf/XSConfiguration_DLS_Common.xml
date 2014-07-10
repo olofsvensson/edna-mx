@@ -107,7 +107,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>ispybPlugin</name>
-					<value>EDPluginControlISPyBv1_4</value>
+					<value>EDPluginControlISPyBv1_1</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>useISPyBPlugin</name>
