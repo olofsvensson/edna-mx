@@ -659,7 +659,8 @@ class EDNARunBuilder:
                        "ControlCharacterisationv1_1_",
                        "ControlCharacterisationv12_",
                        "ControlCharacterisationv1_2_",
-                       "ControlCharacterisationv1_3_"):
+                       "ControlCharacterisationv1_3_",
+                       "ControlCharacterisationv1_4_"):
             if os.path.isfile(os.path.join(characterisation_dir,
                                            prefix + "dataInput.xml")):
                 return prefix
