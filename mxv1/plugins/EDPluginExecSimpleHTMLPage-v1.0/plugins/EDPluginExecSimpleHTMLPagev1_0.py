@@ -125,13 +125,14 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         xsDataResultSimpleHTMLPage.setPathToHTMLDirectory(XSDataFile(XSDataString(os.path.dirname(self.strPath))))
         self.setDataOutput(xsDataResultSimpleHTMLPage)
         # Store in Pyarch
-        strPyarchPath = None
-        if self.xsDataResultCharacterisation is not None:
-            strPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchHtmlDirectoryPath(self.xsDataResultCharacterisation.getDataCollection())
-        if strPyarchPath is None:
-            # For debugging purposes
-            strPyarchPath = EDUtilsPath.getEdnaUserTempFolder()
-        EDHandlerESRFPyarchv1_0.copyHTMLDir(_strPathToHTMLDir=os.path.dirname(self.strPath), _strPathToPyarchDirectory=strPyarchPath)
+        if EDUtilsPath.getEdnaSite().startswith("ESRF"):
+            strPyarchPath = None
+            if self.xsDataResultCharacterisation is not None:
+                strPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchHtmlDirectoryPath(self.xsDataResultCharacterisation.getDataCollection())
+            if strPyarchPath is None:
+                # For debugging purposes
+                strPyarchPath = EDUtilsPath.getEdnaUserTempFolder()
+            EDHandlerESRFPyarchv1_0.copyHTMLDir(_strPathToHTMLDir=os.path.dirname(self.strPath), _strPathToPyarchDirectory=strPyarchPath)
 
 
     def indexingResults(self):
@@ -345,7 +346,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                         self.page.th("%.2f" % fRotationAxisStart)
                         self.page.th("%.2f" % fOscillationWidth)
                         self.page.th(iNumberOfImages)
-                        self.page.th("%.2f" % fExposureTime)
+                        self.page.th("%.3f" % fExposureTime)
                         self.page.th("%.2f" % fResolutionMax)
                         self.page.th("%.2f" % fTransmission)
                         self.page.th("%.2f" % fDistance)
@@ -371,7 +372,10 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     self.page.font.close()
             self.page.h2( "Data collection info" )
             firstImage = firstSubWedge.image[0]
-            strDate = firstImage.date.value
+            if firstImage.date is not None:
+                strDate = firstImage.date.value
+            else:
+                strDate = "-----"
             strPrefix = EDUtilsImage.getPrefix(firstImage.path.value)
             strDirName = os.path.dirname(firstImage.path.value)
             self.page.table( class_='dataCollectionInfo', border_="1", cellpadding_="0")
