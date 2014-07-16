@@ -45,7 +45,7 @@ class EDTestCasePluginExecutePluginControlReadImageHeaderv10_Pilatus2M_DLS(EDTes
 
     def preProcess(self):
         EDTestCasePluginExecutePluginControlReadImageHeaderv10.preProcess(self)
-        self.loadTestImage([ "ref-2m_RNASE_1_0001.cbf" ])
+        self.loadTestImage([ "zzzz_1_0001.cbf" ])
 
 
 
