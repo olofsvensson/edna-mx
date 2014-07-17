@@ -42,6 +42,7 @@ class EDTestSuitePluginExecuteReadImageHeaderv10(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_ADSC")
         self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_MARCCD")
         self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_Pilatus2M")
+        self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_Pilatus2M_DLS")
         self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_Pilatus6M")
         self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_ADSC_waitFile")
         self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_failure")

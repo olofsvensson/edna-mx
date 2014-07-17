@@ -69,6 +69,19 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
+			<name>EDPluginControlIndexingIndicatorsv1_1</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>controlledPlugins</name>
+					<value>indicatorsPlugin</value>
+				</XSParamItem>
+     			<XSParamItem>
+					<name>indicatorsPlugin</name>
+					<value>EDPluginControlImageQualityIndicatorsv1_2</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginControlCCP4iv1_1</name>  
 			<XSParamList>
 				<XSParamItem>
@@ -90,11 +103,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>characterisationPlugin</name>
-					<value>EDPluginControlCharacterisationv1_3</value>
+					<value>EDPluginControlCharacterisationv1_4</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>ispybPlugin</name>
-					<value>EDPluginControlISPyBv1_4</value>
+					<value>EDPluginControlISPyBv1_1</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>useISPyBPlugin</name>

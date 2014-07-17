@@ -104,6 +104,8 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         else:
             xsDataIndexingInput.setExperimentalCondition(self.getDataInput("dataCollection")[0].getSubWedge()[0].getExperimentalCondition())
         self.edPluginControlIndexingLabelit.setDataInput(xsDataIndexingInput)
+        if (self.getControlledPluginName("indicatorsPlugin") is not None):
+            self.strControlledIndicatorsPluginName = self.getControlledPluginName("indicatorsPlugin")
         self.edPluginControlIndicators = self.loadPlugin(self.strControlledIndicatorsPluginName)
         # Extract the images from the data collections
         xsDataSubWedgeList = self.getDataInput("dataCollection")[0].getSubWedge()

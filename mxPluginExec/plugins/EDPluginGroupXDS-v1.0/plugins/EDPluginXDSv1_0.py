@@ -120,7 +120,7 @@ class EDPluginXDSv1_0(EDPluginExecProcessScript):
         if (self.__listJob is None):
             raise "RuntimeException", "No jobs given to XDS!"
 
-        pyStrJobLine = "JOB"
+        pyStrJobLine = "JOB="
         for pyStrJob in self.__listJob:
             pyStrJobLine += " %s" % (pyStrJob)
 

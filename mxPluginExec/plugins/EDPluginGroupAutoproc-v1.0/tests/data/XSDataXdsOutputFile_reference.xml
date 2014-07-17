@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<XSDataXdsOutputFile>
+    <correct_lp>
+        <path>
+            <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/CORRECT_ANOM.LP</value>
+        </path>
+    </correct_lp>
+    <gxparm>
+        <path>
+            <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/MinimalXdsv1_0-00000005/GXPARM.XDS</value>
+        </path>
+    </gxparm>
+</XSDataXdsOutputFile>

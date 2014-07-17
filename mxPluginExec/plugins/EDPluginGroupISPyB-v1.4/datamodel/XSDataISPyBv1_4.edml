@@ -670,3 +670,12 @@ complex type XSDataResultGetSampleInformation extends XSDataResult {
 	sampleLocation: XSDataString
 	sampleName: XSDataString
 }
+
+complex type XSDataInputISPyBGetPdbFilePath extends XSDataInput {
+	dataCollectionId: XSDataInteger
+}
+
+complex type XSDataResultISPyBGetPdbFilePath extends XSDataResult {
+	pdbFilePath : XSDataString
+}
+

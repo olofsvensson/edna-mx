@@ -55,7 +55,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>200</value>
+					<value>30</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -443,7 +443,7 @@
 
 		<!-- the plugins for the file conversion -->
 		<XSPluginItem>
-			<name>EDPluginExecPointless</name>
+			<name>EDPluginExecPointlessv1_0</name>
 			<XSParamList>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
@@ -457,7 +457,7 @@
 		</XSPluginItem>
 
 		<XSPluginItem>
-			<name>EDPluginExecAimless</name>
+			<name>EDPluginExecAimlessv1_0</name>
 			<XSParamList>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
@@ -475,7 +475,7 @@
 		</XSPluginItem>
 
 		<XSPluginItem>
-			<name>EDPluginExecTruncate</name>
+			<name>EDPluginExecTruncatev1_0</name>
 			<XSParamList>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
@@ -489,7 +489,7 @@
 		</XSPluginItem>
 
 		<XSPluginItem>
-			<name>EDPluginExecUniqueify</name>
+			<name>EDPluginExecUniqueifyv1_0</name>
 			<XSParamList>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
@@ -502,7 +502,7 @@
 			</XSParamList>
 		</XSPluginItem>
 		    <XSPluginItem>
-			<name>EDPluginExecMinimalXds</name>
+			<name>EDPluginExecMinimalXdsv1_0</name>
 			<XSParamList>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
@@ -519,7 +519,7 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
-			<name>EDPluginExecXscale</name>
+			<name>EDPluginExecXscalev1_0</name>
 			<XSParamList>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
