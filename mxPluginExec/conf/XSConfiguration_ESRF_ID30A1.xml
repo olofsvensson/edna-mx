@@ -20,13 +20,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.2.0/linux/include/ccp4.setup-bash
-					</value>
+					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.0.9 for Image plate and CCD data 14th May
-						2012</value>
+					<value>Mosflm version 7.1.2  for Image plate and CCD data 16th June 2014</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -35,6 +33,10 @@
 				<XSParamItem>
 					<name>reversephi</name>
 					<value>true</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>omega</name>
+					<value>90</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -51,13 +53,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.2.0/linux/include/ccp4.setup-bash
-					</value>
+					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.0.9 for Image plate and CCD data 14th May
-						2012</value>
+					<value>Mosflm version 7.1.2  for Image plate and CCD data 16th June 2014</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -66,6 +66,10 @@
 				<XSParamItem>
 					<name>reversephi</name>
 					<value>true</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>omega</name>
+					<value>90</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -82,13 +86,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.2.0/linux/include/ccp4.setup-bash
-					</value>
+					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.0.9 for Image plate and CCD data 14th May
-						2012</value>
+					<value>Mosflm version 7.1.2  for Image plate and CCD data 16th June 2014</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -97,6 +99,10 @@
 				<XSParamItem>
 					<name>reversephi</name>
 					<value>true</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>omega</name>
+					<value>90</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
