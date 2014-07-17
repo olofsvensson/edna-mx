@@ -610,7 +610,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
             try:
                 self.DEBUG("Sending message to %s." % self.strEDNAContactEmail)
                 self.DEBUG("Message: %s" % _strMessage)
-                strMessage = "EDNA_HOME = %s\n" %  EDUtilsPath.getEdnaSite()
+                strMessage = "EDNA_HOME = %s\n" %  EDUtilsPath.getEdnaHome()
                 strMessage += "EDNA_SITE = %s\n" % EDUtilsPath.getEdnaSite()
                 strMessage += "PLUGIN_NAME = %s\n" % self.getPluginName()
                 strMessage += "working_dir = %s\n\n" % self.getWorkingDirectory()
