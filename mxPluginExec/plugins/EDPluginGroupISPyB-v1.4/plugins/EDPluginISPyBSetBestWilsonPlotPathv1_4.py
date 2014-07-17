@@ -68,11 +68,11 @@ class EDPluginISPyBSetBestWilsonPlotPathv1_4(EDPluginExec):
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
         """
         EDPluginExec.configure(self)
-        self.strUserName = self.config.get("userName")
+        self.strUserName = str(self.config.get("userName"))
         if self.strUserName is None:
             self.ERROR("EDPluginISPyBSetBestWilsonPlotPathv1_4.configure: No user name found in configuration!")
             self.setFailure()
-        self.strPassWord = self.config.get("passWord")
+        self.strPassWord = str(self.config.get("passWord"))
         if self.strPassWord is None:
             self.ERROR("EDPluginISPyBSetBestWilsonPlotPathv1_4.configure: No pass word found in configuration!")
             self.setFailure()
