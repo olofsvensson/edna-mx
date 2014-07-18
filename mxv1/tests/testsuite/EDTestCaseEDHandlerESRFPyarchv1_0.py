@@ -61,6 +61,7 @@ class EDTestCaseEDHandlerESRFPyarchv1_0(EDTestCasePluginUnit):
         EDAssert.equal("/data/pyarch/id23eh2/opid232/20100525", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id23eh2/inhouse/opid232/20100525"))
         EDAssert.equal("/data/pyarch/id23eh2/opid232/20100525/1", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id23eh2/inhouse/opid232/20100525/1"))
         EDAssert.equal("/data/pyarch/id23eh2/opid232/20100525/1/2", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id23eh2/inhouse/opid232/20100525/1/2"))
+        EDAssert.equal("/data/pyarch/id30a1/opid30a1/20140717/RAW_DATA/opid30a1_1_dnafiles", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id30a1/inhouse/opid30a1/20140717/RAW_DATA/opid30a1_1_dnafiles"))
 
 
 

@@ -94,32 +94,11 @@ class EDTestCasePluginUnitControlInterfaceToMXCuBEv1_3(EDTestCasePluginUnit):
         EDAssert.equal(["data", "visitor"], pluginMXCuBE.splitHeadDirectory("/data/visitor"))
         EDAssert.equal(["data", "visitor/mx415/id14eh2/20100212"], pluginMXCuBE.splitHeadDirectory("/data/visitor/mx415/id14eh2/20100212"))
 
-    def testCreatePyArchDNAFilePath(self):
-        pluginMXCuBE = self.createPlugin()
-        EDAssert.equal(None, pluginMXCuBE.createPyArchDNAFilePath("/"))
-        EDAssert.equal(None, pluginMXCuBE.createPyArchDNAFilePath("/data"))
-        EDAssert.equal(None, pluginMXCuBE.createPyArchDNAFilePath("/data/visitor"))
-        EDAssert.equal("/data/pyarch/id14eh2/mx415", pluginMXCuBE.createPyArchDNAFilePath("/data/visitor/mx415/id14eh2"))
-        EDAssert.equal("/data/pyarch/id14eh2/mx415/20100212", pluginMXCuBE.createPyArchDNAFilePath("/data/visitor/mx415/id14eh2/20100212"))
-        EDAssert.equal("/data/pyarch/id14eh2/mx415/20100212/1", pluginMXCuBE.createPyArchDNAFilePath("/data/visitor/mx415/id14eh2/20100212/1"))
-        EDAssert.equal("/data/pyarch/id14eh2/mx415/20100212/1/2", pluginMXCuBE.createPyArchDNAFilePath("/data/visitor/mx415/id14eh2/20100212/1/2"))
-        # Test with inhouse account...
-        EDAssert.equal(None, pluginMXCuBE.createPyArchDNAFilePath("/"))
-        EDAssert.equal(None, pluginMXCuBE.createPyArchDNAFilePath("/data"))
-        EDAssert.equal(None, pluginMXCuBE.createPyArchDNAFilePath("/data/id23eh2"))
-        EDAssert.equal(None, pluginMXCuBE.createPyArchDNAFilePath("/data/id23eh2/inhouse"))
-        EDAssert.equal("/data/pyarch/id23eh2/opid232", pluginMXCuBE.createPyArchDNAFilePath("/data/id23eh2/inhouse/opid232"))
-        EDAssert.equal("/data/pyarch/id23eh2/opid232/20100525", pluginMXCuBE.createPyArchDNAFilePath("/data/id23eh2/inhouse/opid232/20100525"))
-        EDAssert.equal("/data/pyarch/id23eh2/opid232/20100525/1", pluginMXCuBE.createPyArchDNAFilePath("/data/id23eh2/inhouse/opid232/20100525/1"))
-        EDAssert.equal("/data/pyarch/id23eh2/opid232/20100525/1/2", pluginMXCuBE.createPyArchDNAFilePath("/data/id23eh2/inhouse/opid232/20100525/1/2"))
-
-
 
     def process(self):
         self.addTestMethod(self.testCreateDNAFileDirectoryPath)
         self.addTestMethod(self.testCreateOutputFileDictionary)
         self.addTestMethod(self.testSplitHeadDirectory)
-        self.addTestMethod(self.testCreatePyArchDNAFilePath)
 
 
 
