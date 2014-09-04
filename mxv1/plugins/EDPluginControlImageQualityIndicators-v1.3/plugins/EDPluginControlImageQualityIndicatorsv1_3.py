@@ -128,7 +128,7 @@ class EDPluginControlImageQualityIndicatorsv1_3(EDPluginControl):
             if not os.path.exists(xsDataImage.path.value):
                 self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
                 xsDataInputMXWaitFile.file = XSDataFile(xsDataImage.path)
-                xsDataInputMXWaitFile.setSize(XSDataInteger(100000))
+                xsDataInputMXWaitFile.setSize(XSDataInteger(5000000))
                 xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
                 self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
                 self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
