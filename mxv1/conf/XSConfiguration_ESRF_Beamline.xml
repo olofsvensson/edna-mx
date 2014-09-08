@@ -8,6 +8,10 @@
 					<name>timeOut</name>
 					<value>1800</value>
 				</XSParamItem>
+				<XSParamItem>
+					<name>minImageSize</name>
+					<value>2000000</value>
+				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>

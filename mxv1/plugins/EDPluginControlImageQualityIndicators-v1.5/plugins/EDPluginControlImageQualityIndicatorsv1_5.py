@@ -91,6 +91,8 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
         self.bUseThinClient = True
         self.edPluginISPyB = None
         self.listPluginLabelit = []
+        self.defaultMinImageSize = 1000000
+        self.minImageSize = None
         
 
     def checkParameters(self):
@@ -105,6 +107,9 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlReadImageHeaderv10.configure")
         self.fMXWaitFileTimeOut = float(self.config.get("MXWaitFileTimeOut", self.fMXWaitFileTimeOut))
+        self.minImageSize = self.config.get("minImageSize")
+        if self.minImageSize is None:
+            self.minImageSize = self.defaultMinImageSize
 
     
 
@@ -131,6 +136,13 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
         self.xsDataResultControlImageQualityIndicators = XSDataResultControlImageQualityIndicators()
         listPlugin = []
         for xsDataImage in listXSDataImage:
+            self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
+            xsDataInputMXWaitFile.file = XSDataFile(xsDataImage.path)
+            xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
+            xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
+            self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
+            self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
+            self.edPluginMXWaitFile.executeSynchronous()
             if not os.path.exists(xsDataImage.path.value):
                 self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
                 xsDataInputMXWaitFile.file = XSDataFile(xsDataImage.path)
