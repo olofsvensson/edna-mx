@@ -85,6 +85,8 @@ class EDPluginControlImageQualityIndicatorsv1_2(EDPluginControl):
         self.edPluginISPyB = None
         self.listPluginMOSFLM = []
         self.bDoISPyBUpload = True
+        self.defaultMinImageSize = 1000000
+        self.minImageSize = None
         
 
     def checkParameters(self):
@@ -102,6 +104,9 @@ class EDPluginControlImageQualityIndicatorsv1_2(EDPluginControl):
         self.bDoISPyBUpload = self.config.get("do_ispyb_upload")
         if self.bDoISPyBUpload is None or self.bDoISPyBUpload == "false":
             self.bDoISPyBUpload = False
+        self.minImageSize = self.config.get("minImageSize")
+        if self.minImageSize is None:
+            self.minImageSize = self.defaultMinImageSize
 
     
 
@@ -123,14 +128,13 @@ class EDPluginControlImageQualityIndicatorsv1_2(EDPluginControl):
         self.xsDataResultControlImageQualityIndicators = XSDataResultControlImageQualityIndicators()
         listPlugin = []
         for xsDataImage in listXSDataImage:
-            if not os.path.exists(xsDataImage.path.value):
-                self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
-                xsDataInputMXWaitFile.file = XSDataFile(xsDataImage.path)
-                xsDataInputMXWaitFile.setSize(XSDataInteger(100000))
-                xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
-                self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
-                self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
-                self.edPluginMXWaitFile.executeSynchronous()
+            self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
+            xsDataInputMXWaitFile.file = XSDataFile(xsDataImage.path)
+            xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
+            xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
+            self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
+            self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
+            self.edPluginMXWaitFile.executeSynchronous()
             if not os.path.exists(xsDataImage.path.value):
                 strError = "Time-out while waiting for image %s" % xsDataImage.path.value
                 self.error(strError)
