@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<XSConfiguration> 
+  <XSImportConfiguration>
+  	<name>XSConfiguration_EMBL_Beamline</name>
+  </XSImportConfiguration>	
+</XSConfiguration> 
