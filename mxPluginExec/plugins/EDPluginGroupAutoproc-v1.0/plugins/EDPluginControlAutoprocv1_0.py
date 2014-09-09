@@ -38,12 +38,14 @@ import json
 import traceback
 import shutil
 import socket
+import smtplib
 from stat import *
 
 from EDPluginControl import EDPluginControl
 from EDVerbose import EDVerbose
 
 from EDFactoryPlugin import edFactoryPlugin
+from EDUtilsPath import EDUtilsPath
 
 # try the suds from the system
 try:
@@ -119,16 +121,18 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
 
     def __init__( self ):
-        """
-        """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataAutoprocInput)
         self.dataOutput = XSDataResultStoreAutoProc()
+        self.strEDNAContactEmail = None
+        self.strEDNAEmailSender = "edna-support@esrf.fr"
 
     def configure(self):
         EDPluginControl.configure(self)
         self.ispyb_user = self.config.get('ispyb_user')
         self.ispyb_password = self.config.get('ispyb_password')
+        self.strEDNAEmailSender = self.config.get("contactEmail", self.strEDNAContactEmail)
+        self.strEDNAContactEmail = self.config.get("emailSender", self.strEDNAEmailSender)
         self.setTimeOut(1800)
 
     def checkParameters(self):
@@ -167,6 +171,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             self.screen("System load avg: {0}".format(os.getloadavg()))
         except OSError:
             pass
+        
+        self.sendEmail("EDNA Autoproc started on host %s" % socket.gethostname(), "")
 
         # for info to send to the autoproc stats server
 #        self.custom_stats = dict(creation_time=time.time(),
@@ -1110,6 +1116,37 @@ fi
         else:
             # store the autoproc id
             os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0755)
+            
+    def sendEmail(self, _strSubject, _strMessage):
+        """Sends an email to the EDNA contact person (if configured)."""
+
+        self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: Subject = %s" % _strSubject)
+        self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: Message:")
+        self.DEBUG(_strMessage)
+        if self.strEDNAContactEmail == None:
+            self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: No email address configured!")
+        elif not EDUtilsPath.getEdnaSite().startswith("ESRF"):
+            self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: Not executed at the ESRF! EDNA_SITE=%s" % EDUtilsPath.getEdnaSite())
+        else:
+            try:
+                self.DEBUG("Sending message to %s." % self.strEDNAContactEmail)
+                self.DEBUG("Message: %s" % _strMessage)
+                strMessage = "EDNA_HOME = %s\n" %  EDUtilsPath.getEdnaHome()
+                strMessage += "EDNA_SITE = %s\n" % EDUtilsPath.getEdnaSite()
+                strMessage += "PLUGIN_NAME = %s\n" % self.getPluginName()
+                strMessage += "working_dir = %s\n\n" % self.getWorkingDirectory()
+                strMessage += "\n"
+                strMessage += _strMessage
+                strEmailMsg = ("From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s" % (self.strEDNAEmailSender, \
+                                                                                self.strEDNAContactEmail, \
+                                                                                _strSubject, strMessage))
+                server = smtplib.SMTP("localhost")
+                server.sendmail(self.strEDNAEmailSender, self.strEDNAContactEmail, strEmailMsg)
+                server.quit()
+            except:
+                self.ERROR("Error when sending email message!")
+                self.writeErrorTrace()
+
 
 # Proxy since the API changed and we can now log to several ids
 def log_to_ispyb(integration_id, step, status, comments=""):
