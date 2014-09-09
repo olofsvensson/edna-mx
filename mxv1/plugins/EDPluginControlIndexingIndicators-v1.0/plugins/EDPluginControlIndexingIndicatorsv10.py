@@ -104,6 +104,8 @@ class EDPluginControlIndexingIndicatorsv10(EDPluginControl):
         from EDHandlerXSDataMOSFLMv10 import EDHandlerXSDataMOSFLMv10
         xsDataMOSFLMIndexingInput = EDHandlerXSDataMOSFLMv10.generateXSDataMOSFLMInputIndexing(xsDataIndexingInput)
         self.__edPluginMOSFLMIndexing.setDataInput(xsDataMOSFLMIndexingInput)
+        if (self.getControlledPluginName("indicatorsPlugin") is not None):
+            self.__strControlledIndicatorsPluginName = self.getControlledPluginName("indicatorsPlugin")
         self.__edPluginControlIndicators = self.loadPlugin(self.__strControlledIndicatorsPluginName)
         # Extract the images from the data collections
         xsDataSubWedgeList = self.getDataInput("dataCollection")[0].getSubWedge()
