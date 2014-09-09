@@ -96,6 +96,9 @@ from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
 from XSDataISPyBv1_4 import AutoProcStatus
 from XSDataISPyBv1_4 import  XSDataInputStoreAutoProcStatus
 
+# pdb file retrieval
+from XSDataISPyBv1_4 import XSDataInputISPyBGetPdbFilePath
+
 from xdscfgparser import parse_xds_file, dump_xds_file
 
 #import autoproclog
@@ -126,6 +129,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         EDPluginControl.configure(self)
         self.ispyb_user = self.config.get('ispyb_user')
         self.ispyb_password = self.config.get('ispyb_password')
+        self.setTimeOut(1800)
 
     def checkParameters(self):
         """
@@ -142,7 +146,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # trying to start anything even if the first xds run does it
         # anyway
         if not os.path.isfile(self.dataInput.input_file.path.value):
-            EDVerbose.ERROR('the specified input file does not exist')
+            self.ERROR('the specified input file does not exist')
             self.setFailure()
             # setFailure does not prevent preProcess/process/etc from running
             raise Exception('EDNA FAILURE')
@@ -156,21 +160,19 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
     def preProcess(self, _edObject = None):
         EDPluginControl.preProcess(self)
-        self.DEBUG('EDPluginControlAutoprocv1_0.preProcess starting')
-        self.DEBUG('running on {0}'.format(socket.gethostname()))
+        self.DEBUG("EDPluginControlAutoprocv1_0.preProcess")
+        self.screen("EDNA Auto Processing started")
+        self.screen("Running on {0}".format(socket.gethostname()))
         try:
-            self.DEBUG('system load avg: {0}'.format(os.getloadavg()))
+            self.screen("System load avg: {0}".format(os.getloadavg()))
         except OSError:
             pass
 
         # for info to send to the autoproc stats server
-        self.custom_stats = dict(creation_time=time.time(),
-                                 processing_type='edna fastproc',
-                                 datacollect_id=self.dataInput.data_collection_id.value,
-                                 comments='running on {0}'.format(socket.gethostname()))
-
-
-
+#        self.custom_stats = dict(creation_time=time.time(),
+#                                 processing_type='edna fastproc',
+#                                 datacollect_id=self.dataInput.data_collection_id.value,
+#                                 comments='running on {0}'.format(socket.gethostname()))
 
         data_in = self.dataInput
 
@@ -208,7 +210,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         try:
             os.makedirs(self.results_dir)
         except OSError: # it most likely exists
-            EDVerbose.WARNING('Error creating the results directory: {0}'.format(traceback.format_exc()))
+            self.WARNING('Error creating the results directory: {0}'.format(traceback.format_exc()))
 
         # Copy the vanilla XDS input file to the results dir
         infile_dest = os.path.join(self.results_dir, self.image_prefix + '_input_XDS.INP')
@@ -220,7 +222,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         try:
             os.makedirs(self.autoproc_ids_dir)
         except OSError: # it's there
-            EDVerbose.WARNING('Error creating the autoproc ids directory: {0}'.format(traceback.format_exc()))
+            self.WARNING('Error creating the autoproc ids directory: {0}'.format(traceback.format_exc()))
 
 
         # we'll need the low res limit later on
@@ -334,17 +336,17 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         try:
             self.integration_id_noanom = create_integration_id(self.dataInput.data_collection_id.value)
         except Exception, e:
-            EDVerbose.ERROR('could not get integration ID: \n{0}'.format(traceback.format_exc(e)))
+            self.ERROR('could not get integration ID: \n{0}'.format(traceback.format_exc(e)))
             self.integration_id_noanom = None
 
         try:
             self.integration_id_anom = create_integration_id(self.dataInput.data_collection_id.value)
         except Exception, e:
-            EDVerbose.ERROR('could not get integration ID: \n{0}'.format(traceback.format_exc(e)))
+            self.ERROR('could not get integration ID: \n{0}'.format(traceback.format_exc(e)))
             self.integration_id_anom = None
 
         # first XDS plugin run with supplied XDS file
-        EDVerbose.screen('STARTING XDS run...')
+        self.screen('Starting first XDS run...')
 
         t0=time.time()
         self.xds_first.executeSynchronous()
@@ -352,13 +354,13 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.stats['first_xds'] = time.time()-t0
         with open(self.log_file_path, 'w') as f:
             json.dump(self.stats, f)
-        self.custom_stats['xds_runtime']=self.stats['first_xds']
+#        self.custom_stats['xds_runtime']=self.stats['first_xds']
 
         log_to_ispyb([self.integration_id_noanom, self.integration_id_anom],
                      'Indexing', 'Launched', 'first xds run')
 
         if self.xds_first.isFailure():
-            EDVerbose.ERROR('first XDS run failed')
+            self.ERROR('first XDS run failed')
             self.setFailure()
             log_to_ispyb([self.integration_id_noanom, self.integration_id_anom],
                          'Indexing',
@@ -366,12 +368,12 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                          'first xds run failed after {0}s'.format(self.stats['first_xds']))
             return
         else:
-            EDVerbose.screen('FINISHED first XDS run')
+            self.screen('FINISHED first XDS run')
             log_to_ispyb([self.integration_id_noanom, self.integration_id_anom],
                          'Indexing',
                          'Successful',
                          'first xds run finished after {0}s'.format(self.stats['first_xds']))
-        EDVerbose.screen('FINISHED first XDS run')
+        self.screen('FINISHED first XDS run')
 
 
         # use the cell dimensions and spacegroup from XDS to create a
@@ -401,24 +403,24 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                                      'INTEGRATE.LP'),
                         integrate_path)
         except (IOError, OSError):
-            EDVerbose.ERROR('failed to copy INTEGRATE.LP file ({0}) to the results dir'.format(integrate_path))
+            self.ERROR('failed to copy INTEGRATE.LP file ({0}) to the results dir'.format(integrate_path))
 
 
         log_to_ispyb([self.integration_id_noanom, self.integration_id_anom],
                      'Indexing', 'Launched', 'start of res cutoff')
 
         # apply the first res cutoff with the res extracted from the first XDS run
-        EDVerbose.screen('STARTING first resolution cutoff')
+        self.screen('STARTING first resolution cutoff')
         t0=time.time()
         xdsresult = self.xds_first.dataOutput
 
         # for the custom stats
-        self.custom_stats['overall_i_over_sigma']=xdsresult.total_completeness.isig.value
-        self.custom_stats['overall_r_value']=xdsresult.total_completeness.rfactor.value
-        self.custom_stats['inner_i_over_sigma']=xdsresult.completeness_entries[0].isig.value
-        self.custom_stats['inner_r_value']=xdsresult.completeness_entries[0].rfactor.value
-        self.custom_stats['i_over_sigma']=xdsresult.completeness_entries[-1].isig.value
-        self.custom_stats['r_value']=xdsresult.completeness_entries[-1].rfactor.value
+#        self.custom_stats['overall_i_over_sigma']=xdsresult.total_completeness.isig.value
+#        self.custom_stats['overall_r_value']=xdsresult.total_completeness.rfactor.value
+#        self.custom_stats['inner_i_over_sigma']=xdsresult.completeness_entries[0].isig.value
+#        self.custom_stats['inner_r_value']=xdsresult.completeness_entries[0].rfactor.value
+#        self.custom_stats['i_over_sigma']=xdsresult.completeness_entries[-1].isig.value
+#        self.custom_stats['r_value']=xdsresult.completeness_entries[-1].rfactor.value
 
 
         res_cutoff_in = XSDataResCutoff()
@@ -439,7 +441,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.stats['first_res_cutoff'] = time.time()-t0
 
         if self.first_res_cutoff.isFailure():
-            EDVerbose.ERROR("res cutoff failed")
+            self.ERROR("res cutoff failed")
             log_to_ispyb([self.integration_id_noanom, self.integration_id_anom],
                          'Indexing',
                          'Failed',
@@ -447,7 +449,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             self.setFailure()
             return
         else:
-            EDVerbose.screen('FINISHED first resolution cutoff')
+            self.screen('FINISHED first resolution cutoff')
             log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
                          'Indexing',
                          'Successful',
@@ -462,7 +464,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # for the generate w/ and w/out anom we have to specify where
         # the first XDS plugin run took place
         xds_run_directory = os.path.abspath(self.xds_first.dataOutput.xds_run_directory.value)
-        EDVerbose.screen("the xds run took place in {0}".format(xds_run_directory))
+        self.screen("the xds run took place in {0}".format(xds_run_directory))
         generate_input = XSDataXdsGenerateInput()
         generate_input.resolution = resolution
         generate_input.previous_run_dir = XSDataString(xds_run_directory)
@@ -482,7 +484,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.DEBUG('FINISHED anom/noanom generation')
 
         if self.generate.isFailure():
-            EDVerbose.ERROR('generating w/ and w/out anom failed')
+            self.ERROR('generating w/ and w/out anom failed')
             self.setFailure()
             log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
                          'Scaling',
@@ -490,7 +492,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                          'anom/noanom generation failed in {0}s'.format(self.stats['anom/noanom_generation']))
             return
         else:
-            EDVerbose.screen('generating w/ and w/out anom finished')
+            self.screen('generating w/ and w/out anom finished')
             log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
                          'Scaling',
                          'Successful',
@@ -519,7 +521,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.parse_xds_anom.executeSynchronous()
 
         if self.parse_xds_anom.isFailure():
-            EDVerbose.ERROR('parsing the xds generated w/ anom failed')
+            self.ERROR('parsing the xds generated w/ anom failed')
             self.setFailure()
             return
 
@@ -536,7 +538,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.parse_xds_noanom.executeSynchronous()
 
         if self.parse_xds_noanom.isFailure():
-            EDVerbose.ERROR('parsing the xds generated w/ anom failed')
+            self.ERROR('parsing the xds generated w/ anom failed')
             self.setFailure()
             return
 
@@ -572,7 +574,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             json.dump(self.stats, f)
 
         if self.res_cutoff_anom.isFailure():
-            EDVerbose.ERROR('res cutoff for anom data failed')
+            self.ERROR('res cutoff for anom data failed')
             self.setFailure()
             log_to_ispyb(self.integration_id_anom,
                          'Scaling',
@@ -611,7 +613,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             json.dump(self.stats, f)
 
         if self.res_cutoff_noanom.isFailure():
-            EDVerbose.ERROR('res cutoff for non anom data failed')
+            self.ERROR('res cutoff for non anom data failed')
             self.setFailure()
             log_to_ispyb(self.integration_id_noanom,
                          'Scaling',
@@ -657,14 +659,14 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             json.dump(self.stats, f)
 
         if self.xscale_generate.isFailure():
-            EDVerbose.ERROR('xscale generation failed')
+            self.ERROR('xscale generation failed')
             log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
                          'Scaling',
                          'Failed',
                          'xscale generation failed in {0}s'.format(self.stats['xscale_generate']))
             return
         else:
-            EDVerbose.screen('xscale anom/merge generation finished')
+            self.screen('xscale anom/merge generation finished')
             log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
                          'Scaling',
                          'Successful',
@@ -716,16 +718,16 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             json.dump(self.stats, f)
 
         if self.file_conversion.isFailure():
-            EDVerbose.ERROR("file import failed")
+            self.ERROR("file import failed")
 
 
-        self.custom_stats['total_time']=time.time() - process_start
+#        self.custom_stats['total_time']=time.time() - process_start
         return
 #        try:
 #            autoproclog.log(**self.custom_stats)
 #        except Exception, e:
-#            EDVerbose.screen('could not logs stats to custom log server')
-#            EDVerbose.screen(traceback.format_exc())
+#            self.screen('could not logs stats to custom log server')
+#            self.screen(traceback.format_exc())
 
 
         # Now onto DIMPLE
@@ -749,10 +751,14 @@ fi
 
 
         # we need a PDB file either in ispyb or in the image directory
-        c = suds.client.Client(WS_URL, username=self.ispyb_user, password=self.ispyb_password)
-        pdb_file = c.service.getPdbFilePath(self.dataInput.data_collection_id.value)
+        edPluginGetPdbFile = self.loadPlugin("EDPluginISPyBGetPdbFilePathv1_4")
+        xsDataInputGetPdbFilePath = XSDataInputISPyBGetPdbFilePath()
+        xsDataInputGetPdbFilePath.dataCollectionId = self.dataInput.data_collection_id
+        edPluginGetPdbFile.dataInput = xsDataInputGetPdbFilePath
+        edPluginGetPdbFile.executeSynchronous()
+        pdb_file = edPluginGetPdbFile.dataOutput.pdbFilePath
         if pdb_file is None:
-            EDVerbose.screen('No pdb file in ispyb, trying the toplevel dir {0}'.format(self.root_dir))
+            self.screen('No pdb file in ispyb, trying the toplevel dir {0}'.format(self.root_dir))
         for f in os.listdir(self.root_dir):
             if f.endswith('.pdb'):
                 pdb_file = os.path.join(self.root_dir, f)
@@ -768,9 +774,9 @@ fi
         dimple_did_run = False
 
         if pdb_file is None:
-            EDVerbose.WARNING('No pdb file found, not running dimple')
+            self.WARNING('No pdb file found, not running dimple')
         else:
-            EDVerbose.screen('Using pdb file {0}'.format(pdb_file))
+            self.screen('Using pdb file {0}'.format(pdb_file))
             dimple_in = CCP4DataInputControlPipelineCalcDiffMap()
             dimple_in.XYZIN = XYZ(path=XSDataString(pdb_file))
 
@@ -796,7 +802,7 @@ fi
 
 
             if mtz_file is None:
-                EDVerbose.ERROR('No suitable input mtz found for dimple, not running it')
+                self.ERROR('No suitable input mtz found for dimple, not running it')
             else:
                 dimple_in.HKLIN = HKL(path=XSDataString(mtz_file))
                 dimple_log = os.path.join(self.results_dir, '{0}_dimple.log'.format(self.image_prefix))
@@ -1026,7 +1032,7 @@ fi
                 os.makedirs(pyarch_path)
             except OSError:
                 # dir already exists, may happen when testing
-                EDVerbose.screen('Target directory on pyarch ({0}) already exists, ignoring'.format(pyarch_path))
+                self.screen('Target directory on pyarch ({0}) already exists, ignoring'.format(pyarch_path))
 
             file_list = []
             # we can now copy the files to this dir
