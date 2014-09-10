@@ -8,6 +8,10 @@
 					<name>timeOut</name>
 					<value>1800</value>
 				</XSParamItem>
+				<XSParamItem>
+					<name>minImageSize</name>
+					<value>2000000</value>
+				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
@@ -15,7 +19,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>symopHome</name>
-					<value>/opt/pxsoft/ccp4/v6.2.0/linux/lib/data</value>
+					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/lib/data</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -24,7 +28,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>symopHome</name>
-					<value>/opt/pxsoft/ccp4/v6.2.0/linux/lib/data</value>
+					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/lib/data</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -42,7 +46,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>symopHome</name>
-					<value>/opt/pxsoft/ccp4/v6.2.0/linux/lib/data</value>
+					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/lib/data</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>

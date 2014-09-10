@@ -193,7 +193,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         self.xsDataFilePathToThumbnail = self.edPluginExecThumbnail.dataOutput.thumbnail
         # Retrieve the output path
         pathToThumbnail = self.xsDataFilePathToThumbnail.path.value
-        outfile = os.path.splitext(pathToThumbnail)[0] + ".thumb.jpg"
+        outfile = os.path.splitext(pathToThumbnail)[0] + ".thumb.jpeg"
         size = [256, 256]
         im = Image.open(pathToThumbnail)
         im.thumbnail(size, Image.ANTIALIAS)
