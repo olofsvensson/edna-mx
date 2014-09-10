@@ -135,8 +135,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         EDPluginControl.configure(self)
         self.ispyb_user = self.config.get('ispyb_user')
         self.ispyb_password = self.config.get('ispyb_password')
-        self.strEDNAEmailSender = self.config.get("contactEmail", self.strEDNAContactEmail)
-        self.strEDNAContactEmail = self.config.get("emailSender", self.strEDNAEmailSender)
+        self.strEDNAContactEmail = self.config.get("contactEmail", self.strEDNAContactEmail)
+        self.strEDNAEmailSender = self.config.get("emailSender", self.strEDNAEmailSender)
         self.setTimeOut(1800)
 
     def checkParameters(self):
@@ -212,7 +212,10 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         unit_cell.value = unit_cell.value.replace(",", " ")
         if unit_cell.value.endswith("2"):
             unit_cell.value = unit_cell.value[:-1]
-        xds_in.unit_cell = unit_cell
+            
+        # Check that unit cell is not zero
+        if not any(abs(float(num)) < 0.1 for num in unit_cell.value.split()):
+            xds_in.unit_cell = unit_cell
 
         self.log_file_path = os.path.join(self.root_dir, 'stats.json')
         self.DEBUG('will log timing information to {0}'.format(self.log_file_path))
