@@ -199,7 +199,13 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         xds_in.input_file = data_in.input_file.path
         if sgnumber is not None:
             xds_in.spacegroup = XSDataInteger(sgnumber)
-        xds_in.unit_cell = data_in.unit_cell
+            
+        # Workaround for mxCuBE unit cell comma separation and trailing "2"
+        unit_cell = data_in.unit_cell
+        unit_cell.value = unit_cell.value.replace(",", " ")
+        if unit_cell.value.endswith("2"):
+            unit_cell.value = unit_cell.value[:-1]
+        xds_in.unit_cell = unit_cell
 
         self.log_file_path = os.path.join(self.root_dir, 'stats.json')
         self.DEBUG('will log timing information to {0}'.format(self.log_file_path))
