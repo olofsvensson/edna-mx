@@ -438,6 +438,10 @@
 					<name>timeOut</name>
 					<value>1800</value>
 				</XSParamItem>
+			    <XSParamItem>
+			        <name>contactEmail</name>
+			        <value>svensson@esrf.fr</value>
+			    </XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 

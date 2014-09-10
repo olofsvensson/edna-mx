@@ -30,15 +30,15 @@
 					<name>timeOut</name>
 					<value>90</value>
 				</XSParamItem>
-				<XSParamItem>
+		<!--		<XSParamItem>
 					<name>reversephi</name>
 					<value>true</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>omega</name>
 					<value>90</value>
-				</XSParamItem>
-			</XSParamList>
+				</XSParamItem> -->
+			</XSParamList> 
 		</XSPluginItem>
 		<XSPluginItem>
 			<name>EDPluginMOSFLMIntegrationv10</name>
@@ -63,15 +63,15 @@
 					<name>timeOut</name>
 					<value>90</value>
 				</XSParamItem>
-				<XSParamItem>
+		<!--		<XSParamItem>
 					<name>reversephi</name>
 					<value>true</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>omega</name>
 					<value>90</value>
-				</XSParamItem>
-			</XSParamList>
+				</XSParamItem> -->
+			</XSParamList> 
 		</XSPluginItem>
 		<XSPluginItem>
 			<name>EDPluginMOSFLMGeneratePredictionv10</name>
@@ -96,14 +96,14 @@
 					<name>timeOut</name>
 					<value>90</value>
 				</XSParamItem>
-				<XSParamItem>
+		<!--		<XSParamItem>
 					<name>reversephi</name>
 					<value>true</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>omega</name>
 					<value>90</value>
-				</XSParamItem>
+				</XSParamItem> -->
 			</XSParamList>
 		</XSPluginItem>
 	</XSPluginList>
