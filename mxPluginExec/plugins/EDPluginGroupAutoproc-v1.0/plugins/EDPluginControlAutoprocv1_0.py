@@ -1156,8 +1156,8 @@ fi
         self.DEBUG(_strMessage)
         if self.strEDNAContactEmail == None:
             self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: No email address configured!")
-        elif not EDUtilsPath.getEdnaSite().startswith("ESRF"):
-            self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: Not executed at the ESRF! EDNA_SITE=%s" % EDUtilsPath.getEdnaSite())
+        elif self.getWorkingDirectory().find("ref-") != -1:
+            self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: Working directory contains 'ref-', hence probably reference data collection")
         else:
             try:
                 self.DEBUG("Sending message to %s." % self.strEDNAContactEmail)
