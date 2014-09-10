@@ -126,6 +126,10 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.dataOutput = XSDataResultStoreAutoProc()
         self.strEDNAContactEmail = None
         self.strEDNAEmailSender = "edna-support@esrf.fr"
+        self.strHost = None
+        self.plugin_start = time.time()
+        self.process_start = None
+        self.process_end = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -166,13 +170,16 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlAutoprocv1_0.preProcess")
         self.screen("EDNA Auto Processing started")
-        self.screen("Running on {0}".format(socket.gethostname()))
+        self.strHost = socket.gethostname()
+        self.screen("Running on {0}".format(self.strHost))
         try:
-            self.screen("System load avg: {0}".format(os.getloadavg()))
+            strLoad = os.getloadavg()
+            self.screen("System load avg: {0}".format(strLoad))
         except OSError:
             pass
         
-        self.sendEmail("EDNA Autoproc started on host %s" % socket.gethostname(), "")
+        strSubject = "EDNA dp %s started" % self.strHost
+        self.sendEmail(strSubject, "")
 
         # for info to send to the autoproc stats server
 #        self.custom_stats = dict(creation_time=time.time(),
@@ -341,7 +348,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         EDPluginControl.process(self)
         self.DEBUG('EDPluginControlAutoprocv1_0.process starting')
 
-        process_start = time.time()
+        self.process_start = time.time()
 
 
         # get our two integration IDs
@@ -734,6 +741,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
 
 #        self.custom_stats['total_time']=time.time() - process_start
+        self.process_end = time.time()
         return
 #        try:
 #            autoproclog.log(**self.custom_stats)
@@ -843,6 +851,7 @@ fi
             with open(script_path, 'w') as f:
                 f.write(coot_script)
             os.chmod(script_path, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH|S_IXUSR|S_IXGRP|S_IXOTH)
+
 
 
 
@@ -1122,6 +1131,18 @@ fi
         else:
             # store the autoproc id
             os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0755)
+
+    def finallyProcess(self, _edObject = None):
+        EDPluginControl.finallyProcess(self)
+        if self.isFailure():
+            strSubject = "EDNA dp %s FAILURE" % self.strHost
+        else:
+            strSubject = "EDNA dp %s SUCCESS" % self.strHost
+        strMessage  = "Plugin execution time: %.2f s\n" % (time.time() - self.plugin_start )
+        strMessage += "Process execution time: %.2f s\n" % (self.process_end - self.process_start)
+        self.sendEmail(strSubject, strMessage)
+
+
             
     def sendEmail(self, _strSubject, _strMessage):
         """Sends an email to the EDNA contact person (if configured)."""
@@ -1141,6 +1162,11 @@ fi
                 strMessage += "EDNA_SITE = %s\n" % EDUtilsPath.getEdnaSite()
                 strMessage += "PLUGIN_NAME = %s\n" % self.getPluginName()
                 strMessage += "working_dir = %s\n\n" % self.getWorkingDirectory()
+                try:
+                    strLoad = os.getloadavg()
+                    strMessage += "System load avg: {0}\n".format(strLoad)
+                except OSError:
+                    pass
                 strMessage += "\n"
                 strMessage += _strMessage
                 strEmailMsg = ("From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s" % (self.strEDNAEmailSender, \
