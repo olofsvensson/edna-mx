@@ -101,6 +101,8 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
         params.input_file = self.dataInput.input_file
         params.spacegroup = self.dataInput.spacegroup
         params.unit_cell = self.dataInput.unit_cell
+        #Gleb on Mon Aug  4 18:54:36 CEST 2014: set jobs parameters in order to prevent
+        #params.job = XSDataString('XYCORR INIT COLSPOT IDXREF')
         self.first_run.dataInput = params
         self.first_run.executeSynchronous()
 

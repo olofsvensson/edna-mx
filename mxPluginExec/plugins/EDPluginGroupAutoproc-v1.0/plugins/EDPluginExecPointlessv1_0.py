@@ -33,6 +33,7 @@ import re
 import os.path
 
 from EDVerbose import EDVerbose
+from EDUtilsPath import EDUtilsPath
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult
@@ -53,8 +54,12 @@ class EDPluginExecPointlessv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG('Pointless: preprocess')
         if self.output_file is not None and self.input_file is not None:
-            options = '''xdsin {0} hklout {1}'''.format(self.input_file,
-                                                        self.output_file)
+            if EDUtilsPath.isEMBL():
+                options = '''-c xdsin {0} hklout {1}'''.format(self.input_file,
+                                                               self.output_file)
+            else:
+                options = '''xdsin {0} hklout {1}'''.format(self.input_file,
+                                                            self.output_file)
             self.setScriptCommandline(options)
             self.DEBUG('command line options set to {0}'.format(options))
         self.addListCommandExecution('setting symmetry-based')

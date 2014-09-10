@@ -31,7 +31,8 @@ import os, shutil
 
 from EDVerbose import EDVerbose 
 from EDUtilsImage import EDUtilsImage   
-    
+from EDUtilsPath import EDUtilsPath
+
 class EDHandlerESRFPyarchv1_0:
 
     
@@ -41,6 +42,9 @@ class EDHandlerESRFPyarchv1_0:
         This method translates from an ESRF "visitor" path to a "pyarch" path:
         /data/visitor/mx415/id14eh1/20100209 -> /data/pyarch/id14eh1/mx415/20100209
         """
+        if EDUtilsPath.isEMBL():
+            return _strESRFPath	
+
         strPyarchDNAFilePath = None
         listOfDirectories = _strESRFPath.split(os.sep)
         listBeamlines = ["bm14", "id14eh1", "id14eh2", "id14eh3", "id14eh4", "id23eh1", "id23eh2", 
@@ -67,7 +71,6 @@ class EDHandlerESRFPyarchv1_0:
         if (strPyarchDNAFilePath is None):
             EDVerbose.WARNING("EDHandlerESRFPyarchv1_0.createPyArchFilePath: path not converted for pyarch: %s " % _strESRFPath)
         return strPyarchDNAFilePath
-
 
     @staticmethod
     def createPyarchHtmlDirectoryPath(_xsDataCollection):

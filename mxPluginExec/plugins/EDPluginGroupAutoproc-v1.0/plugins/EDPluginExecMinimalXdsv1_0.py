@@ -35,6 +35,7 @@ import fnmatch
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 from EDVerbose import EDVerbose
+from EDUtilsPath import EDUtilsPath
 
 from XSDataCommon import XSDataBoolean
 from XSDataAutoprocv1_0 import XSDataMinimalXdsIn, XSDataMinimalXdsOut
@@ -158,7 +159,9 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
             self.DEBUG('specific spacegroup requested: {0}'.format(spacegroup.value))
             self.DEBUG('specific unit cell requested: {0}'.format(unit_cell.value))
             parsed_config['SPACE_GROUP_NUMBER='] = str(spacegroup.value)
-            parsed_config['UNIT_CELL_CONSTANTS='] = unit_cell.value
+            #Check if it is ok
+            if EDUtilsPath.isEMBL():
+                parsed_config['UNIT_CELL_CONSTANTS='] = unit_cell_spaced_string
 
         # For [XY]-GEO_CORR files, link them in the cwd and fix their paths
         if 'X-GEO_CORR=' in parsed_config:
