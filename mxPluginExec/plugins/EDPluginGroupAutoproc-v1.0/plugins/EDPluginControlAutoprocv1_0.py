@@ -1139,7 +1139,8 @@ fi
         else:
             strSubject = "EDNA dp %s SUCCESS" % self.strHost
         strMessage  = "Plugin execution time: %.2f s\n" % (time.time() - self.plugin_start )
-        strMessage += "Process execution time: %.2f s\n" % (self.process_end - self.process_start)
+        if self.process_end is not None:
+            strMessage += "Process execution time: %.2f s\n" % (self.process_end - self.process_start)
         self.sendEmail(strSubject, strMessage)
 
 
