@@ -82,11 +82,8 @@ if __name__ == '__main__':
     os.chdir(strPathToTempDir)
     EDVerbose.setLogFileName(os.path.join(strPathToTempDir, "id29_create_thumbnail.log"))
     strImageDirectory = sys.argv[1]
-    listImageName = sys.argv[2:]
-    # Quick check if the two image names are the same. If they are launch the thumbnail generator only once
-    if len(listImageName) == 2:
-        if listImageName[0] == listImageName[1]:
-            listImageName = [ listImageName[0] ]
+    # Remove duplicates
+    listImageName = list(set(sys.argv[2:]))
     for strImageName in listImageName:
         xsDataInputPyarchThumbnailGenerator = XSDataInputPyarchThumbnailGenerator()
         xsDataInputPyarchThumbnailGenerator.setWaitForFileTimeOut(XSDataTime(1000))
