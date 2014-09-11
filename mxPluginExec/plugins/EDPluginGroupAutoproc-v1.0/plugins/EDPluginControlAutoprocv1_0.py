@@ -228,6 +228,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         except Exception:
             self.image_prefix = ''
 
+        if EDUtilsPath.isEMBL():
+            self.image_prefix = self.image_prefix + '_edna'  
+
         self.results_dir = os.path.join(self.root_dir, 'results', 'fast_processing')
         try:
             os.makedirs(self.results_dir)
@@ -1036,20 +1039,23 @@ fi
         files_dir = original_files_dir
 
         # the whole transformation is fragile!
-        if files_dir.startswith('/data/visitor'):
-            # We might get empty elements at the head/tail of the list
-            tokens = [elem for elem in files_dir.split(os.path.sep)
-                      if len(elem) > 0]
-            pyarch_path = os.path.join('/data/pyarch',
-                                       tokens[3], tokens[2],
-                                       *tokens[4:])
-        else:
-            # We might get empty elements at the head/tail of the list
-            tokens = [elem for elem in files_dir.split(os.path.sep)
-                      if len(elem) > 0]
-            if tokens[2] == 'inhouse':
-                pyarch_path = os.path.join('/data/pyarch', tokens[1],
-                                           *tokens[3:])
+        if EDUtilsPath.isEMBL():
+            pyarch_path =  os.path.join(files_dir,'a_copy')
+        elif EDUtilsPath.isESRF():
+            if files_dir.startswith('/data/visitor'):
+                # We might get empty elements at the head/tail of the list
+                tokens = [elem for elem in files_dir.split(os.path.sep)
+                          if len(elem) > 0]
+                pyarch_path = os.path.join('/data/pyarch',
+                                           tokens[3], tokens[2],
+                                           *tokens[4:])
+            else:
+                # We might get empty elements at the head/tail of the list
+                tokens = [elem for elem in files_dir.split(os.path.sep)
+                          if len(elem) > 0]
+                if tokens[2] == 'inhouse':
+                    pyarch_path = os.path.join('/data/pyarch', tokens[1],
+                                               *tokens[3:])
         if pyarch_path is not None:
             pyarch_path = pyarch_path.replace('PROCESSED_DATA', 'RAW_DATA')
             try:
@@ -1076,6 +1082,8 @@ fi
                 attach = AutoProcProgramAttachment()
                 attach.fileType = "Result"
                 attach.fileName = filename
+                if EDUtilsPath.isEMBL():
+                    dirname = '/mnt/p14ppu01/' + dirname
                 attach.filePath = dirname
                 program_container.AutoProcProgramAttachment.append(attach)
 
@@ -1158,6 +1166,10 @@ fi
             self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: No email address configured!")
         elif self.getWorkingDirectory().find("ref-") != -1:
             self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: Working directory contains 'ref-', hence probably reference data collection")
+        elif not EDUtilsPath.isESRF():
+            self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: Not executed at the ESRF! EDNA_SITE=%s" % EDUtilsPath.getEdnaSite())
+        elif not EDUtilsPath.isEMBL():
+            self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: Not executed at the ESRF! EDNA_SITE=%s" % EDUtilsPath.getEdnaSite())
         else:
             try:
                 self.DEBUG("Sending message to %s." % self.strEDNAContactEmail)

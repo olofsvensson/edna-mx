@@ -149,6 +149,20 @@ class EDUtilsPath:
     EDNA_SITE = classproperty(getEdnaSite, setEdnaSite)
 
     @classmethod
+    def isEMBL(cls):
+        """
+        Returns true if EMBL config
+        """
+        return cls._EDNA_SITE.startswith('EMBL')
+     
+    @classmethod
+    def isESRF(cls):
+        """
+        Returns true if EMBL config
+        """
+        return cls._EDNA_SITE.startswith('ESRF')
+
+    @classmethod
     def getCwd(cls):
         """
         Returns the current directory.
