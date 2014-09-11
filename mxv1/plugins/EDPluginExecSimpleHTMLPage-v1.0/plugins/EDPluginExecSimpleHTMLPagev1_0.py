@@ -125,7 +125,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         xsDataResultSimpleHTMLPage.setPathToHTMLDirectory(XSDataFile(XSDataString(os.path.dirname(self.strPath))))
         self.setDataOutput(xsDataResultSimpleHTMLPage)
         # Store in Pyarch
-        if EDUtilsPath.getEdnaSite().startswith("ESRF"):
+        if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():
             strPyarchPath = None
             if self.xsDataResultCharacterisation is not None:
                 strPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchHtmlDirectoryPath(self.xsDataResultCharacterisation.getDataCollection())
@@ -133,6 +133,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 # For debugging purposes
                 strPyarchPath = EDUtilsPath.getEdnaUserTempFolder()
             EDHandlerESRFPyarchv1_0.copyHTMLDir(_strPathToHTMLDir=os.path.dirname(self.strPath), _strPathToPyarchDirectory=strPyarchPath)
+	
 
 
     def indexingResults(self):
