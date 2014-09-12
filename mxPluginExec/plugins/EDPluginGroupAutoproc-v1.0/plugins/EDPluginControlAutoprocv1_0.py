@@ -101,6 +101,11 @@ from XSDataISPyBv1_4 import  XSDataInputStoreAutoProcStatus
 # pdb file retrieval
 from XSDataISPyBv1_4 import XSDataInputISPyBGetPdbFilePath
 
+edFactoryPlugin.loadModule("XSDataMXWaitFilev1_1")
+from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
+
+
+
 from xdscfgparser import parse_xds_file, dump_xds_file
 
 #import autoproclog
@@ -331,10 +336,14 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             self.DEBUG('dumping back the file to {0}'.format(data_in.input_file.path.value))
             dump_xds_file(data_in.input_file.path.value, conf)
 
-        first_image = _template_to_image(template, start_image)
+        self.first_image = _template_to_image(template, start_image)
+        self.last_image =  _template_to_image(template, end_image)
 
         self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProcv1_0")
         self.xds_first.dataInput = xds_in
+
+        if EDUtilsPath.isESRF():
+            self.waitFile = self.loadPlugin("EDPluginMXWaitFilev1_1")
 
         self.generate = self.loadPlugin("EDPluginXDSGeneratev1_0")
 
@@ -361,6 +370,20 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.DEBUG('EDPluginControlAutoprocv1_0.process starting')
 
         self.process_start = time.time()
+        
+        # ESRF specific: wait till we got the last image
+        if EDUtilsPath.isESRF():
+            xsDataInputMXWaitFile = XSDataInputMXWaitFile()
+            xsDataInputMXWaitFile.file = XSDataFile(XSDataString(self.last_image))
+            if any(beamline in self.last_image for beamline in ["id23eh1", "id29"]):
+                minSize = 6000000
+            elif any(beamline in self.last_image for beamline in ["id23eh2", "id30a1"]):
+                minSize = 2000000
+            else:
+                miSize = 1000000
+            self.waitFile.size = XSDataInteger(minSize)
+            self.waitFile.dataInput = xsDataInputMXWaitFile
+            self.waitFile.executeSynchronous()
 
 
         # get our two integration IDs
