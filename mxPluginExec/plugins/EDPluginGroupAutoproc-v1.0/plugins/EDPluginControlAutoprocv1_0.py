@@ -235,7 +235,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         try:
             os.makedirs(self.results_dir)
         except OSError: # it most likely exists
-            self.WARNING('Error creating the results directory: {0}'.format(traceback.format_exc()))
+            strWarningMessage = "Error creating the results directory: {0}".format(traceback.format_exc())
+            self.addWarningMessage(strWarningMessage)
+            self.WARNING(strWarningMessage)
 
         # Copy the vanilla XDS input file to the results dir
         infile_dest = os.path.join(self.results_dir, self.image_prefix + '_input_XDS.INP')
@@ -247,7 +249,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         try:
             os.makedirs(self.autoproc_ids_dir)
         except OSError: # it's there
-            self.WARNING('Error creating the autoproc ids directory: {0}'.format(traceback.format_exc()))
+            strWarningMessage = "Error creating the autoproc ids directory: {0}".format(traceback.format_exc())
+            self.addWarningMessage(strWarningMessage)
+            self.WARNING(strWarningMessage)
 
 
         # we'll need the low res limit later on
@@ -309,7 +313,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             start_image = data_range[0]
             end_image = data_range[1]
             if end_image - start_image < 8:
-                self.ERROR('there are fewer than 8 images, aborting')
+                error_message = "There are fewer than 8 images, aborting"
+                self.addErrorMessage(error_message)
+                self.ERROR(error_message)
                 self.setFailure()
                 return
 
@@ -361,13 +367,17 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         try:
             self.integration_id_noanom = create_integration_id(self.dataInput.data_collection_id.value)
         except Exception, e:
-            self.ERROR('could not get integration ID: \n{0}'.format(traceback.format_exc(e)))
+            strErrorMessage = "Could not get non-anom integration ID: \n{0}".format(traceback.format_exc(e))
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.integration_id_noanom = None
 
         try:
             self.integration_id_anom = create_integration_id(self.dataInput.data_collection_id.value)
         except Exception, e:
-            self.ERROR('could not get integration ID: \n{0}'.format(traceback.format_exc(e)))
+            strErrorMessage = "Could not get anom integration ID: \n{0}".format(traceback.format_exc(e))
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.integration_id_anom = None
 
         # first XDS plugin run with supplied XDS file
@@ -428,7 +438,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                                      'INTEGRATE.LP'),
                         integrate_path)
         except (IOError, OSError):
-            self.ERROR('failed to copy INTEGRATE.LP file ({0}) to the results dir'.format(integrate_path))
+            strErrorMessage = "Failed to copy INTEGRATE.LP file ({0}) to the results dir".format(integrate_path)
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
 
 
         log_to_ispyb([self.integration_id_noanom, self.integration_id_anom],
@@ -546,7 +558,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.parse_xds_anom.executeSynchronous()
 
         if self.parse_xds_anom.isFailure():
-            self.ERROR('parsing the xds generated w/ anom failed')
+            strErrorMessage = "Parsing the xds generated w/ anom failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.setFailure()
             return
 
@@ -563,7 +577,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.parse_xds_noanom.executeSynchronous()
 
         if self.parse_xds_noanom.isFailure():
-            self.ERROR('parsing the xds generated w/ anom failed')
+            strErrorMessage = "Parsing the xds generated w/ no anom failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.setFailure()
             return
 
@@ -684,7 +700,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             json.dump(self.stats, f)
 
         if self.xscale_generate.isFailure():
-            self.ERROR('xscale generation failed')
+            strErrorMessage = "Xscale generation failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
                          'Scaling',
                          'Failed',
@@ -709,7 +727,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             try:
                 shutil.copyfile(log, target)
             except IOError:
-                self.ERROR('Could not copy {0} to {1}'.format(log, target))
+                strErrorMessage = "Could not copy {0} to {1}".format(log, target)
+                self.addErrorMessage(strErrorMessage)
+                self.ERROR(strErrorMessage)
 
 
 
@@ -743,7 +763,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             json.dump(self.stats, f)
 
         if self.file_conversion.isFailure():
-            self.ERROR("file import failed")
+            strErrorMessage = "File import failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
 
 
 #        self.custom_stats['total_time']=time.time() - process_start
@@ -1145,11 +1167,20 @@ fi
 
     def finallyProcess(self, _edObject = None):
         EDPluginControl.finallyProcess(self)
+        strMessage = ""
+        if self.getListOfWarningMessages() != []:
+            strMessage += "Warning messages: \n\n"
+            for strWarningMessage in self.getListOfWarningMessages():
+                strMessage += strWarningMessage            
         if self.isFailure():
             strSubject = "EDNA dp %s FAILURE" % self.strHost
+            if self.getListOfErrorMessages() != []:
+                strMessage += "Error messages: \n\n"
+                for strErrorMessage in self.getListOfErrorMessages():
+                    strMessage += strErrorMessage
         else:
             strSubject = "EDNA dp %s SUCCESS" % self.strHost
-        strMessage  = "Plugin execution time: %.2f s\n" % (time.time() - self.plugin_start )
+        strMessage  += "\n\nPlugin execution time: %.2f s\n" % (time.time() - self.plugin_start )
         if self.process_end is not None:
             strMessage += "Process execution time: %.2f s\n" % (self.process_end - self.process_start)
         self.sendEmail(strSubject, strMessage)
