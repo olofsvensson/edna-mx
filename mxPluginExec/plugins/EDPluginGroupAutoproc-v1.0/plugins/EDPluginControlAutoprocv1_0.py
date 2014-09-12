@@ -385,6 +385,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         t0=time.time()
         self.xds_first.executeSynchronous()
+        self.retrieveFailureMessages(self.xds_first, self.getPluginName())
 
         self.stats['first_xds'] = time.time()-t0
         with open(self.log_file_path, 'w') as f:
@@ -1171,13 +1172,13 @@ fi
         if self.getListOfWarningMessages() != []:
             strMessage += "Warning messages: \n\n"
             for strWarningMessage in self.getListOfWarningMessages():
-                strMessage += strWarningMessage            
+                strMessage += strWarningMessage  + "\n\n"         
+        if self.getListOfErrorMessages() != []:
+            strMessage += "Error messages: \n\n"
+            for strErrorMessage in self.getListOfErrorMessages():
+                strMessage += strErrorMessage + "\n\n"
         if self.isFailure():
             strSubject = "EDNA dp %s FAILURE" % self.strHost
-            if self.getListOfErrorMessages() != []:
-                strMessage += "Error messages: \n\n"
-                for strErrorMessage in self.getListOfErrorMessages():
-                    strMessage += strErrorMessage
         else:
             strSubject = "EDNA dp %s SUCCESS" % self.strHost
         strMessage  += "\n\nPlugin execution time: %.2f s\n" % (time.time() - self.plugin_start )

@@ -48,8 +48,6 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
 
 
     def __init__( self ):
-        """
-        """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataMinimalXdsIn)
         self.controlled_plugin_name = 'EDPluginExecMinimalXdsv1_0'
@@ -78,7 +76,9 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
         cfg = parse_xds_file(self.dataInput.input_file.value)
         spot_range = cfg.get('SPOT_RANGE=')
         if spot_range is None:
-            self.ERROR('no SPOT_RANGE parameter')
+            strErrorMessage = "No SPOT_RANGE parameter"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.setFailure()
         else:
             self.spot_range = spot_range
@@ -105,6 +105,7 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
         #params.job = XSDataString('XYCORR INIT COLSPOT IDXREF')
         self.first_run.dataInput = params
         self.first_run.executeSynchronous()
+        self.retrieveFailureMessages(self.first_run, self.getPluginName())
 
         EDVerbose.DEBUG('first run completed...')
 
@@ -145,7 +146,8 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
 
             self.second_run.dataInput = params
             self.second_run.executeSynchronous()
-
+            self.retrieveFailureMessages(self.second_run, self.getPluginName())
+            
             EDVerbose.DEBUG('second run completed')
             if self.second_run.dataOutput is not None and self.second_run.dataOutput.succeeded.value:
                 EDVerbose.DEBUG('... and it worked')
@@ -191,6 +193,9 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
 
         if not self.successful_run:
         # all runs failed so bail out ...
+            strErrorMessage = "All three XDS runs failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.setFailure()
         else:
             # use the xds parser plugin to parse the xds output file...

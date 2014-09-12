@@ -3,8 +3,6 @@
 #    Project: Autoproc
 #             http://www.edna-site.org
 #
-#    File: "$Id$"
-#
 #    Copyright (C) ESRF
 #
 #    Principal author: Thomas Boeglin
@@ -36,6 +34,7 @@ import fnmatch
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 from EDVerbose import EDVerbose
 from EDUtilsPath import EDUtilsPath
+from EDUtilsFile import EDUtilsFile
 
 from XSDataCommon import XSDataBoolean
 from XSDataAutoprocv1_0 import XSDataMinimalXdsIn, XSDataMinimalXdsOut
@@ -44,13 +43,9 @@ from xdscfgparser import parse_xds_file, dump_xds_file
 
 
 class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
-    """
-    """
 
 
     def __init__(self ):
-        """
-        """
         EDPluginExecProcessScript.__init__(self )
         self.setXSDataInputClass(XSDataMinimalXdsIn)
 
@@ -189,6 +184,11 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
     def postProcess(self, _edObject = None):
         EDPluginExecProcessScript.postProcess(self)
         self.DEBUG("EDPluginMinimalXds.postProcess")
+        # Check log for warning and errors
+        strPathToLogFile = os.path.join(self.getWorkingDirectory(), self.getScriptLogFileName())
+        self.checkLogForWarningAndErrors(strPathToLogFile)
+        
+        
         # Create some output data
         xsDataResult = XSDataMinimalXdsOut()
 
@@ -207,6 +207,17 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
                                                                         xsDataResult.succeeded.value))
         self.setDataOutput(xsDataResult)
 
+    def checkLogForWarningAndErrors(self, _strPathToLogFile):
+        """Checks the plugin/XDS log file for warning and error messages"""
+        if os.path.exists(_strPathToLogFile):
+            strLog = EDUtilsFile.readFile(_strPathToLogFile)
+            listLog = strLog.split("\n")
+            for strLogLine in listLog:
+                # Check for missing images
+                if "!!! ERROR !!!" in strLogLine:
+                    self.addErrorMessage(strLogLine)
+            
+            
 
 
 # XXX: This is the third file I copy this function to: extract it
