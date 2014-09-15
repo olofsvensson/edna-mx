@@ -232,28 +232,28 @@ class EDPluginControl(EDPlugin):
             self.addErrorMessage(strErrorMessage)
 
 
-    def retrieveFailureMessages(self, _edPlugin, _strMethodCaller):
+    def retrieveFailureMessages(self, _edPlugin, _strPrefix):
         """
         Propagates failure messages from a plugin including unexpected errors
         Should be called in the plugin control method invoked when a plugin exec fails (doActionFailure<>)
         """
         self.DEBUG("EDPluginControl.retrieveFailureMessages")
-        self.retrieveWarningMessages(_edPlugin)
-        self.retrieveErrorMessages(_edPlugin, _strMethodCaller, True)
+        self.retrieveWarningMessages(_edPlugin, _strPrefix)
+        self.retrieveErrorMessages(_edPlugin, _strPrefix)
 
 
-    def retrieveSuccessMessages(self, _edPlugin, _strMethodCaller):
+    def retrieveSuccessMessages(self, _edPlugin, _strPrefix):
         """
         Propagates success messages from a plugin
         Error messages are retrieved because a plugin could end successfully with errors (depending on the use case)
         In this case, there is no check for unexpected errors
         """
         self.DEBUG("EDPluginControl.retrieveSuccessMessages")
-        self.retrieveWarningMessages(_edPlugin)
-        self.retrieveErrorMessages(_edPlugin, _strMethodCaller, False)
+        self.retrieveWarningMessages(_edPlugin, _strPrefix)
+        self.retrieveErrorMessages(_edPlugin, _strPrefix)
 
 
-    def retrieveErrorMessages(self, _edPlugin, _strMethodCaller, _bFailure):
+    def retrieveErrorMessages(self, _edPlugin, _strPrefix=None):
         """
         Propagates error messages from a plugin
         if _bFailure is true, this method has been called from retrieveFailureMessages
@@ -261,19 +261,24 @@ class EDPluginControl(EDPlugin):
         """
         self.DEBUG("EDPluginControl.retrieveErrorMessages")
         listErrorMessages = _edPlugin.getListOfErrorMessages()
-        if (len(listErrorMessages) == 0) and (_bFailure is True):
-            strErrorMessage = "%s : Adding Unexpected error" % _strMethodCaller
-            self.DEBUG(strErrorMessage)
-            listErrorMessages.append(strErrorMessage)
-        self.addErrorMessages(listErrorMessages)
+        if _strPrefix is None:
+            self.addErrorMessages(listErrorMessages)
+        else:
+            for strErrorMessage in listErrorMessages:
+                self.addErrorMessage("%s: %s" % (_strPrefix, strErrorMessage))
 
 
-    def retrieveWarningMessages(self, _edPlugin):
+    def retrieveWarningMessages(self, _edPlugin, _strPrefix=None):
         """
         Propagates warning messages from a plugin
         """
         self.DEBUG("EDPluginControl.retrieveWarningMessages")
-        self.addWarningMessages(_edPlugin.getListOfWarningMessages())
+        listWarningMessages = _edPlugin.getListOfWarningMessages()
+        if _strPrefix is None:
+            self.addWarningMessages(listWarningMessages)
+        else:
+            for strWarningMessage in listWarningMessages:
+                self.addWarningMessage("%s: %s" % (_strPrefix, strWarningMessage))
 
 
     def appendExecutiveSummary(self, _edPlugin, _strPrefix="", _bAddSeparator=True):
