@@ -36,7 +36,10 @@ from EDVerbose import EDVerbose
 
 from XSDataCommon import XSDataFile, XSDataString
 
-from XSDataAutoprocv1_0  import XSDataMinimalXdsIn, XSDataXdsOutputFile, XSDataRange
+from XSDataAutoprocv1_0 import XSDataMinimalXdsIn
+from XSDataAutoprocv1_0 import XSDataXdsOutput
+from XSDataAutoprocv1_0 import XSDataXdsOutputFile
+from XSDataAutoprocv1_0 import XSDataRange
 
 from xdscfgparser import parse_xds_file
 
@@ -50,6 +53,7 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
     def __init__( self ):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataMinimalXdsIn)
+        self.setDataOutput(XSDataXdsOutput())
         self.controlled_plugin_name = 'EDPluginExecMinimalXdsv1_0'
         self.first_run = None
         self.second_run = None

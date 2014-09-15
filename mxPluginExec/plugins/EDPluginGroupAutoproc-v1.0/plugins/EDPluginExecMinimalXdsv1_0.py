@@ -48,6 +48,7 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
     def __init__(self ):
         EDPluginExecProcessScript.__init__(self )
         self.setXSDataInputClass(XSDataMinimalXdsIn)
+        self.setDataOutput(XSDataMinimalXdsOut())
 
 
     def checkParameters(self):
