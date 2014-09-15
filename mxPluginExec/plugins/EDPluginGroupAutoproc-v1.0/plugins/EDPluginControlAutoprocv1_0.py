@@ -142,7 +142,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.ispyb_password = self.config.get('ispyb_password')
         self.strEDNAContactEmail = self.config.get("contactEmail", self.strEDNAContactEmail)
         self.strEDNAEmailSender = self.config.get("emailSender", self.strEDNAEmailSender)
-        self.setTimeOut(1800)
 
     def checkParameters(self):
         """
@@ -343,7 +342,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.xds_first.dataInput = xds_in
 
         if EDUtilsPath.isESRF():
-            self.waitFile = self.loadPlugin("EDPluginMXWaitFilev1_1")
+            self.waitFileFirst = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileFirst")
+            self.waitFileLast = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileLast")
 
         self.generate = self.loadPlugin("EDPluginXDSGeneratev1_0")
 
@@ -363,6 +363,40 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
 #        self.dimple = self.loadPlugin('EDPluginControlDIMPLEPipelineCalcDiffMapv10')
 
+        # ESRF specific: wait till we got the last image
+        if EDUtilsPath.isESRF():
+            if any(beamline in self.first_image for beamline in ["id23eh1", "id29"]):
+                minSize = 6000000
+            elif any(beamline in self.first_image for beamline in ["id23eh2", "id30a1"]):
+                minSize = 2000000
+            else:
+                miSize = 1000000
+
+            fWaitFileTimeout = 600 # s
+
+            xsDataInputMXWaitFileFirst = XSDataInputMXWaitFile()
+            xsDataInputMXWaitFileFirst.file = XSDataFile(XSDataString(self.first_image))
+            xsDataInputMXWaitFileFirst.timeOut = XSDataTime(fWaitFileTimeout)
+            self.waitFileFirst.size = XSDataInteger(minSize)
+            self.waitFileFirst.dataInput = xsDataInputMXWaitFileFirst
+            self.waitFileFirst.executeSynchronous()
+            if self.waitFileFirst.dataOutput.timedOut.value:
+                strWarningMessage = "Timeout after %d seconds waiting for the first image %s!" % (fWaitFileTimeout, self.first_image)
+                self.addWarningMessage(strWarningMessage)
+                self.WARNING(strWarningMessage)
+
+            xsDataInputMXWaitFileLast = XSDataInputMXWaitFile()
+            xsDataInputMXWaitFileLast.file = XSDataFile(XSDataString(self.last_image))
+            xsDataInputMXWaitFileLast.timeOut = XSDataTime(fWaitFileTimeout)
+            self.waitFileLast.size = XSDataInteger(minSize)
+            self.waitFileLast.dataInput = xsDataInputMXWaitFileLast
+            self.waitFileLast.executeSynchronous()
+            if self.waitFileLast.dataOutput.timedOut.value:
+                strErrorMessage = "Timeout after %d seconds waiting for the last image %s!" % (fWaitFileTimeout, self.last_image)
+                self.addErrorMessage(strErrorMessage)
+                self.ERROR(strErrorMessage)
+                self.setFailure()
+
         self.DEBUG('EDPluginControlAutoprocv1_0.preProcess finished')
 
     def process(self, _edObject = None):
@@ -371,20 +405,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         self.process_start = time.time()
         
-        # ESRF specific: wait till we got the last image
-        if EDUtilsPath.isESRF():
-            xsDataInputMXWaitFile = XSDataInputMXWaitFile()
-            xsDataInputMXWaitFile.file = XSDataFile(XSDataString(self.last_image))
-            if any(beamline in self.last_image for beamline in ["id23eh1", "id29"]):
-                minSize = 6000000
-            elif any(beamline in self.last_image for beamline in ["id23eh2", "id30a1"]):
-                minSize = 2000000
-            else:
-                miSize = 1000000
-            self.waitFile.size = XSDataInteger(minSize)
-            self.waitFile.dataInput = xsDataInputMXWaitFile
-            self.waitFile.executeSynchronous()
-
 
         # get our two integration IDs
         try:
