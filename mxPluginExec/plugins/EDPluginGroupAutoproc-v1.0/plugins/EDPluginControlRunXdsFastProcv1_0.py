@@ -105,7 +105,7 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
         #params.job = XSDataString('XYCORR INIT COLSPOT IDXREF')
         self.first_run.dataInput = params
         self.first_run.executeSynchronous()
-        self.retrieveFailureMessages(self.first_run, self.getPluginName())
+        self.retrieveFailureMessages(self.first_run, "First XDS run")
 
         EDVerbose.DEBUG('first run completed...')
 
@@ -146,7 +146,7 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
 
             self.second_run.dataInput = params
             self.second_run.executeSynchronous()
-            self.retrieveFailureMessages(self.second_run, self.getPluginName())
+            self.retrieveFailureMessages(self.second_run, "Second XDS run")
             
             EDVerbose.DEBUG('second run completed')
             if self.second_run.dataOutput is not None and self.second_run.dataOutput.succeeded.value:
@@ -183,6 +183,7 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
 
             self.third_run.dataInput = params
             self.third_run.executeSynchronous()
+            self.retrieveFailureMessages(self.third_run, "Third XDS run")
 
             EDVerbose.DEBUG('third run completed')
             if self.third_run.dataOutput is not None and self.third_run.dataOutput.succeeded.value:

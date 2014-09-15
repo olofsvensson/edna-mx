@@ -215,6 +215,7 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
             for strLogLine in listLog:
                 # Check for missing images
                 if "!!! ERROR !!!" in strLogLine:
+                    self.ERROR(strLogLine)
                     self.addErrorMessage(strLogLine)
             
             

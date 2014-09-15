@@ -428,7 +428,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         t0=time.time()
         self.xds_first.executeSynchronous()
-        self.retrieveFailureMessages(self.xds_first, self.getPluginName())
+        self.retrieveFailureMessages(self.xds_first, "Fast proc")
 
         self.stats['first_xds'] = time.time()-t0
         with open(self.log_file_path, 'w') as f:
