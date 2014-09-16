@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 #
-#    Project: PROJECT
+#    Project: EDNA MXv1
 #             http://www.edna-site.org
-#
-#    File: "$Id$"
 #
 #    Copyright (C) European Synchrotron Radiation Facility, Grenoble, France
 #
