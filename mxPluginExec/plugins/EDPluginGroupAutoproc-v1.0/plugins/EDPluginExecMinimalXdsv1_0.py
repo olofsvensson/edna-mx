@@ -156,9 +156,9 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
             self.DEBUG('specific unit cell requested: {0}'.format(unit_cell.value))
             parsed_config['SPACE_GROUP_NUMBER='] = str(spacegroup.value)
             #Check if this is ok
-            parsed_config['UNIT_CELL_CONSTANTS'] = unit_cell.value
+            parsed_config['UNIT_CELL_CONSTANTS='] = unit_cell.value
             if EDUtilsPath.isEMBL():
-                parsed_config['UNIT_CELL_CONSTANTS'] = unit_cell_spaced_string
+                parsed_config['UNIT_CELL_CONSTANTS='] = unit_cell_spaced_string
 
         # For [XY]-GEO_CORR files, link them in the cwd and fix their paths
         if 'X-GEO_CORR=' in parsed_config:
