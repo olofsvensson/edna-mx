@@ -85,6 +85,7 @@ class EDPluginMXWaitFilev1_1(EDPluginExec):
         # Wait for file if it's not already on disk'
         hasTimedOut = False
         shouldContinue = True
+        fileDir = os.path.dirname(self.strFilePath)
         if os.path.exists(self.strFilePath):
             if self.expectedSize is not None:
                 # Check size
@@ -97,6 +98,9 @@ class EDPluginMXWaitFilev1_1(EDPluginExec):
             while shouldContinue and not hasTimedOut:
                 # Sleep 1 s 
                 time.sleep(1)
+                # Try to execute a "ls" on the file directory - this sometimes speed up NFS
+                if os.path.exists(fileDir):
+                    os.system("ls %s > /dev/null" % fileDir)
                 timeElapsed += 1
                 # Check if time out
                 if timeElapsed > self.timeOut:
