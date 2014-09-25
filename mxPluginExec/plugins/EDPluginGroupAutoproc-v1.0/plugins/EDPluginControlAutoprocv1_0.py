@@ -135,6 +135,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.plugin_start = time.time()
         self.process_start = None
         self.process_end = None
+        self.strBeamline = None
+        self.strProposal = None
+        self.strPrefix = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -182,7 +185,15 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         except OSError:
             pass
         
-        strSubject = "EDNA dp %s started" % self.strHost
+        data_in = self.dataInput
+
+        if EDUtilsPath.isESRF():
+            (self.strBeamline, self.strProposal, self.strPrefix) = self.getBeamlinePrefixFromPath(data_in.input_file.path.value)
+            strSubject = "EDNA dp %s %s %s %s started" % (self.strBeamline, self.strProposal, 
+                                                          self.strPrefix, self.strHost)
+        else:
+            strSubject = "EDNA dp started on host %s" % self.strHost
+            
         self.sendEmail(strSubject, "")
 
         # for info to send to the autoproc stats server
@@ -190,8 +201,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 #                                 processing_type='edna fastproc',
 #                                 datacollect_id=self.dataInput.data_collection_id.value,
 #                                 comments='running on {0}'.format(socket.gethostname()))
-
-        data_in = self.dataInput
 
         # Check if the spacegroup needs to be converted to a number
         # (ie it's a symbolic thing)
@@ -1221,14 +1230,45 @@ fi
             for strErrorMessage in self.getListOfErrorMessages():
                 strMessage += strErrorMessage + "\n\n"
         if self.isFailure():
-            strSubject = "EDNA dp %s FAILURE" % self.strHost
+            strStatus = "FAILURE"
         else:
-            strSubject = "EDNA dp %s SUCCESS" % self.strHost
+            strStatus = "SUCCESS"
+        if EDUtilsPath.isESRF():
+            strSubject = "EDNA dp %s %s %s %s %s" % (self.strBeamline, self.strProposal, 
+                                                          self.strPrefix, self.strHost, strStatus)
+        else:
+            strSubject = "EDNA dp host %s %s" % (self.strHost, strStatus)
+            
+
         strMessage  += "\n\nPlugin execution time: %.2f s\n" % (time.time() - self.plugin_start )
         if self.process_end is not None:
-            strMessage += "Process execution time: %.2f s\n" % (self.process_end - self.process_start)
+            fProcessExecutionTime = self.process_end - self.process_start
+            iStartImage = self.data_range[0]
+            iEndImage = self.data_range[1]
+            iNoImages = iEndImage - iStartImage + 1
+            strMessage += "No images: %d\n" % iNoImages
+            strMessage += "Process execution time: %.2f s\n" % fProcessExecutionTime
+            strMessage += "Process execution time per image: %.2f s\n" % (fProcessExecutionTime / iNoImages)
         self.sendEmail(strSubject, strMessage)
 
+
+    def getBeamlinePrefixFromPath(self, strPathToXDSInp):
+        """ESRF specific code for extracting the beamline name and prefix from the path"""
+        listPath = strPathToXDSInp.split("/")
+        if listPath[2] == "visitor":
+            strBeamline = listPath[4]
+            strProposal = listPath[3]
+            strPrefix = listPath[-2][4:]
+        elif listPath[3] == "inhouse":
+            strBeamline = listPath[2]
+            strProposal = listPath[4]
+            strPrefix = listPath[-2][4:]
+        else:
+            strBeamline = ""
+            strProposal = ""
+            strPrefix = ""
+        return (strBeamline, strProposal, strPrefix)
+        
 
             
     def sendEmail(self, _strSubject, _strMessage):
