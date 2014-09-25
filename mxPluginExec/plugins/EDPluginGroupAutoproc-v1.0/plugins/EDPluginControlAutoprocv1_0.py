@@ -370,7 +370,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             elif any(beamline in self.first_image for beamline in ["id23eh2", "id30a1"]):
                 minSize = 2000000
             else:
-                miSize = 1000000
+                minSize = 1000000
 
             fWaitFileTimeout = 600 # s
 
