@@ -372,7 +372,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             else:
                 minSize = 1000000
 
-            fWaitFileTimeout = 600 # s
+            fWaitFileTimeout = 3600 # s
 
             xsDataInputMXWaitFileFirst = XSDataInputMXWaitFile()
             xsDataInputMXWaitFileFirst.file = XSDataFile(XSDataString(self.first_image))

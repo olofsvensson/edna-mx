@@ -436,7 +436,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>3600</value>
+					<value>4500</value>
 				</XSParamItem>
 			    <XSParamItem>
 			        <name>contactEmail</name>
