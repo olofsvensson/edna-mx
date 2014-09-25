@@ -138,6 +138,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.strBeamline = None
         self.strProposal = None
         self.strPrefix = None
+        self.dataInputOrig = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -156,6 +157,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # save the root path (where the initial xds.inp is) for later use
         self.root_dir = os.path.abspath(os.path.dirname(self.dataInput.input_file.path.value))
+        self.dataInputOrig = self.dataInput
 
         # at least check for the xds input file existence before
         # trying to start anything even if the first xds run does it
@@ -188,7 +190,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         data_in = self.dataInput
 
         if EDUtilsPath.isESRF():
-            (self.strBeamline, self.strProposal, self.strPrefix) = self.getBeamlinePrefixFromPath(data_in.input_file.path.value)
+            (self.strBeamline, self.strProposal, self.strPrefix) = self.getBeamlinePrefixFromPath(self.dataInputOrig.input_file.path.value)
             strSubject = "EDNA dp %s %s %s %s started" % (self.strBeamline, self.strProposal, 
                                                           self.strPrefix, self.strHost)
         else:
