@@ -7,7 +7,7 @@
 #
 #    Copyright (C) ESRF
 #
-#    Principal author: Thomas Boeglin
+#    Principal authors: Thomas Boeglin and Olof Svensson
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="Thomas Boeglin"
+__authors__=["Thomas Boeglin", "Olof Svensson"]
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
@@ -157,7 +157,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # save the root path (where the initial xds.inp is) for later use
         self.root_dir = os.path.abspath(os.path.dirname(self.dataInput.input_file.path.value))
-        self.dataInputOrig = self.dataInput
+        self.dataInputOrig = self.dataInput.copy()
 
         # at least check for the xds input file existence before
         # trying to start anything even if the first xds run does it
