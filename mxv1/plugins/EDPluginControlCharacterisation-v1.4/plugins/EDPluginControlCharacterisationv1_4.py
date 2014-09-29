@@ -49,6 +49,7 @@ from XSDataMXv1 import XSDataIndexingSolutionSelected
 from XSDataMXv1 import XSDataIntegrationInput
 from XSDataMXv1 import XSDataInputStrategy
 from XSDataMXv1 import XSDataInputControlXDSGenerateBackgroundImage
+from XSDataMXv1 import XSDataIndexingInput
 
 EDFactoryPluginStatic.loadModule("XSDataMXThumbnailv1_1")
 from XSDataMXThumbnailv1_1 import XSDataInputMXThumbnail
@@ -64,6 +65,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self.setXSDataInputClass(XSDataInputCharacterisation)
         self._strPluginControlIndexingIndicators = "EDPluginControlIndexingIndicatorsv1_1"
         self._strPluginExecEvaluationIndexing = "EDPluginExecEvaluationIndexingv10"
+        self._strPluginControlIndexingMOSFLM = "EDPluginControlIndexingMOSFLMv10"
         self._strPluginControlGeneratePrediction = "EDPluginControlGeneratePredictionv10"
         self._strPluginControlIntegration = "EDPluginControlIntegrationv10"
         self._strPluginControlXDSGenerateBackgroundImage = "EDPluginControlXDSGenerateBackgroundImagev1_0"
@@ -86,6 +88,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._xsDataFileXdsBackgroundImage = None
         self._bDoStrategyCalculation = True
         self._fMinTransmission = 10 # %
+        self._iNoReferenceImages = None
 
 
     def checkParameters(self):
@@ -106,6 +109,10 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
                                                                    "Indexing")
         self._edPluginExecEvaluationIndexingLABELIT = self.loadPlugin(self._strPluginExecEvaluationIndexing, \
                                                                    "IndexingEvalualtionLABELIT")
+        self._edPluginControlIndexingMOSFLM = self.loadPlugin(self._strPluginControlIndexingMOSFLM, \
+                                                                   "IndexingMOSFLM")
+        self._edPluginExecEvaluationIndexingMOSFLM = self.loadPlugin(self._strPluginExecEvaluationIndexing, \
+                                                                   "IndexingEvalualtionMOSFLM")
         self._edPluginControlGeneratePrediction = self.loadPlugin(self._strPluginControlGeneratePrediction, \
                                                                    "GeneratePrediction")
         self._edPluginControlIntegration = self.loadPlugin(self._strPluginControlIntegration, \
@@ -171,8 +178,10 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
                 self._xsDataResultCharacterisation = XSDataResultCharacterisation()
                 self._xsDataResultCharacterisation.setDataCollection(XSDataCollection.parseString(self._xsDataCollection.marshal()))
             # Load the thumbnail plugins
+            self._iNoReferenceImages = 0
             for subWedge in xsDataInputCharacterisation.dataCollection.subWedge:
                 for image in subWedge.image:
+                    self._iNoReferenceImages += 1
                     edPluginJpeg = self.loadPlugin(self._strPluginGenerateThumbnailName)
                     xsDataInputMXThumbnail = XSDataInputMXThumbnail()
                     xsDataInputMXThumbnail.image = XSDataFile(image.path)
@@ -199,6 +208,10 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._edPluginControlIndexingIndicators.connectFAILURE(self.doFailureIndexingIndicators)
         self._edPluginExecEvaluationIndexingLABELIT.connectSUCCESS(self.doSuccessEvaluationIndexingLABELIT)
         self._edPluginExecEvaluationIndexingLABELIT.connectFAILURE(self.doFailureEvaluationIndexingLABELIT)
+        self._edPluginControlIndexingMOSFLM.connectSUCCESS(self.doSuccessIndexingMOSFLM)
+        self._edPluginControlIndexingMOSFLM.connectFAILURE(self.doFailureIndexingMOSFLM)
+        self._edPluginExecEvaluationIndexingMOSFLM.connectSUCCESS(self.doSuccessEvaluationIndexingMOSFLM)
+        self._edPluginExecEvaluationIndexingMOSFLM.connectFAILURE(self.doFailureEvaluationIndexingMOSFLM)
         self._edPluginControlGeneratePrediction.connectSUCCESS(self.doSuccessGeneratePrediction)
         self._edPluginControlGeneratePrediction.connectFAILURE(self.doFailureGeneratePrediction)
         self._edPluginControlIntegration.connectSUCCESS(self.doSuccessIntegration)
@@ -258,16 +271,44 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
 
     def doFailureIndexingIndicators(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_4.doFailureIndexingIndicators")
-        strErrorMessage = "Execution of Indexing and Indicators plugin failed. Execution of characterisation aborted."
+        # If more than two reference images try to index with MOSFLM:
+        if self._iNoReferenceImages > 2:
+            strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
+            self.WARNING(strWarningMessage)
+            self.addWarningMessage(strWarningMessage)
+            xsDataIndexingInput = XSDataIndexingInput()
+            xsDataIndexingInput.dataCollection = self._xsDataCollection
+            xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
+            xsDataIndexingInput.crystal = self._xsDataCrystal
+            self._edPluginControlIndexingMOSFLM.dataInput = xsDataIndexingInput
+            self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
+        else:
+            strErrorMessage = "Execution of Indexing and Indicators plugin failed. Execution of characterisation aborted."
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
+            self.generateExecutiveSummary(self)
+            if self._xsDataResultCharacterisation is not None:
+                self.setDataOutput(self._xsDataResultCharacterisation)
+            self.setFailure()
+            if self._strStatusMessage != None:
+                self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+                self.writeDataOutput()
+
+        
+        
+        
+    def doSuccessIndexingMOSFLM(self, _edPlugin=None):
+        self.DEBUG("EDPluginControlCharacterisationv1_4.doSuccessIndexingMOSFLM")
+        xsDataIndexingResult = self._edPluginControlIndexingMOSFLM.dataOutput
+        self._edPluginExecEvaluationIndexingMOSFLM.setDataInput(xsDataIndexingResult, "indexingResult")
+        self.executePluginSynchronous(self._edPluginExecEvaluationIndexingMOSFLM)
+
+    
+    def doFailureIndexingMOSFLM(self, _edPlugin=None):
+        self.DEBUG("EDPluginControlCharacterisationv1_4.doFailureIndexingMOSFLM")
+        strErrorMessage = "Indexing with MOSFLM failed."
         self.ERROR(strErrorMessage)
-        self.addErrorMessage(strErrorMessage)
-        self.generateExecutiveSummary(self)
-        if self._xsDataResultCharacterisation is not None:
-            self.setDataOutput(self._xsDataResultCharacterisation)
-        self.setFailure()
-        if self._strStatusMessage != None:
-            self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-            self.writeDataOutput()
+        self.executePluginSynchronous(self._edPluginExecEvaluationIndexingMOSFLM)
 
 
 
@@ -288,7 +329,43 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             # Then start the integration of the reference images
             self.indexingToIntegration()
         else:
-            strErrorMessage = "Execution of indexing with Labelit failed."
+            if self._iNoReferenceImages > 2:
+                strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
+                self.WARNING(strWarningMessage)
+                self.addWarningMessage(strWarningMessage)
+                xsDataIndexingInput = XSDataIndexingInput()
+                xsDataIndexingInput.dataCollection = self._xsDataCollection
+                xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
+                xsDataIndexingInput.crystal = self._xsDataCrystal
+                self._edPluginControlIndexingMOSFLM.setDataInput(xsDataIndexingInput)
+                self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
+            else:
+                strErrorMessage = "Execution of indexing with Labelit failed."
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
+                self.setFailure()
+                self.generateExecutiveSummary(self)
+                if self._strStatusMessage != None:
+                    self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+                    self.writeDataOutput()
+
+
+    def doSuccessEvaluationIndexingMOSFLM(self, _edPlugin=None):
+        self.DEBUG("EDPluginControlCharacterisationv1_4.doSuccessEvaluationIndexingMOSFLM")
+        self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv1_4.doSuccessEvaluationIndexingMOSFLM")
+        # Retrieve status messages (if any)
+        if self._edPluginExecEvaluationIndexingMOSFLM.hasDataOutput("statusMessageIndexing"):
+            self.addStatusMessage("MOSFLM: " + self._edPluginExecEvaluationIndexingMOSFLM.getDataOutput("statusMessageIndexing")[0].getValue())
+        # Check if indexing was successful
+        bIndexingSuccess = self._edPluginExecEvaluationIndexingMOSFLM.getDataOutput("indexingSuccess")[0].getValue()
+        if bIndexingSuccess:
+            xsDataIndexingResult = self._edPluginExecEvaluationIndexingMOSFLM.getDataOutput("indexingResult")[0]
+            self._xsDataResultCharacterisation.setIndexingResult(xsDataIndexingResult)
+            self._strCharacterisationShortSummary += self.generateIndexingShortSummary(xsDataIndexingResult)
+            # Then start the integration of the reference images
+            self.indexingToIntegration()
+        else:
+            strErrorMessage = "Execution of indexing with MOSFLM failed."
             self.ERROR(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             self.setFailure()
@@ -297,7 +374,50 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
                 self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
                 self.writeDataOutput()
 
-
+    def generateIndexingShortSummary(self, _xsDataIndexingResult):
+        """
+        Generates a very short summary of the indexing
+        """
+        strIndexingShortSummary = ""
+        if self.hasDataInput("crystal"):
+            xsDataCrystal = self.getDataInput("crystal")[0]
+            if xsDataCrystal.getSpaceGroup() is not None:
+                strForcedSpaceGroup = xsDataCrystal.getSpaceGroup().getName().getValue().upper()
+                if xsDataCrystal.getSpaceGroup().getName().getValue() != "":
+                    strIndexingShortSummary += "Forced space group: %s\n" % strForcedSpaceGroup
+        if _xsDataIndexingResult is not None:
+            # Indexing solution
+            xsDataSelectedSolution = _xsDataIndexingResult.getSelectedSolution()
+            xsDataCrystal = xsDataSelectedSolution.getCrystal()
+            # Refined cell parameters
+            xsDataCell = xsDataCrystal.getCell()
+            fA = xsDataCell.getLength_a().getValue()
+            fB = xsDataCell.getLength_b().getValue()
+            fC = xsDataCell.getLength_c().getValue()
+            fAlpha = xsDataCell.getAngle_alpha().getValue()
+            fBeta = xsDataCell.getAngle_beta().getValue()
+            fGamma = xsDataCell.getAngle_gamma().getValue()
+            # Estimated mosaicity
+            fEstimatedMosaicity = xsDataCrystal.getMosaicity().getValue()
+            # Space group
+            strSpaceGroup = xsDataCrystal.getSpaceGroup().getName().getValue()
+            # Spot deviation
+            xsDataStatisticsIndexing = xsDataSelectedSolution.getStatistics()
+            fSpotDeviationPositional = xsDataStatisticsIndexing.getSpotDeviationPositional().getValue()
+            strIndexingShortSummary += "Indexing: laue/space group %s, mosaicity %.2f [degree], " % (strSpaceGroup, fEstimatedMosaicity)
+            strIndexingShortSummary += "RMS dev pos %.2f [mm]" % fSpotDeviationPositional
+            if xsDataStatisticsIndexing.getSpotDeviationAngular() is not None:
+                fSpotDeviationAngular = xsDataStatisticsIndexing.getSpotDeviationAngular().getValue()
+                strIndexingShortSummary += " ang %.2f [degree]" % fSpotDeviationAngular
+            strIndexingShortSummary += "\n"
+            strIndexingShortSummary += "Indexing: refined Cell: %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f\n" % (fA, fB, fC, fAlpha, fBeta, fGamma)
+        else:
+            strIndexingShortSummary += "Indexing failed."
+        for strLine in strIndexingShortSummary.split("\n"):
+            self.screen(strLine)
+        return strIndexingShortSummary
+    
+    
     def indexingToIntegration(self, _edPlugin=None):
         # Create the XDS background image
         xsDataInputControlXDSGenerateBackgroundImage = XSDataInputControlXDSGenerateBackgroundImage()
@@ -329,6 +449,18 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
             self.writeDataOutput()
 
+    def doFailureEvaluationIndexingMOSFLM(self, _edPlugin=None):
+        self.DEBUG("EDPluginControlCharacterisationv1_4.doFailureEvaluationIndexingMOSFLM")
+        strErrorMessage = "Execution of indexing evaluation plugin failed."
+        self.ERROR(strWarningMessage)
+        self.addErrorMessage(strWarningMessage)
+        self.generateExecutiveSummary(self)
+        if self._xsDataResultCharacterisation is not None:
+            self.setDataOutput(self._xsDataResultCharacterisation)
+        self.setFailure()
+        if self._strStatusMessage != None:
+            self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+            self.writeDataOutput()
 
     def doSuccessGeneratePrediction(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_4.doSuccessGeneratePrediction")

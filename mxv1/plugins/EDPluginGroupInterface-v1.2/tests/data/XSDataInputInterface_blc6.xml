@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<XSDataInputInterface>
+    <diffractionPlan>
+        <anomalousData>
+            <value>false</value>
+        </anomalousData>
+        <complexity>
+            <value>none</value>
+        </complexity>
+        <forcedSpaceGroup>
+            <value>P1</value>
+        </forcedSpaceGroup>
+        <goniostatMaxOscillationSpeed>
+            <value>3.600000e+02</value>
+        </goniostatMaxOscillationSpeed>
+        <goniostatMinOscillationWidth>
+            <value>5.000000e-02</value>
+        </goniostatMinOscillationWidth>
+        <maxExposureTimePerDataCollection>
+            <value>1.000000e+04</value>
+        </maxExposureTimePerDataCollection>
+        <minExposureTimePerImage>
+            <value>1.000000e-02</value>
+        </minExposureTimePerImage>
+    </diffractionPlan>
+    <imagePath>
+        <path>
+            <value>${EDNA_TESTIMAGES}/ref-BCL6-C30_4_0001.cbf</value>
+        </path>
+    </imagePath>
+    <imagePath>
+        <path>
+            <value>${EDNA_TESTIMAGES}/ref-BCL6-C30_4_0002.cbf</value>
+        </path>
+     </imagePath>
+    <imagePath>
+        <path>
+            <value>${EDNA_TESTIMAGES}/ref-BCL6-C30_4_0003.cbf</value>
+        </path>
+    </imagePath>
+    <imagePath>
+        <path>
+            <value>${EDNA_TESTIMAGES}/ref-BCL6-C30_4_0004.cbf</value>
+        </path>
+     </imagePath>
+</XSDataInputInterface>

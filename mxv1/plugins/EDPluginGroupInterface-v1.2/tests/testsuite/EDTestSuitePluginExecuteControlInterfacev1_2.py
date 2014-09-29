@@ -38,6 +38,7 @@ class EDTestSuitePluginExecuteControlInterfacev1_2(EDTestSuite):
     def process(self):
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_withXMLInput")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_blc6")
 
 if __name__ == '__main__':
 
