@@ -254,13 +254,14 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
             xsDataIntegrationResult = xsDataResultCharacterisation.getIntegrationResult()
             if xsDataIntegrationResult:
                 listXSDataIntegrationSubWedgeResult = xsDataIntegrationResult.getIntegrationSubWedgeResult()
-                if listXSDataIntegrationSubWedgeResult:
-                    if listXSDataIntegrationSubWedgeResult != []:
-                        strBestfilePar = listXSDataIntegrationSubWedgeResult[0].getBestfilePar().getValue()
+                for xsDataIntegrationSubWedgeResult in listXSDataIntegrationSubWedgeResult:
+                    if xsDataIntegrationSubWedgeResult.getBestfilePar() is not None:
+                        strBestfilePar = xsDataIntegrationSubWedgeResult.getBestfilePar().getValue()
                         # Put the file one directory above the mxCuBE v1.3 plugin working directory:
                         strDir = os.path.dirname(self.getWorkingDirectory())
                         strPath = os.path.join(strDir, "bestfile.par")
                         EDUtilsFile.writeFile(strPath, strBestfilePar)
+                        break
             # Execute plugin which creates a simple HTML page
             self.executeSimpleHTML(xsDataResultCharacterisation)    
             # Upload the best wilson plot path to ISPyB
