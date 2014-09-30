@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<XSDataInputInterface>
+   <diffractionPlan>
+       <goniostatMaxOscillationSpeed>
+           <value>3.600000e+02</value>
+       </goniostatMaxOscillationSpeed>
+       <goniostatMinOscillationWidth>
+           <value>5.000000e-02</value>
+       </goniostatMinOscillationWidth>
+       <minExposureTimePerImage>
+           <value>1.000000e-02</value>
+       </minExposureTimePerImage>
+   </diffractionPlan>
+   <sample>
+       <size>
+           <x>
+               <value>8.421053e-02</value>
+           </x>
+           <y>
+               <value>2.857143e-02</value>
+           </y>
+           <z>
+               <value>3.846154e-02</value>
+           </z>
+       </size>
+   </sample>
+   <imagePath>
+        <path>
+            <value>${EDNA_TESTIMAGES}/ref-11121-NtermA46_2_4_0001.cbf</value>
+        </path>
+    </imagePath>
+    <imagePath>
+        <path>
+            <value>${EDNA_TESTIMAGES}/ref-11121-NtermA46_2_4_0002.cbf</value>
+        </path>
+     </imagePath>
+    <imagePath>
+        <path>
+            <value>${EDNA_TESTIMAGES}/ref-11121-NtermA46_2_4_0003.cbf</value>
+        </path>
+    </imagePath>
+    <imagePath>
+        <path>
+            <value>${EDNA_TESTIMAGES}/ref-11121-NtermA46_2_4_0004.cbf</value>
+        </path>
+     </imagePath>
+</XSDataInputInterface>

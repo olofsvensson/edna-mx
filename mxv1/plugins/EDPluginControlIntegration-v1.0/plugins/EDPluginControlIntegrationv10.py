@@ -152,8 +152,6 @@ class EDPluginControlIntegrationv10(EDPluginControl):
 
 
     def process(self, _edObject=None):
-        """
-        """
         EDPluginControl.process(self, _edObject)
         self.DEBUG("EDPluginControlIntegrationv10.process")
         for (iSubWedgeNumber, edPluginIntegration) in self.__edPluginIntegrationList:
@@ -173,7 +171,7 @@ class EDPluginControlIntegrationv10(EDPluginControl):
     def doFailureActionIntegration(self, _edPlugin=None):
         self.DEBUG("EDPluginControlIntegrationv10.doFailureActionIntegration")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlIntegrationv10.doFailureActionIntegration")
-        self.setFailure()
+#        self.setFailure()
 
 
     def postProcess(self, _edObject=None):
@@ -183,23 +181,24 @@ class EDPluginControlIntegrationv10(EDPluginControl):
         for (iSubWedgeNumber, edPluginIntegration) in self.__edPluginIntegrationList:
             xsDataMOSFLMOutputIntegration = edPluginIntegration.getDataOutput()
             if (xsDataMOSFLMOutputIntegration is None):
-                strError = "MOSFLM integration error : no integration results obtained."
-                self.addExecutiveSummaryLine(strError)
-                self.ERROR(strError)
-                self.setFailure()
+                strWarning = "MOSFLM integration error : no integration results obtained."
+                self.addExecutiveSummaryLine(strWarning)
+                self.WARNING(strWarning)
+#                self.setFailure()
             else:
                 xsDataIntegrationSubWedgeResult = None
                 try:
                     xsDataIntegrationSubWedgeResult = EDHandlerXSDataMOSFLMv10.generateXSDataIntegrationSubWedgeResult(xsDataMOSFLMOutputIntegration, self.__xsDataExperimentalConditionRefined)
-                except Exception, strErrorMessage:
-                    self.addErrorMessage(strErrorMessage)
-                    self.ERROR(strErrorMessage)
-                    self.setFailure()
+                except Exception, error:
+                    strWarningMessage = str(error)
+                    self.addWarningMessage(strWarningMessage)
+                    self.WARNING(strWarningMessage)
+#                    self.setFailure()
                 if (xsDataIntegrationSubWedgeResult is None):
-                    strError = "MOSFLM integration error : no integration results obtained."
-                    self.addExecutiveSummaryLine(strError)
-                    self.ERROR(strError)
-                    self.setFailure()
+                    strWarning = "MOSFLM integration error : no integration results obtained."
+                    self.addExecutiveSummaryLine(strWarning)
+                    self.WARNING(strWarning)
+#                    self.setFailure()
                 else:
                     xsDataIntegrationSubWedgeResult.setSubWedgeNumber(XSDataInteger(iSubWedgeNumber))
                     xsDataStatisticsIntegration = xsDataIntegrationSubWedgeResult.getStatistics()
@@ -217,6 +216,11 @@ class EDPluginControlIntegrationv10(EDPluginControl):
                         if (self.__xsDataIntegrationResult is None):
                             self.__xsDataIntegrationResult = XSDataIntegrationResult()
                         self.__xsDataIntegrationResult.addIntegrationSubWedgeResult(xsDataIntegrationSubWedgeResult)
+        if self.__xsDataIntegrationResult.integrationSubWedgeResult == []:
+            strErrorMessage = "MOSFLM integration failed for all images"
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
+            self.setFailure()
         self.setDataOutput(self.__xsDataIntegrationResult)
         if self.__xsDataIntegrationResult is not None:
             self.generateIntegrationShortSummary(self.__xsDataIntegrationResult)

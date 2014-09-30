@@ -63,6 +63,15 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginControlPyarchThumbnailGeneratorv1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>minImageSize</name>
+					<value>2000000</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
 	<XSPluginItem>
 		<name>EDPluginControlInterfacev1_2</name>
 		<XSParamList>
