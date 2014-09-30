@@ -60,7 +60,7 @@ class EDPluginMOSFLMIntegrationv10(EDPluginMOSFLMv10):
     def __init__(self):
         EDPluginMOSFLMv10.__init__(self)
         self.setXSDataInputClass(XSDataMOSFLMInputIntegration)
-
+        self.setDataOutput(XSDataMOSFLMOutputIntegration())
 
     def preProcess(self, _edObject=None):
         EDPluginMOSFLMv10.preProcess(self)

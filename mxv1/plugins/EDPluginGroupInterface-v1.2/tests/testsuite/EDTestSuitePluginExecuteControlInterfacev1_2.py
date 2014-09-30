@@ -40,6 +40,7 @@ class EDTestSuitePluginExecuteControlInterfacev1_2(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_withXMLInput")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_blc6")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_NtermA46")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_303")
 
 if __name__ == '__main__':
 
