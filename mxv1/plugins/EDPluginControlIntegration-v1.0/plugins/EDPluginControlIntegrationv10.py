@@ -202,16 +202,17 @@ class EDPluginControlIntegrationv10(EDPluginControl):
                 else:
                     xsDataIntegrationSubWedgeResult.setSubWedgeNumber(XSDataInteger(iSubWedgeNumber))
                     xsDataStatisticsIntegration = xsDataIntegrationSubWedgeResult.getStatistics()
-                    fRMSSpotDeviation = xsDataStatisticsIntegration.getRMSSpotDeviation().getValue()
-                    if (self.__fMaxRMSSpotDeviation is not None):
-                        if (self.__fMaxRMSSpotDeviation < fRMSSpotDeviation):
-                            iImageStart = edPluginIntegration.getDataInput().getImageStart().getValue()
-                            iImageEnd = edPluginIntegration.getDataInput().getImageEnd().getValue()
-                            errorMessage = EDMessage.ERROR_DATA_HANDLER_02 % ("EDPluginControlIntegrationv10.postProcess", \
-                                                                               "MOSFLM Integration : RMS spot deviation (%.3f [mm]) larger than max value from configuration (%.3f [mm]) for images %d to %d" % \
-                                                                               (fRMSSpotDeviation, self.__fMaxRMSSpotDeviation, iImageStart, iImageEnd))
-                            self.error(errorMessage)
-                            self.addErrorMessage(errorMessage)
+                    if xsDataStatisticsIntegration.getRMSSpotDeviation() is not None:
+                        fRMSSpotDeviation = xsDataStatisticsIntegration.getRMSSpotDeviation().getValue()
+                        if (self.__fMaxRMSSpotDeviation is not None):
+                            if (self.__fMaxRMSSpotDeviation < fRMSSpotDeviation):
+                                iImageStart = edPluginIntegration.getDataInput().getImageStart().getValue()
+                                iImageEnd = edPluginIntegration.getDataInput().getImageEnd().getValue()
+                                errorMessage = EDMessage.ERROR_DATA_HANDLER_02 % ("EDPluginControlIntegrationv10.postProcess", \
+                                                                                   "MOSFLM Integration : RMS spot deviation (%.3f [mm]) larger than max value from configuration (%.3f [mm]) for images %d to %d" % \
+                                                                                   (fRMSSpotDeviation, self.__fMaxRMSSpotDeviation, iImageStart, iImageEnd))
+                                self.error(errorMessage)
+                                self.addErrorMessage(errorMessage)
                     if (xsDataIntegrationSubWedgeResult is not None):
                         if (self.__xsDataIntegrationResult is None):
                             self.__xsDataIntegrationResult = XSDataIntegrationResult()
@@ -249,21 +250,24 @@ class EDPluginControlIntegrationv10(EDPluginControl):
             iSubWedgeNumber = xsDataIntegrationSubWedgeResult.getSubWedgeNumber().getValue()
             strIntegrationShortSummary += "Integration: %d " % iSubWedgeNumber
             xsDataStatisticsIntegration = xsDataIntegrationSubWedgeResult.getStatistics()
-            iNoFull = xsDataStatisticsIntegration.getNumberOfFullyRecordedReflections().getValue()
-            strIntegrationShortSummary += "no full: %d, " % iNoFull
-            iNoPartial = xsDataStatisticsIntegration.getNumberOfPartialReflections().getValue()
-            strIntegrationShortSummary += "part: %d, " % iNoPartial
-            iNoBad = xsDataStatisticsIntegration.getNumberOfBadReflections().getValue()
-            iNoNegative = xsDataStatisticsIntegration.getNumberOfNegativeReflections().getValue()
-            iNoOverlapped = xsDataStatisticsIntegration.getNumberOfOverlappedReflections().getValue()
-            strIntegrationShortSummary += "bad/neg/ovrlp: %d, " % (iNoBad + iNoNegative + iNoOverlapped)
-            fRMSSpotDeviation = xsDataStatisticsIntegration.getRMSSpotDeviation().getValue()
-            strIntegrationShortSummary += "RMS dev: %.3f [mm], " % fRMSSpotDeviation
-            fIOverSigmaOverall = xsDataStatisticsIntegration.getIOverSigmaOverall().getValue()
-            strIntegrationShortSummary += "I/sigma overall %.1f " % fIOverSigmaOverall
-            fIOverSigmaAtHighestResolution = xsDataStatisticsIntegration.getIOverSigmaAtHighestResolution().getValue()
-            strIntegrationShortSummary += "at highest res %.1f" % fIOverSigmaAtHighestResolution
-            strIntegrationShortSummary += "\n"
+            if xsDataStatisticsIntegration.getNumberOfFullyRecordedReflections() is None:
+                strIntegrationShortSummary += "FAILED\n"
+            else:
+                iNoFull = xsDataStatisticsIntegration.getNumberOfFullyRecordedReflections().getValue()
+                strIntegrationShortSummary += "no full: %d, " % iNoFull
+                iNoPartial = xsDataStatisticsIntegration.getNumberOfPartialReflections().getValue()
+                strIntegrationShortSummary += "part: %d, " % iNoPartial
+                iNoBad = xsDataStatisticsIntegration.getNumberOfBadReflections().getValue()
+                iNoNegative = xsDataStatisticsIntegration.getNumberOfNegativeReflections().getValue()
+                iNoOverlapped = xsDataStatisticsIntegration.getNumberOfOverlappedReflections().getValue()
+                strIntegrationShortSummary += "bad/neg/ovrlp: %d, " % (iNoBad + iNoNegative + iNoOverlapped)
+                fRMSSpotDeviation = xsDataStatisticsIntegration.getRMSSpotDeviation().getValue()
+                strIntegrationShortSummary += "RMS dev: %.3f [mm], " % fRMSSpotDeviation
+                fIOverSigmaOverall = xsDataStatisticsIntegration.getIOverSigmaOverall().getValue()
+                strIntegrationShortSummary += "I/sigma overall %.1f " % fIOverSigmaOverall
+                fIOverSigmaAtHighestResolution = xsDataStatisticsIntegration.getIOverSigmaAtHighestResolution().getValue()
+                strIntegrationShortSummary += "at highest res %.1f" % fIOverSigmaAtHighestResolution
+                strIntegrationShortSummary += "\n"
         for strLine in strIntegrationShortSummary.split("\n"):
             self.screen(strLine)
         self.setDataOutput(XSDataString(strIntegrationShortSummary), "integrationShortSummary")

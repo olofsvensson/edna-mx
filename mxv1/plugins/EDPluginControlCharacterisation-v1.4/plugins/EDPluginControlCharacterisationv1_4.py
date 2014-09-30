@@ -482,7 +482,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
 
     def doSuccessIntegration(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_4.doSuccessIntegration")
-        self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv1_4.doSuccessIntegration")
+        self.retrieveSuccessMessages(self._edPluginControlIntegration, "EDPluginControlCharacterisationv1_4.doSuccessIntegration")
         # Wait for XDS plugin if necessary
         self._edPluginControlXDSGenerateBackgroundImage.synchronize()
         self.addStatusMessage("Integration successful.")
@@ -498,13 +498,17 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             xsDataInputStrategy.setCrystalRefined(xsDataSolutionSelected.getCrystal())
             xsDataInputStrategy.setSample(self._xsDataResultCharacterisation.getDataCollection().getSample())
             xsDataIntegrationSubWedgeResultList = xsDataIntegrationOutput.getIntegrationSubWedgeResult()
-            xsDataInputStrategy.setBestFileContentDat(xsDataIntegrationSubWedgeResultList[0].getBestfileDat())
-            xsDataInputStrategy.setBestFileContentPar(xsDataIntegrationSubWedgeResultList[0].getBestfilePar())
-            xsDataInputStrategy.setExperimentalCondition(xsDataIntegrationSubWedgeResultList[0].getExperimentalConditionRefined())
+            bFirst = True
+            for xsDataIntegrationSubWedgeResult in xsDataIntegrationSubWedgeResultList:
+                if xsDataIntegrationSubWedgeResult.getBestfileHKL() is not None:
+                    xsDataInputStrategy.addBestFileContentHKL(xsDataIntegrationSubWedgeResult.getBestfileHKL())
+                    if bFirst:
+                        xsDataInputStrategy.setBestFileContentDat(xsDataIntegrationSubWedgeResult.getBestfileDat())
+                        xsDataInputStrategy.setBestFileContentPar(xsDataIntegrationSubWedgeResult.getBestfilePar())
+                        xsDataInputStrategy.setExperimentalCondition(xsDataIntegrationSubWedgeResult.getExperimentalConditionRefined())
+                        bFirst = False
             xsDataInputStrategy.setXdsBackgroundImage(self._xsDataFileXdsBackgroundImage)
             xsDataInputStrategy.setDataCollection(self._xsDataCollection)
-            for xsDataIntegrationSubWedgeResult in xsDataIntegrationSubWedgeResultList:
-                xsDataInputStrategy.addBestFileContentHKL(xsDataIntegrationSubWedgeResult.getBestfileHKL())
             xsDataInputStrategy.setDiffractionPlan(self._xsDataResultCharacterisation.getDataCollection().getDiffractionPlan())
             self._edPluginControlStrategy.setDataInput(xsDataInputStrategy)
             self.executePluginSynchronous(self._edPluginControlStrategy)
