@@ -174,9 +174,9 @@ class EDPluginControlIntegrationv10(EDPluginControl):
 #        self.setFailure()
 
 
-    def postProcess(self, _edObject=None):
-        EDPluginControl.postProcess(self, _edObject)
-        self.DEBUG("EDPluginControlIntegrationv10.postProcess")
+    def finallyProcess(self, _edObject=None):
+        EDPluginControl.finallyProcess(self, _edObject)
+        self.DEBUG("EDPluginControlIntegrationv10.finallyProcess")
         from EDHandlerXSDataMOSFLMv10 import EDHandlerXSDataMOSFLMv10
         for (iSubWedgeNumber, edPluginIntegration) in self.__edPluginIntegrationList:
             xsDataMOSFLMOutputIntegration = edPluginIntegration.getDataOutput()
@@ -217,7 +217,12 @@ class EDPluginControlIntegrationv10(EDPluginControl):
                         if (self.__xsDataIntegrationResult is None):
                             self.__xsDataIntegrationResult = XSDataIntegrationResult()
                         self.__xsDataIntegrationResult.addIntegrationSubWedgeResult(xsDataIntegrationSubWedgeResult)
-        if self.__xsDataIntegrationResult.integrationSubWedgeResult == []:
+        bSuccess = False
+        for integrationSubWedgeResult in self.__xsDataIntegrationResult.integrationSubWedgeResult:
+            if integrationSubWedgeResult.statistics.iOverSigmaOverall is not None:
+                bSuccess = True
+                break
+        if not bSuccess:
             strErrorMessage = "MOSFLM integration failed for all images"
             self.ERROR(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
