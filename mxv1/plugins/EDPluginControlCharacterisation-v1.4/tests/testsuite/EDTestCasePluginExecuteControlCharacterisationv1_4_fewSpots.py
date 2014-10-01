@@ -47,7 +47,7 @@ class EDTestCasePluginExecuteControlCharacterisationv1_4_fewSpots(EDTestCasePlug
         EDTestCasePluginExecuteControlCharacterisationv1_4.__init__(self, "EDTestCasePluginExecuteControlCharacterisationv1_4_fewSpots")
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputCharacterisation_fewSpots.xml"))
-        self.setNoExpectedWarningMessages(1)
+        self.setNoExpectedWarningMessages(0)
         self.setNoExpectedErrorMessages(1)
         self.setAcceptPluginFailure(True)
 

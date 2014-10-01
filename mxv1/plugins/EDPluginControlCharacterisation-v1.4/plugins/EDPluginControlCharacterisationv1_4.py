@@ -89,6 +89,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._bDoStrategyCalculation = True
         self._fMinTransmission = 10 # %
         self._iNoReferenceImages = None
+        self._iNoImagesWithDozorScore = None
 
 
     def checkParameters(self):
@@ -259,6 +260,11 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         if self._edPluginControlIndexingIndicators.hasDataOutput("imageQualityIndicators"):
             listXSDataImageQualityIndicators = self._edPluginControlIndexingIndicators.getDataOutput("imageQualityIndicators")
             for xsDataImageQualityIndicators in listXSDataImageQualityIndicators:
+                if xsDataImageQualityIndicators.dozor_score:
+                    if self._iNoImagesWithDozorScore is None:
+                        self._iNoImagesWithDozorScore = 0
+                    if xsDataImageQualityIndicators.dozor_score.value > 0.001:
+                        self._iNoImagesWithDozorScore += 1
                 self._xsDataResultCharacterisation.addImageQualityIndicators(xsDataImageQualityIndicators)
                 self._edPluginExecEvaluationIndexingLABELIT.setDataInput(xsDataImageQualityIndicators, "imageQualityIndicators")
         if self._edPluginControlIndexingIndicators.hasDataOutput("indicatorsShortSummary"):
@@ -272,7 +278,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
     def doFailureIndexingIndicators(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_4.doFailureIndexingIndicators")
         # If more than two reference images try to index with MOSFLM:
-        if self._iNoReferenceImages > 2:
+        if self._iNoImagesWithDozorScore > 0:
             strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
             self.WARNING(strWarningMessage)
             self.addWarningMessage(strWarningMessage)
@@ -338,25 +344,25 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             # Then start the integration of the reference images
             self.indexingToIntegration()
         else:
-#            if self._iNoReferenceImages > 2:
-            strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
-            self.WARNING(strWarningMessage)
-            self.addWarningMessage(strWarningMessage)
-            xsDataIndexingInput = XSDataIndexingInput()
-            xsDataIndexingInput.dataCollection = self._xsDataCollection
-            xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
-            xsDataIndexingInput.crystal = self._xsDataCrystal
-            self._edPluginControlIndexingMOSFLM.setDataInput(xsDataIndexingInput)
-            self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
-#            else:
-#                strErrorMessage = "Execution of indexing with Labelit failed."
-#                self.ERROR(strErrorMessage)
-#                self.addErrorMessage(strErrorMessage)
-#                self.setFailure()
-#                self.generateExecutiveSummary(self)
-#                if self._strStatusMessage != None:
-#                    self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-#                    self.writeDataOutput()
+            if self._iNoImagesWithDozorScore > 0:
+                strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
+                self.WARNING(strWarningMessage)
+                self.addWarningMessage(strWarningMessage)
+                xsDataIndexingInput = XSDataIndexingInput()
+                xsDataIndexingInput.dataCollection = self._xsDataCollection
+                xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
+                xsDataIndexingInput.crystal = self._xsDataCrystal
+                self._edPluginControlIndexingMOSFLM.setDataInput(xsDataIndexingInput)
+                self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
+            else:
+                strErrorMessage = "Execution of indexing with Labelit failed."
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
+                self.setFailure()
+                self.generateExecutiveSummary(self)
+                if self._strStatusMessage != None:
+                    self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+                    self.writeDataOutput()
 
 
     def doSuccessEvaluationIndexingMOSFLM(self, _edPlugin=None):
