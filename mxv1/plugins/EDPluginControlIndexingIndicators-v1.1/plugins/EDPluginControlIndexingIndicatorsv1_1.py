@@ -28,7 +28,7 @@ __status__ = "production"
 
 
 """
-This control plugin will launch in parallel indexing with Labelit (EDPluginControlIndexingLabelitv1_0) 
+This control plugin will launch in parallel indexing with Labelit (edPluginIndexingLabelitv1_0) 
 and the EDPluginControlImageQualityIndicators.
 
 The idea is to run labelit.distl at the same time as the Labelit indexing in order to not loose time 
@@ -53,7 +53,7 @@ from XSDataMXv1 import XSDataInputControlImageQualityIndicators
 
 class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
     """
-    This control plugin will launch in parallel indexing with Labelit (EDPluginControlIndexingLabelitv1_0) 
+    This control plugin will launch in parallel indexing with Labelit (edPluginIndexingLabelitv1_0) 
     and the EDPluginControlImageQualityIndicators.
     
     The idea is to run labelit.distl at the same time as the Labelit indexing in order to not loose time 
@@ -75,11 +75,24 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         self.setXSDataInputClass(XSDataCollection, "dataCollection")
         self.setXSDataInputClass(XSDataCrystal, "crystal")
         self.setXSDataInputClass(XSDataExperimentalCondition, "refinedExperimentalCondition")
-        self.strPluginControlIndexingLabelit = "EDPluginControlIndexingLabelitv10"
-        self.edPluginControlIndexingLabelit = None
+        self.strPluginIndexingLabelit = "EDPluginLabelitIndexingv1_1"
+        self.edPluginIndexingLabelit = None
         self.strControlledIndicatorsPluginName = "EDPluginControlImageQualityIndicatorsv1_5"
         self.edPluginControlIndicators = None
+        self.xsDataExperimentalCondition = None
+        self.strCONF_SYMOP_HOME = "symopHome"
+        self.strSymopLib = None
 
+    def configure(self):
+        EDPluginControl.configure(self)
+        self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.configure")
+        strSymopHome = self.config.get(self.strCONF_SYMOP_HOME)
+        if strSymopHome is None:
+            strWarningMessage = "EDPluginControlIndexingIndicatorsv1_1: Configuration parameter '%s' not found" % self.strCONF_SYMOP_HOME
+            self.warning(strWarningMessage)
+            self.addWarningMessage(strWarningMessage)
+        else:
+            self.strSymopLib = os.path.join(strSymopHome, "symop.lib")
 
     def checkParameters(self):
         """
@@ -93,17 +106,29 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.preProcess")
         # Load and prepare the execution plugin
-        self.edPluginControlIndexingLabelit = self.loadPlugin(self.strPluginControlIndexingLabelit)
-        self.edPluginControlIndexingLabelit.setUseWarningInsteadOfError(True)
+        self.edPluginIndexingLabelit = self.loadPlugin(self.strPluginIndexingLabelit)
+        self.edPluginIndexingLabelit.setUseWarningInsteadOfError(True)
         xsDataIndexingInput = XSDataIndexingInput()
         xsDataIndexingInput.setDataCollection(self.getDataInput("dataCollection")[0])
         if self.hasDataInput("crystal"):
             xsDataIndexingInput.setCrystal(self.getDataInput("crystal")[0])
         if self.hasDataInput("refinedExperimentalCondition"):
-            xsDataIndexingInput.setExperimentalCondition(self.getDataInput("refinedExperimentalCondition")[0])
+            self.xsDataExperimentalCondition = self.getDataInput("refinedExperimentalCondition")[0]
         else:
-            xsDataIndexingInput.setExperimentalCondition(self.getDataInput("dataCollection")[0].getSubWedge()[0].getExperimentalCondition())
-        self.edPluginControlIndexingLabelit.setDataInput(xsDataIndexingInput)
+            self.xsDataExperimentalCondition = self.getDataInput("dataCollection")[0].getSubWedge()[0].getExperimentalCondition()
+        xsDataIndexingInput.setExperimentalCondition(self.xsDataExperimentalCondition)
+        from EDHandlerXSDataLabelitv1_1 import EDHandlerXSDataLabelitv1_1
+        listXSDataImageReference = EDHandlerXSDataLabelitv1_1.generateListXSDataImageReference(xsDataIndexingInput)
+        for xsDataImage in listXSDataImageReference:
+            self.edPluginIndexingLabelit.setDataInput(xsDataImage, "referenceImage")
+        xsDataCrystal = xsDataIndexingInput.getCrystal()
+        if xsDataCrystal is not None:
+            xsDataSpaceGroup = xsDataCrystal.getSpaceGroup()
+            if xsDataSpaceGroup is not None:
+                xsDataStringName = xsDataSpaceGroup.getName()
+                if xsDataStringName is not None:
+                    self.edPluginIndexingLabelit.setDataInput(xsDataStringName.marshal(), "forcedSpaceGroup")
+        #
         if (self.getControlledPluginName("indicatorsPlugin") is not None):
             self.strControlledIndicatorsPluginName = self.getControlledPluginName("indicatorsPlugin")
         self.edPluginControlIndicators = self.loadPlugin(self.strControlledIndicatorsPluginName)
@@ -121,10 +146,10 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.process")
         edActionCluster = EDActionCluster()
-        edActionCluster.addAction(self.edPluginControlIndexingLabelit)
+        edActionCluster.addAction(self.edPluginIndexingLabelit)
         edActionCluster.addAction(self.edPluginControlIndicators)
-        self.edPluginControlIndexingLabelit.connectSUCCESS(self.doSuccessLabelitIndexing)
-        self.edPluginControlIndexingLabelit.connectFAILURE(self.doFailureLabelitIndexing)
+        self.edPluginIndexingLabelit.connectSUCCESS(self.doSuccessLabelitIndexing)
+        self.edPluginIndexingLabelit.connectFAILURE(self.doFailureLabelitIndexing)
         self.edPluginControlIndicators.connectSUCCESS(self.doSuccessControlIndicators)
         self.edPluginControlIndicators.connectFAILURE(self.doFailureControlIndicators)
         edActionCluster.execute()
@@ -144,7 +169,13 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
     def doSuccessLabelitIndexing(self, _edPlugin=None):
         self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.doSuccessLabelitIndexing")
         self.synchronizeOn()
-        xsDataIndexingResult = self.edPluginControlIndexingLabelit.getDataOutput()
+        xsDataLabelitScreenOutput = _edPlugin.getDataOutput("labelitScreenOutput")[0]
+        xsDataLabelitMosflmScriptsOutput = _edPlugin.getDataOutput("mosflmScriptsOutput")[0]
+        from EDHandlerXSDataLabelitv1_1 import EDHandlerXSDataLabelitv1_1
+        xsDataIndexingResult = EDHandlerXSDataLabelitv1_1.generateXSDataIndexingResult(xsDataLabelitScreenOutput,
+                                                                                       xsDataLabelitMosflmScriptsOutput,
+                                                                                       self.xsDataExperimentalCondition,
+                                                                                       self.strSymopLib)
         xsDataCollection = self.getDataInput("dataCollection")[0]
         xsDataListImage = self.generateImageList(xsDataCollection)
         xsDataIndexingResult.setImage(xsDataListImage)
@@ -154,7 +185,7 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         self.addExecutiveSummarySeparator()
         self.addExecutiveSummaryLine("Summary of indexing with %s :" % self.strControlledIndicatorsPluginName)
         self.addExecutiveSummaryLine("")
-        self.appendExecutiveSummary(self.edPluginControlIndexingLabelit, "Labelit : ", _bAddSeparator=False)
+        self.appendExecutiveSummary(self.edPluginIndexingLabelit, "Labelit : ", _bAddSeparator=False)
         self.generateIndexingShortSummary(xsDataIndexingResult)
         self.synchronizeOff()
 

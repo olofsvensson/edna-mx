@@ -183,8 +183,18 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
             if bDoDistlSignalStrength:
                 edPluginPluginExecImageQualityIndicator = pluginPair[0]
                 edPluginPluginExecImageQualityIndicator.synchronize()
-                if edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators is None:
-                    xsDataImageQualityIndicators = XSDataImageQualityIndicators()
+                if edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators.spotTotal is None:
+                    if self.bUseThinClient:
+                        # Workaround for file permission problems
+                        edPluginPluginExecImageQualityIndicator = self.loadPlugin(self.strPluginName)
+                        self.listPluginExecImageQualityIndicator.append(edPluginPluginExecImageQualityIndicator)
+                        xsDataInputDistlSignalStrength = XSDataInputDistlSignalStrength()
+                        xsDataInputDistlSignalStrength.setReferenceImage(xsDataImage)
+                        edPluginPluginExecImageQualityIndicator.setDataInput(xsDataInputDistlSignalStrength)
+                        edPluginPluginExecImageQualityIndicator.executeSynchronous()
+                        xsDataImageQualityIndicators = XSDataImageQualityIndicators.parseString(edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators.marshal())
+                    else:
+                        xsDataImageQualityIndicators = XSDataImageQualityIndicators()
                 else:
                     xsDataImageQualityIndicators = XSDataImageQualityIndicators.parseString(\
                             edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators.marshal())

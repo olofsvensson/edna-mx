@@ -326,6 +326,15 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             self._xsDataResultCharacterisation.setIndexingResult(xsDataIndexingResult)
             if self._edPluginControlIndexingIndicators.hasDataOutput("indexingShortSummary"):
                 self._strCharacterisationShortSummary += self._edPluginControlIndexingIndicators.getDataOutput("indexingShortSummary")[0].getValue()
+            xsDataCollection = self._xsDataResultCharacterisation.getDataCollection()
+            xsDataGeneratePredictionInput = XSDataGeneratePredictionInput()
+            xsDataGeneratePredictionInput.setDataCollection(XSDataCollection.parseString(xsDataCollection.marshal()))
+            xsDataGeneratePredictionInput.setSelectedIndexingSolution(XSDataIndexingSolutionSelected.parseString(xsDataIndexingResult.getSelectedSolution().marshal()))
+            self._edPluginControlGeneratePrediction.setDataInput(xsDataGeneratePredictionInput)
+            if self._edPluginControlIndexingIndicators.hasDataOutput("indexingShortSummary"):
+                self._strCharacterisationShortSummary += self._edPluginControlIndexingIndicators.getDataOutput("indexingShortSummary")[0].getValue()
+            # Start the generation of prediction images - we synchronize in the post-process
+            self._edPluginControlGeneratePrediction.execute()
             # Then start the integration of the reference images
             self.indexingToIntegration()
         else:
@@ -362,6 +371,15 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             xsDataIndexingResult = self._edPluginExecEvaluationIndexingMOSFLM.getDataOutput("indexingResult")[0]
             self._xsDataResultCharacterisation.setIndexingResult(xsDataIndexingResult)
             self._strCharacterisationShortSummary += self.generateIndexingShortSummary(xsDataIndexingResult)
+            xsDataCollection = self._xsDataResultCharacterisation.getDataCollection()
+            xsDataGeneratePredictionInput = XSDataGeneratePredictionInput()
+            xsDataGeneratePredictionInput.setDataCollection(XSDataCollection.parseString(xsDataCollection.marshal()))
+            xsDataGeneratePredictionInput.setSelectedIndexingSolution(XSDataIndexingSolutionSelected.parseString(xsDataIndexingResult.getSelectedSolution().marshal()))
+            self._edPluginControlGeneratePrediction.setDataInput(xsDataGeneratePredictionInput)
+            if self._edPluginControlIndexingIndicators.hasDataOutput("indexingShortSummary"):
+                self._strCharacterisationShortSummary += self._edPluginControlIndexingIndicators.getDataOutput("indexingShortSummary")[0].getValue()
+            # Start the generation of prediction images - we synchronize in the post-process
+            self._edPluginControlGeneratePrediction.execute()
             # Then start the integration of the reference images
             self.indexingToIntegration()
         else:
@@ -413,8 +431,6 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             strIndexingShortSummary += "Indexing: refined Cell: %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f\n" % (fA, fB, fC, fAlpha, fBeta, fGamma)
         else:
             strIndexingShortSummary += "Indexing failed."
-        for strLine in strIndexingShortSummary.split("\n"):
-            self.screen(strLine)
         return strIndexingShortSummary
     
     

@@ -34,7 +34,7 @@ class EDTestSuitePluginExecuteControlIndexingIndicatorsv1_1(EDTestSuite):
     """
 
     def process(self):
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingIndicatorsv11")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingIndicatorsv1_1")
 
 
 
