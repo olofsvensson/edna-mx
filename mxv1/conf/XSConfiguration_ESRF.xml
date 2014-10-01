@@ -8,6 +8,10 @@
 					<name>timeOut</name>
 					<value>1800</value>
 				</XSParamItem>
+				<XSParamItem>
+					<name>minImageSize</name>
+					<value>2000000</value>
+				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
@@ -65,6 +69,15 @@
 				<XSParamItem>
 					<name>characterisationPlugin</name>
 					<value>EDPluginControlCharacterisationv1_3</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginControlPyarchThumbnailGeneratorv1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>minImageSize</name>
+					<value>2000000</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
