@@ -303,7 +303,10 @@ class EDPluginControlIndexingIndicatorsv10(EDPluginControl):
                     strIndicatorsShortSummary += "\n"
                 else:
                     fDozorScore = xsDataQualityIndicators.getDozor_score().getValue()
-                    strIndicatorsShortSummary += ", Dozor %.1f\n" % fDozorScore
+                    if fDozorScore > 1.0:
+                        strIndicatorsShortSummary += ", Dozor %.1f\n" % fDozorScore
+                    else:
+                        strIndicatorsShortSummary += ", Dozor %.3f\n" % fDozorScore
             for strLine in strIndicatorsShortSummary.split("\n"):
                 self.screen(strLine)
             self.setDataOutput(XSDataString(strIndicatorsShortSummary), "indicatorsShortSummary")
