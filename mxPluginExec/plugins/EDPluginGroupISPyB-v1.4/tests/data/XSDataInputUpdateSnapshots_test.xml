@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<XSDataInputUpdateSnapshots>
+    <image>
+		<path>
+			<value>/data/visitor/mx1202/id23eh2/20111204/RAW_DATA/ZS/T123P-d123/181B4/181B4_9_0001.mccd</value>
+		</path>
+	</image>
+	<xtalSnapshotFullPath1>
+		<path>
+			<value>/tmp/snapshot1.png</value>
+		</path>
+	</xtalSnapshotFullPath1>
+	<xtalSnapshotFullPath2>
+		<path>
+			<value>/tmp/snapshot2.png</value>
+		</path>
+	</xtalSnapshotFullPath2>
+	<xtalSnapshotFullPath3>
+		<path>
+			<value>/tmp/snapshot3.png</value>
+		</path>
+	</xtalSnapshotFullPath3>
+	<xtalSnapshotFullPath4>
+		<path>
+			<value>/tmp/snapshot4.png</value>
+		</path>
+	</xtalSnapshotFullPath4>
+</XSDataInputUpdateSnapshots>
