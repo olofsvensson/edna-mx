@@ -94,6 +94,7 @@ class EDPluginISPyBUpdateSnapshotsv1_4(EDPluginExec):
         self.collectParameters = None
 
         xsDataInput = self.getDataInput()
+        
         strImagePath = xsDataInput.image.path.value
         fileLocation = os.path.dirname(strImagePath)
         fileName = os.path.basename(strImagePath)
@@ -102,17 +103,19 @@ class EDPluginISPyBUpdateSnapshotsv1_4(EDPluginExec):
                          fileLocation=fileLocation,
                          fileName=fileName)
 
-        if xsDataInput.xtalSnapshotFullPath1 is not None:
-            dataCollection.xtalSnapshotFullPath1 = xsDataInput.xtalSnapshotFullPath1.path.value      
-        if xsDataInput.xtalSnapshotFullPath2 is not None:
-            dataCollection.xtalSnapshotFullPath2 = xsDataInput.xtalSnapshotFullPath2.path.value        
-        if xsDataInput.xtalSnapshotFullPath3 is not None:
-            dataCollection.xtalSnapshotFullPath3 = xsDataInput.xtalSnapshotFullPath3.path.value
-        if xsDataInput.xtalSnapshotFullPath4 is not None:
-            dataCollection.xtalSnapshotFullPath4 = xsDataInput.xtalSnapshotFullPath4.path.value       
-        
-        self.dataCollectionId = clientToolsForCollectionWebService.service.storeOrUpdateDataCollection(
-                         dataCollection=dataCollection)
+        if dataCollection is not None:
+
+            if xsDataInput.xtalSnapshotFullPath1 is not None:
+                dataCollection.xtalSnapshotFullPath1 = xsDataInput.xtalSnapshotFullPath1.path.value      
+            if xsDataInput.xtalSnapshotFullPath2 is not None:
+                dataCollection.xtalSnapshotFullPath2 = xsDataInput.xtalSnapshotFullPath2.path.value        
+            if xsDataInput.xtalSnapshotFullPath3 is not None:
+                dataCollection.xtalSnapshotFullPath3 = xsDataInput.xtalSnapshotFullPath3.path.value
+            if xsDataInput.xtalSnapshotFullPath4 is not None:
+                dataCollection.xtalSnapshotFullPath4 = xsDataInput.xtalSnapshotFullPath4.path.value       
+            
+            self.dataCollectionId = clientToolsForCollectionWebService.service.storeOrUpdateDataCollection(
+                             dataCollection=dataCollection)
 
         self.DEBUG("EDPluginISPyBUpdateSnapshotsv1_4.process: data collection id = %r" % self.dataCollectionId)
 
