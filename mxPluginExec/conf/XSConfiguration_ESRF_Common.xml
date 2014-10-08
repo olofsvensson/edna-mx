@@ -417,7 +417,23 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
-
+		<XSPluginItem> 
+			<name>EDPluginExecDimplev1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/dimple</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>600</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
 		<XSPluginItem>
 			<name>EDPluginControlRunXdsFastProcv1_0</name>
 			<XSParamList>

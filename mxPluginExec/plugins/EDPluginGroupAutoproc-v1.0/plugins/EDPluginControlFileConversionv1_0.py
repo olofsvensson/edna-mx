@@ -50,6 +50,7 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
     def __init__(self):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataFileConversion)
+        self.strAnomSuffix = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -65,7 +66,8 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         self.truncate = self.loadPlugin("EDPluginExecTruncatev1_0")
         self.uniqueify = self.loadPlugin("EDPluginExecUniqueifyv1_0")
 
-        anom = "anom" if self.dataInput.anom.value else "noanom"
+        self.strAnomSuffix = "anom" if self.dataInput.anom.value else "noanom"
+        
         if self.dataInput.image_prefix is not None:
             self.image_prefix = self.dataInput.image_prefix.value + '_'
         else:
@@ -73,10 +75,10 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
 
         #TODO: change that to a directory in the data model
         self.results_dir = os.path.join(os.path.dirname(self.dataInput.output_file.value))
-        self.pointless_out = "{0}unmerged_{1}_pointless_multirecord.mtz".format(self.image_prefix, anom)
-        self.truncate_out = '{0}{1}_truncate.mtz'.format(self.image_prefix, anom)
-        self.aimless_out = '{0}{1}_aimless.mtz'.format(self.image_prefix, anom)
-        self.aimless_commands_out = '{0}{1}_aimless.inp'.format(self.image_prefix, anom)
+        self.pointless_out = "{0}unmerged_{1}_pointless_multirecord.mtz".format(self.image_prefix, self.strAnomSuffix)
+        self.truncate_out = '{0}{1}_truncate.mtz'.format(self.image_prefix, self.strAnomSuffix)
+        self.aimless_out = '{0}{1}_aimless.mtz'.format(self.image_prefix, self.strAnomSuffix)
+        self.aimless_commands_out = '{0}{1}_aimless.inp'.format(self.image_prefix, self.strAnomSuffix)
 
 
     def checkParameters(self):
@@ -102,10 +104,12 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
                                      self.pointless_out)
         pointless_in.output_file = XSDataString(pointless_out)
         self.pointless.dataInput = pointless_in
-        self.DEBUG("Pointless")
+        self.screen("Pointless run " + self.strAnomSuffix)
         self.pointless.executeSynchronous()
         if self.pointless.isFailure():
-            self.DEBUG("... it failed")
+            strErrorMessage = "Pointless {0} failed".format(self.strAnomSuffix)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 
@@ -122,10 +126,12 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         aimless_in.anom = self.dataInput.anom
 
         self.aimless.dataInput = aimless_in
-        self.DEBUG("Aimless")
+        self.screen("Aimless run " + self.strAnomSuffix)
         self.aimless.executeSynchronous()
         if self.aimless.isFailure():
-            self.DEBUG("...failed")
+            strErrorMessage = "Aimless {0} failed".format(self.strAnomSuffix)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 
@@ -159,10 +165,12 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         truncate_in.res = self.dataInput.res
 
         self.truncate.dataInput = truncate_in
-        self.DEBUG("Truncate")
+        self.screen("Truncate run " + self.strAnomSuffix)
         self.truncate.executeSynchronous()
         if self.truncate.isFailure():
-            self.DEBUG("...failed")
+            strErrorMessage = "Truncate {0} failed".format(self.strAnomSuffix)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 
@@ -188,10 +196,12 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
 
         self.uniqueify.dataInput = uniqueify_in
 
-        self.DEBUG("Uniqueify")
+        self.screen("Uniqueify run " + self.strAnomSuffix)
         self.uniqueify.executeSynchronous()
         if self.uniqueify.isFailure():
-            self.DEBUG("...failed")
+            strErrorMessage = "Uniqueify {0} failed".format(self.strAnomSuffix)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 
