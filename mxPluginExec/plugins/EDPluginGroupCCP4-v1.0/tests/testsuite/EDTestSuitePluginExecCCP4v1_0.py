@@ -27,7 +27,7 @@ __copyright__ = "ESRF"
 
 from EDTestSuite  import EDTestSuite
 
-class EDTestSuitePluginExecMtz2Variousv1_0(EDTestSuite):
+class EDTestSuitePluginExecCCP4v1_0(EDTestSuite):
     """
     This is the test suite for EDNA plugin Mtz2Variousv1_0 
     It will run subsequently all unit tests and execution tests.     
@@ -36,11 +36,6 @@ class EDTestSuitePluginExecMtz2Variousv1_0(EDTestSuite):
     def process(self):
         self.addTestCaseFromName("EDTestCasePluginUnitExecMtz2Variousv1_0")
         self.addTestCaseFromName("EDTestCasePluginExecuteExecMtz2Variousv1_0")
+        self.addTestCaseFromName("EDTestCasePluginExecuteExecDimplev1_0")
         
-
-
-if __name__ == '__main__':
-
-    edTestSuitePluginExecMtz2Variousv1_0 = EDTestSuitePluginExecMtz2Variousv1_0("EDTestSuitePluginExecMtz2Variousv1_0")
-    edTestSuitePluginExecMtz2Variousv1_0.execute()
 

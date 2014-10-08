@@ -15,3 +15,12 @@ complex type XSDataInputMtz2Various extends XSDataInput {
 complex type XSDataResultMtz2Various extends XSDataResult {
 	hklfile : XSDataFile
 }
+
+complex type XSDataInputDimple extends XSDataInput {
+	mtzfile : XSDataFile
+	pdbfile : XSDataFile
+}
+
+complex type XSDataResultDimple extends XSDataResult {
+	blobfile : XSDataFile [] optional
+}

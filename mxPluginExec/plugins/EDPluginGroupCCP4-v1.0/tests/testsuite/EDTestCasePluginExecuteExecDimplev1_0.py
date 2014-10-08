@@ -32,33 +32,33 @@ from EDAssert                            import EDAssert
 from EDTestCasePluginExecute             import EDTestCasePluginExecute
 
 
-class EDTestCasePluginExecuteExecMtz2Variousv1_0(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteExecDimplev1_0(EDTestCasePluginExecute):
     """
-    Those are all execution tests for the EDNA Exec plugin Mtz2Variousv1_0
+    Those are all execution tests for the EDNA Exec plugin dimple
     """
     
     def __init__(self, _strTestName = None):
-        """
-        """
-        EDTestCasePluginExecute.__init__(self, "EDPluginExecMtz2Variousv1_0")
-#        self.setConfigurationFile(os.path.join(self.getPluginTestsDataHome(),
-#                                               "XSConfiguration_Mtz2Variousv1_0.xml"))
+        EDTestCasePluginExecute.__init__(self, "EDPluginExecDimplev1_0")
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
-                                           "XSDataInputMtz2Various_reference.xml"))
-#        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \
-#                                                     "XSDataResultMtz2Variousv1_0_reference.xml"))
+                                           "XSDataInputDimple_reference.xml"))
                  
                  
     def preProcess(self, _edObject = None):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage(["process_1_1.mtz"])
+        self.loadTestImage(["dimple_noanom_aimless.mtz", "dimple_model.pdb"])
         
     def testExecute(self):
         self.run()
         
+        # Check that blob images have been generated
+        edPlugin = self.getPlugin()
+        EDAssert.equal(True, edPlugin.dataOutput.blobfile!=[], "Blobfiles in result")
+        for xsDataBlobFile in edPlugin.dataOutput.blobfile:
+            strPath = xsDataBlobFile.path.value
+            EDAssert.equal(True, os.path.exists(strPath), "Path to %s exists" % os.path.basename(strPath))
+        
 
     def process(self):
-        """
-        """
         self.addTestMethod(self.testExecute)
 
+        
