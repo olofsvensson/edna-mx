@@ -160,7 +160,10 @@ class EDUtilsPath:
         """
         Returns true if EMBL config
         """
-        return cls._EDNA_SITE.startswith('ESRF')
+        if cls._EDNA_SITE is None:
+            return False
+        else:
+            return cls._EDNA_SITE.startswith('ESRF')
 
     @classmethod
     def getCwd(cls):
