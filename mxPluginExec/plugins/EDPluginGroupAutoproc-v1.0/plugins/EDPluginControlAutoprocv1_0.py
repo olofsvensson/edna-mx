@@ -1148,7 +1148,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                 elif not os.path.exists(pdb_file.value):
                     strWarningMessage = "Cannot find expected pdb file {0}, execution of dimple abandoned".format(pdb_file.value)
                     self.WARNING(strWarningMessage)
-                    self.addWarningMessage(strWarningMessage)
+                    if os.path.exists("/data/pyapdb"):
+                        self.addWarningMessage(strWarningMessage)
                 else:
                     xsDataInputDimple.mtzfile = XSDataFile(XSDataString(strPathNoanomAimlessMtz))
                     xsDataInputDimple.pdbfile = XSDataFile(XSDataString(pdb_file.value))
