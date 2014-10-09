@@ -1135,7 +1135,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                     break
     
             if pdb_file is None:
-                self.WARNING('No pdb file found, not running dimple')
+                self.screen('No pdb file found, not running dimple')
             else:
                 self.screen('Running dimple with pdb file {0}'.format(pdb_file.value))
                 edPluginDimple = self.loadPlugin("EDPluginExecDimplev1_0")
