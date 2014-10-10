@@ -58,7 +58,7 @@ import suds
 
 
 from XSDataCommon import XSDataFile, XSDataBoolean, XSDataString
-from XSDataCommon import  XSDataInteger, XSDataTime, XSDataFloat
+from XSDataCommon import  XSDataInteger, XSDataTime, XSDataDouble
 
 from XSDataAutoprocv1_0 import XSDataAutoprocInput
 from XSDataAutoprocv1_0 import XSDataResCutoff
@@ -526,7 +526,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         #XXX: remove from the data model as it is just pass-through?
         res_cutoff_in.total_completeness = xdsresult.total_completeness
         res_cutoff_in.completeness_cutoff = self.dataInput.completeness_cutoff
-        res_cutoff_in.isig_cutoff = XSDataFloat(1.0)
+        res_cutoff_in.isig_cutoff = XSDataDouble(1.0)
         #res_cutoff_in.isig_cutoff = self.dataInput.isig_cutoff
         res_cutoff_in.r_value_cutoff = self.dataInput.r_value_cutoff
         res_cutoff_in.cc_half_cutoff = self.dataInput.cc_half_cutoff
@@ -658,7 +658,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         res_cutoff_anom_in.total_completeness = self.parse_xds_anom.dataOutput.total_completeness
         # pass in global cutoffs
         res_cutoff_anom_in.completeness_cutoff = self.dataInput.completeness_cutoff
-        res_cutoff_anom_in.isig_cutoff = XSDataFloat(1.0)
+        res_cutoff_anom_in.isig_cutoff = XSDataDouble(1.0)
         #res_cutoff_anom_in.isig_cutoff = self.dataInput.isig_cutoff
         res_cutoff_anom_in.r_value_cutoff = self.dataInput.r_value_cutoff
         res_cutoff_anom_in.cc_half_cutoff = self.dataInput.cc_half_cutoff
@@ -697,7 +697,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         res_cutoff_noanom_in.total_completeness = self.parse_xds_noanom.dataOutput.total_completeness
         # pass in global cutoffs
         res_cutoff_noanom_in.completeness_cutoff = self.dataInput.completeness_cutoff
-        res_cutoff_noanom_in.isig_cutoff = XSDataFloat(1.0)
+        res_cutoff_noanom_in.isig_cutoff = XSDataDouble(1.0)
         #res_cutoff_noanom_in.isig_cutoff = self.dataInput.isig_cutoff
         res_cutoff_noanom_in.r_value_cutoff = self.dataInput.r_value_cutoff
         res_cutoff_noanom_in.cc_half_cutoff = self.dataInput.cc_half_cutoff

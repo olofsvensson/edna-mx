@@ -40,7 +40,7 @@ import math
 
 from EDPlugin import EDPlugin
 from EDVerbose import EDVerbose
-from XSDataCommon import XSDataBoolean, XSDataFloat, XSDataVectorDouble
+from XSDataCommon import XSDataBoolean, XSDataDouble, XSDataVectorDouble
 from XSDataAutoprocv1_0 import XSDataResCutoff, XSDataResCutoffResult
 from XSDataAutoprocv1_0 import XSData2DCoordinates, XSDataXdsCompletenessEntry
 
@@ -140,11 +140,11 @@ Stopping""")
         if res_override is not None:
             res = res_override.value
 
-        retbins = [XSDataFloat(x) for x in bins]
+        retbins = [XSDataDouble(x) for x in bins]
 
 
         data_output = XSDataResCutoffResult()
-        data_output.res = XSDataFloat(res)
+        data_output.res = XSDataDouble(res)
         data_output.bins = retbins
         totals = self.dataInput.total_completeness
         data_output.total_complete = totals.complete

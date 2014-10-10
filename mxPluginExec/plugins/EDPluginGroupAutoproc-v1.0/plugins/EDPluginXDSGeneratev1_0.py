@@ -34,7 +34,7 @@ import os.path
 from EDPluginControl import EDPluginControl
 from EDVerbose import EDVerbose
 
-from XSDataCommon import XSDataString, XSDataFloat, XSDataBoolean
+from XSDataCommon import XSDataString, XSDataDouble, XSDataBoolean
 
 from XSDataAutoprocv1_0 import XSDataMinimalXdsIn
 from XSDataAutoprocv1_0 import XSDataXdsGenerateInput
@@ -117,14 +117,14 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         input_anom.friedels_law = XSDataBoolean(False)
         input_anom.job = XSDataString('CORRECT')
         input_anom.resolution = self.dataInput.resolution
-        input_anom.resolution_range = [XSDataFloat(60), self.dataInput.resolution]
+        input_anom.resolution_range = [XSDataDouble(60), self.dataInput.resolution]
         self.xds_anom.dataInput = input_anom
 
         input_noanom = XSDataMinimalXdsIn()
         input_noanom.input_file = XSDataString(new_xdsinp)
         input_noanom.friedels_law = XSDataBoolean(True)
         input_noanom.job = XSDataString('CORRECT')
-        input_noanom.resolution_range = [XSDataFloat(60), self.dataInput.resolution]
+        input_noanom.resolution_range = [XSDataDouble(60), self.dataInput.resolution]
         self.xds_noanom.dataInput = input_noanom
 
         xds_anom_dir = os.path.abspath(self.xds_anom.getWorkingDirectory())

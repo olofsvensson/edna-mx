@@ -36,7 +36,7 @@ from EDVerbose import EDVerbose
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult
-from XSDataAutoprocv1_0 import XSDataUniqueify
+from XSDataCCP4v1_0 import XSDataUniqueify
 
 class EDPluginExecUniqueifyv1_0(EDPluginExecProcessScript):
     def __init__(self):

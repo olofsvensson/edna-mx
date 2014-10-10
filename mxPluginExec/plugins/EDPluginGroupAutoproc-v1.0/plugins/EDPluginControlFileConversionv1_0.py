@@ -40,11 +40,16 @@ import subprocess
 from stat import *
 
 from EDPluginControl import EDPluginControl
+from EDFactoryPluginStatic import EDFactoryPluginStatic
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult, XSDataString
 from XSDataAutoprocv1_0 import XSDataFileConversion, XSDataFileConversionOut
-from XSDataAutoprocv1_0 import XSDataPointless, XSDataAimless
-from XSDataAutoprocv1_0 import XSDataTruncate, XSDataUniqueify
+
+EDFactoryPluginStatic.loadModule("XSDataCCP4v1_0")
+from XSDataCCP4v1_0 import XSDataAimless
+from XSDataCCP4v1_0 import XSDataPointless
+from XSDataCCP4v1_0 import XSDataTruncate
+from XSDataCCP4v1_0 import XSDataUniqueify
 
 class EDPluginControlFileConversionv1_0(EDPluginControl):
     def __init__(self):

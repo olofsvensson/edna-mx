@@ -64,7 +64,7 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         if not (os.path.exists(xds_input) and os.path.isfile(xds_input)):
             self.setFailure()
 
-        # if we have a resolution it has to be a list of 2 XSDataFloat
+        # if we have a resolution it has to be a list of 2 XSDataDouble
         resrange = self.dataInput.resolution_range
         if resrange is not None and len(resrange) != 0:
             # a non specified list input parameter has a default value

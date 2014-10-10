@@ -36,7 +36,8 @@ from EDVerbose import EDVerbose
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult
-from XSDataAutoprocv1_0 import XSDataAimless
+
+from XSDataCCP4v1_0 import XSDataAimless
 
 class EDPluginExecAimlessv1_0(EDPluginExecProcessScript):
     def __init__(self):

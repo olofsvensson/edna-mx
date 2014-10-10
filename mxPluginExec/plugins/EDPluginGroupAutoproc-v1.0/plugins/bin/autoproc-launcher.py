@@ -2,13 +2,13 @@
 # vim: expandtab:tabstop=4:softtabstop=4:ai
 # input data model
 #input_file : XSDataFile
-#res_override : XSDataFloat optional #//cutoffs #completeness_cutoff : XSDataFloat optional #isig_cutoff : XSDataFloat optional
-#r_value_cutoff : XSDataFloat optional
-#cc_half_cutoff : XSDataFloat optional
+#res_override : XSDataDouble optional #//cutoffs #completeness_cutoff : XSDataDouble optional #isig_cutoff : XSDataDouble optional
+#r_value_cutoff : XSDataDouble optional
+#cc_half_cutoff : XSDataDouble optional
 #
 #data_collection_id : XSDataInteger optional
-#detector_max_res : XSDataFloat optional
-#low_resolution_limit : XSDataFloat optional
+#detector_max_res : XSDataDouble optional
+#low_resolution_limit : XSDataDouble optional
 
 # called this way
 # xdsproc.pl -path /data/id23eh2/inhouse/opid232/20100209/mxschool/process -mode before -datacollectID 666783
