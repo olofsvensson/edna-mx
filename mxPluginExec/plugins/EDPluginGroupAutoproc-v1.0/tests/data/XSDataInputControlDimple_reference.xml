@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<XSDataInputControlDimple>
+	<dataCollectionId>
+		<value>1088454</value>
+	</dataCollectionId>
+	<mtzFile>
+		<path>
+			<value>${EDNA_TESTIMAGES}/dimple_noanom_aimless.mtz</value>
+		</path>
+	</mtzFile>
+</XSDataInputControlDimple>

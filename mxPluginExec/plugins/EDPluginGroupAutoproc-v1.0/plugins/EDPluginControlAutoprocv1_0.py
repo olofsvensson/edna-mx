@@ -69,6 +69,7 @@ from XSDataAutoprocv1_0 import XSDataXscaleInput
 from XSDataAutoprocv1_0 import XSDataXscaleInputFile
 from XSDataAutoprocv1_0 import XSDataAutoprocInput
 from XSDataAutoprocv1_0 import XSDataAutoprocImport
+from XSDataAutoprocv1_0 import XSDataInputControlDimple
 
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 # plugin input/output
@@ -98,14 +99,9 @@ from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
 from XSDataISPyBv1_4 import AutoProcStatus
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProcStatus
 
-# pdb file retrieval
-from XSDataISPyBv1_4 import XSDataInputISPyBGetPdbFilePath
 
 edFactoryPlugin.loadModule("XSDataMXWaitFilev1_1")
 from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
-
-edFactoryPlugin.loadModule("XSDataCCP4v1_0")
-from XSDataCCP4v1_0 import XSDataInputDimple
 
 
 from xdscfgparser import parse_xds_file, dump_xds_file
@@ -1116,47 +1112,20 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             # store the autoproc id
             os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0755)
 
-        # Finally run dimple if executed at the ESRF
-        
+        # Finally run dimple if executed at the ESRF     
         if EDUtilsPath.isESRF():
-    
-            # we need a PDB file either in ispyb or in the image directory
-            edPluginGetPdbFile = self.loadPlugin("EDPluginISPyBGetPdbFilePathv1_4")
-            xsDataInputGetPdbFilePath = XSDataInputISPyBGetPdbFilePath()
-            xsDataInputGetPdbFilePath.dataCollectionId = self.dataInput.data_collection_id
-            edPluginGetPdbFile.dataInput = xsDataInputGetPdbFilePath
-            edPluginGetPdbFile.executeSynchronous()
-            pdb_file = edPluginGetPdbFile.dataOutput.pdbFilePath
-            if pdb_file is None:
-                self.screen('No pdb file in ispyb, trying the toplevel dir {0}'.format(self.root_dir))
-            for f in os.listdir(self.root_dir):
-                if f.endswith('.pdb'):
-                    pdb_file = os.path.join(self.root_dir, f)
-                    break
-    
-            if pdb_file is None:
-                self.screen('No pdb file found, not running dimple')
-            else:
-                self.screen('Running dimple with pdb file {0}'.format(pdb_file.value))
-                edPluginDimple = self.loadPlugin("EDPluginExecDimplev1_0")
-                xsDataInputDimple = XSDataInputDimple()
-                strPathNoanomAimlessMtz = os.path.join(self.file_conversion.dataInput.output_directory.value, "_noanom_aimless.mtz")
-                if not os.path.exists(strPathNoanomAimlessMtz):
-                    strWarningMessage = "Cannot find expected result mtz file {0}, execution of dimple abandoned".format(strPathNoanomAimlessMtz)
-                    self.WARNING(strWarningMessage)
-                    self.addWarningMessage(strWarningMessage)
-                elif not os.path.exists(pdb_file.value):
-                    strWarningMessage = "Cannot find expected pdb file {0}, execution of dimple abandoned".format(pdb_file.value)
-                    self.WARNING(strWarningMessage)
-                    if os.path.exists("/data/pyapdb"):
-                        self.addWarningMessage(strWarningMessage)
-                else:
-                    xsDataInputDimple.mtzfile = XSDataFile(XSDataString(strPathNoanomAimlessMtz))
-                    xsDataInputDimple.pdbfile = XSDataFile(XSDataString(pdb_file.value))
-                    edPluginDimple.dataInput = xsDataInputDimple
-                    edPluginDimple.executeSynchronous()
-                    if not edPluginDimple.isFailure():
-                        self.bExecutedDimple = True
+            xsDataInputControlDimple = XSDataInputControlDimple()
+            xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
+            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "_noanom_aimless.mtz")))
+            xsDataInputControlDimple.pdbDirectory = XSDataFile(XSDataString(self.root_dir))
+            if pyarch_path is not None:
+                xsDataInputControlDimple.pyarchPath = XSDataFile(XSDataString(pyarch_path))
+            edPluginControlRunDimple = self.loadPlugin("EDPluginControlRunDimplev1_0")
+            edPluginControlRunDimple.dataInput = xsDataInputControlDimple
+            edPluginControlRunDimple.executeSynchronous()
+            if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully is not None:
+                if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully.value: 
+                    self.bExecutedDimple = True
 
 
 
