@@ -58,6 +58,7 @@ class EDPluginISPyBGetPdbFilePathv1_4(EDPluginExec):
         self.strPassWord = None
         self.strToolsForCollectionWebServiceWsdl = None
         self.dataCollectionId = None
+        self.strPathToPdbFile = None
         
     
     def configure(self):
@@ -122,6 +123,7 @@ class EDPluginISPyBGetPdbFilePathv1_4(EDPluginExec):
         EDPluginExec.finallyProcess(self)
         self.DEBUG("EDPluginISPyBGetPdbFilePathv1_4.finallyProcess")
         xsDataResultISPyBGetPdbFilePath = XSDataResultISPyBGetPdbFilePath()
-        xsDataResultISPyBGetPdbFilePath.pdbFilePath = XSDataString(self.strPathToPdbFile)
+        if self.strPathToPdbFile is not None:
+            xsDataResultISPyBGetPdbFilePath.pdbFilePath = XSDataString(self.strPathToPdbFile)
         self.setDataOutput(xsDataResultISPyBGetPdbFilePath)
 

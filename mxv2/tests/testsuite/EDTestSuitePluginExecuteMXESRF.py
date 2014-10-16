@@ -57,6 +57,7 @@ class EDTestSuitePluginExecuteMXESRF(EDTestSuite):
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_3")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_4")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_5")
+        self.addTestSuiteFromName("EDTestSuitePluginExecuteXdsBurnStrategyv1_0")
         # From mxv2:
         self.addTestSuiteFromName("EDTestSuitePluginExecuteMXv2")
 

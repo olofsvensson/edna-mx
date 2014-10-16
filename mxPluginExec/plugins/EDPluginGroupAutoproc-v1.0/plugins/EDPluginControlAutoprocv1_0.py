@@ -7,7 +7,7 @@
 #
 #    Copyright (C) ESRF
 #
-#    Principal author: Thomas Boeglin
+#    Principal authors: Thomas Boeglin and Olof Svensson
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="Thomas Boeglin"
+__authors__=["Thomas Boeglin", "Olof Svensson"]
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
@@ -58,7 +58,7 @@ import suds
 
 
 from XSDataCommon import XSDataFile, XSDataBoolean, XSDataString
-from XSDataCommon import  XSDataInteger, XSDataTime, XSDataFloat
+from XSDataCommon import  XSDataInteger, XSDataTime, XSDataDouble
 
 from XSDataAutoprocv1_0 import XSDataAutoprocInput
 from XSDataAutoprocv1_0 import XSDataResCutoff
@@ -69,6 +69,7 @@ from XSDataAutoprocv1_0 import XSDataXscaleInput
 from XSDataAutoprocv1_0 import XSDataXscaleInputFile
 from XSDataAutoprocv1_0 import XSDataAutoprocInput
 from XSDataAutoprocv1_0 import XSDataAutoprocImport
+from XSDataAutoprocv1_0 import XSDataInputControlDimple
 
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 # plugin input/output
@@ -96,10 +97,12 @@ from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
 
 # status updates
 from XSDataISPyBv1_4 import AutoProcStatus
-from XSDataISPyBv1_4 import  XSDataInputStoreAutoProcStatus
+from XSDataISPyBv1_4 import XSDataInputStoreAutoProcStatus
 
-# pdb file retrieval
-from XSDataISPyBv1_4 import XSDataInputISPyBGetPdbFilePath
+
+edFactoryPlugin.loadModule("XSDataMXWaitFilev1_1")
+from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
+
 
 from xdscfgparser import parse_xds_file, dump_xds_file
 
@@ -130,6 +133,11 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.plugin_start = time.time()
         self.process_start = None
         self.process_end = None
+        self.strBeamline = None
+        self.strProposal = None
+        self.strPrefix = None
+        self.dataInputOrig = None
+        self.bExecutedDimple = False
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -137,7 +145,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.ispyb_password = self.config.get('ispyb_password')
         self.strEDNAContactEmail = self.config.get("contactEmail", self.strEDNAContactEmail)
         self.strEDNAEmailSender = self.config.get("emailSender", self.strEDNAEmailSender)
-        self.setTimeOut(1800)
 
     def checkParameters(self):
         """
@@ -149,6 +156,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # save the root path (where the initial xds.inp is) for later use
         self.root_dir = os.path.abspath(os.path.dirname(self.dataInput.input_file.path.value))
+        self.dataInputOrig = self.dataInput.copy()
 
         # at least check for the xds input file existence before
         # trying to start anything even if the first xds run does it
@@ -178,7 +186,15 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         except OSError:
             pass
         
-        strSubject = "EDNA dp %s started" % self.strHost
+        data_in = self.dataInput
+
+        if EDUtilsPath.isESRF():
+            (self.strBeamline, self.strProposal, self.strPrefix) = self.getBeamlinePrefixFromPath(self.dataInputOrig.input_file.path.value)
+            strSubject = "EDNA dp %s %s %s %s started" % (self.strBeamline, self.strProposal, 
+                                                          self.strPrefix, self.strHost)
+        else:
+            strSubject = "EDNA dp started on host %s" % self.strHost
+            
         self.sendEmail(strSubject, "")
 
         # for info to send to the autoproc stats server
@@ -186,8 +202,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 #                                 processing_type='edna fastproc',
 #                                 datacollect_id=self.dataInput.data_collection_id.value,
 #                                 comments='running on {0}'.format(socket.gethostname()))
-
-        data_in = self.dataInput
 
         # Check if the spacegroup needs to be converted to a number
         # (ie it's a symbolic thing)
@@ -235,7 +249,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         try:
             os.makedirs(self.results_dir)
         except OSError: # it most likely exists
-            self.WARNING('Error creating the results directory: {0}'.format(traceback.format_exc()))
+            strWarningMessage = "Error creating the results directory: {0}".format(traceback.format_exc())
+            self.addWarningMessage(strWarningMessage)
+            self.WARNING(strWarningMessage)
 
         # Copy the vanilla XDS input file to the results dir
         infile_dest = os.path.join(self.results_dir, self.image_prefix + '_input_XDS.INP')
@@ -247,7 +263,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         try:
             os.makedirs(self.autoproc_ids_dir)
         except OSError: # it's there
-            self.WARNING('Error creating the autoproc ids directory: {0}'.format(traceback.format_exc()))
+            strWarningMessage = "Error creating the autoproc ids directory: {0}".format(traceback.format_exc())
+            self.addWarningMessage(strWarningMessage)
+            self.WARNING(strWarningMessage)
 
 
         # we'll need the low res limit later on
@@ -309,7 +327,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             start_image = data_range[0]
             end_image = data_range[1]
             if end_image - start_image < 8:
-                self.ERROR('there are fewer than 8 images, aborting')
+                error_message = "There are fewer than 8 images, aborting"
+                self.addErrorMessage(error_message)
+                self.ERROR(error_message)
                 self.setFailure()
                 return
 
@@ -325,10 +345,15 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             self.DEBUG('dumping back the file to {0}'.format(data_in.input_file.path.value))
             dump_xds_file(data_in.input_file.path.value, conf)
 
-        first_image = _template_to_image(template, start_image)
+        self.first_image = _template_to_image(template, start_image)
+        self.last_image =  _template_to_image(template, end_image)
 
         self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProcv1_0")
         self.xds_first.dataInput = xds_in
+
+        if EDUtilsPath.isESRF():
+            self.waitFileFirst = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileFirst")
+            self.waitFileLast = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileLast")
 
         self.generate = self.loadPlugin("EDPluginXDSGeneratev1_0")
 
@@ -348,6 +373,40 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
 #        self.dimple = self.loadPlugin('EDPluginControlDIMPLEPipelineCalcDiffMapv10')
 
+        # ESRF specific: wait till we got the last image
+        if EDUtilsPath.isESRF():
+            if any(beamline in self.first_image for beamline in ["id23eh1", "id29"]):
+                minSize = 6000000
+            elif any(beamline in self.first_image for beamline in ["id23eh2", "id30a1"]):
+                minSize = 2000000
+            else:
+                minSize = 1000000
+
+            fWaitFileTimeout = 3600 # s
+
+            xsDataInputMXWaitFileFirst = XSDataInputMXWaitFile()
+            xsDataInputMXWaitFileFirst.file = XSDataFile(XSDataString(self.first_image))
+            xsDataInputMXWaitFileFirst.timeOut = XSDataTime(fWaitFileTimeout)
+            self.waitFileFirst.size = XSDataInteger(minSize)
+            self.waitFileFirst.dataInput = xsDataInputMXWaitFileFirst
+            self.waitFileFirst.executeSynchronous()
+            if self.waitFileFirst.dataOutput.timedOut.value:
+                strWarningMessage = "Timeout after %d seconds waiting for the first image %s!" % (fWaitFileTimeout, self.first_image)
+                self.addWarningMessage(strWarningMessage)
+                self.WARNING(strWarningMessage)
+
+            xsDataInputMXWaitFileLast = XSDataInputMXWaitFile()
+            xsDataInputMXWaitFileLast.file = XSDataFile(XSDataString(self.last_image))
+            xsDataInputMXWaitFileLast.timeOut = XSDataTime(fWaitFileTimeout)
+            self.waitFileLast.size = XSDataInteger(minSize)
+            self.waitFileLast.dataInput = xsDataInputMXWaitFileLast
+            self.waitFileLast.executeSynchronous()
+            if self.waitFileLast.dataOutput.timedOut.value:
+                strErrorMessage = "Timeout after %d seconds waiting for the last image %s!" % (fWaitFileTimeout, self.last_image)
+                self.addErrorMessage(strErrorMessage)
+                self.ERROR(strErrorMessage)
+                self.setFailure()
+
         self.DEBUG('EDPluginControlAutoprocv1_0.preProcess finished')
 
     def process(self, _edObject = None):
@@ -355,19 +414,23 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.DEBUG('EDPluginControlAutoprocv1_0.process starting')
 
         self.process_start = time.time()
-
+        
 
         # get our two integration IDs
         try:
             self.integration_id_noanom = create_integration_id(self.dataInput.data_collection_id.value)
         except Exception, e:
-            self.ERROR('could not get integration ID: \n{0}'.format(traceback.format_exc(e)))
+            strErrorMessage = "Could not get non-anom integration ID: \n{0}".format(traceback.format_exc(e))
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.integration_id_noanom = None
 
         try:
             self.integration_id_anom = create_integration_id(self.dataInput.data_collection_id.value)
         except Exception, e:
-            self.ERROR('could not get integration ID: \n{0}'.format(traceback.format_exc(e)))
+            strErrorMessage = "Could not get anom integration ID: \n{0}".format(traceback.format_exc(e))
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.integration_id_anom = None
 
         # first XDS plugin run with supplied XDS file
@@ -375,6 +438,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         t0=time.time()
         self.xds_first.executeSynchronous()
+        self.retrieveFailureMessages(self.xds_first, "Fast proc")
 
         self.stats['first_xds'] = time.time()-t0
         with open(self.log_file_path, 'w') as f:
@@ -428,7 +492,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                                      'INTEGRATE.LP'),
                         integrate_path)
         except (IOError, OSError):
-            self.ERROR('failed to copy INTEGRATE.LP file ({0}) to the results dir'.format(integrate_path))
+            strErrorMessage = "Failed to copy INTEGRATE.LP file ({0}) to the results dir".format(integrate_path)
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
 
 
         log_to_ispyb([self.integration_id_noanom, self.integration_id_anom],
@@ -456,7 +522,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         #XXX: remove from the data model as it is just pass-through?
         res_cutoff_in.total_completeness = xdsresult.total_completeness
         res_cutoff_in.completeness_cutoff = self.dataInput.completeness_cutoff
-        res_cutoff_in.isig_cutoff = XSDataFloat(1.0)
+        res_cutoff_in.isig_cutoff = XSDataDouble(1.0)
         #res_cutoff_in.isig_cutoff = self.dataInput.isig_cutoff
         res_cutoff_in.r_value_cutoff = self.dataInput.r_value_cutoff
         res_cutoff_in.cc_half_cutoff = self.dataInput.cc_half_cutoff
@@ -546,7 +612,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.parse_xds_anom.executeSynchronous()
 
         if self.parse_xds_anom.isFailure():
-            self.ERROR('parsing the xds generated w/ anom failed')
+            strErrorMessage = "Parsing the xds generated w/ anom failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.setFailure()
             return
 
@@ -563,7 +631,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.parse_xds_noanom.executeSynchronous()
 
         if self.parse_xds_noanom.isFailure():
-            self.ERROR('parsing the xds generated w/ anom failed')
+            strErrorMessage = "Parsing the xds generated w/ no anom failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.setFailure()
             return
 
@@ -584,7 +654,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         res_cutoff_anom_in.total_completeness = self.parse_xds_anom.dataOutput.total_completeness
         # pass in global cutoffs
         res_cutoff_anom_in.completeness_cutoff = self.dataInput.completeness_cutoff
-        res_cutoff_anom_in.isig_cutoff = XSDataFloat(1.0)
+        res_cutoff_anom_in.isig_cutoff = XSDataDouble(1.0)
         #res_cutoff_anom_in.isig_cutoff = self.dataInput.isig_cutoff
         res_cutoff_anom_in.r_value_cutoff = self.dataInput.r_value_cutoff
         res_cutoff_anom_in.cc_half_cutoff = self.dataInput.cc_half_cutoff
@@ -623,7 +693,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         res_cutoff_noanom_in.total_completeness = self.parse_xds_noanom.dataOutput.total_completeness
         # pass in global cutoffs
         res_cutoff_noanom_in.completeness_cutoff = self.dataInput.completeness_cutoff
-        res_cutoff_noanom_in.isig_cutoff = XSDataFloat(1.0)
+        res_cutoff_noanom_in.isig_cutoff = XSDataDouble(1.0)
         #res_cutoff_noanom_in.isig_cutoff = self.dataInput.isig_cutoff
         res_cutoff_noanom_in.r_value_cutoff = self.dataInput.r_value_cutoff
         res_cutoff_noanom_in.cc_half_cutoff = self.dataInput.cc_half_cutoff
@@ -684,7 +754,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             json.dump(self.stats, f)
 
         if self.xscale_generate.isFailure():
-            self.ERROR('xscale generation failed')
+            strErrorMessage = "Xscale generation failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
                          'Scaling',
                          'Failed',
@@ -709,7 +781,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             try:
                 shutil.copyfile(log, target)
             except IOError:
-                self.ERROR('Could not copy {0} to {1}'.format(log, target))
+                strErrorMessage = "Could not copy {0} to {1}".format(log, target)
+                self.addErrorMessage(strErrorMessage)
+                self.ERROR(strErrorMessage)
 
 
 
@@ -743,120 +817,15 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             json.dump(self.stats, f)
 
         if self.file_conversion.isFailure():
-            self.ERROR("file import failed")
+            strErrorMessage = "File import failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
 
 
 #        self.custom_stats['total_time']=time.time() - process_start
         self.process_end = time.time()
-        return
-#        try:
-#            autoproclog.log(**self.custom_stats)
-#        except Exception, e:
-#            self.screen('could not logs stats to custom log server')
-#            self.screen(traceback.format_exc())
 
 
-        # Now onto DIMPLE
-
-        # create a startup script
-        # This is ugly
-        script_template = '''#!/bin/sh
-
-if [ $# -eq 1 ]; then
-        ssh mxnice /scisoft/bin/cctbx_python_debian6.sh /scisoft/bin/run-dimple-autoproc.py {root_dir} `readlink -f "$1"`;
-else
-        ssh mxnice /scisoft/bin/cctbx_python_debian6.sh /scisoft/bin/run-dimple-autoproc.py {root_dir} {dcid}
-fi
-'''
-        dimple_script = script_template.format(dcid=self.dataInput.data_collection_id.value,
-                                               root_dir=self.root_dir)
-        script_path = os.path.join(self.root_dir, 'dimple.sh')
-        with open(script_path, 'w') as f:
-            f.write(dimple_script)
-        os.chmod(script_path, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH|S_IXUSR|S_IXGRP|S_IXOTH)
-
-
-        # we need a PDB file either in ispyb or in the image directory
-        edPluginGetPdbFile = self.loadPlugin("EDPluginISPyBGetPdbFilePathv1_4")
-        xsDataInputGetPdbFilePath = XSDataInputISPyBGetPdbFilePath()
-        xsDataInputGetPdbFilePath.dataCollectionId = self.dataInput.data_collection_id
-        edPluginGetPdbFile.dataInput = xsDataInputGetPdbFilePath
-        edPluginGetPdbFile.executeSynchronous()
-        pdb_file = edPluginGetPdbFile.dataOutput.pdbFilePath
-        if pdb_file is None:
-            self.screen('No pdb file in ispyb, trying the toplevel dir {0}'.format(self.root_dir))
-        for f in os.listdir(self.root_dir):
-            if f.endswith('.pdb'):
-                pdb_file = os.path.join(self.root_dir, f)
-                break
-
-        # We need these 2 variables for the coot script below
-        dimple_out = os.path.join(self.results_dir, '{0}_dimple_out.pdb'.format(self.image_prefix))
-        dimple_mtzout = os.path.join(self.results_dir, '{0}_dimple_out.mtz'.format(self.image_prefix))
-
-        # To indicate if dimple ran successfully. Perhaps there's a
-        # way to do it with edplugin's various isStarted, isFailure,
-        # isWhatever
-        dimple_did_run = False
-
-        if pdb_file is None:
-            self.WARNING('No pdb file found, not running dimple')
-        else:
-            self.screen('Using pdb file {0}'.format(pdb_file))
-            dimple_in = CCP4DataInputControlPipelineCalcDiffMap()
-            dimple_in.XYZIN = XYZ(path=XSDataString(pdb_file))
-
-            # We'll put the results in the results directory as well
-
-            dimple_in.XYZOUT = XYZ(path=XSDataString(dimple_out))
-
-            labels = CCP4MTZColLabels()
-            labels.F = XSDataString('F_xdsproc')
-            labels.SIGF = XSDataString('SIGF_xdsproc')
-            labels.IMEAN = XSDataString('IMEAN')
-            labels.SIGIMEAN = XSDataString('SIGIMEAN')
-            dimple_in.ColLabels = labels
-
-            # For now the import plugin does no give information about
-            # the paths to the various files it generates so we look
-            # into the results directory for the right mtz file
-            mtz_file = None
-            for f in os.listdir(self.results_dir):
-                if f.endswith('anom_aimless.mtz'):
-                    mtz_file = os.path.join(self.results_dir, f)
-                    break
-
-
-            if mtz_file is None:
-                self.ERROR('No suitable input mtz found for dimple, not running it')
-            else:
-                dimple_in.HKLIN = HKL(path=XSDataString(mtz_file))
-                dimple_log = os.path.join(self.results_dir, '{0}_dimple.log'.format(self.image_prefix))
-                dimple_in.outputLogFile = CCP4LogFile(path=XSDataString(dimple_log))
-                dimple_in.HKLOUT = HKL(path=XSDataString(dimple_mtzout))
-                self.dimple.dataInput = dimple_in
-                self.dimple.executeSynchronous()
-                if not self.dimple.isFailure():
-                    dimple_did_run = True
-
-        # Now create a coot startup file, only if dimple ran successfully
-        if dimple_did_run:
-            coot_script = """#!/bin/sh
-if [ ! -e {mtz} ] || [ ! -e {pdb} ]; then
-        echo Either {mtz} or {pdb} is missing
-        echo Did dimple run?
-        exit 1
-else
-        echo Let\\'s run coot
-        coot --pdb {pdb} --auto {mtz} --python -c 'difference_map_peaks(2,0,5,5,1,1)'
-fi
-""".format(pdb=os.path.basename(dimple_out),
-           mtz=os.path.basename(dimple_mtzout))
-
-            script_path = os.path.join(self.results_dir, 'coot.sh')
-            with open(script_path, 'w') as f:
-                f.write(coot_script)
-            os.chmod(script_path, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH|S_IXUSR|S_IXGRP|S_IXOTH)
 
 
 
@@ -1143,17 +1112,79 @@ fi
             # store the autoproc id
             os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0755)
 
+        # Finally run dimple if executed at the ESRF     
+        if EDUtilsPath.isESRF():
+            xsDataInputControlDimple = XSDataInputControlDimple()
+            xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
+            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "_noanom_aimless.mtz")))
+            xsDataInputControlDimple.pdbDirectory = XSDataFile(XSDataString(self.root_dir))
+            if pyarch_path is not None:
+                xsDataInputControlDimple.pyarchPath = XSDataFile(XSDataString(pyarch_path))
+            edPluginControlRunDimple = self.loadPlugin("EDPluginControlRunDimplev1_0")
+            edPluginControlRunDimple.dataInput = xsDataInputControlDimple
+            edPluginControlRunDimple.executeSynchronous()
+            if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully is not None:
+                if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully.value: 
+                    self.bExecutedDimple = True
+
+
+
+
     def finallyProcess(self, _edObject = None):
         EDPluginControl.finallyProcess(self)
+        strMessage = ""
+        if self.getListOfWarningMessages() != []:
+            strMessage += "Warning messages: \n\n"
+            for strWarningMessage in self.getListOfWarningMessages():
+                strMessage += strWarningMessage  + "\n\n"         
+        if self.getListOfErrorMessages() != []:
+            strMessage += "Error messages: \n\n"
+            for strErrorMessage in self.getListOfErrorMessages():
+                strMessage += strErrorMessage + "\n\n"
         if self.isFailure():
-            strSubject = "EDNA dp %s FAILURE" % self.strHost
+            strStatus = "FAILURE"
         else:
-            strSubject = "EDNA dp %s SUCCESS" % self.strHost
-        strMessage  = "Plugin execution time: %.2f s\n" % (time.time() - self.plugin_start )
+            strStatus = "SUCCESS"
+        if EDUtilsPath.isESRF():
+            if self.bExecutedDimple:
+                strSubject = "EDNA dp DIMPLE %s %s %s %s %s" % (self.strBeamline, self.strProposal, 
+                                                         self.strPrefix, self.strHost, strStatus)
+            else:
+                strSubject = "EDNA dp %s %s %s %s %s" % (self.strBeamline, self.strProposal, 
+                                                         self.strPrefix, self.strHost, strStatus)
+        else:
+            strSubject = "EDNA dp host %s %s" % (self.strHost, strStatus)
+            
+
+        strMessage  += "\n\nPlugin execution time: %.2f s\n" % (time.time() - self.plugin_start )
         if self.process_end is not None:
-            strMessage += "Process execution time: %.2f s\n" % (self.process_end - self.process_start)
+            fProcessExecutionTime = self.process_end - self.process_start
+            iStartImage = self.data_range[0]
+            iEndImage = self.data_range[1]
+            iNoImages = iEndImage - iStartImage + 1
+            strMessage += "No images: %d\n" % iNoImages
+            strMessage += "Process execution time: %.2f s\n" % fProcessExecutionTime
+            strMessage += "Process execution time per image: %.2f s\n" % (fProcessExecutionTime / iNoImages)
         self.sendEmail(strSubject, strMessage)
 
+
+    def getBeamlinePrefixFromPath(self, strPathToXDSInp):
+        """ESRF specific code for extracting the beamline name and prefix from the path"""
+        listPath = strPathToXDSInp.split("/")
+        if listPath[2] == "visitor":
+            strBeamline = listPath[4]
+            strProposal = listPath[3]
+            strPrefix = listPath[-2][4:]
+        elif listPath[3] == "inhouse":
+            strBeamline = listPath[2]
+            strProposal = listPath[4]
+            strPrefix = listPath[-2][4:]
+        else:
+            strBeamline = ""
+            strProposal = ""
+            strPrefix = ""
+        return (strBeamline, strProposal, strPrefix)
+        
 
             
     def sendEmail(self, _strSubject, _strMessage):
@@ -1166,10 +1197,6 @@ fi
             self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: No email address configured!")
         elif self.getWorkingDirectory().find("ref-") != -1:
             self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: Working directory contains 'ref-', hence probably reference data collection")
-        elif not EDUtilsPath.isESRF():
-            self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: Not executed at the ESRF! EDNA_SITE=%s" % EDUtilsPath.getEdnaSite())
-        elif not EDUtilsPath.isEMBL():
-            self.DEBUG("EDPluginControlAutoprocv1_0.sendEmail: Not executed at the ESRF! EDNA_SITE=%s" % EDUtilsPath.getEdnaSite())
         else:
             try:
                 self.DEBUG("Sending message to %s." % self.strEDNAContactEmail)

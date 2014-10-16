@@ -3,8 +3,6 @@
 #    Project: Autoproc
 #             http://www.edna-site.org
 #
-#    File: "$Id$"
-#
 #    Copyright (C) ESRF
 #
 #    Principal author: Thomas Boeglin
@@ -36,6 +34,7 @@ import fnmatch
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 from EDVerbose import EDVerbose
 from EDUtilsPath import EDUtilsPath
+from EDUtilsFile import EDUtilsFile
 
 from XSDataCommon import XSDataBoolean
 from XSDataAutoprocv1_0 import XSDataMinimalXdsIn, XSDataMinimalXdsOut
@@ -44,15 +43,12 @@ from xdscfgparser import parse_xds_file, dump_xds_file
 
 
 class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
-    """
-    """
 
 
     def __init__(self ):
-        """
-        """
         EDPluginExecProcessScript.__init__(self )
         self.setXSDataInputClass(XSDataMinimalXdsIn)
+        self.setDataOutput(XSDataMinimalXdsOut())
 
 
     def checkParameters(self):
@@ -68,7 +64,7 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         if not (os.path.exists(xds_input) and os.path.isfile(xds_input)):
             self.setFailure()
 
-        # if we have a resolution it has to be a list of 2 XSDataFloat
+        # if we have a resolution it has to be a list of 2 XSDataDouble
         resrange = self.dataInput.resolution_range
         if resrange is not None and len(resrange) != 0:
             # a non specified list input parameter has a default value
@@ -160,9 +156,9 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
             self.DEBUG('specific unit cell requested: {0}'.format(unit_cell.value))
             parsed_config['SPACE_GROUP_NUMBER='] = str(spacegroup.value)
             #Check if this is ok
-            parsed_config['UNIT_CELL_CONSTANTS'] = unit_cell.value
+            parsed_config['UNIT_CELL_CONSTANTS='] = unit_cell.value
             if EDUtilsPath.isEMBL():
-                parsed_config['UNIT_CELL_CONSTANTS'] = unit_cell_spaced_string
+                parsed_config['UNIT_CELL_CONSTANTS='] = unit_cell_spaced_string
 
         # For [XY]-GEO_CORR files, link them in the cwd and fix their paths
         if 'X-GEO_CORR=' in parsed_config:
@@ -189,6 +185,11 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
     def postProcess(self, _edObject = None):
         EDPluginExecProcessScript.postProcess(self)
         self.DEBUG("EDPluginMinimalXds.postProcess")
+        # Check log for warning and errors
+        strPathToLogFile = os.path.join(self.getWorkingDirectory(), self.getScriptLogFileName())
+        self.checkLogForWarningAndErrors(strPathToLogFile)
+        
+        
         # Create some output data
         xsDataResult = XSDataMinimalXdsOut()
 
@@ -207,6 +208,18 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
                                                                         xsDataResult.succeeded.value))
         self.setDataOutput(xsDataResult)
 
+    def checkLogForWarningAndErrors(self, _strPathToLogFile):
+        """Checks the plugin/XDS log file for warning and error messages"""
+        if os.path.exists(_strPathToLogFile):
+            strLog = EDUtilsFile.readFile(_strPathToLogFile)
+            listLog = strLog.split("\n")
+            for strLogLine in listLog:
+                # Check for missing images
+                if "!!! ERROR !!!" in strLogLine:
+                    self.ERROR(strLogLine)
+                    self.addErrorMessage(strLogLine)
+            
+            
 
 
 # XXX: This is the third file I copy this function to: extract it

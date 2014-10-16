@@ -62,9 +62,3 @@ class EDTestCasePluginExecuteExecMtz2Variousv1_0(EDTestCasePluginExecute):
         """
         self.addTestMethod(self.testExecute)
 
-        
-
-if __name__ == '__main__':
-
-    testMtz2Variousv1_0instance = EDTestCasePluginExecuteControlMtz2Variousv1_0("EDTestCasePluginExecuteExecMtz2Variousv1_0")
-    testMtz2Variousv1_0instance.execute()

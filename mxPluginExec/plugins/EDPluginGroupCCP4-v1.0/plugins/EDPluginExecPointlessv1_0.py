@@ -33,16 +33,18 @@ import re
 import os.path
 
 from EDVerbose import EDVerbose
+from EDUtilsPath import EDUtilsPath
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult
-from XSDataAutoprocv1_0 import XSDataTruncate
+from XSDataCommon import XSDataInteger, XSDataString
+from XSDataCCP4v1_0 import XSDataPointless, XSDataPointlessOut
 
-class EDPluginExecTruncatev1_0(EDPluginExecProcessScript):
+class EDPluginExecPointlessv1_0(EDPluginExecProcessScript):
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
         self.setRequiredToHaveConfiguration(True)
-        self.setXSDataInputClass(XSDataTruncate)
+        self.setXSDataInputClass(XSDataPointless)
 
 
     def configure(self):
@@ -50,33 +52,26 @@ class EDPluginExecTruncatev1_0(EDPluginExecProcessScript):
 
     def preProcess(self):
         EDPluginExecProcessScript.preProcess(self)
-        self.DEBUG('Truncate: preprocess')
-        input_file = self.dataInput.input_file.value
-        output_file = self.dataInput.output_file.value
-        options = 'hklin {0} hklout {1}'.format(input_file, output_file)
-        self.setScriptCommandline(options)
-        self.DEBUG('command line options set to {0}'.format(options))
-
-        nres = self.dataInput.nres
-        anom = self.dataInput.anom.value
-        res = self.dataInput.res.value
-        if nres is not None:
-            self.addListCommandExecution('nres {0}'.format(nres.value))
-        self.addListCommandExecution('truncate YES')
-        self.addListCommandExecution('anomalous {0}'.format(anom))
-        self.addListCommandExecution('plot OFF')
-        self.addListCommandExecution('labout F=F_xdsproc SIGF=SIGF_xdsproc')
-        self.addListCommandExecution('falloff YES')
-        self.addListCommandExecution('resolution 50 {0}'.format(res))
-        self.addListCommandExecution('PNAME foo')
-        self.addListCommandExecution('DNAME foo')
-        self.addListCommandExecution('end')
+        self.DEBUG('Pointless: preprocess')
+        if self.output_file is not None and self.input_file is not None:
+            if EDUtilsPath.isEMBL():
+                options = '''-c xdsin {0} hklout {1}'''.format(self.input_file,
+                                                               self.output_file)
+            else:
+                options = '''xdsin {0} hklout {1}'''.format(self.input_file,
+                                                            self.output_file)
+            self.setScriptCommandline(options)
+            self.DEBUG('command line options set to {0}'.format(options))
+        self.addListCommandExecution('setting symmetry-based')
 
     def checkParameters(self):
-        self.DEBUG('Truncate: checkParameters')
+        self.DEBUG('Pointless: checkParameters')
         data_input = self.getDataInput()
         self.checkMandatoryParameters(data_input.input_file, 'no input file')
         self.checkMandatoryParameters(data_input.output_file, 'no output file')
+
+        self.input_file = self.dataInput.input_file.value
+        self.output_file = self.dataInput.output_file.value
 
         # now really check the parameters
         if data_input.input_file is not None:
@@ -87,15 +82,33 @@ class EDPluginExecTruncatev1_0(EDPluginExecProcessScript):
                 return
 
     def process(self):
-        self.DEBUG('Truncate: process')
+        self.DEBUG('Pointless: process')
         EDPluginExecProcessScript.process(self)
 
     def postProcess(self):
-        self.DEBUG('Truncate: postProcess')
+        self.DEBUG('Pointless: postProcess')
         EDPluginExecProcessScript.postProcess(self)
         output_file = self.dataInput.output_file.value
 
-        res = XSDataResult()
+        sgre = re.compile(""" \* Space group = '(?P<sgstr>.*)' \(number\s+(?P<sgnumber>\d+)\)""")
+
+        sgnumber = sgstr = None
+        # returns None if the file does not exist...
+        log = self.readProcessLogFile()
+        if log is not None:
+            # we'll apply the regexp to the whole file contents which
+            # hopefully won't be that long.
+            m = sgre.search(log)
+            if m is not None:
+                d = m.groupdict()
+                sgnumber = d['sgnumber']
+                sgstr = d['sgstr']
+
+        res = XSDataPointlessOut()
+        if sgnumber is not None:
+            res.sgnumber = XSDataInteger(sgnumber)
+        if sgstr is not None:
+            res.sgstr = XSDataString(sgstr)
         status = XSDataStatus()
         status.isSuccess = XSDataBoolean(os.path.exists(output_file))
         res.status = status

@@ -85,24 +85,37 @@ class EDPluginDistlSignalStrengthThinClientv1_1(EDPluginExecProcessScript):
         self.setProcessInfo("image %s" % os.path.basename(self.xsDataImage.getPath().getValue()))
 
 
-    def postProcess(self, _edObject=None):
+    def finallyProcess(self, _edObject=None):
         """
         Parses the labelit.screen log file and the generated MOSFLM script
         """
-        EDPluginExecProcessScript.postProcess(self, _edObject)
-        self.DEBUG("EDPluginDistlSignalStrengthThinClientv1_1.postProcess")
+        EDPluginExecProcessScript.finallyProcess(self, _edObject)
+        self.DEBUG("EDPluginDistlSignalStrengthThinClientv1_1.finallyProcess")
         strLabelitDistlLog = self.readProcessLogFile()
         if (strLabelitDistlLog is None):
-            strErrorMessage = "EDPluginDistlSignalStrengthThinClientv1_1.postProcess : Could not read the Labelit log file"
+            strErrorMessage = "EDPluginDistlSignalStrengthThinClientv1_1.finallyProcess : Could not read the Labelit log file"
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             self.setFailure()
+            xsDataImageQualityIndicators = XSDataImageQualityIndicators()
+            xsDataImageQualityIndicators.setImage(self.xsDataImage)
+        elif strLabelitDistlLog == "":
+            strLabelitDislErr = self.readProcessErrorLogFile()
+            if "httplib.BadStatusLine" in strLabelitDislErr:
+                strErrorMessage = "Cannot read image due to problem with file permission!"
+            else:
+                strErrorMessage = "Labelit thin client error message: " + strLabelitDislErr
+            self.error(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
+            self.setFailure()
+            xsDataImageQualityIndicators = XSDataImageQualityIndicators()
+            xsDataImageQualityIndicators.setImage(self.xsDataImage)
         else:
             xsDataImageQualityIndicators = self.parseLabelitDistlOutput(strLabelitDistlLog)
             xsDataImageQualityIndicators.setImage(self.xsDataImage)
-            xsDataResultDistlSignalStrength = XSDataResultDistlSignalStrength()
-            xsDataResultDistlSignalStrength.setImageQualityIndicators(xsDataImageQualityIndicators)
-            self.setDataOutput(xsDataResultDistlSignalStrength)
+        xsDataResultDistlSignalStrength = XSDataResultDistlSignalStrength()
+        xsDataResultDistlSignalStrength.setImageQualityIndicators(xsDataImageQualityIndicators)
+        self.setDataOutput(xsDataResultDistlSignalStrength)
 
 
     def parseLabelitDistlOutput(self, _strLabelitDistlLogText):
@@ -152,24 +165,28 @@ class EDPluginDistlSignalStrengthThinClientv1_1(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginDistlSignalStrengthThinClientv1_1.generateExecutiveSummary")
         xsDataImageQualityIndicators = self.getDataOutput().getImageQualityIndicators()
-        self.addExecutiveSummaryLine("Execution of Labelit distl.thin_client successful.")
-        self.addExecutiveSummaryLine("Image                   : %s" % xsDataImageQualityIndicators.getImage().getPath().getValue())
-        self.addExecutiveSummaryLine("")
-        self.addExecutiveSummaryLine("distl.signal_strength results:")
-        self.addExecutiveSummaryLine("Spot Total                : %d" % xsDataImageQualityIndicators.getSpotTotal().getValue())
-        self.addExecutiveSummaryLine("In-Resolution Total       : %d" % xsDataImageQualityIndicators.getInResTotal().getValue())
-        self.addExecutiveSummaryLine("Good Bragg Candidates     : %d" % xsDataImageQualityIndicators.getGoodBraggCandidates().getValue())
-        if xsDataImageQualityIndicators.getTotalIntegratedSignal() is not None:
-            self.addExecutiveSummaryLine("Total integrated signal, pixel-ADC units above local background : %.0f" % xsDataImageQualityIndicators.getTotalIntegratedSignal().getValue())
-        self.addExecutiveSummaryLine("Ice Rings                 : %d" % xsDataImageQualityIndicators.getIceRings().getValue())
-        self.addExecutiveSummaryLine("Method 1 Resolution       : %.2f [A]" % xsDataImageQualityIndicators.getMethod1Res().getValue())
-        if xsDataImageQualityIndicators.getMethod2Res() is None:
-            self.addExecutiveSummaryLine("Method 2 Resolution       : None")
+        if xsDataImageQualityIndicators is not None:
+            self.addExecutiveSummaryLine("Execution of Labelit distl.thin_client successful.")
+            self.addExecutiveSummaryLine("Image                   : %s" % xsDataImageQualityIndicators.getImage().getPath().getValue())
+            self.addExecutiveSummaryLine("")
+            self.addExecutiveSummaryLine("distl.signal_strength results:")
+            self.addExecutiveSummaryLine("Spot Total                : %d" % xsDataImageQualityIndicators.getSpotTotal().getValue())
+            self.addExecutiveSummaryLine("In-Resolution Total       : %d" % xsDataImageQualityIndicators.getInResTotal().getValue())
+            self.addExecutiveSummaryLine("Good Bragg Candidates     : %d" % xsDataImageQualityIndicators.getGoodBraggCandidates().getValue())
+            if xsDataImageQualityIndicators.getTotalIntegratedSignal() is not None:
+                self.addExecutiveSummaryLine("Total integrated signal, pixel-ADC units above local background : %.0f" % xsDataImageQualityIndicators.getTotalIntegratedSignal().getValue())
+            self.addExecutiveSummaryLine("Ice Rings                 : %d" % xsDataImageQualityIndicators.getIceRings().getValue())
+            self.addExecutiveSummaryLine("Method 1 Resolution       : %.2f [A]" % xsDataImageQualityIndicators.getMethod1Res().getValue())
+            if xsDataImageQualityIndicators.getMethod2Res() is None:
+                self.addExecutiveSummaryLine("Method 2 Resolution       : None")
+            else:
+                self.addExecutiveSummaryLine("Method 2 Resolution       : %.2f [A]" % xsDataImageQualityIndicators.getMethod2Res().getValue())
+            if xsDataImageQualityIndicators.getMaxUnitCell() is not None:
+                self.addExecutiveSummaryLine("Maximum unit cell         : %.2f [A]" % xsDataImageQualityIndicators.getMaxUnitCell().getValue())
+            if xsDataImageQualityIndicators.getPctSaturationTop50Peaks() is not None:
+                self.addExecutiveSummaryLine("Saturation, Top 50 Peaks  : %.1f [%%]" % xsDataImageQualityIndicators.getPctSaturationTop50Peaks().getValue())
+            self.addExecutiveSummaryLine("In-resolution Ovrld Spots : %d" % xsDataImageQualityIndicators.getInResolutionOvrlSpots().getValue())
         else:
-            self.addExecutiveSummaryLine("Method 2 Resolution       : %.2f [A]" % xsDataImageQualityIndicators.getMethod2Res().getValue())
-        if xsDataImageQualityIndicators.getMaxUnitCell() is not None:
-            self.addExecutiveSummaryLine("Maximum unit cell         : %.2f [A]" % xsDataImageQualityIndicators.getMaxUnitCell().getValue())
-        if xsDataImageQualityIndicators.getPctSaturationTop50Peaks() is not None:
-            self.addExecutiveSummaryLine("Saturation, Top 50 Peaks  : %.1f [%%]" % xsDataImageQualityIndicators.getPctSaturationTop50Peaks().getValue())
-        self.addExecutiveSummaryLine("In-resolution Ovrld Spots : %d" % xsDataImageQualityIndicators.getInResolutionOvrlSpots().getValue())
+            self.addExecutiveSummaryLine("Execution of Labelit distl.thin_client failed.")
+            
         

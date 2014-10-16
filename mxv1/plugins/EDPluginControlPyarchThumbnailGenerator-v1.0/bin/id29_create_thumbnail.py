@@ -4,8 +4,6 @@
 #    Project: PROJECT
 #             http://www.edna-site.org
 #
-#    File: "$Id$"
-#
 #    Copyright (C) European Synchrotron Radiation Facility, Grenoble, France
 #
 #    Principal authors:  Olof Svensson (svensson@esrf.fr)     
@@ -74,19 +72,24 @@ if __name__ == '__main__':
         EDVerbose.screen("Usage: id29_create_thumbnail image_directory_path image1 [image2]" )
         sys.exit(1)
     EDVerbose.screen("Arguments: %r" % sys.argv)
+    # Remove duplicates
+    listImageName = list(set(sys.argv[2:]))
+    # Strip off prefix
+    listPrefix = listImageName[0].split("_")
+    strPrefix = "{0}_{1}".format(listPrefix[0], listPrefix[1]) 
     # Check if a temp working directory should be created
     if "CREATE_THUMBNAIL_WORKING_DIR" in os.environ:
-        strPathToTempDir = tempfile.mkdtemp(prefix="id29_create_thumbnail_", dir=os.environ["CREATE_THUMBNAIL_WORKING_DIR"])
+        strPathToTempDir = tempfile.mkdtemp(prefix="thumbnail-{0}-".format(strPrefix), 
+                                            dir=os.environ["CREATE_THUMBNAIL_WORKING_DIR"])
     else:
-        strPathToTempDir = tempfile.mkdtemp(prefix="id29_create_thumbnail_")
+        strTmpUser = os.path.join("/tmp", os.environ["USER"])
+        if not os.path.exists(strTmpUser):
+            os.mkdir(strTmpUser, 0755)
+        strPathToTempDir = tempfile.mkdtemp(prefix="thumbnail-{0}-".format(strPrefix), dir=strTmpUser)
+    os.chmod(strPathToTempDir, 0755)
     os.chdir(strPathToTempDir)
     EDVerbose.setLogFileName(os.path.join(strPathToTempDir, "id29_create_thumbnail.log"))
     strImageDirectory = sys.argv[1]
-    listImageName = sys.argv[2:]
-    # Quick check if the two image names are the same. If they are launch the thumbnail generator only once
-    if len(listImageName) == 2:
-        if listImageName[0] == listImageName[1]:
-            listImageName = [ listImageName[0] ]
     for strImageName in listImageName:
         xsDataInputPyarchThumbnailGenerator = XSDataInputPyarchThumbnailGenerator()
         xsDataInputPyarchThumbnailGenerator.setWaitForFileTimeOut(XSDataTime(1000))

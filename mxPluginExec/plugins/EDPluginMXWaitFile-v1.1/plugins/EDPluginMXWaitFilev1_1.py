@@ -76,8 +76,8 @@ class EDPluginMXWaitFilev1_1(EDPluginExec):
             else:
                 self.timeOut = xsDataInputMXWaitFile.timeOut.value
                 self.DEBUG("Using timeout = %.1f s from input" % self.timeOut)
-            # Set plugin timout to 5 s more in order to avoid EDPlugin timeout
-            self.setTimeOut(self.timeOut + 5.0)
+            # Set plugin timout to 60 s more in order to avoid EDPlugin timeout
+            self.setTimeOut(self.timeOut + 60.0)
             
 
     def process(self, _edPlugin=None):
@@ -85,6 +85,7 @@ class EDPluginMXWaitFilev1_1(EDPluginExec):
         # Wait for file if it's not already on disk'
         hasTimedOut = False
         shouldContinue = True
+        fileDir = os.path.dirname(self.strFilePath)
         if os.path.exists(self.strFilePath):
             if self.expectedSize is not None:
                 # Check size
@@ -93,11 +94,14 @@ class EDPluginMXWaitFilev1_1(EDPluginExec):
         if shouldContinue:
             self.screen("Waiting for file %s" % self.strFilePath)
             #
-            timeElapsed = 0
+            timeStart = time.time()
             while shouldContinue and not hasTimedOut:
                 # Sleep 1 s 
                 time.sleep(1)
-                timeElapsed += 1
+                # Try to execute a "ls" on the file directory - this sometimes speed up NFS
+                if os.path.exists(fileDir):
+                    os.system("ls %s > /dev/null" % fileDir)
+                timeElapsed = time.time() - timeStart
                 # Check if time out
                 if timeElapsed > self.timeOut:
                     hasTimedOut = True

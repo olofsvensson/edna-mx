@@ -25,11 +25,12 @@ __author__ = "Olof Svensson"
 __license__ = "GPLv3+"
 __copyright__ = "Copyrigth (c) 2010 ESRF"
 
-import os, tempfile, Image
+import os, tempfile, Image, time
 
 from EDVerbose import EDVerbose
 from EDPluginControl import EDPluginControl
 from EDFactoryPluginStatic import EDFactoryPluginStatic
+from EDUtilsPath import EDUtilsPath
 
 EDFactoryPluginStatic.loadModule("EDHandlerESRFPyarchv1_0")
 
@@ -71,7 +72,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         self.strOutputPathWithoutExtension = None
         self.xsDataFilePathToThumbnail = None
         self.xsDataFilePathToThumbnail2 = None
-        self.iExpectedSize = 1000000
+        self.minImageSize = 1000000
 
 
 
@@ -83,13 +84,16 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         self.checkMandatoryParameters(self.getDataInput(), "Data Input is None")
         self.checkMandatoryParameters(self.getDataInput().getDiffractionImage(), "No diffraction image file path")
 
-
+    def configure(self):
+        EDPluginControl.configure(self)
+        self.minImageSize = self.config.get("minImageSize", self.minImageSize)
+        
 
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlPyarchThumbnailGeneratorv1_0.preProcess")
         # Check that the input image exists and is of the expected type
-        strPathToDiffractionImage = self.getDataInput().getDiffractionImage().getPath().getValue()
+        strPathToDiffractionImage = self.dataInput.diffractionImage.path.value
         strImageFileNameExtension = os.path.splitext(strPathToDiffractionImage)[1]
         if not strImageFileNameExtension in [".img", ".marccd", ".mccd", ".cbf"]:
             self.error("Unknown image file name extension for pyarch thumbnail generator: %s" % strPathToDiffractionImage)
@@ -97,7 +101,15 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         else:
             # Load the MXWaitFile plugin
             xsDataInputMXWaitFile = XSDataInputMXWaitFile()
-            xsDataInputMXWaitFile.setSize(XSDataInteger(self.iExpectedSize))
+            # Quite ugly hack to avoid lag problems at the ESRF:
+            if EDUtilsPath.isESRF():
+                if any( beamline in strPathToDiffractionImage for beamline in ["id23eh1", "id29"]):
+                    # Pilatus 6M
+                    self.minImageSize = 6000000
+                elif any( beamline in strPathToDiffractionImage for beamline in ["id23eh2", "id30a1"]):
+                    # Pilatus3 2M
+                    self.minImageSize = 2000000
+            xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
             xsDataInputMXWaitFile.setFile(self.getDataInput().getDiffractionImage())
             if self.getDataInput().getWaitForFileTimeOut():
                 xsDataInputMXWaitFile.setTimeOut(self.getDataInput().getWaitForFileTimeOut())
@@ -136,7 +148,11 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
                         bIsOk = True
                 if not bIsOk:
                     self.warning("Cannot write to pyarch directory: %s" % strOutputDirname)
-                    strOutputDirname = tempfile.mkdtemp("", "EDPluginPyarchThumbnailv10_", "/tmp")
+                    strTmpUser = os.path.join("/tmp", os.environ["USER"])
+                    if not os.path.exists(strTmpUser):
+                        os.mkdir(strTmpUser, 0755)
+                    strOutputDirname = tempfile.mkdtemp(prefix="EDPluginPyarchThumbnailv10_", dir=strTmpUser)
+                    os.chmod(strOutputDirname, 0755)
                     self.warning("Writing thumbnail images to: %s" % strOutputDirname)
                 self.strOutputPathWithoutExtension = os.path.join(strOutputDirname, strImageNameWithoutExt)
             self.strOutputPath = os.path.join(self.strOutputPathWithoutExtension + ".jpeg")
@@ -170,8 +186,11 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         self.DEBUG("EDPluginControlID29CreateThumbnailv1_0.doSuccessMXWaitFile")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlID29CreateThumbnailv1_0.doSuccessMXWaitFile")
         # Check that the image is really there
-        # The image is here - make the first thumbnail
         if not self.edPluginMXWaitFile.getDataOutput().getTimedOut().getValue():
+            # Workaround for ESRF lag problem
+            if EDUtilsPath.isESRF():
+                time.sleep(1)
+            # The image is here - make the first thumbnail
             self.edPluginExecThumbnail.connectSUCCESS(self.doSuccessExecThumbnail)
             self.edPluginExecThumbnail.connectFAILURE(self.doFailureExecThumbnail)
             self.edPluginExecThumbnail.executeSynchronous()

@@ -108,8 +108,6 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         
 
     def preProcess(self, _edObject=None):
-        """
-        """
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlReadImageHeaderv10.preProcess")
         # First determine the type of image
@@ -170,8 +168,10 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         The file has not appeared on the disk 
         """
         self.DEBUG("EDPluginControlReadImageHeaderv10.doFailureMXWaitFile")
-        self.retrieveFailureMessages(_edPlugin, "EDPluginControlReadImageHeaderv10.doFailureMXWaitFile")
-        self.ERROR("Timeout when waiting for image %s" % self.strFileImagePath)
+        self.retrieveFailureMessages(_edPlugin, "MXWaitFile")
+        strErrorMessage = "Timeout when waiting for image %s" % self.strFileImagePath
+        self.ERROR(strErrorMessage)
+        self.addErrorMessage(strErrorMessage)
         self.setFailure()
 
     

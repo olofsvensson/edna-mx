@@ -152,8 +152,6 @@ class EDPluginControlIntegrationv10(EDPluginControl):
 
 
     def process(self, _edObject=None):
-        """
-        """
         EDPluginControl.process(self, _edObject)
         self.DEBUG("EDPluginControlIntegrationv10.process")
         for (iSubWedgeNumber, edPluginIntegration) in self.__edPluginIntegrationList:
@@ -173,50 +171,62 @@ class EDPluginControlIntegrationv10(EDPluginControl):
     def doFailureActionIntegration(self, _edPlugin=None):
         self.DEBUG("EDPluginControlIntegrationv10.doFailureActionIntegration")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlIntegrationv10.doFailureActionIntegration")
-        self.setFailure()
+#        self.setFailure()
 
 
-    def postProcess(self, _edObject=None):
-        EDPluginControl.postProcess(self, _edObject)
-        self.DEBUG("EDPluginControlIntegrationv10.postProcess")
+    def finallyProcess(self, _edObject=None):
+        EDPluginControl.finallyProcess(self, _edObject)
+        self.DEBUG("EDPluginControlIntegrationv10.finallyProcess")
         from EDHandlerXSDataMOSFLMv10 import EDHandlerXSDataMOSFLMv10
         for (iSubWedgeNumber, edPluginIntegration) in self.__edPluginIntegrationList:
             xsDataMOSFLMOutputIntegration = edPluginIntegration.getDataOutput()
             if (xsDataMOSFLMOutputIntegration is None):
-                strError = "MOSFLM integration error : no integration results obtained."
-                self.addExecutiveSummaryLine(strError)
-                self.ERROR(strError)
-                self.setFailure()
+                strWarning = "MOSFLM integration error : no integration results obtained."
+                self.addExecutiveSummaryLine(strWarning)
+                self.WARNING(strWarning)
+#                self.setFailure()
             else:
                 xsDataIntegrationSubWedgeResult = None
                 try:
                     xsDataIntegrationSubWedgeResult = EDHandlerXSDataMOSFLMv10.generateXSDataIntegrationSubWedgeResult(xsDataMOSFLMOutputIntegration, self.__xsDataExperimentalConditionRefined)
-                except Exception, strErrorMessage:
-                    self.addErrorMessage(strErrorMessage)
-                    self.ERROR(strErrorMessage)
-                    self.setFailure()
+                except Exception, error:
+                    strWarningMessage = str(error)
+                    self.addWarningMessage(strWarningMessage)
+                    self.WARNING(strWarningMessage)
+#                    self.setFailure()
                 if (xsDataIntegrationSubWedgeResult is None):
-                    strError = "MOSFLM integration error : no integration results obtained."
-                    self.addExecutiveSummaryLine(strError)
-                    self.ERROR(strError)
-                    self.setFailure()
+                    strWarning = "MOSFLM integration error : no integration results obtained."
+                    self.addExecutiveSummaryLine(strWarning)
+                    self.WARNING(strWarning)
+#                    self.setFailure()
                 else:
                     xsDataIntegrationSubWedgeResult.setSubWedgeNumber(XSDataInteger(iSubWedgeNumber))
                     xsDataStatisticsIntegration = xsDataIntegrationSubWedgeResult.getStatistics()
-                    fRMSSpotDeviation = xsDataStatisticsIntegration.getRMSSpotDeviation().getValue()
-                    if (self.__fMaxRMSSpotDeviation is not None):
-                        if (self.__fMaxRMSSpotDeviation < fRMSSpotDeviation):
-                            iImageStart = edPluginIntegration.getDataInput().getImageStart().getValue()
-                            iImageEnd = edPluginIntegration.getDataInput().getImageEnd().getValue()
-                            errorMessage = EDMessage.ERROR_DATA_HANDLER_02 % ("EDPluginControlIntegrationv10.postProcess", \
-                                                                               "MOSFLM Integration : RMS spot deviation (%.3f [mm]) larger than max value from configuration (%.3f [mm]) for images %d to %d" % \
-                                                                               (fRMSSpotDeviation, self.__fMaxRMSSpotDeviation, iImageStart, iImageEnd))
-                            self.error(errorMessage)
-                            self.addErrorMessage(errorMessage)
+                    if xsDataStatisticsIntegration.getRMSSpotDeviation() is not None:
+                        fRMSSpotDeviation = xsDataStatisticsIntegration.getRMSSpotDeviation().getValue()
+                        if (self.__fMaxRMSSpotDeviation is not None):
+                            if (self.__fMaxRMSSpotDeviation < fRMSSpotDeviation):
+                                iImageStart = edPluginIntegration.getDataInput().getImageStart().getValue()
+                                iImageEnd = edPluginIntegration.getDataInput().getImageEnd().getValue()
+                                errorMessage = EDMessage.ERROR_DATA_HANDLER_02 % ("EDPluginControlIntegrationv10.postProcess", \
+                                                                                   "MOSFLM Integration : RMS spot deviation (%.3f [mm]) larger than max value from configuration (%.3f [mm]) for images %d to %d" % \
+                                                                                   (fRMSSpotDeviation, self.__fMaxRMSSpotDeviation, iImageStart, iImageEnd))
+                                self.error(errorMessage)
+                                self.addErrorMessage(errorMessage)
                     if (xsDataIntegrationSubWedgeResult is not None):
                         if (self.__xsDataIntegrationResult is None):
                             self.__xsDataIntegrationResult = XSDataIntegrationResult()
                         self.__xsDataIntegrationResult.addIntegrationSubWedgeResult(xsDataIntegrationSubWedgeResult)
+        bSuccess = False
+        for integrationSubWedgeResult in self.__xsDataIntegrationResult.integrationSubWedgeResult:
+            if integrationSubWedgeResult.statistics.iOverSigmaOverall is not None:
+                bSuccess = True
+                break
+        if not bSuccess:
+            strErrorMessage = "MOSFLM integration failed for all images"
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
+            self.setFailure()
         self.setDataOutput(self.__xsDataIntegrationResult)
         if self.__xsDataIntegrationResult is not None:
             self.generateIntegrationShortSummary(self.__xsDataIntegrationResult)
@@ -245,21 +255,24 @@ class EDPluginControlIntegrationv10(EDPluginControl):
             iSubWedgeNumber = xsDataIntegrationSubWedgeResult.getSubWedgeNumber().getValue()
             strIntegrationShortSummary += "Integration: %d " % iSubWedgeNumber
             xsDataStatisticsIntegration = xsDataIntegrationSubWedgeResult.getStatistics()
-            iNoFull = xsDataStatisticsIntegration.getNumberOfFullyRecordedReflections().getValue()
-            strIntegrationShortSummary += "no full: %d, " % iNoFull
-            iNoPartial = xsDataStatisticsIntegration.getNumberOfPartialReflections().getValue()
-            strIntegrationShortSummary += "part: %d, " % iNoPartial
-            iNoBad = xsDataStatisticsIntegration.getNumberOfBadReflections().getValue()
-            iNoNegative = xsDataStatisticsIntegration.getNumberOfNegativeReflections().getValue()
-            iNoOverlapped = xsDataStatisticsIntegration.getNumberOfOverlappedReflections().getValue()
-            strIntegrationShortSummary += "bad/neg/ovrlp: %d, " % (iNoBad + iNoNegative + iNoOverlapped)
-            fRMSSpotDeviation = xsDataStatisticsIntegration.getRMSSpotDeviation().getValue()
-            strIntegrationShortSummary += "RMS dev: %.3f [mm], " % fRMSSpotDeviation
-            fIOverSigmaOverall = xsDataStatisticsIntegration.getIOverSigmaOverall().getValue()
-            strIntegrationShortSummary += "I/sigma overall %.1f " % fIOverSigmaOverall
-            fIOverSigmaAtHighestResolution = xsDataStatisticsIntegration.getIOverSigmaAtHighestResolution().getValue()
-            strIntegrationShortSummary += "at highest res %.1f" % fIOverSigmaAtHighestResolution
-            strIntegrationShortSummary += "\n"
+            if xsDataStatisticsIntegration.getNumberOfFullyRecordedReflections() is None:
+                strIntegrationShortSummary += "FAILED\n"
+            else:
+                iNoFull = xsDataStatisticsIntegration.getNumberOfFullyRecordedReflections().getValue()
+                strIntegrationShortSummary += "no full: %d, " % iNoFull
+                iNoPartial = xsDataStatisticsIntegration.getNumberOfPartialReflections().getValue()
+                strIntegrationShortSummary += "part: %d, " % iNoPartial
+                iNoBad = xsDataStatisticsIntegration.getNumberOfBadReflections().getValue()
+                iNoNegative = xsDataStatisticsIntegration.getNumberOfNegativeReflections().getValue()
+                iNoOverlapped = xsDataStatisticsIntegration.getNumberOfOverlappedReflections().getValue()
+                strIntegrationShortSummary += "bad/neg/ovrlp: %d, " % (iNoBad + iNoNegative + iNoOverlapped)
+                fRMSSpotDeviation = xsDataStatisticsIntegration.getRMSSpotDeviation().getValue()
+                strIntegrationShortSummary += "RMS dev: %.3f [mm], " % fRMSSpotDeviation
+                fIOverSigmaOverall = xsDataStatisticsIntegration.getIOverSigmaOverall().getValue()
+                strIntegrationShortSummary += "I/sigma overall %.1f " % fIOverSigmaOverall
+                fIOverSigmaAtHighestResolution = xsDataStatisticsIntegration.getIOverSigmaAtHighestResolution().getValue()
+                strIntegrationShortSummary += "at highest res %.1f" % fIOverSigmaAtHighestResolution
+                strIntegrationShortSummary += "\n"
         for strLine in strIntegrationShortSummary.split("\n"):
             self.screen(strLine)
         self.setDataOutput(XSDataString(strIntegrationShortSummary), "integrationShortSummary")

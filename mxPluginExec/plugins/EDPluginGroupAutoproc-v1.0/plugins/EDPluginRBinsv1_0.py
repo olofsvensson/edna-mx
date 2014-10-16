@@ -5,7 +5,7 @@ import re
 from EDVerbose import EDVerbose
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
-from XSDataCommon import XSDataFloat, XSDataString
+from XSDataCommon import XSDataDouble, XSDataString
 
 
 class EDPluginRBinsv1_0(EDPluginExecProcessScript):

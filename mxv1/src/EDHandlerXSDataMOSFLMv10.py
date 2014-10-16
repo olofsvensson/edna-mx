@@ -450,9 +450,10 @@ class EDHandlerXSDataMOSFLMv10:
         if (xsDataDetector is None):
             xsDataDetector = XSDataDetector()
 
-        xsDataIntegrationSubWedgeResult.setBestfilePar(XSDataString(_xsDataMOSFLMOutputIntegration.getBestfilePar().getValue()))
-        xsDataIntegrationSubWedgeResult.setBestfileDat(XSDataString(_xsDataMOSFLMOutputIntegration.getBestfileDat().getValue()))
-        xsDataIntegrationSubWedgeResult.setBestfileHKL(XSDataString(_xsDataMOSFLMOutputIntegration.getBestfileHKL().getValue()))
+        if _xsDataMOSFLMOutputIntegration.getBestfilePar() is not None:
+            xsDataIntegrationSubWedgeResult.setBestfilePar(XSDataString(_xsDataMOSFLMOutputIntegration.getBestfilePar().getValue()))
+            xsDataIntegrationSubWedgeResult.setBestfileDat(XSDataString(_xsDataMOSFLMOutputIntegration.getBestfileDat().getValue()))
+            xsDataIntegrationSubWedgeResult.setBestfileHKL(XSDataString(_xsDataMOSFLMOutputIntegration.getBestfileHKL().getValue()))
 
         xsDataLengthRefinedDistance = _xsDataMOSFLMOutputIntegration.getRefinedDistance()
         if (xsDataLengthRefinedDistance is not None):

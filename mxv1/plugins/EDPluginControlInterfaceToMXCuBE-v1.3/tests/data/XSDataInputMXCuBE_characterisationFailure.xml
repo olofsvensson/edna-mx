@@ -14,6 +14,21 @@
         <value>${EDNA_TESTIMAGES}/fewSpots_1_001.img</value>
       </path>
     </imageFile>
+  	<imageFile>
+      <path>
+        <value>${EDNA_TESTIMAGES}/fewSpots_1_001.img</value>
+      </path>
+    </imageFile>
+  	<imageFile>
+      <path>
+        <value>${EDNA_TESTIMAGES}/fewSpots_1_001.img</value>
+      </path>
+    </imageFile>
+  	<imageFile>
+      <path>
+        <value>${EDNA_TESTIMAGES}/fewSpots_1_001.img</value>
+      </path>
+    </imageFile>
   </dataSet>
   <diffractionPlan>
     <complexity>

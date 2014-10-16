@@ -39,7 +39,7 @@ import shutil
 
 from EDPlugin import EDPlugin
 from EDVerbose import EDVerbose
-from XSDataCommon import XSDataBoolean, XSDataInteger, XSDataFloat
+from XSDataCommon import XSDataBoolean, XSDataInteger, XSDataDouble
 from XSDataCommon import XSDataVectorDouble, XSDataString
 from XSDataAutoprocv1_0 import XSDataXdsOutputFile, XSDataXdsOutput
 from XSDataAutoprocv1_0 import XSData2DCoordinates, XSDataXdsCompletenessEntry
@@ -181,7 +181,7 @@ class EDPluginParseXdsOutputv1_0(EDPlugin):
                     chunks = line.split()
                     if len(chunks) == 7:
                         output.sg_number = XSDataInteger(int(chunks[0]))
-                        output.unit_cell_constants = [XSDataFloat(float(x)) for x in chunks[1:]]
+                        output.unit_cell_constants = [XSDataDouble(float(x)) for x in chunks[1:]]
 
 
         input_file = self.dataInput.correct_lp.path.value
@@ -221,7 +221,7 @@ def _extract_infos(lines, output):
     # now fill in the data model with the values we got (and stop if
     # any of them is missing)
     try:
-        output.crystal_mosaicity = XSDataFloat(parsed['CRYSTAL MOSAICITY (DEGREES)'][0])
+        output.crystal_mosaicity = XSDataDouble(parsed['CRYSTAL MOSAICITY (DEGREES)'][0])
 
         output.direct_beam_coordinates = XSDataVectorDouble()
         output.direct_beam_coordinates.v1 = parsed['DIRECT BEAM COORDINATES (REC. ANGSTROEM)'][0]
@@ -229,14 +229,14 @@ def _extract_infos(lines, output):
         output.direct_beam_coordinates.v3 = parsed['DIRECT BEAM COORDINATES (REC. ANGSTROEM)'][2]
 
         output.direct_beam_detector_coordinates = XSData2DCoordinates()
-        output.direct_beam_detector_coordinates.x = XSDataFloat(parsed['DETECTOR COORDINATES (PIXELS) OF DIRECT BEAM'][0])
-        output.direct_beam_detector_coordinates.y = XSDataFloat(parsed['DETECTOR COORDINATES (PIXELS) OF DIRECT BEAM'][1])
+        output.direct_beam_detector_coordinates.x = XSDataDouble(parsed['DETECTOR COORDINATES (PIXELS) OF DIRECT BEAM'][0])
+        output.direct_beam_detector_coordinates.y = XSDataDouble(parsed['DETECTOR COORDINATES (PIXELS) OF DIRECT BEAM'][1])
 
         output.detector_origin = XSData2DCoordinates()
-        output.detector_origin.x = XSDataFloat(parsed['DETECTOR ORIGIN (PIXELS) AT'][0])
-        output.detector_origin.y = XSDataFloat(parsed['DETECTOR ORIGIN (PIXELS) AT'][1])
+        output.detector_origin.x = XSDataDouble(parsed['DETECTOR ORIGIN (PIXELS) AT'][0])
+        output.detector_origin.y = XSDataDouble(parsed['DETECTOR ORIGIN (PIXELS) AT'][1])
 
-        output.crystal_to_detector_distance = XSDataFloat(parsed['CRYSTAL TO DETECTOR DISTANCE (mm)'][0])
+        output.crystal_to_detector_distance = XSDataDouble(parsed['CRYSTAL TO DETECTOR DISTANCE (mm)'][0])
 
         output.coordinates_of_unit_cell_a_axis = XSDataVectorDouble()
         output.coordinates_of_unit_cell_a_axis.v1 = parsed['COORDINATES OF UNIT CELL A-AXIS'][0]
@@ -253,7 +253,7 @@ def _extract_infos(lines, output):
         output.coordinates_of_unit_cell_c_axis.v2 = parsed['COORDINATES OF UNIT CELL C-AXIS'][1]
         output.coordinates_of_unit_cell_c_axis.v3 = parsed['COORDINATES OF UNIT CELL C-AXIS'][2]
 
-        parsed['UNIT_CELL_CONSTANTS='] = [XSDataFloat(x) for x in parsed['UNIT_CELL_CONSTANTS='] ]
+        parsed['UNIT_CELL_CONSTANTS='] = [XSDataDouble(x) for x in parsed['UNIT_CELL_CONSTANTS='] ]
 
         # there may be trailing information after the 6 floats (the
         # string "as used by INTEGRATE")
@@ -295,12 +295,12 @@ def _extract_completeness_entries(lines, output):
 
         if not total:
             # regular line, so extract the resolution
-            completeness_entry.res = XSDataFloat(float(line[res_start:res_end]))
+            completeness_entry.res = XSDataDouble(float(line[res_start:res_end]))
 
         # Extract values and store them in the data model
         for (name, (start, end)) in offsets.iteritems():
             value = float(line[start:end])
-            setattr(completeness_entry, name, XSDataFloat(value))
+            setattr(completeness_entry, name, XSDataDouble(value))
 
         if total:
             output.total_completeness = completeness_entry

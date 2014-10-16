@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<XSDataInputMtz2Various>
+  <mtzfile>
+    <path>
+      <value>${EDNA_TESTIMAGES}/dimple_noanom_aimless.mtz</value>
+    </path>
+  </mtzfile>
+  <pdbfile>
+    <path>
+      <value>${EDNA_TESTIMAGES}/dimple_model.pdb</value>
+    </path>
+  </pdbfile>
+</XSDataInputMtz2Various>

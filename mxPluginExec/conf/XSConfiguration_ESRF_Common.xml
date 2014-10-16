@@ -417,13 +417,29 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
-
+		<XSPluginItem> 
+			<name>EDPluginExecDimplev1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/dimple</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>600</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
 		<XSPluginItem>
 			<name>EDPluginControlRunXdsFastProcv1_0</name>
 			<XSParamList>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>1800</value>
+					<value>3600</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -436,7 +452,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>1800</value>
+					<value>4500</value>
 				</XSParamItem>
 			    <XSParamItem>
 			        <name>contactEmail</name>

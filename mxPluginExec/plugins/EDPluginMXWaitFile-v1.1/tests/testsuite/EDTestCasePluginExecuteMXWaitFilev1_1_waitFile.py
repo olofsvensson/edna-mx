@@ -29,7 +29,7 @@ __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20140623"
 
-import os, tempfile, shutil
+import os, tempfile, shutil, time
 
 from threading import Timer
 
@@ -76,6 +76,7 @@ class EDTestCasePluginExecuteMXWaitFilev1_1_waitFile(EDTestCasePluginExecute):
         # Check timeout
         edPlugin = self.getPlugin()
         EDAssert.equal(False, edPlugin.dataOutput.timedOut.value, "TimedOut should be False")
+        time.sleep(1)
         shutil.rmtree(self.strTmpDir)
         if self.strTmpDirOrig is not None:
             os.environ["EDNA_TMP_DIR"] = self.strTmpDirOrig

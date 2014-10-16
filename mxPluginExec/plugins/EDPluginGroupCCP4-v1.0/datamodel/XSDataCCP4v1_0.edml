@@ -4,6 +4,9 @@ import XSDataCommon.XSDataInput
 import XSDataCommon.XSDataResult
 import XSDataCommon.XSDataFile
 import XSDataCommon.XSDataString
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataBoolean
 
 complex type XSDataInputMtz2Various extends XSDataInput {
 	mtzfile : XSDataFile
@@ -15,3 +18,48 @@ complex type XSDataInputMtz2Various extends XSDataInput {
 complex type XSDataResultMtz2Various extends XSDataResult {
 	hklfile : XSDataFile
 }
+
+complex type XSDataInputDimple extends XSDataInput {
+	mtzfile : XSDataFile
+	pdbfile : XSDataFile
+}
+
+complex type XSDataResultDimple extends XSDataResult {
+	blobfile : XSDataFile [] optional
+}
+
+complex type XSDataAimless extends XSDataInput {
+        input_file			: XSDataString // intermediate file name
+        output_file			: XSDataString
+        command_file		: XSDataString
+        dataCollectionID	: XSDataInteger
+        start_image			: XSDataInteger
+        end_image			: XSDataInteger
+        res					: XSDataDouble
+        anom				: XSDataBoolean
+}
+
+complex type XSDataPointless extends XSDataInput {
+        input_file      : XSDataString // XDS HKL file
+        output_file	: XSDataString
+
+}
+
+complex type XSDataPointlessOut extends XSDataResult {
+	sgnumber	: XSDataInteger optional
+	sgstr		: XSDataString optional
+}
+
+complex type XSDataTruncate extends XSDataInput {
+        input_file  : XSDataString
+        output_file : XSDataString
+        nres        : XSDataDouble
+        anom        : XSDataBoolean
+        res         : XSDataDouble
+}
+
+complex type XSDataUniqueify  extends XSDataInput {
+        input_file  : XSDataString
+        output_file : XSDataString
+}
+

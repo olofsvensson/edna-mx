@@ -40,16 +40,11 @@ class EDTestCasePluginControlAutoprocv1_0_id29_20140505(EDTestCasePluginExecute)
     """
 
     def __init__(self, _strTestName = None):
-        """
-        """
         EDTestCasePluginExecute.__init__(self, "EDPluginControlAutoprocv1_0")
-#        self.setConfigurationFile(os.path.join(self.getPluginTestsDataHome(),
-#                                               "XSConfiguration_SolveContent.xml"))
         self.strTestDir = os.path.join(self.getPluginTestsDataHome(), "id29_20140505")
         self.setDataInputFile(os.path.join(self.strTestDir,
                                            "edna-autoproc-input.xml"))
-#        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \
-#                                                     "XSDataAutoproc_reference.xml"))
+        self.setNoExpectedErrorMessages(1) # insufficient percentage of indexed reflections
 
 
     def preProcess(self, _edPlugin=None):

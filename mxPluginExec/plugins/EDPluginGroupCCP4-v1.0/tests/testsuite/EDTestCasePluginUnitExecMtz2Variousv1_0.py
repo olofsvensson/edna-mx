@@ -50,9 +50,3 @@ class EDTestCasePluginUnitExecMtz2Variousv1_0(EDTestCasePluginUnit):
     def process(self):
         self.addTestMethod(self.testCheckParameters)
 
-    
-
-if __name__ == '__main__':
-
-    edTestCasePluginUnitExecMtz2Variousv1_0 = EDTestCasePluginUnitExecMtz2Variousv1_0("EDTestCasePluginUnitExecMtz2Variousv1_0")
-    edTestCasePluginUnitExecMtz2Variousv1_0.execute()

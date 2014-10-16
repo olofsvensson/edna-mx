@@ -3,6 +3,7 @@ from types import ListType, TupleType
 import logging
 from xdscfgformat import CONFIGURATION_PARSERS
 from xdscfgformat import REPEATABLE_PARAMS
+from EDUtilsPath import EDUtilsPath
 
 # Load a XDS file, remove the comments, and then split it into a list
 # of (keyword, [args]) tuples
@@ -53,6 +54,24 @@ def _load_xds_file(path):
 def parse_xds_file(path):
     parsed = dict()
     loaded = _load_xds_file(path)
+
+    # Workaround for problem in ESRF XDS.INP generation during burn strategy workflow execution
+    if EDUtilsPath.isESRF():
+        has_added_spot_range = False 
+        tmp_loaded = []
+        for kw, args in loaded:
+            if kw == "DATA_RANGE=":
+                data_range = args
+                tmp_loaded.append((kw, args))
+            elif kw == "SPOT_RANGE=":
+                if len(args) == 2:
+                    tmp_loaded.append((kw, args))
+                    has_added_spot_range = True
+            else:
+                tmp_loaded.append((kw, args))
+        if not has_added_spot_range:
+            tmp_loaded.insert(2, ("SPOT_RANGE=", data_range))
+            loaded = tmp_loaded
 
     # pythonize the arguments
     for kw, args in loaded:

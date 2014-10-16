@@ -207,6 +207,18 @@ complex type XSDataResultRetrieveDataCollection extends XSDataResult {
 	dataCollection : XSDataISPyBDataCollection
 }
 
+complex type XSDataInputUpdateSnapshots extends XSDataInput {
+	image : XSDataImage
+	xtalSnapshotFullPath1: XSDataFile
+	xtalSnapshotFullPath2: XSDataFile optional
+	xtalSnapshotFullPath3: XSDataFile optional
+	xtalSnapshotFullPath4: XSDataFile optional
+}
+
+complex type XSDataResultUpdateSnapshots extends XSDataResult {
+	dataCollectionId : XSDataInteger
+}
+
 complex type XSDataISPyBDataCollection {
 	actualCenteringPosition : string
 	averageTemperature : float

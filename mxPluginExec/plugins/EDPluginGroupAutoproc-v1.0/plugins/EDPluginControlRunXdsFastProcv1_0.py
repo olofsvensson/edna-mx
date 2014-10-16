@@ -36,7 +36,10 @@ from EDVerbose import EDVerbose
 
 from XSDataCommon import XSDataFile, XSDataString
 
-from XSDataAutoprocv1_0  import XSDataMinimalXdsIn, XSDataXdsOutputFile, XSDataRange
+from XSDataAutoprocv1_0 import XSDataMinimalXdsIn
+from XSDataAutoprocv1_0 import XSDataXdsOutput
+from XSDataAutoprocv1_0 import XSDataXdsOutputFile
+from XSDataAutoprocv1_0 import XSDataRange
 
 from xdscfgparser import parse_xds_file
 
@@ -48,10 +51,9 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
 
 
     def __init__( self ):
-        """
-        """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataMinimalXdsIn)
+        self.setDataOutput(XSDataXdsOutput())
         self.controlled_plugin_name = 'EDPluginExecMinimalXdsv1_0'
         self.first_run = None
         self.second_run = None
@@ -78,7 +80,9 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
         cfg = parse_xds_file(self.dataInput.input_file.value)
         spot_range = cfg.get('SPOT_RANGE=')
         if spot_range is None:
-            self.ERROR('no SPOT_RANGE parameter')
+            strErrorMessage = "No SPOT_RANGE parameter"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.setFailure()
         else:
             self.spot_range = spot_range
@@ -105,6 +109,7 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
         #params.job = XSDataString('XYCORR INIT COLSPOT IDXREF')
         self.first_run.dataInput = params
         self.first_run.executeSynchronous()
+        self.retrieveFailureMessages(self.first_run, "First XDS run")
 
         EDVerbose.DEBUG('first run completed...')
 
@@ -145,7 +150,8 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
 
             self.second_run.dataInput = params
             self.second_run.executeSynchronous()
-
+            self.retrieveFailureMessages(self.second_run, "Second XDS run")
+            
             EDVerbose.DEBUG('second run completed')
             if self.second_run.dataOutput is not None and self.second_run.dataOutput.succeeded.value:
                 EDVerbose.DEBUG('... and it worked')
@@ -181,6 +187,7 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
 
             self.third_run.dataInput = params
             self.third_run.executeSynchronous()
+            self.retrieveFailureMessages(self.third_run, "Third XDS run")
 
             EDVerbose.DEBUG('third run completed')
             if self.third_run.dataOutput is not None and self.third_run.dataOutput.succeeded.value:
@@ -191,6 +198,9 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
 
         if not self.successful_run:
         # all runs failed so bail out ...
+            strErrorMessage = "All three XDS runs failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
             self.setFailure()
         else:
             # use the xds parser plugin to parse the xds output file...
