@@ -109,6 +109,8 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
                 elif any( beamline in strPathToDiffractionImage for beamline in ["id23eh2", "id30a1"]):
                     # Pilatus3 2M
                     self.minImageSize = 2000000
+            elif EDUtilsPath.isEMBL():
+                    self.minImageSize = 10000
             xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
             xsDataInputMXWaitFile.setFile(self.getDataInput().getDiffractionImage())
             if self.getDataInput().getWaitForFileTimeOut():
