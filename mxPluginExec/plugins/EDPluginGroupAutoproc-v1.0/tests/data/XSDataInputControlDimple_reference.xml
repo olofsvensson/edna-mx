@@ -8,4 +8,7 @@
 			<value>${EDNA_TESTIMAGES}/dimple_noanom_aimless.mtz</value>
 		</path>
 	</mtzFile>
+	<imagePrefix>
+		<value>xtal5w1_1</value>
+	</imagePrefix>
 </XSDataInputControlDimple>

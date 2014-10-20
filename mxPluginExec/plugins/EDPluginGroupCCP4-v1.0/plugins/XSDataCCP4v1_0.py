@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Oct 10 05:28::37 2014 by EDGenerateDS.
+# Generated Wed Oct 15 10:45::19 2014 by EDGenerateDS.
 #
 
 import os, sys
@@ -411,46 +411,46 @@ class XSDataAimless(XSDataInput):
 
 
 class XSDataInputDimple(XSDataInput):
-    def __init__(self, configuration=None, pdbfile=None, mtzfile=None):
+    def __init__(self, configuration=None, pdb=None, mtz=None):
         XSDataInput.__init__(self, configuration)
-        if mtzfile is None:
-            self._mtzfile = None
-        elif mtzfile.__class__.__name__ == "XSDataFile":
-            self._mtzfile = mtzfile
+        if mtz is None:
+            self._mtz = None
+        elif mtz.__class__.__name__ == "XSDataFile":
+            self._mtz = mtz
         else:
-            strMessage = "ERROR! XSDataInputDimple constructor argument 'mtzfile' is not XSDataFile but %s" % self._mtzfile.__class__.__name__
+            strMessage = "ERROR! XSDataInputDimple constructor argument 'mtz' is not XSDataFile but %s" % self._mtz.__class__.__name__
             raise BaseException(strMessage)
-        if pdbfile is None:
-            self._pdbfile = None
-        elif pdbfile.__class__.__name__ == "XSDataFile":
-            self._pdbfile = pdbfile
+        if pdb is None:
+            self._pdb = None
+        elif pdb.__class__.__name__ == "XSDataFile":
+            self._pdb = pdb
         else:
-            strMessage = "ERROR! XSDataInputDimple constructor argument 'pdbfile' is not XSDataFile but %s" % self._pdbfile.__class__.__name__
+            strMessage = "ERROR! XSDataInputDimple constructor argument 'pdb' is not XSDataFile but %s" % self._pdb.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'mtzfile' attribute
-    def getMtzfile(self): return self._mtzfile
-    def setMtzfile(self, mtzfile):
-        if mtzfile is None:
-            self._mtzfile = None
-        elif mtzfile.__class__.__name__ == "XSDataFile":
-            self._mtzfile = mtzfile
+    # Methods and properties for the 'mtz' attribute
+    def getMtz(self): return self._mtz
+    def setMtz(self, mtz):
+        if mtz is None:
+            self._mtz = None
+        elif mtz.__class__.__name__ == "XSDataFile":
+            self._mtz = mtz
         else:
-            strMessage = "ERROR! XSDataInputDimple.setMtzfile argument is not XSDataFile but %s" % mtzfile.__class__.__name__
+            strMessage = "ERROR! XSDataInputDimple.setMtz argument is not XSDataFile but %s" % mtz.__class__.__name__
             raise BaseException(strMessage)
-    def delMtzfile(self): self._mtzfile = None
-    mtzfile = property(getMtzfile, setMtzfile, delMtzfile, "Property for mtzfile")
-    # Methods and properties for the 'pdbfile' attribute
-    def getPdbfile(self): return self._pdbfile
-    def setPdbfile(self, pdbfile):
-        if pdbfile is None:
-            self._pdbfile = None
-        elif pdbfile.__class__.__name__ == "XSDataFile":
-            self._pdbfile = pdbfile
+    def delMtz(self): self._mtz = None
+    mtz = property(getMtz, setMtz, delMtz, "Property for mtz")
+    # Methods and properties for the 'pdb' attribute
+    def getPdb(self): return self._pdb
+    def setPdb(self, pdb):
+        if pdb is None:
+            self._pdb = None
+        elif pdb.__class__.__name__ == "XSDataFile":
+            self._pdb = pdb
         else:
-            strMessage = "ERROR! XSDataInputDimple.setPdbfile argument is not XSDataFile but %s" % pdbfile.__class__.__name__
+            strMessage = "ERROR! XSDataInputDimple.setPdb argument is not XSDataFile but %s" % pdb.__class__.__name__
             raise BaseException(strMessage)
-    def delPdbfile(self): self._pdbfile = None
-    pdbfile = property(getPdbfile, setPdbfile, delPdbfile, "Property for pdbfile")
+    def delPdb(self): self._pdb = None
+    pdb = property(getPdb, setPdb, delPdb, "Property for pdb")
     def export(self, outfile, level, name_='XSDataInputDimple'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -459,29 +459,29 @@ class XSDataInputDimple(XSDataInput):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataInputDimple'):
         XSDataInput.exportChildren(self, outfile, level, name_)
-        if self._mtzfile is not None:
-            self.mtzfile.export(outfile, level, name_='mtzfile')
+        if self._mtz is not None:
+            self.mtz.export(outfile, level, name_='mtz')
         else:
-            warnEmptyAttribute("mtzfile", "XSDataFile")
-        if self._pdbfile is not None:
-            self.pdbfile.export(outfile, level, name_='pdbfile')
+            warnEmptyAttribute("mtz", "XSDataFile")
+        if self._pdb is not None:
+            self.pdb.export(outfile, level, name_='pdb')
         else:
-            warnEmptyAttribute("pdbfile", "XSDataFile")
+            warnEmptyAttribute("pdb", "XSDataFile")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'mtzfile':
+            nodeName_ == 'mtz':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setMtzfile(obj_)
+            self.setMtz(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'pdbfile':
+            nodeName_ == 'pdb':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setPdbfile(obj_)
+            self.setPdb(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -948,48 +948,124 @@ class XSDataPointlessOut(XSDataResult):
 
 
 class XSDataResultDimple(XSDataResult):
-    def __init__(self, status=None, blobfile=None):
+    def __init__(self, status=None, findBlobsLog=None, log=None, finalPdb=None, finalMtz=None, blob=None):
         XSDataResult.__init__(self, status)
-        if blobfile is None:
-            self._blobfile = []
-        elif blobfile.__class__.__name__ == "list":
-            self._blobfile = blobfile
+        if blob is None:
+            self._blob = []
+        elif blob.__class__.__name__ == "list":
+            self._blob = blob
         else:
-            strMessage = "ERROR! XSDataResultDimple constructor argument 'blobfile' is not list but %s" % self._blobfile.__class__.__name__
+            strMessage = "ERROR! XSDataResultDimple constructor argument 'blob' is not list but %s" % self._blob.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'blobfile' attribute
-    def getBlobfile(self): return self._blobfile
-    def setBlobfile(self, blobfile):
-        if blobfile is None:
-            self._blobfile = []
-        elif blobfile.__class__.__name__ == "list":
-            self._blobfile = blobfile
+        if finalMtz is None:
+            self._finalMtz = None
+        elif finalMtz.__class__.__name__ == "XSDataFile":
+            self._finalMtz = finalMtz
         else:
-            strMessage = "ERROR! XSDataResultDimple.setBlobfile argument is not list but %s" % blobfile.__class__.__name__
+            strMessage = "ERROR! XSDataResultDimple constructor argument 'finalMtz' is not XSDataFile but %s" % self._finalMtz.__class__.__name__
             raise BaseException(strMessage)
-    def delBlobfile(self): self._blobfile = None
-    blobfile = property(getBlobfile, setBlobfile, delBlobfile, "Property for blobfile")
-    def addBlobfile(self, value):
+        if finalPdb is None:
+            self._finalPdb = None
+        elif finalPdb.__class__.__name__ == "XSDataFile":
+            self._finalPdb = finalPdb
+        else:
+            strMessage = "ERROR! XSDataResultDimple constructor argument 'finalPdb' is not XSDataFile but %s" % self._finalPdb.__class__.__name__
+            raise BaseException(strMessage)
+        if log is None:
+            self._log = None
+        elif log.__class__.__name__ == "XSDataFile":
+            self._log = log
+        else:
+            strMessage = "ERROR! XSDataResultDimple constructor argument 'log' is not XSDataFile but %s" % self._log.__class__.__name__
+            raise BaseException(strMessage)
+        if findBlobsLog is None:
+            self._findBlobsLog = None
+        elif findBlobsLog.__class__.__name__ == "XSDataFile":
+            self._findBlobsLog = findBlobsLog
+        else:
+            strMessage = "ERROR! XSDataResultDimple constructor argument 'findBlobsLog' is not XSDataFile but %s" % self._findBlobsLog.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'blob' attribute
+    def getBlob(self): return self._blob
+    def setBlob(self, blob):
+        if blob is None:
+            self._blob = []
+        elif blob.__class__.__name__ == "list":
+            self._blob = blob
+        else:
+            strMessage = "ERROR! XSDataResultDimple.setBlob argument is not list but %s" % blob.__class__.__name__
+            raise BaseException(strMessage)
+    def delBlob(self): self._blob = None
+    blob = property(getBlob, setBlob, delBlob, "Property for blob")
+    def addBlob(self, value):
         if value is None:
-            strMessage = "ERROR! XSDataResultDimple.addBlobfile argument is None"
+            strMessage = "ERROR! XSDataResultDimple.addBlob argument is None"
             raise BaseException(strMessage)            
         elif value.__class__.__name__ == "XSDataFile":
-            self._blobfile.append(value)
+            self._blob.append(value)
         else:
-            strMessage = "ERROR! XSDataResultDimple.addBlobfile argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataResultDimple.addBlob argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
-    def insertBlobfile(self, index, value):
+    def insertBlob(self, index, value):
         if index is None:
-            strMessage = "ERROR! XSDataResultDimple.insertBlobfile argument 'index' is None"
+            strMessage = "ERROR! XSDataResultDimple.insertBlob argument 'index' is None"
             raise BaseException(strMessage)            
         if value is None:
-            strMessage = "ERROR! XSDataResultDimple.insertBlobfile argument 'value' is None"
+            strMessage = "ERROR! XSDataResultDimple.insertBlob argument 'value' is None"
             raise BaseException(strMessage)            
         elif value.__class__.__name__ == "XSDataFile":
-            self._blobfile[index] = value
+            self._blob[index] = value
         else:
-            strMessage = "ERROR! XSDataResultDimple.addBlobfile argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataResultDimple.addBlob argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
+    # Methods and properties for the 'finalMtz' attribute
+    def getFinalMtz(self): return self._finalMtz
+    def setFinalMtz(self, finalMtz):
+        if finalMtz is None:
+            self._finalMtz = None
+        elif finalMtz.__class__.__name__ == "XSDataFile":
+            self._finalMtz = finalMtz
+        else:
+            strMessage = "ERROR! XSDataResultDimple.setFinalMtz argument is not XSDataFile but %s" % finalMtz.__class__.__name__
+            raise BaseException(strMessage)
+    def delFinalMtz(self): self._finalMtz = None
+    finalMtz = property(getFinalMtz, setFinalMtz, delFinalMtz, "Property for finalMtz")
+    # Methods and properties for the 'finalPdb' attribute
+    def getFinalPdb(self): return self._finalPdb
+    def setFinalPdb(self, finalPdb):
+        if finalPdb is None:
+            self._finalPdb = None
+        elif finalPdb.__class__.__name__ == "XSDataFile":
+            self._finalPdb = finalPdb
+        else:
+            strMessage = "ERROR! XSDataResultDimple.setFinalPdb argument is not XSDataFile but %s" % finalPdb.__class__.__name__
+            raise BaseException(strMessage)
+    def delFinalPdb(self): self._finalPdb = None
+    finalPdb = property(getFinalPdb, setFinalPdb, delFinalPdb, "Property for finalPdb")
+    # Methods and properties for the 'log' attribute
+    def getLog(self): return self._log
+    def setLog(self, log):
+        if log is None:
+            self._log = None
+        elif log.__class__.__name__ == "XSDataFile":
+            self._log = log
+        else:
+            strMessage = "ERROR! XSDataResultDimple.setLog argument is not XSDataFile but %s" % log.__class__.__name__
+            raise BaseException(strMessage)
+    def delLog(self): self._log = None
+    log = property(getLog, setLog, delLog, "Property for log")
+    # Methods and properties for the 'findBlobsLog' attribute
+    def getFindBlobsLog(self): return self._findBlobsLog
+    def setFindBlobsLog(self, findBlobsLog):
+        if findBlobsLog is None:
+            self._findBlobsLog = None
+        elif findBlobsLog.__class__.__name__ == "XSDataFile":
+            self._findBlobsLog = findBlobsLog
+        else:
+            strMessage = "ERROR! XSDataResultDimple.setFindBlobsLog argument is not XSDataFile but %s" % findBlobsLog.__class__.__name__
+            raise BaseException(strMessage)
+    def delFindBlobsLog(self): self._findBlobsLog = None
+    findBlobsLog = property(getFindBlobsLog, setFindBlobsLog, delFindBlobsLog, "Property for findBlobsLog")
     def export(self, outfile, level, name_='XSDataResultDimple'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -998,18 +1074,46 @@ class XSDataResultDimple(XSDataResult):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataResultDimple'):
         XSDataResult.exportChildren(self, outfile, level, name_)
-        for blobfile_ in self.getBlobfile():
-            blobfile_.export(outfile, level, name_='blobfile')
+        for blob_ in self.getBlob():
+            blob_.export(outfile, level, name_='blob')
+        if self._finalMtz is not None:
+            self.finalMtz.export(outfile, level, name_='finalMtz')
+        if self._finalPdb is not None:
+            self.finalPdb.export(outfile, level, name_='finalPdb')
+        if self._log is not None:
+            self.log.export(outfile, level, name_='log')
+        if self._findBlobsLog is not None:
+            self.findBlobsLog.export(outfile, level, name_='findBlobsLog')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'blobfile':
+            nodeName_ == 'blob':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.blobfile.append(obj_)
+            self.blob.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'finalMtz':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setFinalMtz(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'finalPdb':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setFinalPdb(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'log':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setLog(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'findBlobsLog':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setFindBlobsLog(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

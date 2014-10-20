@@ -20,12 +20,16 @@ complex type XSDataResultMtz2Various extends XSDataResult {
 }
 
 complex type XSDataInputDimple extends XSDataInput {
-	mtzfile : XSDataFile
-	pdbfile : XSDataFile
+	mtz : XSDataFile
+	pdb : XSDataFile
 }
 
 complex type XSDataResultDimple extends XSDataResult {
-	blobfile : XSDataFile [] optional
+	blob : XSDataFile [] optional
+	finalMtz : XSDataFile optional
+	finalPdb : XSDataFile optional
+	log : XSDataFile optional
+	findBlobsLog :  XSDataFile optional	
 }
 
 complex type XSDataAimless extends XSDataInput {

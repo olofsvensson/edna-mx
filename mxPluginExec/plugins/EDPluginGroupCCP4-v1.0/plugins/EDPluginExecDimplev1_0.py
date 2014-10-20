@@ -25,7 +25,7 @@ __author__="Olof Svensson"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
-import os
+import os, glob
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
@@ -60,19 +60,35 @@ class EDPluginExecDimplev1_0(EDPluginExecProcessScript ):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginExecDimplev1_0.preProcess")
         xsDataInputDimple = self.getDataInput()
-        strMtzFile = xsDataInputDimple.mtzfile.path.value
-        strPdbFile = xsDataInputDimple.pdbfile.path.value
+        strMtzFile = xsDataInputDimple.mtz.path.value
+        strPdbFile = xsDataInputDimple.pdb.path.value
         self.strDimpleDir = os.path.join(self.getWorkingDirectory(), "dimple")
         self.setScriptCommandline(" " + strMtzFile + " " + strPdbFile + " " + self.strDimpleDir)
 
     
     def postProcess(self, _edObject = None):
         self.DEBUG("EDPluginExecDimplev1_0.postProcess")
+        # Attach log file
+        self.dataOutput.log = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), self.getScriptLogFileName())))
         # Check that coot has created the blobs
         for blobName in ["blob1v1.png", "blob1v2.png", "blob1v3.png", "blob2v1.png", "blob2v2.png", "blob2v3.png"]:
             strBlobPath = os.path.join(self.strDimpleDir, blobName)
             if os.path.exists(strBlobPath):
-                self.dataOutput.addBlobfile(XSDataFile(XSDataString(strBlobPath)))
+                self.dataOutput.addBlob(XSDataFile(XSDataString(strBlobPath)))
+        # Final mtz and pdb
+        strFinalMtzPath = os.path.join(self.strDimpleDir, "final.mtz")
+        if os.path.exists(strFinalMtzPath):
+            self.dataOutput.finalMtz = XSDataFile(XSDataString(strFinalMtzPath))
+        strFinalPdbPath = os.path.join(self.strDimpleDir, "final.pdb")
+        if os.path.exists(strFinalPdbPath):
+            self.dataOutput.finalPdb = XSDataFile(XSDataString(strFinalPdbPath))
+        # Findblobs
+        for filepath in glob.glob(os.path.join(self.strDimpleDir, "*.log")):
+            if filepath.endswith("find-blobs.log"):
+                self.dataOutput.findBlobsLog = XSDataFile(XSDataString(filepath))
+                break
+                
+                
             
                 
         

@@ -52,10 +52,14 @@ class EDTestCasePluginExecuteExecDimplev1_0(EDTestCasePluginExecute):
         
         # Check that blob images have been generated
         edPlugin = self.getPlugin()
-        EDAssert.equal(True, edPlugin.dataOutput.blobfile!=[], "Blobfiles in result")
-        for xsDataBlobFile in edPlugin.dataOutput.blobfile:
+        EDAssert.equal(True, edPlugin.dataOutput.blob!=[], "Blobfiles in result")
+        for xsDataBlobFile in edPlugin.dataOutput.blob:
             strPath = xsDataBlobFile.path.value
             EDAssert.equal(True, os.path.exists(strPath), "Path to %s exists" % os.path.basename(strPath))
+        EDAssert.equal(True, os.path.exists(edPlugin.dataOutput.log.path.value), "Path to log file exists")
+        EDAssert.equal(True, os.path.exists(edPlugin.dataOutput.finalMtz.path.value), "Path to final mtz file exists")
+        EDAssert.equal(True, os.path.exists(edPlugin.dataOutput.finalPdb.path.value), "Path to final pdb file exists")
+        EDAssert.equal(True, os.path.exists(edPlugin.dataOutput.findBlobsLog.path.value), "Path to find-blobs.log file exists")
         
 
     def process(self):
