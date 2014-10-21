@@ -112,7 +112,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             if self.dataInput.pyarchPath is not None:
                 self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
                                          self.dataInput.pyarchPath.path.value, 
-                                         xsDataResultDimple)
+                                         xsDataResultControlDimple)
 
             
     def copyResultsToPyarch(self, strImagePrefix, strPyarchRootPath, xsDataResultDimple):
@@ -121,30 +121,28 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         if not os.path.exists(strPyarchRootPath):
             self.ERROR("Pyarch root directory does not exists! %s" % strPyarchRootPath)
         else:
-            # Create "dimple" sub directory
-            strDimplePath = os.path.join(strPyarchRootPath, "dimple")
-            os.makedirs(strDimplePath, 0755)
+            self.DEBUG("Copying results of dimple to : %s" % strPyarchRootPath)
             for xsDataFileBlob in xsDataResultDimple.blob:
                 # Copy blob file to pyarch
                 strBlobName = os.path.basename(xsDataFileBlob.path.value).split(".")[0]
                 strTargetFileName = "%s_%s_dimple.png" % (strImagePrefix, strBlobName)
-                strTargetPath = os.path.join(strDimplePath, strTargetFileName)
+                strTargetPath = os.path.join(strPyarchRootPath, strTargetFileName)
                 shutil.copyfile(xsDataFileBlob.path.value, strTargetPath)
                 listOfTargetPaths.append(strTargetPath)
             # Log file
-            strTargetLogPath = os.path.join(strDimplePath, "%s_dimple.log" % strImagePrefix)
+            strTargetLogPath = os.path.join(strPyarchRootPath, "%s_dimple.log" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.log.path.value, strTargetLogPath)
             listOfTargetPaths.append(strTargetLogPath)
             # Final MTZ file
-            strTargetFinalMtzPath = os.path.join(strDimplePath, "%s_dimple.mtz" % strImagePrefix)
+            strTargetFinalMtzPath = os.path.join(strPyarchRootPath, "%s_dimple.mtz" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.finalMtz.path.value, strTargetFinalMtzPath)
             listOfTargetPaths.append(strTargetFinalMtzPath)
             # Final PDB file
-            strTargetFinalPdbPath = os.path.join(strDimplePath, "%s_dimple.pdb" % strImagePrefix)
+            strTargetFinalPdbPath = os.path.join(strPyarchRootPath, "%s_dimple.pdb" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.finalPdb.path.value, strTargetFinalPdbPath)
             listOfTargetPaths.append(strTargetFinalPdbPath)
             # Findblobs log file
-            strTargetFindBlobsLogPath = os.path.join(strDimplePath, "%s_findblobs_dimple.log" % strImagePrefix)
+            strTargetFindBlobsLogPath = os.path.join(strPyarchRootPath, "%s_findblobs_dimple.log" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.findBlobsLog.path.value, strTargetFindBlobsLogPath)
             listOfTargetPaths.append(strTargetFindBlobsLogPath)
         return listOfTargetPaths

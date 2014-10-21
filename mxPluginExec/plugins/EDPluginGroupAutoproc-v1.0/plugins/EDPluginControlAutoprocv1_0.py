@@ -1116,7 +1116,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         if EDUtilsPath.isESRF():
             xsDataInputControlDimple = XSDataInputControlDimple()
             xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
-            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "_noanom_aimless.mtz")))
+            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "{0}_noanom_aimless.mtz".format(self.image_prefix))))
+            xsDataInputControlDimple.imagePrefix = XSDataString(self.image_prefix)
             xsDataInputControlDimple.pdbDirectory = XSDataFile(XSDataString(self.root_dir))
             if pyarch_path is not None:
                 xsDataInputControlDimple.pyarchPath = XSDataFile(XSDataString(pyarch_path))
