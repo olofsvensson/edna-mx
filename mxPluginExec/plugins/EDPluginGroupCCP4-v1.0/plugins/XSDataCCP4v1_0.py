@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Oct 15 10:45::19 2014 by EDGenerateDS.
+# Generated Tue Oct 21 12:24::57 2014 by EDGenerateDS.
 #
 
 import os, sys
@@ -948,7 +948,7 @@ class XSDataPointlessOut(XSDataResult):
 
 
 class XSDataResultDimple(XSDataResult):
-    def __init__(self, status=None, findBlobsLog=None, log=None, finalPdb=None, finalMtz=None, blob=None):
+    def __init__(self, status=None, refmac5restrLog=None, findBlobsLog=None, log=None, finalPdb=None, finalMtz=None, blob=None):
         XSDataResult.__init__(self, status)
         if blob is None:
             self._blob = []
@@ -984,6 +984,13 @@ class XSDataResultDimple(XSDataResult):
             self._findBlobsLog = findBlobsLog
         else:
             strMessage = "ERROR! XSDataResultDimple constructor argument 'findBlobsLog' is not XSDataFile but %s" % self._findBlobsLog.__class__.__name__
+            raise BaseException(strMessage)
+        if refmac5restrLog is None:
+            self._refmac5restrLog = None
+        elif refmac5restrLog.__class__.__name__ == "XSDataFile":
+            self._refmac5restrLog = refmac5restrLog
+        else:
+            strMessage = "ERROR! XSDataResultDimple constructor argument 'refmac5restrLog' is not XSDataFile but %s" % self._refmac5restrLog.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'blob' attribute
     def getBlob(self): return self._blob
@@ -1066,6 +1073,18 @@ class XSDataResultDimple(XSDataResult):
             raise BaseException(strMessage)
     def delFindBlobsLog(self): self._findBlobsLog = None
     findBlobsLog = property(getFindBlobsLog, setFindBlobsLog, delFindBlobsLog, "Property for findBlobsLog")
+    # Methods and properties for the 'refmac5restrLog' attribute
+    def getRefmac5restrLog(self): return self._refmac5restrLog
+    def setRefmac5restrLog(self, refmac5restrLog):
+        if refmac5restrLog is None:
+            self._refmac5restrLog = None
+        elif refmac5restrLog.__class__.__name__ == "XSDataFile":
+            self._refmac5restrLog = refmac5restrLog
+        else:
+            strMessage = "ERROR! XSDataResultDimple.setRefmac5restrLog argument is not XSDataFile but %s" % refmac5restrLog.__class__.__name__
+            raise BaseException(strMessage)
+    def delRefmac5restrLog(self): self._refmac5restrLog = None
+    refmac5restrLog = property(getRefmac5restrLog, setRefmac5restrLog, delRefmac5restrLog, "Property for refmac5restrLog")
     def export(self, outfile, level, name_='XSDataResultDimple'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1084,6 +1103,8 @@ class XSDataResultDimple(XSDataResult):
             self.log.export(outfile, level, name_='log')
         if self._findBlobsLog is not None:
             self.findBlobsLog.export(outfile, level, name_='findBlobsLog')
+        if self._refmac5restrLog is not None:
+            self.refmac5restrLog.export(outfile, level, name_='refmac5restrLog')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1114,6 +1135,11 @@ class XSDataResultDimple(XSDataResult):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setFindBlobsLog(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'refmac5restrLog':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setRefmac5restrLog(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

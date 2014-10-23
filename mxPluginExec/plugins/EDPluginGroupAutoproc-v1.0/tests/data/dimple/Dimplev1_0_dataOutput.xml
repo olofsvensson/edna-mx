@@ -50,4 +50,9 @@
             <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/dimple/09-find-blobs.log</value>
         </path>
     </findBlobsLog>
+    <refmac5restrLog>
+        <path>
+            <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/dimple/08-refmac5_restr.log</value>
+        </path>
+    </refmac5restrLog>
 </XSDataResultDimple>

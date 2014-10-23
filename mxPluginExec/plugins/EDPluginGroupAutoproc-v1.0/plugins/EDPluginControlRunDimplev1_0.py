@@ -25,11 +25,12 @@ __author__="Olof Svensson"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
-import os, shutil
+import os, shutil, time
 
 from EDPluginControl import EDPluginControl
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDVerbose import EDVerbose
+from EDUtilsFile import EDUtilsFile
 
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataString
@@ -44,6 +45,9 @@ from XSDataISPyBv1_4 import XSDataInputISPyBGetPdbFilePath
 
 EDFactoryPluginStatic.loadModule("XSDataCCP4v1_0")
 from XSDataCCP4v1_0 import XSDataInputDimple
+
+EDFactoryPluginStatic.loadModule("markupv1_7")
+import markupv1_7
 
 
 class EDPluginControlRunDimplev1_0( EDPluginControl ):
@@ -110,9 +114,12 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         if xsDataResultControlDimple is not None:
             # Copy result files to pyarch
             if self.dataInput.pyarchPath is not None:
-                self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
-                                         self.dataInput.pyarchPath.path.value, 
-                                         xsDataResultControlDimple)
+                listOfTargetPaths = self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
+                                                             self.dataInput.pyarchPath.path.value, 
+                                                             xsDataResultControlDimple)
+                htmlPath = self.createHtmlPage(self.dataInput.imagePrefix.value,
+                                               self.dataInput.pyarchPath.path.value)
+                listOfTargetPaths.append(htmlPath)
 
             
     def copyResultsToPyarch(self, strImagePrefix, strPyarchRootPath, xsDataResultDimple):
@@ -145,8 +152,64 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             strTargetFindBlobsLogPath = os.path.join(strPyarchRootPath, "%s_findblobs_dimple.log" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.findBlobsLog.path.value, strTargetFindBlobsLogPath)
             listOfTargetPaths.append(strTargetFindBlobsLogPath)
+            # Refmac5_restr log file
+            strTargetRefmac5restrLogPath = os.path.join(strPyarchRootPath, "%s_refmac5restr_dimple.log" % strImagePrefix)
+            shutil.copyfile(xsDataResultDimple.refmac5restrLog.path.value, strTargetRefmac5restrLogPath)
+            listOfTargetPaths.append(strTargetRefmac5restrLogPath)
         return listOfTargetPaths
             
+    
+    def createHtmlPage(self, strImagePrefix, strPyarchRootPath):
+        """Create an HTML page with the results"""
+        strHtmlFileName = "%s_index.html" % strImagePrefix
+        strPath = os.path.join(strPyarchRootPath, strHtmlFileName)
+        page = markupv1_7.page(mode='loose_html')
+        # Title and footer
+        page.init( title="Dimple Results", 
+                   footer="Generated on %s" % time.asctime())
+        page.div( align_="LEFT")
+        page.h1()
+        page.strong( "Dimple Results" )
+        page.h1.close()
+        page.div.close()
+        # Results of REFMAC 5
+        page.h3("Final results of Recmac 5:")
+        strRefmac5LogPath = os.path.join(strPyarchRootPath, "%s_refmac5restr_dimple.log" % strImagePrefix)
+        page.pre(self.extractFinalResultsFromRefmac5RestrLog(strRefmac5LogPath))
+        # Results of findblobs
+        page.h3("Findblobs log:")
+        strFindblobsLogPath = os.path.join(strPyarchRootPath, "%s_findblobs_dimple.log" % strImagePrefix)
+        page.pre(open(strFindblobsLogPath).read())
+        # Blobs
+        page.br()
+        for blobName in ["blob1v1", "blob1v2", "blob1v3", "blob2v1", "blob2v2", "blob2v3"]:
+            strPageBlobPath = os.path.join(strPyarchRootPath, "%s_%s_dimple.html" % (strImagePrefix, blobName))
+            pageBlob = markupv1_7.page()
+            pageBlob.init( title=blobName, 
+                           footer="Generated on %s" % time.asctime())
+            pageBlob.h1(blobName)
+            pageBlob.div( align_="LEFT")
+            strBlobImage = "%s_%s_dimple.png" % (strImagePrefix, blobName) 
+            pageBlob.img(src=strBlobImage, title=blobName)
+            pageBlob.div.close()
+            pageBlob.br()
+            pageBlob.div( align_="LEFT")
+            pageBlob.a("Back to previous page", href_=strPath)
+            pageBlob.div.close()
+            EDUtilsFile.writeFile(strPageBlobPath, str(pageBlob))
+            page.a( href=strPageBlobPath)
+            page.img( src=strBlobImage, width=300, height=300, title=blobName )
+            page.a.close()
+            if blobName == "blob1v3":
+                page.br()
+        page.br()
+        # FInalise html page
+        strHTML = str(page)
+        EDUtilsFile.writeFile(strPath, strHTML)
+        return strPath
+        
+        
+        
             
     def runDimple(self, strPdbPath, strPathNoanomAimlessMtz):
         self.screen('Running dimple with pdb file {0}'.format(strPdbPath))
@@ -176,3 +239,20 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
     def postProcess(self, _edObject = None):
         EDPluginControl.postProcess(self)
         self.DEBUG("EDPluginControlRunDimplev1_0.postProcess")
+
+
+    def extractFinalResultsFromRefmac5RestrLog(self, logFilePath):
+        fileObject = open(logFilePath)
+        listLines = fileObject.readlines()
+        fileObject.close()
+        iIndex = 0
+        for strLine in listLines:
+            if "Final results" in strLine:
+                break
+            else:
+                iIndex += 1
+        strFinalResults = ""
+        for strLine in listLines[iIndex+1:iIndex+7]:
+            strFinalResults += strLine
+        return strFinalResults
+        

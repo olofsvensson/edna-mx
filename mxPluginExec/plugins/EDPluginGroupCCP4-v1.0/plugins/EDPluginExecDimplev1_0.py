@@ -87,6 +87,11 @@ class EDPluginExecDimplev1_0(EDPluginExecProcessScript ):
             if filepath.endswith("find-blobs.log"):
                 self.dataOutput.findBlobsLog = XSDataFile(XSDataString(filepath))
                 break
+        # Refmac5restr
+        for filepath in glob.glob(os.path.join(self.strDimpleDir, "*.log")):
+            if filepath.endswith("refmac5_restr.log"):
+                self.dataOutput.refmac5restrLog = XSDataFile(XSDataString(filepath))
+                break
                 
                 
             
