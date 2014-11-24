@@ -105,6 +105,13 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
         params.input_file = self.dataInput.input_file
         params.spacegroup = self.dataInput.spacegroup
         params.unit_cell = self.dataInput.unit_cell
+        # Fix for 'SPOT_RANGE 0 100' problem
+        for srange in self.spot_range:
+            if srange[0] > 0:
+                xsDataRange = XSDataRange()
+                xsDataRange.begin = srange[0]
+                xsDataRange.end = srange[1]
+                params.addSpot_range(xsDataRange)
         #Gleb on Mon Aug  4 18:54:36 CEST 2014: set jobs parameters in order to prevent
         #params.job = XSDataString('XYCORR INIT COLSPOT IDXREF')
         self.first_run.dataInput = params
