@@ -128,7 +128,10 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginDozorv1_0.generateCommands")
         strCommandText = None
         if _xsDataInputDozor is not None:
-            self.setProcessInfo("first image no %d" % _xsDataInputDozor.firstImageNumber.value)
+            self.setProcessInfo("name template: %s, first image no: %d, no images: %d" % (
+                _xsDataInputDozor.nameTemplateImage.value,
+                _xsDataInputDozor.firstImageNumber.value,
+                _xsDataInputDozor.numberImages.value))
             strCommandText = "job single\n"
             strCommandText += "detector %s\n" % _xsDataInputDozor.detectorType.value
             strCommandText += "exposure %.3f\n" % _xsDataInputDozor.exposureTime.value

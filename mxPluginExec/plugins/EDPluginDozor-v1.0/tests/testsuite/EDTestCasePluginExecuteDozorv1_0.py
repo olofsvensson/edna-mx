@@ -47,7 +47,7 @@ class EDTestCasePluginExecuteDozorv1_0(EDTestCasePluginExecute):
 
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "mesh2d-x1_1_0001.cbf" ])
+        self.loadTestImage([ "thermn_2_7_0001.cbf", "thermn_2_7_0002.cbf" ])
 
     def testExecute(self):
         self.run()
