@@ -334,6 +334,10 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
             xsDataResultStrategy.bestGraphFile = listFileGraph
         # Sample
         xsDataResultStrategy.setSample(self._xsDataSampleCopy)
+        # timeToReachHendersonLimit
+        if self._edPluginRaddose is not None:
+            xsDataRaddoseOutput = self._edPluginRaddose.dataOutput
+            xsDataResultStrategy.timeToReachHendersonLimit = xsDataRaddoseOutput.timeToReachHendersonLimit
         self.setDataOutput(xsDataResultStrategy)
         self.generateStrategyShortSummary(xsDataResultStrategy)
 
