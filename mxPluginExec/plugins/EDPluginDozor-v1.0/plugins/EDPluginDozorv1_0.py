@@ -95,18 +95,6 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.ix_max = self.config.get("ix_max")
         self.iy_min = self.config.get("iy_min")
         self.iy_max = self.config.get("iy_max")
-        if self.ix_min is None or self.ix_max is None or self.iy_min is None or self.iy_max is None:
-            # One configuration value is missing - use default values
-            if xsDataInputDozor.detectorType.value == "pilatus2m":
-                self.ix_min = self.ix_min_pilatus2m
-                self.ix_max = self.ix_max_pilatus2m
-                self.iy_min = self.iy_min_pilatus2m
-                self.iy_max = self.iy_max_pilatus2m
-            else:
-                self.ix_min = self.ix_min_pilatus6m                
-                self.ix_max = self.ix_max_pilatus6m
-                self.iy_min = self.iy_min_pilatus6m
-                self.iy_max = self.iy_max_pilatus6m
         self.setScriptCommandline("dozor.dat")
         strCommands = self.generateCommands(xsDataInputDozor)
         self.createImageLinks(xsDataInputDozor)
@@ -127,6 +115,18 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginDozorv1_0.generateCommands")
         strCommandText = None
+        if self.ix_min is None or self.ix_max is None or self.iy_min is None or self.iy_max is None:
+            # One configuration value is missing - use default values
+            if _xsDataInputDozor.detectorType.value == "pilatus2m":
+                self.ix_min = self.ix_min_pilatus2m
+                self.ix_max = self.ix_max_pilatus2m
+                self.iy_min = self.iy_min_pilatus2m
+                self.iy_max = self.iy_max_pilatus2m
+            else:
+                self.ix_min = self.ix_min_pilatus6m                
+                self.ix_max = self.ix_max_pilatus6m
+                self.iy_min = self.iy_min_pilatus6m
+                self.iy_max = self.iy_max_pilatus6m
         if _xsDataInputDozor is not None:
             self.setProcessInfo("name template: %s, first image no: %d, no images: %d" % (
                 _xsDataInputDozor.nameTemplateImage.value,
@@ -201,7 +201,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             # Remove "|" 
             listLine = shlex.split(strLine.replace("|", " "))
 #            print listLine
-            if listLine != []:
+            if listLine != [] and not strLine.startswith("-"):
                 xsDataImageDozor.number = XSDataInteger(listLine[0])
                 if listLine[4].startswith("-"):
                     xsDataImageDozor.spots_num_of = XSDataInteger(listLine[1])
