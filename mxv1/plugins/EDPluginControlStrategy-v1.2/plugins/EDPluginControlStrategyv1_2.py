@@ -337,7 +337,8 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
         # timeToReachHendersonLimit
         if self._edPluginRaddose is not None:
             xsDataRaddoseOutput = self._edPluginRaddose.dataOutput
-            xsDataResultStrategy.timeToReachHendersonLimit = xsDataRaddoseOutput.timeToReachHendersonLimit
+            if xsDataRaddoseOutput is not None:
+                xsDataResultStrategy.timeToReachHendersonLimit = xsDataRaddoseOutput.timeToReachHendersonLimit
         self.setDataOutput(xsDataResultStrategy)
         self.generateStrategyShortSummary(xsDataResultStrategy)
 

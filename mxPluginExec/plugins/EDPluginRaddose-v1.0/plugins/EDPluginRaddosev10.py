@@ -95,6 +95,7 @@ class EDPluginRaddosev10(EDPluginExecProcessScript):
         self.__fTimeToReachHendersonLimit = None
 
         self.setXSDataInputClass(XSDataRaddoseInput)
+        self.dataOutput = XSDataRaddoseOutput()
 
 
     def getCommandCrystalSize(self):
