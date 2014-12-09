@@ -228,6 +228,9 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
 
             if parser.isFailure():
                 # that should not happen
+                strErrorMessage = "Parser failure in XDS fast proc"
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
                 self.setFailure()
                 return
             self.dataOutput = parser.dataOutput

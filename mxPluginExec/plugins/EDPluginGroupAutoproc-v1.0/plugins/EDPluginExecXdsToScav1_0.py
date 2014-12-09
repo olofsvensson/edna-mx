@@ -65,7 +65,9 @@ class EDPluginExecXdsToScav1_0(EDPluginExecProcessScript):
         if data_input.hkl_file is not None:
             path = data_input.hkl_file.path.value
             if not os.path.exists(path):
-                self.ERROR('input file {0} does not exist'.format(path))
+                strErrorMessage = "Input file {0} does not exist".format(path)
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
                 self.setFailure()
                 return
 

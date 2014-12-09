@@ -174,5 +174,7 @@ class EDPluginControlXscaleGeneratev1_0(EDPluginControl):
         return
 
     def xscale_failure(self, plugin):
-        EDVerbose.ERROR('{0!r} failed'.format(plugin))
+        strErrorMessage = "XSCALE generate failed"
+        self.addErrorMessage(strErrorMessage)
+        EDVerbose.ERROR(strErrorMessage)
         self.setFailure()

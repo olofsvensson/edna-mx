@@ -162,7 +162,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # trying to start anything even if the first xds run does it
         # anyway
         if not os.path.isfile(self.dataInput.input_file.path.value):
-            self.ERROR('the specified input file does not exist')
+            strErrorMessage = "The specified input file does not exist: {0}".format(self.dataInput.input_file.path.value)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             # setFailure does not prevent preProcess/process/etc from running
             raise Exception('EDNA FAILURE')
@@ -530,7 +532,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         res_cutoff_in.cc_half_cutoff = self.dataInput.cc_half_cutoff
         self.first_res_cutoff.dataInput = res_cutoff_in
         self.first_res_cutoff.executeSynchronous()
-
+        self.retrieveFailureMessages(self.first_res_cutoff, "First res cutoff")
+        
         self.stats['first_res_cutoff'] = time.time()-t0
 
         if self.first_res_cutoff.isFailure():
@@ -569,6 +572,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.DEBUG('STARTING anom/noanom generation')
         t0=time.time()
         self.generate.executeSynchronous()
+        self.retrieveFailureMessages(self.generate, "anom/noanom_generation")
+
         self.stats['anom/noanom_generation'] = time.time()-t0
 
         with open(self.log_file_path, 'w') as f:
@@ -612,6 +617,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.parse_xds_anom.dataInput = parse_anom_input
 
         self.parse_xds_anom.executeSynchronous()
+        self.retrieveFailureMessages(self.parse_xds_anom, "Parse xds anom")
 
         if self.parse_xds_anom.isFailure():
             strErrorMessage = "Parsing the xds generated w/ anom failed"
@@ -631,6 +637,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         self.parse_xds_noanom.dataInput = parse_noanom_input
         self.parse_xds_noanom.executeSynchronous()
+        self.retrieveFailureMessages(self.parse_xds_noanom, "Parse xds noanom")
 
         if self.parse_xds_noanom.isFailure():
             strErrorMessage = "Parsing the xds generated w/ no anom failed"
@@ -667,6 +674,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.DEBUG('STARTING anom res cutoff')
         t0=time.time()
         self.res_cutoff_anom.executeSynchronous()
+        self.retrieveFailureMessages(self.res_cutoff_anom, "Res cut anom")
         self.stats['res_cutoff_anom'] = time.time()-t0
 
         with open(self.log_file_path, 'w') as f:
@@ -706,6 +714,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.DEBUG('STARTING noanom res cutoff')
         t0=time.time()
         self.res_cutoff_noanom.executeSynchronous()
+        self.retrieveFailureMessages(self.res_cutoff_anom, "Res cut noanom")
         self.stats['res_cutoff_noanom'] = time.time()-t0
 
         with open(self.log_file_path, 'w') as f:
@@ -752,6 +761,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         t0=time.time()
         self.xscale_generate.executeSynchronous()
+        self.retrieveFailureMessages(self.xscale_generate, "XSCALE")
         self.stats['xscale_generate']=time.time()-t0
 
         with open(self.log_file_path, 'w') as f:
@@ -815,6 +825,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         t0 = time.time()
         self.file_conversion.executeSynchronous()
+        self.retrieveFailureMessages(self.file_conversion, "File conversion")
         self.stats['autoproc_import']=time.time()-t0
 
         with open(self.log_file_path, 'w') as f:
@@ -1079,6 +1090,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.store_autoproc_anom.dataInput = ispyb_input
         t0=time.time()
         self.store_autoproc_anom.executeSynchronous()
+        self.retrieveFailureMessages(self.store_autoproc_anom, "Store autoproc anom")
         self.stats['ispyb_upload'] = time.time() - t0
 
         with open(self.log_file_path, 'w') as f:
@@ -1105,6 +1117,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.store_autoproc_noanom.dataInput = ispyb_input
         t0=time.time()
         self.store_autoproc_noanom.executeSynchronous()
+        self.retrieveFailureMessages(self.store_autoproc_noanom, "Store autoproc noanom")
         self.stats['ispyb_upload'] = time.time() - t0
 
         with open(self.log_file_path, 'w') as f:

@@ -128,11 +128,13 @@ class EDPluginResCutoffv1_0(EDPlugin):
         # the total values, which are conveniently already parsed in
         # our case
         if len(bins) < 2:
-            EDVerbose.DEBUG("No bins with CC1/2 greater than %s" % cc_half_cutoff)
-            EDVerbose.DEBUG("""something could be wrong, or the completeness could be too low!
-bravais lattice/SG could be incorrect or something more insidious like
-incorrect parameters in XDS.INP like distance, X beam, Y beam, etc.
-Stopping""")
+            strErrorMessage = "No bins with CC1/2 greater than %s" % cc_half_cutoff
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR("Something could be wrong, or the completeness could be too low!")
+            self.ERROR("bravais lattice/SG could be incorrect or something more insidious like")
+            self.ERROR("incorrect parameters in XDS.INP like distance, X beam, Y beam, etc.")
+            self.ERROR("Stopping")
             self.setFailure()
             return
         if res is None:

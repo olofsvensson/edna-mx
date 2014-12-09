@@ -64,7 +64,9 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         # Now really check what we need
         path = os.path.abspath(self.dataInput.previous_run_dir.value)
         if not os.path.isdir(path):
-            EDVerbose.ERROR('path given is not a directory')
+            strErrorMessage = "Path given is not a directory: {0}".format(path)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 
@@ -82,7 +84,9 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
 
         for f in self._required:
             if not os.path.isfile(f):
-                EDVerbose.ERROR('missing required file {0}'.format(f))
+                strErrorMessage = "Missing required file {0}".format(f)
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
                 self.setFailure()
                 return
 
@@ -145,7 +149,9 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
 
         self.xds_anom.executeSynchronous()
         if self.xds_anom.isFailure():
-            EDVerbose.ERROR('xds failed when generating w/ anom')
+            strErrorMessage = "xds failed when generating w/ anom"
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 
@@ -173,7 +179,9 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         self.xds_noanom.executeSynchronous()
 
         if self.xds_noanom.isFailure():
-            EDVerbose.ERROR('xds failed when generating w/out anom')
+            strErrorMessage = "xds failed when generating w/ anom"
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 

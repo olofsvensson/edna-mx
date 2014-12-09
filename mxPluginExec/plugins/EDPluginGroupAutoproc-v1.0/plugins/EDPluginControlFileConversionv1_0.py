@@ -95,7 +95,9 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         if self.dataInput.input_file is not None:
             path = self.dataInput.input_file.value
             if not os.path.exists(path):
-                self.ERROR('input file {0} does not exist'.format(path))
+                strErrorMessage = "Input file {0} does not exist".format(path)
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
                 self.setFailure()
                 return
 

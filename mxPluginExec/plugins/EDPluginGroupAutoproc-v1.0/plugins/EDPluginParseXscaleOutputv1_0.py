@@ -64,6 +64,9 @@ class EDPluginParseXscaleOutputv1_0(EDPlugin):
         # now really check it
         path = self.dataInput.lp_file.value
         if not os.path.isfile(path):
+            strErrorMessage = "Input file {0} does not exist".format(path)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
 
     def preProcess(self, _edObject = None):
@@ -82,7 +85,9 @@ class EDPluginParseXscaleOutputv1_0(EDPlugin):
             f = open(self.dataInput.lp_file.value, 'r')
             lines = f.readlines()
         except IOError:
-            EDVerbose.ERROR('Could not open the specified XDS output file for reading')
+            strErrorMessage = "Input file {0} could not be opened".format(self.dataInput.lp_file.value)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 
@@ -101,7 +106,9 @@ class EDPluginParseXscaleOutputv1_0(EDPlugin):
                 # "total" later
                 break
         if info_begin is None or info_end is None:
-            EDVerbose.ERROR('could not find the completeness table')
+            strErrorMessage = "Could not find the completeness table"
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 

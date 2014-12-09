@@ -82,13 +82,17 @@ class EDPluginControlAutoprocImportv1_0(EDPluginControl):
         self.DEBUG('Import: checkParameters')
         outdir = self.dataInput.output_directory
         if outdir is None:
-            self.ERROR('File Import: output directory not specified: aborting')
+            strErrorMessage = "File Import: output directory not specified: aborting" 
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 
         self.outdir = outdir.value
         if not os.path.exists(self.outdir) and not os.path.isdir(self.outdir):
-            self.ERROR('File Import: output directory is not a directory')
+            strErrorMessage = "File Import: output directory is not a directory"
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 

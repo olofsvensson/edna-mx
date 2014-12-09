@@ -77,15 +77,18 @@ class EDPluginExecXscalev1_0(EDPluginExecProcessScript):
         # now really check that stuff
         # the unit cell constants param should be 6 floats
         if len(self.dataInput.unit_cell_constants) != 6:
-            EDVerbose.ERROR('the unit cell constants list should have 6 elements')
-            EDVerbose.ERROR('i got {0}'.format(len(self.dataInput.unit_cell_constants)))
+            strErrorMessage = "Missing unit cell parameters: {0}".format(self.dataInput.unit_cell_constants)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
         # check existence of the input files
         for f in self.dataInput.xds_files:
             # check which of the anom or noanom file we have to use
             path = f.path_anom.value if self.dataInput.friedels_law.value else f.path_noanom.value
             if not os.path.isfile(path):
-                EDVerbose.ERROR('missing input file {0}'.format(path))
+                strErrorMessage = "Input file {0} does not exist".format(path)
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
                 self.setFailure()
                 break
 

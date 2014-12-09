@@ -46,7 +46,7 @@ class EDTestCasePluginControlAutoprocv1_0_id29_20130301(EDTestCasePluginExecute)
         self.strTestDir = os.path.join(self.getPluginTestsDataHome(), "id29_20130301")
         self.setDataInputFile(os.path.join(self.strTestDir,
                                            "edna-autoproc-input.xml"))
-        self.setNoExpectedErrorMessages(1)
+        self.setNoExpectedErrorMessages(2)
 
 
 
