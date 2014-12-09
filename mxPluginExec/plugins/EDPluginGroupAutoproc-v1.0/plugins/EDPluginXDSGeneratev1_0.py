@@ -51,6 +51,7 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataXdsGenerateInput)
+        self.setDataOutput(XSDataXdsGenerateOutput())
 
     def checkParameters(self):
         """

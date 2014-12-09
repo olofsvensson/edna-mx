@@ -52,6 +52,7 @@ class EDPluginControlRunXdsv1_0( EDPluginControl ):
         """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataMinimalXdsIn)
+        self.setDataOutput(XSDataXdsOutputFile())
         self.controlled_plugin_name = 'EDPluginExecMinimalXdsv1_0'
         self.first_run = None
         self.second_run = None

@@ -91,6 +91,7 @@ class EDPluginParseXdsOutputv1_0(EDPlugin):
         """
         EDPlugin.__init__(self )
         self.setXSDataInputClass(XSDataXdsOutputFile)
+        self.setDataOutput(XSDataXdsOutput())
 
     def checkParameters(self):
         """

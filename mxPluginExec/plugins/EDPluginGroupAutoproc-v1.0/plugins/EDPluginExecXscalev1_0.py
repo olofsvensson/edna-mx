@@ -54,6 +54,7 @@ class EDPluginExecXscalev1_0(EDPluginExecProcessScript):
         """
         EDPluginExecProcessScript.__init__(self )
         self.setXSDataInputClass(XSDataXscaleInput)
+        self.setDataOutput(XSDataXscaleOutput())
 
     def checkParameters(self):
         """

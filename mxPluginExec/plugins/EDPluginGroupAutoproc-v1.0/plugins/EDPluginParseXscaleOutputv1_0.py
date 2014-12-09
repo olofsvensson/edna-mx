@@ -53,6 +53,7 @@ class EDPluginParseXscaleOutputv1_0(EDPlugin):
         """
         EDPlugin.__init__(self )
         self.setXSDataInputClass(XSDataXscaleParsingInput)
+        self.setDataOutput(XSDataXscaleParsedOutput())
 
     def checkParameters(self):
         """

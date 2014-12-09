@@ -55,6 +55,7 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
     def __init__(self):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataFileConversion)
+        self.setDataOutput(XSDataFileConversionOut())
         self.strAnomSuffix = None
 
     def configure(self):

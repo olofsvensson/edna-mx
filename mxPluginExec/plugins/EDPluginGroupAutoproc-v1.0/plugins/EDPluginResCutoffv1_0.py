@@ -55,6 +55,7 @@ class EDPluginResCutoffv1_0(EDPlugin):
         """
         EDPlugin.__init__(self )
         self.setXSDataInputClass(XSDataResCutoff)
+        self.setDataOutput(XSDataResCutoffResult())
 
     def checkParameters(self):
         """

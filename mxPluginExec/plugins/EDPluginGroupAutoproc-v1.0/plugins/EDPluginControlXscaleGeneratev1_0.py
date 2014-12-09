@@ -48,6 +48,7 @@ class EDPluginControlXscaleGeneratev1_0(EDPluginControl):
         """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataXscaleInput)
+        self.setDataOutput(XSDataXscaleGeneratedFiles())
 
     def checkParameters(self):
         """

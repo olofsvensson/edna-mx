@@ -45,6 +45,7 @@ class EDPluginControlAutoprocImportv1_0(EDPluginControl):
     def __init__(self):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataAutoprocImport)
+        self.setDataOutput(XSDataAutoprocImportOut())
 
     def configure(self):
         EDPluginControl.configure(self)
