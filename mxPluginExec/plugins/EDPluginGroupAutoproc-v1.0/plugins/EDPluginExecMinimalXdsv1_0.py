@@ -206,9 +206,12 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         if not os.path.isfile(outfile):
             self.DEBUG('NOT FOUND')
             self.dataOutput.succeeded = XSDataBoolean(False)
-            strErrorMessage = "Cannot find output file: {0}".format(outfile)
+            strErrorMessage = "Cannot find CORRECT.LP output file"
             self.ERROR(strErrorMessage)
-            self.addErrorMessage(strErrorMessage)
+            if len(self.getListOfErrorMessages()) == 0:
+                self.addErrorMessage(strErrorMessage)
+            else:
+                self.addWarningMessage(strErrorMessage)
             self.setFailure()
             return
         else:
