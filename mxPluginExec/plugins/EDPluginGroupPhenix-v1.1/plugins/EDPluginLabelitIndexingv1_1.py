@@ -46,10 +46,10 @@ from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataMatrixDouble
 
-from XSDataLabelitv1_1 import XSDataCell
-from XSDataLabelitv1_1 import XSDataLabelitScreenSolution
-from XSDataLabelitv1_1 import XSDataLabelitScreenOutput
-from XSDataLabelitv1_1 import XSDataLabelitMosflmScriptsOutput
+from XSDataPhenixv1_1 import XSDataCell
+from XSDataPhenixv1_1 import XSDataLabelitScreenSolution
+from XSDataPhenixv1_1 import XSDataLabelitScreenOutput
+from XSDataPhenixv1_1 import XSDataLabelitMosflmScriptsOutput
 
 class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
     """

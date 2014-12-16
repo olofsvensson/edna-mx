@@ -34,7 +34,7 @@ __status__ = "production"
 
 from EDTestSuite import EDTestSuite
 
-class EDTestSuitePluginExecuteLabelitv1_1(EDTestSuite):
+class EDTestSuitePluginExecutePhenixv1_1(EDTestSuite):
 
 
     def process(self):
@@ -42,8 +42,3 @@ class EDTestSuitePluginExecuteLabelitv1_1(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteLabelitDistlv1_1")
         self.addTestCaseFromName("EDTestCasePluginExecuteDistlSignalStrengthv1_1")
 
-
-if __name__ == '__main__':
-
-    EDTestSuitePluginExecuteLabelitv1_1 = EDTestSuitePluginExecuteLabelitv1_1("EDTestSuitePluginExecuteLabelitv1_1")
-    EDTestSuitePluginExecuteLabelitv1_1.execute()

@@ -47,13 +47,13 @@ from XSDataMXv1 import XSDataInputSubWedgeAssemble
 from XSDataMXv1 import XSDataCollection
 from XSDataMXv1 import XSDataIndexingInput
 
-from EDHandlerXSDataLabelitv1_1 import EDHandlerXSDataLabelitv1_1
+from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
 
 EDFactoryPluginStatic.loadModule("XSDataMXWaitFilev1_1")
 from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
-EDFactoryPluginStatic.loadModule("XSDataLabelitv1_1")
-from XSDataLabelitv1_1 import XSDataInputDistlSignalStrength
+EDFactoryPluginStatic.loadModule("XSDataPhenixv1_1")
+from XSDataPhenixv1_1 import XSDataInputDistlSignalStrength
 
 EDFactoryPluginStatic.loadModule("XSDataISPyBv1_4")
 from XSDataISPyBv1_4 import XSDataISPyBImageQualityIndicators
@@ -252,7 +252,7 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
                     if edPluginLabelitIndexing.hasDataOutput("labelitScreenOutput") and edPluginLabelitIndexing.hasDataOutput("mosflmScriptsOutput"):
                         xsDataLabelitOutput = edPluginLabelitIndexing.getDataOutput("labelitScreenOutput")[0]
                         xsDataLabelitMosflmScriptsOutput = edPluginLabelitIndexing.getDataOutput("mosflmScriptsOutput")[0]
-                        xsDataIndexingResult = EDHandlerXSDataLabelitv1_1.generateXSDataIndexingResult(xsDataLabelitOutput, xsDataLabelitMosflmScriptsOutput)
+                        xsDataIndexingResult = EDHandlerXSDataPhenixv1_1.generateXSDataIndexingResult(xsDataLabelitOutput, xsDataLabelitMosflmScriptsOutput)
                         selectedSolution = xsDataIndexingResult.selectedSolution
                         if selectedSolution is not None:
                             xsDataResultControlImageQualityIndicator.selectedIndexingSolution = selectedSolution

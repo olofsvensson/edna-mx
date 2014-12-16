@@ -1,0 +1,66 @@
+distl.signal_strength: characterization of candidate Bragg spots
+#Parameters used:
+#phil __ON__
+
+distl {
+  image = "/mntdirect/_scisoft/users/svensson/git/edna-mx/tests/data/images/ref-testscale_1_001.img"
+  res {
+    outer = None
+    inner = None
+  }
+  verbose = False
+  dxtbx = False
+  bins {
+    verbose = False
+    N = 20
+    corner = True
+  }
+}
+autoindex_override_beam = None
+autoindex_override_distance = None
+autoindex_override_wavelength = None
+autoindex_override_twotheta = None
+autoindex_override_deltaphi = None
+image_specific_osc_start = None
+codecamp {
+}
+pdf_output {
+}
+distl {
+  minimum_spot_area = 10
+  minimum_signal_height = None
+  minimum_spot_height = None
+  spot_area_maximum_factor = None
+  peak_intensity_maximum_factor = None
+  method2_cutoff_percentage = 20
+  compactness_filter = False
+  scanbox_windows = 101 51 51
+  peripheral_margin = 20
+  pdf_output = None
+  port = 8125
+  processors = 1
+  nproc = 1
+}
+
+#phil __OFF__
+
+
+                     File : ref-testscale_1_001.img
+               Spot Total :   1432
+               Remove Ice :   1409
+      In-Resolution Total :   1332
+    Good Bragg Candidates :   1042
+                Ice Rings :      0
+      Method 1 Resolution :   1.89
+      Method 2 Resolution :   1.87
+        Maximum unit cell :  206.4
+<Spot model eccentricity> :   0.761 
+%Saturation, Top 50 Peaks :  19.34
+In-Resolution Ovrld Spots :      1
+
+Bin population cutoff for method 2 resolution: 20%
+
+Number of focus spots on image #1 within the input resolution range: 1332
+Total integrated signal, pixel-ADC units above local background (just the good Bragg candidates) 10416172
+Signals range from 261.3 to 429749.6 with mean integrated signal 10961.2
+Saturations range from 0.0% to 99.8% with mean saturation 1.5%

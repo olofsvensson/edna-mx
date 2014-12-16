@@ -1,10 +1,8 @@
 #
-#    Project: The EDNA MX Specific Plugins
+#    Project: mxPluginExec
 #             http://www.edna-site.org
 #
-#    File: "$Id$"
-#
-#    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
@@ -27,13 +25,21 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
+__authors__ = [ "Olof Svensson", "Marie-Francoise Incardona", "Karl Levik" ]
+__contact__ = "svensson@esrf.fr"
+__license__ = "LGPLv3+"
+__copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
+__date__ = "20120712"
+__status__ = "production"
 
-full_path="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
-export EDNA_HOME=`dirname "$full_path" | sed 's/\/mxPluginExec\/.*\/datamodel$//'`
+from EDTestSuite import EDTestSuite
 
-xsDataBaseName=XSDataLabelitv1_1
-xsdHomeDir=${EDNA_HOME}/mxPluginExec/plugins/EDPluginGroupLabelit-v1.1/datamodel
-pyHomeDir=${EDNA_HOME}/mxPluginExec/plugins/EDPluginGroupLabelit-v1.1/plugins
-includeXSDFilePath=${EDNA_HOME}/kernel/datamodel/XSDataCommon.xsd
+class EDTestSuitePluginUnitPhenixv1_1(EDTestSuite):
 
-${EDNA_HOME}/kernel/datamodel/generateDataBinding.sh ${xsDataBaseName} ${xsdHomeDir} ${pyHomeDir} ${includeXSDFilePath} 
+
+    def process(self):
+        self.addTestCaseFromName("EDTestCasePluginUnitLabelitv1_1")
+        self.addTestCaseFromName("EDTestCasePluginUnitLabelitIndexingv1_1")
+        self.addTestCaseFromName("EDTestCasePluginUnitLabelitDistlv1_1")
+        self.addTestCaseFromName("EDTestCasePluginUnitDistlSignalStrengthv1_1")
+
