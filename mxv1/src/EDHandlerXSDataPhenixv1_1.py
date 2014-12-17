@@ -46,7 +46,7 @@ from XSDataMXv1 import XSDataSpaceGroup
 from XSDataMXv1 import XSDataOrientation
 
 
-class EDHandlerXSDataLabelitv1_1:
+class EDHandlerXSDataPhenixv1_1:
 
 
     def generateListXSDataImageReference(_xsDataIndexingInput):
