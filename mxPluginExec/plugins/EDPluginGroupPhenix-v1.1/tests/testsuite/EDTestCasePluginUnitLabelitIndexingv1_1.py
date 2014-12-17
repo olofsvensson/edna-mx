@@ -40,7 +40,7 @@ from EDUtilsFile import EDUtilsFile
 
 from EDTestCasePluginUnit import EDTestCasePluginUnit
 
-from XSDataLabelitv1_1 import XSDataImage
+from XSDataPhenixv1_1 import XSDataImage
 
 class EDTestCasePluginUnitLabelitIndexingv1_1(EDTestCasePluginUnit):
 
@@ -64,7 +64,7 @@ class EDTestCasePluginUnitLabelitIndexingv1_1(EDTestCasePluginUnit):
         xsDataLabelitScreenOutput = edPluginLabelitIndexingv1_1.parseLabelitScreenOutput(strLabelitLogText)
         strLabelitScreenOutputFile = os.path.join(self.getPluginTestsDataHome(), "XSDataLabelitScreenOutput_reference.xml")
         strLabelitScreenOutputXML = self.readAndParseFile(strLabelitScreenOutputFile)
-        from XSDataLabelitv1_1 import XSDataLabelitScreenOutput
+        from XSDataPhenixv1_1 import XSDataLabelitScreenOutput
         xsDataLabelitScreenOutputReference = XSDataLabelitScreenOutput.parseString(strLabelitScreenOutputXML)
         EDAssert.equal(xsDataLabelitScreenOutputReference.marshal(), xsDataLabelitScreenOutput.marshal())
 
@@ -81,7 +81,7 @@ class EDTestCasePluginUnitLabelitIndexingv1_1(EDTestCasePluginUnit):
         xsDataLabelitMosflmScriptsOutput.outputFile("XSDataLabelitMosflmScriptsOutput_reference.xml")
         strLabelitMosflmScriptsOutputFile = os.path.join(self.getPluginTestsDataHome(), "XSDataLabelitMosflmScriptsOutput_reference.xml")
         strLabelitMosflmScriptsOutputXML = self.readAndParseFile(strLabelitMosflmScriptsOutputFile)
-        from XSDataLabelitv1_1 import XSDataLabelitMosflmScriptsOutput
+        from XSDataPhenixv1_1 import XSDataLabelitMosflmScriptsOutput
         xsDataLabelitMosflmScriptsOutputReference = XSDataLabelitMosflmScriptsOutput.parseString(strLabelitMosflmScriptsOutputXML)
         EDAssert.equal(xsDataLabelitMosflmScriptsOutputReference.marshal(), xsDataLabelitMosflmScriptsOutput.marshal())
         # Second file from version 1000b1
@@ -117,13 +117,13 @@ class EDTestCasePluginUnitLabelitIndexingv1_1(EDTestCasePluginUnit):
 
         strLabelitScreenOutputFile = os.path.join(self.getPluginTestsDataHome(), "XSDataLabelitScreenOutput_reference.xml")
         strLabelitScreenOutputXML = self.readAndParseFile(strLabelitScreenOutputFile)
-        from XSDataLabelitv1_1 import XSDataLabelitScreenOutput
+        from XSDataPhenixv1_1 import XSDataLabelitScreenOutput
         xsDataLabelitScreenOutputReference = XSDataLabelitScreenOutput.parseString(strLabelitScreenOutputXML)
         edPluginLabelitIndexingv1_1.setDataOutput(xsDataLabelitScreenOutputReference, "labelitScreenOutput")
 
         strLabelitMosflmScriptsOutputFile = os.path.join(self.getPluginTestsDataHome(), "XSDataLabelitMosflmScriptsOutput_reference.xml")
         strLabelitMosflmScriptsOutputXML = self.readAndParseFile(strLabelitMosflmScriptsOutputFile)
-        from XSDataLabelitv1_1 import XSDataLabelitMosflmScriptsOutput
+        from XSDataPhenixv1_1 import XSDataLabelitMosflmScriptsOutput
         xsDataLabelitMosflmScriptsOutputReference = XSDataLabelitMosflmScriptsOutput.parseString(strLabelitMosflmScriptsOutputXML)
         edPluginLabelitIndexingv1_1.setDataOutput(xsDataLabelitMosflmScriptsOutputReference, "mosflmScriptOutput")
 

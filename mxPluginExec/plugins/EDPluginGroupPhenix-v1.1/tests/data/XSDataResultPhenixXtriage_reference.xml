@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<XSDataResultPhenixXtriage>
+    <logFile>
+        <path>
+            <value>${EDNA_WORKING_DIR}/PhenixXtriage_noTwinning_noPseudotranslation.log</value>
+        </path>
+    </logFile>
+    <twinning>
+        <value>false</value>
+    </twinning>
+    <pattersonLargestPeakHeight>
+        <value>5.514000e+00</value>
+    </pattersonLargestPeakHeight>
+    <pattersonPValue>
+        <value>8.198600e-01</value>
+    </pattersonPValue>
+    <pseudotranslation>
+        <value>false</value>
+    </pseudotranslation>
+</XSDataResultPhenixXtriage>

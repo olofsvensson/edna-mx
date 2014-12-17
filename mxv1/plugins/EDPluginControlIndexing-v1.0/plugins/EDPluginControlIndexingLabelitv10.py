@@ -70,8 +70,8 @@ class EDPluginControlIndexingLabelitv10(EDPluginControlIndexingv10):
         self.DEBUG("EDPluginControlIndexingLabelitv10.setDataInput")
         EDPluginControlIndexingv10.setDataInput(self, _dataInput)
         # Convert the input data to MOSFLM specific input data
-        from EDHandlerXSDataLabelitv1_1 import EDHandlerXSDataLabelitv1_1
-        self.__listXSDataImageReference = EDHandlerXSDataLabelitv1_1.generateListXSDataImageReference(self.getDataInput())
+        from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
+        self.__listXSDataImageReference = EDHandlerXSDataPhenixv1_1.generateListXSDataImageReference(self.getDataInput())
 
 
     def loadPluginIndexingInputData(self):
@@ -96,8 +96,8 @@ class EDPluginControlIndexingLabelitv10(EDPluginControlIndexingv10):
         self.DEBUG("EDPluginControlIndexingLabelitv10.getDataIndexingResultFromMOSFLM")
         xsDataLabelitScreenOutput = _edPlugin.getDataOutput("labelitScreenOutput")[0]
         xsDataLabelitMosflmScriptsOutput = _edPlugin.getDataOutput("mosflmScriptsOutput")[0]
-        from EDHandlerXSDataLabelitv1_1 import EDHandlerXSDataLabelitv1_1
-        xsDataIndexingResult = EDHandlerXSDataLabelitv1_1.generateXSDataIndexingResult(xsDataLabelitScreenOutput,
+        from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
+        xsDataIndexingResult = EDHandlerXSDataPhenixv1_1.generateXSDataIndexingResult(xsDataLabelitScreenOutput,
                                                                                        xsDataLabelitMosflmScriptsOutput,
                                                                                        self.getExperimentalCondition(),
                                                                                        self.strSymopLib)

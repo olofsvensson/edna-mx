@@ -37,7 +37,7 @@ from EDUtilsFile import EDUtilsFile
 
 from EDTestCasePluginUnit import EDTestCasePluginUnit
 
-from XSDataLabelitv1_1 import XSDataImage
+from XSDataPhenixv1_1 import XSDataImage
 
 class EDTestCasePluginUnitLabelitv1_1(EDTestCasePluginUnit):
 
@@ -54,10 +54,6 @@ class EDTestCasePluginUnitLabelitv1_1(EDTestCasePluginUnit):
         and then retriving an XSDataInputLabelit object.
         """
         edPluginLabelitv1_1 = self.createPlugin()
-        xsPluginItemGood01 = self.getPluginConfiguration(os.path.join(self.getPluginTestsDataHome(), "XSConfiguration.xml"))
-        edPluginLabelitv1_1.setConfiguration(xsPluginItemGood01)
-        edPluginLabelitv1_1.setScriptExecutable("cat")
-        edPluginLabelitv1_1.configure()
         xmlInput1 = self.readAndParseFile(self.__strReferenceInputFile1)
         edPluginLabelitv1_1.setDataInput(xmlInput1, "referenceImage")
         xmlInput2 = self.readAndParseFile(self.__strReferenceInputFile2)
@@ -82,7 +78,7 @@ class EDTestCasePluginUnitLabelitv1_1(EDTestCasePluginUnit):
         edPluginLabelitv1_1.setDataInput(xmlInput2, "referenceImage")
         edPluginLabelitv1_1.initaliseLabelitCommandLine()
         strScriptCommandLine = edPluginLabelitv1_1.getScriptCommandline()
-        strCommandLineExpected = "--index_only ${EDNA_TESTIMAGES}/images/ref-testscale_1_001.img ${EDNA_TESTIMAGES}/images/ref-testscale_1_002.img"
+        strCommandLineExpected = "--index_only ${EDNA_TESTIMAGES}/ref-testscale_1_001.img ${EDNA_TESTIMAGES}/ref-testscale_1_002.img"
         EDAssert.equal(strCommandLineExpected, strScriptCommandLine)
 
 

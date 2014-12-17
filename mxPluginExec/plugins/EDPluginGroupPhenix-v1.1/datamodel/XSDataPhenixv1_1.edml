@@ -82,3 +82,27 @@ complex type XSDataLabelitScreenSolution extends XSData {
 complex type XSDataResultDistlSignalStrength extends XSDataResult {
 	imageQualityIndicators : XSDataImageQualityIndicators
 }
+
+
+complex type XSDataInputPhenixXtriage extends XSDataInput {
+	mtzFile : XSDataFile
+	obsLabels : XSDataString optional
+}
+
+complex type XSDataTwinLawsStatistics extends XSData {
+	operator : XSDataString
+	twinType : XSDataString
+	rObs : XSDataDouble
+	brittonAlpha : XSDataDouble
+	hAlpha : XSDataDouble
+	mlAlpha : XSDataDouble
+}
+
+complex type XSDataResultPhenixXtriage extends XSDataResult {
+	logFile : XSDataFile
+	twinning : XSDataBoolean
+	twinLawStatistics : XSDataTwinLawsStatistics [] optional
+	pattersonLargestPeakHeight : XSDataDouble
+	pattersonPValue : XSDataDouble
+	pseudotranslation : XSDataBoolean
+}

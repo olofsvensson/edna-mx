@@ -34,18 +34,13 @@ __status__ = "production"
 
 from EDTestSuite import EDTestSuite
 
-class EDTestSuitePluginUnitLabelitv1_1(EDTestSuite):
+class EDTestSuitePluginExecutePhenixv1_1(EDTestSuite):
 
 
     def process(self):
-        self.addTestCaseFromName("EDTestCasePluginUnitLabelitv1_1")
-        self.addTestCaseFromName("EDTestCasePluginUnitLabelitIndexingv1_1")
-        self.addTestCaseFromName("EDTestCasePluginUnitLabelitDistlv1_1")
-        self.addTestCaseFromName("EDTestCasePluginUnitDistlSignalStrengthv1_1")
-
-
-if __name__ == '__main__':
-
-    EDTestSuitePluginUnitLabelitv1_1 = EDTestSuitePluginUnitLabelitv1_1("EDTestSuitePluginUnitLabelitv1_1")
-    EDTestSuitePluginUnitLabelitv1_1.execute()
+        self.addTestCaseFromName("EDTestCasePluginExecuteLabelitIndexingv1_1")
+        self.addTestCaseFromName("EDTestCasePluginExecuteLabelitDistlv1_1")
+        self.addTestCaseFromName("EDTestCasePluginExecuteDistlSignalStrengthv1_1")
+        self.addTestCaseFromName("EDTestCasePluginExecutePhenixXtriagev1_1")
+        self.addTestCaseFromName("EDTestCasePluginExecutePhenixXtriagev1_1_pseudotranslation")
 

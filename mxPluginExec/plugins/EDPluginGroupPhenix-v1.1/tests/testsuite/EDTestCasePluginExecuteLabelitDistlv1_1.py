@@ -5,10 +5,7 @@
 #    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
-#
-#    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
+#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -25,25 +22,43 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
-__authors__ = [ "Olof Svensson", "Marie-Francoise Incardona", "Karl Levik" ]
+__authors__ = [ "Olof Svensson" ]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20120712"
 __status__ = "production"
 
-from EDTestSuite import EDTestSuite
 
-class EDTestSuitePluginExecuteLabelitv1_1(EDTestSuite):
+import os
+
+from EDTestCasePluginExecute import EDTestCasePluginExecute
+
+
+
+class EDTestCasePluginExecuteLabelitDistlv1_1(EDTestCasePluginExecute):
+
+    def __init__(self, _edStringTestName=None):
+        EDTestCasePluginExecute.__init__(self, "EDPluginLabelitDistlv1_1")
+        self.setConfigurationFile(self.getRefConfigFile())
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataImage_1_reference.xml"), "referenceImage")
+#        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataImageQualityIndicators_reference.xml"), "imageQualityIndicators")
+
+    def preProcess(self):
+        EDTestCasePluginExecute.preProcess(self)
+        self.loadTestImage([ "ref-testscale_1_001.img" ])
+
+
+    def testExecute(self):
+        self.run()
 
 
     def process(self):
-        self.addTestCaseFromName("EDTestCasePluginExecuteLabelitIndexingv1_1")
-        self.addTestCaseFromName("EDTestCasePluginExecuteLabelitDistlv1_1")
-        self.addTestCaseFromName("EDTestCasePluginExecuteDistlSignalStrengthv1_1")
+        self.addTestMethod(self.testExecute)
+
 
 
 if __name__ == '__main__':
 
-    EDTestSuitePluginExecuteLabelitv1_1 = EDTestSuitePluginExecuteLabelitv1_1("EDTestSuitePluginExecuteLabelitv1_1")
-    EDTestSuitePluginExecuteLabelitv1_1.execute()
+    edTestCasePluginExecuteLabelitDistlv1_1 = EDTestCasePluginExecuteLabelitDistlv1_1("EDTestCasePluginExecuteLabelitDistlv1_1")
+    edTestCasePluginExecuteLabelitDistlv1_1.execute()

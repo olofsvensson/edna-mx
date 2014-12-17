@@ -36,17 +36,17 @@ from EDTestCasePluginExecute import EDTestCasePluginExecute
 
 
 
-class EDTestCasePluginExecuteLabelitDistlv1_1(EDTestCasePluginExecute):
+class EDTestCasePluginExecutePhenixXtriagev1_1(EDTestCasePluginExecute):
 
     def __init__(self, _edStringTestName=None):
-        EDTestCasePluginExecute.__init__(self, "EDPluginLabelitDistlv1_1")
+        EDTestCasePluginExecute.__init__(self, "EDPluginPhenixXtriagev1_1")
         self.setConfigurationFile(self.getRefConfigFile())
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataImage_1_reference.xml"), "referenceImage")
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputPhenixXtriage_reference.xml"))
         self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataImageQualityIndicators_reference.xml"), "imageQualityIndicators")
 
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "ref-testscale_1_001.img" ])
+        self.loadTestImage([ "dimple_noanom_aimless.mtz" ])
 
 
     def testExecute(self):
@@ -56,9 +56,3 @@ class EDTestCasePluginExecuteLabelitDistlv1_1(EDTestCasePluginExecute):
     def process(self):
         self.addTestMethod(self.testExecute)
 
-
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteLabelitDistlv1_1 = EDTestCasePluginExecuteLabelitDistlv1_1("EDTestCasePluginExecuteLabelitDistlv1_1")
-    edTestCasePluginExecuteLabelitDistlv1_1.execute()

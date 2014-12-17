@@ -39,9 +39,9 @@ from EDPluginLabelitv1_1 import EDPluginLabelitv1_1
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataDouble
 
-from XSDataLabelitv1_1 import XSDataImageQualityIndicators
-from XSDataLabelitv1_1 import XSDataInputDistlSignalStrength
-from XSDataLabelitv1_1 import XSDataResultDistlSignalStrength
+from XSDataPhenixv1_1 import XSDataImageQualityIndicators
+from XSDataPhenixv1_1 import XSDataInputDistlSignalStrength
+from XSDataPhenixv1_1 import XSDataResultDistlSignalStrength
 
 
 class EDPluginDistlSignalStrengthThinClientv1_1(EDPluginExecProcessScript):

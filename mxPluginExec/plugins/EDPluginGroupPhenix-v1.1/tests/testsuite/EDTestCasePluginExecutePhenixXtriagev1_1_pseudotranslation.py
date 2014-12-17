@@ -5,10 +5,7 @@
 #    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
-#
-#    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
+#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -25,27 +22,36 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
-__authors__ = [ "Olof Svensson", "Marie-Francoise Incardona", "Karl Levik" ]
+__authors__ = [ "Olof Svensson" ]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
+__date__ = "20120712"
+__status__ = "production"
 
 
-from EDTestSuite import EDTestSuite
+import os
+
+from EDTestCasePluginExecute import EDTestCasePluginExecute
 
 
-class EDTestSuitePluginExecuteMXPluginExec(EDTestSuite):
+
+class EDTestCasePluginExecutePhenixXtriagev1_1_pseudotranslation(EDTestCasePluginExecute):
+
+    def __init__(self, _edStringTestName=None):
+        EDTestCasePluginExecute.__init__(self, "EDPluginPhenixXtriagev1_1")
+        self.setConfigurationFile(self.getRefConfigFile())
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputPhenixXtriage_pseudotranslation.xml"))
+
+    def preProcess(self):
+        EDTestCasePluginExecute.preProcess(self)
+        self.loadTestImage([ "phenix_xtriage_pseudotranslation.mtz.gz" ])
+
+
+    def testExecute(self):
+        self.run()
 
 
     def process(self):
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteMOSFLMv10")
-        self.addTestSuiteFromName("EDTestSuitePluginExecutePhenixv1_1")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteRaddosev10")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteBestv1_2")
+        self.addTestMethod(self.testExecute)
 
-
-
-if __name__ == '__main__':
-
-    edTestSuitePluginExecuteMXPluginExec = EDTestSuitePluginExecuteMXPluginExec("EDTestSuitePluginExecuteMXPluginExec")
-    edTestSuitePluginExecuteMXPluginExec.execute()

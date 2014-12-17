@@ -34,14 +34,14 @@ import os
 from EDAssert import EDAssert
 from EDTestCasePluginUnit import EDTestCasePluginUnit
 
-from XSDataLabelitv1_1 import XSDataInputDistlSignalStrength
-from XSDataLabelitv1_1 import XSDataResultDistlSignalStrength
+from XSDataPhenixv1_1 import XSDataInputDistlSignalStrength
+from XSDataPhenixv1_1 import XSDataResultDistlSignalStrength
 
-class EDTestCasePluginUnitDistlSignalStrengthv1_1(EDTestCasePluginUnit):
+class EDTestCasePluginUnitDistlSignalStrengthThinClientv1_1(EDTestCasePluginUnit):
 
 
     def __init__(self, _pyStrTestName=None):
-        EDTestCasePluginUnit.__init__(self, "EDPluginDistlSignalStrengthv1_1")
+        EDTestCasePluginUnit.__init__(self, "EDPluginDistlSignalStrengthThinClientv1_1")
         self.__strReferenceInputFile1 = os.path.join(self.getPluginTestsDataHome(), "XSDataInputDistlSignalStrength_reference.xml")
         #self.__strReferenceOutputFile = os.path.join(self.getPluginTestsDataHome(), "XSDataResultLabelitDistl_reference.xml")
 
@@ -50,15 +50,15 @@ class EDTestCasePluginUnitDistlSignalStrengthv1_1(EDTestCasePluginUnit):
         """
         This method test the parsing of the distl.signal_strength results in the log file.
         """
-        edPluginDistlSignalStrengthv1_1 = self.createPlugin()
-        strPathToLabelitLogText = os.path.join(self.getPluginTestsDataHome(), "distl.signal_strength_phenix1.7.log")
+        edPluginDistlSignalStrengthThinClientv1_1 = self.createPlugin()
+        strPathToLabelitLogText = os.path.join(self.getPluginTestsDataHome(), "phenix.distl_thin_client_v17_650.txt")
         strLabelitLogText = self.readAndParseFile(strPathToLabelitLogText)
-        xsDataImageQualityIndicators = edPluginDistlSignalStrengthv1_1.parseLabelitDistlOutput(strLabelitLogText)
+        xsDataImageQualityIndicators = edPluginDistlSignalStrengthThinClientv1_1.parseLabelitDistlOutput(strLabelitLogText)
         xmlInput1 = self.readAndParseFile(self.__strReferenceInputFile1)
         xsDataInputDistlSignalStrength = XSDataInputDistlSignalStrength.parseString(xmlInput1)
         xsDataImageQualityIndicators.setImage(xsDataInputDistlSignalStrength.getReferenceImage())
 
-        strResultDistlSignalStrengthFile = os.path.join(self.getPluginTestsDataHome(), "XSDataResultDistlSignalStrength_reference.xml")
+        strResultDistlSignalStrengthFile = os.path.join(self.getPluginTestsDataHome(), "XSDataResultDistlSignalStrengthThinClient_reference.xml")
         strResultDistlSignalStrength = self.readAndParseFile(strResultDistlSignalStrengthFile)
         xsDataResultDistlSignalStrength = XSDataResultDistlSignalStrength.parseString(strResultDistlSignalStrength)
         xsDataImageQualityIndicatorsReference = xsDataResultDistlSignalStrength.getImageQualityIndicators()
@@ -72,15 +72,15 @@ class EDTestCasePluginUnitDistlSignalStrengthv1_1(EDTestCasePluginUnit):
         This method tests the generateExecutiveSummary of the Labelit plugin.
         It contains no assert call so the contents of the executive summary is not tested.
         """
-        edPluginDistlSignalStrengthv1_1 = self.createPlugin()
+        edPluginDistlSignalStrengthThinClientv1_1 = self.createPlugin()
         xmlInput1 = self.readAndParseFile(self.__strReferenceInputFile1)
-        edPluginDistlSignalStrengthv1_1.setDataInput(xmlInput1)
+        edPluginDistlSignalStrengthThinClientv1_1.setDataInput(xmlInput1)
 
-        strResultDistlSignalStrengthFile = os.path.join(self.getPluginTestsDataHome(), "XSDataResultDistlSignalStrength_reference.xml")
+        strResultDistlSignalStrengthFile = os.path.join(self.getPluginTestsDataHome(), "XSDataResultDistlSignalStrengthThinClient_reference.xml")
         strResultDistlSignalStrength = self.readAndParseFile(strResultDistlSignalStrengthFile)
         xsDataResultDistlSignalStrength = XSDataResultDistlSignalStrength.parseString(strResultDistlSignalStrength)
-        edPluginDistlSignalStrengthv1_1.setDataOutput(xsDataResultDistlSignalStrength)
-        edPluginDistlSignalStrengthv1_1.generateExecutiveSummary(edPluginDistlSignalStrengthv1_1)
+        edPluginDistlSignalStrengthThinClientv1_1.setDataOutput(xsDataResultDistlSignalStrength)
+        edPluginDistlSignalStrengthThinClientv1_1.generateExecutiveSummary(edPluginDistlSignalStrengthThinClientv1_1)
 
 
     def process(self):
@@ -90,6 +90,6 @@ class EDTestCasePluginUnitDistlSignalStrengthv1_1(EDTestCasePluginUnit):
 
 if __name__ == '__main__':
 
-    EDTestCasePluginUnitDistlSignalStrengthv1_1 = EDTestCasePluginUnitDistlSignalStrengthv1_1("EDTestCasePluginUnitDistlSignalStrengthv1_1")
-    EDTestCasePluginUnitDistlSignalStrengthv1_1.execute()
+    EDTestCasePluginUnitDistlSignalStrengthThinClientv1_1 = EDTestCasePluginUnitDistlSignalStrengthThinClientv1_1("EDTestCasePluginUnitDistlSignalStrengthThinClientv1_1")
+    EDTestCasePluginUnitDistlSignalStrengthThinClientv1_1.execute()
 

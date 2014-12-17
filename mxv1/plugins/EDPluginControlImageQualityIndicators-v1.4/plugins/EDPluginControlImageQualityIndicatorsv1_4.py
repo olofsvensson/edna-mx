@@ -51,8 +51,8 @@ from EDHandlerXSDataMOSFLMv10 import EDHandlerXSDataMOSFLMv10
 EDFactoryPluginStatic.loadModule("XSDataMXWaitFilev1_1")
 from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
-EDFactoryPluginStatic.loadModule("XSDataLabelitv1_1")
-from XSDataLabelitv1_1 import XSDataInputDistlSignalStrength
+EDFactoryPluginStatic.loadModule("XSDataPhenixv1_1")
+from XSDataPhenixv1_1 import XSDataInputDistlSignalStrength
 
 EDFactoryPluginStatic.loadModule("XSDataISPyBv1_4")
 from XSDataISPyBv1_4 import XSDataISPyBImageQualityIndicators

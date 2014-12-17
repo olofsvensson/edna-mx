@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<XSDataResultPhenixXtriage>
+    <logFile>
+        <path>
+            <value>/mntdirect/_scisoft/users/svensson/git/edna-mx/mxPluginExec/plugins/EDPluginGroupPhenix-v1.1/tests/data/PhenixXtriage_pseudotranslation.log</value>
+        </path>
+    </logFile>
+    <twinning>
+        <value>true</value>
+    </twinning>
+    <twinLawStatistics>
+        <operator>
+            <value>h,-k,-h-l</value>
+        </operator>
+        <twinType>
+            <value>PM</value>
+        </twinType>
+        <rObs>
+            <value>5.730000e-01</value>
+        </rObs>
+        <brittonAlpha>
+            <value>4.700000e-02</value>
+        </brittonAlpha>
+        <hAlpha>
+            <value>0.000000e+00</value>
+        </hAlpha>
+        <mlAlpha>
+            <value>2.200000e-02</value>
+        </mlAlpha>
+    </twinLawStatistics>
+    <pattersonLargestPeakHeight>
+        <value>6.642700e+01</value>
+    </pattersonLargestPeakHeight>
+    <pattersonPValue>
+        <value>6.055000e-06</value>
+    </pattersonPValue>
+    <pseudotranslation>
+        <value>true</value>
+    </pseudotranslation>
+</XSDataResultPhenixXtriage>

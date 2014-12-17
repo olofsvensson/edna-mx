@@ -57,8 +57,9 @@ class EDTestCasePluginUnitLabelitDistlv1_1(EDTestCasePluginUnit):
         xsDataImage1 = XSDataImage.parseString(xmlInput1)
         xsDataImageQualityIndicators.setImage(xsDataImage1)
         strLabelitDistlOutputFile = os.path.join(self.getPluginTestsDataHome(), "XSDataImageQualityIndicators_reference.xml")
+        print strLabelitDistlOutputFile
         strLabelitDistlOutputXML = self.readAndParseFile(strLabelitDistlOutputFile)
-        from XSDataLabelitv1_1 import XSDataImageQualityIndicators
+        from XSDataPhenixv1_1 import XSDataImageQualityIndicators
         xsDataImageQualityIndicatorsReference = XSDataImageQualityIndicators.parseString(strLabelitDistlOutputXML)
         EDAssert.equal(xsDataImageQualityIndicatorsReference.marshal(), xsDataImageQualityIndicators.marshal())
 
@@ -76,7 +77,7 @@ class EDTestCasePluginUnitLabelitDistlv1_1(EDTestCasePluginUnit):
 
         strImageQualityIndicatorsFile = os.path.join(self.getPluginTestsDataHome(), "XSDataImageQualityIndicators_reference.xml")
         strImageQualityIndicatorsXML = self.readAndParseFile(strImageQualityIndicatorsFile)
-        from XSDataLabelitv1_1 import XSDataImageQualityIndicators
+        from XSDataPhenixv1_1 import XSDataImageQualityIndicators
         xsDataImageQualityIndicatorsReference = XSDataImageQualityIndicators.parseString(strImageQualityIndicatorsXML)
         edPluginLabelitDistlv1_1.setDataOutput(xsDataImageQualityIndicatorsReference, "imageQualityIndicators")
 

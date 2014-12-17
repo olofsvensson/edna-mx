@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<XSDataInputPhenixXtriage>
+  <mtzFile>
+    <path>
+      <value>${EDNA_TESTIMAGES}/phenix_xtriage_pseudotranslation.mtz.gz</value>
+    </path>
+  </mtzFile>
+</XSDataInputPhenixXtriage>

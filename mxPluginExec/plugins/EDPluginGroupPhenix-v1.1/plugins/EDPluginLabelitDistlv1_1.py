@@ -31,60 +31,53 @@ __status__ = "production"
 
 
 
-from EDPluginExecProcessScript import EDPluginExecProcessScript
+from EDPluginLabelitv1_1 import EDPluginLabelitv1_1
 
-from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataDouble
+from XSDataCommon import XSDataInteger
 
-from XSDataLabelitv1_1 import XSDataImageQualityIndicators
-from XSDataLabelitv1_1 import XSDataInputDistlSignalStrength
-from XSDataLabelitv1_1 import XSDataResultDistlSignalStrength
+from XSDataPhenixv1_1 import XSDataImageQualityIndicators
 
 
-class EDPluginDistlSignalStrengthv1_1(EDPluginExecProcessScript):
+class EDPluginLabelitDistlv1_1(EDPluginLabelitv1_1):
     """
     This plugin runs the labelit.distl command for pre-screening reference images.
     """
-
-    def __init__(self):
-        EDPluginExecProcessScript.__init__(self)
-        self.setXSDataInputClass(XSDataInputDistlSignalStrength)
 
 
     def preProcess(self, _edObject=None):
         """
         Sets up the Labelit command line
         """
-        EDPluginExecProcessScript.preProcess(self, _edObject)
-        self.DEBUG("EDPluginDistlSignalStrengthv1_1.preProcess...")
-        self.xsDataImage = self.getDataInput().getReferenceImage()
-        strCommandLine = self.xsDataImage.getPath().getValue()
-        self.setScriptCommandline(strCommandLine)
+        EDPluginLabelitv1_1.preProcess(self, _edObject)
+        self.DEBUG("EDPluginLabelitDistlv1_1.preProcess...")
+        self.setScriptExecutable("labelit.distl")
+        self.initaliseLabelitCommandLine()
         self.addListCommandPreExecution("export PYTHONPATH=\"\" ")
+        self.addListCommandPreExecution(". %s" % self.getPathToLabelitSetpathScript())
 
 
     def postProcess(self, _edObject=None):
         """
         Parses the labelit.screen log file and the generated MOSFLM script
         """
-        EDPluginExecProcessScript.postProcess(self, _edObject)
-        self.DEBUG("EDPluginDistlSignalStrengthv1_1.postProcess")
+        EDPluginLabelitv1_1.postProcess(self, _edObject)
+        self.DEBUG("EDPluginLabelitDistlv1_1.postProcess")
         strLabelitDistlLog = self.readProcessLogFile()
-        if (strLabelitDistlLog is None or strLabelitDistlLog.strip() == ""):
-            strErrorMessage = "EDPluginDistlSignalStrengthv1_1.postProcess : Could not read the Labelit log file"
+        if (strLabelitDistlLog is None):
+            strErrorMessage = "EDPluginLabelitDistlv1_1.postProcess : Could not read the Labelit log file"
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             self.setFailure()
         else:
             xsDataImageQualityIndicators = self.parseLabelitDistlOutput(strLabelitDistlLog)
-            xsDataImageQualityIndicators.setImage(self.xsDataImage)
-            xsDataResultDistlSignalStrength = XSDataResultDistlSignalStrength()
-            xsDataResultDistlSignalStrength.setImageQualityIndicators(xsDataImageQualityIndicators)
-            self.setDataOutput(xsDataResultDistlSignalStrength)
+            xsDataImage = self.getDataInput("referenceImage")[0]
+            xsDataImageQualityIndicators.setImage(xsDataImage)
+            self.setDataOutput(xsDataImageQualityIndicators, "imageQualityIndicators")
 
 
     def parseLabelitDistlOutput(self, _strLabelitDistlLogText):
-        self.DEBUG("EDPluginDistlSignalStrengthv1_1.parseLabelitDistlOutput")
+        self.DEBUG("EDPluginLabelitDistlv1_1.parseLabelitDistlOutput")
         xsDataImageQualityIndicators = None
         if _strLabelitDistlLogText is not None:
             xsDataImageQualityIndicators = XSDataImageQualityIndicators()
@@ -121,25 +114,6 @@ class EDPluginDistlSignalStrengthv1_1(EDPluginExecProcessScript):
                 elif strLine.find("Bin population cutoff for method 2 resolution") != -1:
                     fBinPopCutOffMethod2Res = float(strLine.split()[7][:-1])
                     xsDataImageQualityIndicators.setBinPopCutOffMethod2Res(XSDataDouble(fBinPopCutOffMethod2Res))
-                elif strLine.find("Total integrated signal, pixel-ADC units above local background (just the good Bragg candidates)") != -1:
-                    fTotalIntegratedSignal = float(strLine.split()[-1])
-                    xsDataImageQualityIndicators.setTotalIntegratedSignal(XSDataDouble(fTotalIntegratedSignal))
-                elif strLine.find("Signals range from") != -1:
-                    listStrLine = strLine.split()
-                    fSignalRangeMin = float(listStrLine[3])
-                    fSignalRangeMax = float(listStrLine[5])
-                    fSignalRangeAverage = float(listStrLine[-1])
-                    xsDataImageQualityIndicators.setSignalRangeMin(XSDataDouble(fSignalRangeMin))
-                    xsDataImageQualityIndicators.setSignalRangeMax(XSDataDouble(fSignalRangeMax))
-                    xsDataImageQualityIndicators.setSignalRangeAverage(XSDataDouble(fSignalRangeAverage))
-                elif strLine.find("Saturations range from") != -1:
-                    listStrLine = strLine.split()
-                    fSaturationRangeMin = float(listStrLine[3][:-1])
-                    fSaturationRangeMax = float(listStrLine[5][:-1])
-                    fSaturationRangeAverage = float(listStrLine[-1][:-1])
-                    xsDataImageQualityIndicators.setSaturationRangeMin(XSDataDouble(fSaturationRangeMin))
-                    xsDataImageQualityIndicators.setSaturationRangeMax(XSDataDouble(fSaturationRangeMax))
-                    xsDataImageQualityIndicators.setSaturationRangeAverage(XSDataDouble(fSaturationRangeAverage))
         return xsDataImageQualityIndicators
 
 
@@ -147,12 +121,12 @@ class EDPluginDistlSignalStrengthv1_1(EDPluginExecProcessScript):
         """
         Generates a summary of the execution of the Labelit distl plugin.
         """
-        self.DEBUG("EDPluginDistlSignalStrengthv1_1.generateExecutiveSummary")
-        xsDataImageQualityIndicators = self.getDataOutput().getImageQualityIndicators()
-        self.addExecutiveSummaryLine("Execution of Labelit distl.signal_strength successful.")
+        self.DEBUG("EDPluginLabelitDistlv1_1.generateExecutiveSummary")
+        xsDataImageQualityIndicators = self.getDataOutput("imageQualityIndicators")[0]
+        self.addExecutiveSummaryLine("Execution of Labelit distl successful.")
         self.addExecutiveSummaryLine("Image                   : %s" % xsDataImageQualityIndicators.getImage().getPath().getValue())
         self.addExecutiveSummaryLine("")
-        self.addExecutiveSummaryLine("distl.signal_strength results:")
+        self.addExecutiveSummaryLine("Labelit.distl results:")
         self.addExecutiveSummaryLine("Spot Total                : %d" % xsDataImageQualityIndicators.getSpotTotal().getValue())
         self.addExecutiveSummaryLine("In-Resolution Total       : %d" % xsDataImageQualityIndicators.getInResTotal().getValue())
         self.addExecutiveSummaryLine("Good Bragg Candidates     : %d" % xsDataImageQualityIndicators.getGoodBraggCandidates().getValue())
@@ -168,13 +142,3 @@ class EDPluginDistlSignalStrengthv1_1(EDPluginExecProcessScript):
             self.addExecutiveSummaryLine("Saturation, Top 50 Peaks  : %f [%%]" % xsDataImageQualityIndicators.getPctSaturationTop50Peaks().getValue())
         self.addExecutiveSummaryLine("In-Resolution Ovrld Spots : %d" % xsDataImageQualityIndicators.getInResolutionOvrlSpots().getValue())
         self.addExecutiveSummaryLine("Bin population cutoff for method 2 resolution : %d [%%]" % xsDataImageQualityIndicators.getBinPopCutOffMethod2Res().getValue())
-        self.addExecutiveSummaryLine("")
-        self.addExecutiveSummaryLine("Number of focus spots on image #1 within the input resolution range : %d" % xsDataImageQualityIndicators.getInResTotal().getValue())
-        if xsDataImageQualityIndicators.getTotalIntegratedSignal() is not None:
-            self.addExecutiveSummaryLine("Total integrated signal, pixel-ADC units above local background (just the good Bragg candidates) %.0f" % xsDataImageQualityIndicators.getTotalIntegratedSignal().getValue())
-        if xsDataImageQualityIndicators.getSignalRangeMin() is not None:
-            self.addExecutiveSummaryLine("Signals range from %.1f to %.1f with mean integrated signal %.1f" % (xsDataImageQualityIndicators.getSignalRangeMin().getValue(), \
-                                     xsDataImageQualityIndicators.getSignalRangeMax().getValue(), xsDataImageQualityIndicators.getSignalRangeAverage().getValue()))
-        if xsDataImageQualityIndicators.getSaturationRangeMin() is not None:
-            self.addExecutiveSummaryLine("Saturations range from %.1f%% to %.1f%% with mean saturation %.1f%%" % (xsDataImageQualityIndicators.getSaturationRangeMin().getValue(), \
-                                     xsDataImageQualityIndicators.getSaturationRangeMax().getValue(), xsDataImageQualityIndicators.getSaturationRangeAverage().getValue()))
