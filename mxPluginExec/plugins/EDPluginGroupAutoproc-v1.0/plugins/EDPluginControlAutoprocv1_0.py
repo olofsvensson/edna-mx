@@ -103,6 +103,8 @@ from XSDataISPyBv1_4 import XSDataInputStoreAutoProcStatus
 edFactoryPlugin.loadModule("XSDataMXWaitFilev1_1")
 from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
+edFactoryPlugin.loadModule("XSDataPhenixv1_1")
+from XSDataPhenixv1_1 import XSDataInputPhenixXtriage
 
 from xdscfgparser import parse_xds_file, dump_xds_file
 
@@ -372,6 +374,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.store_autoproc_noanom = self.loadPlugin('EDPluginISPyBStoreAutoProcv1_4')
 
         self.file_conversion = self.loadPlugin('EDPluginControlAutoprocImportv1_0')
+        
+        self.phenixXtriage = self.loadPlugin("EDPluginPhenixXtriagev1_1")
 
 #        self.dimple = self.loadPlugin('EDPluginControlDIMPLEPipelineCalcDiffMapv10')
 
@@ -836,8 +840,44 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             self.addErrorMessage(strErrorMessage)
             self.ERROR(strErrorMessage)
 
+        # Run phenix.xtriage
+        xsDataInputPhenixXtriage = XSDataInputPhenixXtriage()
+        xsDataInputPhenixXtriage.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, 
+                                                                                "{0}_unmerged_noanom_pointless_multirecord.mtz.gz".format(self.image_prefix))))
+        self.phenixXtriage.dataInput = xsDataInputPhenixXtriage
+        self.phenixXtriage.executeSynchronous()
+        if self.phenixXtriage.isFailure():
+            self.log_to_ispyb(self.integration_id_noanom,
+                         'Scaling',
+                         'Failed',
+                         "phenix.xtriage failed")
+        else:
+            xsDataResultPhenixXtriage = self.phenixXtriage.dataOutput
+    
+            shutil.copy(xsDataResultPhenixXtriage.logFile.path.value,
+                        os.path.join(self.file_conversion.dataInput.output_directory.value,
+                                     "{0}_phenix_xtriage_truncate_noanom.log".format(self.image_prefix)))
+    
+            if xsDataResultPhenixXtriage.pseudotranslation.value:
+                strMessage = "Pseudotranslation detected by phenix.xtriage!"
+            else:
+                strMessage = "No pseudotranslation detected by phenix.xtriage."
+            self.screen(strMessage)
+            self.log_to_ispyb(self.integration_id_noanom,
+                         'Scaling',
+                         'Successful',
+                         strMessage)
+            
+            if xsDataResultPhenixXtriage.twinning.value:
+                strMessage = "Twinning detected by phenix.xtriage!"
+            else:
+                strMessage = "No twinning detected by phenix.xtriage."
+            self.screen(strMessage)
+            self.log_to_ispyb(self.integration_id_noanom,
+                         'Scaling',
+                         'Successful',
+                         strMessage)
 
-#        self.custom_stats['total_time']=time.time() - process_start
         self.process_end = time.time()
 
 
@@ -1133,7 +1173,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         if EDUtilsPath.isESRF():
             xsDataInputControlDimple = XSDataInputControlDimple()
             xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
-            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "{0}_noanom_aimless.mtz".format(self.image_prefix))))
+            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, 
+                                                                                    "{0}_noanom_aimless.mtz".format(self.image_prefix))))
             xsDataInputControlDimple.imagePrefix = XSDataString(self.image_prefix)
             xsDataInputControlDimple.pdbDirectory = XSDataFile(XSDataString(self.root_dir))
             if pyarch_path is not None:
