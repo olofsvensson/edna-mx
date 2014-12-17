@@ -41,4 +41,6 @@ class EDTestSuitePluginExecutePhenixv1_1(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteLabelitIndexingv1_1")
         self.addTestCaseFromName("EDTestCasePluginExecuteLabelitDistlv1_1")
         self.addTestCaseFromName("EDTestCasePluginExecuteDistlSignalStrengthv1_1")
+        self.addTestCaseFromName("EDTestCasePluginExecutePhenixXtriagev1_1")
+        self.addTestCaseFromName("EDTestCasePluginExecutePhenixXtriagev1_1_pseudotranslation")
 

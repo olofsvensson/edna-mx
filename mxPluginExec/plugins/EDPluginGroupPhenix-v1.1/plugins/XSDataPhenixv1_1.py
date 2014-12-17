@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue Dec 16 01:36::23 2014 by EDGenerateDS.
+# Generated Wed Dec 17 02:13::12 2014 by EDGenerateDS.
 #
 
 import os, sys
@@ -30,12 +30,12 @@ try:
     from XSDataCommon import XSData
     from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataDouble
-    from XSDataCommon import XSDataFile
-    from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataMatrixDouble
-    from XSDataCommon import XSDataResult
     from XSDataCommon import XSDataString
+    from XSDataCommon import XSDataFile
+    from XSDataCommon import XSDataInput
+    from XSDataCommon import XSDataResult
     from XSDataCommon import XSDataImage
     from XSDataCommon import XSDataLength
     from XSDataCommon import XSDataAngle
@@ -52,12 +52,12 @@ except ImportError as error:
 from XSDataCommon import XSData
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataDouble
-from XSDataCommon import XSDataFile
-from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataMatrixDouble
-from XSDataCommon import XSDataResult
 from XSDataCommon import XSDataString
+from XSDataCommon import XSDataFile
+from XSDataCommon import XSDataInput
+from XSDataCommon import XSDataResult
 from XSDataCommon import XSDataImage
 from XSDataCommon import XSDataLength
 from XSDataCommon import XSDataAngle
@@ -1646,6 +1646,235 @@ class XSDataLabelitScreenOutput(XSData):
 # end class XSDataLabelitScreenOutput
 
 
+class XSDataTwinLawsStatistics(XSData):
+    def __init__(self, mlAlpha=None, hAlpha=None, brittonAlpha=None, rObs=None, twinType=None, operator=None):
+        XSData.__init__(self, )
+        if operator is None:
+            self._operator = None
+        elif operator.__class__.__name__ == "XSDataString":
+            self._operator = operator
+        else:
+            strMessage = "ERROR! XSDataTwinLawsStatistics constructor argument 'operator' is not XSDataString but %s" % self._operator.__class__.__name__
+            raise BaseException(strMessage)
+        if twinType is None:
+            self._twinType = None
+        elif twinType.__class__.__name__ == "XSDataString":
+            self._twinType = twinType
+        else:
+            strMessage = "ERROR! XSDataTwinLawsStatistics constructor argument 'twinType' is not XSDataString but %s" % self._twinType.__class__.__name__
+            raise BaseException(strMessage)
+        if rObs is None:
+            self._rObs = None
+        elif rObs.__class__.__name__ == "XSDataDouble":
+            self._rObs = rObs
+        else:
+            strMessage = "ERROR! XSDataTwinLawsStatistics constructor argument 'rObs' is not XSDataDouble but %s" % self._rObs.__class__.__name__
+            raise BaseException(strMessage)
+        if brittonAlpha is None:
+            self._brittonAlpha = None
+        elif brittonAlpha.__class__.__name__ == "XSDataDouble":
+            self._brittonAlpha = brittonAlpha
+        else:
+            strMessage = "ERROR! XSDataTwinLawsStatistics constructor argument 'brittonAlpha' is not XSDataDouble but %s" % self._brittonAlpha.__class__.__name__
+            raise BaseException(strMessage)
+        if hAlpha is None:
+            self._hAlpha = None
+        elif hAlpha.__class__.__name__ == "XSDataDouble":
+            self._hAlpha = hAlpha
+        else:
+            strMessage = "ERROR! XSDataTwinLawsStatistics constructor argument 'hAlpha' is not XSDataDouble but %s" % self._hAlpha.__class__.__name__
+            raise BaseException(strMessage)
+        if mlAlpha is None:
+            self._mlAlpha = None
+        elif mlAlpha.__class__.__name__ == "XSDataDouble":
+            self._mlAlpha = mlAlpha
+        else:
+            strMessage = "ERROR! XSDataTwinLawsStatistics constructor argument 'mlAlpha' is not XSDataDouble but %s" % self._mlAlpha.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'operator' attribute
+    def getOperator(self): return self._operator
+    def setOperator(self, operator):
+        if operator is None:
+            self._operator = None
+        elif operator.__class__.__name__ == "XSDataString":
+            self._operator = operator
+        else:
+            strMessage = "ERROR! XSDataTwinLawsStatistics.setOperator argument is not XSDataString but %s" % operator.__class__.__name__
+            raise BaseException(strMessage)
+    def delOperator(self): self._operator = None
+    operator = property(getOperator, setOperator, delOperator, "Property for operator")
+    # Methods and properties for the 'twinType' attribute
+    def getTwinType(self): return self._twinType
+    def setTwinType(self, twinType):
+        if twinType is None:
+            self._twinType = None
+        elif twinType.__class__.__name__ == "XSDataString":
+            self._twinType = twinType
+        else:
+            strMessage = "ERROR! XSDataTwinLawsStatistics.setTwinType argument is not XSDataString but %s" % twinType.__class__.__name__
+            raise BaseException(strMessage)
+    def delTwinType(self): self._twinType = None
+    twinType = property(getTwinType, setTwinType, delTwinType, "Property for twinType")
+    # Methods and properties for the 'rObs' attribute
+    def getRObs(self): return self._rObs
+    def setRObs(self, rObs):
+        if rObs is None:
+            self._rObs = None
+        elif rObs.__class__.__name__ == "XSDataDouble":
+            self._rObs = rObs
+        else:
+            strMessage = "ERROR! XSDataTwinLawsStatistics.setRObs argument is not XSDataDouble but %s" % rObs.__class__.__name__
+            raise BaseException(strMessage)
+    def delRObs(self): self._rObs = None
+    rObs = property(getRObs, setRObs, delRObs, "Property for rObs")
+    # Methods and properties for the 'brittonAlpha' attribute
+    def getBrittonAlpha(self): return self._brittonAlpha
+    def setBrittonAlpha(self, brittonAlpha):
+        if brittonAlpha is None:
+            self._brittonAlpha = None
+        elif brittonAlpha.__class__.__name__ == "XSDataDouble":
+            self._brittonAlpha = brittonAlpha
+        else:
+            strMessage = "ERROR! XSDataTwinLawsStatistics.setBrittonAlpha argument is not XSDataDouble but %s" % brittonAlpha.__class__.__name__
+            raise BaseException(strMessage)
+    def delBrittonAlpha(self): self._brittonAlpha = None
+    brittonAlpha = property(getBrittonAlpha, setBrittonAlpha, delBrittonAlpha, "Property for brittonAlpha")
+    # Methods and properties for the 'hAlpha' attribute
+    def getHAlpha(self): return self._hAlpha
+    def setHAlpha(self, hAlpha):
+        if hAlpha is None:
+            self._hAlpha = None
+        elif hAlpha.__class__.__name__ == "XSDataDouble":
+            self._hAlpha = hAlpha
+        else:
+            strMessage = "ERROR! XSDataTwinLawsStatistics.setHAlpha argument is not XSDataDouble but %s" % hAlpha.__class__.__name__
+            raise BaseException(strMessage)
+    def delHAlpha(self): self._hAlpha = None
+    hAlpha = property(getHAlpha, setHAlpha, delHAlpha, "Property for hAlpha")
+    # Methods and properties for the 'mlAlpha' attribute
+    def getMlAlpha(self): return self._mlAlpha
+    def setMlAlpha(self, mlAlpha):
+        if mlAlpha is None:
+            self._mlAlpha = None
+        elif mlAlpha.__class__.__name__ == "XSDataDouble":
+            self._mlAlpha = mlAlpha
+        else:
+            strMessage = "ERROR! XSDataTwinLawsStatistics.setMlAlpha argument is not XSDataDouble but %s" % mlAlpha.__class__.__name__
+            raise BaseException(strMessage)
+    def delMlAlpha(self): self._mlAlpha = None
+    mlAlpha = property(getMlAlpha, setMlAlpha, delMlAlpha, "Property for mlAlpha")
+    def export(self, outfile, level, name_='XSDataTwinLawsStatistics'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataTwinLawsStatistics'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._operator is not None:
+            self.operator.export(outfile, level, name_='operator')
+        else:
+            warnEmptyAttribute("operator", "XSDataString")
+        if self._twinType is not None:
+            self.twinType.export(outfile, level, name_='twinType')
+        else:
+            warnEmptyAttribute("twinType", "XSDataString")
+        if self._rObs is not None:
+            self.rObs.export(outfile, level, name_='rObs')
+        else:
+            warnEmptyAttribute("rObs", "XSDataDouble")
+        if self._brittonAlpha is not None:
+            self.brittonAlpha.export(outfile, level, name_='brittonAlpha')
+        else:
+            warnEmptyAttribute("brittonAlpha", "XSDataDouble")
+        if self._hAlpha is not None:
+            self.hAlpha.export(outfile, level, name_='hAlpha')
+        else:
+            warnEmptyAttribute("hAlpha", "XSDataDouble")
+        if self._mlAlpha is not None:
+            self.mlAlpha.export(outfile, level, name_='mlAlpha')
+        else:
+            warnEmptyAttribute("mlAlpha", "XSDataDouble")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'operator':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setOperator(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'twinType':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setTwinType(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rObs':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setRObs(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'brittonAlpha':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setBrittonAlpha(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'hAlpha':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setHAlpha(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'mlAlpha':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setMlAlpha(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataTwinLawsStatistics" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataTwinLawsStatistics' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataTwinLawsStatistics is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataTwinLawsStatistics.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataTwinLawsStatistics()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataTwinLawsStatistics" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataTwinLawsStatistics()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataTwinLawsStatistics
+
+
 class XSDataInputDistlSignalStrength(XSDataInput):
     def __init__(self, configuration=None, referenceImage=None):
         XSDataInput.__init__(self, configuration)
@@ -1735,6 +1964,121 @@ class XSDataInputDistlSignalStrength(XSDataInput):
 # end class XSDataInputDistlSignalStrength
 
 
+class XSDataInputPhenixXtriage(XSDataInput):
+    def __init__(self, configuration=None, obsLabels=None, mtzFile=None):
+        XSDataInput.__init__(self, configuration)
+        if mtzFile is None:
+            self._mtzFile = None
+        elif mtzFile.__class__.__name__ == "XSDataFile":
+            self._mtzFile = mtzFile
+        else:
+            strMessage = "ERROR! XSDataInputPhenixXtriage constructor argument 'mtzFile' is not XSDataFile but %s" % self._mtzFile.__class__.__name__
+            raise BaseException(strMessage)
+        if obsLabels is None:
+            self._obsLabels = None
+        elif obsLabels.__class__.__name__ == "XSDataString":
+            self._obsLabels = obsLabels
+        else:
+            strMessage = "ERROR! XSDataInputPhenixXtriage constructor argument 'obsLabels' is not XSDataString but %s" % self._obsLabels.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'mtzFile' attribute
+    def getMtzFile(self): return self._mtzFile
+    def setMtzFile(self, mtzFile):
+        if mtzFile is None:
+            self._mtzFile = None
+        elif mtzFile.__class__.__name__ == "XSDataFile":
+            self._mtzFile = mtzFile
+        else:
+            strMessage = "ERROR! XSDataInputPhenixXtriage.setMtzFile argument is not XSDataFile but %s" % mtzFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delMtzFile(self): self._mtzFile = None
+    mtzFile = property(getMtzFile, setMtzFile, delMtzFile, "Property for mtzFile")
+    # Methods and properties for the 'obsLabels' attribute
+    def getObsLabels(self): return self._obsLabels
+    def setObsLabels(self, obsLabels):
+        if obsLabels is None:
+            self._obsLabels = None
+        elif obsLabels.__class__.__name__ == "XSDataString":
+            self._obsLabels = obsLabels
+        else:
+            strMessage = "ERROR! XSDataInputPhenixXtriage.setObsLabels argument is not XSDataString but %s" % obsLabels.__class__.__name__
+            raise BaseException(strMessage)
+    def delObsLabels(self): self._obsLabels = None
+    obsLabels = property(getObsLabels, setObsLabels, delObsLabels, "Property for obsLabels")
+    def export(self, outfile, level, name_='XSDataInputPhenixXtriage'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataInputPhenixXtriage'):
+        XSDataInput.exportChildren(self, outfile, level, name_)
+        if self._mtzFile is not None:
+            self.mtzFile.export(outfile, level, name_='mtzFile')
+        else:
+            warnEmptyAttribute("mtzFile", "XSDataFile")
+        if self._obsLabels is not None:
+            self.obsLabels.export(outfile, level, name_='obsLabels')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'mtzFile':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setMtzFile(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'obsLabels':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setObsLabels(obj_)
+        XSDataInput.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataInputPhenixXtriage" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataInputPhenixXtriage' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataInputPhenixXtriage is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataInputPhenixXtriage.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataInputPhenixXtriage()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataInputPhenixXtriage" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataInputPhenixXtriage()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataInputPhenixXtriage
+
+
 class XSDataResultDistlSignalStrength(XSDataResult):
     def __init__(self, status=None, imageQualityIndicators=None):
         XSDataResult.__init__(self, status)
@@ -1822,6 +2166,254 @@ class XSDataResultDistlSignalStrength(XSDataResult):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataResultDistlSignalStrength
+
+
+class XSDataResultPhenixXtriage(XSDataResult):
+    def __init__(self, status=None, pseudotranslation=None, pattersonPValue=None, pattersonLargestPeakHeight=None, twinLawStatistics=None, twinning=None, logFile=None):
+        XSDataResult.__init__(self, status)
+        if logFile is None:
+            self._logFile = None
+        elif logFile.__class__.__name__ == "XSDataFile":
+            self._logFile = logFile
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage constructor argument 'logFile' is not XSDataFile but %s" % self._logFile.__class__.__name__
+            raise BaseException(strMessage)
+        if twinning is None:
+            self._twinning = None
+        elif twinning.__class__.__name__ == "XSDataBoolean":
+            self._twinning = twinning
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage constructor argument 'twinning' is not XSDataBoolean but %s" % self._twinning.__class__.__name__
+            raise BaseException(strMessage)
+        if twinLawStatistics is None:
+            self._twinLawStatistics = []
+        elif twinLawStatistics.__class__.__name__ == "list":
+            self._twinLawStatistics = twinLawStatistics
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage constructor argument 'twinLawStatistics' is not list but %s" % self._twinLawStatistics.__class__.__name__
+            raise BaseException(strMessage)
+        if pattersonLargestPeakHeight is None:
+            self._pattersonLargestPeakHeight = None
+        elif pattersonLargestPeakHeight.__class__.__name__ == "XSDataDouble":
+            self._pattersonLargestPeakHeight = pattersonLargestPeakHeight
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage constructor argument 'pattersonLargestPeakHeight' is not XSDataDouble but %s" % self._pattersonLargestPeakHeight.__class__.__name__
+            raise BaseException(strMessage)
+        if pattersonPValue is None:
+            self._pattersonPValue = None
+        elif pattersonPValue.__class__.__name__ == "XSDataDouble":
+            self._pattersonPValue = pattersonPValue
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage constructor argument 'pattersonPValue' is not XSDataDouble but %s" % self._pattersonPValue.__class__.__name__
+            raise BaseException(strMessage)
+        if pseudotranslation is None:
+            self._pseudotranslation = None
+        elif pseudotranslation.__class__.__name__ == "XSDataBoolean":
+            self._pseudotranslation = pseudotranslation
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage constructor argument 'pseudotranslation' is not XSDataBoolean but %s" % self._pseudotranslation.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'logFile' attribute
+    def getLogFile(self): return self._logFile
+    def setLogFile(self, logFile):
+        if logFile is None:
+            self._logFile = None
+        elif logFile.__class__.__name__ == "XSDataFile":
+            self._logFile = logFile
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage.setLogFile argument is not XSDataFile but %s" % logFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delLogFile(self): self._logFile = None
+    logFile = property(getLogFile, setLogFile, delLogFile, "Property for logFile")
+    # Methods and properties for the 'twinning' attribute
+    def getTwinning(self): return self._twinning
+    def setTwinning(self, twinning):
+        if twinning is None:
+            self._twinning = None
+        elif twinning.__class__.__name__ == "XSDataBoolean":
+            self._twinning = twinning
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage.setTwinning argument is not XSDataBoolean but %s" % twinning.__class__.__name__
+            raise BaseException(strMessage)
+    def delTwinning(self): self._twinning = None
+    twinning = property(getTwinning, setTwinning, delTwinning, "Property for twinning")
+    # Methods and properties for the 'twinLawStatistics' attribute
+    def getTwinLawStatistics(self): return self._twinLawStatistics
+    def setTwinLawStatistics(self, twinLawStatistics):
+        if twinLawStatistics is None:
+            self._twinLawStatistics = []
+        elif twinLawStatistics.__class__.__name__ == "list":
+            self._twinLawStatistics = twinLawStatistics
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage.setTwinLawStatistics argument is not list but %s" % twinLawStatistics.__class__.__name__
+            raise BaseException(strMessage)
+    def delTwinLawStatistics(self): self._twinLawStatistics = None
+    twinLawStatistics = property(getTwinLawStatistics, setTwinLawStatistics, delTwinLawStatistics, "Property for twinLawStatistics")
+    def addTwinLawStatistics(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataResultPhenixXtriage.addTwinLawStatistics argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataTwinLawsStatistics":
+            self._twinLawStatistics.append(value)
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage.addTwinLawStatistics argument is not XSDataTwinLawsStatistics but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertTwinLawStatistics(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataResultPhenixXtriage.insertTwinLawStatistics argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataResultPhenixXtriage.insertTwinLawStatistics argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataTwinLawsStatistics":
+            self._twinLawStatistics[index] = value
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage.addTwinLawStatistics argument is not XSDataTwinLawsStatistics but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'pattersonLargestPeakHeight' attribute
+    def getPattersonLargestPeakHeight(self): return self._pattersonLargestPeakHeight
+    def setPattersonLargestPeakHeight(self, pattersonLargestPeakHeight):
+        if pattersonLargestPeakHeight is None:
+            self._pattersonLargestPeakHeight = None
+        elif pattersonLargestPeakHeight.__class__.__name__ == "XSDataDouble":
+            self._pattersonLargestPeakHeight = pattersonLargestPeakHeight
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage.setPattersonLargestPeakHeight argument is not XSDataDouble but %s" % pattersonLargestPeakHeight.__class__.__name__
+            raise BaseException(strMessage)
+    def delPattersonLargestPeakHeight(self): self._pattersonLargestPeakHeight = None
+    pattersonLargestPeakHeight = property(getPattersonLargestPeakHeight, setPattersonLargestPeakHeight, delPattersonLargestPeakHeight, "Property for pattersonLargestPeakHeight")
+    # Methods and properties for the 'pattersonPValue' attribute
+    def getPattersonPValue(self): return self._pattersonPValue
+    def setPattersonPValue(self, pattersonPValue):
+        if pattersonPValue is None:
+            self._pattersonPValue = None
+        elif pattersonPValue.__class__.__name__ == "XSDataDouble":
+            self._pattersonPValue = pattersonPValue
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage.setPattersonPValue argument is not XSDataDouble but %s" % pattersonPValue.__class__.__name__
+            raise BaseException(strMessage)
+    def delPattersonPValue(self): self._pattersonPValue = None
+    pattersonPValue = property(getPattersonPValue, setPattersonPValue, delPattersonPValue, "Property for pattersonPValue")
+    # Methods and properties for the 'pseudotranslation' attribute
+    def getPseudotranslation(self): return self._pseudotranslation
+    def setPseudotranslation(self, pseudotranslation):
+        if pseudotranslation is None:
+            self._pseudotranslation = None
+        elif pseudotranslation.__class__.__name__ == "XSDataBoolean":
+            self._pseudotranslation = pseudotranslation
+        else:
+            strMessage = "ERROR! XSDataResultPhenixXtriage.setPseudotranslation argument is not XSDataBoolean but %s" % pseudotranslation.__class__.__name__
+            raise BaseException(strMessage)
+    def delPseudotranslation(self): self._pseudotranslation = None
+    pseudotranslation = property(getPseudotranslation, setPseudotranslation, delPseudotranslation, "Property for pseudotranslation")
+    def export(self, outfile, level, name_='XSDataResultPhenixXtriage'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataResultPhenixXtriage'):
+        XSDataResult.exportChildren(self, outfile, level, name_)
+        if self._logFile is not None:
+            self.logFile.export(outfile, level, name_='logFile')
+        else:
+            warnEmptyAttribute("logFile", "XSDataFile")
+        if self._twinning is not None:
+            self.twinning.export(outfile, level, name_='twinning')
+        else:
+            warnEmptyAttribute("twinning", "XSDataBoolean")
+        for twinLawStatistics_ in self.getTwinLawStatistics():
+            twinLawStatistics_.export(outfile, level, name_='twinLawStatistics')
+        if self._pattersonLargestPeakHeight is not None:
+            self.pattersonLargestPeakHeight.export(outfile, level, name_='pattersonLargestPeakHeight')
+        else:
+            warnEmptyAttribute("pattersonLargestPeakHeight", "XSDataDouble")
+        if self._pattersonPValue is not None:
+            self.pattersonPValue.export(outfile, level, name_='pattersonPValue')
+        else:
+            warnEmptyAttribute("pattersonPValue", "XSDataDouble")
+        if self._pseudotranslation is not None:
+            self.pseudotranslation.export(outfile, level, name_='pseudotranslation')
+        else:
+            warnEmptyAttribute("pseudotranslation", "XSDataBoolean")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'logFile':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setLogFile(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'twinning':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setTwinning(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'twinLawStatistics':
+            obj_ = XSDataTwinLawsStatistics()
+            obj_.build(child_)
+            self.twinLawStatistics.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pattersonLargestPeakHeight':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setPattersonLargestPeakHeight(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pattersonPValue':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setPattersonPValue(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pseudotranslation':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setPseudotranslation(obj_)
+        XSDataResult.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataResultPhenixXtriage" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataResultPhenixXtriage' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataResultPhenixXtriage is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataResultPhenixXtriage.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultPhenixXtriage()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataResultPhenixXtriage" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultPhenixXtriage()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataResultPhenixXtriage
 
 
 

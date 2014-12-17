@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<XSDataInputPhenixXtriage>
+  <obsLabels>
+    <value>IMEAN,SIGIMEAN</value>
+  </obsLabels>
+  <mtzFile>
+    <path>
+      <value>${EDNA_TESTIMAGES}/dimple_noanom_aimless.mtz</value>
+    </path>
+  </mtzFile>
+</XSDataInputPhenixXtriage>
