@@ -52,7 +52,13 @@ class EDUtilsFile(object):
         """
         strContent = None
         try:
-            strContent = open(_strFileName, "rb").read()
+            ### Guifre Cuni, 130507 ?!?!?! Possible bug here...
+            ### After some executions there may be an error because too much opened files...
+            ### It can be monitored with command watch "lsof -p $EDNA_TANGODS_PID"
+
+            ###strContent = open(_strFileName, "rb").read()
+            with open(_strFileName, "rb") as fd:
+                strContent = fd.read()
         except Exception, e:
             strError = "EDUtilsFile.readFile: Reading %s: %s" % (_strFileName, str(e))
             EDVerbose.ERROR(strError)
