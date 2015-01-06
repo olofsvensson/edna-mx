@@ -570,7 +570,6 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
     def getBeamlineProposalFromPath(self, _strPathToImage):
         """ESRF specific code for extracting the beamline name and prefix from the path"""
         listPath = _strPathToImage.split("/")
-        print listPath
         strPrefix = EDUtilsImage.getPrefix(_strPathToImage).replace("ref-", "")
         if listPath[2] == "visitor":
             strBeamline = listPath[4]
