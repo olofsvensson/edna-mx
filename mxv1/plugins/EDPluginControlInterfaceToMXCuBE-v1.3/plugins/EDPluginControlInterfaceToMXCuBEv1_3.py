@@ -30,6 +30,7 @@ import os
 import shutil
 import smtplib
 import time
+import socket
 
 from EDMessage import EDMessage
 from EDPluginControl import EDPluginControl
@@ -181,7 +182,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
         self.retrieveSuccessMessages(self.edPluginControlInterface, "EDPluginControlInterfaceToMXCuBEv1_3.doSuccessActionInterface")
         # Send success email message (MXSUP-183):
         self.tStop = time.time()
-        strSubject = "%s : SUCCESS! (%.1f s)" % (EDUtilsPath.getEdnaSite(), self.tStop - self.tStart)
+        strSubject = "SUCCESS"
         strMessage = "Characterisation success!"
         self.storeResultsInISPyB(strSubject, strMessage)
         
@@ -189,7 +190,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.doFailureActionInterface...")
         # Send failure email message (MXSUP-183):
         self.tStop = time.time()
-        strSubject = "%s : FAILURE! (%.1f s)" % (EDUtilsPath.getEdnaSite(), self.tStop - self.tStart)
+        strSubject = "FAILURE"
         strMessage = "Characterisation FAILURE!"
         self.storeResultsInISPyB(strSubject, strMessage)
         # self.setFailure()
@@ -566,11 +567,33 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
             if(xsDataSample is not None):
                 xsDataCollection.setSample(xsDataSample)
 
-
+    def getBeamlineProposalFromPath(self, _strPathToImage):
+        """ESRF specific code for extracting the beamline name and prefix from the path"""
+        listPath = _strPathToImage.split("/")
+        print listPath
+        strPrefix = EDUtilsImage.getPrefix(_strPathToImage).replace("ref-", "")
+        if listPath[2] == "visitor":
+            strBeamline = listPath[4]
+            strProposal = listPath[3]
+        elif listPath[3] == "inhouse":
+            strBeamline = listPath[2]
+            strProposal = listPath[4]
+        else:
+            strBeamline = ""
+            strProposal = ""
+        return (strBeamline, strProposal, strPrefix)
+        
     def sendEmail(self, _strSubject, _strMessage):
         """Sends an email to the EDNA contact person (if configured)."""
-
-        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.sendEmail: Subject = %s" % _strSubject)
+        strTime = "%.1f s" % (self.tStop - self.tStart)
+        if EDUtilsPath.isESRF():
+            strPathImage = self.dataInput.dataSet[0].imageFile[0].path.value
+            (strBeamline, strProposal, strPrefix) = self.getBeamlineProposalFromPath(strPathImage)
+            strHost = socket.gethostname()
+            strSubject = "EDNA ch %s %s %s %s %s (%s)" % (_strSubject, strBeamline, strProposal, strPrefix, strHost, strTime)
+        else:
+            strSubject = "EDNA %s : %s (%s)" % (_strSubject, EDUtilsPath.getEdnaSite(), strTime)
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.sendEmail: Subject = %s" % strSubject)
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.sendEmail: Message:")
         self.DEBUG(_strMessage)
         if self.strEDNAContactEmail == None:
@@ -594,7 +617,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                 strMessage += _strMessage
                 strEmailMsg = ("From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s" % (self.strEDNAEmailSender, \
                                                                                 self.strEDNAContactEmail, \
-                                                                                _strSubject, strMessage))
+                                                                                strSubject, strMessage))
                 server = smtplib.SMTP("localhost")
                 server.sendmail(self.strEDNAEmailSender, self.strEDNAContactEmail, strEmailMsg)
                 server.quit()
@@ -602,7 +625,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                 self.ERROR("Error when sending email message!")
                 self.writeErrorTrace()
 
-
+    
     def executeSimpleHTML(self, _xsDataResultCharacterisation):
         xsDataInputSimpleHTMLPage = XSDataInputSimpleHTMLPage()
         xsDataInputSimpleHTMLPage.setCharacterisationResult(_xsDataResultCharacterisation)
