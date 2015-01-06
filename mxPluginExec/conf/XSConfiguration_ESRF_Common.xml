@@ -452,7 +452,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>4500</value>
+					<value>7200</value>
 				</XSParamItem>
 			    <XSParamItem>
 			        <name>contactEmail</name>
@@ -534,7 +534,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>1800</value>
+					<value>3600</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
