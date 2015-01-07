@@ -578,8 +578,8 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
             strBeamline = listPath[2]
             strProposal = listPath[4]
         else:
-            strBeamline = ""
-            strProposal = ""
+            strBeamline = "nobeamline"
+            strProposal = "noproposal"
         return (strBeamline, strProposal, strPrefix)
         
     def sendEmail(self, _strSubject, _strMessage):
