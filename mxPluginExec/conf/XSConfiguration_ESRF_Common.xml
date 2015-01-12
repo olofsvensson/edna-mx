@@ -18,7 +18,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/bin/ccp4.setup-sh</value>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -47,7 +47,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/bin/ccp4.setup-sh</value>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -122,7 +122,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/bin/ccp4.setup-sh</value>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -147,7 +147,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/bin/ccp4.setup-sh</value>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -172,7 +172,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/bin/ccp4.setup-sh</value>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -197,7 +197,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/bin/ccp4.setup-sh</value>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -222,7 +222,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/bin/ccp4.setup-sh</value>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -251,7 +251,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/bin/ccp4.setup-sh</value>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -413,7 +413,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.4.0/linux-x86_64/ccp4-6.4.0/bin/ccp4.setup-sh</value>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -489,7 +489,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>symdb_path</name>
-					<value>/opt/pxsoft/ccp4-6.0.2/lib/data/syminfo.lib</value>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/lib/data/syminfo.lib</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
