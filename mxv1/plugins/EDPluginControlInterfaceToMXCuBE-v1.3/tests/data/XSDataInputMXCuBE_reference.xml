@@ -9,6 +9,8 @@
 	</path>
   </outputFileDirectory>
   <dataSet>
+  </dataSet>
+  <dataSet>
   	<imageFile>
       <path>
         <value>${EDNA_TESTIMAGES}/ref-testscale_1_001.img</value>

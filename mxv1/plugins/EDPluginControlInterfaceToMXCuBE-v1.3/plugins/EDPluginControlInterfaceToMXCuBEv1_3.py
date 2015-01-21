@@ -586,8 +586,17 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
         """Sends an email to the EDNA contact person (if configured)."""
         strTime = "%.1f s" % (self.tStop - self.tStart)
         if EDUtilsPath.isESRF():
-            strPathImage = self.dataInput.dataSet[0].imageFile[0].path.value
-            (strBeamline, strProposal, strPrefix) = self.getBeamlineProposalFromPath(strPathImage)
+            strPathImage = None
+            for dataSet in self.dataInput.dataSet:
+                for imageFile in dataSet.imageFile:
+                    strPathImage = imageFile.path.value
+                    break
+            if strPathImage is not None:
+                (strBeamline, strProposal, strPrefix) = self.getBeamlineProposalFromPath(strPathImage)
+            else:
+                strBeamline = "Unknown"
+                strProposal = "Unknown"
+                strPrefix = "Unknown"
             strHost = socket.gethostname()
             strSubject = "EDNA ch %s %s %s %s %s (%s)" % (_strSubject, strBeamline, strProposal, strPrefix, strHost, strTime)
         else:
