@@ -49,6 +49,7 @@ from XSDataCommon import XSDataDictionary
 from XSDataCommon import XSDataKeyValuePair
 from XSDataCommon import XSDataSize
 from XSDataCommon import XSDataLength
+from XSDataCommon import XSDataDouble
 
 from XSDataMXv1 import XSDataInputControlISPyB
 from XSDataMXv1 import XSDataResultCharacterisation
@@ -503,6 +504,10 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                         xsDataSize.x = XSDataLength(fBeamSizeAtSampleX)
                         xsDataSize.y = XSDataLength(fBeamSizeAtSampleY)
                         xsDataExperimentalCondition.getBeam().setSize(xsDataSize)
+                    # Get transmission if it's not already there
+                    if xsDataExperimentalCondition.beam.transmission is None:
+                        fTransmission = xsDataISPyBDataCollection.transmission
+                        xsDataExperimentalCondition.beam.transmission = XSDataDouble(fTransmission)
             if not bFoundValidFlux:
                 self.screen("No valid flux could be retrieved from ISPyB! Trying to obtain flux from input data.")
                 xsDataBeam = xsDataExperimentalCondition.getBeam()
@@ -512,6 +517,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                     self.screen("MXCuBE reports flux to be: %g photons/sec" % fFluxMXCuBE)
                     if fFluxMXCuBE < self.fFluxThreshold:
                         self.screen("MXCuBE flux invalid!")
+            
         return xsDataExperimentalCondition
                             
                             
