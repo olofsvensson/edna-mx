@@ -365,7 +365,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 fTransmission = xsDataBeam.getTransmission().getValue()
                 if fTransmission < self.fMinTransmission:
                     strWarningMessage1 = "WARNING! Transmission for characterisation set to %.1f %%" % fTransmission
-                    strWarningMessage2 = "Please consider re-characterising with transmission set to 100 %" 
+                    strWarningMessage2 = "If this transmission setting is not intentional, please consider re-characterising with transmission set to 100 %" 
                     self.page.font(_color="red", size="+2")
                     self.page.i()
                     self.page.h2(strWarningMessage1+"<br>"+strWarningMessage2)
