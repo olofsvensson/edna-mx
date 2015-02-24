@@ -116,7 +116,7 @@ WAIT_FOR_FRAME_TIMEOUT=240 #max uses 50*5
 # We used to go through the results directory and add all files to the
 # ispyb upload. Now some files should not be uploaded, so we'll
 # discriminate by extension for now
-ISPYB_UPLOAD_EXTENSIONS=['.lp', '.mtz', '.log', '.inp', '.mtz.gz']
+ISPYB_UPLOAD_EXTENSIONS=['.lp', '.mtz', '.log', '.inp', '.gz']
 
 class EDPluginControlAutoprocv1_0(EDPluginControl):
     """
@@ -1047,10 +1047,15 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # ------ NO ANOM / ANOM end
 
-        program_container = AutoProcProgramContainer()
-        program_container.AutoProcProgram = AutoProcProgram()
-        program_container.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container.AutoProcProgram.processingPrograms = 'EDNA dp'
+        program_container_anom = AutoProcProgramContainer()
+        program_container_anom.AutoProcProgram = AutoProcProgram()
+        program_container_anom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
+        program_container_anom.AutoProcProgram.processingPrograms = 'EDNA dp'
+
+        program_container_noanom = AutoProcProgramContainer()
+        program_container_noanom.AutoProcProgram = AutoProcProgram()
+        program_container_noanom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
+        program_container_noanom.AutoProcProgram.processingPrograms = 'EDNA dp'
 
         # now for the generated files. There's some magic to do with
         # their paths to determine where to put them on pyarch
@@ -1103,20 +1108,31 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             # now add those to the ispyb upload
             for path in file_list:
                 dirname, filename = os.path.split(path)
-                attach = AutoProcProgramAttachment()
-                attach.fileType = "Result"
-                attach.fileName = filename
+                attach_anom = AutoProcProgramAttachment()
+                attach_anom.fileType = "Result"
+                attach_anom.fileName = filename
+                attach_noanom = AutoProcProgramAttachment()
+                attach_noanom.fileType = "Result"
+                attach_noanom.fileName = filename
                 if EDUtilsPath.isEMBL():
                     dirname = '/mnt/p14ppu01/' + dirname
-                attach.filePath = dirname
-                program_container.AutoProcProgramAttachment.append(attach)
+                attach_anom.filePath = dirname
+                attach_noanom.filePath = dirname
+                if "_anom" in filename:
+                    program_container_anom.AutoProcProgramAttachment.append(attach_anom)
+                elif "_noanom" in filename:
+                    program_container_noanom.AutoProcProgramAttachment.append(attach_noanom)
+                else:
+                    program_container_noanom.AutoProcProgramAttachment.append(attach_anom)
+                    program_container_anom.AutoProcProgramAttachment.append(attach_noanom)
+                    
 
-
-        program_container.AutoProcProgram.processingStatus = True
-        output.AutoProcProgramContainer = program_container
-
+        program_container_anom.AutoProcProgram.processingStatus = True
+        program_container_noanom.AutoProcProgram.processingStatus = True
+        
         # first with anom
 
+        output.AutoProcProgramContainer = program_container_anom
         output.AutoProcScalingContainer = scaling_container_anom
 
         ispyb_input = XSDataInputStoreAutoProc()
@@ -1144,6 +1160,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_anom)), 0755)
         # then noanom stats
 
+        output.AutoProcProgramContainer = program_container_noanom
         output.AutoProcScalingContainer = scaling_container_noanom
 
         ispyb_input = XSDataInputStoreAutoProc()
