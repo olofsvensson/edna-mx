@@ -218,6 +218,16 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         EDPluginControl.postProcess(self)
         output_file = self.dataInput.output_file.value
 
+        # gzip the aimless unmerged file
+        aimless_unmerged_out = '{0}{1}_aimless_unmerged.mtz'.format(self.image_prefix, self.strAnomSuffix)
+        aimless_unmerged_path = os.path.join(os.path.dirname(self.dataInput.output_file.value),
+                                             aimless_unmerged_out)
+        try:
+            self.DEBUG("gzip'ing aimless unmerged file {0}".format(aimless_unmerged_path))
+            subprocess.call(['gzip', aimless_unmerged_path])
+        except Exception:
+            self.DEBUG("gzip'ing the file failed: {0}".format(traceback.format_exc()))
+
         # gzip the pointless multirecord file
         pointless_out = os.path.join(os.path.dirname(self.dataInput.output_file.value),
                                      self.pointless_out)
