@@ -856,7 +856,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
     
             shutil.copy(xsDataResultPhenixXtriage.logFile.path.value,
                         os.path.join(self.file_conversion.dataInput.output_directory.value,
-                                     "{0}_phenix_xtriage_truncate_noanom.log".format(self.image_prefix)))
+                                     "{0}_phenix_xtriage_noanom.log".format(self.image_prefix)))
     
             if xsDataResultPhenixXtriage.pseudotranslation.value:
                 strMessage = "Pseudotranslation detected by phenix.xtriage!"
@@ -1050,7 +1050,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         program_container = AutoProcProgramContainer()
         program_container.AutoProcProgram = AutoProcProgram()
         program_container.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container.AutoProcProgram.processingPrograms = 'EDNAproc'
+        program_container.AutoProcProgram.processingPrograms = 'EDNA_dp'
 
         # now for the generated files. There's some magic to do with
         # their paths to determine where to put them on pyarch
