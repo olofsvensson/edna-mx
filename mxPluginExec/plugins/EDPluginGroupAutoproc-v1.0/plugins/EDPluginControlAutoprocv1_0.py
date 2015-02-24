@@ -1050,7 +1050,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         program_container = AutoProcProgramContainer()
         program_container.AutoProcProgram = AutoProcProgram()
         program_container.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container.AutoProcProgram.processingPrograms = 'EDNA_dp'
+        program_container.AutoProcProgram.processingPrograms = 'EDNA dp'
 
         # now for the generated files. There's some magic to do with
         # their paths to determine where to put them on pyarch
