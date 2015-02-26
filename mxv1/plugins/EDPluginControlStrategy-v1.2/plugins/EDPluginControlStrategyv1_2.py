@@ -253,7 +253,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
                         iOscStart = xsDataGoniostat.rotationAxisStart.value
                         iOscEnd   = xsDataGoniostat.rotationAxisEnd.value
                         iOscWidth = xsDataGoniostat.oscillationWidth.value
-                        iNumberOfImages += int((iOscEnd-iOscStart)/iOscWidth)
+                        iNumberOfImages += int(round((iOscEnd-iOscStart)/iOscWidth,0))
                 if iNumberOfImages is None:
                     iNumberOfImages = 1
                     self.WARNING("No goniostat information, number of images for RADDOSE set to 1")
