@@ -77,6 +77,11 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.ix_max_pilatus2m = 840
         self.iy_min_pilatus2m = 776
         self.iy_max_pilatus2m = 852
+        # Default values for ESRF Eiger4M
+        self.ix_min_eiger4m = 1 
+        self.ix_max_eiger4m = 840
+        self.iy_min_eiger4m = 776
+        self.iy_max_eiger4m = 852
 
     def checkParameters(self):
         """
@@ -122,11 +127,16 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 self.ix_max = self.ix_max_pilatus2m
                 self.iy_min = self.iy_min_pilatus2m
                 self.iy_max = self.iy_max_pilatus2m
-            else:
+            elif _xsDataInputDozor.detectorType.value == "pilatus2m":
                 self.ix_min = self.ix_min_pilatus6m                
                 self.ix_max = self.ix_max_pilatus6m
                 self.iy_min = self.iy_min_pilatus6m
                 self.iy_max = self.iy_max_pilatus6m
+            elif _xsDataInputDozor.detectorType.value == "eiger4m":
+                self.ix_min = self.ix_min_eiger4m                
+                self.ix_max = self.ix_max_eiger4m
+                self.iy_min = self.iy_min_eiger4m
+                self.iy_max = self.iy_max_eiger4m
         if _xsDataInputDozor is not None:
             self.setProcessInfo("name template: %s, first image no: %d, no images: %d" % (
                 _xsDataInputDozor.nameTemplateImage.value,
