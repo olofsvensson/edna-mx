@@ -2,6 +2,7 @@
 <XSDataInputStoreDataCollection>
 	<dataCollection>	
 		<dataCollectionId>0</dataCollectionId>
+		<dataCollectionGroupId>1312843</dataCollectionGroupId>
 		<blSampleId>6489</blSampleId>
 		<sessionId>4345</sessionId>
 		<experimentType>OSC</experimentType>
@@ -9,7 +10,7 @@
 		<startDate>2011-10-03T14:46:30</startDate>
 		<endDate>2011-10-03T14:46:30</endDate>
 		<runStatus>test 123</runStatus>
-		<rotationAxis>OMEGA</rotationAxis>
+		<rotationAxis>Omega</rotationAxis>
 		<phiStart>3.14</phiStart>
 		<kappaStart>3.14</kappaStart>
 		<omegaStart>3.14</omegaStart>
