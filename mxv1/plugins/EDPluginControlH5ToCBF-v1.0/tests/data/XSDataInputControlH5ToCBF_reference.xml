@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<XSDataInputH5ToCBF>
+  <imageNumber>
+  	<value>1</value>
+  </imageNumber>
+  <hdf5File>
+  	<path>
+      <value>/data/gzvisitor/test/id30/id30a3/inhouse/opid30a3/20150227/RAW_DATA/test/lyso_12_0001.h5</value>  	
+<!--       <value>/scisoft/users/svensson/tmp/test/lyso_12_0001.h5</value>  	-->  
+  	</path>
+  </hdf5File>
+</XSDataInputH5ToCBF>

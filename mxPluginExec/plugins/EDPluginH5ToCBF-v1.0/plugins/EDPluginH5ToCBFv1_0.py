@@ -80,6 +80,11 @@ class EDPluginH5ToCBFv1_0(EDPluginExecProcessScript):
         tmpCBF = fileTmpCBF.read()
         fileTmpCBF.close()
         
+        # Replace opening line
+        tmpCBF = tmpCBF.replace("CBF: VERSION 1.5, CBFlib v0.7.8 - SLS/DECTRIS PILATUS detectors",
+                                "CBF: VERSION 1.5, CBFlib v0.7.8")
+        
+        
         index1 = tmpCBF.find("# WARNING: FOR XDS PROCESSING ONLY.")
         string2 = "# SOFTWARE VERSION: 1.0"
         index2 = tmpCBF.find(string2) + len(string2)
@@ -130,7 +135,7 @@ class EDPluginH5ToCBFv1_0(EDPluginExecProcessScript):
     def generateMiniCBFHeader(self, _xsDataInputH5ToCBF):
         dataCollection = _xsDataInputH5ToCBF.dataCollection
         miniCBFHeader = ""
-        miniCBFHeader += "# Detector: EIGER 4M, S/N ????, ESRF ID30a3\r\n"
+        miniCBFHeader += "# Detector: Dectris Eiger 4M, S/N E-08-0106, ESRF ID30a3\r\n"
         miniCBFHeader += "# {0}\r\n".format(dataCollection.startTime) 
         miniCBFHeader += "# Pixel_size 75e-6 m x 75e-6 m\r\n" 
         miniCBFHeader += "# Silicon sensor, thickness 0.000320 m\r\n" 

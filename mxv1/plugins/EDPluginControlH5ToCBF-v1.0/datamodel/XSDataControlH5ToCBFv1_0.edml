@@ -1,0 +1,16 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+
+
+complex type XSDataInputControlH5ToCBF extends XSDataInput {
+	imageNumber : XSDataInteger 
+	hdf5File : XSDataFile
+}
+
+complex type XSDataResultControlH5ToCBF extends XSDataResult {
+	outputCBFFile : XSDataFile
+}
