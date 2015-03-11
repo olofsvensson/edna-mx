@@ -94,8 +94,7 @@ class EDPluginControlH5ToCBFv1_0(EDPluginControl):
         if dataCollection is not None:
             xsDataISPyBDataCollection = XSDataISPyBDataCollection.parseString(dataCollection.marshal())
             xsDataInputH5ToCBF = XSDataInputH5ToCBF()
-#            xsDataInputH5ToCBF.hdf5File = self.dataInput.hdf5File
-            xsDataInputH5ToCBF.hdf5File = XSDataFile(XSDataString("/scisoft/users/svensson/tmp/lyso_12_0001.h5"))
+            xsDataInputH5ToCBF.hdf5File = self.dataInput.hdf5File
             xsDataInputH5ToCBF.imageNumber = self.dataInput.imageNumber
             xsDataInputH5ToCBF.dataCollection = xsDataISPyBDataCollection
             self.edPluginEDPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
