@@ -1,0 +1,83 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSData
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataString
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataDictionary
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+import XSDataMXv1.XSDataInputCharacterisation
+import XSDataMXv1.XSDataDiffractionPlan
+import XSDataMXv1.XSDataExperimentalCondition
+import XSDataMXv1.XSDataSampleCrystalMM
+import XSDataMXv1.XSDataResultCharacterisation
+import XSDataMXv1.XSDataCollectionPlan
+
+complex type XSDataInputMXCuBE extends XSDataInput {
+	characterisationInput : XSDataInputCharacterisation optional
+	dataCollectionId : XSDataInteger optional
+	diffractionPlan : XSDataDiffractionPlan optional
+	experimentalCondition : XSDataExperimentalCondition optional
+	outputFileDirectory : XSDataFile optional
+	sample : XSDataSampleCrystalMM optional
+	dataSet : XSDataMXCuBEDataSet [] optional
+}
+
+complex type XSDataMXCuBEDataSet {
+	imageFile : XSDataFile []
+}
+
+complex type XSDataResultMXCuBE extends XSDataResult {
+	characterisationExecutiveSummary : XSDataString optional
+	characterisationResult : XSDataResultCharacterisation optional
+	collectionPlan : XSDataCollectionPlan [] optional
+	listOfOutputFiles : XSDataString optional
+	outputFileDictionary : XSDataDictionary optional
+	htmlPage : XSDataFile optional
+	screeningId : XSDataInteger optional
+}
+
+
+complex type XSDataMXCuBEParameters extends XSData {
+	sessionId : integer
+	blSampleId : integer
+	exposure_time : float
+	resolution : float
+	resolution_at_corner : float
+	x_beam : float
+	y_beam : float
+	beam_size_x : float
+	beam_size_y : float
+	mad_1_energy : float
+	mad_2_energy : float
+	mad_3_energy : float
+	mad_4_energy : float
+	prefix : string
+	overlap : float
+	osc_start : float
+	process_directory : string
+	sum_images : float
+	detector_mode : string
+	mad_energies : string
+	comments : string
+	osc_range : float
+	first_image : integer
+	template : string
+	kappaStart : float
+	processing : boolean
+	inverse_beam : float
+	number_images : integer
+	current_detdistance : float
+	residues : string
+	run_number : integer
+	current_wavelength : float
+	phiStart : float
+	anomalous : boolean
+	number_passes : integer
+	directory : string
+	current_energy : float
+	current_osc_start : float
+	output_file : string
+	transmission : float
+}
