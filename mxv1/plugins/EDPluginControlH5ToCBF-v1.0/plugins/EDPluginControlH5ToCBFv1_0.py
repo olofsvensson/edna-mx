@@ -99,3 +99,5 @@ class EDPluginControlH5ToCBFv1_0(EDPluginControl):
             xsDataInputH5ToCBF.dataCollection = xsDataISPyBDataCollection
             self.edPluginEDPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
             self.edPluginEDPluginH5ToCBF.executeSynchronous()
+            if self.edPluginEDPluginH5ToCBF.dataOutput is not None:
+                self.dataOutput.outputCBFFile = self.edPluginEDPluginH5ToCBF.dataOutput.outputCBFFile
