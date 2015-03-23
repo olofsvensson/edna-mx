@@ -3,6 +3,17 @@
 	<XSImportConfiguration>
 		<name>XSConfiguration_ESRF_Beamline</name>
 	</XSImportConfiguration>	
+  	<XSPluginList>
+		<XSPluginItem>
+			<name>EDPluginControlCharacterisationv1_4</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+					<value>http://cakenew.esrf.fr:7171</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+  	</XSPluginList>
 	<XSPluginList>
 		<XSPluginItem>
 			<name>EDPluginControlInterfacev1_2</name>  

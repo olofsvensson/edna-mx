@@ -3,6 +3,17 @@
 	<XSImportConfiguration>
 		<name>XSConfiguration_ESRF_Beamline</name>
 	</XSImportConfiguration>	
+  	<XSPluginList>
+		<XSPluginItem>
+			<name>EDPluginControlCharacterisationv1_4</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+					<value>http://p1-id29.esrf.fr:7171</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+  	</XSPluginList>
 	<XSPluginList>
 		<XSPluginItem>
 			<name>EDPluginControlImageQualityIndicatorsv1_2</name>  
