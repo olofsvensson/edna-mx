@@ -44,4 +44,4 @@ class EDTestSuitePluginControlAutoprocv1_0(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginParseXdsOutputv1_0")
         self.addTestCaseFromName("EDTestCasePluginResCutoffv1_0")
         self.addTestCaseFromName("EDTestCasePluginControlAutoprocv1_0_id29_20130301")
-        self.addTestCaseFromName("EDTestCasePluginControlAutoprocv1_0_id29_20140505")
+#        self.addTestCaseFromName("EDTestCasePluginControlAutoprocv1_0_id29_20140505")
