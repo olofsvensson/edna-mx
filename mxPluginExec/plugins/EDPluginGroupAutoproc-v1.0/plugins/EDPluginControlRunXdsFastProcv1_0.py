@@ -95,6 +95,7 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
 
         data_range = cfg.get('DATA_RANGE=')
         if data_range is not None:
+            self.start_image_no = data_range[0]
             self.end_image_no = data_range[1]
 
     def process(self, _edObject = None):
@@ -129,7 +130,7 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
 
         if not self.successful_run:
             self.second_run = self.loadPlugin(self.controlled_plugin_name)
-            self.DEBUG('retrying with increased SPOT_RANGE')
+            self.screen('Retrying with increased SPOT_RANGE')
             self.DEBUG('copying previously generated files to the new plugin dir')
             copy_xds_files(self.first_run.getWorkingDirectory(),
                            self.second_run.getWorkingDirectory())
@@ -139,21 +140,31 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
             params.spacegroup = self.dataInput.spacegroup
             params.unit_cell = self.dataInput.unit_cell
 
-            # increase all the spot ranges end by 20, constrained to
-            # the data range upper limit
-            spot_range = list()
-            for srange in self.spot_range:
-                range_begin = srange[0]
-                range_end = srange[1] + 20
-                if range_end > self.end_image_no:
-                    self.DEBUG('End of range {0} would be past the last image {1}'.format(range_end,
-                                                                                          self.end_image_no))
-                    range_end = self.end_image_no
-                self.DEBUG('Changing spot range {0} to [{1} {2}]'.format(srange, range_begin, range_end))
-                r = XSDataRange(begin=range_begin, end=range_end)
-                spot_range.append(r)
-
-            params.spot_range = spot_range
+            # Extended spot range
+            if self.end_image_no <= 300:
+                # All data as spot range
+                xsDataRangeLimited = XSDataRange()
+                xsDataRangeLimited.begin = 1
+                xsDataRangeLimited.end = self.end_image_no
+                params.addSpot_range(xsDataRangeLimited)
+            else:
+                # Start spot range
+                xsDataRangeLimited = XSDataRange()
+                xsDataRangeLimited.begin = 1
+                xsDataRangeLimited.end = 100
+                params.addSpot_range(xsDataRangeLimited)
+                # Start spot range
+                middleImageNumber = int(self.end_image_no/2)
+                xsDataRangeLimited = XSDataRange()
+                xsDataRangeLimited.begin = middleImageNumber - 49
+                xsDataRangeLimited.end = middleImageNumber + 50
+                params.addSpot_range(xsDataRangeLimited)
+                # End spot range
+                xsDataRangeLimited = XSDataRange()
+                xsDataRangeLimited.begin = self.end_image_no - 99
+                xsDataRangeLimited.end = self.end_image_no
+                params.addSpot_range(xsDataRangeLimited)
+            
 
             self.second_run.dataInput = params
             self.second_run.executeSynchronous()
@@ -165,43 +176,39 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
                 self.successful_run = self.second_run
             else:
                 EDVerbose.DEBUG('... and it failed')
-
-
+                
         if not self.successful_run:
             self.third_run = self.loadPlugin(self.controlled_plugin_name)
-            self.DEBUG('retrying with increased SPOT_RANGE')
+            self.screen('Retrying with reduced SPOT_RANGE')
             self.DEBUG('copying previously generated files to the new plugin dir')
-            copy_xds_files(self.second_run.getWorkingDirectory(),
+            copy_xds_files(self.first_run.getWorkingDirectory(),
                            self.third_run.getWorkingDirectory())
             params = XSDataMinimalXdsIn()
             params.input_file = self.dataInput.input_file
             #params.job = XSDataString('DEFPIX INTEGRATE CORRECT')
             params.spacegroup = self.dataInput.spacegroup
             params.unit_cell = self.dataInput.unit_cell
-            spot_range = list()
-            for srange in self.spot_range:
-                range_begin = srange[0]
-                range_end = srange[1] + 40
-                if range_end > self.end_image_no:
-                    self.DEBUG('End of range {0} would be past the last image {1}'.format(range_end,
-                                                                                          self.end_image_no))
-                    range_end = self.end_image_no
-                self.DEBUG('Changing spot range {0} to [{1} {2}]'.format(srange, range_begin, range_end))
-                r = XSDataRange(begin=range_begin, end=range_end)
-                spot_range.append(r)
 
-            params.spot_range = spot_range
+            # Limited spot range: 1 to 20 or max no data points
+            
+            xsDataRangeLimited = XSDataRange()
+            xsDataRangeLimited.begin = 1
+            xsDataRangeLimited.end = 20 if self.end_image_no > 20 else self.end_image_no
+
+            params.addSpot_range(xsDataRangeLimited)
 
             self.third_run.dataInput = params
             self.third_run.executeSynchronous()
-            self.retrieveFailureMessages(self.third_run, "Third XDS run")
-
-            EDVerbose.DEBUG('third run completed')
+            self.retrieveFailureMessages(self.third_run, "Second XDS run")
+            
+            EDVerbose.DEBUG('second run completed')
             if self.third_run.dataOutput is not None and self.third_run.dataOutput.succeeded.value:
                 EDVerbose.DEBUG('... and it worked')
                 self.successful_run = self.third_run
             else:
                 EDVerbose.DEBUG('... and it failed')
+                
+
 
         if not self.successful_run:
         # all runs failed so bail out ...

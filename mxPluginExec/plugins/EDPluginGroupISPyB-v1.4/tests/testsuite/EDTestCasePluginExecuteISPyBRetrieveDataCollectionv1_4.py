@@ -60,6 +60,8 @@ class EDTestCasePluginExecuteISPyBRetrieveDataCollectionv1_4(EDTestCasePluginExe
         bAttributeExists = True
         if xsDataResult.getDataCollection() is None:
             bAttributeExists = False
+        else:
+            self.screen(xsDataResult.getDataCollection().marshal())
         EDAssert.equal(True, bAttributeExists, "Result dataCollection in the result")
 
 

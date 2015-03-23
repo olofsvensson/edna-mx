@@ -47,7 +47,7 @@ WAIT_TIMEOUT = 1200
 
 # XDS.INP creation is now asynchronous in mxcube, so it may not be here yet
 # when we're started
-WAIT_XDS_TIMEOUT = 20
+WAIT_XDS_TIMEOUT = 60
 WAIT_XDS_RESOLUTION = 5
 
 def _template_to_image(fmt, num):

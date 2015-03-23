@@ -126,6 +126,13 @@ class EDPluginISPyBStoreDataCollectionv1_4(EDPluginExec):
                 oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
         return oReturnValue
 
+    def getDateValue(self, _strValue, _strFormat, _oDefaultValue):
+        if _strValue is None or _strValue == "None":
+            oReturnValue = _oDefaultValue
+        else:
+            oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
+        return oReturnValue
+    
 
     def storeDataCollectionProgram(self, _clientToolsForCollectionWebService, _xsDataInputStoreDataCollection):
         """Creates an entry in the ISPyB DataCollectionProgram table"""
@@ -135,12 +142,13 @@ class EDPluginISPyBStoreDataCollectionv1_4(EDPluginExec):
         dataCollectionWS3VO =_clientToolsForCollectionWebService.factory.create('dataCollectionWS3VO')
 
         dataCollectionWS3VO.dataCollectionId = self.getValue(dataCollection.getDataCollectionId(), 0) # integer
-        dataCollectionWS3VO.blSampleId = self.getValue(dataCollection.getBlSampleId(), 0) # integer
-        dataCollectionWS3VO.sessionId = self.getValue(dataCollection.getSessionId()) # integer
-        dataCollectionWS3VO.experimentType = self.getValue(dataCollection.getExperimentType()) # string
+        dataCollectionWS3VO.dataCollectionGroupId = 1312843 # integer
+#        dataCollectionWS3VO.blSampleId = self.getValue(dataCollection.getBlSampleId(), -1) # integer
+#        dataCollectionWS3VO.sessionId = self.getValue(dataCollection.getSessionId(), 38123) # integer
+#        dataCollectionWS3VO.experimentType = self.getValue(dataCollection.getExperimentType()) # string
         dataCollectionWS3VO.dataCollectionNumber = self.getValue(dataCollection.getDataCollectionNumber()) # integer
-        dataCollectionWS3VO.startTime = DateTime(self.getValue(dataCollection.getStartDate())) # string
-        dataCollectionWS3VO.endTime = DateTime(self.getValue(dataCollection.getEndDate())) # string
+        dataCollectionWS3VO.startTime = self.getDateValue(dataCollection.getStartTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now())) # string
+        dataCollectionWS3VO.endTime = self.getDateValue(dataCollection.getEndTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now())) # string
         dataCollectionWS3VO.runStatus = self.getValue(dataCollection.getRunStatus()) # string
         dataCollectionWS3VO.rotationAxis = self.getValue(dataCollection.getRotationAxis()) # string
         dataCollectionWS3VO.phiStart = self.getValue(dataCollection.getPhiStart()) # float
@@ -163,13 +171,13 @@ class EDPluginISPyBStoreDataCollectionv1_4(EDPluginExec):
         dataCollectionWS3VO.resolutionAtCorner = self.getValue(dataCollection.getResolutionAtCorner()) # float
         dataCollectionWS3VO.detectorDistance = self.getValue(dataCollection.getDetectorDistance()) # float
         dataCollectionWS3VO.detector2theta = self.getValue(dataCollection.getDetector2theta()) # float
-        dataCollectionWS3VO.detectorMode = self.getValue(dataCollection.getDetectorMode()) # string
+#        dataCollectionWS3VO.detectorMode = self.getValue(dataCollection.getDetectorMode()) # string
         dataCollectionWS3VO.undulatorGap1 = self.getValue(dataCollection.getUndulatorGap1()) # float
         dataCollectionWS3VO.undulatorGap2 = self.getValue(dataCollection.getUndulatorGap2()) # float
         dataCollectionWS3VO.undulatorGap3 = self.getValue(dataCollection.getUndulatorGap3()) # float
         dataCollectionWS3VO.xbeam = self.getValue(dataCollection.getXbeam()) # float
         dataCollectionWS3VO.ybeam = self.getValue(dataCollection.getYbeam()) # float
-        dataCollectionWS3VO.crystalClass = self.getValue(dataCollection.getCrystalClass()) # string
+#        dataCollectionWS3VO.crystalClass = self.getValue(dataCollection.getCrystalClass()) # string
         dataCollectionWS3VO.slitGapVertical = self.getValue(dataCollection.getSlitGapVertical()) # float
         dataCollectionWS3VO.slitGapHorizontal = self.getValue(dataCollection.getSlitGapHorizontal()) # float
         dataCollectionWS3VO.beamSizeAtSampleX = self.getValue(dataCollection.getBeamSizeAtSampleX()) # float
@@ -189,9 +197,9 @@ class EDPluginISPyBStoreDataCollectionv1_4(EDPluginExec):
         dataCollectionWS3VO.xtalSnapshotFullPath3 = self.getValue(dataCollection.getXtalSnapshotFullPath3()) # string
         dataCollectionWS3VO.xtalSnapshotFullPath4 = self.getValue(dataCollection.getXtalSnapshotFullPath4()) # string
         dataCollectionWS3VO.beamShape = self.getValue(dataCollection.getBeamShape()) # string
-
+        self.screen(dataCollectionWS3VO)
         iDataCollectionId = _clientToolsForCollectionWebService.service.storeOrUpdateDataCollection(dataCollection=dataCollectionWS3VO)
 
-        self.DEBUG("DataCollectionProgramId: %r" % iDataCollectionId)
+        self.screen("DataCollectionProgramId: %r" % iDataCollectionId)
         return iDataCollectionId
 
