@@ -135,7 +135,7 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
                            self.second_run.getWorkingDirectory())
             params = XSDataMinimalXdsIn()
             params.input_file = self.dataInput.input_file
-            params.job = XSDataString('DEFPIX INTEGRATE CORRECT')
+            #params.job = XSDataString('DEFPIX INTEGRATE CORRECT')
             params.spacegroup = self.dataInput.spacegroup
             params.unit_cell = self.dataInput.unit_cell
 
@@ -175,7 +175,7 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
                            self.third_run.getWorkingDirectory())
             params = XSDataMinimalXdsIn()
             params.input_file = self.dataInput.input_file
-            params.job = XSDataString('DEFPIX INTEGRATE CORRECT')
+            #params.job = XSDataString('DEFPIX INTEGRATE CORRECT')
             params.spacegroup = self.dataInput.spacegroup
             params.unit_cell = self.dataInput.unit_cell
             spot_range = list()
