@@ -47,7 +47,7 @@ class EDTestCasePluginControlAutoprocv1_0_id29_20130301(EDTestCasePluginExecute)
         self.setDataInputFile(os.path.join(self.strTestDir,
                                            "edna-autoproc-input.xml"))
         self.setNoExpectedWarningMessages(1)
-        self.setNoExpectedErrorMessages(1)
+        self.setNoExpectedErrorMessages(2)
 
 
 
