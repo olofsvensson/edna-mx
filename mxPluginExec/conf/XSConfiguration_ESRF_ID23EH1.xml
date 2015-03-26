@@ -1,9 +1,44 @@
 <?xml version="1.0" ?>
 <XSConfiguration> 
-  <XSImportConfiguration>
-  	<name>XSConfiguration_ESRF_Common</name>
-  </XSImportConfiguration>	
-  <XSImportConfiguration>
-  	<name>XSConfiguration_ESRF_ISPyB_Common</name>
-  </XSImportConfiguration>	
+  	<XSImportConfiguration>
+  		<name>XSConfiguration_ESRF_Common</name>
+  	</XSImportConfiguration>	
+  	<XSImportConfiguration>
+  		<name>XSConfiguration_ESRF_ISPyB_Common</name>
+  	</XSImportConfiguration>	
+	<XSPluginList>
+		<XSPluginItem> 
+			<name>EDPluginXOalignv1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/xdsme/v0.5.0.2/linux/XOalign/XOalign_esrf.py</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>600</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>OmegaRot</name>
+					<value>0.00295,-0.00253,0.99999</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>KappaRot</name>
+					<value>-0.28505,-0.28947,0.91376</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>PhiRot</name>
+					<value>0.02036,-0.01629,0.99966</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>Name</name>
+					<value>minikappa on ID23-1</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+	</XSPluginList>
 </XSConfiguration> 

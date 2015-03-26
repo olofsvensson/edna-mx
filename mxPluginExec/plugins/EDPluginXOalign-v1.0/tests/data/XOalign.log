@@ -1,0 +1,106 @@
+
+ XOalign: Calculate possible 3-axis goniometer settings to realigne crystal axes.
+ Version: 0.2.9
+
+   Goniometer definition used: 
+     Name: test minikappa
+Axes:
+         Omega:      0.00295  -0.00253   0.99999
+         Kappa:     -0.28505  -0.28947   0.91376
+           Phi:      0.02036  -0.01629   0.99966
+     Datum:        0.00      0.00      0.00  (in degree)
+
+ Mosflm Parser used to read input file: /mntdirect/_scisoft/users/svensson/workspaces/edna-mx/tmp/EDTestCasePluginExecuteXOalignv1_0_20150326-090504/XOalignv1_0-00000003/mosflm.mat
+
+ Space group symbol: P222,  Number: 16,  Point Group: 222
+
+       Real cell:     54.805    59.077    66.986   90.00   90.00   90.00
+ Reciprocal cell:   0.018246  0.016927  0.014928   90.00   90.00   90.00
+
+   U
+   -0.484938    0.559946    0.671786
+    0.074358    0.791769   -0.606278
+   -0.871382   -0.244054   -0.425596
+
+   B
+    0.018246   -0.000000   -0.000000
+    0.000000    0.016927   -0.000000
+    0.000000    0.000000    0.014928
+
+  UB
+   -0.008848    0.009478    0.010029
+    0.001357    0.013402   -0.009051
+   -0.015900   -0.004131   -0.006353
+
+ phixyz:    29.83  119.38   -8.72
+
+ Cell dimensions:   54.805  59.077  66.986   90.00   90.00   90.00
+ Setting matrix at current Datum [U]:
+  (  -0.48494  0.55995  0.67179 )
+  (   0.07436  0.79177 -0.60628 )
+  (  -0.87138 -0.24405 -0.42560 )
+
+ Setting angles Phix, Phiy, Phiz :   29.832 119.380  -8.718
+
+    0.000   0.000   0.000   Relative zero position (Datum)  Omega  Kappa  Phi
+                       a*   Reciprocal axis nearest to Phi axis
+                       c*   Reciprocal axis nearest to BEAM at Datum
+                       a*   Reciprocal axis nearest to Omega axis
+
+      a*      b*      c*
+   28.095  75.790  66.303   Angles between crystal axes and Phi axis
+   60.992  55.948  47.795     "       "       "      "  and BEAM at Datum
+   29.192  75.853  65.034     "       "       "      "  and Omega axis
+
+      a       b       c 
+   28.095  75.790  66.303   Angles between crystal axes and Phi axis
+   60.992  55.948  47.795     "       "       "      "  and BEAM at Datum
+   29.192  75.853  65.034     "       "       "      "  and Omega axis
+
+
+ Desired setting:
+ ( 1.0000  0.0000  0.0000 ) Crystal vector 1, reciprocal space (v1)
+ ( 0.0000  1.0000  0.0000 ) Crystal vector 2, reciprocal space (v2)
+
+ Solutions for Datum positions:  a*,  b*
+
+                    Omega     Kappa       Phi
+         1        132.720    76.107   -74.898
+         2         20.228   -69.935   173.804
+         3        -47.280    76.107   -74.898
+         4       -159.772   -69.935   173.804
+
+ Solutions for Datum positions:  a*,  c*
+
+                    Omega     Kappa       Phi
+         1       -137.280    76.107   -74.898
+         2        110.228   -69.935   173.804
+         3         42.720    76.107   -74.898
+         4        -69.772   -69.935   173.804
+
+ Solutions for Datum positions:  b*,  a*
+
+                    Omega     Kappa       Phi
+ *** No solutions found ***
+
+ Solutions for Datum positions:  b*,  c*
+
+                    Omega     Kappa       Phi
+ *** No solutions found ***
+
+ Solutions for Datum positions:  c*,  a*
+
+                    Omega     Kappa       Phi
+ *** No solutions found ***
+
+ Solutions for Datum positions:  c*,  b*
+
+                    Omega     Kappa       Phi
+ *** No solutions found ***
+
+
+ Independent Solutions for test minikappa goniometer:
+
+           Kappa      Phi      Settings
+   1     -69.935  173.804   [('a*', 'c*'), ('a*', 'b*')]
+   2      76.107  -74.898   [('a*', 'c*'), ('a*', 'b*')]

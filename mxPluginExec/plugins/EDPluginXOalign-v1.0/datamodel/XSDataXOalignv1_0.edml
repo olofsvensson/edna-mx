@@ -1,0 +1,25 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSData
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataString
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+
+
+complex type XSDataXOalignSolution extends XSData {
+	kappa : XSDataDouble
+	phi : XSDataDouble
+	settings : XSDataString
+}
+
+
+complex type XSDataInputXOalign extends XSDataInput {
+	mosflmMat : XSDataFile
+}
+
+complex type XSDataResultXOalign extends XSDataResult {
+	logFile : XSDataFile optional
+	solution : XSDataXOalignSolution [] optional
+}
