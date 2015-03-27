@@ -54,6 +54,9 @@ from XSDataMXv1 import XSDataIndexingInput
 EDFactoryPluginStatic.loadModule("XSDataMXThumbnailv1_1")
 from XSDataMXThumbnailv1_1 import XSDataInputMXThumbnail
 
+EDFactoryPluginStatic.loadModule("XSDataXOalignv1_0")
+from XSDataXOalignv1_0 import XSDataInputXOalign
+
 class EDPluginControlCharacterisationv1_4(EDPluginControl):
     """
     [To be replaced with a description of EDPluginControlTemplatev10]
@@ -71,6 +74,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._strPluginControlXDSGenerateBackgroundImage = "EDPluginControlXDSGenerateBackgroundImagev1_0"
         self._strPluginControlStrategy = "EDPluginControlStrategyv1_2"
         self._strPluginGenerateThumbnailName = "EDPluginMXThumbnailv1_1"
+        self._strPluginXOalignName = "EDPluginXOalignv1_0"
         self._listPluginGenerateThumbnail = []
         self._edPluginControlIndexingIndicators = None
         self._edPluginExecEvaluationIndexingMOSFLM = None
@@ -79,6 +83,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._edPluginControlIntegration = None
         self._edPluginControlXDSGenerateBackgroundImage = None
         self._edPluginControlStrategy = None
+        self._edPluginExecXOalign = None
         self._xsDataCollection = None
         self._xsDataResultCharacterisation = None
         self._xsDataIndexingResultMOSFLM = None
@@ -92,6 +97,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._iNoImagesWithDozorScore = None
         self._strMxCuBE_URI = None
         self._oServerProxy = None
+        self._runXOalign = False
 
 
     def checkParameters(self):
@@ -112,6 +118,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._strMxCuBE_URI = self.config.get("mxCuBE_URI", None)
         if self._strMxCuBE_URI is not None:
             self._oServerProxy = xmlrpclib.ServerProxy(self._strMxCuBE_URI)
+        self._runXOalign = self.config.get("runXOalign", False)
 
 
 
@@ -135,6 +142,8 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
                                                             "ControlXDSGenerateBackgroundImage")
         self._edPluginControlStrategy = self.loadPlugin(self._strPluginControlStrategy, \
                                                          "Strategy")
+        if self._runXOalign:
+            self._edPluginExecXOalign = self.loadPlugin(self._strPluginXOalignName, "XOalign")
         if (self._edPluginControlIndexingIndicators is not None):
             self.DEBUG("EDPluginControlCharacterisationv1_4.preProcess: " + self._strPluginControlIndexingIndicators + " Found... setting Data Input")
             # create Data Input for indexing
@@ -298,6 +307,10 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
     def doFailureIndexingIndicators(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_4.doFailureIndexingIndicators")
         # If more than two reference images try to index with MOSFLM:
+        if self._edPluginControlIndexingIndicators.hasDataOutput("indicatorsShortSummary"):
+            indicatorsShortSummary = self._edPluginControlIndexingIndicators.getDataOutput("indicatorsShortSummary")[0].getValue()
+            self._strCharacterisationShortSummary += indicatorsShortSummary
+            self.sendMessageToMXCuBE(indicatorsShortSummary)
         if self._iNoImagesWithDozorScore > 0:
             strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
             self.WARNING(strWarningMessage)
