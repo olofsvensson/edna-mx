@@ -13,8 +13,6 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
-  	</XSPluginList>
-	<XSPluginList>
 		<XSPluginItem>
 			<name>EDPluginControlInterfacev1_2</name>  
 			<XSParamList>
