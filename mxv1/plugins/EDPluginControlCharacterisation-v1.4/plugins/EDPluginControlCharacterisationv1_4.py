@@ -117,6 +117,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self.DEBUG("EDPluginControlCharacterisationv1_4.configure")
         self._strMxCuBE_URI = self.config.get("mxCuBE_URI", None)
         if self._strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
+            self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
             self._oServerProxy = xmlrpclib.ServerProxy(self._strMxCuBE_URI)
         self._runXOalign = self.config.get("runXOalign", False)
 
@@ -730,6 +731,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
     def sendMessageToMXCuBE(self, _strMessage, level = "info"):
         # Only for mxCuBE
         if self._strMxCuBE_URI is not None:
+            self.DEBUG("Sending message to mxCuBE: {0}".format(_strMessage))
             try:
                 for strMessage in _strMessage.split("\n"):
                     if strMessage != "":
