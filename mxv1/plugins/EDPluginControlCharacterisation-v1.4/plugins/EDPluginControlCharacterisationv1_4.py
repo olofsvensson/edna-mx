@@ -116,7 +116,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlCharacterisationv1_4.configure")
         self._strMxCuBE_URI = self.config.get("mxCuBE_URI", None)
-        if self._strMxCuBE_URI is not None:
+        if self._strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
             self._oServerProxy = xmlrpclib.ServerProxy(self._strMxCuBE_URI)
         self._runXOalign = self.config.get("runXOalign", False)
 
