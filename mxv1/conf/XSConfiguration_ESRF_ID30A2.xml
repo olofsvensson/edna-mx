@@ -9,7 +9,11 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
-					<value>http://ub1004.esrf.fr:7171</value>
+ 					<value>http://ub1004.esrf.fr:7171</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>runXOalign</name>
+					<value>true</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
