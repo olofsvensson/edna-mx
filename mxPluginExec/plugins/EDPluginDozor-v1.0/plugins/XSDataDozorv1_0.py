@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Apr 16 08:26::37 2014 by EDGenerateDS.
+# Generated Mon Mar 30 03:31::39 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -463,10 +463,10 @@ class XSDataInputDozor(XSDataInput):
             raise BaseException(strMessage)
         if spotSize is None:
             self._spotSize = None
-        elif spotSize.__class__.__name__ == "XSDataDouble":
+        elif spotSize.__class__.__name__ == "XSDataInteger":
             self._spotSize = spotSize
         else:
-            strMessage = "ERROR! XSDataInputDozor constructor argument 'spotSize' is not XSDataDouble but %s" % self._spotSize.__class__.__name__
+            strMessage = "ERROR! XSDataInputDozor constructor argument 'spotSize' is not XSDataInteger but %s" % self._spotSize.__class__.__name__
             raise BaseException(strMessage)
         if detectorDistance is None:
             self._detectorDistance = None
@@ -574,10 +574,10 @@ class XSDataInputDozor(XSDataInput):
     def setSpotSize(self, spotSize):
         if spotSize is None:
             self._spotSize = None
-        elif spotSize.__class__.__name__ == "XSDataDouble":
+        elif spotSize.__class__.__name__ == "XSDataInteger":
             self._spotSize = spotSize
         else:
-            strMessage = "ERROR! XSDataInputDozor.setSpotSize argument is not XSDataDouble but %s" % spotSize.__class__.__name__
+            strMessage = "ERROR! XSDataInputDozor.setSpotSize argument is not XSDataInteger but %s" % spotSize.__class__.__name__
             raise BaseException(strMessage)
     def delSpotSize(self): self._spotSize = None
     spotSize = property(getSpotSize, setSpotSize, delSpotSize, "Property for spotSize")
@@ -732,7 +732,7 @@ class XSDataInputDozor(XSDataInput):
         if self._spotSize is not None:
             self.spotSize.export(outfile, level, name_='spotSize')
         else:
-            warnEmptyAttribute("spotSize", "XSDataDouble")
+            warnEmptyAttribute("spotSize", "XSDataInteger")
         if self._detectorDistance is not None:
             self.detectorDistance.export(outfile, level, name_='detectorDistance')
         else:
@@ -788,7 +788,7 @@ class XSDataInputDozor(XSDataInput):
             self.setExposureTime(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'spotSize':
-            obj_ = XSDataDouble()
+            obj_ = XSDataInteger()
             obj_.build(child_)
             self.setSpotSize(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \

@@ -23,7 +23,7 @@ complex type XSDataImageDozor {
 complex type XSDataInputDozor extends XSDataInput {
 	detectorType : XSDataString
 	exposureTime : XSDataDouble
-	spotSize : XSDataDouble
+	spotSize : XSDataInteger
 	detectorDistance : XSDataDouble
 	wavelength : XSDataDouble
 	fractionPolarization : XSDataDouble optional
