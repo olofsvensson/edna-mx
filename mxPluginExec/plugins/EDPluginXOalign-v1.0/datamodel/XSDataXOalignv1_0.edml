@@ -37,6 +37,9 @@ complex type XSDataInputXOalign extends XSDataInput {
 	symmetry : XSDataString
 	orientation : XSDataXOalignOrientation
 	cell : XSDataXOalignCell
+	omega : XSDataAngle optional
+	kappa : XSDataAngle optional
+	phi : XSDataAngle optional
 }
 
 complex type XSDataResultXOalign extends XSDataResult {

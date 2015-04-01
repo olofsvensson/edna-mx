@@ -72,6 +72,16 @@ class EDPluginControlKappav1_0(EDPluginControl):
         self.DEBUG("EDPluginControlKappav1_0.preProcess")
         self.edPluginXOalign = self.loadPlugin(self.strEDPluginXOalignName, "XOalign")
         xsDataInputXOalign = XSDataInputXOalign()
+        # Check kappa and phi angles
+        dataCollection = self.dataInput.dataCollection
+        firstSubWedge = dataCollection.subWedge[0]
+        experimentalCondition = firstSubWedge.experimentalCondition
+        goniostat = experimentalCondition.goniostat
+        xsDataInputXOalign.omega = goniostat.rotationAxisStart
+        if goniostat.kappa is not None:
+            xsDataInputXOalign.kappa = goniostat.kappa
+        if goniostat.phi is not None:
+            xsDataInputXOalign.phi = goniostat.phi
         orientation = self.dataInput.selectedSolution.orientation
         cell = self.dataInput.selectedSolution.crystal.cell
         xsDataXOalignOrientation = XSDataXOalignOrientation.parseString(orientation.marshal())

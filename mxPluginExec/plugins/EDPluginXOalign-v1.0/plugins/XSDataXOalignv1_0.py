@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Mar 30 01:52::03 2015 by EDGenerateDS.
+# Generated Wed Apr 1 10:18::04 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -623,7 +623,7 @@ class XSDataXOalignSolution(XSData):
 
 
 class XSDataInputXOalign(XSDataInput):
-    def __init__(self, configuration=None, cell=None, orientation=None, symmetry=None):
+    def __init__(self, configuration=None, phi=None, kappa=None, omega=None, cell=None, orientation=None, symmetry=None):
         XSDataInput.__init__(self, configuration)
         if symmetry is None:
             self._symmetry = None
@@ -645,6 +645,27 @@ class XSDataInputXOalign(XSDataInput):
             self._cell = cell
         else:
             strMessage = "ERROR! XSDataInputXOalign constructor argument 'cell' is not XSDataXOalignCell but %s" % self._cell.__class__.__name__
+            raise BaseException(strMessage)
+        if omega is None:
+            self._omega = None
+        elif omega.__class__.__name__ == "XSDataAngle":
+            self._omega = omega
+        else:
+            strMessage = "ERROR! XSDataInputXOalign constructor argument 'omega' is not XSDataAngle but %s" % self._omega.__class__.__name__
+            raise BaseException(strMessage)
+        if kappa is None:
+            self._kappa = None
+        elif kappa.__class__.__name__ == "XSDataAngle":
+            self._kappa = kappa
+        else:
+            strMessage = "ERROR! XSDataInputXOalign constructor argument 'kappa' is not XSDataAngle but %s" % self._kappa.__class__.__name__
+            raise BaseException(strMessage)
+        if phi is None:
+            self._phi = None
+        elif phi.__class__.__name__ == "XSDataAngle":
+            self._phi = phi
+        else:
+            strMessage = "ERROR! XSDataInputXOalign constructor argument 'phi' is not XSDataAngle but %s" % self._phi.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'symmetry' attribute
     def getSymmetry(self): return self._symmetry
@@ -682,6 +703,42 @@ class XSDataInputXOalign(XSDataInput):
             raise BaseException(strMessage)
     def delCell(self): self._cell = None
     cell = property(getCell, setCell, delCell, "Property for cell")
+    # Methods and properties for the 'omega' attribute
+    def getOmega(self): return self._omega
+    def setOmega(self, omega):
+        if omega is None:
+            self._omega = None
+        elif omega.__class__.__name__ == "XSDataAngle":
+            self._omega = omega
+        else:
+            strMessage = "ERROR! XSDataInputXOalign.setOmega argument is not XSDataAngle but %s" % omega.__class__.__name__
+            raise BaseException(strMessage)
+    def delOmega(self): self._omega = None
+    omega = property(getOmega, setOmega, delOmega, "Property for omega")
+    # Methods and properties for the 'kappa' attribute
+    def getKappa(self): return self._kappa
+    def setKappa(self, kappa):
+        if kappa is None:
+            self._kappa = None
+        elif kappa.__class__.__name__ == "XSDataAngle":
+            self._kappa = kappa
+        else:
+            strMessage = "ERROR! XSDataInputXOalign.setKappa argument is not XSDataAngle but %s" % kappa.__class__.__name__
+            raise BaseException(strMessage)
+    def delKappa(self): self._kappa = None
+    kappa = property(getKappa, setKappa, delKappa, "Property for kappa")
+    # Methods and properties for the 'phi' attribute
+    def getPhi(self): return self._phi
+    def setPhi(self, phi):
+        if phi is None:
+            self._phi = None
+        elif phi.__class__.__name__ == "XSDataAngle":
+            self._phi = phi
+        else:
+            strMessage = "ERROR! XSDataInputXOalign.setPhi argument is not XSDataAngle but %s" % phi.__class__.__name__
+            raise BaseException(strMessage)
+    def delPhi(self): self._phi = None
+    phi = property(getPhi, setPhi, delPhi, "Property for phi")
     def export(self, outfile, level, name_='XSDataInputXOalign'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -702,6 +759,12 @@ class XSDataInputXOalign(XSDataInput):
             self.cell.export(outfile, level, name_='cell')
         else:
             warnEmptyAttribute("cell", "XSDataXOalignCell")
+        if self._omega is not None:
+            self.omega.export(outfile, level, name_='omega')
+        if self._kappa is not None:
+            self.kappa.export(outfile, level, name_='kappa')
+        if self._phi is not None:
+            self.phi.export(outfile, level, name_='phi')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -722,6 +785,21 @@ class XSDataInputXOalign(XSDataInput):
             obj_ = XSDataXOalignCell()
             obj_.build(child_)
             self.setCell(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'omega':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setOmega(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'kappa':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setKappa(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'phi':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setPhi(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

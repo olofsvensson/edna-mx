@@ -54,6 +54,9 @@ class EDPluginXOalignv1_0(EDPluginExecProcessScript):
         self.xoalignPythonpath = None
         self.fMaxKappaAngle = 200
         self.fMinKappaAngle = -200
+        self.fOmega = 0.0
+        self.fKappa = 0.0
+        self.fPhi = 0.0
 
     def checkParameters(self):
         """
@@ -79,6 +82,12 @@ class EDPluginXOalignv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginXOalignv1_0.preProcess")
         xsDataInputXOalign = self.dataInput
+        if xsDataInputXOalign.omega is not None:
+            self.fOmega = xsDataInputXOalign.omega.value
+        if xsDataInputXOalign.kappa is not None:
+            self.fKappa = xsDataInputXOalign.kappa.value
+        if xsDataInputXOalign.phi is not None:
+            self.fPhi = xsDataInputXOalign.phi.value
         # Create the MOSFLM mat file
         strMosflmMatFilePath = os.path.join(self.getWorkingDirectory(), "mosflm.mat")
         self.writeDataMOSFLMNewmat(self.dataInput.orientation, 
@@ -113,7 +122,7 @@ class EDPluginXOalignv1_0(EDPluginExecProcessScript):
                                                              self.strKappaRot,
                                                              self.strPhiRot)
         
-        strScriptCommandLine += " -D 0.0,0.0,0.0"
+        strScriptCommandLine += " -D {0},{1},{2}".format(self.fOmega, self.fKappa, self.fPhi)
         
         strScriptCommandLine += " -s {0}".format(_strSymmetry)
         
