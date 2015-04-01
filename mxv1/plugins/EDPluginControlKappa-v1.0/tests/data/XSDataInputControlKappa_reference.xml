@@ -239,10 +239,10 @@
                         <value>0.000000e+00</value>
                     </rotationAxisStart>
 	                <kappa>
-	                    <value>10.000000e+00</value>
+	                    <value>0.000000e+00</value>
 	                </kappa>
 	                <phi>
-	                    <value>20.000000e+00</value>
+	                    <value>0.000000e+00</value>
 	                </phi>
                 </goniostat>
             </experimentalCondition>
@@ -358,10 +358,10 @@
                         <value>9.000000e+01</value>
                     </rotationAxisStart>
 	                <kappa>
-	                    <value>10.000000e+00</value>
+	                    <value>0.000000e+00</value>
 	                </kappa>
 	                <phi>
-	                    <value>20.000000e+00</value>
+	                    <value>0.000000e+00</value>
 	                </phi>
                 </goniostat>
             </experimentalCondition>

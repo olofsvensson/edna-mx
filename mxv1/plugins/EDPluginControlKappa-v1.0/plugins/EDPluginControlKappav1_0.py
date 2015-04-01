@@ -57,6 +57,8 @@ class EDPluginControlKappav1_0(EDPluginControl):
         self.setDataOutput(XSDataResultControlKappa())
         self.strEDPluginXOalignName = "EDPluginXOalignv1_0"
         self.edPluginXOalign = None
+        self.fKappa = 0.0
+        self.fPhi = 0.0
 
 
     def checkParameters(self):
@@ -80,8 +82,10 @@ class EDPluginControlKappav1_0(EDPluginControl):
         xsDataInputXOalign.omega = goniostat.rotationAxisStart
         if goniostat.kappa is not None:
             xsDataInputXOalign.kappa = goniostat.kappa
+            self.fKappa = goniostat.kappa.value
         if goniostat.phi is not None:
             xsDataInputXOalign.phi = goniostat.phi
+            self.fPhi = goniostat.phi.value
         orientation = self.dataInput.selectedSolution.orientation
         cell = self.dataInput.selectedSolution.crystal.cell
         xsDataXOalignOrientation = XSDataXOalignOrientation.parseString(orientation.marshal())
@@ -94,7 +98,11 @@ class EDPluginControlKappav1_0(EDPluginControl):
     def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlKappav1_0.process")
-        self.executePluginSynchronous(self.edPluginXOalign)
+        # Only run kappa re-orientation calculations if kappa angle is close to zero:
+        if abs(self.fKappa) < 1.0 and abs(self.fPhi) < 1.0:
+            self.executePluginSynchronous(self.edPluginXOalign)
+        else:
+            self.WARNING("Kappa re-orientation not calculated because kappa and/or phi angles are not zero")
         
     def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self, _edObject)
