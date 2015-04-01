@@ -772,7 +772,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             
     def kappaResults(self):
         
-        if self.xsDataResultCharacterisation.kappaReorientation is not None:
+        if self.xsDataResultCharacterisation.kappaReorientation is not None and len(self.xsDataResultCharacterisation.kappaReorientation.solution) > 0:
             if self.xsDataResultCharacterisation.kappaReorientation.logFile:
                 strPathToKappaLogFile = self.xsDataResultCharacterisation.kappaReorientation.logFile.path.value
                 strPageKappaLog = os.path.join(self.getWorkingDirectory(), "kappa_log.html")
