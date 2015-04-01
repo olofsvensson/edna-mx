@@ -52,6 +52,8 @@ class EDPluginXOalignv1_0(EDPluginExecProcessScript):
         self.setXSDataInputClass(XSDataInputXOalign)
         self.setDataOutput(XSDataResultXOalign())
         self.xoalignPythonpath = None
+        self.fMaxKappaAngle = 200
+        self.fMinKappaAngle = -200
 
     def checkParameters(self):
         """
@@ -59,7 +61,9 @@ class EDPluginXOalignv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginXOalignv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
-        self.checkMandatoryParameters(self.dataInput.getMosflmMat(), "Mosflm mat file path is None")
+        self.checkMandatoryParameters(self.dataInput.symmetry, "Symmetry is None")
+        self.checkMandatoryParameters(self.dataInput.cell, "Cell is None")
+        self.checkMandatoryParameters(self.dataInput.orientation, "Orientation is None")
 
     def configure(self):
         EDPluginExecProcessScript.configure(self)
@@ -68,20 +72,20 @@ class EDPluginXOalignv1_0(EDPluginExecProcessScript):
         self.strKappaRot = self.config.get("KappaRot")
         self.strPhiRot   = self.config.get("PhiRot")
         self.strName     = self.config.get("Name")
+        self.fMaxKappaAngle = self.config.get("maxKappaAngle", self.fMaxKappaAngle)
+        self.fMinKappaAngle = self.config.get("minKappaAngle", self.fMinKappaAngle)
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginXOalignv1_0.preProcess")
         xsDataInputXOalign = self.dataInput
-        # Read the MOSFLM mat file
-        strMosflmMat = EDUtilsFile.readFile(xsDataInputXOalign.mosflmMat.path.value)
-        # Split the file at the "SYMM" keyword
-        strMat, strSymm = strMosflmMat.split("SYMM")
-        # Write the mat file without the symm to the working directory
+        # Create the MOSFLM mat file
         strMosflmMatFilePath = os.path.join(self.getWorkingDirectory(), "mosflm.mat")
-        EDUtilsFile.writeFile(strMosflmMatFilePath, strMat)
+        self.writeDataMOSFLMNewmat(self.dataInput.orientation, 
+                                   self.dataInput.cell, 
+                                   strMosflmMatFilePath)
         # Construct the command line
-        self.setScriptCommandline(self.generateCommands(xsDataInputXOalign, strSymm.strip(), strMosflmMatFilePath))
+        self.setScriptCommandline(self.generateCommands(self.dataInput.symmetry.value, strMosflmMatFilePath))
         
         
     def postProcess(self, _edObject=None):
@@ -98,25 +102,24 @@ class EDPluginXOalignv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.finallyProcess(self)
         self.DEBUG("EDPluginXOalignv1_0.finallyProcess")
 
-    def generateCommands(self, _xsDataInputRdfit, _strSymmetry, _strMosflmMatFilePath):
+    def generateCommands(self, _strSymmetry, _strMosflmMatFilePath):
         """
         This method creates a list of commands for mtz2various
         """
-        self.DEBUG("EDPluginExecMtz2Variousv1_0.generateCommands")
+        self.DEBUG("EDPluginXOalignv1_0.generateCommands")
         strScriptCommandLine = ""
-        if _xsDataInputRdfit is not None:
             
-            strScriptCommandLine += "-O {0} -K {1} -P {2}".format(self.strOmegaRot,
-                                                                 self.strKappaRot,
-                                                                 self.strPhiRot)
-            
-            strScriptCommandLine += " -D 0.0,0.0,0.0"
-            
-            strScriptCommandLine += " -s {0}".format(_strSymmetry)
-            
-            strScriptCommandLine += " -g \"{0}\"".format(self.strName)
+        strScriptCommandLine += "-O {0} -K {1} -P {2}".format(self.strOmegaRot,
+                                                             self.strKappaRot,
+                                                             self.strPhiRot)
+        
+        strScriptCommandLine += " -D 0.0,0.0,0.0"
+        
+        strScriptCommandLine += " -s {0}".format(_strSymmetry)
+        
+        strScriptCommandLine += " -g \"{0}\"".format(self.strName)
 
-            strScriptCommandLine += " {0}".format(_strMosflmMatFilePath)
+        strScriptCommandLine += " {0}".format(_strMosflmMatFilePath)
             
         return strScriptCommandLine
     
@@ -137,15 +140,38 @@ class EDPluginXOalignv1_0(EDPluginExecProcessScript):
                         # Split the string at white spaces
                         listSettings = strTmp.split(" ")
                         fKappa = float(listSettings[1])
-                        xsDataXOalignSolution.kappa = XSDataDouble(fKappa)
-                        fPhi = float(listSettings[2])
-                        xsDataXOalignSolution.phi = XSDataDouble(fPhi)
-                        strSettings = "".join(listSettings[3:])
-                        xsDataXOalignSolution.settings = XSDataString(strSettings)
-                        xsDataResultXOalign.addSolution(xsDataXOalignSolution)
+                        if fKappa >= self.fMinKappaAngle and fKappa <= self.fMaxKappaAngle: 
+                            xsDataXOalignSolution.kappa = XSDataDouble(fKappa)
+                            fPhi = float(listSettings[2])
+                            xsDataXOalignSolution.phi = XSDataDouble(fPhi)
+                            strSettings = "".join(listSettings[3:])
+                            xsDataXOalignSolution.settings = XSDataString(strSettings)
+                            xsDataResultXOalign.addSolution(xsDataXOalignSolution)
                         iIndex += 1
                 iIndex += 1
                 if iIndex >= len(listLog):
                     bContinue = False
         return xsDataResultXOalign
-        
+    
+    def writeDataMOSFLMNewmat(self, _orientation, _cell, _strMatFileName):
+        self.DEBUG("EDPluginXOalignv1_0.writeDataMOSFLMNewmat")
+        matrixA = _orientation.matrixA
+        strNewmat =  " %11.8f %11.8f %11.8f\n" % (matrixA.m11, matrixA.m12, matrixA.m13)
+        strNewmat += " %11.8f %11.8f %11.8f\n" % (matrixA.m21, matrixA.m22, matrixA.m23)
+        strNewmat += " %11.8f %11.8f %11.8f\n" % (matrixA.m31, matrixA.m32, matrixA.m33)
+        strNewmat += " %11.3f %11.3f %11.3f\n" % (0.0, 0.0, 0.0)
+        matrixU = _orientation.matrixU
+        strNewmat += " %11.7f %11.7f %11.7f\n" % (matrixU.m11, matrixU.m12, matrixU.m13)
+        strNewmat += " %11.7f %11.7f %11.7f\n" % (matrixU.m21, matrixU.m22, matrixU.m23)
+        strNewmat += " %11.7f %11.7f %11.7f\n" % (matrixU.m31, matrixU.m32, matrixU.m33)
+
+        strNewmat += " %11.4f %11.4f %11.4f" % (_cell.length_a.value, 
+                                                _cell.length_b.value, 
+                                                _cell.length_c.value)
+        strNewmat += " %11.4f %11.4f %11.4f\n" % (_cell.angle_alpha.value,
+                                                  _cell.angle_beta.value,
+                                                  _cell.angle_gamma.value)
+        strNewmat += " %11.3f %11.3f %11.3f\n" % (0.0, 0.0, 0.0)
+
+        self.writeProcessFile(_strMatFileName, strNewmat)
+    

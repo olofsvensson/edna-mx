@@ -87,6 +87,22 @@ package XSDataMXv1 {
 			subWedge : XSDataSubWedge []
 		}
 
+		complex type XSDataInputControlKappa extends XSData {
+			dataCollection : XSDataCollection
+			selectedSolution : XSDataIndexingSolutionSelected
+		}
+
+		complex type XSDataKappaSolution extends XSData {
+			kappa : XSDataDouble
+			phi : XSDataDouble
+			settings : XSDataString
+		}
+
+		complex type XSDataResultControlKappa extends XSDataResult {
+			logFile : XSDataFile optional
+			solution : XSDataKappaSolution [] optional
+		}
+
 		complex type XSDataResultCharacterisation extends XSDataResult {
 			dataCollection : XSDataCollection
 			jpegImage : XSDataImage [] optional
@@ -99,6 +115,7 @@ package XSDataMXv1 {
 			statusMessage : XSDataString
 			strategyResult : XSDataResultStrategy optional
 			xdsBackgroundImage : XSDataFile optional
+			kappaReorientation : XSDataResultControlKappa optional
 		}
 
 		complex type XSDataResultControlISPyB extends XSDataResult {

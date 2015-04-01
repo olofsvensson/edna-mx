@@ -50,12 +50,11 @@ from XSDataMXv1 import XSDataIntegrationInput
 from XSDataMXv1 import XSDataInputStrategy
 from XSDataMXv1 import XSDataInputControlXDSGenerateBackgroundImage
 from XSDataMXv1 import XSDataIndexingInput
+from XSDataMXv1 import XSDataInputControlKappa
 
 EDFactoryPluginStatic.loadModule("XSDataMXThumbnailv1_1")
 from XSDataMXThumbnailv1_1 import XSDataInputMXThumbnail
 
-EDFactoryPluginStatic.loadModule("XSDataXOalignv1_0")
-from XSDataXOalignv1_0 import XSDataInputXOalign
 
 class EDPluginControlCharacterisationv1_4(EDPluginControl):
     """
@@ -74,7 +73,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._strPluginControlXDSGenerateBackgroundImage = "EDPluginControlXDSGenerateBackgroundImagev1_0"
         self._strPluginControlStrategy = "EDPluginControlStrategyv1_2"
         self._strPluginGenerateThumbnailName = "EDPluginMXThumbnailv1_1"
-        self._strPluginXOalignName = "EDPluginXOalignv1_0"
+        self._strPluginControlKappaName = "EDPluginControlKappav1_0"
         self._listPluginGenerateThumbnail = []
         self._edPluginControlIndexingIndicators = None
         self._edPluginExecEvaluationIndexingMOSFLM = None
@@ -83,7 +82,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._edPluginControlIntegration = None
         self._edPluginControlXDSGenerateBackgroundImage = None
         self._edPluginControlStrategy = None
-        self._edPluginExecXOalign = None
+        self._edPluginControlKappa = None
         self._xsDataCollection = None
         self._xsDataResultCharacterisation = None
         self._xsDataIndexingResultMOSFLM = None
@@ -97,7 +96,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._iNoImagesWithDozorScore = None
         self._strMxCuBE_URI = None
         self._oServerProxy = None
-        self._runXOalign = False
+        self._runKappa = False
 
 
     def checkParameters(self):
@@ -119,7 +118,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         if self._strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
             self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
             self._oServerProxy = xmlrpclib.ServerProxy(self._strMxCuBE_URI)
-        self._runXOalign = self.config.get("runXOalign", False)
+        self._runKappa = self.config.get("runKappa", False)
 
 
 
@@ -143,8 +142,8 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
                                                             "ControlXDSGenerateBackgroundImage")
         self._edPluginControlStrategy = self.loadPlugin(self._strPluginControlStrategy, \
                                                          "Strategy")
-        if self._runXOalign:
-            self._edPluginExecXOalign = self.loadPlugin(self._strPluginXOalignName, "XOalign")
+        if self._runKappa:
+            self._edPluginControlKappa = self.loadPlugin(self._strPluginControlKappaName, "Kappa")
         if (self._edPluginControlIndexingIndicators is not None):
             self.DEBUG("EDPluginControlCharacterisationv1_4.preProcess: " + self._strPluginControlIndexingIndicators + " Found... setting Data Input")
             # create Data Input for indexing
@@ -483,6 +482,15 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
     
     
     def indexingToIntegration(self, _edPlugin=None):
+        # Run Kappa if configured
+        if self._runKappa:
+            xsDataInputControlKappa = XSDataInputControlKappa()
+            xsDataInputControlKappa.dataCollection = self._xsDataCollection
+            xsDataInputControlKappa.selectedSolution = self._xsDataResultCharacterisation.indexingResult.selectedSolution
+            self._edPluginControlKappa.dataInput = xsDataInputControlKappa
+            self.executePluginSynchronous(self._edPluginControlKappa)
+            if not self._edPluginControlKappa.isFailure():
+                self._xsDataResultCharacterisation.kappaReorientation = self._edPluginControlKappa.dataOutput
         # Create the XDS background image
         xsDataInputControlXDSGenerateBackgroundImage = XSDataInputControlXDSGenerateBackgroundImage()
         xsDataInputControlXDSGenerateBackgroundImage.setDataCollection(self._xsDataCollection)

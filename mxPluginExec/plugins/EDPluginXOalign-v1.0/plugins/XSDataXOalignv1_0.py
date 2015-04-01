@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Mar 26 09:44::58 2015 by EDGenerateDS.
+# Generated Mon Mar 30 01:52::03 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -18,6 +18,9 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
@@ -25,8 +28,11 @@ try:
     from XSDataCommon import XSDataDouble
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
+    from XSDataCommon import XSDataMatrixDouble
     from XSDataCommon import XSDataResult
     from XSDataCommon import XSDataString
+    from XSDataCommon import XSDataLength
+    from XSDataCommon import XSDataAngle
 except ImportError as error:
     if strEdnaHome is not None:
         for strXsdName in dictLocation:
@@ -41,8 +47,11 @@ from XSDataCommon import XSData
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
+from XSDataCommon import XSDataMatrixDouble
 from XSDataCommon import XSDataResult
 from XSDataCommon import XSDataString
+from XSDataCommon import XSDataLength
+from XSDataCommon import XSDataAngle
 
 
 
@@ -120,6 +129,352 @@ class MixedContainer(object):
 # Data representation classes.
 #
 
+
+
+class XSDataXOalignCell(XSData):
+    def __init__(self, length_c=None, length_b=None, length_a=None, angle_gamma=None, angle_beta=None, angle_alpha=None):
+        XSData.__init__(self, )
+        if angle_alpha is None:
+            self._angle_alpha = None
+        elif angle_alpha.__class__.__name__ == "XSDataAngle":
+            self._angle_alpha = angle_alpha
+        else:
+            strMessage = "ERROR! XSDataXOalignCell constructor argument 'angle_alpha' is not XSDataAngle but %s" % self._angle_alpha.__class__.__name__
+            raise BaseException(strMessage)
+        if angle_beta is None:
+            self._angle_beta = None
+        elif angle_beta.__class__.__name__ == "XSDataAngle":
+            self._angle_beta = angle_beta
+        else:
+            strMessage = "ERROR! XSDataXOalignCell constructor argument 'angle_beta' is not XSDataAngle but %s" % self._angle_beta.__class__.__name__
+            raise BaseException(strMessage)
+        if angle_gamma is None:
+            self._angle_gamma = None
+        elif angle_gamma.__class__.__name__ == "XSDataAngle":
+            self._angle_gamma = angle_gamma
+        else:
+            strMessage = "ERROR! XSDataXOalignCell constructor argument 'angle_gamma' is not XSDataAngle but %s" % self._angle_gamma.__class__.__name__
+            raise BaseException(strMessage)
+        if length_a is None:
+            self._length_a = None
+        elif length_a.__class__.__name__ == "XSDataLength":
+            self._length_a = length_a
+        else:
+            strMessage = "ERROR! XSDataXOalignCell constructor argument 'length_a' is not XSDataLength but %s" % self._length_a.__class__.__name__
+            raise BaseException(strMessage)
+        if length_b is None:
+            self._length_b = None
+        elif length_b.__class__.__name__ == "XSDataLength":
+            self._length_b = length_b
+        else:
+            strMessage = "ERROR! XSDataXOalignCell constructor argument 'length_b' is not XSDataLength but %s" % self._length_b.__class__.__name__
+            raise BaseException(strMessage)
+        if length_c is None:
+            self._length_c = None
+        elif length_c.__class__.__name__ == "XSDataLength":
+            self._length_c = length_c
+        else:
+            strMessage = "ERROR! XSDataXOalignCell constructor argument 'length_c' is not XSDataLength but %s" % self._length_c.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'angle_alpha' attribute
+    def getAngle_alpha(self): return self._angle_alpha
+    def setAngle_alpha(self, angle_alpha):
+        if angle_alpha is None:
+            self._angle_alpha = None
+        elif angle_alpha.__class__.__name__ == "XSDataAngle":
+            self._angle_alpha = angle_alpha
+        else:
+            strMessage = "ERROR! XSDataXOalignCell.setAngle_alpha argument is not XSDataAngle but %s" % angle_alpha.__class__.__name__
+            raise BaseException(strMessage)
+    def delAngle_alpha(self): self._angle_alpha = None
+    angle_alpha = property(getAngle_alpha, setAngle_alpha, delAngle_alpha, "Property for angle_alpha")
+    # Methods and properties for the 'angle_beta' attribute
+    def getAngle_beta(self): return self._angle_beta
+    def setAngle_beta(self, angle_beta):
+        if angle_beta is None:
+            self._angle_beta = None
+        elif angle_beta.__class__.__name__ == "XSDataAngle":
+            self._angle_beta = angle_beta
+        else:
+            strMessage = "ERROR! XSDataXOalignCell.setAngle_beta argument is not XSDataAngle but %s" % angle_beta.__class__.__name__
+            raise BaseException(strMessage)
+    def delAngle_beta(self): self._angle_beta = None
+    angle_beta = property(getAngle_beta, setAngle_beta, delAngle_beta, "Property for angle_beta")
+    # Methods and properties for the 'angle_gamma' attribute
+    def getAngle_gamma(self): return self._angle_gamma
+    def setAngle_gamma(self, angle_gamma):
+        if angle_gamma is None:
+            self._angle_gamma = None
+        elif angle_gamma.__class__.__name__ == "XSDataAngle":
+            self._angle_gamma = angle_gamma
+        else:
+            strMessage = "ERROR! XSDataXOalignCell.setAngle_gamma argument is not XSDataAngle but %s" % angle_gamma.__class__.__name__
+            raise BaseException(strMessage)
+    def delAngle_gamma(self): self._angle_gamma = None
+    angle_gamma = property(getAngle_gamma, setAngle_gamma, delAngle_gamma, "Property for angle_gamma")
+    # Methods and properties for the 'length_a' attribute
+    def getLength_a(self): return self._length_a
+    def setLength_a(self, length_a):
+        if length_a is None:
+            self._length_a = None
+        elif length_a.__class__.__name__ == "XSDataLength":
+            self._length_a = length_a
+        else:
+            strMessage = "ERROR! XSDataXOalignCell.setLength_a argument is not XSDataLength but %s" % length_a.__class__.__name__
+            raise BaseException(strMessage)
+    def delLength_a(self): self._length_a = None
+    length_a = property(getLength_a, setLength_a, delLength_a, "Property for length_a")
+    # Methods and properties for the 'length_b' attribute
+    def getLength_b(self): return self._length_b
+    def setLength_b(self, length_b):
+        if length_b is None:
+            self._length_b = None
+        elif length_b.__class__.__name__ == "XSDataLength":
+            self._length_b = length_b
+        else:
+            strMessage = "ERROR! XSDataXOalignCell.setLength_b argument is not XSDataLength but %s" % length_b.__class__.__name__
+            raise BaseException(strMessage)
+    def delLength_b(self): self._length_b = None
+    length_b = property(getLength_b, setLength_b, delLength_b, "Property for length_b")
+    # Methods and properties for the 'length_c' attribute
+    def getLength_c(self): return self._length_c
+    def setLength_c(self, length_c):
+        if length_c is None:
+            self._length_c = None
+        elif length_c.__class__.__name__ == "XSDataLength":
+            self._length_c = length_c
+        else:
+            strMessage = "ERROR! XSDataXOalignCell.setLength_c argument is not XSDataLength but %s" % length_c.__class__.__name__
+            raise BaseException(strMessage)
+    def delLength_c(self): self._length_c = None
+    length_c = property(getLength_c, setLength_c, delLength_c, "Property for length_c")
+    def export(self, outfile, level, name_='XSDataXOalignCell'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataXOalignCell'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._angle_alpha is not None:
+            self.angle_alpha.export(outfile, level, name_='angle_alpha')
+        else:
+            warnEmptyAttribute("angle_alpha", "XSDataAngle")
+        if self._angle_beta is not None:
+            self.angle_beta.export(outfile, level, name_='angle_beta')
+        else:
+            warnEmptyAttribute("angle_beta", "XSDataAngle")
+        if self._angle_gamma is not None:
+            self.angle_gamma.export(outfile, level, name_='angle_gamma')
+        else:
+            warnEmptyAttribute("angle_gamma", "XSDataAngle")
+        if self._length_a is not None:
+            self.length_a.export(outfile, level, name_='length_a')
+        else:
+            warnEmptyAttribute("length_a", "XSDataLength")
+        if self._length_b is not None:
+            self.length_b.export(outfile, level, name_='length_b')
+        else:
+            warnEmptyAttribute("length_b", "XSDataLength")
+        if self._length_c is not None:
+            self.length_c.export(outfile, level, name_='length_c')
+        else:
+            warnEmptyAttribute("length_c", "XSDataLength")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'angle_alpha':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setAngle_alpha(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'angle_beta':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setAngle_beta(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'angle_gamma':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setAngle_gamma(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'length_a':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setLength_a(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'length_b':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setLength_b(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'length_c':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setLength_c(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataXOalignCell" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataXOalignCell' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataXOalignCell is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataXOalignCell.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataXOalignCell()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataXOalignCell" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataXOalignCell()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataXOalignCell
+
+
+class XSDataXOalignOrientation(XSData):
+    def __init__(self, matrixU=None, matrixA=None):
+        XSData.__init__(self, )
+        if matrixA is None:
+            self._matrixA = None
+        elif matrixA.__class__.__name__ == "XSDataMatrixDouble":
+            self._matrixA = matrixA
+        else:
+            strMessage = "ERROR! XSDataXOalignOrientation constructor argument 'matrixA' is not XSDataMatrixDouble but %s" % self._matrixA.__class__.__name__
+            raise BaseException(strMessage)
+        if matrixU is None:
+            self._matrixU = None
+        elif matrixU.__class__.__name__ == "XSDataMatrixDouble":
+            self._matrixU = matrixU
+        else:
+            strMessage = "ERROR! XSDataXOalignOrientation constructor argument 'matrixU' is not XSDataMatrixDouble but %s" % self._matrixU.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'matrixA' attribute
+    def getMatrixA(self): return self._matrixA
+    def setMatrixA(self, matrixA):
+        if matrixA is None:
+            self._matrixA = None
+        elif matrixA.__class__.__name__ == "XSDataMatrixDouble":
+            self._matrixA = matrixA
+        else:
+            strMessage = "ERROR! XSDataXOalignOrientation.setMatrixA argument is not XSDataMatrixDouble but %s" % matrixA.__class__.__name__
+            raise BaseException(strMessage)
+    def delMatrixA(self): self._matrixA = None
+    matrixA = property(getMatrixA, setMatrixA, delMatrixA, "Property for matrixA")
+    # Methods and properties for the 'matrixU' attribute
+    def getMatrixU(self): return self._matrixU
+    def setMatrixU(self, matrixU):
+        if matrixU is None:
+            self._matrixU = None
+        elif matrixU.__class__.__name__ == "XSDataMatrixDouble":
+            self._matrixU = matrixU
+        else:
+            strMessage = "ERROR! XSDataXOalignOrientation.setMatrixU argument is not XSDataMatrixDouble but %s" % matrixU.__class__.__name__
+            raise BaseException(strMessage)
+    def delMatrixU(self): self._matrixU = None
+    matrixU = property(getMatrixU, setMatrixU, delMatrixU, "Property for matrixU")
+    def export(self, outfile, level, name_='XSDataXOalignOrientation'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataXOalignOrientation'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._matrixA is not None:
+            self.matrixA.export(outfile, level, name_='matrixA')
+        else:
+            warnEmptyAttribute("matrixA", "XSDataMatrixDouble")
+        if self._matrixU is not None:
+            self.matrixU.export(outfile, level, name_='matrixU')
+        else:
+            warnEmptyAttribute("matrixU", "XSDataMatrixDouble")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'matrixA':
+            obj_ = XSDataMatrixDouble()
+            obj_.build(child_)
+            self.setMatrixA(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'matrixU':
+            obj_ = XSDataMatrixDouble()
+            obj_.build(child_)
+            self.setMatrixU(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataXOalignOrientation" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataXOalignOrientation' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataXOalignOrientation is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataXOalignOrientation.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataXOalignOrientation()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataXOalignOrientation" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataXOalignOrientation()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataXOalignOrientation
 
 
 class XSDataXOalignSolution(XSData):
@@ -268,27 +623,65 @@ class XSDataXOalignSolution(XSData):
 
 
 class XSDataInputXOalign(XSDataInput):
-    def __init__(self, configuration=None, mosflmMat=None):
+    def __init__(self, configuration=None, cell=None, orientation=None, symmetry=None):
         XSDataInput.__init__(self, configuration)
-        if mosflmMat is None:
-            self._mosflmMat = None
-        elif mosflmMat.__class__.__name__ == "XSDataFile":
-            self._mosflmMat = mosflmMat
+        if symmetry is None:
+            self._symmetry = None
+        elif symmetry.__class__.__name__ == "XSDataString":
+            self._symmetry = symmetry
         else:
-            strMessage = "ERROR! XSDataInputXOalign constructor argument 'mosflmMat' is not XSDataFile but %s" % self._mosflmMat.__class__.__name__
+            strMessage = "ERROR! XSDataInputXOalign constructor argument 'symmetry' is not XSDataString but %s" % self._symmetry.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'mosflmMat' attribute
-    def getMosflmMat(self): return self._mosflmMat
-    def setMosflmMat(self, mosflmMat):
-        if mosflmMat is None:
-            self._mosflmMat = None
-        elif mosflmMat.__class__.__name__ == "XSDataFile":
-            self._mosflmMat = mosflmMat
+        if orientation is None:
+            self._orientation = None
+        elif orientation.__class__.__name__ == "XSDataXOalignOrientation":
+            self._orientation = orientation
         else:
-            strMessage = "ERROR! XSDataInputXOalign.setMosflmMat argument is not XSDataFile but %s" % mosflmMat.__class__.__name__
+            strMessage = "ERROR! XSDataInputXOalign constructor argument 'orientation' is not XSDataXOalignOrientation but %s" % self._orientation.__class__.__name__
             raise BaseException(strMessage)
-    def delMosflmMat(self): self._mosflmMat = None
-    mosflmMat = property(getMosflmMat, setMosflmMat, delMosflmMat, "Property for mosflmMat")
+        if cell is None:
+            self._cell = None
+        elif cell.__class__.__name__ == "XSDataXOalignCell":
+            self._cell = cell
+        else:
+            strMessage = "ERROR! XSDataInputXOalign constructor argument 'cell' is not XSDataXOalignCell but %s" % self._cell.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'symmetry' attribute
+    def getSymmetry(self): return self._symmetry
+    def setSymmetry(self, symmetry):
+        if symmetry is None:
+            self._symmetry = None
+        elif symmetry.__class__.__name__ == "XSDataString":
+            self._symmetry = symmetry
+        else:
+            strMessage = "ERROR! XSDataInputXOalign.setSymmetry argument is not XSDataString but %s" % symmetry.__class__.__name__
+            raise BaseException(strMessage)
+    def delSymmetry(self): self._symmetry = None
+    symmetry = property(getSymmetry, setSymmetry, delSymmetry, "Property for symmetry")
+    # Methods and properties for the 'orientation' attribute
+    def getOrientation(self): return self._orientation
+    def setOrientation(self, orientation):
+        if orientation is None:
+            self._orientation = None
+        elif orientation.__class__.__name__ == "XSDataXOalignOrientation":
+            self._orientation = orientation
+        else:
+            strMessage = "ERROR! XSDataInputXOalign.setOrientation argument is not XSDataXOalignOrientation but %s" % orientation.__class__.__name__
+            raise BaseException(strMessage)
+    def delOrientation(self): self._orientation = None
+    orientation = property(getOrientation, setOrientation, delOrientation, "Property for orientation")
+    # Methods and properties for the 'cell' attribute
+    def getCell(self): return self._cell
+    def setCell(self, cell):
+        if cell is None:
+            self._cell = None
+        elif cell.__class__.__name__ == "XSDataXOalignCell":
+            self._cell = cell
+        else:
+            strMessage = "ERROR! XSDataInputXOalign.setCell argument is not XSDataXOalignCell but %s" % cell.__class__.__name__
+            raise BaseException(strMessage)
+    def delCell(self): self._cell = None
+    cell = property(getCell, setCell, delCell, "Property for cell")
     def export(self, outfile, level, name_='XSDataInputXOalign'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -297,20 +690,38 @@ class XSDataInputXOalign(XSDataInput):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataInputXOalign'):
         XSDataInput.exportChildren(self, outfile, level, name_)
-        if self._mosflmMat is not None:
-            self.mosflmMat.export(outfile, level, name_='mosflmMat')
+        if self._symmetry is not None:
+            self.symmetry.export(outfile, level, name_='symmetry')
         else:
-            warnEmptyAttribute("mosflmMat", "XSDataFile")
+            warnEmptyAttribute("symmetry", "XSDataString")
+        if self._orientation is not None:
+            self.orientation.export(outfile, level, name_='orientation')
+        else:
+            warnEmptyAttribute("orientation", "XSDataXOalignOrientation")
+        if self._cell is not None:
+            self.cell.export(outfile, level, name_='cell')
+        else:
+            warnEmptyAttribute("cell", "XSDataXOalignCell")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'mosflmMat':
-            obj_ = XSDataFile()
+            nodeName_ == 'symmetry':
+            obj_ = XSDataString()
             obj_.build(child_)
-            self.setMosflmMat(obj_)
+            self.setSymmetry(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'orientation':
+            obj_ = XSDataXOalignOrientation()
+            obj_.build(child_)
+            self.setOrientation(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cell':
+            obj_ = XSDataXOalignCell()
+            obj_.build(child_)
+            self.setCell(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

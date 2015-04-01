@@ -22,7 +22,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import os, shutil, time, cgi, Image
+import os, shutil, time, cgi, Image, cgi
 
 from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
@@ -108,6 +108,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.diffractionPlan()
             self.strategyResults()
             self.graphs()
+            self.kappaResults()
             self.indexingResults()
             self.integrationResults()
             self.imageQualityIndicatorResults()
@@ -654,7 +655,11 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.page.td("%s" % os.path.basename(xsDataResultImageQualityIndicators.image.path.value))
             if bDozor:
                 if xsDataResultImageQualityIndicators.dozor_score:
-                    self.page.td("%.1f" % xsDataResultImageQualityIndicators.dozor_score.value)
+                    fDozor_score = xsDataResultImageQualityIndicators.dozor_score.value
+                    if fDozor_score > 1.0:
+                        self.page.td("%.1f" % fDozor_score)
+                    else:
+                        self.page.td("%.3f" % fDozor_score)
                 else:
                     self.page.td("NA")                    
             if xsDataResultImageQualityIndicators.totalIntegratedSignal:
@@ -764,3 +769,39 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.page.tr.close()
             self.page.table.close()
             
+            
+    def kappaResults(self):
+        
+        if self.xsDataResultCharacterisation.kappaReorientation is not None:
+            if self.xsDataResultCharacterisation.kappaReorientation.logFile:
+                strPathToKappaLogFile = self.xsDataResultCharacterisation.kappaReorientation.logFile.path.value
+                strPageKappaLog = os.path.join(self.getWorkingDirectory(), "kappa_log.html")
+                pageKappaLog = markupv1_7.page()
+                pageKappaLog.h1("Kappa re-orientation Log")
+                pageKappaLog.a("Back to previous page", href_=self.strHtmlFileName)
+                pageKappaLog.pre(cgi.escape(EDUtilsFile.readFile(strPathToKappaLogFile)))
+                pageKappaLog.a("Back to previous page", href_=self.strHtmlFileName)
+                EDUtilsFile.writeFile(strPageKappaLog, str(pageKappaLog))
+            self.page.h3()
+            self.page.strong( "Suggested kappa goniostat reorientation ( XOalign*, " )
+            self.page.a("log file", href="kappa_log.html")
+            self.page.strong( "):" )
+            self.page.h3.close()
+            self.page.table( class_='kappaSuggestedResult', border_="1", cellpadding_="1")
+            self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle2)
+            self.page.th("Kappa")
+            self.page.th("Phi")
+            self.page.th("Settings")
+            self.page.tr.close()
+            for solution in self.xsDataResultCharacterisation.kappaReorientation.solution:
+                self.page.tr( align_="CENTER", bgcolor_=self.strTableColourRows)
+                self.page.th(" %.2f " % float(solution.kappa.value))
+                self.page.th(" %.2f " % float(solution.phi.value))
+                self.page.th(" %s " % cgi.escape(solution.settings.value))
+                self.page.tr.close()
+            self.page.table.close()
+            self.page.br()
+            self.page.strong("*) XOalign is a part of XDSme writtent by Pierre Legrand (https://code.google.com/p/xdsme)")
+            self.page.br()
+            self.page.br()
+            self.page.br()

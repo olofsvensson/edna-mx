@@ -11,6 +11,10 @@
 					<name>mxCuBE_URI</name>
 					<value>http://p1-id29.esrf.fr:7171</value>
 				</XSParamItem>
+				<XSParamItem>
+					<name>runKappa</name>
+					<value>true</value>
+				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
