@@ -70,6 +70,7 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
         self.setXSDataInputClass(XSDataInputBest)
+        self.setDataOutput(XSDataResultBest())
 
         # This version of the Best plugin requires the latest
         # version of Best. 
