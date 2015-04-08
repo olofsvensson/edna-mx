@@ -55,7 +55,7 @@ class EDHandlerESRFPyarchv1_0:
             strSecondDirectory = listOfDirectories[ 2 ]
             strProposal = None
             strBeamline = None
-            if ((strDataDirectory == "data") and (strSecondDirectory == "visitor")):
+            if ((strDataDirectory == "data") and ("visitor" in strSecondDirectory)):
                 strProposal = listOfDirectories[ 3 ]
                 strBeamline = listOfDirectories[ 4 ]
             elif ((strDataDirectory == "data") and (strSecondDirectory in listBeamlines)):
