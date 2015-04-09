@@ -1071,7 +1071,23 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         if EDUtilsPath.isEMBL():
             pyarch_path =  os.path.join(files_dir,'a_copy')
         elif EDUtilsPath.isESRF():
-            if files_dir.startswith('/data/visitor'):
+            if files_dir.startswith('/data/gz'):
+                if files_dir.startswith('/data/gz/visitor'):
+                    tokens = [elem for elem in files_dir.split(os.path.sep)
+                              if len(elem) > 0]
+                    pyarch_path = os.path.join('/data/pyarch',
+                                               tokens[4], tokens[3],
+                                               *tokens[5:])
+                else:
+                    # We might get empty elements at the head/tail of the list
+                    tokens = [elem for elem in files_dir.split(os.path.sep)
+                              if len(elem) > 0]
+                    if tokens[3] == 'inhouse':
+                        pyarch_path = os.path.join('/data/pyarch', tokens[2],
+                                                   *tokens[4:])
+                    
+                    
+            elif files_dir.startswith('/data/visitor'):
                 # We might get empty elements at the head/tail of the list
                 tokens = [elem for elem in files_dir.split(os.path.sep)
                           if len(elem) > 0]
