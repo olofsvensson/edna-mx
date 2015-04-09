@@ -50,23 +50,38 @@ class EDHandlerESRFPyarchv1_0:
         listBeamlines = ["bm14", "id14eh1", "id14eh2", "id14eh3", "id14eh4", "id23eh1", "id23eh2", 
                          "id29", "id30a1", "id30a2", "id30a3", "id30b", "simulator_mxcube"]
         # Check that we have at least four levels of directories:
-        if (len(listOfDirectories) > 4):
+        if (len(listOfDirectories) > 5):
             strDataDirectory = listOfDirectories[ 1 ]
             strSecondDirectory = listOfDirectories[ 2 ]
+            strThirdDirectory = listOfDirectories[ 3 ]
+            strFourthDirectory = listOfDirectories[ 4 ]
+            strFifthDirectory = listOfDirectories[ 5 ]
             strProposal = None
             strBeamline = None
-            if ((strDataDirectory == "data") and ("visitor" in strSecondDirectory)):
+            if (strDataDirectory == "data") and (strSecondDirectory == "gz"):
+                if strThirdDirectory == "visitor":
+                    strProposal = strFourthDirectory
+                    strBeamline = strFifthDirectory
+                elif strFourthDirectory == "inhouse":
+                    strProposal = strFifthDirectory
+                    strBeamline = strThirdDirectory
+                else:
+                    raise RuntimeError("Illegal path for EDHandlerESRFPyarchv1_0.createPyarchFilePath: {0}".format(_strESRFPath))
+                listOfRemainingDirectories = listOfDirectories[ 6: ]
+            elif (strDataDirectory == "data") and (strSecondDirectory == "visitor"):
                 strProposal = listOfDirectories[ 3 ]
                 strBeamline = listOfDirectories[ 4 ]
+                listOfRemainingDirectories = listOfDirectories[ 5: ]
             elif ((strDataDirectory == "data") and (strSecondDirectory in listBeamlines)):
                 strBeamline = strSecondDirectory
                 strProposal = listOfDirectories[ 4 ]
+                listOfRemainingDirectories = listOfDirectories[ 5: ]
             if (strProposal != None) and (strBeamline != None):
                 strPyarchDNAFilePath = os.path.join(os.sep, "data")
                 strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, "pyarch")
                 strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, strBeamline)
                 strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, strProposal)
-                for strDirectory in listOfDirectories[ 5: ]:
+                for strDirectory in listOfRemainingDirectories:
                     strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, strDirectory)
         if (strPyarchDNAFilePath is None):
             EDVerbose.WARNING("EDHandlerESRFPyarchv1_0.createPyArchFilePath: path not converted for pyarch: %s " % _strESRFPath)
