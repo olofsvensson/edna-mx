@@ -483,6 +483,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         # Thumbnail images of the predictions
         xsDataResultIndexing = self.xsDataResultCharacterisation.indexingResult
         listThumbnailImage = self.xsDataResultCharacterisation.thumbnailImage
+        if len(listThumbnailImage) == 0:
+            return
         listPaths = []
         self.page.div(align_="left")
         self.page.table( class_='imageRow' )
