@@ -242,6 +242,7 @@ complex type XSDataISPyBDataCollection {
 	experimentType : string
 	fileTemplate : string
 	flux : float
+	flux_end : float
 	imageDirectory : string
 	imagePrefix : string
 	imageSuffix : string
