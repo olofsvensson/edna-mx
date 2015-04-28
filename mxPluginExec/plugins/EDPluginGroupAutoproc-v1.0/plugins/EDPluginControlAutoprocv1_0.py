@@ -925,7 +925,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         scaling_container_noanom.AutoProcScaling = scaling
 
-        inner, outer, overall, unit_cell = _parse_aimless(self.file_conversion.dataOutput.aimless_log_noanom.value)
+        inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_noanom.value)
 
         autoproc.refinedCell_a = str(unit_cell[0])
         autoproc.refinedCell_b = str(unit_cell[1])
@@ -972,7 +972,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # ANOM PATH
         scaling_container_anom = AutoProcScalingContainer()
 
-        inner, outer, overall, unit_cell = _parse_aimless(self.file_conversion.dataOutput.aimless_log_anom.value)
+        inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_anom.value)
         inner_stats = AutoProcScalingStatistics()
         for k, v in inner.iteritems():
             setattr(inner_stats, k, v)
@@ -998,30 +998,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         xscale_stats_anom = self.xscale_generate.dataOutput.stats_anom_merged
         inner_stats_anom = xscale_stats_anom.completeness_entries[0]
         outer_stats_anom = xscale_stats_anom.completeness_entries[-1]
-
-        # use the previous shell's res as low res if available
-        prev_res = self.low_resolution_limit
-        try:
-            prev_res = xscale_stats_anom.completeness_entries[-2].res.value
-        except IndexError:
-            pass
-        total_stats_anom = xscale_stats_anom.total_completeness
-
-        stats = _create_scaling_stats(inner_stats_anom, 'innerShell',
-                                      self.low_resolution_limit, True)
-        overall_low = stats.resolutionLimitLow
-        scaling_container_anom.AutoProcScalingStatistics.append(stats)
-
-        stats = _create_scaling_stats(outer_stats_anom, 'outerShell',
-                                      prev_res, True)
-        overall_high = stats.resolutionLimitHigh
-        scaling_container_anom.AutoProcScalingStatistics.append(stats)
-        stats = _create_scaling_stats(total_stats_anom, 'overall',
-                                      self.low_resolution_limit, True)
-        stats.resolutionLimitLow = overall_low
-        stats.resolutionLimitHigh = overall_high
-        scaling_container_anom.AutoProcScalingStatistics.append(stats)
-
 
         integration_container_anom = AutoProcIntegrationContainer()
         image = Image()
@@ -1361,6 +1337,47 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         autoproc_status.executeSynchronous()
         return autoproc_status.dataOutput.autoProcIntegrationId
 
+    def parse_aimless(self, filepath):
+        # mapping between the start of the line and the name of the property
+        # in the ispyb data object thing
+        INTERESTING_LINES = {
+            'Low resolution limit': 'resolutionLimitLow',
+            'High resolution limit': 'resolutionLimitHigh',
+            'Mean((I)/sd(I))': 'meanIOverSigI',
+            'Completeness': 'completeness',
+            'Multiplicity': 'multiplicity',
+            'Total number of observations': 'nTotalObservations',
+            'Rmerge  (within I+/I-)': 'rMerge'
+        }
+        
+        UNIT_CELL_PREFIX = 'Average unit cell:' # special case, 6 values
+        lines = []
+        inner_stats = {'scalingStatisticsType':'innerShell'}
+        outer_stats = {'scalingStatisticsType':'outerShell'}
+        overall_stats = {'scalingStatisticsType':'overall'}
+        unit_cell = None
+        with open(filepath, 'r') as f:
+            lines = f.readlines()
+        started = False
+        for line in lines:
+            # avoid all the stuff before the final summary
+            if line.startswith('<!--SUMMARY_BEGIN--> $TEXT:Result: $$ $$'):
+                started = True
+            if started:
+                for prefix, prop_name in INTERESTING_LINES.iteritems():
+                    if line.startswith(prefix):
+                        # We need to multiply the values for rMerge by 100
+                        factor = 100 if prop_name == 'rMerge' else 1
+                        # 3 last columns are the values we're after
+                        overall, inner, outer = [float(x) * factor for x in line.split()[-3:]]
+                        overall_stats[prop_name] = overall
+                        inner_stats[prop_name] = inner
+                        outer_stats[prop_name] = outer
+                if line.startswith(UNIT_CELL_PREFIX):
+                    unit_cell = map(float, line.split()[-6:])
+        return inner_stats, outer_stats, overall_stats, unit_cell
+    
+
 def _create_scaling_stats(xscale_stats, stats_type, lowres, anom):
     stats = AutoProcScalingStatistics()
     stats.scalingStatisticsType = stats_type
@@ -1402,46 +1419,7 @@ def _template_to_image(fmt, num):
     return fmt_string.format(num)
 
 
-# mapping between the start of the line and the name of the property
-# in the ispyb data object thing
-INTERESTING_LINES = {
-    'Low resolution limit': 'resolutionLimitLow',
-    'High resolution limit': 'resolutionLimitHigh',
-    'Mean((I)/sd(I))': 'meanIOverSigI',
-    'Completeness': 'completeness',
-    'Multiplicity': 'multiplicity',
-    'Total number of observations': 'nTotalObservations',
-    'Rmerge  (within I+/I-)': 'rMerge'
-}
 
-UNIT_CELL_PREFIX = 'Average unit cell:' # special case, 6 values
-
-def _parse_aimless(filepath):
-    lines = []
-    inner_stats = {'scalingStatisticsType':'innerShell'}
-    outer_stats = {'scalingStatisticsType':'outerShell'}
-    overall_stats = {'scalingStatisticsType':'overall'}
-    unit_cell = None
-    with open(filepath, 'r') as f:
-        lines = f.readlines()
-    started = False
-    for line in lines:
-        # avoid all the stuff before the final summary
-        if line.startswith('<!--SUMMARY_BEGIN--> $TEXT:Result: $$ $$'):
-            started = True
-        if started:
-            for prefix, prop_name in INTERESTING_LINES.iteritems():
-                if line.startswith(prefix):
-                    # We need to multiply the values for rMerge by 100
-                    factor = 100 if prop_name == 'rMerge' else 1
-                    # 3 last columns are the values we're after
-                    overall, inner, outer = [float(x) * factor for x in line.split()[-3:]]
-                    overall_stats[prop_name] = overall
-                    inner_stats[prop_name] = inner
-                    outer_stats[prop_name] = outer
-            if line.startswith(UNIT_CELL_PREFIX):
-                unit_cell = map(float, line.split()[-6:])
-    return inner_stats, outer_stats, overall_stats, unit_cell
 
 
 # taken straight from max's code
