@@ -825,6 +825,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         except:
             self.DEBUG('could not determine image prefix from directory "{0}"'.format(self.root_dir))
 
+        if self.dataInput.spacegroup is not None:
+            import_in.choose_spacegroup = self.dataInput.spacegroup
+
         self.file_conversion.dataInput = import_in
 
         t0 = time.time()

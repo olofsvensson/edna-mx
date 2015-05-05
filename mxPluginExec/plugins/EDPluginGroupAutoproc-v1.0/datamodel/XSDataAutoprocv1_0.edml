@@ -212,6 +212,7 @@ complex type XSDataFileConversion extends XSDataInput {
         res              : XSDataDouble
         nres             : XSDataDouble
         anom             : XSDataBoolean
+        choose_spacegroup : XSDataString optional
 	// optional because the way we get it is fragile and may break
 	image_prefix     : XSDataString optional
 }
@@ -223,15 +224,16 @@ complex type XSDataFileConversionOut extends XSDataResult {
 }
 
 complex type XSDataAutoprocImport extends XSDataInput {
-	input_anom		: XSDataString
+	input_anom	    	: XSDataString
 	input_noanom		: XSDataString
 	output_directory	: XSDataString
 	dataCollectionID	: XSDataInteger
-	start_image		: XSDataInteger
+	start_image		    : XSDataInteger
         end_image		: XSDataInteger
-        res			: XSDataDouble
+        res			    : XSDataDouble
         nres			: XSDataDouble
-	image_prefix            : XSDataString optional
+	image_prefix        : XSDataString optional
+    choose_spacegroup   : XSDataString optional
 }
 
 complex type XSDataAutoprocImportOut extends XSDataResult {

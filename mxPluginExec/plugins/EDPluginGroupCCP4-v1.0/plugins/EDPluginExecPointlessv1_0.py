@@ -63,6 +63,8 @@ class EDPluginExecPointlessv1_0(EDPluginExecProcessScript):
             self.setScriptCommandline(options)
             self.DEBUG('command line options set to {0}'.format(options))
         self.addListCommandExecution('setting symmetry-based')
+        if self.dataInput.choose_spacegroup is not None:
+            self.addListCommandExecution('choose spacegroup {0}'.format(self.dataInput.choose_spacegroup.value))
 
     def checkParameters(self):
         self.DEBUG('Pointless: checkParameters')

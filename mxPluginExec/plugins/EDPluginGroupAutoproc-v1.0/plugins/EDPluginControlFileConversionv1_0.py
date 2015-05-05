@@ -111,6 +111,8 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         pointless_out = os.path.join(os.path.dirname(self.dataInput.output_file.value),
                                      self.pointless_out)
         pointless_in.output_file = XSDataString(pointless_out)
+        if self.dataInput.choose_spacegroup is not None:
+            pointless_in.choose_spacegroup = self.dataInput.choose_spacegroup
         self.pointless.dataInput = pointless_in
         self.screen("Pointless run " + self.strAnomSuffix)
         self.pointless.executeSynchronous()

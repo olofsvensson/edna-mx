@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue Oct 21 12:24::57 2014 by EDGenerateDS.
+# Generated Tue May 5 06:55::22 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -718,7 +718,7 @@ class XSDataInputMtz2Various(XSDataInput):
 
 
 class XSDataPointless(XSDataInput):
-    def __init__(self, configuration=None, output_file=None, input_file=None):
+    def __init__(self, configuration=None, choose_spacegroup=None, output_file=None, input_file=None):
         XSDataInput.__init__(self, configuration)
         if input_file is None:
             self._input_file = None
@@ -733,6 +733,13 @@ class XSDataPointless(XSDataInput):
             self._output_file = output_file
         else:
             strMessage = "ERROR! XSDataPointless constructor argument 'output_file' is not XSDataString but %s" % self._output_file.__class__.__name__
+            raise BaseException(strMessage)
+        if choose_spacegroup is None:
+            self._choose_spacegroup = None
+        elif choose_spacegroup.__class__.__name__ == "XSDataString":
+            self._choose_spacegroup = choose_spacegroup
+        else:
+            strMessage = "ERROR! XSDataPointless constructor argument 'choose_spacegroup' is not XSDataString but %s" % self._choose_spacegroup.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'input_file' attribute
     def getInput_file(self): return self._input_file
@@ -758,6 +765,18 @@ class XSDataPointless(XSDataInput):
             raise BaseException(strMessage)
     def delOutput_file(self): self._output_file = None
     output_file = property(getOutput_file, setOutput_file, delOutput_file, "Property for output_file")
+    # Methods and properties for the 'choose_spacegroup' attribute
+    def getChoose_spacegroup(self): return self._choose_spacegroup
+    def setChoose_spacegroup(self, choose_spacegroup):
+        if choose_spacegroup is None:
+            self._choose_spacegroup = None
+        elif choose_spacegroup.__class__.__name__ == "XSDataString":
+            self._choose_spacegroup = choose_spacegroup
+        else:
+            strMessage = "ERROR! XSDataPointless.setChoose_spacegroup argument is not XSDataString but %s" % choose_spacegroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delChoose_spacegroup(self): self._choose_spacegroup = None
+    choose_spacegroup = property(getChoose_spacegroup, setChoose_spacegroup, delChoose_spacegroup, "Property for choose_spacegroup")
     def export(self, outfile, level, name_='XSDataPointless'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -774,6 +793,8 @@ class XSDataPointless(XSDataInput):
             self.output_file.export(outfile, level, name_='output_file')
         else:
             warnEmptyAttribute("output_file", "XSDataString")
+        if self._choose_spacegroup is not None:
+            self.choose_spacegroup.export(outfile, level, name_='choose_spacegroup')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -789,6 +810,11 @@ class XSDataPointless(XSDataInput):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setOutput_file(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'choose_spacegroup':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setChoose_spacegroup(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

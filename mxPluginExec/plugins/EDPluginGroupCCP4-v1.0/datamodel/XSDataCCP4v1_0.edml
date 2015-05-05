@@ -45,9 +45,9 @@ complex type XSDataAimless extends XSDataInput {
 }
 
 complex type XSDataPointless extends XSDataInput {
-        input_file      : XSDataString // XDS HKL file
-        output_file	: XSDataString
-
+        input_file        : XSDataString // XDS HKL file
+        output_file	      : XSDataString
+		choose_spacegroup : XSDataString optional
 }
 
 complex type XSDataPointlessOut extends XSDataResult {
