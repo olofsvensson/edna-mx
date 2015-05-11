@@ -696,3 +696,11 @@ complex type XSDataResultISPyBGetPdbFilePath extends XSDataResult {
 	pdbFilePath : XSDataString
 }
 
+complex type XSDataInputISPyBUpdateDataCollectionGroupComment extends XSDataInput {
+	dataCollectionId: XSDataInteger
+	newComment : XSDataString
+}
+
+complex type XSDataResultISPyBUpdateDataCollectionGroupComment extends XSDataResult {
+	dataCollectionGroupId : XSDataInteger
+}
