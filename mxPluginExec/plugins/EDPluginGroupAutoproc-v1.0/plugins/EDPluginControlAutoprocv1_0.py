@@ -95,6 +95,9 @@ from XSDataISPyBv1_4 import AutoProcProgramAttachment
 from XSDataISPyBv1_4 import Image
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
 
+# add comments to data collection and data collection group
+from XSDataISPyBv1_4 import XSDataInputISPyBUpdateDataCollectionGroupComment
+
 # status updates
 from XSDataISPyBv1_4 import AutoProcStatus
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProcStatus
@@ -376,6 +379,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.file_conversion = self.loadPlugin('EDPluginControlAutoprocImportv1_0')
         
         self.phenixXtriage = self.loadPlugin("EDPluginPhenixXtriagev1_1")
+        
+        self.edPluginISPyBUpdateDataCollectionGroupComment = self.loadPlugin("EDPluginISPyBUpdateDataCollectionGroupCommentv1_4")
 
 #        self.dimple = self.loadPlugin('EDPluginControlDIMPLEPipelineCalcDiffMapv10')
 
@@ -863,8 +868,10 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
     
             if xsDataResultPhenixXtriage.pseudotranslation.value:
                 strMessage = "Pseudotranslation detected by phenix.xtriage!"
+                bPseudotranslation = True
             else:
                 strMessage = "No pseudotranslation detected by phenix.xtriage."
+                bPseudotranslation = False
             self.screen(strMessage)
             self.log_to_ispyb(self.integration_id_noanom,
                          'Scaling',
@@ -873,13 +880,29 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             
             if xsDataResultPhenixXtriage.twinning.value:
                 strMessage = "Twinning detected by phenix.xtriage!"
+                bTwinning = True
             else:
                 strMessage = "No twinning detected by phenix.xtriage."
+                bTwinning = False
             self.screen(strMessage)
             self.log_to_ispyb(self.integration_id_noanom,
                          'Scaling',
                          'Successful',
                          strMessage)
+            
+            if bPseudotranslation or bTwinning:
+                if bPseudotranslation and bTwinning:
+                    strISPyBComment = "EDNA dp: pseudo-translation and twinning detected."
+                elif bPseudotranslation:
+                    strISPyBComment = "EDNA dp: pseudo-translation detected."
+                else:
+                    strISPyBComment = "EDNA dp: twinning detected."
+                xsDataInput = XSDataInputISPyBUpdateDataCollectionGroupComment()
+                xsDataInput.newComment = XSDataString(strISPyBComment)
+                xsDataInput.dataCollectionId = self.dataInput.data_collection_id
+                self.edPluginISPyBUpdateDataCollectionGroupComment.dataInput = xsDataInput
+                self.executePluginSynchronous(self.edPluginISPyBUpdateDataCollectionGroupComment)
+                    
 
         self.process_end = time.time()
 
