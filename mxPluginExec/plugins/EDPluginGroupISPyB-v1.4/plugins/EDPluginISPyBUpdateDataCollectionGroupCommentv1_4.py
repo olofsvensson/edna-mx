@@ -129,13 +129,6 @@ class EDPluginISPyBUpdateDataCollectionGroupCommentv1_4(EDPluginExec):
             self.ERROR("No data collection corresponding to data collection id {0}".format(dataCollectionId))
             self.setFailure()
             return
-        if hasattr(dataCollectionWS3VO, "comments"):
-            if not newComment in dataCollectionWS3VO.comments:
-                dataCollectionWS3VO.comments += " " + newComment
-                dataCollectionId = clientToolsForCollectionWebService.service.storeOrUpdateDataCollection(dataCollectionWS3VO)
-        else:
-            dataCollectionWS3VO.comments = newComment
-            dataCollectionId = clientToolsForCollectionWebService.service.storeOrUpdateDataCollection(dataCollectionWS3VO)
         dataCollectionGroupId = dataCollectionWS3VO.dataCollectionGroupId
         if dataCollectionGroupId is None:
             self.ERROR("No data collection group corresponding to data collection id {0}".format(dataCollectionId))
@@ -145,6 +138,15 @@ class EDPluginISPyBUpdateDataCollectionGroupCommentv1_4(EDPluginExec):
         if not newComment in dataCollectionGroupWS3VO.comments:
             dataCollectionGroupWS3VO.comments = newComment
             self.iDataCollectionGroupId = clientToolsForCollectionWebService.service.storeOrUpdateDataCollectionGroup(dataCollectionGroupWS3VO)
+            # Make sure the comments hasn't already been added by ISPyB:
+            dataCollectionWS3VO = clientToolsForCollectionWebService.service.findDataCollection(dataCollectionId)
+            if hasattr(dataCollectionWS3VO, "comments"):
+                if not newComment in dataCollectionWS3VO.comments:
+                    dataCollectionWS3VO.comments += " " + newComment
+                    dataCollectionId = clientToolsForCollectionWebService.service.storeOrUpdateDataCollection(dataCollectionWS3VO)
+            else:
+                dataCollectionWS3VO.comments = newComment
+                dataCollectionId = clientToolsForCollectionWebService.service.storeOrUpdateDataCollection(dataCollectionWS3VO)
         self.DEBUG("EDPluginISPyBUpdateDataCollectionGroupWorkflowIdv1_4.process: DataCollectionGroupId=%r" % self.iDataCollectionGroupId)
             
              
