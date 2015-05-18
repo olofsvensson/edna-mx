@@ -61,6 +61,14 @@ from XSDataMXv1 import XSDataInputControlISPyB
 from XSDataInterfacev1_2 import XSDataInputInterface
 from XSDataInterfacev1_2 import XSDataResultInterface
 
+from EDFactoryPlugin import edFactoryPlugin
+edFactoryPlugin.loadModule('XSDataISPyBv1_4')
+# add comments to data collection and data collection group
+from XSDataISPyBv1_4 import XSDataInputISPyBUpdateDataCollectionGroupComment
+
+
+
+
 class EDPluginControlInterfacev1_2(EDPluginControl):
     """
     This is the common class to all plugins managing user interfaces
@@ -423,6 +431,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
 
         if (self.strEDPluginControlISPyBName is not None):
             self.edPluginControlISPyB = self.loadPlugin(self.strEDPluginControlISPyBName, "ISPyB")
+            
 
 
     def process(self, _edPlugin=None):
@@ -502,6 +511,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
                 self.edPluginControlISPyB.setDataInput(XSDataString(self.strStatusMessage), "statusMessage")
             self.edPluginControlISPyB.setDataInput(xsDataInputControlISPyB)
             self.edPluginControlISPyB.executeSynchronous()
+            self.checkDozorScores(self.edPluginControlCharacterisation.getDataOutput())
 
 
     def createInputCharacterisationFromSubWedges(self):
@@ -627,3 +637,50 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
             self.addExecutiveSummaryLine("Summary of plugin %s:" % self.strEDPluginControlISPyBName)
             self.appendExecutiveSummary(self.edPluginControlISPyB)
         self.verboseScreenExecutiveSummary()
+
+
+    def checkDozorScores(self, _xsDataResultCharacterisation):
+        # Check Dozor scores
+        listImageQualityIndicators = _xsDataResultCharacterisation.imageQualityIndicators
+        noWeakDiffraction = 0
+        noTotal = 0
+        newComment = None
+        referenceImagePath = None
+        listImageNoWithNoDiffraction = []
+        for imageQualityIndicators in listImageQualityIndicators:
+            if referenceImagePath is None:
+                referenceImagePath = imageQualityIndicators.image.path.value
+            if imageQualityIndicators.dozor_score is not None:
+                noTotal += 1
+                dozorScore = imageQualityIndicators.dozor_score.value
+                if dozorScore <= 0.001:
+                    listImageNoWithNoDiffraction.append(imageQualityIndicators.image.number.value)
+                elif dozorScore < 1.0:
+                    noWeakDiffraction += 1
+        if noTotal > 0:
+            if len(listImageNoWithNoDiffraction) == noTotal:
+                newComment = "No diffraction."
+            elif noWeakDiffraction == noTotal:
+                newComment = "Very weak diffraction."
+            else:
+                subComment = None
+                if len(listImageNoWithNoDiffraction) == 1:
+                    subComment = "image {0}".format(listImageNoWithNoDiffraction[0])
+                elif len(listImageNoWithNoDiffraction) == 2:
+                    subComment = "images {0} and {1}".format(listImageNoWithNoDiffraction[0], listImageNoWithNoDiffraction[1])                    
+                elif len(listImageNoWithNoDiffraction) > 2:
+                    subComment = "images {0}".format(listImageNoWithNoDiffraction[0])
+                    for imageNo in listImageNoWithNoDiffraction[1:-1]:
+                        subComment += ", {0}".format(imageNo)
+                    subComment += " and {0}".format(listImageNoWithNoDiffraction[-1])
+                if subComment is not None:
+                    newComment = "No diffraction detected in {0} - hint: sample might not be accurately centred.".format(subComment)
+            
+            if newComment is not None and self.iDataCollectionId is not None:
+                xsDataInput = XSDataInputISPyBUpdateDataCollectionGroupComment()
+                xsDataInput.newComment = XSDataString(newComment)
+                xsDataInput.dataCollectionId = XSDataInteger(self.iDataCollectionId)
+                edPluginISPyBUpdateDataCollectionGroupComment = self.loadPlugin("EDPluginISPyBUpdateDataCollectionGroupCommentv1_4")
+                edPluginISPyBUpdateDataCollectionGroupComment.dataInput = xsDataInput
+                self.executePluginSynchronous(edPluginISPyBUpdateDataCollectionGroupComment)
+                    
