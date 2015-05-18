@@ -660,7 +660,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
         if noTotal > 0:
             if len(listImageNoWithNoDiffraction) == noTotal:
                 newComment = "No diffraction."
-            elif noWeakDiffraction == noTotal:
+            elif noWeakDiffraction + len(listImageNoWithNoDiffraction) == noTotal:
                 newComment = "Very weak diffraction."
             else:
                 subComment = None
