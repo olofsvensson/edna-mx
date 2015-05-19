@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<XSDataInputPyarchTumbnailGenerator>
+	<diffractionImage>
+		<path>
+			<value>${EDNA_TESTIMAGES}/FAE_1_1_00001.cbf</value>
+		</path>
+	</diffractionImage>
+	<forcedOutputDirectory>
+		<path>
+			<value>${EDNA_WORKING_DIR}</value>
+		</path>
+	</forcedOutputDirectory>
+	<waitForFileTimeOut>
+	    <value>15</value>
+	</waitForFileTimeOut>
+	<format>
+		<value>png</value>
+	</format>
+</XSDataInputPyarchTumbnailGenerator>

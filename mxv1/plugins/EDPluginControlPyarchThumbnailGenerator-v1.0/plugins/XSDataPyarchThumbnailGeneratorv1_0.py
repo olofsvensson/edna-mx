@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Feb 3 03:01::03 2014 by EDGenerateDS.
+# Generated Tue May 19 09:34::44 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -16,12 +16,14 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataResult
+    from XSDataCommon import XSDataString
     from XSDataCommon import XSDataTime
 except ImportError as error:
     if strEdnaHome is not None:
@@ -36,6 +38,7 @@ except ImportError as error:
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataResult
+from XSDataCommon import XSDataString
 from XSDataCommon import XSDataTime
 
 
@@ -117,7 +120,7 @@ class MixedContainer(object):
 
 
 class XSDataInputPyarchThumbnailGenerator(XSDataInput):
-    def __init__(self, configuration=None, waitForFileTimeOut=None, forcedOutputDirectory=None, diffractionImage=None):
+    def __init__(self, configuration=None, format=None, waitForFileTimeOut=None, forcedOutputDirectory=None, diffractionImage=None):
         XSDataInput.__init__(self, configuration)
         if diffractionImage is None:
             self._diffractionImage = None
@@ -139,6 +142,13 @@ class XSDataInputPyarchThumbnailGenerator(XSDataInput):
             self._waitForFileTimeOut = waitForFileTimeOut
         else:
             strMessage = "ERROR! XSDataInputPyarchThumbnailGenerator constructor argument 'waitForFileTimeOut' is not XSDataTime but %s" % self._waitForFileTimeOut.__class__.__name__
+            raise BaseException(strMessage)
+        if format is None:
+            self._format = None
+        elif format.__class__.__name__ == "XSDataString":
+            self._format = format
+        else:
+            strMessage = "ERROR! XSDataInputPyarchThumbnailGenerator constructor argument 'format' is not XSDataString but %s" % self._format.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'diffractionImage' attribute
     def getDiffractionImage(self): return self._diffractionImage
@@ -176,6 +186,18 @@ class XSDataInputPyarchThumbnailGenerator(XSDataInput):
             raise BaseException(strMessage)
     def delWaitForFileTimeOut(self): self._waitForFileTimeOut = None
     waitForFileTimeOut = property(getWaitForFileTimeOut, setWaitForFileTimeOut, delWaitForFileTimeOut, "Property for waitForFileTimeOut")
+    # Methods and properties for the 'format' attribute
+    def getFormat(self): return self._format
+    def setFormat(self, format):
+        if format is None:
+            self._format = None
+        elif format.__class__.__name__ == "XSDataString":
+            self._format = format
+        else:
+            strMessage = "ERROR! XSDataInputPyarchThumbnailGenerator.setFormat argument is not XSDataString but %s" % format.__class__.__name__
+            raise BaseException(strMessage)
+    def delFormat(self): self._format = None
+    format = property(getFormat, setFormat, delFormat, "Property for format")
     def export(self, outfile, level, name_='XSDataInputPyarchThumbnailGenerator'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -192,6 +214,8 @@ class XSDataInputPyarchThumbnailGenerator(XSDataInput):
             self.forcedOutputDirectory.export(outfile, level, name_='forcedOutputDirectory')
         if self._waitForFileTimeOut is not None:
             self.waitForFileTimeOut.export(outfile, level, name_='waitForFileTimeOut')
+        if self._format is not None:
+            self.format.export(outfile, level, name_='format')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -212,6 +236,11 @@ class XSDataInputPyarchThumbnailGenerator(XSDataInput):
             obj_ = XSDataTime()
             obj_.build(child_)
             self.setWaitForFileTimeOut(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'format':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setFormat(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -258,7 +287,7 @@ class XSDataInputPyarchThumbnailGenerator(XSDataInput):
 
 
 class XSDataInputPyarchThumbnailGeneratorParallel(XSDataInput):
-    def __init__(self, configuration=None, waitForFileTimeOut=None, forcedOutputDirectory=None, diffractionImage=None):
+    def __init__(self, configuration=None, format=None, waitForFileTimeOut=None, forcedOutputDirectory=None, diffractionImage=None):
         XSDataInput.__init__(self, configuration)
         if diffractionImage is None:
             self._diffractionImage = []
@@ -280,6 +309,13 @@ class XSDataInputPyarchThumbnailGeneratorParallel(XSDataInput):
             self._waitForFileTimeOut = waitForFileTimeOut
         else:
             strMessage = "ERROR! XSDataInputPyarchThumbnailGeneratorParallel constructor argument 'waitForFileTimeOut' is not XSDataTime but %s" % self._waitForFileTimeOut.__class__.__name__
+            raise BaseException(strMessage)
+        if format is None:
+            self._format = None
+        elif format.__class__.__name__ == "XSDataString":
+            self._format = format
+        else:
+            strMessage = "ERROR! XSDataInputPyarchThumbnailGeneratorParallel constructor argument 'format' is not XSDataString but %s" % self._format.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'diffractionImage' attribute
     def getDiffractionImage(self): return self._diffractionImage
@@ -338,6 +374,18 @@ class XSDataInputPyarchThumbnailGeneratorParallel(XSDataInput):
             raise BaseException(strMessage)
     def delWaitForFileTimeOut(self): self._waitForFileTimeOut = None
     waitForFileTimeOut = property(getWaitForFileTimeOut, setWaitForFileTimeOut, delWaitForFileTimeOut, "Property for waitForFileTimeOut")
+    # Methods and properties for the 'format' attribute
+    def getFormat(self): return self._format
+    def setFormat(self, format):
+        if format is None:
+            self._format = None
+        elif format.__class__.__name__ == "XSDataString":
+            self._format = format
+        else:
+            strMessage = "ERROR! XSDataInputPyarchThumbnailGeneratorParallel.setFormat argument is not XSDataString but %s" % format.__class__.__name__
+            raise BaseException(strMessage)
+    def delFormat(self): self._format = None
+    format = property(getFormat, setFormat, delFormat, "Property for format")
     def export(self, outfile, level, name_='XSDataInputPyarchThumbnailGeneratorParallel'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -354,6 +402,8 @@ class XSDataInputPyarchThumbnailGeneratorParallel(XSDataInput):
             self.forcedOutputDirectory.export(outfile, level, name_='forcedOutputDirectory')
         if self._waitForFileTimeOut is not None:
             self.waitForFileTimeOut.export(outfile, level, name_='waitForFileTimeOut')
+        if self._format is not None:
+            self.format.export(outfile, level, name_='format')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -374,6 +424,11 @@ class XSDataInputPyarchThumbnailGeneratorParallel(XSDataInput):
             obj_ = XSDataTime()
             obj_.build(child_)
             self.setWaitForFileTimeOut(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'format':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setFormat(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

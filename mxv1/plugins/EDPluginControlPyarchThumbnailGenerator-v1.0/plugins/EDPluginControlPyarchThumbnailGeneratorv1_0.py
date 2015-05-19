@@ -73,7 +73,8 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         self.xsDataFilePathToThumbnail = None
         self.xsDataFilePathToThumbnail2 = None
         self.minImageSize = 1000000
-
+        self.strSuffix = "jpeg"
+        self.strImageFormat = "JPEG"
 
 
     def checkParameters(self):
@@ -123,6 +124,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
             xsDataInputMXThumbnail.image = self.getDataInput().getDiffractionImage()
             xsDataInputMXThumbnail.height = XSDataInteger(1024)
             xsDataInputMXThumbnail.width = XSDataInteger(1024)
+            xsDataInputMXThumbnail.format = self.dataInput.format
             # Output path
             strImageNameWithoutExt = os.path.basename(os.path.splitext(strPathToDiffractionImage)[0])
             strImageDirname = os.path.dirname(strPathToDiffractionImage)
@@ -157,7 +159,10 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
                     os.chmod(strOutputDirname, 0755)
                     self.warning("Writing thumbnail images to: %s" % strOutputDirname)
                 self.strOutputPathWithoutExtension = os.path.join(strOutputDirname, strImageNameWithoutExt)
-            self.strOutputPath = os.path.join(self.strOutputPathWithoutExtension + ".jpeg")
+            if self.dataInput.format is not None:
+                self.strSuffix = self.dataInput.format.value.lower()
+                self.strImageFormat = self.dataInput.format.value.upper()
+            self.strOutputPath = os.path.join(self.strOutputPathWithoutExtension + "."+self.strSuffix)
             xsDataInputMXThumbnail.setOutputPath(XSDataFile(XSDataString(self.strOutputPath)))
             self.edPluginExecThumbnail.setDataInput(xsDataInputMXThumbnail)
 
@@ -214,11 +219,11 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         self.xsDataFilePathToThumbnail = self.edPluginExecThumbnail.dataOutput.thumbnail
         # Retrieve the output path
         pathToThumbnail = self.xsDataFilePathToThumbnail.path.value
-        outfile = os.path.splitext(pathToThumbnail)[0] + ".thumb.jpeg"
+        outfile = os.path.splitext(pathToThumbnail)[0] + ".thumb." + self.strSuffix
         size = [256, 256]
         im = Image.open(pathToThumbnail)
         im.thumbnail(size, Image.ANTIALIAS)
-        im.save(outfile, "JPEG")
+        im.save(outfile, self.strImageFormat)
         self.xsDataFilePathToThumbnail2 = XSDataFile(XSDataString(outfile))
 
 

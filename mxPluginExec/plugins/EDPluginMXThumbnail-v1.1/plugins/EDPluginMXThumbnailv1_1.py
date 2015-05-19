@@ -64,6 +64,15 @@ class EDPluginMXThumbnailv1_1(EDPluginExec):
     def process(self, _edObject=None):
         EDPluginExec.process(self)
         imageFileName = os.path.basename(self.dataInput.image.path.value)
+        # Default format
+        strSuffix = "jpg"
+        strPILFormat = "JPEG"
+        # Check if format is provided
+        if self.dataInput.format is not None:
+            strFormat = self.dataInput.format.value
+            if strFormat.lower() == "png":
+                strSuffix = "png"
+                strPILFormat = "PNG"
         # The following code has been adapted from EDPluginExecThumbnail written by J.Kieffer
         fabioImage = fabio.openimage.openimage(self.dataInput.image.path.value)
         numpyImage = fabioImage.data
@@ -80,14 +89,14 @@ class EDPluginMXThumbnailv1_1(EDPluginExec):
         if self.dataInput.height is not None and self.dataInput.width is not None:
             pilOutputImage = pilOutputImage.resize((self.dataInput.width.value, self.dataInput.height.value), Image.ANTIALIAS)
         if self.dataInput.outputPath is None:
-            outputPath = os.path.join(self.getWorkingDirectory(), os.path.splitext(imageFileName)[0] + "." + self.format)
+            outputPath = os.path.join(self.getWorkingDirectory(), os.path.splitext(imageFileName)[0] + "." + strSuffix)
         else:
             outputPath = self.dataInput.outputPath.path.value
         self.DEBUG("Output thumbnail path: %s" % outputPath)
         self.width, self.height = pilOutputImage.size
         if self.width * self.height > ImageFile.MAXBLOCK:
             ImageFile.MAXBLOCK = self.width * self.height
-        pilOutputImage.save(outputPath, "JPEG", quality=85, optimize=True)
+        pilOutputImage.save(outputPath, strPILFormat, quality=85, optimize=True)
         self.dataOutput.thumbnail = XSDataFile(XSDataString(outputPath))
         
         
