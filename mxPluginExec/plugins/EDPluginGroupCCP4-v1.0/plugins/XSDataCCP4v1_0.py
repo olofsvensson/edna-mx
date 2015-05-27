@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue May 5 06:55::22 2015 by EDGenerateDS.
+# Generated Fri May 22 01:23::23 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -19,9 +19,13 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSData
     from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataDouble
     from XSDataCommon import XSDataFile
@@ -29,6 +33,8 @@ try:
     from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataResult
     from XSDataCommon import XSDataString
+    from XSDataCommon import XSDataLength
+    from XSDataCommon import XSDataAngle
 except ImportError as error:
     if strEdnaHome is not None:
         for strXsdName in dictLocation:
@@ -39,6 +45,7 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSData
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataFile
@@ -46,6 +53,8 @@ from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataResult
 from XSDataCommon import XSDataString
+from XSDataCommon import XSDataLength
+from XSDataCommon import XSDataAngle
 
 
 
@@ -123,6 +132,235 @@ class MixedContainer(object):
 # Data representation classes.
 #
 
+
+
+class XSDataCCP4Cell(XSData):
+    def __init__(self, angle_gamma=None, angle_beta=None, angle_alpha=None, length_c=None, length_b=None, length_a=None):
+        XSData.__init__(self, )
+        if length_a is None:
+            self._length_a = None
+        elif length_a.__class__.__name__ == "XSDataLength":
+            self._length_a = length_a
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell constructor argument 'length_a' is not XSDataLength but %s" % self._length_a.__class__.__name__
+            raise BaseException(strMessage)
+        if length_b is None:
+            self._length_b = None
+        elif length_b.__class__.__name__ == "XSDataLength":
+            self._length_b = length_b
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell constructor argument 'length_b' is not XSDataLength but %s" % self._length_b.__class__.__name__
+            raise BaseException(strMessage)
+        if length_c is None:
+            self._length_c = None
+        elif length_c.__class__.__name__ == "XSDataLength":
+            self._length_c = length_c
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell constructor argument 'length_c' is not XSDataLength but %s" % self._length_c.__class__.__name__
+            raise BaseException(strMessage)
+        if angle_alpha is None:
+            self._angle_alpha = None
+        elif angle_alpha.__class__.__name__ == "XSDataAngle":
+            self._angle_alpha = angle_alpha
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell constructor argument 'angle_alpha' is not XSDataAngle but %s" % self._angle_alpha.__class__.__name__
+            raise BaseException(strMessage)
+        if angle_beta is None:
+            self._angle_beta = None
+        elif angle_beta.__class__.__name__ == "XSDataAngle":
+            self._angle_beta = angle_beta
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell constructor argument 'angle_beta' is not XSDataAngle but %s" % self._angle_beta.__class__.__name__
+            raise BaseException(strMessage)
+        if angle_gamma is None:
+            self._angle_gamma = None
+        elif angle_gamma.__class__.__name__ == "XSDataAngle":
+            self._angle_gamma = angle_gamma
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell constructor argument 'angle_gamma' is not XSDataAngle but %s" % self._angle_gamma.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'length_a' attribute
+    def getLength_a(self): return self._length_a
+    def setLength_a(self, length_a):
+        if length_a is None:
+            self._length_a = None
+        elif length_a.__class__.__name__ == "XSDataLength":
+            self._length_a = length_a
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell.setLength_a argument is not XSDataLength but %s" % length_a.__class__.__name__
+            raise BaseException(strMessage)
+    def delLength_a(self): self._length_a = None
+    length_a = property(getLength_a, setLength_a, delLength_a, "Property for length_a")
+    # Methods and properties for the 'length_b' attribute
+    def getLength_b(self): return self._length_b
+    def setLength_b(self, length_b):
+        if length_b is None:
+            self._length_b = None
+        elif length_b.__class__.__name__ == "XSDataLength":
+            self._length_b = length_b
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell.setLength_b argument is not XSDataLength but %s" % length_b.__class__.__name__
+            raise BaseException(strMessage)
+    def delLength_b(self): self._length_b = None
+    length_b = property(getLength_b, setLength_b, delLength_b, "Property for length_b")
+    # Methods and properties for the 'length_c' attribute
+    def getLength_c(self): return self._length_c
+    def setLength_c(self, length_c):
+        if length_c is None:
+            self._length_c = None
+        elif length_c.__class__.__name__ == "XSDataLength":
+            self._length_c = length_c
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell.setLength_c argument is not XSDataLength but %s" % length_c.__class__.__name__
+            raise BaseException(strMessage)
+    def delLength_c(self): self._length_c = None
+    length_c = property(getLength_c, setLength_c, delLength_c, "Property for length_c")
+    # Methods and properties for the 'angle_alpha' attribute
+    def getAngle_alpha(self): return self._angle_alpha
+    def setAngle_alpha(self, angle_alpha):
+        if angle_alpha is None:
+            self._angle_alpha = None
+        elif angle_alpha.__class__.__name__ == "XSDataAngle":
+            self._angle_alpha = angle_alpha
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell.setAngle_alpha argument is not XSDataAngle but %s" % angle_alpha.__class__.__name__
+            raise BaseException(strMessage)
+    def delAngle_alpha(self): self._angle_alpha = None
+    angle_alpha = property(getAngle_alpha, setAngle_alpha, delAngle_alpha, "Property for angle_alpha")
+    # Methods and properties for the 'angle_beta' attribute
+    def getAngle_beta(self): return self._angle_beta
+    def setAngle_beta(self, angle_beta):
+        if angle_beta is None:
+            self._angle_beta = None
+        elif angle_beta.__class__.__name__ == "XSDataAngle":
+            self._angle_beta = angle_beta
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell.setAngle_beta argument is not XSDataAngle but %s" % angle_beta.__class__.__name__
+            raise BaseException(strMessage)
+    def delAngle_beta(self): self._angle_beta = None
+    angle_beta = property(getAngle_beta, setAngle_beta, delAngle_beta, "Property for angle_beta")
+    # Methods and properties for the 'angle_gamma' attribute
+    def getAngle_gamma(self): return self._angle_gamma
+    def setAngle_gamma(self, angle_gamma):
+        if angle_gamma is None:
+            self._angle_gamma = None
+        elif angle_gamma.__class__.__name__ == "XSDataAngle":
+            self._angle_gamma = angle_gamma
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell.setAngle_gamma argument is not XSDataAngle but %s" % angle_gamma.__class__.__name__
+            raise BaseException(strMessage)
+    def delAngle_gamma(self): self._angle_gamma = None
+    angle_gamma = property(getAngle_gamma, setAngle_gamma, delAngle_gamma, "Property for angle_gamma")
+    def export(self, outfile, level, name_='XSDataCCP4Cell'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataCCP4Cell'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._length_a is not None:
+            self.length_a.export(outfile, level, name_='length_a')
+        else:
+            warnEmptyAttribute("length_a", "XSDataLength")
+        if self._length_b is not None:
+            self.length_b.export(outfile, level, name_='length_b')
+        else:
+            warnEmptyAttribute("length_b", "XSDataLength")
+        if self._length_c is not None:
+            self.length_c.export(outfile, level, name_='length_c')
+        else:
+            warnEmptyAttribute("length_c", "XSDataLength")
+        if self._angle_alpha is not None:
+            self.angle_alpha.export(outfile, level, name_='angle_alpha')
+        else:
+            warnEmptyAttribute("angle_alpha", "XSDataAngle")
+        if self._angle_beta is not None:
+            self.angle_beta.export(outfile, level, name_='angle_beta')
+        else:
+            warnEmptyAttribute("angle_beta", "XSDataAngle")
+        if self._angle_gamma is not None:
+            self.angle_gamma.export(outfile, level, name_='angle_gamma')
+        else:
+            warnEmptyAttribute("angle_gamma", "XSDataAngle")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'length_a':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setLength_a(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'length_b':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setLength_b(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'length_c':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setLength_c(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'angle_alpha':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setAngle_alpha(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'angle_beta':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setAngle_beta(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'angle_gamma':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setAngle_gamma(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataCCP4Cell" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataCCP4Cell' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataCCP4Cell is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataCCP4Cell.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataCCP4Cell()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataCCP4Cell" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataCCP4Cell()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataCCP4Cell
 
 
 class XSDataAimless(XSDataInput):
@@ -861,7 +1099,7 @@ class XSDataPointless(XSDataInput):
 
 
 class XSDataPointlessOut(XSDataResult):
-    def __init__(self, status=None, sgstr=None, sgnumber=None):
+    def __init__(self, status=None, cell=None, sgstr=None, sgnumber=None):
         XSDataResult.__init__(self, status)
         if sgnumber is None:
             self._sgnumber = None
@@ -876,6 +1114,13 @@ class XSDataPointlessOut(XSDataResult):
             self._sgstr = sgstr
         else:
             strMessage = "ERROR! XSDataPointlessOut constructor argument 'sgstr' is not XSDataString but %s" % self._sgstr.__class__.__name__
+            raise BaseException(strMessage)
+        if cell is None:
+            self._cell = None
+        elif cell.__class__.__name__ == "XSDataCCP4Cell":
+            self._cell = cell
+        else:
+            strMessage = "ERROR! XSDataPointlessOut constructor argument 'cell' is not XSDataCCP4Cell but %s" % self._cell.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'sgnumber' attribute
     def getSgnumber(self): return self._sgnumber
@@ -901,6 +1146,18 @@ class XSDataPointlessOut(XSDataResult):
             raise BaseException(strMessage)
     def delSgstr(self): self._sgstr = None
     sgstr = property(getSgstr, setSgstr, delSgstr, "Property for sgstr")
+    # Methods and properties for the 'cell' attribute
+    def getCell(self): return self._cell
+    def setCell(self, cell):
+        if cell is None:
+            self._cell = None
+        elif cell.__class__.__name__ == "XSDataCCP4Cell":
+            self._cell = cell
+        else:
+            strMessage = "ERROR! XSDataPointlessOut.setCell argument is not XSDataCCP4Cell but %s" % cell.__class__.__name__
+            raise BaseException(strMessage)
+    def delCell(self): self._cell = None
+    cell = property(getCell, setCell, delCell, "Property for cell")
     def export(self, outfile, level, name_='XSDataPointlessOut'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -913,6 +1170,8 @@ class XSDataPointlessOut(XSDataResult):
             self.sgnumber.export(outfile, level, name_='sgnumber')
         if self._sgstr is not None:
             self.sgstr.export(outfile, level, name_='sgstr')
+        if self._cell is not None:
+            self.cell.export(outfile, level, name_='cell')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -928,6 +1187,11 @@ class XSDataPointlessOut(XSDataResult):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setSgstr(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cell':
+            obj_ = XSDataCCP4Cell()
+            obj_.build(child_)
+            self.setCell(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
