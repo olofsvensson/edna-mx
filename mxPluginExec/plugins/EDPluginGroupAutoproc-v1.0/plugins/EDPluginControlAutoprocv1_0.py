@@ -745,6 +745,44 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                          'Non-anomalous resolution cutoffs finished'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_noanom']))
 
 
+        import_in = XSDataAutoprocImport()
+        import_in.input_anom = self.generate.dataOutput.hkl_anom
+        import_in.input_noanom = self.generate.dataOutput.hkl_no_anom
+        import_in.dataCollectionID = self.dataInput.data_collection_id
+        import_in.start_image = XSDataInteger(self.data_range[0])
+        import_in.end_image = XSDataInteger(self.data_range[1])
+
+        # XXX: is this the right place to get the res from?
+        import_in.res = self.res_cutoff_anom.dataOutput.res
+
+        # XXX: This is optional but seems required by aimless
+        import_in.nres = self.dataInput.nres
+
+        import_in.output_directory = XSDataString(self.results_dir)
+
+        try:
+            import_in.image_prefix = XSDataString(self.image_prefix)
+        except:
+            self.DEBUG('could not determine image prefix from directory "{0}"'.format(self.root_dir))
+
+        if self.dataInput.spacegroup is not None:
+            import_in.choose_spacegroup = self.dataInput.spacegroup
+
+        self.file_conversion.dataInput = import_in
+
+        t0 = time.time()
+        self.file_conversion.executeSynchronous()
+        self.retrieveFailureMessages(self.file_conversion, "File conversion")
+        self.stats['autoproc_import']=time.time()-t0
+
+        with open(self.log_file_path, 'w') as f:
+            json.dump(self.stats, f)
+
+        if self.file_conversion.isFailure():
+            strErrorMessage = "File import failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
+
 
         # now we just have to run XScale to generate w/ and w/out
         # anom, merged and unmerged
@@ -758,8 +796,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         input_file.res = self.res_cutoff_anom.dataOutput.res
 
         xscale_generate_in.xds_files = [input_file]
-        xscale_generate_in.unit_cell_constants = self.parse_xds_anom.dataOutput.unit_cell_constants
-        xscale_generate_in.sg_number = self.parse_xds_anom.dataOutput.sg_number
+        xscale_generate_in.unit_cell_constants = self.file_conversion.dataOutput.pointless_cell
+        xscale_generate_in.sg_number = self.file_conversion.dataOutput.pointless_sgnumber
         xscale_generate_in.bins = self.res_cutoff_anom.dataOutput.bins
 
 
@@ -810,43 +848,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
 
 
-        import_in = XSDataAutoprocImport()
-        import_in.input_anom = self.xscale_generate.dataOutput.hkl_anom_unmerged
-        import_in.input_noanom = self.xscale_generate.dataOutput.hkl_noanom_unmerged
-        import_in.dataCollectionID = self.dataInput.data_collection_id
-        import_in.start_image = XSDataInteger(self.data_range[0])
-        import_in.end_image = XSDataInteger(self.data_range[1])
-
-        # XXX: is this the right place to get the res from?
-        import_in.res = self.res_cutoff_anom.dataOutput.res
-
-        # XXX: This is optional but seems required by aimless
-        import_in.nres = self.dataInput.nres
-
-        import_in.output_directory = XSDataString(self.results_dir)
-
-        try:
-            import_in.image_prefix = XSDataString(self.image_prefix)
-        except:
-            self.DEBUG('could not determine image prefix from directory "{0}"'.format(self.root_dir))
-
-        if self.dataInput.spacegroup is not None:
-            import_in.choose_spacegroup = self.dataInput.spacegroup
-
-        self.file_conversion.dataInput = import_in
-
-        t0 = time.time()
-        self.file_conversion.executeSynchronous()
-        self.retrieveFailureMessages(self.file_conversion, "File conversion")
-        self.stats['autoproc_import']=time.time()-t0
-
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
-
-        if self.file_conversion.isFailure():
-            strErrorMessage = "File import failed"
-            self.addErrorMessage(strErrorMessage)
-            self.ERROR(strErrorMessage)
 
         # Run phenix.xtriage
         xsDataInputPhenixXtriage = XSDataInputPhenixXtriage()

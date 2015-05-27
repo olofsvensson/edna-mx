@@ -220,6 +220,7 @@ complex type XSDataFileConversion extends XSDataInput {
 complex type XSDataFileConversionOut extends XSDataResult {
 	pointless_sgnumber : XSDataInteger
 	pointless_sgstring : XSDataString
+	pointless_cell     : XSDataDouble []
 	aimless_log        : XSDataString
 }
 
@@ -241,7 +242,8 @@ complex type XSDataAutoprocImportOut extends XSDataResult {
 	// Those two come from the noanom data
 	pointless_sgnumber	: XSDataInteger
 	pointless_sgstring	: XSDataString
-	aimless_log_anom        : XSDataString
+	pointless_cell      : XSDataDouble []
+	aimless_log_anom    : XSDataString
 	aimless_log_noanom	: XSDataString
 }
 

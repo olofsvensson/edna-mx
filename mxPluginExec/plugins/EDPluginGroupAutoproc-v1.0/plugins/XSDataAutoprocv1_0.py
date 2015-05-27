@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue May 5 06:52::55 2015 by EDGenerateDS.
+# Generated Wed May 27 01:50::31 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -1066,7 +1066,7 @@ class XSDataAutoprocImport(XSDataInput):
 
 
 class XSDataAutoprocImportOut(XSDataResult):
-    def __init__(self, status=None, aimless_log_noanom=None, aimless_log_anom=None, pointless_sgstring=None, pointless_sgnumber=None, files=None):
+    def __init__(self, status=None, aimless_log_noanom=None, aimless_log_anom=None, pointless_cell=None, pointless_sgstring=None, pointless_sgnumber=None, files=None):
         XSDataResult.__init__(self, status)
         if files is None:
             self._files = []
@@ -1088,6 +1088,13 @@ class XSDataAutoprocImportOut(XSDataResult):
             self._pointless_sgstring = pointless_sgstring
         else:
             strMessage = "ERROR! XSDataAutoprocImportOut constructor argument 'pointless_sgstring' is not XSDataString but %s" % self._pointless_sgstring.__class__.__name__
+            raise BaseException(strMessage)
+        if pointless_cell is None:
+            self._pointless_cell = []
+        elif pointless_cell.__class__.__name__ == "list":
+            self._pointless_cell = pointless_cell
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut constructor argument 'pointless_cell' is not list but %s" % self._pointless_cell.__class__.__name__
             raise BaseException(strMessage)
         if aimless_log_anom is None:
             self._aimless_log_anom = None
@@ -1160,6 +1167,39 @@ class XSDataAutoprocImportOut(XSDataResult):
             raise BaseException(strMessage)
     def delPointless_sgstring(self): self._pointless_sgstring = None
     pointless_sgstring = property(getPointless_sgstring, setPointless_sgstring, delPointless_sgstring, "Property for pointless_sgstring")
+    # Methods and properties for the 'pointless_cell' attribute
+    def getPointless_cell(self): return self._pointless_cell
+    def setPointless_cell(self, pointless_cell):
+        if pointless_cell is None:
+            self._pointless_cell = []
+        elif pointless_cell.__class__.__name__ == "list":
+            self._pointless_cell = pointless_cell
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut.setPointless_cell argument is not list but %s" % pointless_cell.__class__.__name__
+            raise BaseException(strMessage)
+    def delPointless_cell(self): self._pointless_cell = None
+    pointless_cell = property(getPointless_cell, setPointless_cell, delPointless_cell, "Property for pointless_cell")
+    def addPointless_cell(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataAutoprocImportOut.addPointless_cell argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataDouble":
+            self._pointless_cell.append(value)
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut.addPointless_cell argument is not XSDataDouble but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertPointless_cell(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataAutoprocImportOut.insertPointless_cell argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataAutoprocImportOut.insertPointless_cell argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataDouble":
+            self._pointless_cell[index] = value
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut.addPointless_cell argument is not XSDataDouble but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     # Methods and properties for the 'aimless_log_anom' attribute
     def getAimless_log_anom(self): return self._aimless_log_anom
     def setAimless_log_anom(self, aimless_log_anom):
@@ -1204,6 +1244,10 @@ class XSDataAutoprocImportOut(XSDataResult):
             self.pointless_sgstring.export(outfile, level, name_='pointless_sgstring')
         else:
             warnEmptyAttribute("pointless_sgstring", "XSDataString")
+        for pointless_cell_ in self.getPointless_cell():
+            pointless_cell_.export(outfile, level, name_='pointless_cell')
+        if self.getPointless_cell() == []:
+            warnEmptyAttribute("pointless_cell", "XSDataDouble")
         if self._aimless_log_anom is not None:
             self.aimless_log_anom.export(outfile, level, name_='aimless_log_anom')
         else:
@@ -1232,6 +1276,11 @@ class XSDataAutoprocImportOut(XSDataResult):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setPointless_sgstring(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pointless_cell':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.pointless_cell.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'aimless_log_anom':
             obj_ = XSDataString()
@@ -2028,7 +2077,7 @@ class XSDataFileConversion(XSDataInput):
 
 
 class XSDataFileConversionOut(XSDataResult):
-    def __init__(self, status=None, aimless_log=None, pointless_sgstring=None, pointless_sgnumber=None):
+    def __init__(self, status=None, aimless_log=None, pointless_cell=None, pointless_sgstring=None, pointless_sgnumber=None):
         XSDataResult.__init__(self, status)
         if pointless_sgnumber is None:
             self._pointless_sgnumber = None
@@ -2043,6 +2092,13 @@ class XSDataFileConversionOut(XSDataResult):
             self._pointless_sgstring = pointless_sgstring
         else:
             strMessage = "ERROR! XSDataFileConversionOut constructor argument 'pointless_sgstring' is not XSDataString but %s" % self._pointless_sgstring.__class__.__name__
+            raise BaseException(strMessage)
+        if pointless_cell is None:
+            self._pointless_cell = []
+        elif pointless_cell.__class__.__name__ == "list":
+            self._pointless_cell = pointless_cell
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut constructor argument 'pointless_cell' is not list but %s" % self._pointless_cell.__class__.__name__
             raise BaseException(strMessage)
         if aimless_log is None:
             self._aimless_log = None
@@ -2075,6 +2131,39 @@ class XSDataFileConversionOut(XSDataResult):
             raise BaseException(strMessage)
     def delPointless_sgstring(self): self._pointless_sgstring = None
     pointless_sgstring = property(getPointless_sgstring, setPointless_sgstring, delPointless_sgstring, "Property for pointless_sgstring")
+    # Methods and properties for the 'pointless_cell' attribute
+    def getPointless_cell(self): return self._pointless_cell
+    def setPointless_cell(self, pointless_cell):
+        if pointless_cell is None:
+            self._pointless_cell = []
+        elif pointless_cell.__class__.__name__ == "list":
+            self._pointless_cell = pointless_cell
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut.setPointless_cell argument is not list but %s" % pointless_cell.__class__.__name__
+            raise BaseException(strMessage)
+    def delPointless_cell(self): self._pointless_cell = None
+    pointless_cell = property(getPointless_cell, setPointless_cell, delPointless_cell, "Property for pointless_cell")
+    def addPointless_cell(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataFileConversionOut.addPointless_cell argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataDouble":
+            self._pointless_cell.append(value)
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut.addPointless_cell argument is not XSDataDouble but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertPointless_cell(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataFileConversionOut.insertPointless_cell argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataFileConversionOut.insertPointless_cell argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataDouble":
+            self._pointless_cell[index] = value
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut.addPointless_cell argument is not XSDataDouble but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     # Methods and properties for the 'aimless_log' attribute
     def getAimless_log(self): return self._aimless_log
     def setAimless_log(self, aimless_log):
@@ -2103,6 +2192,10 @@ class XSDataFileConversionOut(XSDataResult):
             self.pointless_sgstring.export(outfile, level, name_='pointless_sgstring')
         else:
             warnEmptyAttribute("pointless_sgstring", "XSDataString")
+        for pointless_cell_ in self.getPointless_cell():
+            pointless_cell_.export(outfile, level, name_='pointless_cell')
+        if self.getPointless_cell() == []:
+            warnEmptyAttribute("pointless_cell", "XSDataDouble")
         if self._aimless_log is not None:
             self.aimless_log.export(outfile, level, name_='aimless_log')
         else:
@@ -2122,6 +2215,11 @@ class XSDataFileConversionOut(XSDataResult):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setPointless_sgstring(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pointless_cell':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.pointless_cell.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'aimless_log':
             obj_ = XSDataString()
