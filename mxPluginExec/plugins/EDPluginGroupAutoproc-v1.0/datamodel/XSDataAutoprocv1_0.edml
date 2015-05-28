@@ -164,6 +164,9 @@ useful files from there. Yes, this is not pretty */
 complex type XSDataXdsGenerateInput extends XSDataInput {
         previous_run_dir : XSDataString
         resolution       : XSDataDouble
+		spacegroup       : XSDataInteger optional
+		unit_cell        : XSDataString optional
+        
 }
 
 // we are only interested in that one file

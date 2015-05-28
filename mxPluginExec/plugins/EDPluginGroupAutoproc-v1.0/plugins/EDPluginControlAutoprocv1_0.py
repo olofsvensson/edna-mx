@@ -70,6 +70,7 @@ from XSDataAutoprocv1_0 import XSDataXscaleInputFile
 from XSDataAutoprocv1_0 import XSDataAutoprocInput
 from XSDataAutoprocv1_0 import XSDataAutoprocImport
 from XSDataAutoprocv1_0 import XSDataInputControlDimple
+from XSDataAutoprocv1_0 import XSDataRange
 
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 # plugin input/output
@@ -355,14 +356,15 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.first_image = _template_to_image(template, start_image)
         self.last_image =  _template_to_image(template, end_image)
 
-        self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProcv1_0")
+        self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProcv1_0", "XDS_first")
         self.xds_first.dataInput = xds_in
-
+        
         if EDUtilsPath.isESRF():
             self.waitFileFirst = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileFirst")
             self.waitFileLast = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileLast")
 
-        self.generate = self.loadPlugin("EDPluginXDSGeneratev1_0")
+        self.generate = self.loadPlugin("EDPluginXDSGeneratev1_0", "XDSGenerate")
+        self.generate_xscale = self.loadPlugin("EDPluginXDSGeneratev1_0", "XDSGenerate_for_Xscale")
 
         self.first_res_cutoff = self.loadPlugin("EDPluginResCutoffv1_0")
         self.res_cutoff_anom = self.loadPlugin("EDPluginResCutoffv1_0")
@@ -787,12 +789,27 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # now we just have to run XScale to generate w/ and w/out
         # anom, merged and unmerged
 
+        generate_xscale_input = XSDataXdsGenerateInput()
+        generate_xscale_input.resolution = resolution
+        generate_xscale_input.previous_run_dir = XSDataString(xds_run_directory)
+        generate_xscale_input.spacegroup = self.file_conversion.dataOutput.pointless_sgnumber
+        pointless_cell = ""
+        list_pointless_cell = self.file_conversion.dataOutput.pointless_cell
+        pointless_cell += "{0}".format(list_pointless_cell[0].value)
+        for cell_param in list_pointless_cell[1:]:
+            pointless_cell += " {0}".format(cell_param.value)
+        generate_xscale_input.unit_cell = XSDataString(pointless_cell)
+        self.generate_xscale.dataInput = generate_xscale_input
+        self.generate_xscale.executeSynchronous()
+        
+
+
         # We use another control plugin for that to isolate the whole thing
         xscale_generate_in = XSDataXscaleInput()
 
         input_file = XSDataXscaleInputFile()
-        input_file.path_anom = self.generate.dataOutput.hkl_anom
-        input_file.path_noanom = self.generate.dataOutput.hkl_no_anom
+        input_file.path_anom = self.generate_xscale.dataOutput.hkl_anom
+        input_file.path_noanom = self.generate_xscale.dataOutput.hkl_no_anom
         input_file.res = self.res_cutoff_anom.dataOutput.res
 
         xscale_generate_in.xds_files = [input_file]
