@@ -119,9 +119,13 @@ class EDPluginExecPointlessv1_0(EDPluginExecProcessScript):
                     res.sgnumber = XSDataInteger(sgnumber)
                     res.sgstr = XSDataString(sgstr)
                     status.isSuccess = XSDataBoolean(True)
-                    
+                    # Search first for unit cell after the Laue group...
                     unitCellRe = re.compile("""  Laue group confidence.+\\n\\n\s+Unit cell:(.+)""")
                     m2 = unitCellRe.search(strLog)
+                    if m2 is None:
+                        # Then search it from the end...
+                        unitCellRe = re.compile(""" \* Cell Dimensions : \(obsolete \- refer to dataset cell dimensions above\)\\n\\n(.+)""")
+                        m2 = unitCellRe.search(strLog)
                     if m2 is not None:
                         listCell = m2.groups()[0].split()
                         xsDataCCP4Cell = XSDataCCP4Cell()

@@ -53,6 +53,17 @@ class EDTestCasePluginUnitExecPointlessv1_0(EDTestCasePluginUnit):
         EDAssert.equal(91.00, xsDataResult.cell.angle_alpha.value, "Cell angle alpha")
         EDAssert.equal(92.00, xsDataResult.cell.angle_beta.value, "Cell angle beta")
         EDAssert.equal(93.00, xsDataResult.cell.angle_gamma.value, "Cell angle gamma")
+        pathToLogFile = os.path.join(self.getPluginTestsDataHome(), "pointless2.log")
+        xsDataResult = edPlugin.parsePointlessOutput(pathToLogFile)
+#        print xsDataResult.marshal()
+        EDAssert.equal("P 3 2 1", xsDataResult.sgstr.value, "Space group name")
+        EDAssert.equal(150, xsDataResult.sgnumber.value, "Space group number")
+        EDAssert.equal(110.9918, xsDataResult.cell.length_a.value, "Cell length a")
+        EDAssert.equal(110.9918, xsDataResult.cell.length_b.value, "Cell length b")
+        EDAssert.equal(137.0160, xsDataResult.cell.length_c.value, "Cell length v")
+        EDAssert.equal(94.00, xsDataResult.cell.angle_alpha.value, "Cell angle alpha")
+        EDAssert.equal(95.00, xsDataResult.cell.angle_beta.value, "Cell angle beta")
+        EDAssert.equal(120.00, xsDataResult.cell.angle_gamma.value, "Cell angle gamma")
     
     
     def process(self):
