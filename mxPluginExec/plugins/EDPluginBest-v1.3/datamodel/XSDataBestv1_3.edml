@@ -1,0 +1,123 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSDataAbsorbedDoseRate
+import XSDataCommon.XSDataAngle
+import XSDataCommon.XSDataAngularSpeed
+import XSDataCommon.XSDataBoolean
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataLength
+import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataString
+import XSDataCommon.XSDataTime
+package XSDataBestv12 {
+
+	complex type XSDataBestCollectionPlan {
+		collectionPlanNumber : XSDataInteger optional
+		collectionRun : XSDataBestCollectionRun [] optional
+		comment : XSDataString optional
+		crystalScale : XSDataCrystalScale optional
+		statisticalPrediction : XSDataBestStatisticalPrediction optional
+		strategySummary : XSDataBestStrategySummary
+		optional
+	}
+
+	complex type XSDataBestCollectionRun {
+		action : XSDataString optional
+		collectionRunNumber : XSDataInteger
+		crystalPosition : XSDataInteger optional
+		exposureTime : XSDataTime
+		numberOfImages : XSDataInteger
+		overlaps : XSDataString optional
+		phiStart : XSDataAngle
+		phiWidth : XSDataAngle
+		transmission : XSDataDouble optional
+	}
+
+	complex type XSDataBestGlePlot {
+		data : XSDataFile
+		script : XSDataFile
+	}
+
+	complex type XSDataBestResolutionBin {
+		IOverSigma : XSDataDouble
+		averageIntensity : XSDataDouble
+		averageIntensityOverAverageSigma : XSDataDouble
+		optional
+		averageSigma : XSDataDouble
+		completeness : XSDataDouble
+		maxResolution : XSDataDouble
+		minResolution : XSDataDouble
+		percentageOverload : XSDataDouble
+		rFactor : XSDataDouble
+		rFriedel : XSDataDouble
+		optional
+		redundancy : XSDataDouble
+	}
+
+	complex type XSDataBestStatisticalPrediction {
+		resolutionBin : XSDataBestResolutionBin [] optional
+	}
+
+	complex type XSDataBestStrategySummary {
+		completeness : XSDataDouble optional
+		distance : XSDataLength
+		iSigma : XSDataDouble optional
+		rankingResolution : XSDataDouble optional
+		redundancy : XSDataDouble optional
+		resolution : XSDataDouble
+		resolutionReasoning : XSDataString optional
+		totalDataCollectionTime : XSDataTime optional
+		totalExposureTime : XSDataTime optional
+		transmission : XSDataDouble optional
+	}
+
+	complex type XSDataCrystalScale {
+		bFactor : XSDataDouble
+		scale : XSDataDouble
+	}
+
+	complex type XSDataInputBest extends XSDataInput {
+		"- anomalousData is deprecated, please use strategyOption instead.\n\n- minTransmission will work only with version v3.4 or higher of Best\n\n- xdsBackgroundFile will only work with version v3.4.1 or higher of Best\n\n- detectorDistanceMin and detectorDistanceMax (in mm) will work only with version v3.4.3 or higher of Best\n"
+		aimedCompleteness : XSDataDouble optional
+		aimedIOverSigma : XSDataDouble optional
+		aimedRedundancy : XSDataDouble
+		optional
+		aimedResolution : XSDataDouble optional
+		anomalousData : XSDataBoolean optional
+		beamExposureTime : XSDataTime
+		beamMaxExposureTime : XSDataTime optional
+		beamMinExposureTime : XSDataTime optional
+		bestFileContentDat : XSDataString
+		bestFileContentHKL : XSDataString []
+		bestFileContentPar : XSDataString
+		complexity : XSDataString optional
+		crystalAbsorbedDoseRate : XSDataAbsorbedDoseRate optional
+		crystalShape : XSDataDouble optional
+		crystalSusceptibility : XSDataDouble optional
+		detectorDistanceMax : XSDataLength optional
+		detectorDistanceMin : XSDataLength optional
+		detectorType : XSDataString
+		goniostatMaxRotationSpeed : XSDataAngularSpeed optional
+		goniostatMinRotationWidth : XSDataAngle optional
+		minTransmission : XSDataDouble optional
+		numberOfCrystalPositions : XSDataInteger optional
+		radiationDamageModelBeta : XSDataDouble optional
+		radiationDamageModelGamma : XSDataDouble optional
+		strategyOption : XSDataString optional
+		transmission : XSDataDouble optional
+		userDefinedRotationRange : XSDataAngle optional
+		userDefinedRotationStart : XSDataAngle optional
+		xdsBackgroundImage : XSDataFile optional
+	}
+
+	complex type XSDataResultBest extends XSDataResult {
+		collectionPlan : XSDataBestCollectionPlan [] optional
+		glePlot : XSDataBestGlePlot [] optional
+		pathToLogFile : XSDataFile
+		pathToPlotMtvFile : XSDataFile optional
+	}
+
+}
