@@ -392,6 +392,7 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
         listLog = _strBestLog.split("\n")
         while indexLine < len(listLog):
             strLine = listLog[indexLine]
+            iCollectionPlanNumber = 1
             if "Main Wedge" in strLine:
                 isScanningWedge = True
                 xsDataBestCollectionPlan  = XSDataBestCollectionPlan()
@@ -415,7 +416,6 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                 # Resolution, transmission, distance
                 indexLine += 8
                 listLine = listLog[indexLine].split()
-                print listLine
                 xsDataBestCollectionRun   = XSDataBestCollectionRun()
                 xsDataBestCollectionRun.collectionRunNumber = XSDataInteger(listLine[0])
                 xsDataBestCollectionRun.phiStart = XSDataAngle(listLine[1])
@@ -424,10 +424,29 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                 xsDataBestCollectionRun.numberOfImages = XSDataInteger(listLine[4].split("|")[0])
                 xsDataBestCollectionRun.overlaps = XSDataString(listLine[5])
                 xsDataBestStrategySummary.totalExposureTime = XSDataTime(listLine[7])
+                #
                 xsDataBestStrategySummary.completeness = XSDataDouble(listLine[11])
                 #
+                while not "Redundancy" in listLog[indexLine]:
+                    indexLine += 1
+                xsDataBestStrategySummary.redundancy = XSDataDouble(listLog[indexLine].split()[-1])
+                #
+                while not "I/Sigma (outer shell)" in listLog[indexLine]:
+                    indexLine += 1
+                xsDataBestStrategySummary.iSigma = XSDataDouble(listLog[indexLine].split()[6].replace(")",""))
+                #
+                while not "Total Data Collection time" in listLog[indexLine]:
+                    indexLine += 1
+                xsDataBestStrategySummary.totalDataCollectionTime = XSDataTime(listLog[indexLine].split()[5])
+                #
+                while not "Wedge Data Collection Statistics according to the Strategy" in listLog[indexLine]:
+                    indexLine += 1
+                (xsDataBestStatisticalPrediction, indexLine) = self.getXSDataBestStatisticalPrediction(listLog, indexLine)
+                
                 xsDataBestCollectionPlan.addCollectionRun(xsDataBestCollectionRun)
                 xsDataBestCollectionPlan.strategySummary = xsDataBestStrategySummary
+                xsDataBestCollectionPlan.statisticalPrediction = xsDataBestStatisticalPrediction
+                xsDataBestCollectionPlan.collectionPlanNumber = XSDataInteger(iCollectionPlanNumber)
                 xsDataResultBest.addCollectionPlan(xsDataBestCollectionPlan)
             if "Additional information" in strLine:
                 isScanningWedge = False
@@ -435,6 +454,39 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
         return xsDataResultBest
                 
                 
+    def getXSDataBestStatisticalPrediction(self, _listLog, _indexLine):
+        minResolution = None
+        maxResolution = None
+        indexLine = _indexLine
+        xsDataBestStatisticalPrediction = XSDataBestStatisticalPrediction()
+        if "Wedge Data Collection Statistics according to the Strategy" in _listLog[indexLine]:
+            indexLine += 5
+            continueToReadLog = True
+            while continueToReadLog:
+                listLine = _listLog[indexLine].split()
+                xsDataBestResolutionBin = XSDataBestResolutionBin()
+                if "All data" in _listLog[indexLine]:
+                    xsDataBestResolutionBin.minResolution = XSDataDouble(minResolution)
+                    xsDataBestResolutionBin.maxResolution = XSDataDouble(maxResolution)
+                    continueToReadLog = False
+                else:
+                    if minResolution is None or minResolution < float(listLine[0]):
+                        minResolution = listLine[0]
+                    if maxResolution is None or maxResolution > float(listLine[1]):
+                        maxResolution = listLine[1]
+                    xsDataBestResolutionBin.minResolution = XSDataDouble(listLine[0])
+                    xsDataBestResolutionBin.maxResolution = XSDataDouble(listLine[1])
+                xsDataBestResolutionBin.completeness = XSDataDouble(float(listLine[2])/100.0)
+                xsDataBestResolutionBin.averageIntensity = XSDataDouble(listLine[3])
+                xsDataBestResolutionBin.averageSigma = XSDataDouble(listLine[4])
+                xsDataBestResolutionBin.averageIntensityOverAverageSigma = XSDataDouble(listLine[5])
+                xsDataBestResolutionBin.IOverSigma = XSDataDouble(listLine[6])
+                xsDataBestResolutionBin.rFactor = XSDataDouble(listLine[7])
+                xsDataBestResolutionBin.percentageOverload = XSDataDouble(listLine[8])
+                xsDataBestStatisticalPrediction.addResolutionBin(xsDataBestResolutionBin)
+                indexLine += 1
+        return (xsDataBestStatisticalPrediction, indexLine)
+
 
 
     def getOutputDataFromDNATableFile(self, _strFileName):
