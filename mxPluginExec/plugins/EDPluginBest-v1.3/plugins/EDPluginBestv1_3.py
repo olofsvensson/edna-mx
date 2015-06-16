@@ -72,8 +72,8 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
 
         # This version of the Best plugin requires the latest
         # version of Best. 
-#        self.addCompatibleVersion("Version 5.1.0 //  28.05.2015")
-        self.addCompatibleVersion("Version 4.1.0 //  02.10.2012")
+        self.addCompatibleVersion("Version 5.1.0 //  28.05.2015")
+#        self.addCompatibleVersion("Version 4.1.0 //  02.10.2012")
 
         self.strCONF_BEST_HOME_LABEL = "besthome"
 
@@ -512,7 +512,24 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                 iCollectionPlanNumber += 1
                 xsDataResultBest.addCollectionPlan(xsDataBestCollectionPlan)
             if "Additional information" in listLog[indexLine]:
-                isScanningWedge = False
+                #
+                while not "Relative scale" in listLog[indexLine]:
+                    indexLine += 1
+                scale = float(listLog[indexLine].split()[-1])
+                #
+                while not "Overall B-factor" in listLog[indexLine]:
+                    indexLine += 1
+                #
+                bFactor = float(listLog[indexLine].split()[-2])
+                while not "Estimated limit of resolution" in listLog[indexLine]:
+                    indexLine += 1
+                rankingResolution = float(listLog[indexLine].split()[5])
+                for collectionPlan in xsDataResultBest.collectionPlan:
+                    xsDataCrystalScale = XSDataCrystalScale()
+                    xsDataCrystalScale.scale = XSDataDouble(scale)
+                    xsDataCrystalScale.bFactor = XSDataDouble(bFactor)
+                    collectionPlan.crystalScale = xsDataCrystalScale
+                    collectionPlan.strategySummary.rankingResolution = XSDataDouble(rankingResolution)
             indexLine += 1
         return xsDataResultBest
                 

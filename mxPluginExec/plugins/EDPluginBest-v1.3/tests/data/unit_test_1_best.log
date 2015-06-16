@@ -73,6 +73,9 @@ Scaling
  B-factor eigenvalues :   6.16   7.74   9.86 Angstrom^2
  Scaling error        :  17% at the resolution limit
 
+Estimated limit of resolution =   1.69 +- 0.14 Angstrom
+I/Sigma =    3.0
+
 
                          INPUT
                          =====

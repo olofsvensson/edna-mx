@@ -264,6 +264,31 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
+			<name>EDPluginBestv1_3</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/BEST/v5.1.0_20150528/linux/best</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptSetupCCP4</name>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptVersionString</name>
+					<value>Version 5.1.0 //  28.05.2015</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>30</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginRdfitv1_0</name>  
 			<XSParamList>
 				<XSParamItem>
