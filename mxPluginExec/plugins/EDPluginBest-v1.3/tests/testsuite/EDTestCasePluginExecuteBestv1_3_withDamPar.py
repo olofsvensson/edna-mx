@@ -42,26 +42,14 @@ from EDTestCasePluginExecuteBestv1_3     import EDTestCasePluginExecuteBestv1_3
 
 
 class EDTestCasePluginExecuteBestv1_3_withDamPar(EDTestCasePluginExecuteBestv1_3):
-    """
-    """
 
     def __init__(self, _oalStringTestName=None):
-        """
-        """
         EDTestCasePluginExecuteBestv1_3.__init__(self, "EDPluginBestv1_3")
 
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputBest_withDamPar.xml"))
-        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_withDamPar.xml"))
 
 
     def process(self):
-        """
-        """
         self.addTestMethod(self.testExecute)
 
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteBestv1_3_withDamPar = EDTestCasePluginExecuteBestv1_3_withDamPar("EDTestCasePluginExecuteBestv1_3_withDamPar")
-    edTestCasePluginExecuteBestv1_3_withDamPar.execute()

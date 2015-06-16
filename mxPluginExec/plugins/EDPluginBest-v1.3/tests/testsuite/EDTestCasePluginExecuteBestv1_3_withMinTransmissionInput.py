@@ -47,17 +47,7 @@ class EDTestCasePluginExecuteBestv1_3_withMinTransmissionInput(EDTestCasePluginE
 
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputBest_withMinTransmissionInput.xml"))
-        if (self.m_bRunOnIntel):
-            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_withTransmissionInputForIntel.xml"))
-        else:
-            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_withTransmissionInput.xml"))
-
 
     def process(self):
         self.addTestMethod(self.testExecute)
 
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteBestv1_3_withMinTransmissionInput = EDTestCasePluginExecuteBestv1_3_withMinTransmissionInput("EDTestCasePluginExecuteBestv1_3_withMinTransmissionInput")
-    edTestCasePluginExecuteBestv1_3_withMinTransmissionInput.execute()

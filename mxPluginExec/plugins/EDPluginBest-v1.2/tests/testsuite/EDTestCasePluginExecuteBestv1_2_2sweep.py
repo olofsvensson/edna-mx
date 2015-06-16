@@ -23,8 +23,7 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
-
-__authors__ = [ "Olof Svensson", "Marie-Francoise Incardona" ]
+__authors__ = ["Marie-Francoise Incardona", "Olof Svensson"]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
@@ -35,20 +34,44 @@ import os
 
 
 from EDAssert                            import EDAssert
+from EDTestCasePluginExecute             import EDTestCasePluginExecute
 from EDUtilsTest                         import EDUtilsTest
 from EDUtilsPath                         import EDUtilsPath
-from EDTestCasePluginExecuteBestv1_3     import EDTestCasePluginExecuteBestv1_3
 
 
 
-class EDTestCasePluginExecuteBestv1_3_withDetectorDistanceMin(EDTestCasePluginExecuteBestv1_3):
+
+class EDTestCasePluginExecuteBestv1_2_2sweep(EDTestCasePluginExecute):
+
 
     def __init__(self, _oalStringTestName=None):
-        EDTestCasePluginExecuteBestv1_3.__init__(self, "EDPluginBestv1_3")
-
+        EDTestCasePluginExecute.__init__(self, "EDPluginBestv1_2")
         self.setConfigurationFile(self.getRefConfigFile())
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputBest_withDetectorDistanceMin.xml"))
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputBest_2sweep.xml"))
+        #
+        # If on Linux, check if run on Intel processor
+        #
+        self.m_bRunOnIntel = False
+        pyStrSystem = os.uname()[0]
+        if (pyStrSystem == "Linux"):
+            pyFile = open("/proc/cpuinfo", "r")
+            pyListCpuInfo = pyFile.readlines()
+            pyFile.close()
+            for pyStrLine in pyListCpuInfo:
+                if (pyStrLine.find("vendor_id") != -1):
+                    if (pyStrLine.find("GenuineIntel") != -1):
+                         self.m_bRunOnIntel = True
+        if (self.m_bRunOnIntel):
+            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_referenceForIntel.xml"))
+        else:
+            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_reference.xml"))
+
+
+    def testExecute(self):
+        self.run()
+
 
     def process(self):
         self.addTestMethod(self.testExecute)
+
 

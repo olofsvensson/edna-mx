@@ -48,16 +48,7 @@ class EDTestCasePluginExecuteBestv1_3_withNumberOfCrystalPositions(EDTestCasePlu
 
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputBest_withNumberOfCrystalPositions.xml"))
-        if (self.m_bRunOnIntel):
-            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_withNumberOfCrystalPositionsForIntel.xml"))
-        else:
-            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_withNumberOfCrystalPositions.xml"))
 
     def process(self):
         self.addTestMethod(self.testExecute)
 
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteBestv1_3_withNumberOfCrystalPositions = EDTestCasePluginExecuteBestv1_3_withNumberOfCrystalPositions("EDTestCasePluginExecuteBestv1_3_withNumberOfCrystalPositions")
-    edTestCasePluginExecuteBestv1_3_withNumberOfCrystalPositions.execute()

@@ -52,17 +52,8 @@ class EDTestCasePluginExecuteBestv1_3_withBonly(EDTestCasePluginExecuteBestv1_3)
 
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputBest_withBonly.xml"))
-        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_withBonly.xml"))
         self.m_iNoErrorMessages = 0
 
 
     def process(self):
-        """
-        """
         self.addTestMethod(self.testExecute)
-
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteBestv1_3_withBonly = EDTestCasePluginExecuteBestv1_3_withBonly("EDTestCasePluginExecuteBestv1_3_withBonly")
-    edTestCasePluginExecuteBestv1_3_withBonly.execute()

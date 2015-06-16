@@ -42,6 +42,8 @@ from EDUtilsTest                         import EDUtilsTest
 from EDUtilsPath                         import EDUtilsPath
 from EDConfiguration                     import EDConfiguration
 
+from XSDataCommon import XSDataString
+
 from XSDataBestv1_3 import XSDataInputBest
 from XSDataBestv1_3 import XSDataResultBest
 
@@ -151,7 +153,7 @@ class EDTestCasePluginUnitBestv1_3(EDTestCasePluginUnit):
         edPluginBest.generateExecutiveSummary(edPluginBest)
 
 
-    def testGetXSDataResultBest(self):
+    def testGetXSDataResultBest1(self):
         edPluginBest = self.createPlugin()
         xsDataInputBest = XSDataInputBest()
         edPluginBest.dataInput = xsDataInputBest
@@ -162,11 +164,61 @@ class EDTestCasePluginUnitBestv1_3(EDTestCasePluginUnit):
         EDAssert.equal(xsDataResultBestReference.collectionPlan[0].marshal(), 
                        xsDataResultBest.collectionPlan[0].marshal(), "Collection plan")
 
+    def testGetXSDataResultBest2(self):
+        edPluginBest = self.createPlugin()
+        xsDataInputBest = XSDataInputBest()
+        edPluginBest.dataInput = xsDataInputBest
+        # Test 1
+        xsDataResultBest = edPluginBest.getXSDataResultBest(os.path.join(self.strDataPath, "unit_test_2_best.log"))
+        xsDataResultBestReference = XSDataResultBest.parseFile(os.path.join(self.strDataPath, "XSDataResultBest_unit_test_2.xml"))
+#        print xsDataResultBest.marshal()
+        for index in range(len(xsDataResultBestReference.collectionPlan)):
+            try:
+                EDAssert.equal(xsDataResultBestReference.collectionPlan[index].marshal(), 
+                           xsDataResultBest.collectionPlan[index].marshal(), "Collection plan {0}".format(index))
+            except:
+                pass
+
+    def testGetXSDataResultBest3(self):
+        edPluginBest = self.createPlugin()
+        xsDataInputBest = XSDataInputBest()
+        edPluginBest.dataInput = xsDataInputBest
+        # Test 1
+        xsDataResultBest = edPluginBest.getXSDataResultBest(os.path.join(self.strDataPath, "unit_test_3_best.log"))
+        xsDataResultBestReference = XSDataResultBest.parseFile(os.path.join(self.strDataPath, "XSDataResultBest_unit_test_3.xml"))
+#        print xsDataResultBest.marshal()
+        EDAssert.equal(xsDataResultBestReference.collectionPlan[0].marshal(), 
+                       xsDataResultBest.collectionPlan[0].marshal(), "Collection plan")
+
+    def testGetXSDataResultBest4(self):
+        edPluginBest = self.createPlugin()
+        xsDataInputBest = XSDataInputBest()
+        edPluginBest.dataInput = xsDataInputBest
+        # Test 1
+        xsDataResultBest = edPluginBest.getXSDataResultBest(os.path.join(self.strDataPath, "unit_test_4_best.log"))
+        xsDataResultBestReference = XSDataResultBest.parseFile(os.path.join(self.strDataPath, "XSDataResultBest_unit_test_4.xml"))
+        print xsDataResultBest.marshal()
+        EDAssert.equal(xsDataResultBestReference.collectionPlan[0].marshal(), 
+                       xsDataResultBest.collectionPlan[0].marshal(), "Collection plan")
+
+    def testGetXSDataResultBest5(self):
+        edPluginBest = self.createPlugin()
+        xsDataInputBest = XSDataInputBest()
+        xsDataInputBest.strategyOption = XSDataString("-Bonly")
+        edPluginBest.dataInput = xsDataInputBest
+        # Test 1
+        xsDataResultBest = edPluginBest.getXSDataResultBest(os.path.join(self.strDataPath, "unit_test_5_best.log"))
+        xsDataResultBestReference = XSDataResultBest.parseFile(os.path.join(self.strDataPath, "XSDataResultBest_unit_test_5.xml"))
+        print xsDataResultBest.marshal()
+        EDAssert.equal(xsDataResultBestReference.collectionPlan[0].marshal(), 
+                       xsDataResultBest.collectionPlan[0].marshal(), "Collection plan")
+
     def process(self):
 #        self.addTestMethod(self.testConfigureOK)
 #        self.addTestMethod(self.testSetDataModelInput)
         #self.addTestMethod(self.testGenerateExecutiveSummary)
-        self.addTestMethod(self.testGetXSDataResultBest)
+#        self.addTestMethod(self.testGetXSDataResultBest4)
+        self.addTestMethod(self.testGetXSDataResultBest5)
 
 
 if __name__ == '__main__':

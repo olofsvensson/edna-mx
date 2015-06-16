@@ -1,0 +1,15 @@
+ Program Best /A.Popov & G.Bourenkov/
+ Version 4.1.0 //  02.10.2012
+ Copyright 2004-11 by Alexander Popov and Gleb Bourenkov
+
+                  Scaling results
+                  ===============
+ Relative scale       :    2.78
+ Overall B-factor     :   7.63 Angstrom^2
+ B-factor eigenvalues :   6.16   7.74   9.86 Angstrom^2
+ Scaling error        :  17% at the resolution limit
+
+Crystal
+ Space Group                      : P 2 2 2   
+ Cell                             :  54.80  59.06  66.96  90.00  90.00  90.00
+ Mosaicity                        : 0.85 degree

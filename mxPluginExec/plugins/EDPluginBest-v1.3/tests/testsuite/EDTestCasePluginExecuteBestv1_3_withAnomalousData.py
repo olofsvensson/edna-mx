@@ -48,17 +48,8 @@ class EDTestCasePluginExecuteBestv1_3_withAnomalousData(EDTestCasePluginExecuteB
 
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputBest_withAnomalousData.xml"))
-        if (self.m_bRunOnIntel):
-            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_withAnomalousDataForIntel.xml"))
-        else:
-            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_withAnomalousData.xml"))
 
 
     def process(self):
         self.addTestMethod(self.testExecute)
 
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteBestv1_3_withAnomalousData = EDTestCasePluginExecuteBestv1_3_withAnomalousData("EDTestCasePluginExecuteBestv1_3_withAnomalousData")
-    edTestCasePluginExecuteBestv1_3_withAnomalousData.execute()

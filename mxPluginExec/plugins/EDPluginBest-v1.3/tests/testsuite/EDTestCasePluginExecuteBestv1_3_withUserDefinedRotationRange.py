@@ -52,9 +52,3 @@ class EDTestCasePluginExecuteBestv1_3_withUserDefinedRotationRange(EDTestCasePlu
 
     def process(self):
         self.addTestMethod(self.testExecute)
-
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteBestv1_3_withUserDefinedRotationRange = EDTestCasePluginExecuteBestv1_3_withUserDefinedRotationRange("EDTestCasePluginExecuteBestv1_3_withUserDefinedRotationRange")
-    edTestCasePluginExecuteBestv1_3_withUserDefinedRotationRange.execute()

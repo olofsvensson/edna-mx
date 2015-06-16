@@ -48,10 +48,6 @@ class EDTestCasePluginExecuteBestv1_3_withXdsBackgroundImage(EDTestCasePluginExe
 
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputBest_withXdsBackgroundImage.xml"))
-        if (self.m_bRunOnIntel):
-            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_withXdsBackgroundImageForIntel.xml"))
-        else:
-            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_withXdsBackgroundImage.xml"))
 
     def preProcess(self):
         EDTestCasePluginExecuteBestv1_3.preProcess(self)
@@ -62,7 +58,3 @@ class EDTestCasePluginExecuteBestv1_3_withXdsBackgroundImage(EDTestCasePluginExe
         self.addTestMethod(self.testExecute)
 
 
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteBestv1_3_withXdsBackgroundImage = EDTestCasePluginExecuteBestv1_3_withXdsBackgroundImage("EDTestCasePluginExecuteBestv1_3_withXdsBackgroundImage")
-    edTestCasePluginExecuteBestv1_3_withXdsBackgroundImage.execute()

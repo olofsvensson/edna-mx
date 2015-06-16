@@ -53,8 +53,3 @@ class EDTestCasePluginExecuteBestv1_3_withRadiationDamageModelBetaGamma(EDTestCa
     def process(self):
         self.addTestMethod(self.testExecute)
 
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteBestv1_3_withRadiationDamageModelBetaGamma = EDTestCasePluginExecuteBestv1_3_withRadiationDamageModelBetaGamma("EDTestCasePluginExecuteBestv1_3_withRadiationDamageModelBetaGamma")
-    edTestCasePluginExecuteBestv1_3_withRadiationDamageModelBetaGamma.execute()

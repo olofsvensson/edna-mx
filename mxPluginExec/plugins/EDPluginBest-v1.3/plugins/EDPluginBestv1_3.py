@@ -373,15 +373,31 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
             # Check if -DamPar or -Bonly strategy options have been used
             if xsDataStringStrategyOption is not None:
                 strStrategyOption = xsDataStringStrategyOption.value
-                if strStrategyOption.find("-DamPar") != -1:
-                    xsDataResultBest = self.getDamParOutputFromLog(strBestLog)
-                elif strStrategyOption.find("-Bonly") != -1:
+                if strStrategyOption.find("-Bonly") != -1:
                     xsDataResultBest = self.getBonlyOutputFromLog(strBestLog)
             if xsDataResultBest is None:
                 # Neither the -DamPar nor the -Bonly strategy option has been used
                 xsDataResultBest = self.getDataCollectionOutputDataFromLog(strBestLog)
         return xsDataResultBest
 
+
+    def getBonlyOutputFromLog(self, _strBestLog):
+        listLog = _strBestLog.split("\n")
+        indexLine = 0
+        xsDataResultBest = XSDataResultBest()
+        xsDataBestCollectionPlan  = XSDataBestCollectionPlan()
+        xsDataCrystalScale = XSDataCrystalScale()
+        #
+        while not "Relative scale" in listLog[indexLine]:
+            indexLine += 1
+        xsDataCrystalScale.scale = XSDataDouble(listLog[indexLine].split()[-1])
+        #
+        while not "Overall B-factor" in listLog[indexLine]:
+            indexLine += 1
+        xsDataCrystalScale.bFactor = XSDataDouble(listLog[indexLine].split()[-2])
+        xsDataBestCollectionPlan.crystalScale = xsDataCrystalScale
+        xsDataResultBest.addCollectionPlan(xsDataBestCollectionPlan)
+        return xsDataResultBest
 
 
     def getDataCollectionOutputDataFromLog(self, _strBestLog):
@@ -390,19 +406,60 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
         isScanningWedge = False
         indexLine = 0
         listLog = _strBestLog.split("\n")
+        iCollectionPlanNumber = 1
         while indexLine < len(listLog):
-            strLine = listLog[indexLine]
-            iCollectionPlanNumber = 1
-            if "Main Wedge" in strLine:
+            if "Plan of data collection for radiation damage characterisation" in listLog[indexLine]:
+                xsDataBestCollectionPlan  = XSDataBestCollectionPlan()
+                xsDataBestStrategySummary = XSDataBestStrategySummary()
+                indexLine += 2
+                regEx= re.compile(""" Resolution limit =\s*(\d+\.\d+) Angstrom\s*Distance =\s*(\d+\.\d+)mm""")
+                matchObj = regEx.search(listLog[indexLine])
+                if matchObj == None:
+                    raise BaseException("Cannot parse best log file!")
+                resultMatch = matchObj.groups()
+                resultion = float(resultMatch[0])
+                distance = float(resultMatch[1])
+                xsDataBestStrategySummary.resolution = XSDataDouble(resultion)
+                xsDataBestStrategySummary.distance = XSDataLength(distance)
+                xsDataBestCollectionPlan.strategySummary = xsDataBestStrategySummary
+                # Burn strategy
+                indexLine += 7
+                collectionRunNumber = 1
+                while not listLog[indexLine].startswith("-------------------------------"):
+                    listLine = listLog[indexLine].split()
+                    if listLine[0].startswith("exposure") or listLine[0].startswith("burn"):
+                        xsDataBestCollectionRun = XSDataBestCollectionRun()
+                        xsDataBestCollectionRun.collectionRunNumber = XSDataInteger(collectionRunNumber)
+                        xsDataBestCollectionRun.action = XSDataString(listLine[0])
+                        xsDataBestCollectionRun.phiStart = XSDataAngle(listLine[1])
+                        xsDataBestCollectionRun.phiWidth = XSDataAngle(listLine[2])
+                        xsDataBestCollectionRun.exposureTime = XSDataTime(listLine[3])
+                        xsDataBestCollectionRun.numberOfImages = XSDataInteger(listLine[4].split("|")[0])
+                        xsDataBestCollectionRun.transmission = XSDataDouble(listLine[5])
+                        xsDataBestCollectionPlan.addCollectionRun(xsDataBestCollectionRun)
+                        collectionRunNumber += 1
+                    indexLine += 1
+                xsDataBestCollectionPlan.collectionPlanNumber = XSDataInteger(iCollectionPlanNumber)
+                xsDataResultBest.addCollectionPlan(xsDataBestCollectionPlan)                
+            if "Main Wedge" in listLog[indexLine] or "Low resolution Wedge" in listLog[indexLine] \
+                or "Strategy for SAD data collection" in listLog[indexLine]:
                 isScanningWedge = True
                 xsDataBestCollectionPlan  = XSDataBestCollectionPlan()
                 xsDataBestStrategySummary = XSDataBestStrategySummary()
-                # ResolutionReasoning
-                indexLine += 2                
-                xsDataBestStrategySummary.resolutionReasoning = XSDataString(listLog[indexLine].strip())
+                if "Main Wedge" in listLog[indexLine]:
+                    indexLine += 2
+                    # ResolutionReasoning
+                    xsDataBestStrategySummary.resolutionReasoning = XSDataString(listLog[indexLine].strip())
+                elif "Strategy for SAD data collection" in listLog[indexLine]:
+                    indexLine += 2
+                    xsDataBestStrategySummary.resolutionReasoning = XSDataString(listLog[indexLine].strip())
+                else:
+                    xsDataBestStrategySummary.resolutionReasoning = XSDataString("Low-resolution pass, no overloads and full completeness")
                 # Resolution, transmission, distance
                 indexLine += 1
-                regEx= re.compile(""" Resolution limit =(\d+\.\d+) Angstrom   Transmission =\s+(\d+\.\d+)%  Distance = (\d+\.\d+)mm""")
+                while not "Resolution limit" in listLog[indexLine]:
+                    indexLine += 1
+                regEx= re.compile(""" Resolution limit =\s*(\d+\.\d+) Angstrom   Transmission =\s*(\d+\.\d+)%  Distance =\s*(\d+\.\d+)mm""")
                 matchObj = regEx.search(listLog[indexLine])
                 if matchObj == None:
                     raise BaseException("Cannot parse best log file!")
@@ -415,15 +472,17 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                 xsDataBestStrategySummary.distance = XSDataLength(distance)
                 # Resolution, transmission, distance
                 indexLine += 8
-                listLine = listLog[indexLine].split()
-                xsDataBestCollectionRun   = XSDataBestCollectionRun()
-                xsDataBestCollectionRun.collectionRunNumber = XSDataInteger(listLine[0])
-                xsDataBestCollectionRun.phiStart = XSDataAngle(listLine[1])
-                xsDataBestCollectionRun.phiWidth = XSDataAngle(listLine[2])
-                xsDataBestCollectionRun.exposureTime = XSDataTime(listLine[3])
-                xsDataBestCollectionRun.numberOfImages = XSDataInteger(listLine[4].split("|")[0])
-                xsDataBestCollectionRun.overlaps = XSDataString(listLine[5])
-                xsDataBestStrategySummary.totalExposureTime = XSDataTime(listLine[7])
+                while not listLog[indexLine].startswith("-------------------------------"):
+                    listLine = listLog[indexLine].split()
+                    xsDataBestCollectionRun = XSDataBestCollectionRun()
+                    xsDataBestCollectionRun.collectionRunNumber = XSDataInteger(listLine[0])
+                    xsDataBestCollectionRun.phiStart = XSDataAngle(listLine[1])
+                    xsDataBestCollectionRun.phiWidth = XSDataAngle(listLine[2])
+                    xsDataBestCollectionRun.exposureTime = XSDataTime(listLine[3])
+                    xsDataBestCollectionRun.numberOfImages = XSDataInteger(listLine[4].split("|")[0])
+                    xsDataBestCollectionRun.overlaps = XSDataString(listLine[5])
+                    xsDataBestCollectionPlan.addCollectionRun(xsDataBestCollectionRun)
+                    indexLine += 1
                 #
                 xsDataBestStrategySummary.completeness = XSDataDouble(listLine[11])
                 #
@@ -435,6 +494,10 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                     indexLine += 1
                 xsDataBestStrategySummary.iSigma = XSDataDouble(listLog[indexLine].split()[6].replace(")",""))
                 #
+                while not "Total Exposure time" in listLog[indexLine]:
+                    indexLine += 1
+                xsDataBestStrategySummary.totalExposureTime = XSDataTime(listLog[indexLine].split()[4])
+                #
                 while not "Total Data Collection time" in listLog[indexLine]:
                     indexLine += 1
                 xsDataBestStrategySummary.totalDataCollectionTime = XSDataTime(listLog[indexLine].split()[5])
@@ -443,12 +506,12 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                     indexLine += 1
                 (xsDataBestStatisticalPrediction, indexLine) = self.getXSDataBestStatisticalPrediction(listLog, indexLine)
                 
-                xsDataBestCollectionPlan.addCollectionRun(xsDataBestCollectionRun)
                 xsDataBestCollectionPlan.strategySummary = xsDataBestStrategySummary
                 xsDataBestCollectionPlan.statisticalPrediction = xsDataBestStatisticalPrediction
                 xsDataBestCollectionPlan.collectionPlanNumber = XSDataInteger(iCollectionPlanNumber)
+                iCollectionPlanNumber += 1
                 xsDataResultBest.addCollectionPlan(xsDataBestCollectionPlan)
-            if "Additional information" in strLine:
+            if "Additional information" in listLog[indexLine]:
                 isScanningWedge = False
             indexLine += 1
         return xsDataResultBest
@@ -460,7 +523,12 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
         indexLine = _indexLine
         xsDataBestStatisticalPrediction = XSDataBestStatisticalPrediction()
         if "Wedge Data Collection Statistics according to the Strategy" in _listLog[indexLine]:
-            indexLine += 5
+            indexLine += 2
+            if "Rfriedel" in _listLog[indexLine]:
+                hasRfriedel = True
+            else:
+                hasRfriedel = False
+            indexLine += 3
             continueToReadLog = True
             while continueToReadLog:
                 listLine = _listLog[indexLine].split()
@@ -482,7 +550,11 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                 xsDataBestResolutionBin.averageIntensityOverAverageSigma = XSDataDouble(listLine[5])
                 xsDataBestResolutionBin.IOverSigma = XSDataDouble(listLine[6])
                 xsDataBestResolutionBin.rFactor = XSDataDouble(listLine[7])
-                xsDataBestResolutionBin.percentageOverload = XSDataDouble(listLine[8])
+                if hasRfriedel:
+                    xsDataBestResolutionBin.rFriedel = XSDataDouble(listLine[8])
+                    xsDataBestResolutionBin.percentageOverload = XSDataDouble(listLine[9])
+                else:
+                    xsDataBestResolutionBin.percentageOverload = XSDataDouble(listLine[8])
                 xsDataBestStatisticalPrediction.addResolutionBin(xsDataBestResolutionBin)
                 indexLine += 1
         return (xsDataBestStatisticalPrediction, indexLine)

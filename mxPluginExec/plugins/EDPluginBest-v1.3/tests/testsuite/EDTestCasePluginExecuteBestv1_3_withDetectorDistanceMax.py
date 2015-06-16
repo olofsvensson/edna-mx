@@ -48,11 +48,6 @@ class EDTestCasePluginExecuteBestv1_3_withDetectorDistanceMax(EDTestCasePluginEx
 
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputBest_withDetectorDistanceMax.xml"))
-        if (self.m_bRunOnIntel):
-            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_withDetectorDistanceMaxForIntel.xml"))
-        else:
-            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_withDetectorDistanceMax.xml"))
-
 
     def testExecute(self):
         self.run()
@@ -64,9 +59,3 @@ class EDTestCasePluginExecuteBestv1_3_withDetectorDistanceMax(EDTestCasePluginEx
 
     def process(self):
         self.addTestMethod(self.testExecute)
-
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteBestv1_3_withDetectorDistanceMax = EDTestCasePluginExecuteBestv1_3_withDetectorDistanceMax("EDTestCasePluginExecuteBestv1_3_withDetectorDistanceMax")
-    edTestCasePluginExecuteBestv1_3_withDetectorDistanceMax.execute()

@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<XSDataResultBest>
+    <collectionPlan>
+        <crystalScale>
+            <bFactor>
+                <value>7.630000e+00</value>
+            </bFactor>
+            <scale>
+                <value>2.780000e+00</value>
+            </scale>
+        </crystalScale>
+    </collectionPlan>
+    <glePlot>
+        <data>
+            <path>
+                <value>/mntdirect/_scisoft/users/svensson/workspaces/edna-mx/tmp/EDTestCasePluginExecuteBestv1_2_withBonly_20150616-152412/Bestv1_2-00000003/B.dat</value>
+            </path>
+        </data>
+        <script>
+            <path>
+                <value>/mntdirect/_scisoft/users/svensson/workspaces/edna-mx/tmp/EDTestCasePluginExecuteBestv1_2_withBonly_20150616-152412/Bestv1_2-00000003/B.gle</value>
+            </path>
+        </script>
+    </glePlot>
+    <pathToLogFile>
+        <path>
+            <value>/mntdirect/_scisoft/users/svensson/workspaces/edna-mx/tmp/EDTestCasePluginExecuteBestv1_2_withBonly_20150616-152412/Bestv1_2-00000003/best.log</value>
+        </path>
+    </pathToLogFile>
+    <pathToPlotMtvFile>
+        <path>
+            <value>/mntdirect/_scisoft/users/svensson/workspaces/edna-mx/tmp/EDTestCasePluginExecuteBestv1_2_withBonly_20150616-152412/Bestv1_2-00000003/Bestv1_2-00000003_plots.mtv</value>
+        </path>
+    </pathToPlotMtvFile>
+</XSDataResultBest>

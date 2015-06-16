@@ -48,23 +48,6 @@ class EDTestCasePluginExecuteBestv1_3(EDTestCasePluginExecute):
         EDTestCasePluginExecute.__init__(self, "EDPluginBestv1_3")
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputBest_reference.xml"))
-        #
-        # If on Linux, check if run on Intel processor
-        #
-        self.m_bRunOnIntel = False
-        pyStrSystem = os.uname()[0]
-        if (pyStrSystem == "Linux"):
-            pyFile = open("/proc/cpuinfo", "r")
-            pyListCpuInfo = pyFile.readlines()
-            pyFile.close()
-            for pyStrLine in pyListCpuInfo:
-                if (pyStrLine.find("vendor_id") != -1):
-                    if (pyStrLine.find("GenuineIntel") != -1):
-                         self.m_bRunOnIntel = True
-        if (self.m_bRunOnIntel):
-            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_referenceForIntel.xml"))
-        else:
-            self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultBest_reference.xml"))
 
 
     def testExecute(self):
@@ -75,8 +58,3 @@ class EDTestCasePluginExecuteBestv1_3(EDTestCasePluginExecute):
         self.addTestMethod(self.testExecute)
 
 
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteBestv1_3 = EDTestCasePluginExecuteBestv1_3("EDTestCasePluginExecuteBestv1_3")
-    edTestCasePluginExecuteBestv1_3.execute()
