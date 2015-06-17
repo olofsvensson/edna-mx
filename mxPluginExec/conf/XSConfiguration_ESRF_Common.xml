@@ -143,7 +143,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v712_20140616</value>
+					<value>/opt/pxsoft/bin/mosflm__v720_20150605</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -151,7 +151,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.1.2  for Image plate and CCD data 16th June 2014</value>
+					<value>Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -168,7 +168,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v712_20140616</value>
+					<value>/opt/pxsoft/bin/mosflm__v720_20150605</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -176,7 +176,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.1.2  for Image plate and CCD data 16th June 2014</value>
+					<value>Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -193,7 +193,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v712_20140616</value>
+					<value>/opt/pxsoft/bin/mosflm__v720_20150605</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -201,7 +201,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.1.2  for Image plate and CCD data 16th June 2014</value>
+					<value>Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>

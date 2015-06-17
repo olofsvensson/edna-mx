@@ -2,10 +2,10 @@
 <XSDataMOSFLMOutputIndexing>
     <refinedBeam>
         <x>
-            <value>1.024778e+02</value>
+            <value>1.024781e+02</value>
         </x>
         <y>
-            <value>1.048855e+02</value>
+            <value>1.048851e+02</value>
         </y>
     </refinedBeam>
     <refinedDistance>
@@ -13,15 +13,15 @@
     </refinedDistance>
     <refinedNewmat>
         <aMatrix>
-            <m11>-8.263970e-03</m11>
-            <m12>8.852860e-03</m12>
-            <m13>9.367170e-03</m13>
-            <m21>1.267620e-03</m21>
-            <m22>1.251809e-02</m22>
-            <m23>-8.453390e-03</m23>
-            <m31>-1.485029e-02</m31>
-            <m32>-3.857950e-03</m32>
-            <m33>-5.934270e-03</m33>
+            <m11>-8.264230e-03</m11>
+            <m12>8.852930e-03</m12>
+            <m13>9.366830e-03</m13>
+            <m21>1.267850e-03</m21>
+            <m22>1.251850e-02</m22>
+            <m23>-8.453040e-03</m23>
+            <m31>-1.484989e-02</m31>
+            <m32>-3.858010e-03</m32>
+            <m33>-5.934510e-03</m33>
         </aMatrix>
         <missettingAngles>
             <phix>
@@ -45,25 +45,25 @@
                 <value>9.000000e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.480570e+01</value>
+                <value>5.480630e+01</value>
             </length_a>
             <length_b>
-                <value>5.907610e+01</value>
+                <value>5.907470e+01</value>
             </length_b>
             <length_c>
-                <value>6.698500e+01</value>
+                <value>6.698660e+01</value>
             </length_c>
         </refinedCell>
         <uMatrix>
-            <m11>-4.849167e-01</m11>
-            <m12>5.599493e-01</m12>
-            <m13>6.717979e-01</m13>
-            <m21>7.438180e-02</m21>
-            <m22>7.917777e-01</m22>
-            <m23>-6.062633e-01</m23>
-            <m31>-8.713914e-01</m31>
-            <m32>-2.440178e-01</m32>
-            <m33>-4.255964e-01</m33>
+            <m11>-4.849377e-01</m11>
+            <m12>5.599406e-01</m12>
+            <m13>6.717902e-01</m13>
+            <m21>7.439660e-02</m21>
+            <m22>7.917846e-01</m22>
+            <m23>-6.062528e-01</m23>
+            <m31>-8.713787e-01</m31>
+            <m32>-2.440159e-01</m32>
+            <m33>-4.256238e-01</m33>
         </uMatrix>
     </refinedNewmat>
     <pathToLogFile>
@@ -73,40 +73,40 @@
     </pathToLogFile>
     <beamShift>
         <x>
-            <value>-1.874600e-02</value>
+            <value>-1.910400e-02</value>
         </x>
         <y>
-            <value>-1.475220e-01</value>
+            <value>-1.471100e-01</value>
         </y>
     </beamShift>
     <deviationAngular>
-        <value>4.260170e-01</value>
+        <value>4.240540e-01</value>
     </deviationAngular>
     <deviationPositional>
-        <value>1.397350e-01</value>
+        <value>1.379250e-01</value>
     </deviationPositional>
     <mosaicityEstimation>
-        <value>8.000000e-01</value>
+        <value>7.750000e-01</value>
     </mosaicityEstimation>
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.001141e+01</value>
+                <value>9.000787e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>6.806295e+01</value>
+                <value>6.806474e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>1.009984e+02</value>
+                <value>1.010006e+02</value>
             </angle_gamma>
             <length_a>
-                <value>1.464036e+02</value>
+                <value>1.464045e+02</value>
             </length_a>
             <length_b>
-                <value>8.931809e+01</value>
+                <value>8.931673e+01</value>
             </length_b>
             <length_c>
-                <value>5.481550e+01</value>
+                <value>5.481640e+01</value>
             </length_c>
         </cell>
         <index>
@@ -122,22 +122,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>1.113502e+02</value>
+                <value>1.113484e+02</value>
             </angle_alpha>
             <angle_beta>
-                <value>1.005203e+02</value>
+                <value>1.005223e+02</value>
             </angle_beta>
             <angle_gamma>
-                <value>1.169242e+02</value>
+                <value>1.169226e+02</value>
             </angle_gamma>
             <length_a>
-                <value>1.048065e+02</value>
+                <value>1.048030e+02</value>
             </length_a>
             <length_b>
-                <value>1.047879e+02</value>
+                <value>1.047901e+02</value>
             </length_b>
             <length_c>
-                <value>1.047377e+02</value>
+                <value>1.047372e+02</value>
             </length_c>
         </cell>
         <index>
@@ -153,22 +153,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>6.103396e+01</value>
+                <value>6.103196e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>5.455162e+01</value>
+                <value>5.455497e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>6.451438e+01</value>
+                <value>6.451354e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.651876e+01</value>
+                <value>8.651852e+01</value>
             </length_a>
             <length_b>
-                <value>8.056505e+01</value>
+                <value>8.056469e+01</value>
             </length_b>
             <length_c>
-                <value>8.930143e+01</value>
+                <value>8.930112e+01</value>
             </length_c>
         </cell>
         <index>
@@ -184,22 +184,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>5.849767e+01</value>
+                <value>5.849780e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>8.998859e+01</value>
+                <value>8.999213e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.611014e+01</value>
+                <value>9.610850e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.931811e+01</value>
+                <value>8.931675e+01</value>
             </length_a>
             <length_b>
-                <value>1.047378e+02</value>
+                <value>1.047372e+02</value>
             </length_b>
             <length_c>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_c>
         </cell>
         <index>
@@ -215,22 +215,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>1.121880e+02</value>
+                <value>1.121885e+02</value>
             </angle_alpha>
             <angle_beta>
-                <value>1.371260e+02</value>
+                <value>1.371249e+02</value>
             </angle_beta>
             <angle_gamma>
-                <value>5.900537e+01</value>
+                <value>5.900319e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.056506e+01</value>
+                <value>8.056469e+01</value>
             </length_a>
             <length_b>
-                <value>1.562761e+02</value>
+                <value>1.562732e+02</value>
             </length_b>
             <length_c>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_c>
         </cell>
         <index>
@@ -246,22 +246,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.162910e+01</value>
+                <value>9.162797e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>1.046342e+02</value>
+                <value>1.046375e+02</value>
             </angle_beta>
             <angle_gamma>
-                <value>1.328406e+02</value>
+                <value>1.328384e+02</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481640e+01</value>
             </length_a>
             <length_b>
-                <value>8.056506e+01</value>
+                <value>8.056469e+01</value>
             </length_b>
             <length_c>
-                <value>2.164807e+02</value>
+                <value>2.164755e+02</value>
             </length_c>
         </cell>
         <index>
@@ -277,22 +277,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>8.086262e+01</value>
+                <value>8.086206e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>1.122155e+02</value>
+                <value>1.122181e+02</value>
             </angle_beta>
             <angle_gamma>
-                <value>1.148617e+02</value>
+                <value>1.148587e+02</value>
             </angle_gamma>
             <length_a>
-                <value>5.481552e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>1.302161e+02</value>
+                <value>1.302170e+02</value>
             </length_b>
             <length_c>
-                <value>1.447039e+02</value>
+                <value>1.447007e+02</value>
             </length_c>
         </cell>
         <index>
@@ -308,22 +308,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>5.455162e+01</value>
+                <value>5.455497e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>6.103396e+01</value>
+                <value>6.103196e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>6.451438e+01</value>
+                <value>6.451354e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.056505e+01</value>
+                <value>8.056469e+01</value>
             </length_a>
             <length_b>
-                <value>8.651876e+01</value>
+                <value>8.651852e+01</value>
             </length_b>
             <length_c>
-                <value>8.930143e+01</value>
+                <value>8.930112e+01</value>
             </length_c>
         </cell>
         <index>
@@ -339,22 +339,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>6.103396e+01</value>
+                <value>6.103196e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>5.455162e+01</value>
+                <value>5.455497e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>6.451438e+01</value>
+                <value>6.451354e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.651876e+01</value>
+                <value>8.651852e+01</value>
             </length_a>
             <length_b>
-                <value>8.056505e+01</value>
+                <value>8.056469e+01</value>
             </length_b>
             <length_c>
-                <value>8.930143e+01</value>
+                <value>8.930112e+01</value>
             </length_c>
         </cell>
         <index>
@@ -370,22 +370,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>6.451438e+01</value>
+                <value>6.451354e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>6.103396e+01</value>
+                <value>6.103196e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>5.455162e+01</value>
+                <value>5.455497e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.930143e+01</value>
+                <value>8.930112e+01</value>
             </length_a>
             <length_b>
-                <value>8.651877e+01</value>
+                <value>8.651852e+01</value>
             </length_b>
             <length_c>
-                <value>8.056506e+01</value>
+                <value>8.056469e+01</value>
             </length_c>
         </cell>
         <index>
@@ -401,22 +401,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>8.388986e+01</value>
+                <value>8.389150e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>5.849767e+01</value>
+                <value>5.849780e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.001141e+01</value>
+                <value>9.000787e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>8.931810e+01</value>
+                <value>8.931675e+01</value>
             </length_b>
             <length_c>
-                <value>1.047378e+02</value>
+                <value>1.047372e+02</value>
             </length_c>
         </cell>
         <index>
@@ -432,22 +432,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.222572e+01</value>
+                <value>9.222557e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>1.209946e+02</value>
+                <value>1.209968e+02</value>
             </angle_beta>
             <angle_gamma>
-                <value>8.571709e+01</value>
+                <value>8.571623e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.056506e+01</value>
+                <value>8.056469e+01</value>
             </length_a>
             <length_b>
-                <value>8.061183e+01</value>
+                <value>8.061614e+01</value>
             </length_b>
             <length_c>
-                <value>1.562761e+02</value>
+                <value>1.562732e+02</value>
             </length_c>
         </cell>
         <index>
@@ -463,22 +463,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>6.451438e+01</value>
+                <value>6.451354e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>1.155176e+02</value>
+                <value>1.155195e+02</value>
             </angle_beta>
             <angle_gamma>
-                <value>8.571709e+01</value>
+                <value>8.571622e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.061183e+01</value>
+                <value>8.061614e+01</value>
             </length_a>
             <length_b>
-                <value>8.056506e+01</value>
+                <value>8.056469e+01</value>
             </length_b>
             <length_c>
-                <value>8.651878e+01</value>
+                <value>8.651851e+01</value>
             </length_c>
         </cell>
         <index>
@@ -494,22 +494,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>6.781204e+01</value>
+                <value>6.781152e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>6.952045e+01</value>
+                <value>6.951942e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>5.907417e+01</value>
+                <value>5.907602e+01</value>
             </length_b>
             <length_c>
-                <value>1.562761e+02</value>
+                <value>1.562732e+02</value>
             </length_c>
         </cell>
         <index>
@@ -525,22 +525,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>1.121880e+02</value>
+                <value>1.121885e+02</value>
             </angle_alpha>
             <angle_beta>
-                <value>1.104796e+02</value>
+                <value>1.104806e+02</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>5.907417e+01</value>
+                <value>5.907602e+01</value>
             </length_b>
             <length_c>
-                <value>1.562761e+02</value>
+                <value>1.562732e+02</value>
             </length_c>
         </cell>
         <index>
@@ -556,22 +556,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.001141e+01</value>
+                <value>9.000787e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>1.268920e+02</value>
+                <value>1.268926e+02</value>
             </angle_beta>
             <angle_gamma>
-                <value>6.513827e+01</value>
+                <value>6.514133e+01</value>
             </angle_gamma>
             <length_a>
-                <value>1.302161e+02</value>
+                <value>1.302170e+02</value>
             </length_a>
             <length_b>
-                <value>5.481552e+01</value>
+                <value>5.481641e+01</value>
             </length_b>
             <length_c>
-                <value>8.931811e+01</value>
+                <value>8.931673e+01</value>
             </length_c>
         </cell>
         <index>
@@ -587,22 +587,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.004463e+01</value>
+                <value>9.004285e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.001078e+01</value>
+                <value>9.001010e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.907417e+01</value>
+                <value>5.907602e+01</value>
             </length_a>
             <length_b>
-                <value>6.698118e+01</value>
+                <value>6.697841e+01</value>
             </length_b>
             <length_c>
-                <value>5.481551e+01</value>
+                <value>5.481640e+01</value>
             </length_c>
         </cell>
         <index>
@@ -618,22 +618,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.001078e+01</value>
+                <value>9.001010e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.004463e+01</value>
+                <value>9.004285e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_b>
             <length_c>
-                <value>6.698118e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
@@ -649,22 +649,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.002261e+01</value>
+                <value>9.002325e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>6.778454e+01</value>
+                <value>6.778185e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>1.447039e+02</value>
+                <value>1.447007e+02</value>
             </length_b>
             <length_c>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_c>
         </cell>
         <index>
@@ -680,22 +680,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>8.997739e+01</value>
+                <value>8.997675e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>1.122155e+02</value>
+                <value>1.122181e+02</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>1.447039e+02</value>
+                <value>1.447007e+02</value>
             </length_b>
             <length_c>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_c>
         </cell>
         <index>
@@ -705,28 +705,28 @@
             <value>oC</value>
         </lattice>
         <penalty>
-            <value>258</value>
+            <value>259</value>
         </penalty>
     </possibleSolutions>
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.003336e+01</value>
+                <value>9.003668e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.002261e+01</value>
+                <value>9.002325e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>6.778454e+01</value>
+                <value>6.778186e+01</value>
             </angle_gamma>
             <length_a>
-                <value>1.447038e+02</value>
+                <value>1.447007e+02</value>
             </length_a>
             <length_b>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_b>
             <length_c>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_c>
         </cell>
         <index>
@@ -742,22 +742,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.002261e+01</value>
+                <value>9.002325e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>6.778454e+01</value>
+                <value>6.778185e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>1.447039e+02</value>
+                <value>1.447007e+02</value>
             </length_b>
             <length_c>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_c>
         </cell>
         <index>
@@ -773,29 +773,29 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.002856e+01</value>
+                <value>8.997279e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.004463e+01</value>
+                <value>9.004285e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>6.513827e+01</value>
+                <value>1.148587e+02</value>
             </angle_gamma>
             <length_a>
-                <value>5.481552e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>1.302161e+02</value>
+                <value>1.302169e+02</value>
             </length_b>
             <length_c>
-                <value>6.698118e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
             <value>22</value>
         </index>
         <lattice>
-            <value>mC</value>
+            <value>oC</value>
         </lattice>
         <penalty>
             <value>223</value>
@@ -804,28 +804,59 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>8.997144e+01</value>
+                <value>9.004285e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.004463e+01</value>
+                <value>9.002721e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>1.148617e+02</value>
+                <value>6.514134e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481552e+01</value>
+                <value>1.302169e+02</value>
             </length_a>
             <length_b>
-                <value>1.302161e+02</value>
+                <value>5.481641e+01</value>
             </length_b>
             <length_c>
-                <value>6.698118e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
             <value>21</value>
         </index>
         <lattice>
+            <value>mC</value>
+        </lattice>
+        <penalty>
+            <value>223</value>
+        </penalty>
+    </possibleSolutions>
+    <possibleSolutions>
+        <cell>
+            <angle_alpha>
+                <value>8.997675e+01</value>
+            </angle_alpha>
+            <angle_beta>
+                <value>9.003668e+01</value>
+            </angle_beta>
+            <angle_gamma>
+                <value>1.122181e+02</value>
+            </angle_gamma>
+            <length_a>
+                <value>5.481641e+01</value>
+            </length_a>
+            <length_b>
+                <value>1.447007e+02</value>
+            </length_b>
+            <length_c>
+                <value>5.907603e+01</value>
+            </length_c>
+        </cell>
+        <index>
+            <value>20</value>
+        </index>
+        <lattice>
             <value>oC</value>
         </lattice>
         <penalty>
@@ -835,26 +866,26 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.004463e+01</value>
+                <value>9.003668e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.002856e+01</value>
+                <value>9.002325e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>6.513827e+01</value>
+                <value>6.778186e+01</value>
             </angle_gamma>
             <length_a>
-                <value>1.302161e+02</value>
+                <value>1.447007e+02</value>
             </length_a>
             <length_b>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_b>
             <length_c>
-                <value>6.698118e+01</value>
+                <value>5.907603e+01</value>
             </length_c>
         </cell>
         <index>
-            <value>20</value>
+            <value>19</value>
         </index>
         <lattice>
             <value>mC</value>
@@ -866,53 +897,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>8.997739e+01</value>
+                <value>9.002721e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.003335e+01</value>
+                <value>9.004285e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>1.122155e+02</value>
+                <value>6.514134e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>1.447039e+02</value>
+                <value>1.302169e+02</value>
             </length_b>
             <length_c>
-                <value>5.907417e+01</value>
-            </length_c>
-        </cell>
-        <index>
-            <value>19</value>
-        </index>
-        <lattice>
-            <value>oC</value>
-        </lattice>
-        <penalty>
-            <value>223</value>
-        </penalty>
-    </possibleSolutions>
-    <possibleSolutions>
-        <cell>
-            <angle_alpha>
-                <value>9.003336e+01</value>
-            </angle_alpha>
-            <angle_beta>
-                <value>9.002261e+01</value>
-            </angle_beta>
-            <angle_gamma>
-                <value>6.778454e+01</value>
-            </angle_gamma>
-            <length_a>
-                <value>1.447038e+02</value>
-            </length_a>
-            <length_b>
-                <value>5.481551e+01</value>
-            </length_b>
-            <length_c>
-                <value>5.907417e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
@@ -922,28 +922,28 @@
             <value>mC</value>
         </lattice>
         <penalty>
-            <value>222</value>
+            <value>223</value>
         </penalty>
     </possibleSolutions>
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.941103e+01</value>
+                <value>9.940990e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>8.669243e+01</value>
+                <value>8.669222e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>1.155352e+02</value>
+                <value>1.155367e+02</value>
             </angle_gamma>
             <length_a>
-                <value>8.061183e+01</value>
+                <value>8.061614e+01</value>
             </length_a>
             <length_b>
-                <value>8.658486e+01</value>
+                <value>8.658197e+01</value>
             </length_b>
             <length_c>
-                <value>1.047378e+02</value>
+                <value>1.047372e+02</value>
             </length_c>
         </cell>
         <index>
@@ -959,22 +959,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.942158e+01</value>
+                <value>9.941985e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>8.672335e+01</value>
+                <value>8.672212e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>1.155176e+02</value>
+                <value>1.155195e+02</value>
             </angle_gamma>
             <length_a>
-                <value>8.061183e+01</value>
+                <value>8.061613e+01</value>
             </length_a>
             <length_b>
-                <value>8.651877e+01</value>
+                <value>8.651852e+01</value>
             </length_b>
             <length_c>
-                <value>1.048066e+02</value>
+                <value>1.048030e+02</value>
             </length_c>
         </cell>
         <index>
@@ -990,22 +990,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.001078e+01</value>
+                <value>9.001010e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.004463e+01</value>
+                <value>9.004285e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_b>
             <length_c>
-                <value>6.698118e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1021,22 +1021,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>8.998859e+01</value>
+                <value>8.999213e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.005554e+01</value>
+                <value>9.005640e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.717852e+01</value>
+                <value>9.717438e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.930142e+01</value>
+                <value>8.930112e+01</value>
             </length_a>
             <length_b>
-                <value>8.931810e+01</value>
+                <value>8.931674e+01</value>
             </length_b>
             <length_c>
-                <value>5.481551e+01</value>
+                <value>5.481640e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1052,22 +1052,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.004463e+01</value>
+                <value>9.004285e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.001078e+01</value>
+                <value>9.001010e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.907417e+01</value>
+                <value>5.907602e+01</value>
             </length_a>
             <length_b>
-                <value>6.698118e+01</value>
+                <value>6.697841e+01</value>
             </length_b>
             <length_c>
-                <value>5.481551e+01</value>
+                <value>5.481640e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1083,22 +1083,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.001141e+01</value>
+                <value>9.000787e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.005554e+01</value>
+                <value>9.005640e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>8.282149e+01</value>
+                <value>8.282562e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.930142e+01</value>
+                <value>8.930112e+01</value>
             </length_a>
             <length_b>
-                <value>8.931810e+01</value>
+                <value>8.931674e+01</value>
             </length_b>
             <length_c>
-                <value>5.481551e+01</value>
+                <value>5.481640e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1114,22 +1114,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.001141e+01</value>
+                <value>9.000787e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.005554e+01</value>
+                <value>9.005640e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>8.282149e+01</value>
+                <value>8.282562e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.930142e+01</value>
+                <value>8.930112e+01</value>
             </length_a>
             <length_b>
-                <value>8.931810e+01</value>
+                <value>8.931674e+01</value>
             </length_b>
             <length_c>
-                <value>5.481551e+01</value>
+                <value>5.481640e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1145,22 +1145,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.002245e+01</value>
+                <value>9.002173e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.003827e+01</value>
+                <value>9.003657e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.428291e+01</value>
+                <value>9.428378e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.056505e+01</value>
+                <value>8.056469e+01</value>
             </length_a>
             <length_b>
-                <value>8.061182e+01</value>
+                <value>8.061614e+01</value>
             </length_b>
             <length_c>
-                <value>6.698117e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1176,22 +1176,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.001078e+01</value>
+                <value>9.001010e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.004463e+01</value>
+                <value>9.004285e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_b>
             <length_c>
-                <value>6.698118e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1207,22 +1207,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>8.997755e+01</value>
+                <value>8.997827e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.003827e+01</value>
+                <value>9.003657e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>8.571709e+01</value>
+                <value>8.571622e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.056505e+01</value>
+                <value>8.056469e+01</value>
             </length_a>
             <length_b>
-                <value>8.061182e+01</value>
+                <value>8.061614e+01</value>
             </length_b>
             <length_c>
-                <value>6.698117e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1238,22 +1238,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>8.997755e+01</value>
+                <value>8.997827e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.003827e+01</value>
+                <value>9.003657e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>8.571709e+01</value>
+                <value>8.571622e+01</value>
             </angle_gamma>
             <length_a>
-                <value>8.056505e+01</value>
+                <value>8.056469e+01</value>
             </length_a>
             <length_b>
-                <value>8.061182e+01</value>
+                <value>8.061614e+01</value>
             </length_b>
             <length_c>
-                <value>6.698117e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1269,22 +1269,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.001078e+01</value>
+                <value>9.001010e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>8.995538e+01</value>
+                <value>8.995716e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>8.996665e+01</value>
+                <value>8.996332e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_b>
             <length_c>
-                <value>6.698118e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1300,22 +1300,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.001078e+01</value>
+                <value>9.001010e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.004463e+01</value>
+                <value>9.004285e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_b>
             <length_c>
-                <value>6.698118e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1331,22 +1331,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.001078e+01</value>
+                <value>9.001010e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.004463e+01</value>
+                <value>9.004285e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_b>
             <length_c>
-                <value>6.698118e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1362,22 +1362,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.001078e+01</value>
+                <value>9.001010e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.004463e+01</value>
+                <value>9.004285e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>6.698118e+01</value>
+                <value>6.697842e+01</value>
             </length_b>
             <length_c>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1393,22 +1393,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.004463e+01</value>
+                <value>9.004285e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.001078e+01</value>
+                <value>9.001010e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.907417e+01</value>
+                <value>5.907602e+01</value>
             </length_a>
             <length_b>
-                <value>5.481551e+01</value>
+                <value>5.481640e+01</value>
             </length_b>
             <length_c>
-                <value>6.698118e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1424,22 +1424,22 @@
     <possibleSolutions>
         <cell>
             <angle_alpha>
-                <value>9.001078e+01</value>
+                <value>9.001010e+01</value>
             </angle_alpha>
             <angle_beta>
-                <value>9.004463e+01</value>
+                <value>9.004285e+01</value>
             </angle_beta>
             <angle_gamma>
-                <value>9.003335e+01</value>
+                <value>9.003668e+01</value>
             </angle_gamma>
             <length_a>
-                <value>5.481551e+01</value>
+                <value>5.481641e+01</value>
             </length_a>
             <length_b>
-                <value>5.907417e+01</value>
+                <value>5.907603e+01</value>
             </length_b>
             <length_c>
-                <value>6.698118e+01</value>
+                <value>6.697841e+01</value>
             </length_c>
         </cell>
         <index>
@@ -1462,9 +1462,9 @@
         <value>16</value>
     </selectedSolutionSpaceGroupNumber>
     <spotsTotal>
-        <value>1422</value>
+        <value>1419</value>
     </spotsTotal>
     <spotsUsed>
-        <value>1287</value>
+        <value>1282</value>
     </spotsUsed>
 </XSDataMOSFLMOutputIndexing>
