@@ -12,7 +12,10 @@ import XSDataCommon.XSDataLength
 import XSDataCommon.XSDataResult
 import XSDataCommon.XSDataString
 import XSDataCommon.XSDataTime
-package XSDataBestv12 {
+import XSDataCommon.XSDataSize
+import XSDataCommon.XSDataFlux
+
+package XSDataBestv13 {
 
 	complex type XSDataBestCollectionPlan {
 		collectionPlanNumber : XSDataInteger optional
@@ -20,8 +23,7 @@ package XSDataBestv12 {
 		comment : XSDataString optional
 		crystalScale : XSDataCrystalScale optional
 		statisticalPrediction : XSDataBestStatisticalPrediction optional
-		strategySummary : XSDataBestStrategySummary
-		optional
+		strategySummary : XSDataBestStrategySummary optional
 	}
 
 	complex type XSDataBestCollectionRun {
@@ -44,16 +46,14 @@ package XSDataBestv12 {
 	complex type XSDataBestResolutionBin {
 		IOverSigma : XSDataDouble
 		averageIntensity : XSDataDouble
-		averageIntensityOverAverageSigma : XSDataDouble
-		optional
+		averageIntensityOverAverageSigma : XSDataDouble optional
 		averageSigma : XSDataDouble
 		completeness : XSDataDouble
 		maxResolution : XSDataDouble
 		minResolution : XSDataDouble
 		percentageOverload : XSDataDouble
 		rFactor : XSDataDouble
-		rFriedel : XSDataDouble
-		optional
+		rFriedel : XSDataDouble optional
 		redundancy : XSDataDouble
 	}
 
@@ -83,18 +83,22 @@ package XSDataBestv12 {
 		"- anomalousData is deprecated, please use strategyOption instead.\n\n- minTransmission will work only with version v3.4 or higher of Best\n\n- xdsBackgroundFile will only work with version v3.4.1 or higher of Best\n\n- detectorDistanceMin and detectorDistanceMax (in mm) will work only with version v3.4.3 or higher of Best\n"
 		aimedCompleteness : XSDataDouble optional
 		aimedIOverSigma : XSDataDouble optional
-		aimedRedundancy : XSDataDouble
-		optional
+		aimedRedundancy : XSDataDouble optional
 		aimedResolution : XSDataDouble optional
 		anomalousData : XSDataBoolean optional
+		apertureSize : XSDataLength optional
 		beamExposureTime : XSDataTime
+		beamFlux : XSDataFlux optional
 		beamMaxExposureTime : XSDataTime optional
 		beamMinExposureTime : XSDataTime optional
+		beamShift : XSDataLength optional
+		beamSize : XSDataSize optional
 		bestFileContentDat : XSDataString
 		bestFileContentHKL : XSDataString []
 		bestFileContentPar : XSDataString
 		complexity : XSDataString optional
 		crystalAbsorbedDoseRate : XSDataAbsorbedDoseRate optional
+		crystalSize : XSDataSize optional
 		crystalShape : XSDataDouble optional
 		crystalSusceptibility : XSDataDouble optional
 		detectorDistanceMax : XSDataLength optional
@@ -104,6 +108,7 @@ package XSDataBestv12 {
 		goniostatMinRotationWidth : XSDataAngle optional
 		minTransmission : XSDataDouble optional
 		numberOfCrystalPositions : XSDataInteger optional
+		omegaMin : XSDataAngle optional
 		radiationDamageModelBeta : XSDataDouble optional
 		radiationDamageModelGamma : XSDataDouble optional
 		strategyOption : XSDataString optional
