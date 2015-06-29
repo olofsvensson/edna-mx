@@ -196,7 +196,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         if not self.edPluginMXWaitFile.getDataOutput().getTimedOut().getValue():
             # Workaround for ESRF lag problem
             if EDUtilsPath.isESRF():
-                time.sleep(1)
+                time.sleep(2)
             # The image is here - make the first thumbnail
             self.edPluginExecThumbnail.connectSUCCESS(self.doSuccessExecThumbnail)
             self.edPluginExecThumbnail.connectFAILURE(self.doFailureExecThumbnail)
