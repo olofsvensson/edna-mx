@@ -103,7 +103,7 @@ class EDPluginControlInterfacev1_3(EDPluginControl):
         self.setXSDataInputClass(XSDataInputCharacterisation, "inputCharacterisation")
 
         self.strEDPluginControlSubWedgeAssembleName = "EDPluginControlSubWedgeAssemblev1_1"
-        self.strEDPluginControlCharacterisationName = "EDPluginControlCharacterisationv1_3"
+        self.strEDPluginControlCharacterisationName = "EDPluginControlCharacterisationv1_5"
         self.strEDPluginControlISPyBName = "EDPluginControlISPyBv1_1"
 
         self.edPluginControlSubWedgeAssemble = None
