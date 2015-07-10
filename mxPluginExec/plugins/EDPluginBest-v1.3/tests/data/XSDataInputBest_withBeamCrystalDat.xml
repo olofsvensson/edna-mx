@@ -1184,10 +1184,10 @@ BEAM            102.521  104.797
     </beamFlux>
     <beamSize>
         <x>
-            <value>0.100000</value>
+            <value>0.045</value>
         </x>
         <y>
-            <value>0.100000</value>
+            <value>0.030</value>
         </y>
     </beamSize>
     <beamShift>
@@ -1195,13 +1195,13 @@ BEAM            102.521  104.797
     </beamShift>
     <crystalSize>
         <x>
-            <value>0.0140</value>
+            <value>0.0830</value>
         </x>
         <y>
-            <value>0.030</value>
+            <value>0.0140</value>
         </y>
         <z>
-            <value>0.0830</value>
+            <value>0.030</value>
         </z>
     </crystalSize>
 	<apertureSize>

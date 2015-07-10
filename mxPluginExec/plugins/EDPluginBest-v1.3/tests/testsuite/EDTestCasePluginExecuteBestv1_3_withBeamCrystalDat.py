@@ -41,7 +41,7 @@ from EDTestCasePluginExecuteBestv1_3     import EDTestCasePluginExecuteBestv1_3
 
 
 
-class EDTestCasePluginExecuteBestv1_3_withAnomalousData(EDTestCasePluginExecuteBestv1_3):
+class EDTestCasePluginExecuteBestv1_3_withBeamCrystalDat(EDTestCasePluginExecuteBestv1_3):
 
     def __init__(self, _oalStringTestName=None):
         EDTestCasePluginExecuteBestv1_3.__init__(self, "EDPluginBestv1_3")

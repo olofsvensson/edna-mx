@@ -72,8 +72,7 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
 
         # This version of the Best plugin requires the latest
         # version of Best. 
-        self.addCompatibleVersion("Version 5.1.0 //  28.05.2015")
-#        self.addCompatibleVersion("Version 4.1.0 //  02.10.2012")
+        self.addCompatibleVersion("Version 5.1.0 //  07.07.2015")
 
         self.strCONF_BEST_HOME_LABEL = "besthome"
 
@@ -103,9 +102,6 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
         self.checkMandatoryParameters(self.dataInput.beamExposureTime, "beamExposureTime")
         self.checkMandatoryParameters(self.dataInput.beamMaxExposureTime, "beamMaxExposureTime")
         self.checkMandatoryParameters(self.dataInput.detectorType, "detectorType")
-
-        self.checkImportantParameters(self.dataInput.crystalAbsorbedDoseRate, "crystalDoseRate - radiation damage will not be estimated")
-        self.checkImportantParameters(self.dataInput.crystalShape, "crystalShape")
 
 
     def getComplexity(self):
@@ -207,6 +203,9 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
 
 
     def initializeCommands(self):
+        
+        dataInput = self.dataInput
+        
         self.addListCommandPreExecution(self.strCommandBestHome)
 
         listFileBestHKL = self.getListFileBestHKL()
@@ -215,113 +214,152 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
         for fileBestHKL in listFileBestHKL:
             listFileBestHKLCommand = listFileBestHKLCommand + fileBestHKL + " "
 
-        strDetectorName = self.dataInput.detectorType.value
-        fExposureTime = self.dataInput.beamExposureTime.value
-        fMaxExposureTime = self.dataInput.beamMaxExposureTime.value
+        strDetectorName = dataInput.detectorType.value
+        fExposureTime = dataInput.beamExposureTime.value
+        fMaxExposureTime = dataInput.beamMaxExposureTime.value
 
-        self.strCommandBest = "-f " + strDetectorName + " " + "-t " + str(fExposureTime) + " "
+        self.strCommandBest = "-f {0}".format(strDetectorName)
+        self.strCommandBest += " -t {0}".format(fExposureTime)
 
         # Add output of gle files
-        self.strCommandBest = self.strCommandBest + "-g "
+        self.strCommandBest += " -g"
 
-        if self.dataInput.crystalAbsorbedDoseRate is not None:
-            strCrystalAbsorbedDoseRate = str(self.dataInput.crystalAbsorbedDoseRate.value)
-            self.strCommandBest = self.strCommandBest + "-GpS " + strCrystalAbsorbedDoseRate + " "
+        # Check if we can use new BEST v5.1 features
+        xsDataBeamFlux = dataInput.beamFlux
+        xsDataBeamSize = dataInput.beamSize
+        xsDataCrystalSize = dataInput.crystalSize
+        xsDataApertureSize = dataInput.apertureSize
+#        xsDataBeamShift = dataInput.beamShift
+        xsDataOmegaMin = dataInput.omegaMin
 
-        if self.dataInput.crystalShape is not None:
-            strCrystalShape = str(self.dataInput.crystalShape.value)
-            self.strCommandBest = self.strCommandBest + "-sh " + strCrystalShape + " "
+        if all([xsData is not None for xsData in [xsDataBeamFlux, xsDataBeamSize, xsDataCrystalSize, \
+                                                 xsDataApertureSize, xsDataOmegaMin]]):
 
-        if self.dataInput.crystalSusceptibility is not None:
-            strCrystalSusceptibility = str(self.dataInput.crystalSusceptibility.value)
-            self.strCommandBest = self.strCommandBest + "-su " + strCrystalSusceptibility + " "
+            self.strCommandBest += " -flux {0}".format(xsDataBeamFlux.value)
+            strBestCrystalDatFileName = "best_crystal.dat"
+            strBestCrystalDatPath = os.path.join(self.getWorkingDirectory(), strBestCrystalDatFileName)
+            strContent  = "! - this is comments\n"
+            strContent += "! all sizes in mm\n"
+            strContent += "! beam size\n"
+            strContent += "horizontal_size {0}\n".format(xsDataBeamSize.x.value)
+            strContent += "vertical_size {0}\n".format(xsDataBeamSize.y.value)
+            strContent += "aperture_size {0}\n".format(xsDataApertureSize.value)
+            strContent += "!defalt: no aperture\n"
+            strContent += "!horizontal_slit 0.1000\n"
+            strContent += "!vertical_slit 0.1000\n"
+            strContent += "beam_shift 0.0\n"
+            strContent += "!vertical shift relative to the rotation axis\n"
+            strContent += "!\n"
+            strContent += "crystal_vert_max {0}\n".format(xsDataCrystalSize.x.value)
+            strContent += "crystal_vert_min {0}\n".format(xsDataCrystalSize.y.value)
+            strContent += "crystal_hor {0}\n".format(xsDataCrystalSize.z.value)
+            strContent += "omega_min {0}\n".format(xsDataOmegaMin.value)
+            strContent += "!description of crystal shape and position- a,c,b\n"
+            strContent += "end\n"
+            EDUtilsFile.writeFile(strBestCrystalDatPath, strContent)
+            
+            self.strCommandBest += " -3D {0}".format(strBestCrystalDatFileName)
+            
+        else:
 
-        if self.dataInput.anomalousData is not None:
-            bAnomalousData = self.dataInput.anomalousData.value
-            if (bAnomalousData):
-                if self.dataInput.crystalAbsorbedDoseRate is not None:
-                    self.strCommandBest = self.strCommandBest + "-asad "
-                else:
-                    self.strCommandBest = self.strCommandBest + "-a "
+            if dataInput.crystalAbsorbedDoseRate is not None:
+                strCrystalAbsorbedDoseRate = str(dataInput.crystalAbsorbedDoseRate.value)
+                self.strCommandBest += " -GpS " + strCrystalAbsorbedDoseRate + " "
+    
+            if dataInput.crystalShape is not None:
+                strCrystalShape = str(dataInput.crystalShape.value)
+                self.strCommandBest += " -sh " + strCrystalShape + " "
+    
+            if dataInput.crystalSusceptibility is not None:
+                strCrystalSusceptibility = str(dataInput.crystalSusceptibility.value)
+                self.strCommandBest += " -su " + strCrystalSusceptibility + " "
+    
+            if dataInput.anomalousData is not None:
+                bAnomalousData = dataInput.anomalousData.value
+                if (bAnomalousData):
+                    if dataInput.crystalAbsorbedDoseRate is not None:
+                        self.strCommandBest += " -asad"
+                    else:
+                        self.strCommandBest += " -a"
 
-        if self.dataInput.beamMinExposureTime is not None:
-            strBeamMinExposureTime = str(self.dataInput.beamMinExposureTime.value)
-            self.strCommandBest = self.strCommandBest + "-M " + strBeamMinExposureTime + " "
+        if dataInput.beamMinExposureTime is not None:
+            strBeamMinExposureTime = str(dataInput.beamMinExposureTime.value)
+            self.strCommandBest += " -M " + strBeamMinExposureTime + " "
 
-        if self.dataInput.goniostatMaxRotationSpeed is not None:
-            strGoniostatMaxRotationSpeed = str(self.dataInput.goniostatMaxRotationSpeed.value)
-            self.strCommandBest = self.strCommandBest + "-S " + strGoniostatMaxRotationSpeed + " "
+        if dataInput.goniostatMaxRotationSpeed is not None:
+            strGoniostatMaxRotationSpeed = str(dataInput.goniostatMaxRotationSpeed.value)
+            self.strCommandBest += " -S " + strGoniostatMaxRotationSpeed + " "
 
-        if self.dataInput.goniostatMinRotationWidth is not None:
-            strGoniostatMinRotationWidth = str(self.dataInput.goniostatMinRotationWidth.value)
-            self.strCommandBest = self.strCommandBest + "-w " + strGoniostatMinRotationWidth + " "
+        if dataInput.goniostatMinRotationWidth is not None:
+            strGoniostatMinRotationWidth = str(dataInput.goniostatMinRotationWidth.value)
+            self.strCommandBest += " -w " + strGoniostatMinRotationWidth + " "
 
-        if self.dataInput.aimedResolution is not None:
-            strAimedResolution = str(self.dataInput.aimedResolution.value)
-            self.strCommandBest = self.strCommandBest + "-r " + strAimedResolution + " "
+        if dataInput.aimedResolution is not None:
+            strAimedResolution = str(dataInput.aimedResolution.value)
+            self.strCommandBest += " -r " + strAimedResolution + " "
 
-        if self.dataInput.aimedRedundancy is not None:
-            strAimedRedundancy = str(self.dataInput.aimedRedundancy.value)
-            self.strCommandBest = self.strCommandBest + "-R " + strAimedRedundancy + " "
+        if dataInput.aimedRedundancy is not None:
+            strAimedRedundancy = str(dataInput.aimedRedundancy.value)
+            self.strCommandBest += " -R " + strAimedRedundancy + " "
 
-        if self.dataInput.aimedCompleteness is not None:
-            strAimedCompleteness = str(self.dataInput.aimedCompleteness.value)
-            self.strCommandBest = self.strCommandBest + "-C " + strAimedCompleteness + " "
+        if dataInput.aimedCompleteness is not None:
+            strAimedCompleteness = str(dataInput.aimedCompleteness.value)
+            self.strCommandBest += " -C " + strAimedCompleteness + " "
 
-        if self.dataInput.aimedIOverSigma is not None:
-            strAimedIOverSigma = str(self.dataInput.aimedIOverSigma.value)
-            self.strCommandBest = self.strCommandBest + "-i2s " + strAimedIOverSigma + " "
+        if dataInput.aimedIOverSigma is not None:
+            strAimedIOverSigma = str(dataInput.aimedIOverSigma.value)
+            self.strCommandBest += " -i2s " + strAimedIOverSigma + " "
 
-        if self.dataInput.transmission is not None:
-            strTransmission = str(self.dataInput.transmission.value)
-            self.strCommandBest = self.strCommandBest + "-Trans " + strTransmission + " "
+        if dataInput.transmission is not None:
+            strTransmission = str(dataInput.transmission.value)
+            self.strCommandBest += " -Trans " + strTransmission + " "
 
-        if self.dataInput.minTransmission is not None:
-            strMinTransmission = str(self.dataInput.minTransmission.value)
-            self.strCommandBest = self.strCommandBest + "-TRmin " + strMinTransmission + " "
+        if dataInput.minTransmission is not None:
+            strMinTransmission = str(dataInput.minTransmission.value)
+            self.strCommandBest += " -TRmin " + strMinTransmission + " "
 
-        if self.dataInput.numberOfCrystalPositions is not None:
-            iNumberOfCrystalPositions = str(self.dataInput.numberOfCrystalPositions.value)
-            self.strCommandBest = self.strCommandBest + "-Npos " + iNumberOfCrystalPositions + " "
+        if dataInput.numberOfCrystalPositions is not None:
+            iNumberOfCrystalPositions = str(dataInput.numberOfCrystalPositions.value)
+            self.strCommandBest += " -Npos " + iNumberOfCrystalPositions + " "
 
         
-        if self.dataInput.detectorDistanceMin is not None:
-            fDetectorDistanceMin = str(self.dataInput.detectorDistanceMin.value)
-            self.strCommandBest = self.strCommandBest + "-DIS_MIN " + fDetectorDistanceMin + " "
+        if dataInput.detectorDistanceMin is not None:
+            fDetectorDistanceMin = str(dataInput.detectorDistanceMin.value)
+            self.strCommandBest += " -DIS_MIN " + fDetectorDistanceMin + " "
 
         
-        if self.dataInput.detectorDistanceMax is not None:
-            fDetectorDistanceMax = str(self.dataInput.detectorDistanceMax.value)
-            self.strCommandBest = self.strCommandBest + "-DIS_MAX " + fDetectorDistanceMax + " "
+        if dataInput.detectorDistanceMax is not None:
+            fDetectorDistanceMax = str(dataInput.detectorDistanceMax.value)
+            self.strCommandBest += " -DIS_MAX " + fDetectorDistanceMax + " "
 
         
-        xsDataStrategyOption = self.dataInput.strategyOption
+        xsDataStrategyOption = dataInput.strategyOption
         if xsDataStrategyOption is not None:
-            self.strCommandBest = self.strCommandBest + "%s " % xsDataStrategyOption.value
+            self.strCommandBest += " %s " % xsDataStrategyOption.value
 
-        xsDataAngleUserDefinedRotationStart = self.dataInput.userDefinedRotationStart
-        xsDataAngleUserDefinedRotationRange = self.dataInput.userDefinedRotationRange
+        xsDataAngleUserDefinedRotationStart = dataInput.userDefinedRotationStart
+        xsDataAngleUserDefinedRotationRange = dataInput.userDefinedRotationRange
         if xsDataAngleUserDefinedRotationStart is not None:
-            self.strCommandBest = self.strCommandBest + "-phi %f %f " % \
+            self.strCommandBest += " -phi %f %f " % \
               (xsDataAngleUserDefinedRotationStart.value, xsDataAngleUserDefinedRotationRange.value)
 
-        if self.dataInput.radiationDamageModelBeta is not None:
-            fRadiationDamageModelBeta = str(self.dataInput.radiationDamageModelBeta.value)
-            self.strCommandBest = self.strCommandBest + "-beta " + fRadiationDamageModelBeta + " "
+        if dataInput.radiationDamageModelBeta is not None:
+            fRadiationDamageModelBeta = str(dataInput.radiationDamageModelBeta.value)
+            self.strCommandBest += " -beta " + fRadiationDamageModelBeta + " "
 
-        if self.dataInput.radiationDamageModelGamma is not None:
-            fRadiationDamageModelGamma = str(self.dataInput.radiationDamageModelGamma.value)
-            self.strCommandBest = self.strCommandBest + "-gama " + fRadiationDamageModelGamma + " "
+        if dataInput.radiationDamageModelGamma is not None:
+            fRadiationDamageModelGamma = str(dataInput.radiationDamageModelGamma.value)
+            self.strCommandBest += " -gama " + fRadiationDamageModelGamma + " "
 
-        self.strCommandBest = self.strCommandBest + "-T " + str(fMaxExposureTime) + " " + \
+        self.strCommandBest += " -T " + str(fMaxExposureTime) + " " + \
                                      "-o " + os.path.join(self.getWorkingDirectory(), self.getScriptBaseName() + "_plots.mtv ") + \
                                      "-e " + self.getComplexity() + " "
                                      
-        if self.dataInput.xdsBackgroundImage:
-            strPathToXdsBackgroundImage = self.dataInput.xdsBackgroundImage.path.value
-            self.strCommandBest = self.strCommandBest + "-MXDS " + self.getFileBestPar() + " " + strPathToXdsBackgroundImage + " " + listFileBestHKLCommand            
+        if dataInput.xdsBackgroundImage:
+            strPathToXdsBackgroundImage = dataInput.xdsBackgroundImage.path.value
+            self.strCommandBest += "-MXDS " + self.getFileBestPar() + " " + strPathToXdsBackgroundImage + " " + listFileBestHKLCommand            
         else:
-            self.strCommandBest = self.strCommandBest + "-mos " + self.getFileBestDat() + " " + self.getFileBestPar() + " " + listFileBestHKLCommand
+            self.strCommandBest += "-mos " + self.getFileBestDat() + " " + self.getFileBestPar() + " " + listFileBestHKLCommand
 
         self.setScriptCommandline(self.strCommandBest)
 
