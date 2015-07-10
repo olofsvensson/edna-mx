@@ -31,6 +31,7 @@ from EDVerbose import EDVerbose
 from XSDataCommon                   import XSDataDouble
 from XSDataCommon                   import XSDataAngle
 from XSDataCommon                   import XSDataString
+from XSDataCommon                   import XSDataSize
 
 from XSDataMXv1                     import XSDataResultStrategy
 from XSDataMXv1                     import XSDataCollection
@@ -73,22 +74,26 @@ class EDHandlerXSDataBestv1_3(EDObject):
             xsDataSusceptibility = xsDataSample.getSusceptibility()
             # crystalShape
             # Default value is 1 (We assume that Xtal is smaller than beam)
-            xsDataDoubleCrystalShape = xsDataSample.getShape()
-            if(xsDataDoubleCrystalShape is None):
-                if (xsDataSample.getSize() is None) or (xsDataBeam.getSize() is None):
-                    xsDataDoubleCrystalShape = XSDataDouble(1)
-                else:
-                    fCrystalSizeY = xsDataSample.getSize().getY().getValue()
-                    fCrystalSizeZ = xsDataSample.getSize().getZ().getValue()
-                    fDiagonal = math.sqrt(fCrystalSizeY ** 2 + fCrystalSizeZ ** 2)
-                    fBeamSizeY = xsDataBeam.getSize().getY().getValue()
-                    fCrystalShape = None
-                    if fBeamSizeY > fDiagonal:
-                        fCrystalShape = 1.0
+            if xsDataSample.size is not None and xsDataSample.omegaMin is not None:
+                xsDataInputBest.crystalSize = XSDataSize().parseString(xsDataSample.size.marshal())
+                xsDataInputBest.omegaMin = xsDataSample.omegaMin
+            else:
+                xsDataDoubleCrystalShape = xsDataSample.getShape()
+                if(xsDataDoubleCrystalShape is None):
+                    if (xsDataSample.getSize() is None) or (xsDataBeam.getSize() is None):
+                        xsDataDoubleCrystalShape = XSDataDouble(1)
                     else:
-                        fCrystalShape = int(10 * fDiagonal / fBeamSizeY) / 10.0
-                    xsDataDoubleCrystalShape = XSDataDouble(fCrystalShape)
-            xsDataInputBest.setCrystalShape(xsDataDoubleCrystalShape)
+                        fCrystalSizeY = xsDataSample.getSize().getY().getValue()
+                        fCrystalSizeZ = xsDataSample.getSize().getZ().getValue()
+                        fDiagonal = math.sqrt(fCrystalSizeY ** 2 + fCrystalSizeZ ** 2)
+                        fBeamSizeY = xsDataBeam.getSize().getY().getValue()
+                        fCrystalShape = None
+                        if fBeamSizeY > fDiagonal:
+                            fCrystalShape = 1.0
+                        else:
+                            fCrystalShape = int(10 * fDiagonal / fBeamSizeY) / 10.0
+                        xsDataDoubleCrystalShape = XSDataDouble(fCrystalShape)
+                xsDataInputBest.setCrystalShape(xsDataDoubleCrystalShape)
             # Radiation damage model parameters
             xsDataInputBest.setRadiationDamageModelBeta(xsDataSample.getRadiationDamageModelBeta())
             xsDataInputBest.setRadiationDamageModelGamma(xsDataSample.getRadiationDamageModelGamma())
@@ -137,6 +142,12 @@ class EDHandlerXSDataBestv1_3(EDObject):
                     EDVerbose.warning("Input transmission to BEST ignored because it is zero or close to zero: %f" % fTransmission)
                 else:
                     xsDataInputBest.setTransmission(xsDataBeam.getTransmission())
+            if xsDataBeam.getApertureSize():
+                xsDataInputBest.setApertureSize(xsDataBeam.getApertureSize())
+            if xsDataBeam.size:
+                xsDataInputBest.setBeamSize(xsDataBeam.size)
+            if xsDataBeam.flux:
+                xsDataInputBest.setBeamFlux(xsDataBeam.flux)
 
         # Other diffraction plan parameters
         if xsDataDiffractionPlan:
