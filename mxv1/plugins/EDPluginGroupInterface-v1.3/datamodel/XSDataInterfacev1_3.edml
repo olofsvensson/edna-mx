@@ -26,6 +26,7 @@ complex type XSDataInputInterface {
 	beamSize : XSDataLength optional
 	beamSizeX : XSDataLength optional
 	beamSizeY : XSDataLength optional
+	apertureSize : XSDataLength optional
 	templateMode : XSDataBoolean optional
 	generatedTemplateFile : XSDataFile optional
 	resultsFilePath : XSDataFile optional

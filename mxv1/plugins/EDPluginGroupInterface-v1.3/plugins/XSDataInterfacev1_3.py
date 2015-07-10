@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Jul 10 11:25::46 2015 by EDGenerateDS.
+# Generated Fri Jul 10 01:12::38 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -150,7 +150,7 @@ class MixedContainer(object):
 
 
 class XSDataInputInterface(object):
-    def __init__(self, inputCharacterisation=None, comments=None, shortComments=None, dataCollectionId=None, transmission=None, wavelength=None, beamPosY=None, beamPosX=None, resultsFilePath=None, generatedTemplateFile=None, templateMode=None, beamSizeY=None, beamSizeX=None, beamSize=None, minExposureTimePerImage=None, flux=None, imagePath=None, sample=None, diffractionPlan=None, experimentalCondition=None):
+    def __init__(self, inputCharacterisation=None, comments=None, shortComments=None, dataCollectionId=None, transmission=None, wavelength=None, beamPosY=None, beamPosX=None, resultsFilePath=None, generatedTemplateFile=None, templateMode=None, apertureSize=None, beamSizeY=None, beamSizeX=None, beamSize=None, minExposureTimePerImage=None, flux=None, imagePath=None, sample=None, diffractionPlan=None, experimentalCondition=None):
         if experimentalCondition is None:
             self._experimentalCondition = None
         elif experimentalCondition.__class__.__name__ == "XSDataExperimentalCondition":
@@ -213,6 +213,13 @@ class XSDataInputInterface(object):
             self._beamSizeY = beamSizeY
         else:
             strMessage = "ERROR! XSDataInputInterface constructor argument 'beamSizeY' is not XSDataLength but %s" % self._beamSizeY.__class__.__name__
+            raise BaseException(strMessage)
+        if apertureSize is None:
+            self._apertureSize = None
+        elif apertureSize.__class__.__name__ == "XSDataLength":
+            self._apertureSize = apertureSize
+        else:
+            strMessage = "ERROR! XSDataInputInterface constructor argument 'apertureSize' is not XSDataLength but %s" % self._apertureSize.__class__.__name__
             raise BaseException(strMessage)
         if templateMode is None:
             self._templateMode = None
@@ -420,6 +427,18 @@ class XSDataInputInterface(object):
             raise BaseException(strMessage)
     def delBeamSizeY(self): self._beamSizeY = None
     beamSizeY = property(getBeamSizeY, setBeamSizeY, delBeamSizeY, "Property for beamSizeY")
+    # Methods and properties for the 'apertureSize' attribute
+    def getApertureSize(self): return self._apertureSize
+    def setApertureSize(self, apertureSize):
+        if apertureSize is None:
+            self._apertureSize = None
+        elif apertureSize.__class__.__name__ == "XSDataLength":
+            self._apertureSize = apertureSize
+        else:
+            strMessage = "ERROR! XSDataInputInterface.setApertureSize argument is not XSDataLength but %s" % apertureSize.__class__.__name__
+            raise BaseException(strMessage)
+    def delApertureSize(self): self._apertureSize = None
+    apertureSize = property(getApertureSize, setApertureSize, delApertureSize, "Property for apertureSize")
     # Methods and properties for the 'templateMode' attribute
     def getTemplateMode(self): return self._templateMode
     def setTemplateMode(self, templateMode):
@@ -578,6 +597,8 @@ class XSDataInputInterface(object):
             self.beamSizeX.export(outfile, level, name_='beamSizeX')
         if self._beamSizeY is not None:
             self.beamSizeY.export(outfile, level, name_='beamSizeY')
+        if self._apertureSize is not None:
+            self.apertureSize.export(outfile, level, name_='apertureSize')
         if self._templateMode is not None:
             self.templateMode.export(outfile, level, name_='templateMode')
         if self._generatedTemplateFile is not None:
@@ -650,6 +671,11 @@ class XSDataInputInterface(object):
             obj_ = XSDataLength()
             obj_.build(child_)
             self.setBeamSizeY(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'apertureSize':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setApertureSize(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'templateMode':
             obj_ = XSDataBoolean()

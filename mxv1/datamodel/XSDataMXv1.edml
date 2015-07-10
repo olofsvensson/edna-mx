@@ -191,6 +191,7 @@ package XSDataMXv1 {
 			size : XSDataSize optional
 			transmission : XSDataDouble optional
 			wavelength : XSDataWavelength optional
+			apertureSize : XSDataLength optional
 		}
 
 		complex type XSDataCollection extends XSData {
@@ -444,6 +445,7 @@ package XSDataMXv1 {
 			radiationDamageModelGamma : XSDataDouble optional
 			shape : XSDataDouble optional
 			size : XSDataSize optional
+			omegaMin : XSDataAngle optional
 			susceptibility : XSDataDouble optional
 		}
 

@@ -120,6 +120,7 @@ class EDPluginControlInterfacev1_3(EDPluginControl):
         self.fMinExposureTimePerImage = None
         self.fBeamSizeX = None
         self.fBeamSizeY = None
+        self.fApertureSize = None
         self.bTemplateMode = False
         self.strGeneratedTemplateFile = None
         self.strResultsFilePath = None
@@ -233,16 +234,24 @@ class EDPluginControlInterfacev1_3(EDPluginControl):
                     if self.xsDataExperimentalCodition.getBeam().getSize() != None:
                         self.fBeamSizeX = self.xsDataExperimentalCodition.getBeam().getSize().getX().getValue()
                         self.fBeamSizeY = self.xsDataExperimentalCodition.getBeam().getSize().getY().getValue()
+                    if self.xsDataExperimentalCodition.getBeam().getApertureSize() != None:
+                        self.fApertureSize = self.xsDataExperimentalCodition.getBeam().getApertureSize().getValue()
 
             if xsDataInputInterface.getBeamSize():
                 self.fBeamSizeX = xsDataInputInterface.getBeamSize().getValue()
                 self.fBeamSizeY = xsDataInputInterface.getBeamSize().getValue()
 
+            if xsDataInputInterface.getApertureSize():
+                self.fApertureSize = xsDataInputInterface.getApertureSize().getValue()
+                
             if xsDataInputInterface.getBeamSizeX():
                 self.fBeamSizeX = xsDataInputInterface.getBeamSizeX().getValue()
 
             if xsDataInputInterface.getBeamSizeY():
                 self.fBeamSizeY = xsDataInputInterface.getBeamSizeY().getValue()
+
+            if xsDataInputInterface.getApertureSize():
+                self.fApertureSize = xsDataInputInterface.getApertureSize().getValue()
 
             if xsDataInputInterface.getTemplateMode():
                 self.bTemplateMode = xsDataInputInterface.getTemplateMode().getValue()
@@ -363,10 +372,15 @@ class EDPluginControlInterfacev1_3(EDPluginControl):
                     if self.xsDataExperimentalCodition.getBeam().getSize() != None:
                         self.fBeamSizeX = self.xsDataExperimentalCodition.getBeam().getSize().getX().getValue()
                         self.fBeamSizeY = self.xsDataExperimentalCodition.getBeam().getSize().getY().getValue()
+                    if self.xsDataExperimentalCodition.getBeam().getApertureSize() != None:
+                        self.fApertureSize = self.xsDataExperimentalCodition.getBeam().getApertureSize().getValue()
 
             if self.hasDataInput("beamSize"):
                 self.fBeamSizeX = self.getDataInput("beamSize")[0].getValue()
                 self.fBeamSizeY = self.getDataInput("beamSize")[0].getValue()
+
+            if self.hasDataInput("apertureSize"):
+                self.fApertureSize = self.getDataInput("apertureSize")[0].getValue()
 
             if self.hasDataInput("beamSizeX"):
                 self.fBeamSizeX = self.getDataInput("beamSizeX")[0].getValue()
@@ -536,6 +550,8 @@ class EDPluginControlInterfacev1_3(EDPluginControl):
                     xsDataSize.setX(XSDataLength(self.fBeamSizeX))
                     xsDataSize.setY(XSDataLength(self.fBeamSizeY))
                     xsDataSubWedge.getExperimentalCondition().getBeam().setSize(xsDataSize)
+                if (self.fApertureSize is not None):
+                    xsDataSubWedge.getExperimentalCondition().getBeam().setApertureSize(XSDataLength(self.fApertureSize))
                 if (self.fBeamPosX is not None):
                     xsDataSubWedge.getExperimentalCondition().getDetector().setBeamPositionX(XSDataLength(self.fBeamPosX))
                 if (self.fBeamPosY is not None):
