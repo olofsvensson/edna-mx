@@ -70,6 +70,7 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
         self.setXSDataInputClass(XSDataInputBest)
+        self.setDataOutput(XSDataResultBest())
 
         # This version of the Best plugin requires the latest
         # version of Best. 
@@ -378,6 +379,8 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
             strDnaTablesXML = self.readProcessFile(_strFileName)
             # Fix for MXSUP-1751: Error when parsing broken XML
             try:
+                strDnaTablesXML = strDnaTablesXML.replace(" > ", " greater than ")
+                strDnaTablesXML = strDnaTablesXML.replace(" < ", " lesser than ")
                 xsDataDnaTables = dna_tables.parseString(strDnaTablesXML)
             except Exception as e:
                 self.setFailure()

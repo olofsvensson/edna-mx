@@ -164,6 +164,9 @@ useful files from there. Yes, this is not pretty */
 complex type XSDataXdsGenerateInput extends XSDataInput {
         previous_run_dir : XSDataString
         resolution       : XSDataDouble
+		spacegroup       : XSDataInteger optional
+		unit_cell        : XSDataString optional
+        
 }
 
 // we are only interested in that one file
@@ -212,6 +215,7 @@ complex type XSDataFileConversion extends XSDataInput {
         res              : XSDataDouble
         nres             : XSDataDouble
         anom             : XSDataBoolean
+        choose_spacegroup : XSDataString optional
 	// optional because the way we get it is fragile and may break
 	image_prefix     : XSDataString optional
 }
@@ -219,19 +223,21 @@ complex type XSDataFileConversion extends XSDataInput {
 complex type XSDataFileConversionOut extends XSDataResult {
 	pointless_sgnumber : XSDataInteger
 	pointless_sgstring : XSDataString
+	pointless_cell     : XSDataDouble []
 	aimless_log        : XSDataString
 }
 
 complex type XSDataAutoprocImport extends XSDataInput {
-	input_anom		: XSDataString
+	input_anom	    	: XSDataString
 	input_noanom		: XSDataString
 	output_directory	: XSDataString
 	dataCollectionID	: XSDataInteger
-	start_image		: XSDataInteger
+	start_image		    : XSDataInteger
         end_image		: XSDataInteger
-        res			: XSDataDouble
+        res			    : XSDataDouble
         nres			: XSDataDouble
-	image_prefix            : XSDataString optional
+	image_prefix        : XSDataString optional
+    choose_spacegroup   : XSDataString optional
 }
 
 complex type XSDataAutoprocImportOut extends XSDataResult {
@@ -239,7 +245,8 @@ complex type XSDataAutoprocImportOut extends XSDataResult {
 	// Those two come from the noanom data
 	pointless_sgnumber	: XSDataInteger
 	pointless_sgstring	: XSDataString
-	aimless_log_anom        : XSDataString
+	pointless_cell      : XSDataDouble []
+	aimless_log_anom    : XSDataString
 	aimless_log_noanom	: XSDataString
 }
 
@@ -247,6 +254,7 @@ complex type XSDataInputControlDimple extends XSDataInput {
 	dataCollectionId : XSDataInteger
 	mtzFile : XSDataFile
 	pyarchPath : XSDataFile
+	imagePrefix : XSDataString optional
 	pdbDirectory : XSDataFile optional
 }
 

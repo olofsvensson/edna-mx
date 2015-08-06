@@ -94,11 +94,17 @@ class EDTestCasePluginUnitControlInterfaceToMXCuBEv1_3(EDTestCasePluginUnit):
         EDAssert.equal(["data", "visitor"], pluginMXCuBE.splitHeadDirectory("/data/visitor"))
         EDAssert.equal(["data", "visitor/mx415/id14eh2/20100212"], pluginMXCuBE.splitHeadDirectory("/data/visitor/mx415/id14eh2/20100212"))
 
+    def testGetBeamlineProposalFromPath(self):
+        pluginMXCuBE = self.createPlugin()
+        testPath1 = "/data/visitor/mx1588/id23eh1/20141216/RAW_DATA/99_1/ref-PTE_C23_A203_1_0001.cbf"
+        print testPath1
+        print  pluginMXCuBE.getBeamlineProposalFromPath(testPath1)
 
     def process(self):
         self.addTestMethod(self.testCreateDNAFileDirectoryPath)
         self.addTestMethod(self.testCreateOutputFileDictionary)
         self.addTestMethod(self.testSplitHeadDirectory)
+        self.addTestMethod(self.testGetBeamlineProposalFromPath)
 
 
 

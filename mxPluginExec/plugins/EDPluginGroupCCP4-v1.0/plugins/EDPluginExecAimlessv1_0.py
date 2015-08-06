@@ -82,8 +82,8 @@ class EDPluginExecAimlessv1_0(EDPluginExecProcessScript):
         self.addListCommandExecution('scales constant')
         self.addListCommandExecution('resolution 50 {0}'.format(resolution))
         self.addListCommandExecution('cycles 100')
-        anomalous = 'ON' if anom else 'OFF'
-        self.addListCommandExecution('anomalous {0}'.format(anomalous))
+        self.addListCommandExecution('anomalous {0}'.format('ON' if anom else 'OFF'))
+        self.addListCommandExecution('output MERGED UNMERGED')
         self.addListCommandExecution('END')
 
         self.DEBUG(self.getListCommandExecution())

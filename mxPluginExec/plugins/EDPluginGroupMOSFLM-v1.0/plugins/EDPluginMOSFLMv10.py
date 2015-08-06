@@ -53,6 +53,8 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
 
         self.addCompatibleVersion("Mosflm version 7.0.9  for Image plate and CCD data 14th May 2012")
         self.addCompatibleVersion("Mosflm version 7.1.2  for Image plate and CCD data 16th June 2014")
+        self.addCompatibleVersion("Mosflm version 7.1.3  for Image plate and CCD data 17th February 2015")
+        self.addCompatibleVersion("Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015")
 
         self.strMOSFLMNewmatFileName = None
         self.strMOSFLMMatrixFileName = None

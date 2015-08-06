@@ -44,6 +44,7 @@ class EDTestCasePluginControlAutoprocv1_0_id29_20140505(EDTestCasePluginExecute)
         self.strTestDir = os.path.join(self.getPluginTestsDataHome(), "id29_20140505")
         self.setDataInputFile(os.path.join(self.strTestDir,
                                            "edna-autoproc-input.xml"))
+        self.setNoExpectedWarningMessages(1)
         self.setNoExpectedErrorMessages(1) # insufficient percentage of indexed reflections
 
 

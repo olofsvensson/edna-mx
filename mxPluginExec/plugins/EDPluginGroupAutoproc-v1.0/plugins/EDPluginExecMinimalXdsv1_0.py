@@ -49,6 +49,7 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.__init__(self )
         self.setXSDataInputClass(XSDataMinimalXdsIn)
         self.setDataOutput(XSDataMinimalXdsOut())
+        self.dataOutput.succeeded = XSDataBoolean(False)
 
 
     def checkParameters(self):
@@ -62,7 +63,12 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         # really look into the mandatory arg
         xds_input = os.path.abspath(self.dataInput.input_file.value)
         if not (os.path.exists(xds_input) and os.path.isfile(xds_input)):
+            strErrorMessage = "Cannot find or read XDS input file {0}".format(xds_input)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
+            self.dataOutput.succeeded = XSDataBoolean(False)
             self.setFailure()
+            return
 
         # if we have a resolution it has to be a list of 2 XSDataDouble
         resrange = self.dataInput.resolution_range
@@ -70,7 +76,10 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
             # a non specified list input parameter has a default value
             # of [], seriously???
             if len(resrange) != 2:
-                EDVerbose.ERROR("resolution range must be 2 in length ({0} given)".format(resrange))
+                strErrorMessage = "Resolution range must be 2 in length ({0} given)".format(resrange)
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
+                self.dataOutput.succeeded = XSDataBoolean(False)
                 self.setFailure()
                 return
 
@@ -135,7 +144,8 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         if spot_range is not None and len(spot_range) > 0:
             spot_range_list = list()
             for srange in spot_range:
-                spot_range_list.append('{0} {1}'.format(srange.begin, srange.end))
+                if srange.begin > 0:
+                    spot_range_list.append('{0} {1}'.format(srange.begin, srange.end))
             self.DEBUG('setting the spot range to {0} as requested'.format(spot_range_list))
             parsed_config['SPOT_RANGE='] = spot_range_list
         # unit cell might be an empty string or some other crazy stuff
@@ -190,23 +200,25 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         self.checkLogForWarningAndErrors(strPathToLogFile)
         
         
-        # Create some output data
-        xsDataResult = XSDataMinimalXdsOut()
-
-
         # XDS is considered to have succeeded iff CORRECT.LP has been created
         outfile = os.path.join(self.getWorkingDirectory(), 'CORRECT.LP')
         self.DEBUG('looking for {0}'.format(outfile))
         if not os.path.isfile(outfile):
             self.DEBUG('NOT FOUND')
-            xsDataResult.succeeded = XSDataBoolean(False)
+            self.dataOutput.succeeded = XSDataBoolean(False)
+            strErrorMessage = "Cannot find CORRECT.LP output file"
+            self.ERROR(strErrorMessage)
+            if len(self.getListOfErrorMessages()) == 0:
+                self.addErrorMessage(strErrorMessage)
+            else:
+                self.addWarningMessage(strErrorMessage)
             self.setFailure()
+            return
         else:
             self.DEBUG('FOUND')
-            xsDataResult.succeeded = XSDataBoolean(True)
-        self.DEBUG('succeeded is {0} and succeeded.value is {1}'.format(xsDataResult.succeeded,
-                                                                        xsDataResult.succeeded.value))
-        self.setDataOutput(xsDataResult)
+            self.dataOutput.succeeded = XSDataBoolean(True)
+        self.DEBUG('succeeded is {0} and succeeded.value is {1}'.format(self.dataOutput.succeeded,
+                                                                        self.dataOutput.succeeded.value))
 
     def checkLogForWarningAndErrors(self, _strPathToLogFile):
         """Checks the plugin/XDS log file for warning and error messages"""
@@ -215,7 +227,7 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
             listLog = strLog.split("\n")
             for strLogLine in listLog:
                 # Check for missing images
-                if "!!! ERROR !!!" in strLogLine:
+                if "!!! ERROR " in strLogLine:
                     self.ERROR(strLogLine)
                     self.addErrorMessage(strLogLine)
             

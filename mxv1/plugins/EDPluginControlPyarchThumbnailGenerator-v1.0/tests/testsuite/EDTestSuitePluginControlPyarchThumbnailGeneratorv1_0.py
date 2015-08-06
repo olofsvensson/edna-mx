@@ -37,6 +37,7 @@ class EDTestSuitePluginControlPyarchThumbnailGeneratorv1_0(EDTestSuite):
     def process(self):
         self.addTestCaseFromName("EDTestCasePluginUnitControlPyarchThumbnailGeneratorv1_0")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlPyarchThumbnailGeneratorv1_0")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlPyarchThumbnailGeneratorv1_0_png")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlPyarchThumbnailGeneratorv1_0_waitForFile")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlPyarchThumbnailGeneratorParallelv1_0")
 

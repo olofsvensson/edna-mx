@@ -82,6 +82,7 @@ class EDPluginControlPyarchThumbnailGeneratorParallelv1_0(EDPluginControl):
             xsDataInputPyarchThumbnailGenerator.diffractionImage = xsDataFile
             xsDataInputPyarchThumbnailGenerator.forcedOutputDirectory = self.dataInput.forcedOutputDirectory
             xsDataInputPyarchThumbnailGenerator.waitForFileTimeOut = self.dataInput.waitForFileTimeOut
+            xsDataInputPyarchThumbnailGenerator.format = self.dataInput.format
             edPluginControlThumbnail.dataInput = xsDataInputPyarchThumbnailGenerator
             listPlugins.append(edPluginControlThumbnail)
             edPluginControlThumbnail.execute()

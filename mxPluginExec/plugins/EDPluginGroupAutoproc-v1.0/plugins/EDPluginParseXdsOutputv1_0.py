@@ -91,6 +91,7 @@ class EDPluginParseXdsOutputv1_0(EDPlugin):
         """
         EDPlugin.__init__(self )
         self.setXSDataInputClass(XSDataXdsOutputFile)
+        self.setDataOutput(XSDataXdsOutput())
 
     def checkParameters(self):
         """
@@ -102,6 +103,9 @@ class EDPluginParseXdsOutputv1_0(EDPlugin):
         # now really check it
         path = self.dataInput.correct_lp.path.value
         if not os.path.isfile(path):
+            strErrorMessage = "Input file {0} does not exist".format(path)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
 
     def preProcess(self, _edObject = None):
@@ -120,7 +124,9 @@ class EDPluginParseXdsOutputv1_0(EDPlugin):
             f = open(self.dataInput.correct_lp.path.value, 'r')
             lines = f.readlines()
         except IOError:
-            EDVerbose.ERROR('Could not open the specified XDS output file for reading')
+            strErrorMessage = "Could not open the specified XDS output file for reading: {0}".format(self.dataInput.correct_lp.path.value)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 
@@ -137,7 +143,9 @@ class EDPluginParseXdsOutputv1_0(EDPlugin):
                     break
 
         if info_begin is None or info_end is None:
-            EDVerbose.ERROR('could not find the refined parameters')
+            strErrorMessage = "Could not find the refined parameters"
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 

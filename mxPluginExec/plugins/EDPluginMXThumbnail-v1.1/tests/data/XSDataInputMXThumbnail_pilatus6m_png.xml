@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<XSDataInputMXThumbnail>
+	<image>
+		<path>
+			<value>${EDNA_TESTIMAGES}/FAE_1_1_00001.cbf</value>
+		</path>
+	</image>
+	<height>
+		<value>1024</value>
+	</height>
+	<width>
+		<value>1024</value>
+	</width>
+	<format>
+		<value>png</value>
+	</format>
+</XSDataInputMXThumbnail>

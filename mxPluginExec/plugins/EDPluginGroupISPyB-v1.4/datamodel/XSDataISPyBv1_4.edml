@@ -228,8 +228,10 @@ complex type XSDataISPyBDataCollection {
 	beamShape : string
 	beamSizeAtSampleX : float
 	beamSizeAtSampleY : float
+	blSampleId : integer
 	centeringMethod : string
 	comments : string
+	crystalClass : string
 	dataCollectionId : integer
 	dataCollectionNumber : integer
 	detector2theta : float
@@ -237,8 +239,10 @@ complex type XSDataISPyBDataCollection {
 	detectorMode : string
 	endTime : string
 	exposureTime : float
+	experimentType : string
 	fileTemplate : string
 	flux : float
+	flux_end : float
 	imageDirectory : string
 	imagePrefix : string
 	imageSuffix : string
@@ -253,6 +257,7 @@ complex type XSDataISPyBDataCollection {
 	resolutionAtCorner : float
 	rotationAxis : string
 	runStatus : string
+	sessionId : integer
 	slitGapVertical : float
 	slitGapHorizontal : float
 	startImageNumber : integer
@@ -691,3 +696,11 @@ complex type XSDataResultISPyBGetPdbFilePath extends XSDataResult {
 	pdbFilePath : XSDataString
 }
 
+complex type XSDataInputISPyBUpdateDataCollectionGroupComment extends XSDataInput {
+	dataCollectionId: XSDataInteger
+	newComment : XSDataString
+}
+
+complex type XSDataResultISPyBUpdateDataCollectionGroupComment extends XSDataResult {
+	dataCollectionGroupId : XSDataInteger
+}

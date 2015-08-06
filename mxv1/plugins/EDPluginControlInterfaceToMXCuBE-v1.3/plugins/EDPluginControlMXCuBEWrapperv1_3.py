@@ -64,8 +64,11 @@ class EDPluginControlMXCuBEWrapperv1_3( EDPluginControl ):
         strTimeString = time.strftime("%Y%m%d-%H%M%S", time.localtime(time.time())) + "-%06d" % random.randint(0,1000000)
         strWorkingDir = self.getWorkingDirectory()
         strProcessedDataDir = strWorkingDir
-        xsDataMXCuBEDataSet = self.getDataInput().getDataSet()[0]
-        strFirstImagePath = xsDataMXCuBEDataSet.getImageFile()[0].getPath().getValue()
+        strFirstImagePath = None
+        for dataSet in self.dataInput.dataSet:
+            for imageFile in dataSet.imageFile:
+                strFirstImagePath = imageFile.path.value
+                break
         if strFirstImagePath.find("RAW_DATA") != -1:
             strCurrentWorkingDirectory = os.getcwd()
             strCurrentProcessedDataDir = os.path.dirname(strCurrentWorkingDirectory)

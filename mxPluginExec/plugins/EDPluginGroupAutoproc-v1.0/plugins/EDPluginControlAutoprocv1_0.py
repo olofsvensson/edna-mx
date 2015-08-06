@@ -28,7 +28,7 @@ __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
 
-WS_URL='http://ispyb.esrf.fr:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl'
+WS_URL='http://ispyb.esrf.fr:8080/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl'
 
 import os
 import os.path
@@ -70,6 +70,7 @@ from XSDataAutoprocv1_0 import XSDataXscaleInputFile
 from XSDataAutoprocv1_0 import XSDataAutoprocInput
 from XSDataAutoprocv1_0 import XSDataAutoprocImport
 from XSDataAutoprocv1_0 import XSDataInputControlDimple
+from XSDataAutoprocv1_0 import XSDataRange
 
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 # plugin input/output
@@ -95,6 +96,9 @@ from XSDataISPyBv1_4 import AutoProcProgramAttachment
 from XSDataISPyBv1_4 import Image
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
 
+# add comments to data collection and data collection group
+from XSDataISPyBv1_4 import XSDataInputISPyBUpdateDataCollectionGroupComment
+
 # status updates
 from XSDataISPyBv1_4 import AutoProcStatus
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProcStatus
@@ -103,6 +107,8 @@ from XSDataISPyBv1_4 import XSDataInputStoreAutoProcStatus
 edFactoryPlugin.loadModule("XSDataMXWaitFilev1_1")
 from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
+edFactoryPlugin.loadModule("XSDataPhenixv1_1")
+from XSDataPhenixv1_1 import XSDataInputPhenixXtriage
 
 from xdscfgparser import parse_xds_file, dump_xds_file
 
@@ -114,7 +120,7 @@ WAIT_FOR_FRAME_TIMEOUT=240 #max uses 50*5
 # We used to go through the results directory and add all files to the
 # ispyb upload. Now some files should not be uploaded, so we'll
 # discriminate by extension for now
-ISPYB_UPLOAD_EXTENSIONS=['.lp', '.mtz', '.log', '.inp', '.mtz.gz']
+ISPYB_UPLOAD_EXTENSIONS=['.lp', '.mtz', '.log', '.inp', '.gz']
 
 class EDPluginControlAutoprocv1_0(EDPluginControl):
     """
@@ -162,7 +168,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # trying to start anything even if the first xds run does it
         # anyway
         if not os.path.isfile(self.dataInput.input_file.path.value):
-            self.ERROR('the specified input file does not exist')
+            strErrorMessage = "The specified input file does not exist: {0}".format(self.dataInput.input_file.path.value)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             # setFailure does not prevent preProcess/process/etc from running
             raise Exception('EDNA FAILURE')
@@ -348,14 +356,15 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.first_image = _template_to_image(template, start_image)
         self.last_image =  _template_to_image(template, end_image)
 
-        self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProcv1_0")
+        self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProcv1_0", "XDS_first")
         self.xds_first.dataInput = xds_in
-
+        
         if EDUtilsPath.isESRF():
             self.waitFileFirst = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileFirst")
             self.waitFileLast = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileLast")
 
-        self.generate = self.loadPlugin("EDPluginXDSGeneratev1_0")
+        self.generate = self.loadPlugin("EDPluginXDSGeneratev1_0", "XDSGenerate")
+        self.generate_xscale = self.loadPlugin("EDPluginXDSGeneratev1_0", "XDSGenerate_for_Xscale")
 
         self.first_res_cutoff = self.loadPlugin("EDPluginResCutoffv1_0")
         self.res_cutoff_anom = self.loadPlugin("EDPluginResCutoffv1_0")
@@ -370,6 +379,10 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.store_autoproc_noanom = self.loadPlugin('EDPluginISPyBStoreAutoProcv1_4')
 
         self.file_conversion = self.loadPlugin('EDPluginControlAutoprocImportv1_0')
+        
+        self.phenixXtriage = self.loadPlugin("EDPluginPhenixXtriagev1_1")
+        
+        self.edPluginISPyBUpdateDataCollectionGroupComment = self.loadPlugin("EDPluginISPyBUpdateDataCollectionGroupCommentv1_4")
 
 #        self.dimple = self.loadPlugin('EDPluginControlDIMPLEPipelineCalcDiffMapv10')
 
@@ -418,7 +431,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # get our two integration IDs
         try:
-            self.integration_id_noanom = create_integration_id(self.dataInput.data_collection_id.value)
+            self.integration_id_noanom = self.create_integration_id(self.dataInput.data_collection_id.value,
+                                                                    "Creating non-anomalous integration ID")
         except Exception, e:
             strErrorMessage = "Could not get non-anom integration ID: \n{0}".format(traceback.format_exc(e))
             self.addErrorMessage(strErrorMessage)
@@ -426,7 +440,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             self.integration_id_noanom = None
 
         try:
-            self.integration_id_anom = create_integration_id(self.dataInput.data_collection_id.value)
+            self.integration_id_anom = self.create_integration_id(self.dataInput.data_collection_id.value,
+                                                                  "Creating anomalous integration ID")
         except Exception, e:
             strErrorMessage = "Could not get anom integration ID: \n{0}".format(traceback.format_exc(e))
             self.addErrorMessage(strErrorMessage)
@@ -435,6 +450,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # first XDS plugin run with supplied XDS file
         self.screen('Starting first XDS run...')
+        self.log_to_ispyb(self.integration_id_noanom,
+                     'Indexing', 'Launched', 'XDS started')
 
         t0=time.time()
         self.xds_first.executeSynchronous()
@@ -445,23 +462,21 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             json.dump(self.stats, f)
 #        self.custom_stats['xds_runtime']=self.stats['first_xds']
 
-        log_to_ispyb([self.integration_id_noanom, self.integration_id_anom],
-                     'Indexing', 'Launched', 'first xds run')
 
         if self.xds_first.isFailure():
             self.ERROR('first XDS run failed')
             self.setFailure()
-            log_to_ispyb([self.integration_id_noanom, self.integration_id_anom],
+            self.log_to_ispyb(self.integration_id_noanom, 
                          'Indexing',
                          'Failed',
-                         'first xds run failed after {0}s'.format(self.stats['first_xds']))
+                         'XDS failed after {0:.1f}s'.format(self.stats['first_xds']))
             return
         else:
             self.screen('FINISHED first XDS run')
-            log_to_ispyb([self.integration_id_noanom, self.integration_id_anom],
+            self.log_to_ispyb(self.integration_id_noanom,
                          'Indexing',
                          'Successful',
-                         'first xds run finished after {0}s'.format(self.stats['first_xds']))
+                         'XDS finished after {0:.1f}s'.format(self.stats['first_xds']))
         self.screen('FINISHED first XDS run')
 
 
@@ -497,8 +512,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             self.ERROR(strErrorMessage)
 
 
-        log_to_ispyb([self.integration_id_noanom, self.integration_id_anom],
-                     'Indexing', 'Launched', 'start of res cutoff')
+        self.log_to_ispyb(self.integration_id_noanom,
+                     'Indexing', 'Launched', 'Start of resolution cutoff')
 
         # apply the first res cutoff with the res extracted from the first XDS run
         self.screen('STARTING first resolution cutoff')
@@ -528,23 +543,24 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         res_cutoff_in.cc_half_cutoff = self.dataInput.cc_half_cutoff
         self.first_res_cutoff.dataInput = res_cutoff_in
         self.first_res_cutoff.executeSynchronous()
-
+        self.retrieveFailureMessages(self.first_res_cutoff, "First res cutoff")
+        
         self.stats['first_res_cutoff'] = time.time()-t0
 
         if self.first_res_cutoff.isFailure():
             self.ERROR("res cutoff failed")
-            log_to_ispyb([self.integration_id_noanom, self.integration_id_anom],
+            self.log_to_ispyb(self.integration_id_noanom,
                          'Indexing',
                          'Failed',
-                         'res cutoff failed in {0}s'.format(self.stats['first_res_cutoff']))
+                         'Resolution cutoff failed after {0:.1f}s'.format(self.stats['first_res_cutoff']))
             self.setFailure()
             return
         else:
             self.screen('FINISHED first resolution cutoff')
-            log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
+            self.log_to_ispyb(self.integration_id_noanom,
                          'Indexing',
                          'Successful',
-                         'res cutoff finished in {0}s'.format(self.stats['first_res_cutoff']))
+                         'Resolution cutoff finished')
 
 
         with open(self.log_file_path, 'w') as f:
@@ -561,12 +577,14 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         generate_input.previous_run_dir = XSDataString(xds_run_directory)
         self.generate.dataInput = generate_input
 
-        log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
-                     'Scaling', 'Launched', 'start of anom/noanom generation')
+        self.log_to_ispyb(self.integration_id_noanom,
+                     'Scaling', 'Launched', 'Start of scaling')
 
         self.DEBUG('STARTING anom/noanom generation')
         t0=time.time()
         self.generate.executeSynchronous()
+        self.retrieveFailureMessages(self.generate, "anom/noanom_generation")
+
         self.stats['anom/noanom_generation'] = time.time()-t0
 
         with open(self.log_file_path, 'w') as f:
@@ -577,17 +595,17 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         if self.generate.isFailure():
             self.ERROR('generating w/ and w/out anom failed')
             self.setFailure()
-            log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
+            self.log_to_ispyb(self.integration_id_noanom,
                          'Scaling',
                          'Failed',
-                         'anom/noanom generation failed in {0}s'.format(self.stats['anom/noanom_generation']))
+                         'Scaling failed after {0:.1}s'.format(self.stats['anom/noanom_generation']))
             return
         else:
             self.screen('generating w/ and w/out anom finished')
-            log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
+            self.log_to_ispyb(self.integration_id_noanom,
                          'Scaling',
                          'Successful',
-                         'anom/noanom generation finished in {0}s'.format(self.stats['anom/noanom_generation']))
+                         'Scaling finished in {0:.1f}s'.format(self.stats['anom/noanom_generation']))
 
         # Copy the integrate and xds_ascii files to the results directory (for
         # max)
@@ -610,6 +628,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.parse_xds_anom.dataInput = parse_anom_input
 
         self.parse_xds_anom.executeSynchronous()
+        self.retrieveFailureMessages(self.parse_xds_anom, "Parse xds anom")
 
         if self.parse_xds_anom.isFailure():
             strErrorMessage = "Parsing the xds generated w/ anom failed"
@@ -629,6 +648,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         self.parse_xds_noanom.dataInput = parse_noanom_input
         self.parse_xds_noanom.executeSynchronous()
+        self.retrieveFailureMessages(self.parse_xds_noanom, "Parse xds noanom")
 
         if self.parse_xds_noanom.isFailure():
             strErrorMessage = "Parsing the xds generated w/ no anom failed"
@@ -642,8 +662,10 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # xds parsing
 
 
-        log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
-                     'Scaling', 'Launched', 'start of anom/noanom resolution cutoffs')
+        self.log_to_ispyb(self.integration_id_noanom,
+                     'Scaling', 'Launched', 'Start of non-anomalous resolution cutoffs')
+        self.log_to_ispyb(self.integration_id_anom,
+                     'Scaling', 'Launched', 'Start of anomalous resolution cutoffs')
 
         # XXX completeness_cutoff/res_override and isig_cutoff still
         # missing
@@ -663,6 +685,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.DEBUG('STARTING anom res cutoff')
         t0=time.time()
         self.res_cutoff_anom.executeSynchronous()
+        self.retrieveFailureMessages(self.res_cutoff_anom, "Res cut anom")
         self.stats['res_cutoff_anom'] = time.time()-t0
 
         with open(self.log_file_path, 'w') as f:
@@ -671,17 +694,17 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         if self.res_cutoff_anom.isFailure():
             self.ERROR('res cutoff for anom data failed')
             self.setFailure()
-            log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Scaling',
                          'Failed',
-                         'anom resolution cutoffs failed in {0}s'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_anom']))
+                         'Anomalous resolution cutoffs failed in {0:.1f}s'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_anom']))
             return
         else:
             self.screen('FINISHED anom res cutoff')
-            log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Scaling',
                          'Successful',
-                         'anom resolution cutoffs finished in {0}s'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_anom']))
+                         'Anomalous resolution cutoffs finished'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_anom']))
 
         self.DEBUG('FINISHED anom res cutoff')
 
@@ -702,6 +725,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.DEBUG('STARTING noanom res cutoff')
         t0=time.time()
         self.res_cutoff_noanom.executeSynchronous()
+        self.retrieveFailureMessages(self.res_cutoff_anom, "Res cut noanom")
         self.stats['res_cutoff_noanom'] = time.time()-t0
 
         with open(self.log_file_path, 'w') as f:
@@ -710,44 +734,98 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         if self.res_cutoff_noanom.isFailure():
             self.ERROR('res cutoff for non anom data failed')
             self.setFailure()
-            log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_noanom,
                          'Scaling',
                          'Failed',
-                         'noanom resolution cutoffs failed in {0}s'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_noanom']))
+                         'Non-anomalous resolution cutoffs failed in {0:.1f}s'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_noanom']))
             return
         else:
             self.screen('FINISHED noanom res cutoff')
-            log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_noanom,
                          'Scaling',
                          'Successful',
-                         'noanom resolution cutoffs finished in {0}s'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_noanom']))
+                         'Non-anomalous resolution cutoffs finished'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_noanom']))
 
+
+        import_in = XSDataAutoprocImport()
+        import_in.input_anom = self.generate.dataOutput.hkl_anom
+        import_in.input_noanom = self.generate.dataOutput.hkl_no_anom
+        import_in.dataCollectionID = self.dataInput.data_collection_id
+        import_in.start_image = XSDataInteger(self.data_range[0])
+        import_in.end_image = XSDataInteger(self.data_range[1])
+
+        # XXX: is this the right place to get the res from?
+        import_in.res = self.res_cutoff_anom.dataOutput.res
+
+        # XXX: This is optional but seems required by aimless
+        import_in.nres = self.dataInput.nres
+
+        import_in.output_directory = XSDataString(self.results_dir)
+
+        try:
+            import_in.image_prefix = XSDataString(self.image_prefix)
+        except:
+            self.DEBUG('could not determine image prefix from directory "{0}"'.format(self.root_dir))
+
+        if self.dataInput.spacegroup is not None:
+            import_in.choose_spacegroup = self.dataInput.spacegroup
+
+        self.file_conversion.dataInput = import_in
+
+        t0 = time.time()
+        self.file_conversion.executeSynchronous()
+        self.retrieveFailureMessages(self.file_conversion, "File conversion")
+        self.stats['autoproc_import']=time.time()-t0
+
+        with open(self.log_file_path, 'w') as f:
+            json.dump(self.stats, f)
+
+        if self.file_conversion.isFailure():
+            strErrorMessage = "File import failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
 
 
         # now we just have to run XScale to generate w/ and w/out
         # anom, merged and unmerged
 
+        generate_xscale_input = XSDataXdsGenerateInput()
+        generate_xscale_input.resolution = resolution
+        generate_xscale_input.previous_run_dir = XSDataString(xds_run_directory)
+        generate_xscale_input.spacegroup = self.file_conversion.dataOutput.pointless_sgnumber
+        pointless_cell = ""
+        list_pointless_cell = self.file_conversion.dataOutput.pointless_cell
+        pointless_cell += "{0}".format(list_pointless_cell[0].value)
+        for cell_param in list_pointless_cell[1:]:
+            pointless_cell += " {0}".format(cell_param.value)
+        generate_xscale_input.unit_cell = XSDataString(pointless_cell)
+        self.generate_xscale.dataInput = generate_xscale_input
+        self.generate_xscale.executeSynchronous()
+        
+
+
         # We use another control plugin for that to isolate the whole thing
         xscale_generate_in = XSDataXscaleInput()
 
         input_file = XSDataXscaleInputFile()
-        input_file.path_anom = self.generate.dataOutput.hkl_anom
-        input_file.path_noanom = self.generate.dataOutput.hkl_no_anom
+        input_file.path_anom = self.generate_xscale.dataOutput.hkl_anom
+        input_file.path_noanom = self.generate_xscale.dataOutput.hkl_no_anom
         input_file.res = self.res_cutoff_anom.dataOutput.res
 
         xscale_generate_in.xds_files = [input_file]
-        xscale_generate_in.unit_cell_constants = self.parse_xds_anom.dataOutput.unit_cell_constants
-        xscale_generate_in.sg_number = self.parse_xds_anom.dataOutput.sg_number
+        xscale_generate_in.unit_cell_constants = self.file_conversion.dataOutput.pointless_cell
+        xscale_generate_in.sg_number = self.file_conversion.dataOutput.pointless_sgnumber
         xscale_generate_in.bins = self.res_cutoff_anom.dataOutput.bins
 
 
         self.xscale_generate.dataInput = xscale_generate_in
         self.DEBUG('STARTING xscale generation')
-        log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
-                     'Scaling', 'Launched', 'start of xscale generation')
+        self.log_to_ispyb(self.integration_id_noanom,
+                     'Scaling', 'Launched', 'Start of XSCALE')
 
         t0=time.time()
         self.xscale_generate.executeSynchronous()
+        self.retrieveFailureMessages(self.xscale_generate, "XSCALE")
         self.stats['xscale_generate']=time.time()-t0
 
         with open(self.log_file_path, 'w') as f:
@@ -757,17 +835,17 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             strErrorMessage = "Xscale generation failed"
             self.addErrorMessage(strErrorMessage)
             self.ERROR(strErrorMessage)
-            log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
+            self.log_to_ispyb(self.integration_id_noanom,
                          'Scaling',
                          'Failed',
-                         'xscale generation failed in {0}s'.format(self.stats['xscale_generate']))
+                         'XSCALE failed after {0:.1f}s'.format(self.stats['xscale_generate']))
             return
         else:
             self.screen('xscale anom/merge generation finished')
-            log_to_ispyb([self.integration_id_anom, self.integration_id_noanom],
+            self.log_to_ispyb(self.integration_id_noanom,
                          'Scaling',
                          'Successful',
-                         'xscale generation finished in {0}s'.format(self.stats['xscale_generate']))
+                         'XSCALE finished in {0:.1f}s'.format(self.stats['xscale_generate']))
 
         # Copy the generated files to the results dir
         attrs = ['lp_anom_merged', 'lp_noanom_merged',
@@ -787,42 +865,63 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
 
 
-        import_in = XSDataAutoprocImport()
-        import_in.input_anom = self.xscale_generate.dataOutput.hkl_anom_unmerged
-        import_in.input_noanom = self.xscale_generate.dataOutput.hkl_noanom_unmerged
-        import_in.dataCollectionID = self.dataInput.data_collection_id
-        import_in.start_image = XSDataInteger(self.data_range[0])
-        import_in.end_image = XSDataInteger(self.data_range[1])
 
-        # XXX: is this the right place to get the res from?
-        import_in.res = self.res_cutoff_anom.dataOutput.res
+        # Run phenix.xtriage
+        xsDataInputPhenixXtriage = XSDataInputPhenixXtriage()
+        xsDataInputPhenixXtriage.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, 
+                                                                                "{0}_unmerged_noanom_pointless_multirecord.mtz.gz".format(self.image_prefix))))
+        self.phenixXtriage.dataInput = xsDataInputPhenixXtriage
+        self.phenixXtriage.executeSynchronous()
+        if self.phenixXtriage.isFailure():
+            self.log_to_ispyb(self.integration_id_noanom,
+                         'Scaling',
+                         'Failed',
+                         "phenix.xtriage failed")
+        else:
+            xsDataResultPhenixXtriage = self.phenixXtriage.dataOutput
+    
+            shutil.copy(xsDataResultPhenixXtriage.logFile.path.value,
+                        os.path.join(self.file_conversion.dataInput.output_directory.value,
+                                     "{0}_phenix_xtriage_noanom.log".format(self.image_prefix)))
+    
+            if xsDataResultPhenixXtriage.pseudotranslation.value:
+                strMessage = "Pseudotranslation detected by phenix.xtriage!"
+                bPseudotranslation = True
+            else:
+                strMessage = "No pseudotranslation detected by phenix.xtriage."
+                bPseudotranslation = False
+            self.screen(strMessage)
+            self.log_to_ispyb(self.integration_id_noanom,
+                         'Scaling',
+                         'Successful',
+                         strMessage)
+            
+            if xsDataResultPhenixXtriage.twinning.value:
+                strMessage = "Twinning detected by phenix.xtriage!"
+                bTwinning = True
+            else:
+                strMessage = "No twinning detected by phenix.xtriage."
+                bTwinning = False
+            self.screen(strMessage)
+            self.log_to_ispyb(self.integration_id_noanom,
+                         'Scaling',
+                         'Successful',
+                         strMessage)
+            
+            if bPseudotranslation or bTwinning:
+                if bPseudotranslation and bTwinning:
+                    strISPyBComment = "EDNA dp: pseudo-translation and twinning detected."
+                elif bPseudotranslation:
+                    strISPyBComment = "EDNA dp: pseudo-translation detected."
+                else:
+                    strISPyBComment = "EDNA dp: twinning detected."
+                xsDataInput = XSDataInputISPyBUpdateDataCollectionGroupComment()
+                xsDataInput.newComment = XSDataString(strISPyBComment)
+                xsDataInput.dataCollectionId = self.dataInput.data_collection_id
+                self.edPluginISPyBUpdateDataCollectionGroupComment.dataInput = xsDataInput
+                self.executePluginSynchronous(self.edPluginISPyBUpdateDataCollectionGroupComment)
+                    
 
-        # XXX: This is optional but seems required by aimless
-        import_in.nres = self.dataInput.nres
-
-        import_in.output_directory = XSDataString(self.results_dir)
-
-        try:
-            import_in.image_prefix = XSDataString(self.image_prefix)
-        except:
-            self.DEBUG('could not determine image prefix from directory "{0}"'.format(self.root_dir))
-
-        self.file_conversion.dataInput = import_in
-
-        t0 = time.time()
-        self.file_conversion.executeSynchronous()
-        self.stats['autoproc_import']=time.time()-t0
-
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
-
-        if self.file_conversion.isFailure():
-            strErrorMessage = "File import failed"
-            self.addErrorMessage(strErrorMessage)
-            self.ERROR(strErrorMessage)
-
-
-#        self.custom_stats['total_time']=time.time() - process_start
         self.process_end = time.time()
 
 
@@ -870,7 +969,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         scaling_container_noanom.AutoProcScaling = scaling
 
-        inner, outer, overall, unit_cell = _parse_aimless(self.file_conversion.dataOutput.aimless_log_noanom.value)
+        inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_noanom.value)
 
         autoproc.refinedCell_a = str(unit_cell[0])
         autoproc.refinedCell_b = str(unit_cell[1])
@@ -917,7 +1016,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # ANOM PATH
         scaling_container_anom = AutoProcScalingContainer()
 
-        inner, outer, overall, unit_cell = _parse_aimless(self.file_conversion.dataOutput.aimless_log_anom.value)
+        inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_anom.value)
         inner_stats = AutoProcScalingStatistics()
         for k, v in inner.iteritems():
             setattr(inner_stats, k, v)
@@ -944,30 +1043,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         inner_stats_anom = xscale_stats_anom.completeness_entries[0]
         outer_stats_anom = xscale_stats_anom.completeness_entries[-1]
 
-        # use the previous shell's res as low res if available
-        prev_res = self.low_resolution_limit
-        try:
-            prev_res = xscale_stats_anom.completeness_entries[-2].res.value
-        except IndexError:
-            pass
-        total_stats_anom = xscale_stats_anom.total_completeness
-
-        stats = _create_scaling_stats(inner_stats_anom, 'innerShell',
-                                      self.low_resolution_limit, True)
-        overall_low = stats.resolutionLimitLow
-        scaling_container_anom.AutoProcScalingStatistics.append(stats)
-
-        stats = _create_scaling_stats(outer_stats_anom, 'outerShell',
-                                      prev_res, True)
-        overall_high = stats.resolutionLimitHigh
-        scaling_container_anom.AutoProcScalingStatistics.append(stats)
-        stats = _create_scaling_stats(total_stats_anom, 'overall',
-                                      self.low_resolution_limit, True)
-        stats.resolutionLimitLow = overall_low
-        stats.resolutionLimitHigh = overall_high
-        scaling_container_anom.AutoProcScalingStatistics.append(stats)
-
-
         integration_container_anom = AutoProcIntegrationContainer()
         image = Image()
         image.dataCollectionId = self.dataInput.data_collection_id.value
@@ -992,10 +1067,15 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # ------ NO ANOM / ANOM end
 
-        program_container = AutoProcProgramContainer()
-        program_container.AutoProcProgram = AutoProcProgram()
-        program_container.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container.AutoProcProgram.processingPrograms = 'EDNAproc'
+        program_container_anom = AutoProcProgramContainer()
+        program_container_anom.AutoProcProgram = AutoProcProgram()
+        program_container_anom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
+        program_container_anom.AutoProcProgram.processingPrograms = 'EDNAproc'
+
+        program_container_noanom = AutoProcProgramContainer()
+        program_container_noanom.AutoProcProgram = AutoProcProgram()
+        program_container_noanom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
+        program_container_noanom.AutoProcProgram.processingPrograms = 'EDNAproc'
 
         # now for the generated files. There's some magic to do with
         # their paths to determine where to put them on pyarch
@@ -1011,7 +1091,23 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         if EDUtilsPath.isEMBL():
             pyarch_path =  os.path.join(files_dir,'a_copy')
         elif EDUtilsPath.isESRF():
-            if files_dir.startswith('/data/visitor'):
+            if files_dir.startswith('/data/gz'):
+                if files_dir.startswith('/data/gz/visitor'):
+                    tokens = [elem for elem in files_dir.split(os.path.sep)
+                              if len(elem) > 0]
+                    pyarch_path = os.path.join('/data/pyarch',
+                                               tokens[4], tokens[3],
+                                               *tokens[5:])
+                else:
+                    # We might get empty elements at the head/tail of the list
+                    tokens = [elem for elem in files_dir.split(os.path.sep)
+                              if len(elem) > 0]
+                    if tokens[3] == 'inhouse':
+                        pyarch_path = os.path.join('/data/pyarch', tokens[2],
+                                                   *tokens[4:])
+                    
+                    
+            elif files_dir.startswith('/data/visitor'):
                 # We might get empty elements at the head/tail of the list
                 tokens = [elem for elem in files_dir.split(os.path.sep)
                           if len(elem) > 0]
@@ -1048,20 +1144,31 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             # now add those to the ispyb upload
             for path in file_list:
                 dirname, filename = os.path.split(path)
-                attach = AutoProcProgramAttachment()
-                attach.fileType = "Result"
-                attach.fileName = filename
+                attach_anom = AutoProcProgramAttachment()
+                attach_anom.fileType = "Result"
+                attach_anom.fileName = filename
+                attach_noanom = AutoProcProgramAttachment()
+                attach_noanom.fileType = "Result"
+                attach_noanom.fileName = filename
                 if EDUtilsPath.isEMBL():
                     dirname = '/mnt/p14ppu01/' + dirname
-                attach.filePath = dirname
-                program_container.AutoProcProgramAttachment.append(attach)
+                attach_anom.filePath = dirname
+                attach_noanom.filePath = dirname
+                if "_anom" in filename:
+                    program_container_anom.AutoProcProgramAttachment.append(attach_anom)
+                elif "_noanom" in filename:
+                    program_container_noanom.AutoProcProgramAttachment.append(attach_noanom)
+                else:
+                    program_container_noanom.AutoProcProgramAttachment.append(attach_anom)
+                    program_container_anom.AutoProcProgramAttachment.append(attach_noanom)
+                    
 
-
-        program_container.AutoProcProgram.processingStatus = True
-        output.AutoProcProgramContainer = program_container
-
+        program_container_anom.AutoProcProgram.processingStatus = True
+        program_container_noanom.AutoProcProgram.processingStatus = True
+        
         # first with anom
 
+        output.AutoProcProgramContainer = program_container_anom
         output.AutoProcScalingContainer = scaling_container_anom
 
         ispyb_input = XSDataInputStoreAutoProc()
@@ -1075,6 +1182,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.store_autoproc_anom.dataInput = ispyb_input
         t0=time.time()
         self.store_autoproc_anom.executeSynchronous()
+        self.retrieveFailureMessages(self.store_autoproc_anom, "Store autoproc anom")
         self.stats['ispyb_upload'] = time.time() - t0
 
         with open(self.log_file_path, 'w') as f:
@@ -1088,6 +1196,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_anom)), 0755)
         # then noanom stats
 
+        output.AutoProcProgramContainer = program_container_noanom
         output.AutoProcScalingContainer = scaling_container_noanom
 
         ispyb_input = XSDataInputStoreAutoProc()
@@ -1101,6 +1210,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.store_autoproc_noanom.dataInput = ispyb_input
         t0=time.time()
         self.store_autoproc_noanom.executeSynchronous()
+        self.retrieveFailureMessages(self.store_autoproc_noanom, "Store autoproc noanom")
         self.stats['ispyb_upload'] = time.time() - t0
 
         with open(self.log_file_path, 'w') as f:
@@ -1116,7 +1226,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         if EDUtilsPath.isESRF():
             xsDataInputControlDimple = XSDataInputControlDimple()
             xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
-            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "_noanom_aimless.mtz")))
+            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, 
+                                                                                    "{0}_noanom_aimless.mtz".format(self.image_prefix))))
+            xsDataInputControlDimple.imagePrefix = XSDataString(self.image_prefix)
             xsDataInputControlDimple.pdbDirectory = XSDataFile(XSDataString(self.root_dir))
             if pyarch_path is not None:
                 xsDataInputControlDimple.pyarchPath = XSDataFile(XSDataString(pyarch_path))
@@ -1223,48 +1335,92 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                 self.writeErrorTrace()
 
 
-# Proxy since the API changed and we can now log to several ids
-def log_to_ispyb(integration_id, step, status, comments=""):
-    if type(integration_id) is list:
-        for item in integration_id:
-            log_to_ispyb_impl(item, step, status, comments)
-    else:
-        log_to_ispyb_impl(integration_id, step, status, comments)
+    # Proxy since the API changed and we can now log to several ids
+    def log_to_ispyb(self, integration_id, step, status, comments=""):
+        if type(integration_id) is list:
+            for item in integration_id:
+                self.log_to_ispyb_impl(item, step, status, comments)
+        else:
+            self.log_to_ispyb_impl(integration_id, step, status, comments)
+            if status == "Failed":
+                for strErrorMessage in self.getListOfErrorMessages():
+                    self.log_to_ispyb_impl(integration_id, step, status, strErrorMessage)                
+    
+    def log_to_ispyb_impl(self, integration_id, step, status, comments=""):
+        # hack in the event we could not create an integration ID
+        if integration_id is None:
+            EDVerbose.ERROR('could not log to ispyb: no integration id')
+            return
+        autoproc_status = edFactoryPlugin.loadPlugin('EDPluginISPyBStoreAutoProcStatusv1_4')
+        status_input = XSDataInputStoreAutoProcStatus()
+        status_input.autoProcIntegrationId = integration_id
+        status_data = AutoProcStatus()
+        status_data.step = step
+        status_data.status = status
+        status_data.comments = comments
+        status_input.AutoProcStatus = status_data
+    
+        autoproc_status.dataInput = status_input
+    
+        autoproc_status.executeSynchronous()
+    
+    def create_integration_id(self, datacollect_id, comments):
+        autoproc_status = edFactoryPlugin.loadPlugin('EDPluginISPyBStoreAutoProcStatusv1_4')
+        status_input = XSDataInputStoreAutoProcStatus()
+        status_input.dataCollectionId = datacollect_id
+    
+        # needed even if we only want to get an integration ID?
+        status_data = AutoProcStatus()
+        status_data.step = "Indexing"
+        status_data.status = "Launched"
+        status_data.comments = comments
+        status_input.AutoProcStatus = status_data
+    
+        autoproc_status.dataInput = status_input
+        # get our autoproc status id
+        autoproc_status.executeSynchronous()
+        return autoproc_status.dataOutput.autoProcIntegrationId
 
-def log_to_ispyb_impl(integration_id, step, status, comments=""):
-    # hack in the event we could not create an integration ID
-    if integration_id is None:
-        EDVerbose.ERROR('could not log to ispyb: no integration id')
-        return
-    autoproc_status = edFactoryPlugin.loadPlugin('EDPluginISPyBStoreAutoProcStatusv1_4')
-    status_input = XSDataInputStoreAutoProcStatus()
-    status_input.autoProcIntegrationId = integration_id
-    status_data = AutoProcStatus()
-    status_data.step = step
-    status_data.status = status
-    status_data.comments = comments
-    status_input.AutoProcStatus = status_data
-
-    autoproc_status.dataInput = status_input
-
-    autoproc_status.executeSynchronous()
-
-def create_integration_id(datacollect_id):
-    autoproc_status = edFactoryPlugin.loadPlugin('EDPluginISPyBStoreAutoProcStatusv1_4')
-    status_input = XSDataInputStoreAutoProcStatus()
-    status_input.dataCollectionId = datacollect_id
-
-    # needed even if we only want to get an integration ID?
-    status_data = AutoProcStatus()
-    status_data.step = "Indexing"
-    status_data.status = "Launched"
-    status_data.comments = "Getting integration ID"
-    status_input.AutoProcStatus = status_data
-
-    autoproc_status.dataInput = status_input
-    # get our autoproc status id
-    autoproc_status.executeSynchronous()
-    return autoproc_status.dataOutput.autoProcIntegrationId
+    def parse_aimless(self, filepath):
+        # mapping between the start of the line and the name of the property
+        # in the ispyb data object thing
+        INTERESTING_LINES = {
+            'Low resolution limit': 'resolutionLimitLow',
+            'High resolution limit': 'resolutionLimitHigh',
+            'Mean((I)/sd(I))': 'meanIOverSigI',
+            'Completeness': 'completeness',
+            'Multiplicity': 'multiplicity',
+            'Total number of observations': 'nTotalObservations',
+            'Rmerge  (within I+/I-)': 'rMerge'
+        }
+        
+        UNIT_CELL_PREFIX = 'Average unit cell:' # special case, 6 values
+        lines = []
+        inner_stats = {'scalingStatisticsType':'innerShell'}
+        outer_stats = {'scalingStatisticsType':'outerShell'}
+        overall_stats = {'scalingStatisticsType':'overall'}
+        unit_cell = None
+        with open(filepath, 'r') as f:
+            lines = f.readlines()
+        started = False
+        for line in lines:
+            # avoid all the stuff before the final summary
+            if line.startswith('<!--SUMMARY_BEGIN--> $TEXT:Result: $$ $$'):
+                started = True
+            if started:
+                for prefix, prop_name in INTERESTING_LINES.iteritems():
+                    if line.startswith(prefix):
+                        # We need to multiply the values for rMerge by 100
+                        factor = 100 if prop_name == 'rMerge' else 1
+                        # 3 last columns are the values we're after
+                        overall, inner, outer = [float(x) * factor for x in line.split()[-3:]]
+                        overall_stats[prop_name] = overall
+                        inner_stats[prop_name] = inner
+                        outer_stats[prop_name] = outer
+                if line.startswith(UNIT_CELL_PREFIX):
+                    unit_cell = map(float, line.split()[-6:])
+        return inner_stats, outer_stats, overall_stats, unit_cell
+    
 
 def _create_scaling_stats(xscale_stats, stats_type, lowres, anom):
     stats = AutoProcScalingStatistics()
@@ -1307,46 +1463,7 @@ def _template_to_image(fmt, num):
     return fmt_string.format(num)
 
 
-# mapping between the start of the line and the name of the property
-# in the ispyb data object thing
-INTERESTING_LINES = {
-    'Low resolution limit': 'resolutionLimitLow',
-    'High resolution limit': 'resolutionLimitHigh',
-    'Mean((I)/sd(I))': 'meanIOverSigI',
-    'Completeness': 'completeness',
-    'Multiplicity': 'multiplicity',
-    'Total number of observations': 'nTotalObservations',
-    'Rmerge  (within I+/I-)': 'rMerge'
-}
 
-UNIT_CELL_PREFIX = 'Average unit cell:' # special case, 6 values
-
-def _parse_aimless(filepath):
-    lines = []
-    inner_stats = {'scalingStatisticsType':'innerShell'}
-    outer_stats = {'scalingStatisticsType':'outerShell'}
-    overall_stats = {'scalingStatisticsType':'overall'}
-    unit_cell = None
-    with open(filepath, 'r') as f:
-        lines = f.readlines()
-    started = False
-    for line in lines:
-        # avoid all the stuff before the final summary
-        if line.startswith('<!--SUMMARY_BEGIN--> $TEXT:Result: $$ $$'):
-            started = True
-        if started:
-            for prefix, prop_name in INTERESTING_LINES.iteritems():
-                if line.startswith(prefix):
-                    # We need to multiply the values for rMerge by 100
-                    factor = 100 if prop_name == 'rMerge' else 1
-                    # 3 last columns are the values we're after
-                    overall, inner, outer = [float(x) * factor for x in line.split()[-3:]]
-                    overall_stats[prop_name] = overall
-                    inner_stats[prop_name] = inner
-                    outer_stats[prop_name] = outer
-            if line.startswith(UNIT_CELL_PREFIX):
-                unit_cell = map(float, line.split()[-6:])
-    return inner_stats, outer_stats, overall_stats, unit_cell
 
 
 # taken straight from max's code

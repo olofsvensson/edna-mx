@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue Oct 14 03:54::11 2014 by EDGenerateDS.
+# Generated Thu May 28 04:18::09 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -729,7 +729,7 @@ class XSDataXscaleCompletenessEntry(XSDataXdsCompletenessEntry):
 
 
 class XSDataAutoprocImport(XSDataInput):
-    def __init__(self, configuration=None, image_prefix=None, nres=None, res=None, end_image=None, start_image=None, dataCollectionID=None, output_directory=None, input_noanom=None, input_anom=None):
+    def __init__(self, configuration=None, choose_spacegroup=None, image_prefix=None, nres=None, res=None, end_image=None, start_image=None, dataCollectionID=None, output_directory=None, input_noanom=None, input_anom=None):
         XSDataInput.__init__(self, configuration)
         if input_anom is None:
             self._input_anom = None
@@ -793,6 +793,13 @@ class XSDataAutoprocImport(XSDataInput):
             self._image_prefix = image_prefix
         else:
             strMessage = "ERROR! XSDataAutoprocImport constructor argument 'image_prefix' is not XSDataString but %s" % self._image_prefix.__class__.__name__
+            raise BaseException(strMessage)
+        if choose_spacegroup is None:
+            self._choose_spacegroup = None
+        elif choose_spacegroup.__class__.__name__ == "XSDataString":
+            self._choose_spacegroup = choose_spacegroup
+        else:
+            strMessage = "ERROR! XSDataAutoprocImport constructor argument 'choose_spacegroup' is not XSDataString but %s" % self._choose_spacegroup.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'input_anom' attribute
     def getInput_anom(self): return self._input_anom
@@ -902,6 +909,18 @@ class XSDataAutoprocImport(XSDataInput):
             raise BaseException(strMessage)
     def delImage_prefix(self): self._image_prefix = None
     image_prefix = property(getImage_prefix, setImage_prefix, delImage_prefix, "Property for image_prefix")
+    # Methods and properties for the 'choose_spacegroup' attribute
+    def getChoose_spacegroup(self): return self._choose_spacegroup
+    def setChoose_spacegroup(self, choose_spacegroup):
+        if choose_spacegroup is None:
+            self._choose_spacegroup = None
+        elif choose_spacegroup.__class__.__name__ == "XSDataString":
+            self._choose_spacegroup = choose_spacegroup
+        else:
+            strMessage = "ERROR! XSDataAutoprocImport.setChoose_spacegroup argument is not XSDataString but %s" % choose_spacegroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delChoose_spacegroup(self): self._choose_spacegroup = None
+    choose_spacegroup = property(getChoose_spacegroup, setChoose_spacegroup, delChoose_spacegroup, "Property for choose_spacegroup")
     def export(self, outfile, level, name_='XSDataAutoprocImport'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -944,6 +963,8 @@ class XSDataAutoprocImport(XSDataInput):
             warnEmptyAttribute("nres", "XSDataDouble")
         if self._image_prefix is not None:
             self.image_prefix.export(outfile, level, name_='image_prefix')
+        if self._choose_spacegroup is not None:
+            self.choose_spacegroup.export(outfile, level, name_='choose_spacegroup')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -994,6 +1015,11 @@ class XSDataAutoprocImport(XSDataInput):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setImage_prefix(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'choose_spacegroup':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setChoose_spacegroup(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -1040,7 +1066,7 @@ class XSDataAutoprocImport(XSDataInput):
 
 
 class XSDataAutoprocImportOut(XSDataResult):
-    def __init__(self, status=None, aimless_log_noanom=None, aimless_log_anom=None, pointless_sgstring=None, pointless_sgnumber=None, files=None):
+    def __init__(self, status=None, aimless_log_noanom=None, aimless_log_anom=None, pointless_cell=None, pointless_sgstring=None, pointless_sgnumber=None, files=None):
         XSDataResult.__init__(self, status)
         if files is None:
             self._files = []
@@ -1062,6 +1088,13 @@ class XSDataAutoprocImportOut(XSDataResult):
             self._pointless_sgstring = pointless_sgstring
         else:
             strMessage = "ERROR! XSDataAutoprocImportOut constructor argument 'pointless_sgstring' is not XSDataString but %s" % self._pointless_sgstring.__class__.__name__
+            raise BaseException(strMessage)
+        if pointless_cell is None:
+            self._pointless_cell = []
+        elif pointless_cell.__class__.__name__ == "list":
+            self._pointless_cell = pointless_cell
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut constructor argument 'pointless_cell' is not list but %s" % self._pointless_cell.__class__.__name__
             raise BaseException(strMessage)
         if aimless_log_anom is None:
             self._aimless_log_anom = None
@@ -1134,6 +1167,39 @@ class XSDataAutoprocImportOut(XSDataResult):
             raise BaseException(strMessage)
     def delPointless_sgstring(self): self._pointless_sgstring = None
     pointless_sgstring = property(getPointless_sgstring, setPointless_sgstring, delPointless_sgstring, "Property for pointless_sgstring")
+    # Methods and properties for the 'pointless_cell' attribute
+    def getPointless_cell(self): return self._pointless_cell
+    def setPointless_cell(self, pointless_cell):
+        if pointless_cell is None:
+            self._pointless_cell = []
+        elif pointless_cell.__class__.__name__ == "list":
+            self._pointless_cell = pointless_cell
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut.setPointless_cell argument is not list but %s" % pointless_cell.__class__.__name__
+            raise BaseException(strMessage)
+    def delPointless_cell(self): self._pointless_cell = None
+    pointless_cell = property(getPointless_cell, setPointless_cell, delPointless_cell, "Property for pointless_cell")
+    def addPointless_cell(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataAutoprocImportOut.addPointless_cell argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataDouble":
+            self._pointless_cell.append(value)
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut.addPointless_cell argument is not XSDataDouble but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertPointless_cell(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataAutoprocImportOut.insertPointless_cell argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataAutoprocImportOut.insertPointless_cell argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataDouble":
+            self._pointless_cell[index] = value
+        else:
+            strMessage = "ERROR! XSDataAutoprocImportOut.addPointless_cell argument is not XSDataDouble but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     # Methods and properties for the 'aimless_log_anom' attribute
     def getAimless_log_anom(self): return self._aimless_log_anom
     def setAimless_log_anom(self, aimless_log_anom):
@@ -1178,6 +1244,10 @@ class XSDataAutoprocImportOut(XSDataResult):
             self.pointless_sgstring.export(outfile, level, name_='pointless_sgstring')
         else:
             warnEmptyAttribute("pointless_sgstring", "XSDataString")
+        for pointless_cell_ in self.getPointless_cell():
+            pointless_cell_.export(outfile, level, name_='pointless_cell')
+        if self.getPointless_cell() == []:
+            warnEmptyAttribute("pointless_cell", "XSDataDouble")
         if self._aimless_log_anom is not None:
             self.aimless_log_anom.export(outfile, level, name_='aimless_log_anom')
         else:
@@ -1206,6 +1276,11 @@ class XSDataAutoprocImportOut(XSDataResult):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setPointless_sgstring(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pointless_cell':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.pointless_cell.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'aimless_log_anom':
             obj_ = XSDataString()
@@ -1665,7 +1740,7 @@ class XSDataAutoprocInput(XSDataInput):
 
 
 class XSDataFileConversion(XSDataInput):
-    def __init__(self, configuration=None, image_prefix=None, anom=None, nres=None, res=None, end_image=None, start_image=None, dataCollectionID=None, output_file=None, input_file=None):
+    def __init__(self, configuration=None, image_prefix=None, choose_spacegroup=None, anom=None, nres=None, res=None, end_image=None, start_image=None, dataCollectionID=None, output_file=None, input_file=None):
         XSDataInput.__init__(self, configuration)
         if input_file is None:
             self._input_file = None
@@ -1722,6 +1797,13 @@ class XSDataFileConversion(XSDataInput):
             self._anom = anom
         else:
             strMessage = "ERROR! XSDataFileConversion constructor argument 'anom' is not XSDataBoolean but %s" % self._anom.__class__.__name__
+            raise BaseException(strMessage)
+        if choose_spacegroup is None:
+            self._choose_spacegroup = None
+        elif choose_spacegroup.__class__.__name__ == "XSDataString":
+            self._choose_spacegroup = choose_spacegroup
+        else:
+            strMessage = "ERROR! XSDataFileConversion constructor argument 'choose_spacegroup' is not XSDataString but %s" % self._choose_spacegroup.__class__.__name__
             raise BaseException(strMessage)
         if image_prefix is None:
             self._image_prefix = None
@@ -1826,6 +1908,18 @@ class XSDataFileConversion(XSDataInput):
             raise BaseException(strMessage)
     def delAnom(self): self._anom = None
     anom = property(getAnom, setAnom, delAnom, "Property for anom")
+    # Methods and properties for the 'choose_spacegroup' attribute
+    def getChoose_spacegroup(self): return self._choose_spacegroup
+    def setChoose_spacegroup(self, choose_spacegroup):
+        if choose_spacegroup is None:
+            self._choose_spacegroup = None
+        elif choose_spacegroup.__class__.__name__ == "XSDataString":
+            self._choose_spacegroup = choose_spacegroup
+        else:
+            strMessage = "ERROR! XSDataFileConversion.setChoose_spacegroup argument is not XSDataString but %s" % choose_spacegroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delChoose_spacegroup(self): self._choose_spacegroup = None
+    choose_spacegroup = property(getChoose_spacegroup, setChoose_spacegroup, delChoose_spacegroup, "Property for choose_spacegroup")
     # Methods and properties for the 'image_prefix' attribute
     def getImage_prefix(self): return self._image_prefix
     def setImage_prefix(self, image_prefix):
@@ -1878,6 +1972,8 @@ class XSDataFileConversion(XSDataInput):
             self.anom.export(outfile, level, name_='anom')
         else:
             warnEmptyAttribute("anom", "XSDataBoolean")
+        if self._choose_spacegroup is not None:
+            self.choose_spacegroup.export(outfile, level, name_='choose_spacegroup')
         if self._image_prefix is not None:
             self.image_prefix.export(outfile, level, name_='image_prefix')
     def build(self, node_):
@@ -1925,6 +2021,11 @@ class XSDataFileConversion(XSDataInput):
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setAnom(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'choose_spacegroup':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setChoose_spacegroup(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'image_prefix':
             obj_ = XSDataString()
@@ -1976,7 +2077,7 @@ class XSDataFileConversion(XSDataInput):
 
 
 class XSDataFileConversionOut(XSDataResult):
-    def __init__(self, status=None, aimless_log=None, pointless_sgstring=None, pointless_sgnumber=None):
+    def __init__(self, status=None, aimless_log=None, pointless_cell=None, pointless_sgstring=None, pointless_sgnumber=None):
         XSDataResult.__init__(self, status)
         if pointless_sgnumber is None:
             self._pointless_sgnumber = None
@@ -1991,6 +2092,13 @@ class XSDataFileConversionOut(XSDataResult):
             self._pointless_sgstring = pointless_sgstring
         else:
             strMessage = "ERROR! XSDataFileConversionOut constructor argument 'pointless_sgstring' is not XSDataString but %s" % self._pointless_sgstring.__class__.__name__
+            raise BaseException(strMessage)
+        if pointless_cell is None:
+            self._pointless_cell = []
+        elif pointless_cell.__class__.__name__ == "list":
+            self._pointless_cell = pointless_cell
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut constructor argument 'pointless_cell' is not list but %s" % self._pointless_cell.__class__.__name__
             raise BaseException(strMessage)
         if aimless_log is None:
             self._aimless_log = None
@@ -2023,6 +2131,39 @@ class XSDataFileConversionOut(XSDataResult):
             raise BaseException(strMessage)
     def delPointless_sgstring(self): self._pointless_sgstring = None
     pointless_sgstring = property(getPointless_sgstring, setPointless_sgstring, delPointless_sgstring, "Property for pointless_sgstring")
+    # Methods and properties for the 'pointless_cell' attribute
+    def getPointless_cell(self): return self._pointless_cell
+    def setPointless_cell(self, pointless_cell):
+        if pointless_cell is None:
+            self._pointless_cell = []
+        elif pointless_cell.__class__.__name__ == "list":
+            self._pointless_cell = pointless_cell
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut.setPointless_cell argument is not list but %s" % pointless_cell.__class__.__name__
+            raise BaseException(strMessage)
+    def delPointless_cell(self): self._pointless_cell = None
+    pointless_cell = property(getPointless_cell, setPointless_cell, delPointless_cell, "Property for pointless_cell")
+    def addPointless_cell(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataFileConversionOut.addPointless_cell argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataDouble":
+            self._pointless_cell.append(value)
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut.addPointless_cell argument is not XSDataDouble but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertPointless_cell(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataFileConversionOut.insertPointless_cell argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataFileConversionOut.insertPointless_cell argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataDouble":
+            self._pointless_cell[index] = value
+        else:
+            strMessage = "ERROR! XSDataFileConversionOut.addPointless_cell argument is not XSDataDouble but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     # Methods and properties for the 'aimless_log' attribute
     def getAimless_log(self): return self._aimless_log
     def setAimless_log(self, aimless_log):
@@ -2051,6 +2192,10 @@ class XSDataFileConversionOut(XSDataResult):
             self.pointless_sgstring.export(outfile, level, name_='pointless_sgstring')
         else:
             warnEmptyAttribute("pointless_sgstring", "XSDataString")
+        for pointless_cell_ in self.getPointless_cell():
+            pointless_cell_.export(outfile, level, name_='pointless_cell')
+        if self.getPointless_cell() == []:
+            warnEmptyAttribute("pointless_cell", "XSDataDouble")
         if self._aimless_log is not None:
             self.aimless_log.export(outfile, level, name_='aimless_log')
         else:
@@ -2070,6 +2215,11 @@ class XSDataFileConversionOut(XSDataResult):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setPointless_sgstring(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pointless_cell':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.pointless_cell.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'aimless_log':
             obj_ = XSDataString()
@@ -2121,7 +2271,7 @@ class XSDataFileConversionOut(XSDataResult):
 
 
 class XSDataInputControlDimple(XSDataInput):
-    def __init__(self, configuration=None, pdbDirectory=None, pyarchPath=None, mtzFile=None, dataCollectionId=None):
+    def __init__(self, configuration=None, pdbDirectory=None, imagePrefix=None, pyarchPath=None, mtzFile=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -2143,6 +2293,13 @@ class XSDataInputControlDimple(XSDataInput):
             self._pyarchPath = pyarchPath
         else:
             strMessage = "ERROR! XSDataInputControlDimple constructor argument 'pyarchPath' is not XSDataFile but %s" % self._pyarchPath.__class__.__name__
+            raise BaseException(strMessage)
+        if imagePrefix is None:
+            self._imagePrefix = None
+        elif imagePrefix.__class__.__name__ == "XSDataString":
+            self._imagePrefix = imagePrefix
+        else:
+            strMessage = "ERROR! XSDataInputControlDimple constructor argument 'imagePrefix' is not XSDataString but %s" % self._imagePrefix.__class__.__name__
             raise BaseException(strMessage)
         if pdbDirectory is None:
             self._pdbDirectory = None
@@ -2187,6 +2344,18 @@ class XSDataInputControlDimple(XSDataInput):
             raise BaseException(strMessage)
     def delPyarchPath(self): self._pyarchPath = None
     pyarchPath = property(getPyarchPath, setPyarchPath, delPyarchPath, "Property for pyarchPath")
+    # Methods and properties for the 'imagePrefix' attribute
+    def getImagePrefix(self): return self._imagePrefix
+    def setImagePrefix(self, imagePrefix):
+        if imagePrefix is None:
+            self._imagePrefix = None
+        elif imagePrefix.__class__.__name__ == "XSDataString":
+            self._imagePrefix = imagePrefix
+        else:
+            strMessage = "ERROR! XSDataInputControlDimple.setImagePrefix argument is not XSDataString but %s" % imagePrefix.__class__.__name__
+            raise BaseException(strMessage)
+    def delImagePrefix(self): self._imagePrefix = None
+    imagePrefix = property(getImagePrefix, setImagePrefix, delImagePrefix, "Property for imagePrefix")
     # Methods and properties for the 'pdbDirectory' attribute
     def getPdbDirectory(self): return self._pdbDirectory
     def setPdbDirectory(self, pdbDirectory):
@@ -2219,6 +2388,8 @@ class XSDataInputControlDimple(XSDataInput):
             self.pyarchPath.export(outfile, level, name_='pyarchPath')
         else:
             warnEmptyAttribute("pyarchPath", "XSDataFile")
+        if self._imagePrefix is not None:
+            self.imagePrefix.export(outfile, level, name_='imagePrefix')
         if self._pdbDirectory is not None:
             self.pdbDirectory.export(outfile, level, name_='pdbDirectory')
     def build(self, node_):
@@ -2241,6 +2412,11 @@ class XSDataInputControlDimple(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setPyarchPath(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'imagePrefix':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setImagePrefix(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'pdbDirectory':
             obj_ = XSDataFile()
@@ -3984,7 +4160,7 @@ class XSDataResultControlDimple(XSDataResult):
 
 
 class XSDataXdsGenerateInput(XSDataInput):
-    def __init__(self, configuration=None, resolution=None, previous_run_dir=None):
+    def __init__(self, configuration=None, unit_cell=None, spacegroup=None, resolution=None, previous_run_dir=None):
         XSDataInput.__init__(self, configuration)
         if previous_run_dir is None:
             self._previous_run_dir = None
@@ -3999,6 +4175,20 @@ class XSDataXdsGenerateInput(XSDataInput):
             self._resolution = resolution
         else:
             strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'resolution' is not XSDataDouble but %s" % self._resolution.__class__.__name__
+            raise BaseException(strMessage)
+        if spacegroup is None:
+            self._spacegroup = None
+        elif spacegroup.__class__.__name__ == "XSDataInteger":
+            self._spacegroup = spacegroup
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'spacegroup' is not XSDataInteger but %s" % self._spacegroup.__class__.__name__
+            raise BaseException(strMessage)
+        if unit_cell is None:
+            self._unit_cell = None
+        elif unit_cell.__class__.__name__ == "XSDataString":
+            self._unit_cell = unit_cell
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'unit_cell' is not XSDataString but %s" % self._unit_cell.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'previous_run_dir' attribute
     def getPrevious_run_dir(self): return self._previous_run_dir
@@ -4024,6 +4214,30 @@ class XSDataXdsGenerateInput(XSDataInput):
             raise BaseException(strMessage)
     def delResolution(self): self._resolution = None
     resolution = property(getResolution, setResolution, delResolution, "Property for resolution")
+    # Methods and properties for the 'spacegroup' attribute
+    def getSpacegroup(self): return self._spacegroup
+    def setSpacegroup(self, spacegroup):
+        if spacegroup is None:
+            self._spacegroup = None
+        elif spacegroup.__class__.__name__ == "XSDataInteger":
+            self._spacegroup = spacegroup
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput.setSpacegroup argument is not XSDataInteger but %s" % spacegroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpacegroup(self): self._spacegroup = None
+    spacegroup = property(getSpacegroup, setSpacegroup, delSpacegroup, "Property for spacegroup")
+    # Methods and properties for the 'unit_cell' attribute
+    def getUnit_cell(self): return self._unit_cell
+    def setUnit_cell(self, unit_cell):
+        if unit_cell is None:
+            self._unit_cell = None
+        elif unit_cell.__class__.__name__ == "XSDataString":
+            self._unit_cell = unit_cell
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput.setUnit_cell argument is not XSDataString but %s" % unit_cell.__class__.__name__
+            raise BaseException(strMessage)
+    def delUnit_cell(self): self._unit_cell = None
+    unit_cell = property(getUnit_cell, setUnit_cell, delUnit_cell, "Property for unit_cell")
     def export(self, outfile, level, name_='XSDataXdsGenerateInput'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -4040,6 +4254,10 @@ class XSDataXdsGenerateInput(XSDataInput):
             self.resolution.export(outfile, level, name_='resolution')
         else:
             warnEmptyAttribute("resolution", "XSDataDouble")
+        if self._spacegroup is not None:
+            self.spacegroup.export(outfile, level, name_='spacegroup')
+        if self._unit_cell is not None:
+            self.unit_cell.export(outfile, level, name_='unit_cell')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -4055,6 +4273,16 @@ class XSDataXdsGenerateInput(XSDataInput):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setResolution(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spacegroup':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setSpacegroup(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'unit_cell':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setUnit_cell(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -4470,147 +4698,6 @@ class XSDataXdsOutputFile(XSDataInput):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataXdsOutputFile
-
-
-class XSDataXscaleOutput(XSDataResult):
-    def __init__(self, status=None, lp_file=None, hkl_file=None, succeeded=None):
-        XSDataResult.__init__(self, status)
-        if succeeded is None:
-            self._succeeded = None
-        elif succeeded.__class__.__name__ == "XSDataBoolean":
-            self._succeeded = succeeded
-        else:
-            strMessage = "ERROR! XSDataXscaleOutput constructor argument 'succeeded' is not XSDataBoolean but %s" % self._succeeded.__class__.__name__
-            raise BaseException(strMessage)
-        if hkl_file is None:
-            self._hkl_file = None
-        elif hkl_file.__class__.__name__ == "XSDataString":
-            self._hkl_file = hkl_file
-        else:
-            strMessage = "ERROR! XSDataXscaleOutput constructor argument 'hkl_file' is not XSDataString but %s" % self._hkl_file.__class__.__name__
-            raise BaseException(strMessage)
-        if lp_file is None:
-            self._lp_file = None
-        elif lp_file.__class__.__name__ == "XSDataString":
-            self._lp_file = lp_file
-        else:
-            strMessage = "ERROR! XSDataXscaleOutput constructor argument 'lp_file' is not XSDataString but %s" % self._lp_file.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'succeeded' attribute
-    def getSucceeded(self): return self._succeeded
-    def setSucceeded(self, succeeded):
-        if succeeded is None:
-            self._succeeded = None
-        elif succeeded.__class__.__name__ == "XSDataBoolean":
-            self._succeeded = succeeded
-        else:
-            strMessage = "ERROR! XSDataXscaleOutput.setSucceeded argument is not XSDataBoolean but %s" % succeeded.__class__.__name__
-            raise BaseException(strMessage)
-    def delSucceeded(self): self._succeeded = None
-    succeeded = property(getSucceeded, setSucceeded, delSucceeded, "Property for succeeded")
-    # Methods and properties for the 'hkl_file' attribute
-    def getHkl_file(self): return self._hkl_file
-    def setHkl_file(self, hkl_file):
-        if hkl_file is None:
-            self._hkl_file = None
-        elif hkl_file.__class__.__name__ == "XSDataString":
-            self._hkl_file = hkl_file
-        else:
-            strMessage = "ERROR! XSDataXscaleOutput.setHkl_file argument is not XSDataString but %s" % hkl_file.__class__.__name__
-            raise BaseException(strMessage)
-    def delHkl_file(self): self._hkl_file = None
-    hkl_file = property(getHkl_file, setHkl_file, delHkl_file, "Property for hkl_file")
-    # Methods and properties for the 'lp_file' attribute
-    def getLp_file(self): return self._lp_file
-    def setLp_file(self, lp_file):
-        if lp_file is None:
-            self._lp_file = None
-        elif lp_file.__class__.__name__ == "XSDataString":
-            self._lp_file = lp_file
-        else:
-            strMessage = "ERROR! XSDataXscaleOutput.setLp_file argument is not XSDataString but %s" % lp_file.__class__.__name__
-            raise BaseException(strMessage)
-    def delLp_file(self): self._lp_file = None
-    lp_file = property(getLp_file, setLp_file, delLp_file, "Property for lp_file")
-    def export(self, outfile, level, name_='XSDataXscaleOutput'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataXscaleOutput'):
-        XSDataResult.exportChildren(self, outfile, level, name_)
-        if self._succeeded is not None:
-            self.succeeded.export(outfile, level, name_='succeeded')
-        else:
-            warnEmptyAttribute("succeeded", "XSDataBoolean")
-        if self._hkl_file is not None:
-            self.hkl_file.export(outfile, level, name_='hkl_file')
-        if self._lp_file is not None:
-            self.lp_file.export(outfile, level, name_='lp_file')
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'succeeded':
-            obj_ = XSDataBoolean()
-            obj_.build(child_)
-            self.setSucceeded(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'hkl_file':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setHkl_file(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'lp_file':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setLp_file(obj_)
-        XSDataResult.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataXscaleOutput" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataXscaleOutput' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataXscaleOutput is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataXscaleOutput.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataXscaleOutput()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataXscaleOutput" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataXscaleOutput()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataXscaleOutput
 
 
 class XSDataXscaleParsedOutput(XSDataResult):
@@ -5577,6 +5664,147 @@ class XSDataXscaleInput(XSDataInput):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataXscaleInput
+
+
+class XSDataXscaleOutput(XSDataResult):
+    def __init__(self, status=None, lp_file=None, hkl_file=None, succeeded=None):
+        XSDataResult.__init__(self, status)
+        if succeeded is None:
+            self._succeeded = None
+        elif succeeded.__class__.__name__ == "XSDataBoolean":
+            self._succeeded = succeeded
+        else:
+            strMessage = "ERROR! XSDataXscaleOutput constructor argument 'succeeded' is not XSDataBoolean but %s" % self._succeeded.__class__.__name__
+            raise BaseException(strMessage)
+        if hkl_file is None:
+            self._hkl_file = None
+        elif hkl_file.__class__.__name__ == "XSDataString":
+            self._hkl_file = hkl_file
+        else:
+            strMessage = "ERROR! XSDataXscaleOutput constructor argument 'hkl_file' is not XSDataString but %s" % self._hkl_file.__class__.__name__
+            raise BaseException(strMessage)
+        if lp_file is None:
+            self._lp_file = None
+        elif lp_file.__class__.__name__ == "XSDataString":
+            self._lp_file = lp_file
+        else:
+            strMessage = "ERROR! XSDataXscaleOutput constructor argument 'lp_file' is not XSDataString but %s" % self._lp_file.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'succeeded' attribute
+    def getSucceeded(self): return self._succeeded
+    def setSucceeded(self, succeeded):
+        if succeeded is None:
+            self._succeeded = None
+        elif succeeded.__class__.__name__ == "XSDataBoolean":
+            self._succeeded = succeeded
+        else:
+            strMessage = "ERROR! XSDataXscaleOutput.setSucceeded argument is not XSDataBoolean but %s" % succeeded.__class__.__name__
+            raise BaseException(strMessage)
+    def delSucceeded(self): self._succeeded = None
+    succeeded = property(getSucceeded, setSucceeded, delSucceeded, "Property for succeeded")
+    # Methods and properties for the 'hkl_file' attribute
+    def getHkl_file(self): return self._hkl_file
+    def setHkl_file(self, hkl_file):
+        if hkl_file is None:
+            self._hkl_file = None
+        elif hkl_file.__class__.__name__ == "XSDataString":
+            self._hkl_file = hkl_file
+        else:
+            strMessage = "ERROR! XSDataXscaleOutput.setHkl_file argument is not XSDataString but %s" % hkl_file.__class__.__name__
+            raise BaseException(strMessage)
+    def delHkl_file(self): self._hkl_file = None
+    hkl_file = property(getHkl_file, setHkl_file, delHkl_file, "Property for hkl_file")
+    # Methods and properties for the 'lp_file' attribute
+    def getLp_file(self): return self._lp_file
+    def setLp_file(self, lp_file):
+        if lp_file is None:
+            self._lp_file = None
+        elif lp_file.__class__.__name__ == "XSDataString":
+            self._lp_file = lp_file
+        else:
+            strMessage = "ERROR! XSDataXscaleOutput.setLp_file argument is not XSDataString but %s" % lp_file.__class__.__name__
+            raise BaseException(strMessage)
+    def delLp_file(self): self._lp_file = None
+    lp_file = property(getLp_file, setLp_file, delLp_file, "Property for lp_file")
+    def export(self, outfile, level, name_='XSDataXscaleOutput'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataXscaleOutput'):
+        XSDataResult.exportChildren(self, outfile, level, name_)
+        if self._succeeded is not None:
+            self.succeeded.export(outfile, level, name_='succeeded')
+        else:
+            warnEmptyAttribute("succeeded", "XSDataBoolean")
+        if self._hkl_file is not None:
+            self.hkl_file.export(outfile, level, name_='hkl_file')
+        if self._lp_file is not None:
+            self.lp_file.export(outfile, level, name_='lp_file')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'succeeded':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setSucceeded(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'hkl_file':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setHkl_file(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'lp_file':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setLp_file(obj_)
+        XSDataResult.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataXscaleOutput" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataXscaleOutput' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataXscaleOutput is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataXscaleOutput.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataXscaleOutput()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataXscaleOutput" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataXscaleOutput()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataXscaleOutput
 
 
 class XSDataXscaleParsingInput(XSDataInput):

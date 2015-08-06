@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Oct 10 05:28::37 2014 by EDGenerateDS.
+# Generated Fri May 22 01:23::23 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -19,9 +19,13 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSData
     from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataDouble
     from XSDataCommon import XSDataFile
@@ -29,6 +33,8 @@ try:
     from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataResult
     from XSDataCommon import XSDataString
+    from XSDataCommon import XSDataLength
+    from XSDataCommon import XSDataAngle
 except ImportError as error:
     if strEdnaHome is not None:
         for strXsdName in dictLocation:
@@ -39,6 +45,7 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSData
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataFile
@@ -46,6 +53,8 @@ from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataResult
 from XSDataCommon import XSDataString
+from XSDataCommon import XSDataLength
+from XSDataCommon import XSDataAngle
 
 
 
@@ -123,6 +132,235 @@ class MixedContainer(object):
 # Data representation classes.
 #
 
+
+
+class XSDataCCP4Cell(XSData):
+    def __init__(self, angle_gamma=None, angle_beta=None, angle_alpha=None, length_c=None, length_b=None, length_a=None):
+        XSData.__init__(self, )
+        if length_a is None:
+            self._length_a = None
+        elif length_a.__class__.__name__ == "XSDataLength":
+            self._length_a = length_a
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell constructor argument 'length_a' is not XSDataLength but %s" % self._length_a.__class__.__name__
+            raise BaseException(strMessage)
+        if length_b is None:
+            self._length_b = None
+        elif length_b.__class__.__name__ == "XSDataLength":
+            self._length_b = length_b
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell constructor argument 'length_b' is not XSDataLength but %s" % self._length_b.__class__.__name__
+            raise BaseException(strMessage)
+        if length_c is None:
+            self._length_c = None
+        elif length_c.__class__.__name__ == "XSDataLength":
+            self._length_c = length_c
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell constructor argument 'length_c' is not XSDataLength but %s" % self._length_c.__class__.__name__
+            raise BaseException(strMessage)
+        if angle_alpha is None:
+            self._angle_alpha = None
+        elif angle_alpha.__class__.__name__ == "XSDataAngle":
+            self._angle_alpha = angle_alpha
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell constructor argument 'angle_alpha' is not XSDataAngle but %s" % self._angle_alpha.__class__.__name__
+            raise BaseException(strMessage)
+        if angle_beta is None:
+            self._angle_beta = None
+        elif angle_beta.__class__.__name__ == "XSDataAngle":
+            self._angle_beta = angle_beta
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell constructor argument 'angle_beta' is not XSDataAngle but %s" % self._angle_beta.__class__.__name__
+            raise BaseException(strMessage)
+        if angle_gamma is None:
+            self._angle_gamma = None
+        elif angle_gamma.__class__.__name__ == "XSDataAngle":
+            self._angle_gamma = angle_gamma
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell constructor argument 'angle_gamma' is not XSDataAngle but %s" % self._angle_gamma.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'length_a' attribute
+    def getLength_a(self): return self._length_a
+    def setLength_a(self, length_a):
+        if length_a is None:
+            self._length_a = None
+        elif length_a.__class__.__name__ == "XSDataLength":
+            self._length_a = length_a
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell.setLength_a argument is not XSDataLength but %s" % length_a.__class__.__name__
+            raise BaseException(strMessage)
+    def delLength_a(self): self._length_a = None
+    length_a = property(getLength_a, setLength_a, delLength_a, "Property for length_a")
+    # Methods and properties for the 'length_b' attribute
+    def getLength_b(self): return self._length_b
+    def setLength_b(self, length_b):
+        if length_b is None:
+            self._length_b = None
+        elif length_b.__class__.__name__ == "XSDataLength":
+            self._length_b = length_b
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell.setLength_b argument is not XSDataLength but %s" % length_b.__class__.__name__
+            raise BaseException(strMessage)
+    def delLength_b(self): self._length_b = None
+    length_b = property(getLength_b, setLength_b, delLength_b, "Property for length_b")
+    # Methods and properties for the 'length_c' attribute
+    def getLength_c(self): return self._length_c
+    def setLength_c(self, length_c):
+        if length_c is None:
+            self._length_c = None
+        elif length_c.__class__.__name__ == "XSDataLength":
+            self._length_c = length_c
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell.setLength_c argument is not XSDataLength but %s" % length_c.__class__.__name__
+            raise BaseException(strMessage)
+    def delLength_c(self): self._length_c = None
+    length_c = property(getLength_c, setLength_c, delLength_c, "Property for length_c")
+    # Methods and properties for the 'angle_alpha' attribute
+    def getAngle_alpha(self): return self._angle_alpha
+    def setAngle_alpha(self, angle_alpha):
+        if angle_alpha is None:
+            self._angle_alpha = None
+        elif angle_alpha.__class__.__name__ == "XSDataAngle":
+            self._angle_alpha = angle_alpha
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell.setAngle_alpha argument is not XSDataAngle but %s" % angle_alpha.__class__.__name__
+            raise BaseException(strMessage)
+    def delAngle_alpha(self): self._angle_alpha = None
+    angle_alpha = property(getAngle_alpha, setAngle_alpha, delAngle_alpha, "Property for angle_alpha")
+    # Methods and properties for the 'angle_beta' attribute
+    def getAngle_beta(self): return self._angle_beta
+    def setAngle_beta(self, angle_beta):
+        if angle_beta is None:
+            self._angle_beta = None
+        elif angle_beta.__class__.__name__ == "XSDataAngle":
+            self._angle_beta = angle_beta
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell.setAngle_beta argument is not XSDataAngle but %s" % angle_beta.__class__.__name__
+            raise BaseException(strMessage)
+    def delAngle_beta(self): self._angle_beta = None
+    angle_beta = property(getAngle_beta, setAngle_beta, delAngle_beta, "Property for angle_beta")
+    # Methods and properties for the 'angle_gamma' attribute
+    def getAngle_gamma(self): return self._angle_gamma
+    def setAngle_gamma(self, angle_gamma):
+        if angle_gamma is None:
+            self._angle_gamma = None
+        elif angle_gamma.__class__.__name__ == "XSDataAngle":
+            self._angle_gamma = angle_gamma
+        else:
+            strMessage = "ERROR! XSDataCCP4Cell.setAngle_gamma argument is not XSDataAngle but %s" % angle_gamma.__class__.__name__
+            raise BaseException(strMessage)
+    def delAngle_gamma(self): self._angle_gamma = None
+    angle_gamma = property(getAngle_gamma, setAngle_gamma, delAngle_gamma, "Property for angle_gamma")
+    def export(self, outfile, level, name_='XSDataCCP4Cell'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataCCP4Cell'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._length_a is not None:
+            self.length_a.export(outfile, level, name_='length_a')
+        else:
+            warnEmptyAttribute("length_a", "XSDataLength")
+        if self._length_b is not None:
+            self.length_b.export(outfile, level, name_='length_b')
+        else:
+            warnEmptyAttribute("length_b", "XSDataLength")
+        if self._length_c is not None:
+            self.length_c.export(outfile, level, name_='length_c')
+        else:
+            warnEmptyAttribute("length_c", "XSDataLength")
+        if self._angle_alpha is not None:
+            self.angle_alpha.export(outfile, level, name_='angle_alpha')
+        else:
+            warnEmptyAttribute("angle_alpha", "XSDataAngle")
+        if self._angle_beta is not None:
+            self.angle_beta.export(outfile, level, name_='angle_beta')
+        else:
+            warnEmptyAttribute("angle_beta", "XSDataAngle")
+        if self._angle_gamma is not None:
+            self.angle_gamma.export(outfile, level, name_='angle_gamma')
+        else:
+            warnEmptyAttribute("angle_gamma", "XSDataAngle")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'length_a':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setLength_a(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'length_b':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setLength_b(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'length_c':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setLength_c(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'angle_alpha':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setAngle_alpha(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'angle_beta':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setAngle_beta(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'angle_gamma':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setAngle_gamma(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataCCP4Cell" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataCCP4Cell' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataCCP4Cell is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataCCP4Cell.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataCCP4Cell()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataCCP4Cell" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataCCP4Cell()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataCCP4Cell
 
 
 class XSDataAimless(XSDataInput):
@@ -411,46 +649,46 @@ class XSDataAimless(XSDataInput):
 
 
 class XSDataInputDimple(XSDataInput):
-    def __init__(self, configuration=None, pdbfile=None, mtzfile=None):
+    def __init__(self, configuration=None, pdb=None, mtz=None):
         XSDataInput.__init__(self, configuration)
-        if mtzfile is None:
-            self._mtzfile = None
-        elif mtzfile.__class__.__name__ == "XSDataFile":
-            self._mtzfile = mtzfile
+        if mtz is None:
+            self._mtz = None
+        elif mtz.__class__.__name__ == "XSDataFile":
+            self._mtz = mtz
         else:
-            strMessage = "ERROR! XSDataInputDimple constructor argument 'mtzfile' is not XSDataFile but %s" % self._mtzfile.__class__.__name__
+            strMessage = "ERROR! XSDataInputDimple constructor argument 'mtz' is not XSDataFile but %s" % self._mtz.__class__.__name__
             raise BaseException(strMessage)
-        if pdbfile is None:
-            self._pdbfile = None
-        elif pdbfile.__class__.__name__ == "XSDataFile":
-            self._pdbfile = pdbfile
+        if pdb is None:
+            self._pdb = None
+        elif pdb.__class__.__name__ == "XSDataFile":
+            self._pdb = pdb
         else:
-            strMessage = "ERROR! XSDataInputDimple constructor argument 'pdbfile' is not XSDataFile but %s" % self._pdbfile.__class__.__name__
+            strMessage = "ERROR! XSDataInputDimple constructor argument 'pdb' is not XSDataFile but %s" % self._pdb.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'mtzfile' attribute
-    def getMtzfile(self): return self._mtzfile
-    def setMtzfile(self, mtzfile):
-        if mtzfile is None:
-            self._mtzfile = None
-        elif mtzfile.__class__.__name__ == "XSDataFile":
-            self._mtzfile = mtzfile
+    # Methods and properties for the 'mtz' attribute
+    def getMtz(self): return self._mtz
+    def setMtz(self, mtz):
+        if mtz is None:
+            self._mtz = None
+        elif mtz.__class__.__name__ == "XSDataFile":
+            self._mtz = mtz
         else:
-            strMessage = "ERROR! XSDataInputDimple.setMtzfile argument is not XSDataFile but %s" % mtzfile.__class__.__name__
+            strMessage = "ERROR! XSDataInputDimple.setMtz argument is not XSDataFile but %s" % mtz.__class__.__name__
             raise BaseException(strMessage)
-    def delMtzfile(self): self._mtzfile = None
-    mtzfile = property(getMtzfile, setMtzfile, delMtzfile, "Property for mtzfile")
-    # Methods and properties for the 'pdbfile' attribute
-    def getPdbfile(self): return self._pdbfile
-    def setPdbfile(self, pdbfile):
-        if pdbfile is None:
-            self._pdbfile = None
-        elif pdbfile.__class__.__name__ == "XSDataFile":
-            self._pdbfile = pdbfile
+    def delMtz(self): self._mtz = None
+    mtz = property(getMtz, setMtz, delMtz, "Property for mtz")
+    # Methods and properties for the 'pdb' attribute
+    def getPdb(self): return self._pdb
+    def setPdb(self, pdb):
+        if pdb is None:
+            self._pdb = None
+        elif pdb.__class__.__name__ == "XSDataFile":
+            self._pdb = pdb
         else:
-            strMessage = "ERROR! XSDataInputDimple.setPdbfile argument is not XSDataFile but %s" % pdbfile.__class__.__name__
+            strMessage = "ERROR! XSDataInputDimple.setPdb argument is not XSDataFile but %s" % pdb.__class__.__name__
             raise BaseException(strMessage)
-    def delPdbfile(self): self._pdbfile = None
-    pdbfile = property(getPdbfile, setPdbfile, delPdbfile, "Property for pdbfile")
+    def delPdb(self): self._pdb = None
+    pdb = property(getPdb, setPdb, delPdb, "Property for pdb")
     def export(self, outfile, level, name_='XSDataInputDimple'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -459,29 +697,29 @@ class XSDataInputDimple(XSDataInput):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataInputDimple'):
         XSDataInput.exportChildren(self, outfile, level, name_)
-        if self._mtzfile is not None:
-            self.mtzfile.export(outfile, level, name_='mtzfile')
+        if self._mtz is not None:
+            self.mtz.export(outfile, level, name_='mtz')
         else:
-            warnEmptyAttribute("mtzfile", "XSDataFile")
-        if self._pdbfile is not None:
-            self.pdbfile.export(outfile, level, name_='pdbfile')
+            warnEmptyAttribute("mtz", "XSDataFile")
+        if self._pdb is not None:
+            self.pdb.export(outfile, level, name_='pdb')
         else:
-            warnEmptyAttribute("pdbfile", "XSDataFile")
+            warnEmptyAttribute("pdb", "XSDataFile")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'mtzfile':
+            nodeName_ == 'mtz':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setMtzfile(obj_)
+            self.setMtz(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'pdbfile':
+            nodeName_ == 'pdb':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setPdbfile(obj_)
+            self.setPdb(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -718,7 +956,7 @@ class XSDataInputMtz2Various(XSDataInput):
 
 
 class XSDataPointless(XSDataInput):
-    def __init__(self, configuration=None, output_file=None, input_file=None):
+    def __init__(self, configuration=None, choose_spacegroup=None, output_file=None, input_file=None):
         XSDataInput.__init__(self, configuration)
         if input_file is None:
             self._input_file = None
@@ -733,6 +971,13 @@ class XSDataPointless(XSDataInput):
             self._output_file = output_file
         else:
             strMessage = "ERROR! XSDataPointless constructor argument 'output_file' is not XSDataString but %s" % self._output_file.__class__.__name__
+            raise BaseException(strMessage)
+        if choose_spacegroup is None:
+            self._choose_spacegroup = None
+        elif choose_spacegroup.__class__.__name__ == "XSDataString":
+            self._choose_spacegroup = choose_spacegroup
+        else:
+            strMessage = "ERROR! XSDataPointless constructor argument 'choose_spacegroup' is not XSDataString but %s" % self._choose_spacegroup.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'input_file' attribute
     def getInput_file(self): return self._input_file
@@ -758,6 +1003,18 @@ class XSDataPointless(XSDataInput):
             raise BaseException(strMessage)
     def delOutput_file(self): self._output_file = None
     output_file = property(getOutput_file, setOutput_file, delOutput_file, "Property for output_file")
+    # Methods and properties for the 'choose_spacegroup' attribute
+    def getChoose_spacegroup(self): return self._choose_spacegroup
+    def setChoose_spacegroup(self, choose_spacegroup):
+        if choose_spacegroup is None:
+            self._choose_spacegroup = None
+        elif choose_spacegroup.__class__.__name__ == "XSDataString":
+            self._choose_spacegroup = choose_spacegroup
+        else:
+            strMessage = "ERROR! XSDataPointless.setChoose_spacegroup argument is not XSDataString but %s" % choose_spacegroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delChoose_spacegroup(self): self._choose_spacegroup = None
+    choose_spacegroup = property(getChoose_spacegroup, setChoose_spacegroup, delChoose_spacegroup, "Property for choose_spacegroup")
     def export(self, outfile, level, name_='XSDataPointless'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -774,6 +1031,8 @@ class XSDataPointless(XSDataInput):
             self.output_file.export(outfile, level, name_='output_file')
         else:
             warnEmptyAttribute("output_file", "XSDataString")
+        if self._choose_spacegroup is not None:
+            self.choose_spacegroup.export(outfile, level, name_='choose_spacegroup')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -789,6 +1048,11 @@ class XSDataPointless(XSDataInput):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setOutput_file(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'choose_spacegroup':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setChoose_spacegroup(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -835,7 +1099,7 @@ class XSDataPointless(XSDataInput):
 
 
 class XSDataPointlessOut(XSDataResult):
-    def __init__(self, status=None, sgstr=None, sgnumber=None):
+    def __init__(self, status=None, cell=None, sgstr=None, sgnumber=None):
         XSDataResult.__init__(self, status)
         if sgnumber is None:
             self._sgnumber = None
@@ -850,6 +1114,13 @@ class XSDataPointlessOut(XSDataResult):
             self._sgstr = sgstr
         else:
             strMessage = "ERROR! XSDataPointlessOut constructor argument 'sgstr' is not XSDataString but %s" % self._sgstr.__class__.__name__
+            raise BaseException(strMessage)
+        if cell is None:
+            self._cell = None
+        elif cell.__class__.__name__ == "XSDataCCP4Cell":
+            self._cell = cell
+        else:
+            strMessage = "ERROR! XSDataPointlessOut constructor argument 'cell' is not XSDataCCP4Cell but %s" % self._cell.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'sgnumber' attribute
     def getSgnumber(self): return self._sgnumber
@@ -875,6 +1146,18 @@ class XSDataPointlessOut(XSDataResult):
             raise BaseException(strMessage)
     def delSgstr(self): self._sgstr = None
     sgstr = property(getSgstr, setSgstr, delSgstr, "Property for sgstr")
+    # Methods and properties for the 'cell' attribute
+    def getCell(self): return self._cell
+    def setCell(self, cell):
+        if cell is None:
+            self._cell = None
+        elif cell.__class__.__name__ == "XSDataCCP4Cell":
+            self._cell = cell
+        else:
+            strMessage = "ERROR! XSDataPointlessOut.setCell argument is not XSDataCCP4Cell but %s" % cell.__class__.__name__
+            raise BaseException(strMessage)
+    def delCell(self): self._cell = None
+    cell = property(getCell, setCell, delCell, "Property for cell")
     def export(self, outfile, level, name_='XSDataPointlessOut'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -887,6 +1170,8 @@ class XSDataPointlessOut(XSDataResult):
             self.sgnumber.export(outfile, level, name_='sgnumber')
         if self._sgstr is not None:
             self.sgstr.export(outfile, level, name_='sgstr')
+        if self._cell is not None:
+            self.cell.export(outfile, level, name_='cell')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -902,6 +1187,11 @@ class XSDataPointlessOut(XSDataResult):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setSgstr(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cell':
+            obj_ = XSDataCCP4Cell()
+            obj_.build(child_)
+            self.setCell(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -948,48 +1238,143 @@ class XSDataPointlessOut(XSDataResult):
 
 
 class XSDataResultDimple(XSDataResult):
-    def __init__(self, status=None, blobfile=None):
+    def __init__(self, status=None, refmac5restrLog=None, findBlobsLog=None, log=None, finalPdb=None, finalMtz=None, blob=None):
         XSDataResult.__init__(self, status)
-        if blobfile is None:
-            self._blobfile = []
-        elif blobfile.__class__.__name__ == "list":
-            self._blobfile = blobfile
+        if blob is None:
+            self._blob = []
+        elif blob.__class__.__name__ == "list":
+            self._blob = blob
         else:
-            strMessage = "ERROR! XSDataResultDimple constructor argument 'blobfile' is not list but %s" % self._blobfile.__class__.__name__
+            strMessage = "ERROR! XSDataResultDimple constructor argument 'blob' is not list but %s" % self._blob.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'blobfile' attribute
-    def getBlobfile(self): return self._blobfile
-    def setBlobfile(self, blobfile):
-        if blobfile is None:
-            self._blobfile = []
-        elif blobfile.__class__.__name__ == "list":
-            self._blobfile = blobfile
+        if finalMtz is None:
+            self._finalMtz = None
+        elif finalMtz.__class__.__name__ == "XSDataFile":
+            self._finalMtz = finalMtz
         else:
-            strMessage = "ERROR! XSDataResultDimple.setBlobfile argument is not list but %s" % blobfile.__class__.__name__
+            strMessage = "ERROR! XSDataResultDimple constructor argument 'finalMtz' is not XSDataFile but %s" % self._finalMtz.__class__.__name__
             raise BaseException(strMessage)
-    def delBlobfile(self): self._blobfile = None
-    blobfile = property(getBlobfile, setBlobfile, delBlobfile, "Property for blobfile")
-    def addBlobfile(self, value):
+        if finalPdb is None:
+            self._finalPdb = None
+        elif finalPdb.__class__.__name__ == "XSDataFile":
+            self._finalPdb = finalPdb
+        else:
+            strMessage = "ERROR! XSDataResultDimple constructor argument 'finalPdb' is not XSDataFile but %s" % self._finalPdb.__class__.__name__
+            raise BaseException(strMessage)
+        if log is None:
+            self._log = None
+        elif log.__class__.__name__ == "XSDataFile":
+            self._log = log
+        else:
+            strMessage = "ERROR! XSDataResultDimple constructor argument 'log' is not XSDataFile but %s" % self._log.__class__.__name__
+            raise BaseException(strMessage)
+        if findBlobsLog is None:
+            self._findBlobsLog = None
+        elif findBlobsLog.__class__.__name__ == "XSDataFile":
+            self._findBlobsLog = findBlobsLog
+        else:
+            strMessage = "ERROR! XSDataResultDimple constructor argument 'findBlobsLog' is not XSDataFile but %s" % self._findBlobsLog.__class__.__name__
+            raise BaseException(strMessage)
+        if refmac5restrLog is None:
+            self._refmac5restrLog = None
+        elif refmac5restrLog.__class__.__name__ == "XSDataFile":
+            self._refmac5restrLog = refmac5restrLog
+        else:
+            strMessage = "ERROR! XSDataResultDimple constructor argument 'refmac5restrLog' is not XSDataFile but %s" % self._refmac5restrLog.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'blob' attribute
+    def getBlob(self): return self._blob
+    def setBlob(self, blob):
+        if blob is None:
+            self._blob = []
+        elif blob.__class__.__name__ == "list":
+            self._blob = blob
+        else:
+            strMessage = "ERROR! XSDataResultDimple.setBlob argument is not list but %s" % blob.__class__.__name__
+            raise BaseException(strMessage)
+    def delBlob(self): self._blob = None
+    blob = property(getBlob, setBlob, delBlob, "Property for blob")
+    def addBlob(self, value):
         if value is None:
-            strMessage = "ERROR! XSDataResultDimple.addBlobfile argument is None"
+            strMessage = "ERROR! XSDataResultDimple.addBlob argument is None"
             raise BaseException(strMessage)            
         elif value.__class__.__name__ == "XSDataFile":
-            self._blobfile.append(value)
+            self._blob.append(value)
         else:
-            strMessage = "ERROR! XSDataResultDimple.addBlobfile argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataResultDimple.addBlob argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
-    def insertBlobfile(self, index, value):
+    def insertBlob(self, index, value):
         if index is None:
-            strMessage = "ERROR! XSDataResultDimple.insertBlobfile argument 'index' is None"
+            strMessage = "ERROR! XSDataResultDimple.insertBlob argument 'index' is None"
             raise BaseException(strMessage)            
         if value is None:
-            strMessage = "ERROR! XSDataResultDimple.insertBlobfile argument 'value' is None"
+            strMessage = "ERROR! XSDataResultDimple.insertBlob argument 'value' is None"
             raise BaseException(strMessage)            
         elif value.__class__.__name__ == "XSDataFile":
-            self._blobfile[index] = value
+            self._blob[index] = value
         else:
-            strMessage = "ERROR! XSDataResultDimple.addBlobfile argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataResultDimple.addBlob argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
+    # Methods and properties for the 'finalMtz' attribute
+    def getFinalMtz(self): return self._finalMtz
+    def setFinalMtz(self, finalMtz):
+        if finalMtz is None:
+            self._finalMtz = None
+        elif finalMtz.__class__.__name__ == "XSDataFile":
+            self._finalMtz = finalMtz
+        else:
+            strMessage = "ERROR! XSDataResultDimple.setFinalMtz argument is not XSDataFile but %s" % finalMtz.__class__.__name__
+            raise BaseException(strMessage)
+    def delFinalMtz(self): self._finalMtz = None
+    finalMtz = property(getFinalMtz, setFinalMtz, delFinalMtz, "Property for finalMtz")
+    # Methods and properties for the 'finalPdb' attribute
+    def getFinalPdb(self): return self._finalPdb
+    def setFinalPdb(self, finalPdb):
+        if finalPdb is None:
+            self._finalPdb = None
+        elif finalPdb.__class__.__name__ == "XSDataFile":
+            self._finalPdb = finalPdb
+        else:
+            strMessage = "ERROR! XSDataResultDimple.setFinalPdb argument is not XSDataFile but %s" % finalPdb.__class__.__name__
+            raise BaseException(strMessage)
+    def delFinalPdb(self): self._finalPdb = None
+    finalPdb = property(getFinalPdb, setFinalPdb, delFinalPdb, "Property for finalPdb")
+    # Methods and properties for the 'log' attribute
+    def getLog(self): return self._log
+    def setLog(self, log):
+        if log is None:
+            self._log = None
+        elif log.__class__.__name__ == "XSDataFile":
+            self._log = log
+        else:
+            strMessage = "ERROR! XSDataResultDimple.setLog argument is not XSDataFile but %s" % log.__class__.__name__
+            raise BaseException(strMessage)
+    def delLog(self): self._log = None
+    log = property(getLog, setLog, delLog, "Property for log")
+    # Methods and properties for the 'findBlobsLog' attribute
+    def getFindBlobsLog(self): return self._findBlobsLog
+    def setFindBlobsLog(self, findBlobsLog):
+        if findBlobsLog is None:
+            self._findBlobsLog = None
+        elif findBlobsLog.__class__.__name__ == "XSDataFile":
+            self._findBlobsLog = findBlobsLog
+        else:
+            strMessage = "ERROR! XSDataResultDimple.setFindBlobsLog argument is not XSDataFile but %s" % findBlobsLog.__class__.__name__
+            raise BaseException(strMessage)
+    def delFindBlobsLog(self): self._findBlobsLog = None
+    findBlobsLog = property(getFindBlobsLog, setFindBlobsLog, delFindBlobsLog, "Property for findBlobsLog")
+    # Methods and properties for the 'refmac5restrLog' attribute
+    def getRefmac5restrLog(self): return self._refmac5restrLog
+    def setRefmac5restrLog(self, refmac5restrLog):
+        if refmac5restrLog is None:
+            self._refmac5restrLog = None
+        elif refmac5restrLog.__class__.__name__ == "XSDataFile":
+            self._refmac5restrLog = refmac5restrLog
+        else:
+            strMessage = "ERROR! XSDataResultDimple.setRefmac5restrLog argument is not XSDataFile but %s" % refmac5restrLog.__class__.__name__
+            raise BaseException(strMessage)
+    def delRefmac5restrLog(self): self._refmac5restrLog = None
+    refmac5restrLog = property(getRefmac5restrLog, setRefmac5restrLog, delRefmac5restrLog, "Property for refmac5restrLog")
     def export(self, outfile, level, name_='XSDataResultDimple'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -998,18 +1383,53 @@ class XSDataResultDimple(XSDataResult):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataResultDimple'):
         XSDataResult.exportChildren(self, outfile, level, name_)
-        for blobfile_ in self.getBlobfile():
-            blobfile_.export(outfile, level, name_='blobfile')
+        for blob_ in self.getBlob():
+            blob_.export(outfile, level, name_='blob')
+        if self._finalMtz is not None:
+            self.finalMtz.export(outfile, level, name_='finalMtz')
+        if self._finalPdb is not None:
+            self.finalPdb.export(outfile, level, name_='finalPdb')
+        if self._log is not None:
+            self.log.export(outfile, level, name_='log')
+        if self._findBlobsLog is not None:
+            self.findBlobsLog.export(outfile, level, name_='findBlobsLog')
+        if self._refmac5restrLog is not None:
+            self.refmac5restrLog.export(outfile, level, name_='refmac5restrLog')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'blobfile':
+            nodeName_ == 'blob':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.blobfile.append(obj_)
+            self.blob.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'finalMtz':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setFinalMtz(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'finalPdb':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setFinalPdb(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'log':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setLog(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'findBlobsLog':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setFindBlobsLog(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'refmac5restrLog':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setRefmac5restrLog(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

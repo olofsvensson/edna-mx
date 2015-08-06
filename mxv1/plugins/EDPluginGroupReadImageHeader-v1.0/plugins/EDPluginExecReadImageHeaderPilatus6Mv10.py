@@ -128,6 +128,12 @@ class EDPluginExecReadImageHeaderPilatus6Mv10(EDPluginExec):
             xsDataGoniostat = XSDataGoniostat()
             fRotationAxisStart = float(dictPilatus6MHeader[ "Start_angle" ].split(" ")[0])
             fOscillationWidth = float(dictPilatus6MHeader[ "Angle_increment" ].split(" ")[0])
+            if "Kappa" in dictPilatus6MHeader.keys():
+                fKappa = float(dictPilatus6MHeader[ "Kappa" ].split(" ")[0])
+                xsDataGoniostat.setKappa(XSDataAngle(fKappa))
+            if "Phi" in dictPilatus6MHeader.keys():
+                fPhi = float(dictPilatus6MHeader[ "Phi" ].split(" ")[0])
+                xsDataGoniostat.setPhi(XSDataAngle(fPhi))
             xsDataGoniostat.setRotationAxisStart(XSDataAngle(fRotationAxisStart))
             xsDataGoniostat.setRotationAxisEnd(XSDataAngle(fRotationAxisStart + fOscillationWidth))
             xsDataGoniostat.setOscillationWidth(XSDataAngle(fOscillationWidth))

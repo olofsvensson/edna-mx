@@ -30,6 +30,7 @@ import os
 import shutil
 import smtplib
 import time
+import socket
 
 from EDMessage import EDMessage
 from EDPluginControl import EDPluginControl
@@ -48,6 +49,7 @@ from XSDataCommon import XSDataDictionary
 from XSDataCommon import XSDataKeyValuePair
 from XSDataCommon import XSDataSize
 from XSDataCommon import XSDataLength
+from XSDataCommon import XSDataDouble
 
 from XSDataMXv1 import XSDataInputControlISPyB
 from XSDataMXv1 import XSDataResultCharacterisation
@@ -181,7 +183,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
         self.retrieveSuccessMessages(self.edPluginControlInterface, "EDPluginControlInterfaceToMXCuBEv1_3.doSuccessActionInterface")
         # Send success email message (MXSUP-183):
         self.tStop = time.time()
-        strSubject = "%s : SUCCESS! (%.1f s)" % (EDUtilsPath.getEdnaSite(), self.tStop - self.tStart)
+        strSubject = "SUCCESS"
         strMessage = "Characterisation success!"
         self.storeResultsInISPyB(strSubject, strMessage)
         
@@ -189,7 +191,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.doFailureActionInterface...")
         # Send failure email message (MXSUP-183):
         self.tStop = time.time()
-        strSubject = "%s : FAILURE! (%.1f s)" % (EDUtilsPath.getEdnaSite(), self.tStop - self.tStart)
+        strSubject = "FAILURE"
         strMessage = "Characterisation FAILURE!"
         self.storeResultsInISPyB(strSubject, strMessage)
         # self.setFailure()
@@ -502,6 +504,10 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                         xsDataSize.x = XSDataLength(fBeamSizeAtSampleX)
                         xsDataSize.y = XSDataLength(fBeamSizeAtSampleY)
                         xsDataExperimentalCondition.getBeam().setSize(xsDataSize)
+                    # Get transmission if it's not already there
+                    if xsDataExperimentalCondition.beam.transmission is None:
+                        fTransmission = xsDataISPyBDataCollection.transmission
+                        xsDataExperimentalCondition.beam.transmission = XSDataDouble(fTransmission)
             if not bFoundValidFlux:
                 self.screen("No valid flux could be retrieved from ISPyB! Trying to obtain flux from input data.")
                 xsDataBeam = xsDataExperimentalCondition.getBeam()
@@ -510,7 +516,14 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                     fFluxMXCuBE = xsDataBeamFlux.getValue()
                     self.screen("MXCuBE reports flux to be: %g photons/sec" % fFluxMXCuBE)
                     if fFluxMXCuBE < self.fFluxThreshold:
-                        self.screen("MXCuBE flux invalid!")
+                        self.screen("MXCuBE flux lower than threshold flux %g photons/s!" % self.fFluxThreshold)
+                        self.screen("Forcing flux to 0.0 photons/s")
+                        xsDataExperimentalCondition.getBeam().setFlux(XSDataFlux(0.0))
+                else:
+                    # Force missing flux to 0.0
+                    self.screen("No flux neither in ISPyB nor in mxCuBE, forcing flux to 0.0 photon/s")
+                    xsDataExperimentalCondition.getBeam().setFlux(XSDataFlux(0.0))
+            
         return xsDataExperimentalCondition
                             
                             
@@ -566,11 +579,41 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
             if(xsDataSample is not None):
                 xsDataCollection.setSample(xsDataSample)
 
-
+    def getBeamlineProposalFromPath(self, _strPathToImage):
+        """ESRF specific code for extracting the beamline name and prefix from the path"""
+        listPath = _strPathToImage.split("/")
+        strPrefix = EDUtilsImage.getPrefix(_strPathToImage).replace("ref-", "")
+        if listPath[2] == "visitor":
+            strBeamline = listPath[4]
+            strProposal = listPath[3]
+        elif listPath[3] == "inhouse":
+            strBeamline = listPath[2]
+            strProposal = listPath[4]
+        else:
+            strBeamline = "nobeamline"
+            strProposal = "noproposal"
+        return (strBeamline, strProposal, strPrefix)
+        
     def sendEmail(self, _strSubject, _strMessage):
         """Sends an email to the EDNA contact person (if configured)."""
-
-        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.sendEmail: Subject = %s" % _strSubject)
+        strTime = "%.1f s" % (self.tStop - self.tStart)
+        if EDUtilsPath.isESRF():
+            strPathImage = None
+            for dataSet in self.dataInput.dataSet:
+                for imageFile in dataSet.imageFile:
+                    strPathImage = imageFile.path.value
+                    break
+            if strPathImage is not None:
+                (strBeamline, strProposal, strPrefix) = self.getBeamlineProposalFromPath(strPathImage)
+            else:
+                strBeamline = "Unknown"
+                strProposal = "Unknown"
+                strPrefix = "Unknown"
+            strHost = socket.gethostname()
+            strSubject = "EDNA ch %s %s %s %s %s (%s)" % (_strSubject, strBeamline, strProposal, strPrefix, strHost, strTime)
+        else:
+            strSubject = "EDNA %s : %s (%s)" % (_strSubject, EDUtilsPath.getEdnaSite(), strTime)
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.sendEmail: Subject = %s" % strSubject)
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.sendEmail: Message:")
         self.DEBUG(_strMessage)
         if self.strEDNAContactEmail == None:
@@ -594,7 +637,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                 strMessage += _strMessage
                 strEmailMsg = ("From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s" % (self.strEDNAEmailSender, \
                                                                                 self.strEDNAContactEmail, \
-                                                                                _strSubject, strMessage))
+                                                                                strSubject, strMessage))
                 server = smtplib.SMTP("localhost")
                 server.sendmail(self.strEDNAEmailSender, self.strEDNAContactEmail, strEmailMsg)
                 server.quit()
@@ -602,7 +645,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                 self.ERROR("Error when sending email message!")
                 self.writeErrorTrace()
 
-
+    
     def executeSimpleHTML(self, _xsDataResultCharacterisation):
         xsDataInputSimpleHTMLPage = XSDataInputSimpleHTMLPage()
         xsDataInputSimpleHTMLPage.setCharacterisationResult(_xsDataResultCharacterisation)

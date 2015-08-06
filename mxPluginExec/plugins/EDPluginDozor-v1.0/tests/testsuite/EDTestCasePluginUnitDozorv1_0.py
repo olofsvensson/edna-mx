@@ -61,6 +61,8 @@ class EDTestCasePluginUnitDozorv1_0(EDTestCasePluginUnit):
         edPlugin = self.getPlugin()
         xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "dozor.log"))
         EDAssert.equal(2, len(xsDataResult.imageDozor), "Result from 2 images")
+        xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "Dozor_v20141203.log"))
+        EDAssert.equal(2, len(xsDataResult.imageDozor), "Result from 2 images with version 20141203")
         xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "dozor_no_results.log"))
         EDAssert.equal(1, len(xsDataResult.imageDozor), "Result from 1 image")
         

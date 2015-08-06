@@ -1,0 +1,18 @@
+Process frames in directory: /mntdirect/_scisoft/users/svensson/git/edna-mx/tests/data/images
+/mntdirect/_scisoft/users/svensson/git/edna-mx/tests/data/images/ref-testscale_1_001.img
+
+                     File : ref-testscale_1_001.img
+               Spot Total :   1432
+               Remove Ice :   1409
+      In-Resolution Total :   1332
+    Good Bragg Candidates :   1042
+                Ice Rings :      0
+      Method 1 Resolution :   1.89
+      Method 2 Resolution :   1.87
+        Maximum unit cell :  206.4
+<Spot model eccentricity> :   0.761 
+%Saturation, Top 50 Peaks :  19.34
+In-Resolution Ovrld Spots :      1
+
+Bin population cutoff for method 2 resolution: 20%
+

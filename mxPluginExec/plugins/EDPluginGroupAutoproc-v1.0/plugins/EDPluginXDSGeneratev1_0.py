@@ -51,6 +51,7 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataXdsGenerateInput)
+        self.setDataOutput(XSDataXdsGenerateOutput())
 
     def checkParameters(self):
         """
@@ -64,7 +65,9 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         # Now really check what we need
         path = os.path.abspath(self.dataInput.previous_run_dir.value)
         if not os.path.isdir(path):
-            EDVerbose.ERROR('path given is not a directory')
+            strErrorMessage = "Path given is not a directory: {0}".format(path)
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 
@@ -82,7 +85,9 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
 
         for f in self._required:
             if not os.path.isfile(f):
-                EDVerbose.ERROR('missing required file {0}'.format(f))
+                strErrorMessage = "Missing required file {0}".format(f)
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
                 self.setFailure()
                 return
 
@@ -118,6 +123,8 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         input_anom.job = XSDataString('CORRECT')
         input_anom.resolution = self.dataInput.resolution
         input_anom.resolution_range = [XSDataDouble(60), self.dataInput.resolution]
+        input_anom.spacegroup = self.dataInput.spacegroup
+        input_anom.unit_cell = self.dataInput.unit_cell
         self.xds_anom.dataInput = input_anom
 
         input_noanom = XSDataMinimalXdsIn()
@@ -125,6 +132,8 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         input_noanom.friedels_law = XSDataBoolean(True)
         input_noanom.job = XSDataString('CORRECT')
         input_noanom.resolution_range = [XSDataDouble(60), self.dataInput.resolution]
+        input_noanom.spacegroup = self.dataInput.spacegroup
+        input_noanom.unit_cell = self.dataInput.unit_cell
         self.xds_noanom.dataInput = input_noanom
 
         xds_anom_dir = os.path.abspath(self.xds_anom.getWorkingDirectory())
@@ -145,7 +154,9 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
 
         self.xds_anom.executeSynchronous()
         if self.xds_anom.isFailure():
-            EDVerbose.ERROR('xds failed when generating w/ anom')
+            strErrorMessage = "xds failed when generating w/ anom"
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 
@@ -173,7 +184,9 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         self.xds_noanom.executeSynchronous()
 
         if self.xds_noanom.isFailure():
-            EDVerbose.ERROR('xds failed when generating w/out anom')
+            strErrorMessage = "xds failed when generating w/ anom"
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
 

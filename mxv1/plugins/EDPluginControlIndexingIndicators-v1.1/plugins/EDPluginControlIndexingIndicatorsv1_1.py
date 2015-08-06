@@ -117,8 +117,8 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         else:
             self.xsDataExperimentalCondition = self.getDataInput("dataCollection")[0].getSubWedge()[0].getExperimentalCondition()
         xsDataIndexingInput.setExperimentalCondition(self.xsDataExperimentalCondition)
-        from EDHandlerXSDataLabelitv1_1 import EDHandlerXSDataLabelitv1_1
-        listXSDataImageReference = EDHandlerXSDataLabelitv1_1.generateListXSDataImageReference(xsDataIndexingInput)
+        from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
+        listXSDataImageReference = EDHandlerXSDataPhenixv1_1.generateListXSDataImageReference(xsDataIndexingInput)
         for xsDataImage in listXSDataImageReference:
             self.edPluginIndexingLabelit.setDataInput(xsDataImage, "referenceImage")
         xsDataCrystal = xsDataIndexingInput.getCrystal()
@@ -171,8 +171,8 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         self.synchronizeOn()
         xsDataLabelitScreenOutput = _edPlugin.getDataOutput("labelitScreenOutput")[0]
         xsDataLabelitMosflmScriptsOutput = _edPlugin.getDataOutput("mosflmScriptsOutput")[0]
-        from EDHandlerXSDataLabelitv1_1 import EDHandlerXSDataLabelitv1_1
-        xsDataIndexingResult = EDHandlerXSDataLabelitv1_1.generateXSDataIndexingResult(xsDataLabelitScreenOutput,
+        from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
+        xsDataIndexingResult = EDHandlerXSDataPhenixv1_1.generateXSDataIndexingResult(xsDataLabelitScreenOutput,
                                                                                        xsDataLabelitMosflmScriptsOutput,
                                                                                        self.xsDataExperimentalCondition,
                                                                                        self.strSymopLib)

@@ -52,6 +52,7 @@ class EDPluginControlRunXdsv1_0( EDPluginControl ):
         """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataMinimalXdsIn)
+        self.setDataOutput(XSDataXdsOutputFile())
         self.controlled_plugin_name = 'EDPluginExecMinimalXdsv1_0'
         self.first_run = None
         self.second_run = None
@@ -151,6 +152,9 @@ class EDPluginControlRunXdsv1_0( EDPluginControl ):
 
         if not self.successful_run:
         # all runs failed so bail out ...
+            strErrorMessage = "All XDS run failed"
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
             self.setFailure()
         else:
             # use the xds parser plugin to parse the xds output file...
@@ -171,6 +175,9 @@ class EDPluginControlRunXdsv1_0( EDPluginControl ):
 
             if parser.isFailure():
                 # that should not happen
+                strErrorMessage = "Parser failure in control run XDS"
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
                 self.setFailure()
                 return
             self.dataOutput = parser.dataOutput

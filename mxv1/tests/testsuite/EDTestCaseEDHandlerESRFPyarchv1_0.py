@@ -48,7 +48,7 @@ class EDTestCaseEDHandlerESRFPyarchv1_0(EDTestCasePluginUnit):
         EDAssert.equal(None, EDHandlerESRFPyarchv1_0.createPyarchFilePath("/"))
         EDAssert.equal(None, EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data"))
         EDAssert.equal(None, EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/visitor"))
-        EDAssert.equal("/data/pyarch/id14eh2/mx415", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/visitor/mx415/id14eh2"))
+        EDAssert.equal(None, EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/visitor/mx415/id14eh2"))
         EDAssert.equal("/data/pyarch/id14eh2/mx415/20100212", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/visitor/mx415/id14eh2/20100212"))
         EDAssert.equal("/data/pyarch/id14eh2/mx415/20100212/1", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/visitor/mx415/id14eh2/20100212/1"))
         EDAssert.equal("/data/pyarch/id14eh2/mx415/20100212/1/2", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/visitor/mx415/id14eh2/20100212/1/2"))
@@ -57,12 +57,21 @@ class EDTestCaseEDHandlerESRFPyarchv1_0(EDTestCasePluginUnit):
         EDAssert.equal(None, EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data"))
         EDAssert.equal(None, EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id23eh2"))
         EDAssert.equal(None, EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id23eh2/inhouse"))
-        EDAssert.equal("/data/pyarch/id23eh2/opid232", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id23eh2/inhouse/opid232"))
+        EDAssert.equal(None, EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id23eh2/inhouse/opid232"))
         EDAssert.equal("/data/pyarch/id23eh2/opid232/20100525", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id23eh2/inhouse/opid232/20100525"))
         EDAssert.equal("/data/pyarch/id23eh2/opid232/20100525/1", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id23eh2/inhouse/opid232/20100525/1"))
         EDAssert.equal("/data/pyarch/id23eh2/opid232/20100525/1/2", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id23eh2/inhouse/opid232/20100525/1/2"))
         EDAssert.equal("/data/pyarch/id30a1/opid30a1/20140717/RAW_DATA/opid30a1_1_dnafiles", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id30a1/inhouse/opid30a1/20140717/RAW_DATA/opid30a1_1_dnafiles"))
-
+        # Test with gzvisitor
+        EDAssert.equal(None, EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gzvisitor/mx415/id30a3"))
+        EDAssert.equal("/data/pyarch/id30a3/mx415/20100212", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/visitor/mx415/id30a3/20100212"))
+        EDAssert.equal("/data/pyarch/id30a3/mx415/20100212/1", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/visitor/mx415/id30a3/20100212/1"))
+        EDAssert.equal("/data/pyarch/id30a3/mx415/20100212/1/2", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/visitor/mx415/id30a3/20100212/1/2"))
+        EDAssert.equal("/data/pyarch/id30a3/opid232/20100525", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/id30a3/inhouse/opid232/20100525"))
+        EDAssert.equal("/data/pyarch/id30a3/opid232/20100525/1", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/id30a3/inhouse/opid232/20100525/1"))
+        EDAssert.equal("/data/pyarch/id30a3/opid232/20100525/1/2", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/id30a3/inhouse/opid232/20100525/1/2"))
+        EDAssert.equal("/data/pyarch/id30a3/opid30a1/20140717/RAW_DATA/opid30a1_1_dnafiles", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/id30a3/inhouse/opid30a1/20140717/RAW_DATA/opid30a1_1_dnafiles"))
+        
 
 
     def testCreatePyarchHtmlDirectoryPath(self):

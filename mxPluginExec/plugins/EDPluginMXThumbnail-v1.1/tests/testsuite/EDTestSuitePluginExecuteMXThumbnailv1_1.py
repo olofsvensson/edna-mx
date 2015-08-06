@@ -39,6 +39,7 @@ class EDTestSuitePluginExecuteMXThumbnailv1_1(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteMXThumbnailv1_1_outputPath")
         self.addTestCaseFromName("EDTestCasePluginExecuteMXThumbnailv1_1_pilatus2m")
         self.addTestCaseFromName("EDTestCasePluginExecuteMXThumbnailv1_1_pilatus6m")
+        self.addTestCaseFromName("EDTestCasePluginExecuteMXThumbnailv1_1_pilatus6m_png")
         self.addTestCaseFromName("EDTestCasePluginExecuteMXThumbnailv1_1_marccd")
 
 

@@ -42,7 +42,7 @@ from stat import *
 from EDPluginControl import EDPluginControl
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult, XSDataString
+from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult, XSDataString, XSDataDouble
 from XSDataAutoprocv1_0 import XSDataFileConversion, XSDataFileConversionOut
 
 EDFactoryPluginStatic.loadModule("XSDataCCP4v1_0")
@@ -55,6 +55,7 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
     def __init__(self):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataFileConversion)
+        self.setDataOutput(XSDataFileConversionOut())
         self.strAnomSuffix = None
 
     def configure(self):
@@ -95,7 +96,9 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         if self.dataInput.input_file is not None:
             path = self.dataInput.input_file.value
             if not os.path.exists(path):
-                self.ERROR('input file {0} does not exist'.format(path))
+                strErrorMessage = "Input file {0} does not exist".format(path)
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
                 self.setFailure()
                 return
 
@@ -108,6 +111,8 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         pointless_out = os.path.join(os.path.dirname(self.dataInput.output_file.value),
                                      self.pointless_out)
         pointless_in.output_file = XSDataString(pointless_out)
+        if self.dataInput.choose_spacegroup is not None:
+            pointless_in.choose_spacegroup = self.dataInput.choose_spacegroup
         self.pointless.dataInput = pointless_in
         self.screen("Pointless run " + self.strAnomSuffix)
         self.pointless.executeSynchronous()
@@ -215,6 +220,16 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         EDPluginControl.postProcess(self)
         output_file = self.dataInput.output_file.value
 
+        # gzip the aimless unmerged file
+        aimless_unmerged_out = '{0}{1}_aimless_unmerged.mtz'.format(self.image_prefix, self.strAnomSuffix)
+        aimless_unmerged_path = os.path.join(os.path.dirname(self.dataInput.output_file.value),
+                                             aimless_unmerged_out)
+        try:
+            self.DEBUG("gzip'ing aimless unmerged file {0}".format(aimless_unmerged_path))
+            subprocess.call(['gzip', aimless_unmerged_path])
+        except Exception:
+            self.DEBUG("gzip'ing the file failed: {0}".format(traceback.format_exc()))
+
         # gzip the pointless multirecord file
         pointless_out = os.path.join(os.path.dirname(self.dataInput.output_file.value),
                                      self.pointless_out)
@@ -230,5 +245,11 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         res.status = status
         res.pointless_sgnumber = self.pointless.dataOutput.sgnumber
         res.pointless_sgstring = self.pointless.dataOutput.sgstr
+        res.pointless_cell = [XSDataDouble(self.pointless.dataOutput.cell.length_a.value),
+                              XSDataDouble(self.pointless.dataOutput.cell.length_b.value),
+                              XSDataDouble(self.pointless.dataOutput.cell.length_c.value),
+                              XSDataDouble(self.pointless.dataOutput.cell.angle_alpha.value),
+                              XSDataDouble(self.pointless.dataOutput.cell.angle_beta.value),
+                              XSDataDouble(self.pointless.dataOutput.cell.angle_gamma.value)]
         res.aimless_log = XSDataString(self.aimless_log)
         self.dataOutput = res
