@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue Jun 24 09:31::17 2014 by EDGenerateDS.
+# Generated Tue May 19 09:23::46 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -16,6 +16,7 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
@@ -23,6 +24,7 @@ try:
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataResult
+    from XSDataCommon import XSDataString
 except ImportError as error:
     if strEdnaHome is not None:
         for strXsdName in dictLocation:
@@ -37,6 +39,7 @@ from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataResult
+from XSDataCommon import XSDataString
 
 
 
@@ -117,7 +120,7 @@ class MixedContainer(object):
 
 
 class XSDataInputMXThumbnail(XSDataInput):
-    def __init__(self, configuration=None, outputPath=None, width=None, height=None, image=None):
+    def __init__(self, configuration=None, format=None, outputPath=None, width=None, height=None, image=None):
         XSDataInput.__init__(self, configuration)
         if image is None:
             self._image = None
@@ -146,6 +149,13 @@ class XSDataInputMXThumbnail(XSDataInput):
             self._outputPath = outputPath
         else:
             strMessage = "ERROR! XSDataInputMXThumbnail constructor argument 'outputPath' is not XSDataFile but %s" % self._outputPath.__class__.__name__
+            raise BaseException(strMessage)
+        if format is None:
+            self._format = None
+        elif format.__class__.__name__ == "XSDataString":
+            self._format = format
+        else:
+            strMessage = "ERROR! XSDataInputMXThumbnail constructor argument 'format' is not XSDataString but %s" % self._format.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
@@ -195,6 +205,18 @@ class XSDataInputMXThumbnail(XSDataInput):
             raise BaseException(strMessage)
     def delOutputPath(self): self._outputPath = None
     outputPath = property(getOutputPath, setOutputPath, delOutputPath, "Property for outputPath")
+    # Methods and properties for the 'format' attribute
+    def getFormat(self): return self._format
+    def setFormat(self, format):
+        if format is None:
+            self._format = None
+        elif format.__class__.__name__ == "XSDataString":
+            self._format = format
+        else:
+            strMessage = "ERROR! XSDataInputMXThumbnail.setFormat argument is not XSDataString but %s" % format.__class__.__name__
+            raise BaseException(strMessage)
+    def delFormat(self): self._format = None
+    format = property(getFormat, setFormat, delFormat, "Property for format")
     def export(self, outfile, level, name_='XSDataInputMXThumbnail'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -213,6 +235,8 @@ class XSDataInputMXThumbnail(XSDataInput):
             self.width.export(outfile, level, name_='width')
         if self._outputPath is not None:
             self.outputPath.export(outfile, level, name_='outputPath')
+        if self._format is not None:
+            self.format.export(outfile, level, name_='format')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -238,6 +262,11 @@ class XSDataInputMXThumbnail(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setOutputPath(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'format':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setFormat(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

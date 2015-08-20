@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<XSDataInputInterface>
+    <diffractionPlan>
+        <aimedIOverSigmaAtHighestResolution>
+            <value>2.000000e+00</value>
+        </aimedIOverSigmaAtHighestResolution>
+        <aimedMultiplicity>
+            <value>1.600000e+01</value>
+        </aimedMultiplicity>
+        <anomalousData>
+            <value>false</value>
+        </anomalousData>
+        <complexity>
+            <value>none</value>
+        </complexity>
+        <maxExposureTimePerDataCollection>
+            <value>2.018000e+03</value>
+        </maxExposureTimePerDataCollection>
+        <minExposureTimePerImage>
+            <value>1.000000e-02</value>
+        </minExposureTimePerImage>
+    </diffractionPlan>
+    <imagePath>
+        <path>
+            <value>${EDNA_TESTIMAGES}/THAU_1_0001.cbf</value>
+        </path>
+    </imagePath>
+    <imagePath>
+        <path>
+            <value>${EDNA_TESTIMAGES}/THAU_1_0002.cbf</value>
+        </path>
+    </imagePath>
+    <imagePath>
+        <path>
+            <value>${EDNA_TESTIMAGES}/THAU_1_0003.cbf</value>
+        </path>
+    </imagePath>
+</XSDataInputInterface>

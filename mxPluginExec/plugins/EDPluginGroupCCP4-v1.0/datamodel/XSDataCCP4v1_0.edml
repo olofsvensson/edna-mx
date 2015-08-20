@@ -1,5 +1,6 @@
 targetNamespace "http://www.edna-site.org"
 
+import XSDataCommon.XSData
 import XSDataCommon.XSDataInput
 import XSDataCommon.XSDataResult
 import XSDataCommon.XSDataFile
@@ -7,6 +8,17 @@ import XSDataCommon.XSDataString
 import XSDataCommon.XSDataInteger
 import XSDataCommon.XSDataDouble
 import XSDataCommon.XSDataBoolean
+import XSDataCommon.XSDataLength
+import XSDataCommon.XSDataAngle
+
+complex type XSDataCCP4Cell extends XSData {
+	length_a    : XSDataLength
+	length_b    : XSDataLength
+	length_c    : XSDataLength
+	angle_alpha : XSDataAngle
+	angle_beta  : XSDataAngle
+	angle_gamma : XSDataAngle
+}
 
 complex type XSDataInputMtz2Various extends XSDataInput {
 	mtzfile : XSDataFile
@@ -45,14 +57,15 @@ complex type XSDataAimless extends XSDataInput {
 }
 
 complex type XSDataPointless extends XSDataInput {
-        input_file      : XSDataString // XDS HKL file
-        output_file	: XSDataString
-
+        input_file        : XSDataString // XDS HKL file
+        output_file	      : XSDataString
+		choose_spacegroup : XSDataString optional
 }
 
 complex type XSDataPointlessOut extends XSDataResult {
 	sgnumber	: XSDataInteger optional
 	sgstr		: XSDataString optional
+	cell        : XSDataCCP4Cell optional
 }
 
 complex type XSDataTruncate extends XSDataInput {

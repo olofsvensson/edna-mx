@@ -242,6 +242,7 @@ complex type XSDataISPyBDataCollection {
 	experimentType : string
 	fileTemplate : string
 	flux : float
+	flux_end : float
 	imageDirectory : string
 	imagePrefix : string
 	imageSuffix : string
@@ -695,3 +696,11 @@ complex type XSDataResultISPyBGetPdbFilePath extends XSDataResult {
 	pdbFilePath : XSDataString
 }
 
+complex type XSDataInputISPyBUpdateDataCollectionGroupComment extends XSDataInput {
+	dataCollectionId: XSDataInteger
+	newComment : XSDataString
+}
+
+complex type XSDataResultISPyBUpdateDataCollectionGroupComment extends XSDataResult {
+	dataCollectionGroupId : XSDataInteger
+}

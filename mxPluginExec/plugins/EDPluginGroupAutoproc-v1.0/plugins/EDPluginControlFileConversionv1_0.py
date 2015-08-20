@@ -42,7 +42,7 @@ from stat import *
 from EDPluginControl import EDPluginControl
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult, XSDataString
+from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult, XSDataString, XSDataDouble
 from XSDataAutoprocv1_0 import XSDataFileConversion, XSDataFileConversionOut
 
 EDFactoryPluginStatic.loadModule("XSDataCCP4v1_0")
@@ -111,6 +111,8 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         pointless_out = os.path.join(os.path.dirname(self.dataInput.output_file.value),
                                      self.pointless_out)
         pointless_in.output_file = XSDataString(pointless_out)
+        if self.dataInput.choose_spacegroup is not None:
+            pointless_in.choose_spacegroup = self.dataInput.choose_spacegroup
         self.pointless.dataInput = pointless_in
         self.screen("Pointless run " + self.strAnomSuffix)
         self.pointless.executeSynchronous()
@@ -243,5 +245,11 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         res.status = status
         res.pointless_sgnumber = self.pointless.dataOutput.sgnumber
         res.pointless_sgstring = self.pointless.dataOutput.sgstr
+        res.pointless_cell = [XSDataDouble(self.pointless.dataOutput.cell.length_a.value),
+                              XSDataDouble(self.pointless.dataOutput.cell.length_b.value),
+                              XSDataDouble(self.pointless.dataOutput.cell.length_c.value),
+                              XSDataDouble(self.pointless.dataOutput.cell.angle_alpha.value),
+                              XSDataDouble(self.pointless.dataOutput.cell.angle_beta.value),
+                              XSDataDouble(self.pointless.dataOutput.cell.angle_gamma.value)]
         res.aimless_log = XSDataString(self.aimless_log)
         self.dataOutput = res

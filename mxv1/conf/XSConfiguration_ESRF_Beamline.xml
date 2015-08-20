@@ -41,6 +41,15 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginControlStrategyv1_3</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>symopHome</name>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/lib/data</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
 		<XSPluginItem> 
 			<name>EDPluginControlIntegrationv10</name> 
 			<XSParamList>
@@ -91,6 +100,27 @@
 			<XSParamItem>
 				<name>characterisationPlugin</name>
 				<value>EDPluginControlCharacterisationv1_4</value>
+			</XSParamItem>
+			<XSParamItem>
+				<name>ispybPlugin</name>
+				<value>EDPluginControlISPyBv1_4</value>
+			</XSParamItem>
+			<XSParamItem>
+				<name>useISPyBPlugin</name>
+				<value>True</value>
+			</XSParamItem>
+		</XSParamList>
+	</XSPluginItem>
+	<XSPluginItem>
+		<name>EDPluginControlInterfacev1_3</name>
+		<XSParamList>
+			<XSParamItem>
+				<name>controlledPlugins</name>
+				<value>characterisationPlugin,ispybPlugin</value>
+			</XSParamItem>
+			<XSParamItem>
+				<name>characterisationPlugin</name>
+				<value>EDPluginControlCharacterisationv1_5</value>
 			</XSParamItem>
 			<XSParamItem>
 				<name>ispybPlugin</name>

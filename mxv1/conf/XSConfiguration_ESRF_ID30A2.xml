@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<XSConfiguration> 
+  	<XSImportConfiguration>
+  		<name>XSConfiguration_ESRF_Beamline</name>
+  	</XSImportConfiguration>	
+  	<XSPluginList>
+		<XSPluginItem>
+			<name>EDPluginControlCharacterisationv1_4</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+ 					<value>http://ub1004.esrf.fr:7171</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>runKappa</name>
+					<value>true</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+  	</XSPluginList>
+</XSConfiguration> 

@@ -128,6 +128,12 @@ class EDPluginExecReadImageHeaderPilatus6Mv10(EDPluginExec):
             xsDataGoniostat = XSDataGoniostat()
             fRotationAxisStart = float(dictPilatus6MHeader[ "Start_angle" ].split(" ")[0])
             fOscillationWidth = float(dictPilatus6MHeader[ "Angle_increment" ].split(" ")[0])
+            if "Kappa" in dictPilatus6MHeader.keys():
+                fKappa = float(dictPilatus6MHeader[ "Kappa" ].split(" ")[0])
+                xsDataGoniostat.setKappa(XSDataAngle(fKappa))
+            if "Phi" in dictPilatus6MHeader.keys():
+                fPhi = float(dictPilatus6MHeader[ "Phi" ].split(" ")[0])
+                xsDataGoniostat.setPhi(XSDataAngle(fPhi))
             xsDataGoniostat.setRotationAxisStart(XSDataAngle(fRotationAxisStart))
             xsDataGoniostat.setRotationAxisEnd(XSDataAngle(fRotationAxisStart + fOscillationWidth))
             xsDataGoniostat.setOscillationWidth(XSDataAngle(fOscillationWidth))
@@ -186,6 +192,13 @@ class EDPluginExecReadImageHeaderPilatus6Mv10(EDPluginExec):
                     strTmp = strLine[2:].replace("\r\n", "")
                     if strLine[6] == "/" and strLine[10] == "/":
                         dictPilatus6M["DateTime"] = strTmp
+                    elif strLine[6] == "-" and strLine[9] == "-":
+                        # At ALBA, we have the Pilatus 6M writing in the header                                                
+                        # the date and time with the following format:                                                         
+                        # '%Y-%m-%dT%H:%M:%S.%f'                                                                              
+                        import datetime
+                        dt = datetime.datetime.strptime(strTmp, '%Y-%m-%dT%H:%M:%S.%f')
+                        dictPilatus6M["DateTime"] = dt.strftime('%Y/%b/%d %H:%M:%S.%f')[:-3]
                     else:
                         strKey = strTmp.split(" ")[0]
                         strValue = strTmp.replace(strKey, "")[1:]

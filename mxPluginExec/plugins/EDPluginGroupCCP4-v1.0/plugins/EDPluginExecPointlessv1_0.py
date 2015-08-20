@@ -35,10 +35,11 @@ import os.path
 from EDVerbose import EDVerbose
 from EDUtilsPath import EDUtilsPath
 from EDPluginExecProcessScript import EDPluginExecProcessScript
+from EDUtilsFile import EDUtilsFile
 
 from XSDataCommon import XSDataStatus, XSDataBoolean, XSDataResult
-from XSDataCommon import XSDataInteger, XSDataString
-from XSDataCCP4v1_0 import XSDataPointless, XSDataPointlessOut
+from XSDataCommon import XSDataInteger, XSDataString, XSDataLength, XSDataAngle
+from XSDataCCP4v1_0 import XSDataPointless, XSDataPointlessOut, XSDataCCP4Cell
 
 class EDPluginExecPointlessv1_0(EDPluginExecProcessScript):
     def __init__(self):
@@ -63,6 +64,8 @@ class EDPluginExecPointlessv1_0(EDPluginExecProcessScript):
             self.setScriptCommandline(options)
             self.DEBUG('command line options set to {0}'.format(options))
         self.addListCommandExecution('setting symmetry-based')
+        if self.dataInput.choose_spacegroup is not None:
+            self.addListCommandExecution('choose spacegroup {0}'.format(self.dataInput.choose_spacegroup.value))
 
     def checkParameters(self):
         self.DEBUG('Pointless: checkParameters')
@@ -88,29 +91,49 @@ class EDPluginExecPointlessv1_0(EDPluginExecProcessScript):
     def postProcess(self):
         self.DEBUG('Pointless: postProcess')
         EDPluginExecProcessScript.postProcess(self)
-        output_file = self.dataInput.output_file.value
+        outputFile = self.dataInput.output_file.value
+        self.dataOutput = self.parsePointlessOutput(os.path.join(self.getWorkingDirectory(), self.getScriptLogFileName()))
 
+    def parsePointlessOutput(self, _outputFile):
+        
         sgre = re.compile(""" \* Space group = '(?P<sgstr>.*)' \(number\s+(?P<sgnumber>\d+)\)""")
 
         sgnumber = sgstr = None
-        # returns None if the file does not exist...
-        log = self.readProcessLogFile()
-        if log is not None:
-            # we'll apply the regexp to the whole file contents which
-            # hopefully won't be that long.
-            m = sgre.search(log)
-            if m is not None:
-                d = m.groupdict()
-                sgnumber = d['sgnumber']
-                sgstr = d['sgstr']
 
         res = XSDataPointlessOut()
-        if sgnumber is not None:
-            res.sgnumber = XSDataInteger(sgnumber)
-        if sgstr is not None:
-            res.sgstr = XSDataString(sgstr)
         status = XSDataStatus()
-        status.isSuccess = XSDataBoolean(os.path.exists(output_file))
-        res.status = status
+        status.isSuccess = XSDataBoolean(False)
+        if os.path.exists(_outputFile):
+            res.status = status
 
-        self.dataOutput = res
+            strLog = EDUtilsFile.readFile(_outputFile)
+            if strLog is not None:
+                # we'll apply the regexp to the whole file contents which
+                # hopefully won't be that long.
+                m = sgre.search(strLog)
+                if m is not None:
+                    d = m.groupdict()
+                    sgnumber = d['sgnumber']
+                    sgstr = d['sgstr']
+
+                    res.sgnumber = XSDataInteger(sgnumber)
+                    res.sgstr = XSDataString(sgstr)
+                    status.isSuccess = XSDataBoolean(True)
+                    # Search first for unit cell after the Laue group...
+                    unitCellRe = re.compile("""  Laue group confidence.+\\n\\n\s+Unit cell:(.+)""")
+                    m2 = unitCellRe.search(strLog)
+                    if m2 is None:
+                        # Then search it from the end...
+                        unitCellRe = re.compile(""" \* Cell Dimensions : \(obsolete \- refer to dataset cell dimensions above\)\\n\\n(.+)""")
+                        m2 = unitCellRe.search(strLog)
+                    if m2 is not None:
+                        listCell = m2.groups()[0].split()
+                        xsDataCCP4Cell = XSDataCCP4Cell()
+                        xsDataCCP4Cell.length_a = XSDataLength(listCell[0])
+                        xsDataCCP4Cell.length_b = XSDataLength(listCell[1])
+                        xsDataCCP4Cell.length_c = XSDataLength(listCell[2])
+                        xsDataCCP4Cell.angle_alpha = XSDataAngle(listCell[3])
+                        xsDataCCP4Cell.angle_beta = XSDataAngle(listCell[4])
+                        xsDataCCP4Cell.angle_gamma = XSDataAngle(listCell[5])
+                        res.cell = xsDataCCP4Cell
+        return res

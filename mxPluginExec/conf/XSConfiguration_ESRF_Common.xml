@@ -143,7 +143,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v714_20150311</value>
+					<value>/opt/pxsoft/bin/mosflm__v720_20150605</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -151,7 +151,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.1.4  for Image plate and CCD data 11th March 2015</value>
+					<value>Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -168,7 +168,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v714_20150311</value>
+					<value>/opt/pxsoft/bin/mosflm__v720_20150605</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -176,7 +176,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.1.4  for Image plate and CCD data 11th March 2015</value>
+					<value>Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -193,7 +193,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v714_20150311</value>
+					<value>/opt/pxsoft/bin/mosflm__v720_20150605</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -201,7 +201,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.1.4  for Image plate and CCD data 11th March 2015</value>
+					<value>Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -260,6 +260,31 @@
 				<XSParamItem>
 					<name>timeOut</name>
 					<value>120</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginBestv1_3</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/BEST/v5.1.0_20150707/linux/best</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptSetupCCP4</name>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptVersionString</name>
+					<value>Version 5.1.0 //  28.05.2015</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>30</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>

@@ -52,9 +52,9 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
         EDPluginExecProcessScript.__init__(self)
 
         self.addCompatibleVersion("Mosflm version 7.0.9  for Image plate and CCD data 14th May 2012")
-        self.addCompatibleVersion("Mosflm version 7.1.0  for Image plate and CCD data 24th January 2014")
         self.addCompatibleVersion("Mosflm version 7.1.2  for Image plate and CCD data 16th June 2014")
-        self.addCompatibleVersion("Mosflm version 7.1.4  for Image plate and CCD data 11th March 2015")
+        self.addCompatibleVersion("Mosflm version 7.1.3  for Image plate and CCD data 17th February 2015")
+        self.addCompatibleVersion("Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015")
 
         self.strMOSFLMNewmatFileName = None
         self.strMOSFLMMatrixFileName = None
@@ -201,14 +201,6 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
                     self.addListCommandExecution("LIMITS EXCLUDE 106.47  0.0 109.56 423.6")
                     self.addListCommandExecution("LIMITS EXCLUDE  70.00  0.0 73.10  423.6")
                     self.addListCommandExecution("LIMITS EXCLUDE  33.54  0.0 36.64  423.6")
-            elif xsDataMOSFLMInput.getDetector().getType().getValue() == "EIGER":
-                if xsDataMOSFLMInput.getDetector().getNumberPixelX().getValue() == 2070 and \
-                   xsDataMOSFLMInput.getDetector().getNumberPixelY().getValue() == 2167:
-                    # Eiger 4M
-                    self.addListCommandExecution("LIMITS EXCLUDE    0.0  77.2   162.6    78.0")
-                    self.addListCommandExecution("LIMITS EXCLUDE   38.4   0.0    41.4   155.2")
-                    self.addListCommandExecution("LIMITS EXCLUDE   79.7   0.0    82.8   155.2")
-                    self.addListCommandExecution("LIMITS EXCLUDE  121.2   0.0   124.1   155.2")
             
 
             # Check if raster is configured

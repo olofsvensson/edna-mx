@@ -46,7 +46,7 @@ class EDTestCasePluginExecuteExecSimpleHTMLPagev1_0_withQt3Render(EDTestCasePlug
     def __init__(self, _edStringTestName=None):
         EDTestCasePluginExecute.__init__(self, "EDPluginExecSimpleHTMLPagev1_0")
         self.setConfigurationFile(self.getRefConfigFile())
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputSimpleHTMLPage_reference.xml"))
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputSimpleHTMLPage_kappa.xml"))
 
 
     def preProcess(self):

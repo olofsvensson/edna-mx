@@ -87,6 +87,22 @@ package XSDataMXv1 {
 			subWedge : XSDataSubWedge []
 		}
 
+		complex type XSDataInputControlKappa extends XSData {
+			dataCollection : XSDataCollection
+			selectedSolution : XSDataIndexingSolutionSelected
+		}
+
+		complex type XSDataKappaSolution extends XSData {
+			kappa : XSDataDouble
+			phi : XSDataDouble
+			settings : XSDataString
+		}
+
+		complex type XSDataResultControlKappa extends XSDataResult {
+			logFile : XSDataFile optional
+			solution : XSDataKappaSolution [] optional
+		}
+
 		complex type XSDataResultCharacterisation extends XSDataResult {
 			dataCollection : XSDataCollection
 			jpegImage : XSDataImage [] optional
@@ -99,6 +115,7 @@ package XSDataMXv1 {
 			statusMessage : XSDataString
 			strategyResult : XSDataResultStrategy optional
 			xdsBackgroundImage : XSDataFile optional
+			kappaReorientation : XSDataResultControlKappa optional
 		}
 
 		complex type XSDataResultControlISPyB extends XSDataResult {
@@ -174,6 +191,7 @@ package XSDataMXv1 {
 			size : XSDataSize optional
 			transmission : XSDataDouble optional
 			wavelength : XSDataWavelength optional
+			apertureSize : XSDataLength optional
 		}
 
 		complex type XSDataCollection extends XSData {
@@ -221,6 +239,8 @@ package XSDataMXv1 {
 			rotationAxisEnd : XSDataAngle
 			rotationAxisStart : XSDataAngle
 			samplePosition : XSDataVectorDouble [] optional
+			kappa : XSDataAngle optional
+			phi : XSDataAngle optional
 		}
 
 		complex type XSDataSubWedge extends XSData {
@@ -425,6 +445,7 @@ package XSDataMXv1 {
 			radiationDamageModelGamma : XSDataDouble optional
 			shape : XSDataDouble optional
 			size : XSDataSize optional
+			omegaMin : XSDataAngle optional
 			susceptibility : XSDataDouble optional
 		}
 

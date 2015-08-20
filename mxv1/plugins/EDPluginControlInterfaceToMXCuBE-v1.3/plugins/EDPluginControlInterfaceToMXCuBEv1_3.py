@@ -516,7 +516,13 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                     fFluxMXCuBE = xsDataBeamFlux.getValue()
                     self.screen("MXCuBE reports flux to be: %g photons/sec" % fFluxMXCuBE)
                     if fFluxMXCuBE < self.fFluxThreshold:
-                        self.screen("MXCuBE flux invalid!")
+                        self.screen("MXCuBE flux lower than threshold flux %g photons/s!" % self.fFluxThreshold)
+                        self.screen("Forcing flux to 0.0 photons/s")
+                        xsDataExperimentalCondition.getBeam().setFlux(XSDataFlux(0.0))
+                else:
+                    # Force missing flux to 0.0
+                    self.screen("No flux neither in ISPyB nor in mxCuBE, forcing flux to 0.0 photon/s")
+                    xsDataExperimentalCondition.getBeam().setFlux(XSDataFlux(0.0))
             
         return xsDataExperimentalCondition
                             

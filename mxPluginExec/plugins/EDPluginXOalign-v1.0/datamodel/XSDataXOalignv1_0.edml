@@ -1,0 +1,48 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSData
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataString
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataAngle
+import XSDataCommon.XSDataLength
+import XSDataCommon.XSDataMatrixDouble
+import XSDataCommon.XSDataResult
+
+
+complex type XSDataXOalignCell extends XSData {
+	angle_alpha : XSDataAngle
+	angle_beta : XSDataAngle
+	angle_gamma : XSDataAngle
+	length_a : XSDataLength
+	length_b : XSDataLength
+	length_c : XSDataLength
+}
+
+
+complex type XSDataXOalignOrientation extends XSData {
+	matrixA : XSDataMatrixDouble
+	matrixU : XSDataMatrixDouble
+}
+
+complex type XSDataXOalignSolution extends XSData {
+	kappa : XSDataDouble
+	phi : XSDataDouble
+	settings : XSDataString
+}
+
+
+complex type XSDataInputXOalign extends XSDataInput {
+	symmetry : XSDataString
+	orientation : XSDataXOalignOrientation
+	cell : XSDataXOalignCell
+	omega : XSDataAngle optional
+	kappa : XSDataAngle optional
+	phi : XSDataAngle optional
+}
+
+complex type XSDataResultXOalign extends XSDataResult {
+	logFile : XSDataFile optional
+	solution : XSDataXOalignSolution [] optional
+}

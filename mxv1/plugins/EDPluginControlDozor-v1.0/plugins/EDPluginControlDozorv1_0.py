@@ -94,7 +94,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             goniostat = subWedge.experimentalCondition.goniostat
             xsDataInputDozor.detectorType = detector.type
             xsDataInputDozor.exposureTime = XSDataDouble(beam.exposureTime.value)
-            xsDataInputDozor.spotSize = XSDataDouble(3.0)
+            xsDataInputDozor.spotSize = XSDataInteger(3)
             xsDataInputDozor.detectorDistance = XSDataDouble(detector.distance.value)
             xsDataInputDozor.wavelength = XSDataDouble(beam.wavelength.value)
 #            xsDataInputDozor.fractionPolatization : XSDataDouble optional

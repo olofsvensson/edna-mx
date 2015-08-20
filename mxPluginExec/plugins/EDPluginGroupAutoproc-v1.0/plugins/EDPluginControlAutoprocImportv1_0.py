@@ -76,6 +76,10 @@ class EDPluginControlAutoprocImportv1_0(EDPluginControl):
         noanom_in.input_file = self.dataInput.input_noanom
         noanom_in.output_file = XSDataString(os.path.join(self.outdir, OUTFILE_TEMPLATE.format('noanom')))
         self.noanom.dataInput = noanom_in
+        
+        if self.dataInput.choose_spacegroup is not None:
+            anom_in.choose_spacegroup = self.dataInput.choose_spacegroup
+            noanom_in.choose_spacegroup = self.dataInput.choose_spacegroup
 
     def checkParameters(self):
         # NB. we'll only check for the output directory existence for
@@ -125,6 +129,7 @@ class EDPluginControlAutoprocImportv1_0(EDPluginControl):
 
         res.pointless_sgnumber = self.noanom.dataOutput.pointless_sgnumber
         res.pointless_sgstring = self.noanom.dataOutput.pointless_sgstring
+        res.pointless_cell = self.noanom.dataOutput.pointless_cell
         res.aimless_log_anom = self.anom.dataOutput.aimless_log
         res.aimless_log_noanom = self.noanom.dataOutput.aimless_log
         self.dataOutput = res

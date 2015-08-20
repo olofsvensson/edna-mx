@@ -123,6 +123,8 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         input_anom.job = XSDataString('CORRECT')
         input_anom.resolution = self.dataInput.resolution
         input_anom.resolution_range = [XSDataDouble(60), self.dataInput.resolution]
+        input_anom.spacegroup = self.dataInput.spacegroup
+        input_anom.unit_cell = self.dataInput.unit_cell
         self.xds_anom.dataInput = input_anom
 
         input_noanom = XSDataMinimalXdsIn()
@@ -130,6 +132,8 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         input_noanom.friedels_law = XSDataBoolean(True)
         input_noanom.job = XSDataString('CORRECT')
         input_noanom.resolution_range = [XSDataDouble(60), self.dataInput.resolution]
+        input_noanom.spacegroup = self.dataInput.spacegroup
+        input_noanom.unit_cell = self.dataInput.unit_cell
         self.xds_noanom.dataInput = input_noanom
 
         xds_anom_dir = os.path.abspath(self.xds_anom.getWorkingDirectory())

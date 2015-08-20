@@ -1,0 +1,96 @@
+ Program Best /A.Popov & G.Bourenkov/
+ Version 4.1.0 //  02.10.2012
+ Copyright 2004-11 by Alexander Popov and Gleb Bourenkov
+
+    Plan of data collection for radiation damage characterisation 
+    ============================================================== 
+ Resolution limit =2.96 Angstrom      Distance = 317.5mm
+------------------------------------------------------------------------
+                  PLAN PARAMETERS                  ||     INFORMATION
+---------------------------------------------------||-------------------
+Step/   | Phi  | Rot. |  Exposure| N.of  |Transmis-|| Exposure |  Dose  
+ action |start | width|  /image  |images |    sion ||  total   | total 
+---------------------------------------------------||--------------------
+ 1
+exposure   0.00   1.00      0.100    297     5.72  ||     1.698 .373E+06
+   burn    0.00 297.00      1.944      0   100.00  ||     3.641 .801E+06
+ 2
+exposure   0.00   1.00      0.100    297     5.72  ||     5.339 .117E+07
+   burn    0.00 297.00      1.944      0   100.00  ||     7.283 .160E+07
+ 3
+exposure   0.00   1.00      0.100    297     5.72  ||     8.981 .198E+07
+   burn    0.00 297.00      1.944      0   100.00  ||    10.924 .240E+07
+ 4
+exposure   0.00   1.00      0.100    297     5.72  ||    12.622 .278E+07
+   burn    0.00 297.00      1.944      0   100.00  ||    14.566 .320E+07
+ 5
+exposure   0.00   1.00      0.100    297     5.72  ||    16.263 .358E+07
+   burn    0.00 297.00      1.944      0   100.00  ||    18.207 .401E+07
+ 6
+exposure   0.00   1.00      0.100    297     5.72  ||    19.905 .438E+07
+   burn    0.00 297.00      1.944      0   100.00  ||    21.849 .481E+07
+ 7
+exposure   0.00   1.00      0.100    297     5.72  ||    23.546 .518E+07
+   burn    0.00 297.00      1.944      0   100.00  ||    25.490 .561E+07
+ 8
+exposure   0.00   1.00      0.100    297     5.72  ||    27.188 .598E+07
+   burn    0.00 297.00      1.944      0   100.00  ||    29.132 .641E+07
+ 9
+exposure   0.00   1.00      0.100    297     5.72  ||    30.829 .678E+07
+   burn    0.00 297.00      1.944      0   100.00  ||    32.773 .721E+07
+10
+exposure   0.00   1.00      0.100    297     5.72  ||    34.471 .758E+07
+   burn    0.00 297.00      1.944      0   100.00  ||    36.415 .801E+07
+11
+exposure   0.00   1.00      0.100    297     5.72  ||    38.112 .838E+07
+------------------------------------------------------------------------
+
+                  Additional information
+                 =======================
+Fraction of unique reflections in blind region:   0.0%
+
+Scaling
+ Relative scale       :    2.78
+ Overall B-factor     :   7.63 Angstrom^2
+ B-factor eigenvalues :   6.16   7.74   9.86 Angstrom^2
+
+
+                         INPUT
+                         =====
+Initial images
+ Detector                         : q210-2x
+ Wavelength                       : 0.934 Angstrom
+ Transmission                     : 100.00
+ Exposure time                    : 1.00 sec
+ Read-outs                        : 1
+ Resolution limit                 : 2.00 Angstrom
+ Input from                       : MOSFLM
+
+Radiation damage parameters
+ Gray per second                  : 0.220E+06
+ Shape factor                     : 1.00
+ Susceptibility factor            : 1.50
+
+Task parameters
+ Task                             : Optimize SAD data collection
+ Target Ratio I/Sigma             : 5.0
+ Optimization option              : dose is minimal
+ Anisotropy correction level      : none
+ Number of crystal positions      :  1
+ Total rotation range selection   : according to given redundancy
+ Anomalous data                   : Yes
+ Target Completeness              : 0.900
+ Target redundancy                : 6.50
+ Maximum total exposure time      : 10000.0 sec
+ Dose limit                       : not given
+ Given Resolution limit           : 2.00 Angstrom
+
+Hardware limitations
+ Minimum rotation range per frame : 0.10 degree
+ Maximum scan speed               : 10.000 degree/sec
+ Minimum exposure time per frame  : 0.100 sec
+
+Crystal
+ Space Group                      : P 2 2 2   
+ Cell                             :  54.80  59.06  66.96  90.00  90.00  90.00
+ Mosaicity                        : 0.85 degree

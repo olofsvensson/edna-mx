@@ -35,6 +35,7 @@ class EDTestSuitePluginExecCCP4v1_0(EDTestSuite):
 
     def process(self):
         self.addTestCaseFromName("EDTestCasePluginUnitExecMtz2Variousv1_0")
+        self.addTestCaseFromName("EDTestCasePluginUnitExecPointlessv1_0")
         self.addTestCaseFromName("EDTestCasePluginExecuteExecMtz2Variousv1_0")
         self.addTestCaseFromName("EDTestCasePluginExecuteExecDimplev1_0")
         

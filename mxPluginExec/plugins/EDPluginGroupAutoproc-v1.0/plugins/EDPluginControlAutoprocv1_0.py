@@ -28,7 +28,7 @@ __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
 
-WS_URL='http://ispyb.esrf.fr:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl'
+WS_URL='http://ispyb.esrf.fr:8080/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl'
 
 import os
 import os.path
@@ -70,6 +70,7 @@ from XSDataAutoprocv1_0 import XSDataXscaleInputFile
 from XSDataAutoprocv1_0 import XSDataAutoprocInput
 from XSDataAutoprocv1_0 import XSDataAutoprocImport
 from XSDataAutoprocv1_0 import XSDataInputControlDimple
+from XSDataAutoprocv1_0 import XSDataRange
 
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 # plugin input/output
@@ -94,6 +95,9 @@ from XSDataISPyBv1_4 import AutoProcProgramContainer, AutoProcProgram
 from XSDataISPyBv1_4 import AutoProcProgramAttachment
 from XSDataISPyBv1_4 import Image
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
+
+# add comments to data collection and data collection group
+from XSDataISPyBv1_4 import XSDataInputISPyBUpdateDataCollectionGroupComment
 
 # status updates
 from XSDataISPyBv1_4 import AutoProcStatus
@@ -352,14 +356,15 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.first_image = _template_to_image(template, start_image)
         self.last_image =  _template_to_image(template, end_image)
 
-        self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProcv1_0")
+        self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProcv1_0", "XDS_first")
         self.xds_first.dataInput = xds_in
-
+        
         if EDUtilsPath.isESRF():
             self.waitFileFirst = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileFirst")
             self.waitFileLast = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileLast")
 
-        self.generate = self.loadPlugin("EDPluginXDSGeneratev1_0")
+        self.generate = self.loadPlugin("EDPluginXDSGeneratev1_0", "XDSGenerate")
+        self.generate_xscale = self.loadPlugin("EDPluginXDSGeneratev1_0", "XDSGenerate_for_Xscale")
 
         self.first_res_cutoff = self.loadPlugin("EDPluginResCutoffv1_0")
         self.res_cutoff_anom = self.loadPlugin("EDPluginResCutoffv1_0")
@@ -376,6 +381,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.file_conversion = self.loadPlugin('EDPluginControlAutoprocImportv1_0')
         
         self.phenixXtriage = self.loadPlugin("EDPluginPhenixXtriagev1_1")
+        
+        self.edPluginISPyBUpdateDataCollectionGroupComment = self.loadPlugin("EDPluginISPyBUpdateDataCollectionGroupCommentv1_4")
 
 #        self.dimple = self.loadPlugin('EDPluginControlDIMPLEPipelineCalcDiffMapv10')
 
@@ -740,21 +747,74 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                          'Non-anomalous resolution cutoffs finished'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_noanom']))
 
 
+        import_in = XSDataAutoprocImport()
+        import_in.input_anom = self.generate.dataOutput.hkl_anom
+        import_in.input_noanom = self.generate.dataOutput.hkl_no_anom
+        import_in.dataCollectionID = self.dataInput.data_collection_id
+        import_in.start_image = XSDataInteger(self.data_range[0])
+        import_in.end_image = XSDataInteger(self.data_range[1])
+
+        # XXX: is this the right place to get the res from?
+        import_in.res = self.res_cutoff_anom.dataOutput.res
+
+        # XXX: This is optional but seems required by aimless
+        import_in.nres = self.dataInput.nres
+
+        import_in.output_directory = XSDataString(self.results_dir)
+
+        try:
+            import_in.image_prefix = XSDataString(self.image_prefix)
+        except:
+            self.DEBUG('could not determine image prefix from directory "{0}"'.format(self.root_dir))
+
+        if self.dataInput.spacegroup is not None:
+            import_in.choose_spacegroup = self.dataInput.spacegroup
+
+        self.file_conversion.dataInput = import_in
+
+        t0 = time.time()
+        self.file_conversion.executeSynchronous()
+        self.retrieveFailureMessages(self.file_conversion, "File conversion")
+        self.stats['autoproc_import']=time.time()-t0
+
+        with open(self.log_file_path, 'w') as f:
+            json.dump(self.stats, f)
+
+        if self.file_conversion.isFailure():
+            strErrorMessage = "File import failed"
+            self.addErrorMessage(strErrorMessage)
+            self.ERROR(strErrorMessage)
+
 
         # now we just have to run XScale to generate w/ and w/out
         # anom, merged and unmerged
+
+        generate_xscale_input = XSDataXdsGenerateInput()
+        generate_xscale_input.resolution = resolution
+        generate_xscale_input.previous_run_dir = XSDataString(xds_run_directory)
+        generate_xscale_input.spacegroup = self.file_conversion.dataOutput.pointless_sgnumber
+        pointless_cell = ""
+        list_pointless_cell = self.file_conversion.dataOutput.pointless_cell
+        pointless_cell += "{0}".format(list_pointless_cell[0].value)
+        for cell_param in list_pointless_cell[1:]:
+            pointless_cell += " {0}".format(cell_param.value)
+        generate_xscale_input.unit_cell = XSDataString(pointless_cell)
+        self.generate_xscale.dataInput = generate_xscale_input
+        self.generate_xscale.executeSynchronous()
+        
+
 
         # We use another control plugin for that to isolate the whole thing
         xscale_generate_in = XSDataXscaleInput()
 
         input_file = XSDataXscaleInputFile()
-        input_file.path_anom = self.generate.dataOutput.hkl_anom
-        input_file.path_noanom = self.generate.dataOutput.hkl_no_anom
+        input_file.path_anom = self.generate_xscale.dataOutput.hkl_anom
+        input_file.path_noanom = self.generate_xscale.dataOutput.hkl_no_anom
         input_file.res = self.res_cutoff_anom.dataOutput.res
 
         xscale_generate_in.xds_files = [input_file]
-        xscale_generate_in.unit_cell_constants = self.parse_xds_anom.dataOutput.unit_cell_constants
-        xscale_generate_in.sg_number = self.parse_xds_anom.dataOutput.sg_number
+        xscale_generate_in.unit_cell_constants = self.file_conversion.dataOutput.pointless_cell
+        xscale_generate_in.sg_number = self.file_conversion.dataOutput.pointless_sgnumber
         xscale_generate_in.bins = self.res_cutoff_anom.dataOutput.bins
 
 
@@ -805,40 +865,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
 
 
-        import_in = XSDataAutoprocImport()
-        import_in.input_anom = self.xscale_generate.dataOutput.hkl_anom_unmerged
-        import_in.input_noanom = self.xscale_generate.dataOutput.hkl_noanom_unmerged
-        import_in.dataCollectionID = self.dataInput.data_collection_id
-        import_in.start_image = XSDataInteger(self.data_range[0])
-        import_in.end_image = XSDataInteger(self.data_range[1])
-
-        # XXX: is this the right place to get the res from?
-        import_in.res = self.res_cutoff_anom.dataOutput.res
-
-        # XXX: This is optional but seems required by aimless
-        import_in.nres = self.dataInput.nres
-
-        import_in.output_directory = XSDataString(self.results_dir)
-
-        try:
-            import_in.image_prefix = XSDataString(self.image_prefix)
-        except:
-            self.DEBUG('could not determine image prefix from directory "{0}"'.format(self.root_dir))
-
-        self.file_conversion.dataInput = import_in
-
-        t0 = time.time()
-        self.file_conversion.executeSynchronous()
-        self.retrieveFailureMessages(self.file_conversion, "File conversion")
-        self.stats['autoproc_import']=time.time()-t0
-
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
-
-        if self.file_conversion.isFailure():
-            strErrorMessage = "File import failed"
-            self.addErrorMessage(strErrorMessage)
-            self.ERROR(strErrorMessage)
 
         # Run phenix.xtriage
         xsDataInputPhenixXtriage = XSDataInputPhenixXtriage()
@@ -860,8 +886,10 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
     
             if xsDataResultPhenixXtriage.pseudotranslation.value:
                 strMessage = "Pseudotranslation detected by phenix.xtriage!"
+                bPseudotranslation = True
             else:
                 strMessage = "No pseudotranslation detected by phenix.xtriage."
+                bPseudotranslation = False
             self.screen(strMessage)
             self.log_to_ispyb(self.integration_id_noanom,
                          'Scaling',
@@ -870,13 +898,29 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             
             if xsDataResultPhenixXtriage.twinning.value:
                 strMessage = "Twinning detected by phenix.xtriage!"
+                bTwinning = True
             else:
                 strMessage = "No twinning detected by phenix.xtriage."
+                bTwinning = False
             self.screen(strMessage)
             self.log_to_ispyb(self.integration_id_noanom,
                          'Scaling',
                          'Successful',
                          strMessage)
+            
+            if bPseudotranslation or bTwinning:
+                if bPseudotranslation and bTwinning:
+                    strISPyBComment = "EDNA dp: pseudo-translation and twinning detected."
+                elif bPseudotranslation:
+                    strISPyBComment = "EDNA dp: pseudo-translation detected."
+                else:
+                    strISPyBComment = "EDNA dp: twinning detected."
+                xsDataInput = XSDataInputISPyBUpdateDataCollectionGroupComment()
+                xsDataInput.newComment = XSDataString(strISPyBComment)
+                xsDataInput.dataCollectionId = self.dataInput.data_collection_id
+                self.edPluginISPyBUpdateDataCollectionGroupComment.dataInput = xsDataInput
+                self.executePluginSynchronous(self.edPluginISPyBUpdateDataCollectionGroupComment)
+                    
 
         self.process_end = time.time()
 
@@ -925,7 +969,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         scaling_container_noanom.AutoProcScaling = scaling
 
-        inner, outer, overall, unit_cell = _parse_aimless(self.file_conversion.dataOutput.aimless_log_noanom.value)
+        inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_noanom.value)
 
         autoproc.refinedCell_a = str(unit_cell[0])
         autoproc.refinedCell_b = str(unit_cell[1])
@@ -972,7 +1016,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # ANOM PATH
         scaling_container_anom = AutoProcScalingContainer()
 
-        inner, outer, overall, unit_cell = _parse_aimless(self.file_conversion.dataOutput.aimless_log_anom.value)
+        inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_anom.value)
         inner_stats = AutoProcScalingStatistics()
         for k, v in inner.iteritems():
             setattr(inner_stats, k, v)
@@ -998,30 +1042,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         xscale_stats_anom = self.xscale_generate.dataOutput.stats_anom_merged
         inner_stats_anom = xscale_stats_anom.completeness_entries[0]
         outer_stats_anom = xscale_stats_anom.completeness_entries[-1]
-
-        # use the previous shell's res as low res if available
-        prev_res = self.low_resolution_limit
-        try:
-            prev_res = xscale_stats_anom.completeness_entries[-2].res.value
-        except IndexError:
-            pass
-        total_stats_anom = xscale_stats_anom.total_completeness
-
-        stats = _create_scaling_stats(inner_stats_anom, 'innerShell',
-                                      self.low_resolution_limit, True)
-        overall_low = stats.resolutionLimitLow
-        scaling_container_anom.AutoProcScalingStatistics.append(stats)
-
-        stats = _create_scaling_stats(outer_stats_anom, 'outerShell',
-                                      prev_res, True)
-        overall_high = stats.resolutionLimitHigh
-        scaling_container_anom.AutoProcScalingStatistics.append(stats)
-        stats = _create_scaling_stats(total_stats_anom, 'overall',
-                                      self.low_resolution_limit, True)
-        stats.resolutionLimitLow = overall_low
-        stats.resolutionLimitHigh = overall_high
-        scaling_container_anom.AutoProcScalingStatistics.append(stats)
-
 
         integration_container_anom = AutoProcIntegrationContainer()
         image = Image()
@@ -1050,12 +1070,12 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         program_container_anom = AutoProcProgramContainer()
         program_container_anom.AutoProcProgram = AutoProcProgram()
         program_container_anom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container_anom.AutoProcProgram.processingPrograms = 'EDNA dp'
+        program_container_anom.AutoProcProgram.processingPrograms = 'EDNAproc'
 
         program_container_noanom = AutoProcProgramContainer()
         program_container_noanom.AutoProcProgram = AutoProcProgram()
         program_container_noanom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container_noanom.AutoProcProgram.processingPrograms = 'EDNA dp'
+        program_container_noanom.AutoProcProgram.processingPrograms = 'EDNAproc'
 
         # now for the generated files. There's some magic to do with
         # their paths to determine where to put them on pyarch
@@ -1071,7 +1091,23 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         if EDUtilsPath.isEMBL():
             pyarch_path =  os.path.join(files_dir,'a_copy')
         elif EDUtilsPath.isESRF():
-            if files_dir.startswith('/data/visitor'):
+            if files_dir.startswith('/data/gz'):
+                if files_dir.startswith('/data/gz/visitor'):
+                    tokens = [elem for elem in files_dir.split(os.path.sep)
+                              if len(elem) > 0]
+                    pyarch_path = os.path.join('/data/pyarch',
+                                               tokens[4], tokens[3],
+                                               *tokens[5:])
+                else:
+                    # We might get empty elements at the head/tail of the list
+                    tokens = [elem for elem in files_dir.split(os.path.sep)
+                              if len(elem) > 0]
+                    if tokens[3] == 'inhouse':
+                        pyarch_path = os.path.join('/data/pyarch', tokens[2],
+                                                   *tokens[4:])
+                    
+                    
+            elif files_dir.startswith('/data/visitor'):
                 # We might get empty elements at the head/tail of the list
                 tokens = [elem for elem in files_dir.split(os.path.sep)
                           if len(elem) > 0]
@@ -1345,6 +1381,47 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         autoproc_status.executeSynchronous()
         return autoproc_status.dataOutput.autoProcIntegrationId
 
+    def parse_aimless(self, filepath):
+        # mapping between the start of the line and the name of the property
+        # in the ispyb data object thing
+        INTERESTING_LINES = {
+            'Low resolution limit': 'resolutionLimitLow',
+            'High resolution limit': 'resolutionLimitHigh',
+            'Mean((I)/sd(I))': 'meanIOverSigI',
+            'Completeness': 'completeness',
+            'Multiplicity': 'multiplicity',
+            'Total number of observations': 'nTotalObservations',
+            'Rmerge  (within I+/I-)': 'rMerge'
+        }
+        
+        UNIT_CELL_PREFIX = 'Average unit cell:' # special case, 6 values
+        lines = []
+        inner_stats = {'scalingStatisticsType':'innerShell'}
+        outer_stats = {'scalingStatisticsType':'outerShell'}
+        overall_stats = {'scalingStatisticsType':'overall'}
+        unit_cell = None
+        with open(filepath, 'r') as f:
+            lines = f.readlines()
+        started = False
+        for line in lines:
+            # avoid all the stuff before the final summary
+            if line.startswith('<!--SUMMARY_BEGIN--> $TEXT:Result: $$ $$'):
+                started = True
+            if started:
+                for prefix, prop_name in INTERESTING_LINES.iteritems():
+                    if line.startswith(prefix):
+                        # We need to multiply the values for rMerge by 100
+                        factor = 100 if prop_name == 'rMerge' else 1
+                        # 3 last columns are the values we're after
+                        overall, inner, outer = [float(x) * factor for x in line.split()[-3:]]
+                        overall_stats[prop_name] = overall
+                        inner_stats[prop_name] = inner
+                        outer_stats[prop_name] = outer
+                if line.startswith(UNIT_CELL_PREFIX):
+                    unit_cell = map(float, line.split()[-6:])
+        return inner_stats, outer_stats, overall_stats, unit_cell
+    
+
 def _create_scaling_stats(xscale_stats, stats_type, lowres, anom):
     stats = AutoProcScalingStatistics()
     stats.scalingStatisticsType = stats_type
@@ -1386,46 +1463,7 @@ def _template_to_image(fmt, num):
     return fmt_string.format(num)
 
 
-# mapping between the start of the line and the name of the property
-# in the ispyb data object thing
-INTERESTING_LINES = {
-    'Low resolution limit': 'resolutionLimitLow',
-    'High resolution limit': 'resolutionLimitHigh',
-    'Mean((I)/sd(I))': 'meanIOverSigI',
-    'Completeness': 'completeness',
-    'Multiplicity': 'multiplicity',
-    'Total number of observations': 'nTotalObservations',
-    'Rmerge  (within I+/I-)': 'rMerge'
-}
 
-UNIT_CELL_PREFIX = 'Average unit cell:' # special case, 6 values
-
-def _parse_aimless(filepath):
-    lines = []
-    inner_stats = {'scalingStatisticsType':'innerShell'}
-    outer_stats = {'scalingStatisticsType':'outerShell'}
-    overall_stats = {'scalingStatisticsType':'overall'}
-    unit_cell = None
-    with open(filepath, 'r') as f:
-        lines = f.readlines()
-    started = False
-    for line in lines:
-        # avoid all the stuff before the final summary
-        if line.startswith('<!--SUMMARY_BEGIN--> $TEXT:Result: $$ $$'):
-            started = True
-        if started:
-            for prefix, prop_name in INTERESTING_LINES.iteritems():
-                if line.startswith(prefix):
-                    # We need to multiply the values for rMerge by 100
-                    factor = 100 if prop_name == 'rMerge' else 1
-                    # 3 last columns are the values we're after
-                    overall, inner, outer = [float(x) * factor for x in line.split()[-3:]]
-                    overall_stats[prop_name] = overall
-                    inner_stats[prop_name] = inner
-                    outer_stats[prop_name] = outer
-            if line.startswith(UNIT_CELL_PREFIX):
-                unit_cell = map(float, line.split()[-6:])
-    return inner_stats, outer_stats, overall_stats, unit_cell
 
 
 # taken straight from max's code
