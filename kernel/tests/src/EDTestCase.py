@@ -94,14 +94,14 @@ class EDTestCase(EDTest):
                         EDVerbose.unitTest("%s executed with SUCCESS" % strMethodName)
                         EDVerbose.unitTest()
 
-                    except AssertionError, pyException:
+                    except AssertionError as pyException:
                         self.__dictMethodFailureMessages[strMethodName] = str(pyException)
                         self.__iNumberTestMethodFailure += 1
                         EDVerbose.unitTest("Assertion Error Raised!")
                         EDVerbose.unitTest("%s executed with FAILURE" % strMethodName)
                         EDVerbose.unitTest()
 
-                    except Exception, pyException:
+                    except Exception as pyException:
                         self.__dictMethodFailureMessages[strMethodName] = str(pyException)
                         self.__iNumberTestMethodFailure += 1
                         EDVerbose.unitTest("Unexpected Error!")

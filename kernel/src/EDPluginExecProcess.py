@@ -188,7 +188,7 @@ class EDPluginExecProcess(EDPluginExec):
         errorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginExecProcess.process', self.getClassName(), "Timeout ")
         self.error(errorMessage)
         self.addErrorMessage(errorMessage)
-        raise RuntimeError, errorMessage
+        raise RuntimeError(errorMessage)
 
 
     def configure(self):

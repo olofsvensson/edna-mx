@@ -63,7 +63,7 @@ class EDLogFile(object):
         if (self.__bIsLogFileOn):
             if (self.__pyStrLogFileName is None):
                 self.__pyStrLogFileName = "EDNA_%s.log" % time.strftime("%Y%m%d-%H%M%S", time.localtime(time.time()))
-            self.__pyFileLog = file(self.__pyStrLogFileName, "w")
+            self.__pyFileLog = open(self.__pyStrLogFileName, "w")
             for pyStrLogMessage in self.__pyListLogCache:
                 self.write(pyStrLogMessage)
 

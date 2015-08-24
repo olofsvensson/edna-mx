@@ -80,7 +80,7 @@ class EDModule(EDLogging):
                 tb = tb_root
                 while tb is not None:
                     if tb.tb_frame.f_globals.get('__name__') == self.__name:
-                        raise exc_type, exc_value, tb_root
+                        raise exc_type(exc_value, tb_root)
                     tb = tb.tb_next
                     self.__module = None
 

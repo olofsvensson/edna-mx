@@ -31,7 +31,11 @@ __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 
-import math
+import math, sys
+
+if sys.version.startswith('3'):
+    unicode = str
+    
 from EDVerbose import EDVerbose
 from XSDataCommon import XSDataString
 

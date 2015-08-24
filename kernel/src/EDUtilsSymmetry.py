@@ -136,7 +136,7 @@ class EDUtilsSymmetry:
         """
         iITNumber = None
         symmetryTableFile = open(_strSymmetryTableFileName)
-        for strLine in symmetryTableFile.xreadlines():
+        for strLine in symmetryTableFile.readlines():
             listItems = strLine.split(" ")
             if len(listItems) > 3:
                 if _strSpaceGroupName == listItems[3]:

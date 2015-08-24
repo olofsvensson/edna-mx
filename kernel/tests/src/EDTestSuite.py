@@ -85,7 +85,7 @@ class EDTestSuite(EDTest):
         exceptionObject = None
         try:
             edTestCase = EDUtilsTest.getFactoryPluginTest().loadPlugin(_strTestCaseName)
-        except ImportError, exceptionObject:
+        except ImportError as exceptionObject:
             strWarningMessage = "Could not create the test case: %s, reason: %s" % (_strTestCaseName, exceptionObject)
             EDVerbose.WARNING(strWarningMessage)
             self.__dictTestCaseNotExecuted[_strTestCaseName] = "%s : %s" % (self.getClassName(), strWarningMessage)
@@ -110,7 +110,7 @@ class EDTestSuite(EDTest):
         exceptionObject = None
         try:
             edTestSuite = EDUtilsTest.getFactoryPluginTest().loadPlugin(_strTestSuiteName)
-        except ImportError, exceptionObject:
+        except ImportError as exceptionObject:
             strWarningMessage = "Could not create the test suite: %s, reason: %s" % (_strTestSuiteName, exceptionObject)
             EDVerbose.WARNING(strWarningMessage)
             self.__dictTestCaseNotExecuted[_strTestSuiteName] = "%s : %s" % (self.getClassName(), strWarningMessage)

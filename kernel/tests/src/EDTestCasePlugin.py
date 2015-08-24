@@ -39,7 +39,14 @@ __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20120131"
 
-import sys, os, threading, urllib2
+import sys, os, threading
+
+try:
+    # For Python 3.0 and later
+    from urllib.request import urlopen, ProxyHandler, build_opener
+except ImportError:
+    # Fall back to Python 2's urllib2
+    from urllib2 import urlopen, ProxyHandler, build_opener
 
 from EDVerbose             import EDVerbose
 from EDUtilsPath           import EDUtilsPath
@@ -153,7 +160,7 @@ class EDTestCasePlugin(EDTestCase):
         try:
             edFactoryPlugin = EDFactoryPlugin()
             edPlugin = edFactoryPlugin.loadPlugin(self.getPluginName())
-        except ImportError, exceptionObject:
+        except ImportError(exceptionObject):
             strWarningMessage = "Could not create the plugin: %s, reason: %s" % (self.getPluginName(), exceptionObject)
             EDVerbose.WARNING(strWarningMessage)
         if edPlugin is None:
@@ -215,10 +222,10 @@ class EDTestCasePlugin(EDTestCase):
                 EDVerbose.unitTest("Trying to download image %s, timeout set to %d s" % (strImagePath, iMAX_DOWNLOAD_TIME))
                 if os.environ.has_key("http_proxy"):
                     dictProxies = {'http': os.environ["http_proxy"]}
-                    proxy_handler = urllib2.ProxyHandler(dictProxies)
-                    opener = urllib2.build_opener(proxy_handler).open
+                    proxy_handler = ProxyHandler(dictProxies)
+                    opener = build_opener(proxy_handler).open
                 else:
-                    opener = urllib2.urlopen
+                    opener = urlopen
 
 # Nota: since python2.6 there is a timeout in the urllib2                    
                 timer = threading.Timer(iMAX_DOWNLOAD_TIME + 1, timeoutDuringDownload)
@@ -232,15 +239,15 @@ class EDTestCasePlugin(EDTestCase):
                 try:
                     open(strImagePath, "wb").write(data)
                 except IOError:
-                    raise IOError, "unable to write downloaded data to disk at %s" % strImagePath
+                    raise IOError("unable to write downloaded data to disk at %s" % strImagePath)
 
                 if os.path.exists(strImagePath):
                     EDVerbose.unitTest("Image %s successfully downloaded." % strImagePath)
                 else:
-                    raise RuntimeError, "Could not automatically download test images %r! \n \
-                                         If you are behind a firewall, please set the environment variable http_proxy. \n \
-                                         Otherwise please try to download the images manually from \n \
-                                         http://www.edna-site.org/data/tests/images" % _listImageFileName
+                    raise RuntimeError("Could not automatically download test images %r! \n \
+                                        If you are behind a firewall, please set the environment variable http_proxy. \n \
+                                        Otherwise please try to download the images manually from \n \
+                                        http://www.edna-site.org/data/tests/images" % _listImageFileName)
 
     def getDictReplace(self):
         dictReplace = EDUtilsPath.getDictOfPaths()
@@ -273,7 +280,7 @@ def timeoutDuringDownload():
     """
     Function called after a timeout in the download part ... just raise an Exception. 
     """
-    raise RuntimeError, "Could not automatically download test images ! \n \
-                         If you are behind a firewall, please set the environment variable http_proxy. \n \
-                         Otherwise please try to download the images manually from \n \
-                         http://www.edna-site.org/data/tests/images"
+    raise RuntimeError("Could not automatically download test images ! \n \
+                        If you are behind a firewall, please set the environment variable http_proxy. \n \
+                        Otherwise please try to download the images manually from \n \
+                        http://www.edna-site.org/data/tests/images")

@@ -157,7 +157,7 @@ class EDUtilsParallel(object):
 
 
     @classmethod
-    def detectNumberOfCPUs(cls, _iMaxCPU=sys.maxint, _bForce=False):
+    def detectNumberOfCPUs(cls, _iMaxCPU=sys.maxsize, _bForce=False):
         """
         class method :
         Detects the number of CPUs on a system. Cribbed from pp.
@@ -171,7 +171,7 @@ class EDUtilsParallel(object):
         @rtype: integer
         """
         if not isinstance(_iMaxCPU, int):
-            _iMaxCPU = sys.maxint
+            _iMaxCPU = sys.maxsize
         else:
             _iMaxCPU = max(1, _iMaxCPU)
 
