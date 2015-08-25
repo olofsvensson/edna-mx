@@ -110,16 +110,18 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             self.screen('No pdb file found, not running dimple')
             return
         # Run dimple
-        xsDataResultControlDimple = self.runDimple(self.strPdbPath, self.strPathNoanomAimlessMtz)
-        if xsDataResultControlDimple is not None:
-            # Copy result files to pyarch
-            if self.dataInput.pyarchPath is not None:
-                listOfTargetPaths = self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
-                                                             self.dataInput.pyarchPath.path.value, 
-                                                             xsDataResultControlDimple)
-                htmlPath = self.createHtmlPage(self.dataInput.imagePrefix.value,
-                                               self.dataInput.pyarchPath.path.value)
-                listOfTargetPaths.append(htmlPath)
+        xsDataResultDimple = self.runDimple(self.strPdbPath, self.strPathNoanomAimlessMtz)
+        if xsDataResultDimple is not None:
+            # Create HTML page
+            strHtmlPath = self.createHtmlPage(self.dataInput.imagePrefix.value,
+                                              xsDataResultDimple,
+                                              os.path.join(self.getWorkingDirectory(), "html"))
+#            # Copy result files to pyarch
+#            if self.dataInput.pyarchPath is not None:
+#                listOfTargetPaths = self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
+#                                                             self.dataInput.pyarchPath.path.value, 
+#                                                             xsDataResultControlDimple)
+#                listOfTargetPaths.append(htmlPath)
 
             
     def copyResultsToPyarch(self, strImagePrefix, strPyarchRootPath, xsDataResultDimple):
@@ -159,10 +161,12 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         return listOfTargetPaths
             
     
-    def createHtmlPage(self, strImagePrefix, strPyarchRootPath):
+    def createHtmlPage(self, strImagePrefix, xsDataResultDimple, strHtmlPath):
         """Create an HTML page with the results"""
+        if not os.path.exists(strHtmlPath):
+            os.makedirs(strHtmlPath, 0755)
         strHtmlFileName = "%s_index.html" % strImagePrefix
-        strPath = os.path.join(strPyarchRootPath, strHtmlFileName)
+        strPath = os.path.join(strHtmlPath, strHtmlFileName)
         page = markupv1_7.page(mode='loose_html')
         # Title and footer
         page.init( title="Dimple Results", 
@@ -174,23 +178,25 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         page.div.close()
         # Results of REFMAC 5
         page.h3("Final results of Recmac 5:")
-        strRefmac5LogPath = os.path.join(strPyarchRootPath, "%s_refmac5restr_dimple.log" % strImagePrefix)
-        page.pre(self.extractFinalResultsFromRefmac5RestrLog(strRefmac5LogPath))
+        page.pre(self.extractFinalResultsFromRefmac5RestrLog(xsDataResultDimple.refmac5restrLog.path.value))
         # Results of findblobs
         page.h3("Findblobs log:")
-        strFindblobsLogPath = os.path.join(strPyarchRootPath, "%s_findblobs_dimple.log" % strImagePrefix)
-        page.pre(open(strFindblobsLogPath).read())
+        page.pre(open(xsDataResultDimple.findBlobsLog.path.value).read())
         # Blobs
         page.br()
-        for blobName in ["blob1v1", "blob1v2", "blob1v3", "blob2v1", "blob2v2", "blob2v3"]:
-            strPageBlobPath = os.path.join(strPyarchRootPath, "%s_%s_dimple.html" % (strImagePrefix, blobName))
+        for xsDataFileBlob in xsDataResultDimple.blob:
+            # Copy blob file to html directory
+            strBlobName = os.path.basename(xsDataFileBlob.path.value).split(".")[0]
+            strBlobImage = "%s_%s_dimple.png" % (strImagePrefix, strBlobName) 
+            strTargetPath = os.path.join(strHtmlPath, strBlobImage)
+            shutil.copyfile(xsDataFileBlob.path.value, strTargetPath)
+            strPageBlobPath = os.path.join(strHtmlPath, "%s_%s_dimple.html" % (strImagePrefix, strBlobName))
             pageBlob = markupv1_7.page()
-            pageBlob.init( title=blobName, 
+            pageBlob.init( title=strBlobName, 
                            footer="Generated on %s" % time.asctime())
-            pageBlob.h1(blobName)
+            pageBlob.h1(strBlobName)
             pageBlob.div( align_="LEFT")
-            strBlobImage = "%s_%s_dimple.png" % (strImagePrefix, blobName) 
-            pageBlob.img(src=strBlobImage, title=blobName)
+            pageBlob.img(src=strBlobImage, title=strBlobName)
             pageBlob.div.close()
             pageBlob.br()
             pageBlob.div( align_="LEFT")
@@ -198,9 +204,9 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             pageBlob.div.close()
             EDUtilsFile.writeFile(strPageBlobPath, str(pageBlob))
             page.a( href=strPageBlobPath)
-            page.img( src=strBlobImage, width=300, height=300, title=blobName )
+            page.img( src=strBlobImage, width=200, height=200, title=strBlobName )
             page.a.close()
-            if blobName == "blob1v3":
+            if strBlobName == "blob1v3":
                 page.br()
         page.br()
         # FInalise html page

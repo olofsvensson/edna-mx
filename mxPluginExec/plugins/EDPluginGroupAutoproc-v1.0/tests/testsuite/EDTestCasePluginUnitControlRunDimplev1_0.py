@@ -74,10 +74,10 @@ class EDTestCasePluginUnitControlRunDimplev1_0(EDTestCasePluginUnit):
         strResultDimple = self.readAndParseFile(strDimpleOutput)
         xsDataResultDimple = XSDataResultDimple.parseString(strResultDimple)
         edPlugin = self.getPlugin()
-        strPyarchRootDir = tempfile.mkdtemp(prefix="EDTestCasePluginUnitControlRunDimplev1_0_")
+        strPyarchRootDir = tempfile.mkdtemp(prefix="html_", dir=os.path.join(self.strDataPath,  "dimple"))
         strPrefix = "xtal5w1_1"
         listPath = edPlugin.copyResultsToPyarch(strPrefix, strPyarchRootDir, xsDataResultDimple)
-        pathHtml = edPlugin.createHtmlPage(strPrefix, strPyarchRootDir)
+        pathHtml = edPlugin.createHtmlPage(strPrefix, xsDataResultDimple, strPyarchRootDir)
         EDAssert.equal(True, os.path.exists(pathHtml), "HTML page generated")
         shutil.rmtree(strPyarchRootDir)
 
