@@ -34,7 +34,7 @@ import os
 from EDAssert                            import EDAssert
 from EDTestCasePluginUnit                import EDTestCasePluginUnit
 from EDUtilsTest                         import EDUtilsTest
-from EDVerbose import EDVerbose
+from EDConfiguration                     import EDConfiguration
 
 from XSDataMXv1 import XSDataIntegrationResult
 
@@ -48,8 +48,10 @@ class EDTestCasePluginUnitControlIntegrationv10(EDTestCasePluginUnit):
 
     def testConfigureOK(self):
         edPluginControlIntegrationv10 = self.createPlugin()
-        xsPluginItemGood01 = self.getPluginConfiguration(os.path.join(self.getPluginTestsDataHome(), "XSConfiguration.xml"))
-        edPluginControlIntegrationv10.setConfiguration(xsPluginItemGood01)
+        strPathToTestConfigFile = os.path.join(self.getPluginTestsDataHome(), "XSConfiguration.xml")
+        edConfiguration = EDConfiguration(strPathToTestConfigFile)
+        dictItem = edConfiguration.get(edPluginControlIntegrationv10.getPluginName())
+        edPluginControlIntegrationv10.setConfig(dictItem)
         edPluginControlIntegrationv10.configure()
         self.cleanUp(edPluginControlIntegrationv10)
 
@@ -57,8 +59,10 @@ class EDTestCasePluginUnitControlIntegrationv10(EDTestCasePluginUnit):
 
     def testSetDataInput(self):
         edPluginControlIntegrationv10 = self.createPlugin()
-        xsPluginItemGood01 = self.getPluginConfiguration(os.path.join(self.getPluginTestsDataHome(), "XSConfiguration.xml"))
-        edPluginControlIntegrationv10.setConfiguration(xsPluginItemGood01)
+        strPathToTestConfigFile = os.path.join(self.getPluginTestsDataHome(), "XSConfiguration.xml")
+        edConfiguration = EDConfiguration(strPathToTestConfigFile)
+        dictItem = edConfiguration.get(edPluginControlIntegrationv10.getPluginName())
+        edPluginControlIntegrationv10.setConfig(dictItem)
         edPluginControlIntegrationv10.configure()
         xmlInputReference = self.readAndParseFile(self.strReferenceInputFile)
         from XSDataMXv1 import XSDataIntegrationInput
