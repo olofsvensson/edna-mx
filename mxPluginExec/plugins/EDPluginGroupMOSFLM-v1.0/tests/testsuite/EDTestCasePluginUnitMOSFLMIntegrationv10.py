@@ -72,10 +72,10 @@ class EDTestCasePluginUnitMOSFLMIntegrationv10(EDTestCasePluginUnit):
     def testGenerateMOSFLMIntegrationCommands(self):
         strPathToTestConfigFile = os.path.join(self.strUnitTestDataHome, "XSConfiguration_unitTest.xml")
         edConfiguration = EDConfiguration(strPathToTestConfigFile)
-        xsPluginItem = edConfiguration.getXSConfigurationItem("EDPluginMOSFLMIntegrationv10")
+        dictItem = edConfiguration.get(self.getPluginName())
         pluginIntegration = self.createPlugin()
         pluginIntegration.setScriptExecutable("cat")
-        pluginIntegration.setConfiguration(xsPluginItem)
+        pluginIntegration.setConfig(dictItem, _bLocal = True)
         pluginIntegration.configure()
         strXMLInputData = self.readAndParseFile (self.strReferenceDataInputFile)
         pluginIntegration.setDataInput(strXMLInputData)
