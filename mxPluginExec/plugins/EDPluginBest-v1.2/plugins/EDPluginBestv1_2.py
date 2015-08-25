@@ -181,7 +181,7 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         try:
             if float(strVersion[8:11]) > 4.0:
                 self.bVersionHigherThan4_0 = True
-        except Exception, e:
+        except Exception as e:
             pass 
 
 

@@ -50,7 +50,7 @@ class EDPluginExec(EDPlugin):
         preProcess of the plugin:
         Ensure a CPU resource is available for the processing by acquiring a semaphore
         """
-        self.DEBUG("Acquire semaphore nbCPU by plugin %s, currently value: %s" % (self.getPluginName(), EDUtilsParallel.getSemaphoreValue()))
+        self.DEBUG("Acquire semaphore nbCPU by plugin %s" % self.getPluginName())
         EDUtilsParallel.semaphoreNbThreadsAcquire()
         EDPlugin.preProcess(self, _edObject)
 
@@ -60,6 +60,6 @@ class EDPluginExec(EDPlugin):
         after processing of the plugin:
         Release a CPU resource by releasing the semaphore
         """
-        self.DEBUG("Release semaphore nbCPU by plugin %s, currently value: %s" % (self.getPluginName(), EDUtilsParallel.getSemaphoreValue()))
+        self.DEBUG("Release semaphore nbCPU by plugin %s" % self.getPluginName())
         EDUtilsParallel.semaphoreNbThreadsRelease()
         EDPlugin.finallyProcess(self, _edObject)
