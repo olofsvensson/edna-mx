@@ -638,7 +638,7 @@ class EDHandlerXSDataMOSFLMv10:
             # This is a temporary solution for the exception problem pointed out in bug #43.
             # Instead of raising an exception with a known type we send the error message as a string.
             strErrorMessage = "EDHandlerXSDataMOSFLMv10.getXSDataMOSFLMDetector: Unknown detector type : " + strDetectorType
-            raise Exception, strErrorMessage
+            raise BaseException(strErrorMessage)
         if (_xsDataDetector.getNumberPixelX() is not None):
             xsDataMOSFLMDetector.setNumberPixelX(_xsDataDetector.getNumberPixelX())
         if (_xsDataDetector.getNumberPixelY() is not None):

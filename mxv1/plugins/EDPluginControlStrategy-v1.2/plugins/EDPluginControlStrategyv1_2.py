@@ -188,11 +188,11 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup, strFileSymop)
                             bSpaceGroupForced = True
-                        except Exception, detail:
+                        except Exception as detail:
                             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlStrategyv1_2.preProcess', "Problem to calculate Number of symmetry operators", detail)
                             self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
-                            raise RuntimeError, strErrorMessage
+                            raise RuntimeError(strErrorMessage)
                 if not bSpaceGroupForced:
                     # Space Group has NOT been forced
                     xsDataStringSpaceGroup = self._xsDataSampleCopy.getCrystal().getSpaceGroup().getName()
@@ -202,22 +202,22 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
                         self.DEBUG("EDPluginControlStrategyv1_2.preProcess: Space Group IT Name found by indexing: " + strSpaceGroupName)
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroupName, strFileSymop)
-                        except Exception, detail:
+                        except Exception as detail:
                             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlStrategyv1_2.preProcess', "Problem to calculate Number of symmetry operators", detail)
                             self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
-                            raise RuntimeError, strErrorMessage
+                            raise RuntimeError(strErrorMessage)
                     else:
                         # Prepare chemical composition calculation with the Space Group calculated by indexing (Space Group IT number)
                         iSpaceGroupITNumber = self._xsDataSampleCopy.getCrystal().getSpaceGroup().getITNumber().getValue()
                         self.DEBUG("EDPluginControlStrategyv1_2.preProcess: Space Group IT Number Found by indexing: %d" % iSpaceGroupITNumber)
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupITNumber(str(iSpaceGroupITNumber), strFileSymop)
-                        except Exception, detail:
+                        except Exception as detail:
                             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlStrategyv1_2.preProcess', "Problem to calculate Number of symmetry operators", detail)
                             self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
-                            raise RuntimeError, strErrorMessage
+                            raise RuntimeError(strErrorMessage)
 
                 if (strNumOperators is not None):
                     iNumOperators = int(strNumOperators)
@@ -225,7 +225,7 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
                     strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlStrategyv1_2.preProcess', "No symmetry operators found for Space Group: ", strNumOperators)
                     self.error(strErrorMessage)
                     self.addErrorMessage(strErrorMessage)
-                    raise RuntimeError, strErrorMessage
+                    raise RuntimeError(strErrorMessage)
 
                 xsDataChemicalComposition = self._xsDataSampleCopy.getChemicalComposition()
 

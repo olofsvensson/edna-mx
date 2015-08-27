@@ -179,7 +179,7 @@ class EDPluginControl(EDPlugin):
             strErrorMessage = "EDPluginControl.loadPlugin : Cannot load plugin %s" % strPluginName
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
-            raise RuntimeError, strErrorMessage
+            raise RuntimeError(strErrorMessage)
         else:
             self.__listOfLoadedPlugins.append(edPlugin)
         edPlugin.setBaseDirectory(self.getWorkingDirectory())
@@ -209,7 +209,7 @@ class EDPluginControl(EDPlugin):
         Returns the name of the plugin to be controlled.
         """
         strPluginname = None
-        if self.__dictControlledPlugins.has_key(_strControlledPluginName):
+        if _strControlledPluginName in self.__dictControlledPlugins:
             strPluginname = self.__dictControlledPlugins[_strControlledPluginName]
         return strPluginname
 

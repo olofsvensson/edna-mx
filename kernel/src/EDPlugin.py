@@ -644,7 +644,7 @@ class EDPlugin(EDAction):
         # Try to create the directory...
         try:
             os.mkdir(strBaseDir)
-        except BaseException as strErrorDetail:
+        except Exception as strErrorDetail:
             self.error("EDPlugin.createBaseName: Could not create base directory %s because of %s" % (strBaseDir, strErrorDetail))
             self.warning("EDPlugin.createBaseName: Trying to create alternative base directory...")
             self.writeErrorTrace()

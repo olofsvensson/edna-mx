@@ -186,6 +186,6 @@ class EDPluginBackground3Dv1_0(EDPluginExecProcessScript):
         returnValue = None
         try:
             returnValue = XSDataDouble(_strValue)
-        except BaseException as ex:
+        except Exception as ex:
             self.warning("Error when trying to parse '" + _strValue + "': %r" % ex)
         return returnValue
