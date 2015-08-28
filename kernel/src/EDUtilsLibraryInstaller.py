@@ -62,7 +62,7 @@ class EDUtilsLibraryInstaller:
         self.__strArchiveName = _strArchiveName
         self.__strSourceDir = _strSourceDir
         self.__strDestinationDirectory = None
-        if os.environ.has_key("EDNA_HOME"):
+        if "EDNA_HOME" in os.environ:
             self.__libraryPath = os.path.join(EDUtilsPath.EDNA_HOME, "libraries", self.__strLibraryDirectory)
         else:
             self.__libraryPath = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -97,7 +97,7 @@ class EDUtilsLibraryInstaller:
         except Exception:
             if os.path.isdir(strDepLibPath)and (strDepLibPath not in sys.path):
                 sys.path.insert(1, strDepLibPath)
-                if os.environ.has_key("PYTHONPATH"):
+                if "PYTHONPATH"in os.environ:
                     os.environ["PYTHONPATH"] += os.pathsep + strDepLibPath
                 else:
                     os.environ["PYTHONPATH"] = strDepLibPath
@@ -370,7 +370,7 @@ class EDUtilsLibraryInstaller:
         """
         if not os.path.exists(self.__strArchiveName):
             EDVerbose.screen("Trying to download library %s, timeout set to %d s" % (self.__strArchiveName, EDUtilsLibraryInstaller.iMAX_DOWNLOAD_TIME))
-            if os.environ.has_key("http_proxy"):
+            if "http_proxy" in os.environ:
                 dictProxies = {'http': os.environ["http_proxy"]}
                 proxy_handler = urllib2.ProxyHandler(dictProxies)
                 opener = urllib2.build_opener(proxy_handler).open

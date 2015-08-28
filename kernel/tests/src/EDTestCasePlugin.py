@@ -220,7 +220,7 @@ class EDTestCasePlugin(EDTestCase):
             strImagePath = os.path.join(EDUtilsPath.EDNA_TESTIMAGES, strImageName)
             if(not os.path.exists(strImagePath)):
                 EDVerbose.unitTest("Trying to download image %s, timeout set to %d s" % (strImagePath, iMAX_DOWNLOAD_TIME))
-                if os.environ.has_key("http_proxy"):
+                if "http_proxy" in os.environ:
                     dictProxies = {'http': os.environ["http_proxy"]}
                     proxy_handler = ProxyHandler(dictProxies)
                     opener = build_opener(proxy_handler).open
