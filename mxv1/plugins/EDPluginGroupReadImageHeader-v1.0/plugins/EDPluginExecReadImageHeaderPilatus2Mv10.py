@@ -28,6 +28,7 @@ __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os
+import sys
 import struct
 
 from EDVerbose      import EDVerbose
@@ -164,7 +165,10 @@ class EDPluginExecReadImageHeaderPilatus2Mv10(EDPluginExec):
         dictPilatus2M = None
         pyFile = None
         try:
-            pyFile = open(_strImageFileName, "r")
+            if sys.version.startswith('3'):
+                pyFile = open(_strImageFileName, "r", encoding = "ISO-8859-1")
+            else:
+                pyFile = open(_strImageFileName, "r")
         except:
             self.ERROR("EDPluginExecReadImageHeaderPilatus2Mv10.readHeaderPilauts6M: couldn't open file: " + _strImageFileName)
             self.setFailure()

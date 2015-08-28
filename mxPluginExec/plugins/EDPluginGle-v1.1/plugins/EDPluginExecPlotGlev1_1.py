@@ -134,7 +134,7 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
                                                    cwd=self.getWorkingDirectory())
                 self.__iPID = self.__subprocess.pid
                 self.__strExecutionStatus = str(self.__subprocess.wait())
-            except OSError, e:
+            except OSError as e:
                 strErrorMessage = self.getPluginName() + " : required program gle not installed"
                 self.error(strErrorMessage)
                 self.setFailure()
@@ -148,7 +148,7 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
         errorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginExecProcess.process', self.getClassName(), "Timeout ")
         self.error(errorMessage)
         self.addErrorMessage(errorMessage)
-        raise RuntimeError, errorMessage
+        raise RuntimeError(errorMessage)
 
         
     def postProcess(self, _edObject=None):

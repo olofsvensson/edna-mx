@@ -356,7 +356,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                 strDNAFileBaseDirectory = os.path.split(_strDNAFileDirectoryPath)[0]
                 if (os.access(strDNAFileBaseDirectory, os.W_OK)):
                     self.DEBUG("Creating DNA files directory: %s" % _strDNAFileDirectoryPath)
-                    os.makedirs(_strDNAFileDirectoryPath, mode = 0755)
+                    os.makedirs(_strDNAFileDirectoryPath, mode = 0o755)
                     bSuccess = True
                 else:
                     self.warning("Cannot create DNA files directory: %s" % _strDNAFileDirectoryPath)
