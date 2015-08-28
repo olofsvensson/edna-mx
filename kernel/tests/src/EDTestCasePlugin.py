@@ -227,13 +227,9 @@ class EDTestCasePlugin(EDTestCase):
                 else:
                     opener = urlopen
 
-# Nota: since python2.6 there is a timeout in the urllib2                    
                 timer = threading.Timer(iMAX_DOWNLOAD_TIME + 1, timeoutDuringDownload)
                 timer.start()
-                if sys.version > (2, 6):
-                    data = opener("%s/%s" % (self.URL_EDNA_SITE, strImageName), data=None, timeout=iMAX_DOWNLOAD_TIME).read()
-                else:
-                    data = opener("%s/%s" % (self.URL_EDNA_SITE, strImageName), data=None).read()
+                data = opener("%s/%s" % (self.URL_EDNA_SITE, strImageName), data=None, timeout=iMAX_DOWNLOAD_TIME).read()
                 timer.cancel()
 
                 try:
