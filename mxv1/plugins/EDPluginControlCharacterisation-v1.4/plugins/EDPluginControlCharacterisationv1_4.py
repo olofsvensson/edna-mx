@@ -28,7 +28,12 @@ __contact__ = "svensson@esrf.fr"
 __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
-import os, xmlrpclib
+import os
+
+try:
+    from xmlrpclib import ServerProxy
+except:
+    from xmlrpc.client import ServerProxy
 
 from EDVerbose import EDVerbose
 from EDPluginControl import EDPluginControl
@@ -117,7 +122,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._strMxCuBE_URI = self.config.get("mxCuBE_URI", None)
         if self._strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
             self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
-            self._oServerProxy = xmlrpclib.ServerProxy(self._strMxCuBE_URI)
+            self._oServerProxy = ServerProxy(self._strMxCuBE_URI)
         self._runKappa = self.config.get("runKappa", False)
 
 

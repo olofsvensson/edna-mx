@@ -31,8 +31,8 @@ from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
 from EDUtilsPath import EDUtilsPath
 from EDUtilsImage import EDUtilsImage
 
-EDFactoryPluginStatic.loadModule("markupv1_7")
-import markupv1_7
+EDFactoryPluginStatic.loadModule("markupv1_10")
+import markupv1_10
 
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
@@ -80,7 +80,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.DEBUG("EDPluginExecSimpleHTMLPagev1_0.process...")
         if self.xsDataResultCharacterisation is not None:
             # Create the simple characterisation result page
-            self.page = markupv1_7.page(mode='loose_html')
+            self.page = markupv1_10.page(mode='loose_html')
             self.page.init( title="Characterisation Results", 
                        footer="Generated on %s" % time.asctime())
             self.page.div( align_="CENTER")
@@ -94,7 +94,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             if strPathToLogFile is not None:
                 self.page.strong("(")
                 self.strPageEDNALog = os.path.join(self.getWorkingDirectory(), "edna_log.html")
-                pageEDNALog = markupv1_7.page()
+                pageEDNALog = markupv1_10.page()
                 pageEDNALog.h1("EDNA Log")
                 pageEDNALog.a("Back to previous page", href_=self.strHtmlFileName)
                 pageEDNALog.pre(cgi.escape(EDUtilsFile.readFile(strPathToLogFile)))
@@ -175,7 +175,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     strPathToIntegrationLogFile = xsDataIntegrationSubWedgeResult.getIntegrationLogFile().getPath().getValue()
                     strIntegrationHtmlPageName = "integration_%d_log.html" % iIntegration
                     strPageIntegrationLog = os.path.join(self.getWorkingDirectory(), strIntegrationHtmlPageName)
-                    pageIntegrationLog = markupv1_7.page()
+                    pageIntegrationLog = markupv1_10.page()
                     pageIntegrationLog.h1("Integration Log No %d" % iIntegration)
                     pageIntegrationLog.a("Back to previous page", href_=self.strHtmlFileName)
                     pageIntegrationLog.pre(cgi.escape(EDUtilsFile.readFile(strPathToIntegrationLogFile)))
@@ -226,7 +226,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 strPathToBestLogFile = xsDataResultStrategy.getBestLogFile().getPath().getValue()
                 if os.path.exists(strPathToBestLogFile):
                     strPageBestLog = os.path.join(self.getWorkingDirectory(), "best_log.html")
-                    pageBestLog = markupv1_7.page()
+                    pageBestLog = markupv1_10.page()
                     pageBestLog.h1("BEST Log")
                     pageBestLog.a("Back to previous page", href_=self.strHtmlFileName)
                     pageBestLog.pre(cgi.escape(EDUtilsFile.readFile(strPathToBestLogFile)))
@@ -238,7 +238,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 strPathToRaddoseLogFile = xsDataResultStrategy.getRaddoseLogFile().getPath().getValue()
                 strPageRaddoseLog = os.path.join(self.getWorkingDirectory(), "raddose_log.html")
                 if os.path.exists(strPathToRaddoseLogFile):
-                    pageRaddoseLog = markupv1_7.page()
+                    pageRaddoseLog = markupv1_10.page()
                     pageRaddoseLog.h1("RADDOSE Log")
                     pageRaddoseLog.a("Back to previous page", href_=self.strHtmlFileName)
                     pageRaddoseLog.pre(cgi.escape(EDUtilsFile.readFile(strPathToRaddoseLogFile)))
@@ -510,7 +510,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     self.page.tr( align_="CENTER" )
                     self.page.td()
                     strPageReferenceImage = os.path.splitext(strReferenceImageName)[0]+".html"
-                    pageReferenceImage = markupv1_7.page()
+                    pageReferenceImage = markupv1_10.page()
                     pageReferenceImage.init( title=strReferenceImageName, 
                            footer="Generated on %s" % time.asctime())
                     pageReferenceImage.h1(strReferenceImageName)
@@ -559,7 +559,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                         self.page.tr( align_="CENTER" )
                         self.page.td()
                         strPageReferenceImage = os.path.splitext(strFileName)[0]+".html"
-                        pageReferenceImage = markupv1_7.page()
+                        pageReferenceImage = markupv1_10.page()
                         pageReferenceImage.init( title=strReferenceFileName, 
                                footer="Generated on %s" % time.asctime())
                         pageReferenceImage.h1(strReferenceFileName)
@@ -619,7 +619,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         if _xsDataResultIndexing.getIndexingLogFile():
             strPathToIndexingLogFile = _xsDataResultIndexing.getIndexingLogFile().getPath().getValue()
             strPageIndexingLog = os.path.join(self.getWorkingDirectory(), "indexing_log.html")
-            pageIndexingLog = markupv1_7.page()
+            pageIndexingLog = markupv1_10.page()
             pageIndexingLog.h1("Indexing Log")
             pageIndexingLog.a("Back to previous page", href_=self.strHtmlFileName)
             pageIndexingLog.pre(cgi.escape(EDUtilsFile.readFile(strPathToIndexingLogFile)))
@@ -746,7 +746,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.page.td()
                 strPageGraphFileName = os.path.splitext(strFileName)[0]+".html"
                 strPageGraphPath = os.path.join(self.getWorkingDirectory(), strPageGraphFileName)
-                pageGraph = markupv1_7.page()
+                pageGraph = markupv1_10.page()
                 pageGraph.init( title=strFileName, 
                        footer="Generated on %s" % time.asctime())
                 pageGraph.img(src=strFileName, title=strFileName)
@@ -778,7 +778,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             if self.xsDataResultCharacterisation.kappaReorientation.logFile:
                 strPathToKappaLogFile = self.xsDataResultCharacterisation.kappaReorientation.logFile.path.value
                 strPageKappaLog = os.path.join(self.getWorkingDirectory(), "kappa_log.html")
-                pageKappaLog = markupv1_7.page()
+                pageKappaLog = markupv1_10.page()
                 pageKappaLog.h1("Kappa re-orientation Log")
                 pageKappaLog.a("Back to previous page", href_=self.strHtmlFileName)
                 pageKappaLog.pre(cgi.escape(EDUtilsFile.readFile(strPathToKappaLogFile)))

@@ -32,8 +32,8 @@ from EDUtilsTable              import EDUtilsTable
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDUtilsFile import EDUtilsFile
 
-EDFactoryPluginStatic.loadModule("markupv1_7")
-import markupv1_7
+EDFactoryPluginStatic.loadModule("markupv1_10")
+import markupv1_10
 
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString

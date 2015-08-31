@@ -107,21 +107,21 @@ class EDPluginSubWedgeMergev1_1(EDPluginExec):
             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginSubWedgeMergev1_1.compareTwoValues', self.getClassName(), "Types of values different : value1=%r, value2=%r" % (type(_value1), type(_value2)))
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
-            raise Exception, strErrorMessage
+            raise BaseException(strErrorMessage)
         elif (type(_value1) == type(0.1)):
             if (abs(_value1 - _value2) < _dTolerance):
                 bReturnValue = True
         elif (type(_value1) == type(1)):
             if (_value1 == _value2):
                 bReturnValue = True
-        elif type(_value1) == type("aaa") or type(_value1) == type(u'unicode'):
+        elif type(_value1) == str or type(_value1) == unicode:
             if _value1 == _value2:
                 bReturnValue = True
         else:
             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginSubWedgeMergev1_1.compareTwoValues', self.getClassName(), "Unknown value type : %r for value %r" % (type(_value1), _value1))
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
-            raise Exception, strErrorMessage
+            raise BaseException(strErrorMessage)
         return bReturnValue
 
 

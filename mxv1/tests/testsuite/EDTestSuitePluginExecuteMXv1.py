@@ -51,7 +51,7 @@ class EDTestSuitePluginExecuteMXv1(EDTestSuite):
         self.addTestSuiteFromName("EDTestSuitePluginExecuteReadImageHeaderv10")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlInterfacev1_2")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteExecEvaluationIndexingv10")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteExecOutputHTMLv1_0")
+#        self.addTestSuiteFromName("EDTestSuitePluginExecuteExecOutputHTMLv1_0")
 
 
 if __name__ == '__main__':

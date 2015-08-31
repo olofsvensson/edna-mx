@@ -32,8 +32,8 @@ from EDUtilsTable              import EDUtilsTable
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDUtilsFile import EDUtilsFile
 
-EDFactoryPluginStatic.loadModule("markupv1_7")
-import markupv1_7
+EDFactoryPluginStatic.loadModule("markupv1_10")
+import markupv1_10
 
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
@@ -190,7 +190,7 @@ class EDPluginRdfitv1_0(EDPluginExecProcessScript):
         return xsDataResultRdfit
 
     def createHtmlPage(self):
-        page = markupv1_7.page(mode='loose_html')
+        page = markupv1_10.page(mode='loose_html')
         page.init(title="Burn Strategy Results",
                         footer="Generated on %s" % time.asctime())
         page.div(align_="CENTER")

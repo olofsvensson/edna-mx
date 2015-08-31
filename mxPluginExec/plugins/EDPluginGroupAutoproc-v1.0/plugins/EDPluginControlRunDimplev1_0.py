@@ -46,8 +46,8 @@ from XSDataISPyBv1_4 import XSDataInputISPyBGetPdbFilePath
 EDFactoryPluginStatic.loadModule("XSDataCCP4v1_0")
 from XSDataCCP4v1_0 import XSDataInputDimple
 
-EDFactoryPluginStatic.loadModule("markupv1_7")
-import markupv1_7
+EDFactoryPluginStatic.loadModule("markupv1_10")
+import markupv1_10
 
 
 class EDPluginControlRunDimplev1_0( EDPluginControl ):
@@ -167,7 +167,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             os.makedirs(strHtmlPath, 0755)
         strHtmlFileName = "%s_index.html" % strImagePrefix
         strPath = os.path.join(strHtmlPath, strHtmlFileName)
-        page = markupv1_7.page(mode='loose_html')
+        page = markupv1_10.page(mode='loose_html')
         # Title and footer
         page.init( title="Dimple Results", 
                    footer="Generated on %s" % time.asctime())
@@ -191,7 +191,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             strTargetPath = os.path.join(strHtmlPath, strBlobImage)
             shutil.copyfile(xsDataFileBlob.path.value, strTargetPath)
             strPageBlobPath = os.path.join(strHtmlPath, "%s_%s_dimple.html" % (strImagePrefix, strBlobName))
-            pageBlob = markupv1_7.page()
+            pageBlob = markupv1_10.page()
             pageBlob.init( title=strBlobName, 
                            footer="Generated on %s" % time.asctime())
             pageBlob.h1(strBlobName)
