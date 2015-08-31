@@ -27,8 +27,19 @@ __copyright__ = "ESRF"
 __date__ = "20120712"
 __status__ = "production"
 
-import os, numpy, fabio, Image, ImageFile, ImageOps, scipy.ndimage
-
+import os
+import numpy
+import fabio
+import scipy.ndimage
+try:
+    import Image
+    import ImageFile
+    import ImageOps
+except:
+    from PIL import Image
+    from PIL import ImageFile
+    from PIL import ImageOps
+    
 from EDPluginExec import EDPluginExec
 from EDUtilsFile import EDUtilsFile
 from EDUtilsPlatform import EDUtilsPlatform
