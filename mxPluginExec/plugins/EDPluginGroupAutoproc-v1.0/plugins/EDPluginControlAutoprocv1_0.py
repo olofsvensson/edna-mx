@@ -141,6 +141,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.process_end = None
         self.strBeamline = None
         self.strProposal = None
+        self.strSessionDate = None
         self.strPrefix = None
         self.dataInputOrig = None
         self.bExecutedDimple = False
@@ -197,7 +198,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         data_in = self.dataInput
 
         if EDUtilsPath.isESRF():
-            (self.strBeamline, self.strProposal, self.strPrefix) = self.getBeamlinePrefixFromPath(self.dataInputOrig.input_file.path.value)
+            (self.strBeamline, self.strProposal, self.strSessionDate, self.strPrefix) = self.getBeamlinePrefixFromPath(self.dataInputOrig.input_file.path.value)
             strSubject = "EDNA dp %s %s %s %s started" % (self.strBeamline, self.strProposal, 
                                                           self.strPrefix, self.strHost)
         else:
@@ -1229,6 +1230,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, 
                                                                                     "{0}_noanom_aimless.mtz".format(self.image_prefix))))
             xsDataInputControlDimple.imagePrefix = XSDataString(self.image_prefix)
+            xsDataInputControlDimple.proposal = XSDataString(self.strProposal)
+            xsDataInputControlDimple.sessionDate = XSDataString(self.strSessionDate)
+            xsDataInputControlDimple.beamline = XSDataString(self.strBeamline)
             xsDataInputControlDimple.pdbDirectory = XSDataFile(XSDataString(self.root_dir))
             if pyarch_path is not None:
                 xsDataInputControlDimple.pyarchPath = XSDataFile(XSDataString(pyarch_path))
@@ -1282,20 +1286,30 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
     def getBeamlinePrefixFromPath(self, strPathToXDSInp):
         """ESRF specific code for extracting the beamline name and prefix from the path"""
+        strBeamline = ""
+        strProposal = ""
+        strPrefix = ""
+        strSessionDate = ""
         listPath = strPathToXDSInp.split("/")
-        if listPath[2] == "visitor":
+        if listPath[2] == "gz":
+            if listPath[3] == "visitor":
+                strBeamline = listPath[5]
+                strProposal = listPath[4]
+                strSessionDate = listPath[6]
+            elif listPath[4] == "inhouse":
+                strBeamline = listPath[3]
+                strProposal = listPath[5]
+                strSessionDate = listPath[6]
+        elif listPath[2] == "visitor":
             strBeamline = listPath[4]
             strProposal = listPath[3]
-            strPrefix = listPath[-2][4:]
+            strSessionDate = listPath[5]
         elif listPath[3] == "inhouse":
             strBeamline = listPath[2]
             strProposal = listPath[4]
-            strPrefix = listPath[-2][4:]
-        else:
-            strBeamline = ""
-            strProposal = ""
-            strPrefix = ""
-        return (strBeamline, strProposal, strPrefix)
+            strSessionDate = listPath[5]
+        strPrefix = listPath[-2][4:]
+        return (strBeamline, strProposal, strSessionDate, strPrefix)
         
 
             

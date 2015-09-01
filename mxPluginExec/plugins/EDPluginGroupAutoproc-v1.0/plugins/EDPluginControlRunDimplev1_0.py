@@ -115,7 +115,10 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             # Create HTML page
             strHtmlPath = self.createHtmlPage(self.dataInput.imagePrefix.value,
                                               xsDataResultDimple,
-                                              os.path.join(self.getWorkingDirectory(), "html"))
+                                              os.path.join(self.getWorkingDirectory(), "html"),
+                                              self.dataInput.proposal.value,
+                                              self.dataInput.sessionDate.value,
+                                              self.dataInput.beamline.value)
 #            # Copy result files to pyarch
 #            if self.dataInput.pyarchPath is not None:
 #                listOfTargetPaths = self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
@@ -161,20 +164,26 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         return listOfTargetPaths
             
     
-    def createHtmlPage(self, strImagePrefix, xsDataResultDimple, strHtmlPath):
+    def createHtmlPage(self, strImagePrefix, xsDataResultDimple, strHtmlPath, strProposal, strSessionDate, strBeamline):
         """Create an HTML page with the results"""
         if not os.path.exists(strHtmlPath):
             os.makedirs(strHtmlPath, 0755)
+        strSample = "_".join(strImagePrefix.split("_")[0:-1])
         strHtmlFileName = "%s_index.html" % strImagePrefix
         strPath = os.path.join(strHtmlPath, strHtmlFileName)
+        strResultsDirectory = xsDataResultDimple.resultsDirectory.path.value
         page = markupv1_10.page(mode='loose_html')
         # Title and footer
         page.init( title="Dimple Results", 
                    footer="Generated on %s" % time.asctime())
         page.div( align_="LEFT")
         page.h1()
-        page.strong( "Dimple Results" )
+        page.strong( "Dimple Results for sample {0} from proposal {1}".format(strSample, strProposal) )
         page.h1.close()
+        page.h3("Session date: {0}-{1}-{2}".format(strSessionDate[0:4], strSessionDate[4:6], strSessionDate[6:]))
+        page.h3("Beamline: {0}".format(strBeamline))
+        page.h3("Dimple output files can be found in :")
+        page.strong(strResultsDirectory)
         page.div.close()
         # Results of REFMAC 5
         page.h3("Final results of Recmac 5:")

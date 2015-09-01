@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu May 28 04:18::09 2015 by EDGenerateDS.
+# Generated Tue Sep 1 11:21::38 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -2271,7 +2271,7 @@ class XSDataFileConversionOut(XSDataResult):
 
 
 class XSDataInputControlDimple(XSDataInput):
-    def __init__(self, configuration=None, pdbDirectory=None, imagePrefix=None, pyarchPath=None, mtzFile=None, dataCollectionId=None):
+    def __init__(self, configuration=None, pdbDirectory=None, beamline=None, sessionDate=None, proposal=None, imagePrefix=None, pyarchPath=None, mtzFile=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -2300,6 +2300,27 @@ class XSDataInputControlDimple(XSDataInput):
             self._imagePrefix = imagePrefix
         else:
             strMessage = "ERROR! XSDataInputControlDimple constructor argument 'imagePrefix' is not XSDataString but %s" % self._imagePrefix.__class__.__name__
+            raise BaseException(strMessage)
+        if proposal is None:
+            self._proposal = None
+        elif proposal.__class__.__name__ == "XSDataString":
+            self._proposal = proposal
+        else:
+            strMessage = "ERROR! XSDataInputControlDimple constructor argument 'proposal' is not XSDataString but %s" % self._proposal.__class__.__name__
+            raise BaseException(strMessage)
+        if sessionDate is None:
+            self._sessionDate = None
+        elif sessionDate.__class__.__name__ == "XSDataString":
+            self._sessionDate = sessionDate
+        else:
+            strMessage = "ERROR! XSDataInputControlDimple constructor argument 'sessionDate' is not XSDataString but %s" % self._sessionDate.__class__.__name__
+            raise BaseException(strMessage)
+        if beamline is None:
+            self._beamline = None
+        elif beamline.__class__.__name__ == "XSDataString":
+            self._beamline = beamline
+        else:
+            strMessage = "ERROR! XSDataInputControlDimple constructor argument 'beamline' is not XSDataString but %s" % self._beamline.__class__.__name__
             raise BaseException(strMessage)
         if pdbDirectory is None:
             self._pdbDirectory = None
@@ -2356,6 +2377,42 @@ class XSDataInputControlDimple(XSDataInput):
             raise BaseException(strMessage)
     def delImagePrefix(self): self._imagePrefix = None
     imagePrefix = property(getImagePrefix, setImagePrefix, delImagePrefix, "Property for imagePrefix")
+    # Methods and properties for the 'proposal' attribute
+    def getProposal(self): return self._proposal
+    def setProposal(self, proposal):
+        if proposal is None:
+            self._proposal = None
+        elif proposal.__class__.__name__ == "XSDataString":
+            self._proposal = proposal
+        else:
+            strMessage = "ERROR! XSDataInputControlDimple.setProposal argument is not XSDataString but %s" % proposal.__class__.__name__
+            raise BaseException(strMessage)
+    def delProposal(self): self._proposal = None
+    proposal = property(getProposal, setProposal, delProposal, "Property for proposal")
+    # Methods and properties for the 'sessionDate' attribute
+    def getSessionDate(self): return self._sessionDate
+    def setSessionDate(self, sessionDate):
+        if sessionDate is None:
+            self._sessionDate = None
+        elif sessionDate.__class__.__name__ == "XSDataString":
+            self._sessionDate = sessionDate
+        else:
+            strMessage = "ERROR! XSDataInputControlDimple.setSessionDate argument is not XSDataString but %s" % sessionDate.__class__.__name__
+            raise BaseException(strMessage)
+    def delSessionDate(self): self._sessionDate = None
+    sessionDate = property(getSessionDate, setSessionDate, delSessionDate, "Property for sessionDate")
+    # Methods and properties for the 'beamline' attribute
+    def getBeamline(self): return self._beamline
+    def setBeamline(self, beamline):
+        if beamline is None:
+            self._beamline = None
+        elif beamline.__class__.__name__ == "XSDataString":
+            self._beamline = beamline
+        else:
+            strMessage = "ERROR! XSDataInputControlDimple.setBeamline argument is not XSDataString but %s" % beamline.__class__.__name__
+            raise BaseException(strMessage)
+    def delBeamline(self): self._beamline = None
+    beamline = property(getBeamline, setBeamline, delBeamline, "Property for beamline")
     # Methods and properties for the 'pdbDirectory' attribute
     def getPdbDirectory(self): return self._pdbDirectory
     def setPdbDirectory(self, pdbDirectory):
@@ -2390,6 +2447,20 @@ class XSDataInputControlDimple(XSDataInput):
             warnEmptyAttribute("pyarchPath", "XSDataFile")
         if self._imagePrefix is not None:
             self.imagePrefix.export(outfile, level, name_='imagePrefix')
+        else:
+            warnEmptyAttribute("imagePrefix", "XSDataString")
+        if self._proposal is not None:
+            self.proposal.export(outfile, level, name_='proposal')
+        else:
+            warnEmptyAttribute("proposal", "XSDataString")
+        if self._sessionDate is not None:
+            self.sessionDate.export(outfile, level, name_='sessionDate')
+        else:
+            warnEmptyAttribute("sessionDate", "XSDataString")
+        if self._beamline is not None:
+            self.beamline.export(outfile, level, name_='beamline')
+        else:
+            warnEmptyAttribute("beamline", "XSDataString")
         if self._pdbDirectory is not None:
             self.pdbDirectory.export(outfile, level, name_='pdbDirectory')
     def build(self, node_):
@@ -2417,6 +2488,21 @@ class XSDataInputControlDimple(XSDataInput):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setImagePrefix(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'proposal':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setProposal(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'sessionDate':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setSessionDate(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'beamline':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setBeamline(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'pdbDirectory':
             obj_ = XSDataFile()
@@ -2893,6 +2979,175 @@ class XSDataMinimalXdsOut(XSDataResult):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataMinimalXdsOut
+
+
+class XSDataXdsGenerateInput(XSDataInput):
+    def __init__(self, configuration=None, unit_cell=None, spacegroup=None, resolution=None, previous_run_dir=None):
+        XSDataInput.__init__(self, configuration)
+        if previous_run_dir is None:
+            self._previous_run_dir = None
+        elif previous_run_dir.__class__.__name__ == "XSDataString":
+            self._previous_run_dir = previous_run_dir
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'previous_run_dir' is not XSDataString but %s" % self._previous_run_dir.__class__.__name__
+            raise BaseException(strMessage)
+        if resolution is None:
+            self._resolution = None
+        elif resolution.__class__.__name__ == "XSDataDouble":
+            self._resolution = resolution
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'resolution' is not XSDataDouble but %s" % self._resolution.__class__.__name__
+            raise BaseException(strMessage)
+        if spacegroup is None:
+            self._spacegroup = None
+        elif spacegroup.__class__.__name__ == "XSDataInteger":
+            self._spacegroup = spacegroup
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'spacegroup' is not XSDataInteger but %s" % self._spacegroup.__class__.__name__
+            raise BaseException(strMessage)
+        if unit_cell is None:
+            self._unit_cell = None
+        elif unit_cell.__class__.__name__ == "XSDataString":
+            self._unit_cell = unit_cell
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'unit_cell' is not XSDataString but %s" % self._unit_cell.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'previous_run_dir' attribute
+    def getPrevious_run_dir(self): return self._previous_run_dir
+    def setPrevious_run_dir(self, previous_run_dir):
+        if previous_run_dir is None:
+            self._previous_run_dir = None
+        elif previous_run_dir.__class__.__name__ == "XSDataString":
+            self._previous_run_dir = previous_run_dir
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput.setPrevious_run_dir argument is not XSDataString but %s" % previous_run_dir.__class__.__name__
+            raise BaseException(strMessage)
+    def delPrevious_run_dir(self): self._previous_run_dir = None
+    previous_run_dir = property(getPrevious_run_dir, setPrevious_run_dir, delPrevious_run_dir, "Property for previous_run_dir")
+    # Methods and properties for the 'resolution' attribute
+    def getResolution(self): return self._resolution
+    def setResolution(self, resolution):
+        if resolution is None:
+            self._resolution = None
+        elif resolution.__class__.__name__ == "XSDataDouble":
+            self._resolution = resolution
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput.setResolution argument is not XSDataDouble but %s" % resolution.__class__.__name__
+            raise BaseException(strMessage)
+    def delResolution(self): self._resolution = None
+    resolution = property(getResolution, setResolution, delResolution, "Property for resolution")
+    # Methods and properties for the 'spacegroup' attribute
+    def getSpacegroup(self): return self._spacegroup
+    def setSpacegroup(self, spacegroup):
+        if spacegroup is None:
+            self._spacegroup = None
+        elif spacegroup.__class__.__name__ == "XSDataInteger":
+            self._spacegroup = spacegroup
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput.setSpacegroup argument is not XSDataInteger but %s" % spacegroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpacegroup(self): self._spacegroup = None
+    spacegroup = property(getSpacegroup, setSpacegroup, delSpacegroup, "Property for spacegroup")
+    # Methods and properties for the 'unit_cell' attribute
+    def getUnit_cell(self): return self._unit_cell
+    def setUnit_cell(self, unit_cell):
+        if unit_cell is None:
+            self._unit_cell = None
+        elif unit_cell.__class__.__name__ == "XSDataString":
+            self._unit_cell = unit_cell
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput.setUnit_cell argument is not XSDataString but %s" % unit_cell.__class__.__name__
+            raise BaseException(strMessage)
+    def delUnit_cell(self): self._unit_cell = None
+    unit_cell = property(getUnit_cell, setUnit_cell, delUnit_cell, "Property for unit_cell")
+    def export(self, outfile, level, name_='XSDataXdsGenerateInput'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataXdsGenerateInput'):
+        XSDataInput.exportChildren(self, outfile, level, name_)
+        if self._previous_run_dir is not None:
+            self.previous_run_dir.export(outfile, level, name_='previous_run_dir')
+        else:
+            warnEmptyAttribute("previous_run_dir", "XSDataString")
+        if self._resolution is not None:
+            self.resolution.export(outfile, level, name_='resolution')
+        else:
+            warnEmptyAttribute("resolution", "XSDataDouble")
+        if self._spacegroup is not None:
+            self.spacegroup.export(outfile, level, name_='spacegroup')
+        if self._unit_cell is not None:
+            self.unit_cell.export(outfile, level, name_='unit_cell')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'previous_run_dir':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setPrevious_run_dir(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'resolution':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setResolution(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spacegroup':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setSpacegroup(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'unit_cell':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setUnit_cell(obj_)
+        XSDataInput.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataXdsGenerateInput" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataXdsGenerateInput' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataXdsGenerateInput is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataXdsGenerateInput.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataXdsGenerateInput()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataXdsGenerateInput" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataXdsGenerateInput()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataXdsGenerateInput
 
 
 class XSDataXdsOutput(XSDataResult):
@@ -4157,175 +4412,6 @@ class XSDataResultControlDimple(XSDataResult):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataResultControlDimple
-
-
-class XSDataXdsGenerateInput(XSDataInput):
-    def __init__(self, configuration=None, unit_cell=None, spacegroup=None, resolution=None, previous_run_dir=None):
-        XSDataInput.__init__(self, configuration)
-        if previous_run_dir is None:
-            self._previous_run_dir = None
-        elif previous_run_dir.__class__.__name__ == "XSDataString":
-            self._previous_run_dir = previous_run_dir
-        else:
-            strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'previous_run_dir' is not XSDataString but %s" % self._previous_run_dir.__class__.__name__
-            raise BaseException(strMessage)
-        if resolution is None:
-            self._resolution = None
-        elif resolution.__class__.__name__ == "XSDataDouble":
-            self._resolution = resolution
-        else:
-            strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'resolution' is not XSDataDouble but %s" % self._resolution.__class__.__name__
-            raise BaseException(strMessage)
-        if spacegroup is None:
-            self._spacegroup = None
-        elif spacegroup.__class__.__name__ == "XSDataInteger":
-            self._spacegroup = spacegroup
-        else:
-            strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'spacegroup' is not XSDataInteger but %s" % self._spacegroup.__class__.__name__
-            raise BaseException(strMessage)
-        if unit_cell is None:
-            self._unit_cell = None
-        elif unit_cell.__class__.__name__ == "XSDataString":
-            self._unit_cell = unit_cell
-        else:
-            strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'unit_cell' is not XSDataString but %s" % self._unit_cell.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'previous_run_dir' attribute
-    def getPrevious_run_dir(self): return self._previous_run_dir
-    def setPrevious_run_dir(self, previous_run_dir):
-        if previous_run_dir is None:
-            self._previous_run_dir = None
-        elif previous_run_dir.__class__.__name__ == "XSDataString":
-            self._previous_run_dir = previous_run_dir
-        else:
-            strMessage = "ERROR! XSDataXdsGenerateInput.setPrevious_run_dir argument is not XSDataString but %s" % previous_run_dir.__class__.__name__
-            raise BaseException(strMessage)
-    def delPrevious_run_dir(self): self._previous_run_dir = None
-    previous_run_dir = property(getPrevious_run_dir, setPrevious_run_dir, delPrevious_run_dir, "Property for previous_run_dir")
-    # Methods and properties for the 'resolution' attribute
-    def getResolution(self): return self._resolution
-    def setResolution(self, resolution):
-        if resolution is None:
-            self._resolution = None
-        elif resolution.__class__.__name__ == "XSDataDouble":
-            self._resolution = resolution
-        else:
-            strMessage = "ERROR! XSDataXdsGenerateInput.setResolution argument is not XSDataDouble but %s" % resolution.__class__.__name__
-            raise BaseException(strMessage)
-    def delResolution(self): self._resolution = None
-    resolution = property(getResolution, setResolution, delResolution, "Property for resolution")
-    # Methods and properties for the 'spacegroup' attribute
-    def getSpacegroup(self): return self._spacegroup
-    def setSpacegroup(self, spacegroup):
-        if spacegroup is None:
-            self._spacegroup = None
-        elif spacegroup.__class__.__name__ == "XSDataInteger":
-            self._spacegroup = spacegroup
-        else:
-            strMessage = "ERROR! XSDataXdsGenerateInput.setSpacegroup argument is not XSDataInteger but %s" % spacegroup.__class__.__name__
-            raise BaseException(strMessage)
-    def delSpacegroup(self): self._spacegroup = None
-    spacegroup = property(getSpacegroup, setSpacegroup, delSpacegroup, "Property for spacegroup")
-    # Methods and properties for the 'unit_cell' attribute
-    def getUnit_cell(self): return self._unit_cell
-    def setUnit_cell(self, unit_cell):
-        if unit_cell is None:
-            self._unit_cell = None
-        elif unit_cell.__class__.__name__ == "XSDataString":
-            self._unit_cell = unit_cell
-        else:
-            strMessage = "ERROR! XSDataXdsGenerateInput.setUnit_cell argument is not XSDataString but %s" % unit_cell.__class__.__name__
-            raise BaseException(strMessage)
-    def delUnit_cell(self): self._unit_cell = None
-    unit_cell = property(getUnit_cell, setUnit_cell, delUnit_cell, "Property for unit_cell")
-    def export(self, outfile, level, name_='XSDataXdsGenerateInput'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataXdsGenerateInput'):
-        XSDataInput.exportChildren(self, outfile, level, name_)
-        if self._previous_run_dir is not None:
-            self.previous_run_dir.export(outfile, level, name_='previous_run_dir')
-        else:
-            warnEmptyAttribute("previous_run_dir", "XSDataString")
-        if self._resolution is not None:
-            self.resolution.export(outfile, level, name_='resolution')
-        else:
-            warnEmptyAttribute("resolution", "XSDataDouble")
-        if self._spacegroup is not None:
-            self.spacegroup.export(outfile, level, name_='spacegroup')
-        if self._unit_cell is not None:
-            self.unit_cell.export(outfile, level, name_='unit_cell')
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'previous_run_dir':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setPrevious_run_dir(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'resolution':
-            obj_ = XSDataDouble()
-            obj_.build(child_)
-            self.setResolution(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'spacegroup':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setSpacegroup(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'unit_cell':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setUnit_cell(obj_)
-        XSDataInput.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataXdsGenerateInput" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataXdsGenerateInput' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataXdsGenerateInput is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataXdsGenerateInput.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataXdsGenerateInput()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataXdsGenerateInput" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataXdsGenerateInput()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataXdsGenerateInput
 
 
 class XSDataXdsGenerateOutput(XSDataResult):
