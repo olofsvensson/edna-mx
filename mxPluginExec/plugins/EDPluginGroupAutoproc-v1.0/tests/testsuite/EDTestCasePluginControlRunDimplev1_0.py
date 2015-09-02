@@ -43,6 +43,9 @@ class EDTestCasePluginControlRunDimplev1_0(EDTestCasePluginExecute):
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
                                            "XSDataInputControlDimple_reference.xml"))
 
+    def preProcess(self):
+        EDTestCasePluginExecute.preProcess(self)
+        self.loadTestImage([ "dimple_noanom_aimless.mtz" ])
 
     def testExecute(self):
         pyarchPath = tempfile.mkdtemp(prefix="EDTestCasePluginControlRunDimplev1_0_")
