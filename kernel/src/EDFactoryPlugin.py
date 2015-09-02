@@ -172,8 +172,9 @@ class EDFactoryPlugin(EDLogging):
                 strModuleLocationRelative = xsDataKeyValuePair.getValue().getValue()
                 strModuleLocationAbsolute = os.path.abspath(os.path.join(strEdnaHome, strModuleLocationRelative))
                 if not os.path.exists(strModuleLocationAbsolute):
-                    raise BaseException("Path loaded from disk does not exist: %s" % strModuleLocationAbsolute)
-                self.__dictModuleLocation[ strModuleName ] = strModuleLocationAbsolute
+                    self.warning("Path loaded from disk does not exist: %s" % strModuleLocationAbsolute)
+                else:
+                    self.__dictModuleLocation[ strModuleName ] = strModuleLocationAbsolute
         except Exception as oExcpetionType:
             self.warning("Error when reading module cache from disk: %s" % str(oExcpetionType))
             self.warning("Forcing reload of module locations.")
