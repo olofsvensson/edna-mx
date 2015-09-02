@@ -49,6 +49,9 @@ from XSDataCCP4v1_0 import XSDataInputDimple
 EDFactoryPluginStatic.loadModule("markupv1_10")
 import markupv1_10
 
+EDFactoryPluginStatic.loadModule("XSDataHTML2PDFv1_0")
+from XSDataHTML2PDFv1_0 import XSDataInputHTML2PDF
+
 
 class EDPluginControlRunDimplev1_0( EDPluginControl ):
     """
@@ -119,6 +122,12 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
                                               self.dataInput.proposal.value,
                                               self.dataInput.sessionDate.value,
                                               self.dataInput.beamline.value)
+            xsDataInputHTML2PDF = XSDataInputHTML2PDF()
+            xsDataInputHTML2PDF.htmlFile = XSDataFile(XSDataString(strHtmlPath))
+            xsDataInputHTML2PDF.resultDirectory = xsDataResultDimple.resultsDirectory
+            edPluginHTML2PDF = self.loadPlugin("EDPluginHTML2PDFv1_0")
+            edPluginHTML2PDF.dataInput = xsDataInputHTML2PDF
+            edPluginHTML2PDF.executeSynchronous()
 #            # Copy result files to pyarch
 #            if self.dataInput.pyarchPath is not None:
 #                listOfTargetPaths = self.copyResultsToPyarch(self.dataInput.imagePrefix.value,

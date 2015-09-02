@@ -1,0 +1,14 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+
+complex type XSDataInputHTML2PDF extends XSDataInput {
+	htmlFile : XSDataFile
+	resultDirectory : XSDataFile optional
+}
+
+complex type XSDataResultHTML2PDF extends XSDataResult {
+	pdfFile : XSDataFile
+}
