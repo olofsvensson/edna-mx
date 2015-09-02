@@ -34,6 +34,7 @@ import os
 
 from EDAssert                            import EDAssert
 from EDTestCasePluginUnit                import EDTestCasePluginUnit
+from EDConfiguration                     import EDConfiguration
 
 from XSDataMXv1 import XSDataIndexingInput
 
@@ -47,15 +48,19 @@ class EDTestCasePluginUnitControlIndexingv10(EDTestCasePluginUnit):
 
     def testConfigureOK(self):
         edPluginControlIndexingv10 = self.createPlugin()
-        xsPluginItemGood01 = self.getPluginConfiguration(os.path.join(self.getPluginTestsDataHome(), "XSConfiguration.xml"))
-        edPluginControlIndexingv10.setConfiguration(xsPluginItemGood01)
+        strPathToTestConfigFile = os.path.join(self.getPluginTestsDataHome(), "XSConfiguration.xml")
+        edConfiguration = EDConfiguration(strPathToTestConfigFile)
+        dictItem = edConfiguration.get(edPluginControlIndexingv10.getPluginName())
+        edPluginControlIndexingv10.setConfig(dictItem)
         edPluginControlIndexingv10.configure()
 
 
     def testSetDataInput(self):
         edPluginControlIndexingv10 = self.createPlugin()
-        xsPluginItemGood01 = self.getPluginConfiguration(os.path.join(self.getPluginTestsDataHome(), "XSConfiguration.xml"))
-        edPluginControlIndexingv10.setConfiguration(xsPluginItemGood01)
+        strPathToTestConfigFile = os.path.join(self.getPluginTestsDataHome(), "XSConfiguration.xml")
+        edConfiguration = EDConfiguration(strPathToTestConfigFile)
+        dictItem = edConfiguration.get(edPluginControlIndexingv10.getPluginName())
+        edPluginControlIndexingv10.setConfig(dictItem)
         edPluginControlIndexingv10.configure()
 
         xmlInput = self.readAndParseFile(self.__strReferenceInputFile)

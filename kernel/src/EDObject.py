@@ -98,16 +98,6 @@ class EDObject(object):
         self.__semaphore.release()
 
 
-    def getSemaphoreValue(self):
-        """
-        This method should only be used for debugging purpose...
-        @return: the "internal" value of the semaphore
-        @rtype: integer
-        """
-        iValue = self.__semaphore._Semaphore__value
-        #EDVerbose.WARNING("DEBUG INFO: The value of semaphore for instance of class %s with hash %s is %i" % (self.getClassName(), hash(self), iValue))
-        return iValue
-
     def locked(self):
         return self.__semaphore
 

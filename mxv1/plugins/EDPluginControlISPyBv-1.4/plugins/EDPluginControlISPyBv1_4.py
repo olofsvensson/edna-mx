@@ -82,13 +82,13 @@ class EDPluginControlISPyBv1_4(EDPluginControl):
                                                                                                              self.strStatusMessage, \
                                                                                                              self.strShortComments, \
                                                                                                              self.strComments)
-        except Exception, error:
+        except Exception as error:
             raise
             # This exception handling needs to be rethought, see bug #43.
             errorMessage = "EDPluginControlISPyBv1_4.preProcess: Unexpected error in ISPyB handler: %r" % error
             self.error(errorMessage)
             self.addErrorMessage(errorMessage)
-            raise RuntimeError, errorMessage
+            raise RuntimeError(errorMessage)
         self.edPluginExecISPyB.setDataInput(xsDataInputISPyBStoreScreening)
 
 

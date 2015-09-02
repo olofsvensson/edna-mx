@@ -61,7 +61,7 @@ class EDUtilsPlatform(object):
     __strPathSep = os.pathsep
     __strName = os.name
     __strStartScript = None
-    __PythonPlatformSize = int(round(math.log(sys.maxint + 1) / math.log(2) + 1))
+    __PythonPlatformSize = int(round(math.log(sys.maxsize + 1) / math.log(2) + 1))
 
     __SystemPlatform = distutils.util.get_platform()
     if __PythonPlatformSize == 32 and __SystemPlatform.endswith("x86_64"):

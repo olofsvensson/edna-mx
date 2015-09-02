@@ -68,7 +68,7 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
         self.DEBUG("EDPluginMOSFLMv10.process")
         # It should not be possible to execute this abstract plugin
         if (self.getPluginName() == "EDPluginMOSFLMv10"):
-            raise RuntimeError, "ExectuteAbstractPluginError"
+            raise RuntimeError("ExectuteAbstractPluginError")
 
 
     def process(self, _edObject=None):
@@ -76,7 +76,7 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
         self.DEBUG("EDPluginMOSFLMv10.process")
         # It should not be possible to execute this abstract plugin
         if (self.getPluginName() == "EDPluginMOSFLMv10"):
-            raise RuntimeError, "ExectuteAbstractPluginError"
+            raise RuntimeError("ExectuteAbstractPluginError")
 
     
     def configure(self):

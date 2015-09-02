@@ -11,4 +11,13 @@
 	<imagePrefix>
 		<value>xtal5w1_1</value>
 	</imagePrefix>
+	<beamline>
+		<value>id29</value>
+	</beamline>
+	<sessionDate>
+		<value>20141109</value>
+	</sessionDate>
+	<proposal>
+		<value>mx415</value>
+	</proposal>
 </XSDataInputControlDimple>

@@ -55,4 +55,9 @@
             <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/dimple/08-refmac5_restr.log</value>
         </path>
     </refmac5restrLog>
+    <resultsDirectory>
+        <path>
+            <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/dimple</value>
+        </path>
+    </resultsDirectory>
 </XSDataResultDimple>

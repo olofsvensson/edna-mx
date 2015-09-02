@@ -97,8 +97,8 @@ class EDTestCasePluginUnitControlInterfaceToMXCuBEv1_3(EDTestCasePluginUnit):
     def testGetBeamlineProposalFromPath(self):
         pluginMXCuBE = self.createPlugin()
         testPath1 = "/data/visitor/mx1588/id23eh1/20141216/RAW_DATA/99_1/ref-PTE_C23_A203_1_0001.cbf"
-        print testPath1
-        print  pluginMXCuBE.getBeamlineProposalFromPath(testPath1)
+        print(testPath1)
+        print(pluginMXCuBE.getBeamlineProposalFromPath(testPath1))
 
     def process(self):
         self.addTestMethod(self.testCreateDNAFileDirectoryPath)

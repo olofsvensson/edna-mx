@@ -32,6 +32,8 @@ from EDAssert import EDAssert
 from EDUtilsPath import EDUtilsPath
 from EDTestCasePluginExecute import EDTestCasePluginExecute
 
+from XSDataCommon import XSDataString
+from XSDataCommon import XSDataFile
 
 class EDTestCasePluginControlRunDimplev1_0(EDTestCasePluginExecute):
 
@@ -43,6 +45,10 @@ class EDTestCasePluginControlRunDimplev1_0(EDTestCasePluginExecute):
 
 
     def testExecute(self):
+        pyarchPath = tempfile.mkdtemp(prefix="EDTestCasePluginControlRunDimplev1_0_")
+        print pyarchPath
+        xsDataPyarchPath = XSDataFile(XSDataString(pyarchPath))
+        self._edPlugin.dataInput.pyarchPath = xsDataPyarchPath
         self.run()
 
     def process(self):

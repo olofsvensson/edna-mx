@@ -146,7 +146,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
                         try:
                             os.makedirs(strOutputDirname)
                             bIsOk = True
-                        except BaseException, e:
+                        except Exception as e:
                             self.WARNING("Couldn't create the directory %s" % strOutputDirname)
                     elif os.access(strOutputDirname, os.W_OK):
                         bIsOk = True

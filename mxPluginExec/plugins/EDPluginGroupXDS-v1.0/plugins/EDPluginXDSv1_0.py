@@ -118,7 +118,7 @@ class EDPluginXDSv1_0(EDPluginExecProcessScript):
         xsDataXDSDetector = xsDataXDSInput.getDetector()
 
         if (self.__listJob is None):
-            raise "RuntimeException", "No jobs given to XDS!"
+            raise RuntimeException("No jobs given to XDS!")
 
         pyStrJobLine = "JOB="
         for pyStrJob in self.__listJob:

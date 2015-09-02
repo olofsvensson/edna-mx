@@ -142,7 +142,7 @@ class EDPluginExecReadImageHeaderMARCCDv10(EDPluginExec):
                 strErrorMessage = EDMessage.ERROR_DATA_HANDLER_02 % ("EDPluginExecReadImageHeaderMARCCDv10.process", "Unknown detector type")
                 self.error(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
-                raise RuntimeError, strErrorMessage
+                raise RuntimeError(strErrorMessage)
 
             xsDataExperimentalCondition.setDetector(xsDataDetector)
 
@@ -382,6 +382,8 @@ class EDPluginExecReadImageHeaderMARCCDv10(EDPluginExec):
                 strValue = struct.unpack(strFormat, pyRawData)
                 if len(strValue) == 1:
                     strValue = strValue[0]
+                if type(strValue) == bytes:
+                    strValue = strValue.decode('ISO-8859-1')
                 if pyListRow[0] == strChar:
                     strValue = strValue.strip('\x00')
                 dictMarccd[strKeyword] = strValue

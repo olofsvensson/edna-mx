@@ -29,6 +29,7 @@ __contact__ = "svensson@esrf.fr"
 __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
+import sys
 import struct
 
 from EDUtilsFile     import EDUtilsFile
@@ -206,7 +207,10 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         pyFile = None
         bIsAdscFormat = False
         try:
-            pyFile = open(_strImageFileName, "r")
+            if sys.version.startswith('3'):
+                pyFile = open(_strImageFileName, "r", encoding = "ISO-8859-1")
+            else:
+                pyFile = open(_strImageFileName, "r")
         except:
             self.warning("EDPluginControlReadImageHeaderv10.isAdscImageFormat: couldn't open file: " + _strImageFileName)
 
@@ -262,6 +266,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
             strValue = struct.unpack(strFormat, pyRawData)
             if len(strValue) == 1:
                 strValue = strValue[0]
+            strValue = strValue.decode('ISO-8859-1')
             if pyListRow[0] == strChar:
                 strValue = strValue.strip('\x00')
 
@@ -280,7 +285,10 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         pyFile = None
         bIsPilatus2MFormat = False
         try:
-            pyFile = open(_strImageFileName, "r")
+            if sys.version.startswith('3'):
+                pyFile = open(_strImageFileName, "r", encoding = "ISO-8859-1")
+            else:
+                pyFile = open(_strImageFileName, "r")
         except:
             self.warning("EDPluginControlReadImageHeaderv10.isPilatus6MImageFormat: couldn't open file: " + _strImageFileName)
 
@@ -304,7 +312,10 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         pyFile = None
         bIsPilatus6MFormat = False
         try:
-            pyFile = open(_strImageFileName, "r")
+            if sys.version.startswith('3'):
+                pyFile = open(_strImageFileName, "r", encoding = "ISO-8859-1")
+            else:
+                pyFile = open(_strImageFileName, "r")
         except:
             self.warning("EDPluginControlReadImageHeaderv10.isPilatus6MImageFormat: couldn't open file: " + _strImageFileName)
 

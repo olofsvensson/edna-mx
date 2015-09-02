@@ -92,6 +92,8 @@ class EDPluginExecDimplev1_0(EDPluginExecProcessScript ):
             if filepath.endswith("refmac5_restr.log"):
                 self.dataOutput.refmac5restrLog = XSDataFile(XSDataString(filepath))
                 break
+        # Results directory
+        self.dataOutput.resultsDirectory = XSDataFile(XSDataString(self.strDimpleDir))
                 
                 
             

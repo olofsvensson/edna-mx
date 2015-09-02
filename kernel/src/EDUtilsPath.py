@@ -222,7 +222,7 @@ class EDUtilsPath:
         Returns the name of a temporary folder that is unique for a given user.
         """
         if cls._EDNA_USERTEMPFOLDER is None:
-            if os.environ.has_key("EDNA_USERTEMPFOLDER"):
+            if "EDNA_USERTEMPFOLDER" in os.environ:
                 cls._EDNA_USERTEMPFOLDER = os.environ["EDNA_USERTEMPFOLDER"]
                 if not os.path.exists(cls._EDNA_USERTEMPFOLDER):
                     EDVerbose.warning("EDNA_USERTEMPFOLDER environment variable is set to %s put the directory does not exist!" % cls._EDNA_USERTEMPFOLDER)
@@ -281,7 +281,7 @@ class EDUtilsPath:
                 strTempFileDir = EDUtilsPath.getEdnaUserTempFolder()
                 # We create a hash of the path in order to be able to reference several different EDNA_HOME 
                 # caches in the same directory
-                strCacheFileName = hashlib.sha1(os.getenv('EDNA_HOME')).hexdigest() + ".xml"
+                strCacheFileName = hashlib.sha1(os.getenv('EDNA_HOME').encode('utf-8')).hexdigest() + ".xml"
                 cls._EDNA_PLUGINCACHE = os.path.abspath(os.path.join(strTempFileDir, strCacheFileName))
             EDVerbose.DEBUG("EDFactoryPlugin: Path to plugin cache: %s" % cls._EDNA_PLUGINCACHE)
         return cls._EDNA_PLUGINCACHE

@@ -64,7 +64,7 @@ class EDTestCasePluginUnitXDSSpotSearchv1_1(EDTestCasePluginUnit):
         edPluginXDSSpotSearchv1_1.setDataInput(xsDataInputXDSSpotSearch)
         #edPluginXDSSpotSearchv1_1.configure()
         edPluginXDSSpotSearchv1_1.createXDSInput()
-        print edPluginXDSSpotSearchv1_1.m_pyStrXDSInput
+        print(edPluginXDSSpotSearchv1_1.m_pyStrXDSInput)
 
 
     def process(self):

@@ -38,7 +38,7 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20120401"
 import uuid, sys, os, traceback
 import threading
-_Semaphore = threading._Semaphore
+_Semaphore = threading.Semaphore
 
 if os.environ.get("EDNA_LOCK", False):
     class Semaphore(_Semaphore):

@@ -6,7 +6,10 @@
 
 import sys
 import getopt
-import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 from xml.dom import minidom
 from xml.dom import Node
 
@@ -593,7 +596,7 @@ class SaxDna_tablesHandler(handler.ContentHandler):
         self.locator = locator
     
     def showError(self, msg):
-        print '*** (showError):', msg
+        print('*** (showError):', msg)
         sys.exit(-1)
 
     def startElement(self, name, attrs):
@@ -682,7 +685,7 @@ Options:
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(-1)
 
 
@@ -711,10 +714,10 @@ def parseSelect(inFileName):
         except StopIteration:
             topElementName = documentHandler.getTopElementName()
         if topElementName is None:
-            raise RuntimeError, 'no top level element'
+            raise RuntimeError('no top level element')
         topElementName = topElementName.replace('-', '_').replace(':', '_')
         if topElementName not in globals():
-            raise RuntimeError, 'no class for top element: %s' % topElementName
+            raise RuntimeError('no class for top element: %s' % topElementName)
         topElement = globals()[topElementName]
         infile.seek(0)
         doc = minidom.parse(infile)

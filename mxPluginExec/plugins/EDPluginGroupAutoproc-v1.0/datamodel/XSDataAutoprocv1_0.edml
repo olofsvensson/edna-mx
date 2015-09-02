@@ -254,7 +254,10 @@ complex type XSDataInputControlDimple extends XSDataInput {
 	dataCollectionId : XSDataInteger
 	mtzFile : XSDataFile
 	pyarchPath : XSDataFile
-	imagePrefix : XSDataString optional
+	imagePrefix : XSDataString
+	proposal : XSDataString
+	sessionDate : XSDataString
+	beamline : XSDataString
 	pdbDirectory : XSDataFile optional
 }
 

@@ -135,6 +135,6 @@ class EDHandlerESRFPyarchv1_0:
                 if os.path.exists(strPathToPyArchHtmlDirectory):
                     shutil.rmtree(strPathToPyArchHtmlDirectory, ignore_errors=True)
                 shutil.copytree(_strPathToHTMLDir, strPathToPyArchHtmlDirectory)
-            except Exception, e:
+            except Exception as e:
                 EDVerbose.ERROR("EDHandlerESRFPyarchv1_0.copyHTMLFilesAndDir: Exception caught: %r" % e)
 

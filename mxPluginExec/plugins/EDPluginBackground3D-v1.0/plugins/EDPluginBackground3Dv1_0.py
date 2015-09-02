@@ -32,8 +32,8 @@ from EDUtilsTable              import EDUtilsTable
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDUtilsFile import EDUtilsFile
 
-EDFactoryPluginStatic.loadModule("markupv1_7")
-import markupv1_7
+EDFactoryPluginStatic.loadModule("markupv1_10")
+import markupv1_10
 
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
@@ -186,6 +186,6 @@ class EDPluginBackground3Dv1_0(EDPluginExecProcessScript):
         returnValue = None
         try:
             returnValue = XSDataDouble(_strValue)
-        except BaseException as ex:
+        except Exception as ex:
             self.warning("Error when trying to parse '" + _strValue + "': %r" % ex)
         return returnValue

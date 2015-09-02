@@ -31,7 +31,7 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20120712"
 __status__ = "production"
 
-import os
+import os, sys
 
 
 from EDMessage                    import EDMessage
@@ -216,7 +216,7 @@ class EDPluginRaddosev10(EDPluginExecProcessScript):
             errorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginRaddosev10.postProcess', 'EDPluginRaddosev10', strRaddoseError)
             self.error(errorMessage)
             self.addErrorMessage(errorMessage)
-            raise RuntimeError, errorMessage
+            raise RuntimeError(errorMessage)
 
         resultDict = self.analyseScriptLogFileName(os.path.join(self.getWorkingDirectory(), self.getScriptLogFileName()))
 
@@ -233,13 +233,13 @@ class EDPluginRaddosev10(EDPluginExecProcessScript):
             errorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginRaddosev10.postProcess', "Raddose", "No Result for Keyword [" + EDPluginRaddosev10.__strSOLVENT + "] see: " + self.getScriptLogFileName())
             self.error(errorMessage)
             self.addErrorMessage(errorMessage)
-            raise RuntimeError, errorMessage
+            raise RuntimeError(errorMessage)
 
         if(strAbsorbedDose is None):
             errorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginRaddosev10.postProcess', "Raddose", "No Result for Keyword [" + strAbsorbedDoseKeyword + "] see: " + self.getScriptLogFileName())
             self.error(errorMessage)
             self.addErrorMessage(errorMessage)
-            raise RuntimeError, errorMessage
+            raise RuntimeError(errorMessage)
 
 
         self.__fSolvent = float(strSolvent)
@@ -273,17 +273,33 @@ class EDPluginRaddosev10(EDPluginExecProcessScript):
         resultDict = None
 
         f = None
-        try:
-            f = open(_strFileName)
-        except:
+        if not os.path.exists(_strFileName):
             errorMessage = EDMessage.ERROR_CANNOT_READ_FILE_02 % ('EDPluginRaddosev10.analyseScriptLogFileName', self.getScriptLogFileName())
             self.error(errorMessage)
             self.addErrorMessage(errorMessage)
-            raise RuntimeError, errorMessage
+            raise RuntimeError(errorMessage)
+        else:
+            # Fix for problem reading raddose log file under Python 3:
+            # 'utf-8' codec can't decode byte 0xf1 in position 2729: invalid continuation byte
+            #strLog = self.readProcessFile(_strFileName)
+            strFilePath = os.path.join(self.getWorkingDirectory(), _strFileName)
+            try:
+                with open(_strFileName, "rb") as fd:
+                    oContent = fd.read()
+                # Cut off the last 150 bytes
+                oContent = oContent[0:len(oContent)-150]
+                if sys.version.startswith('3'):
+                    strLog = oContent.decode('utf-8')
+                else:
+                    strLog = oContent
 
-        for strLine in f.xreadlines():
-            strLine = strLine.replace('\n', "")
-            resultDict = self.addResultToDict(strLine)
+            except Exception as e:
+                strError = "EDPluginRaddosev10.analyseScriptLogFileName: Reading %s: %s" % (_strFileName, str(e))
+                self.ERROR(strError)
+                raise IOError(strError)
+            listLines = strLog.split("\n")
+            for strLine in listLines:
+                resultDict = self.addResultToDict(strLine)
 
         return resultDict
 

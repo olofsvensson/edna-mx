@@ -78,7 +78,7 @@ class EDTestCasePluginUnitRaddosev10(EDTestCasePluginUnit):
         xsDataRaddoseInput = XSDataRaddoseInput()
 
         from XSDataCommon import XSDataString
-        from XSDataCommon import XSDataFloat
+        from XSDataCommon import XSDataDouble
         from XSDataCommon import XSDataAngle
         from XSDataCommon import XSDataLength
         from XSDataCommon import XSDataSize
@@ -88,10 +88,10 @@ class EDTestCasePluginUnitRaddosev10(EDTestCasePluginUnit):
         from XSDataRaddosev10 import XSDataAtomicComposition
 
         xsDataAtomSulfur = XSDataAtom()
-        xsDataAtomSulfur.setNumberOf(XSDataFloat(4))
+        xsDataAtomSulfur.setNumberOf(XSDataDouble(4))
         xsDataAtomSulfur.setSymbol(XSDataString("S"))
         xsDataAtomSelenium = XSDataAtom()
-        xsDataAtomSelenium.setNumberOf(XSDataFloat(4))
+        xsDataAtomSelenium.setNumberOf(XSDataDouble(4))
         xsDataAtomSelenium.setSymbol(XSDataString("Se"))
 
         xsDataAtomicComposition = XSDataAtomicComposition()
@@ -176,7 +176,7 @@ class EDTestCasePluginUnitRaddosev10(EDTestCasePluginUnit):
         EDAssert.equal("CRYSTAL 0.1 0.1 0.1", edPluginRaddose.getCommandCrystalSize())
 
         EDAssert.equal("BEAM 0.1 0.1", edPluginRaddose.getCommandBeamSize())
-        EDAssert.equal("PHOSEC 1e+12", edPluginRaddose.getCommandBeamFlux())
+        EDAssert.equal("PHOSEC " + str(1000000000000.0), edPluginRaddose.getCommandBeamFlux())
         EDAssert.equal("WAVELENGTH 2.41", edPluginRaddose.getCommandBeamWavelength())
 
         EDAssert.equal("EXPOSURE 1.0", edPluginRaddose.getCommandExposureTime())

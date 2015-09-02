@@ -57,7 +57,7 @@ class EDTestSuitePluginExecuteAllMXv1(EDTestSuite):
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlInterfaceToMXCuBEv1_2")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlInterfaceToMXCuBEv1_3")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteExecEvaluationIndexingv10")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteExecOutputHTMLv1_0")
+#        self.addTestSuiteFromName("EDTestSuitePluginExecuteExecOutputHTMLv1_0")
 
 
 if __name__ == '__main__':
