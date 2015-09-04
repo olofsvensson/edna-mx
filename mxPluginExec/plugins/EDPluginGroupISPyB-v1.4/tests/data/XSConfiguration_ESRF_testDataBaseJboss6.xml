@@ -69,6 +69,23 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem> 
+			<name>EDPluginISPyBStoreAutoProcProgramAttachmentv1_4</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>userName</name>
+					<value>${ISPyB_user}</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>passWord</name>
+					<value>${ISPyB_pass}</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>toolsForAutoprocessingWebServiceWsdl</name>
+					<value>http://ispyvalid.esrf.fr:8080/ispyb-ws/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem> 
 			<name>EDPluginISPyBRetrieveDataCollectionv1_4</name>  
 			<XSParamList>
 				<XSParamItem>

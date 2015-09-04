@@ -42,6 +42,8 @@ from XSDataAutoprocv1_0  import XSDataResultControlDimple
 # pdb file retrieval
 EDFactoryPluginStatic.loadModule('XSDataISPyBv1_4')
 from XSDataISPyBv1_4 import XSDataInputISPyBGetPdbFilePath
+from XSDataISPyBv1_4 import XSDataInputStoreAutoProcProgramAttachment
+from XSDataISPyBv1_4 import AutoProcProgramAttachment
 
 EDFactoryPluginStatic.loadModule("XSDataCCP4v1_0")
 from XSDataCCP4v1_0 import XSDataInputDimple
@@ -128,15 +130,30 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             edPluginHTML2PDF = self.loadPlugin("EDPluginHTML2PDFv1_0")
             edPluginHTML2PDF.dataInput = xsDataInputHTML2PDF
             edPluginHTML2PDF.executeSynchronous()
-#            # Copy result files to pyarch
-#            if self.dataInput.pyarchPath is not None:
-#                listOfTargetPaths = self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
-#                                                             self.dataInput.pyarchPath.path.value, 
-#                                                             xsDataResultControlDimple)
-#                listOfTargetPaths.append(htmlPath)
+            strPdfFile = edPluginHTML2PDF.dataOutput.pdfFile.path.value
+            # Copy result files to pyarch
+            if self.dataInput.pyarchPath is not None:
+                listOfTargetPaths = self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
+                                                             self.dataInput.pyarchPath.path.value, 
+                                                             xsDataResultControlDimple,
+                                                             strPdfFile)
+            # Upload files to ISPyB
+            if self.dataInput.autoProcProgramId is not None:
+                xsDataInputStoreAutoProcProgramAttachment = XSDataInputStoreAutoProcProgramAttachment()
+                for targetPath in listOfTargetPaths:
+                    autoProcProgramAttachment = AutoProcProgramAttachment()
+                    autoProcProgramAttachment.fileType = "Result"
+                    autoProcProgramAttachment.fileName = os.path.basename(targetPath)
+                    autoProcProgramAttachment.filePath = os.path.dirname(targetPath)
+                    autoProcProgramAttachment.autoProcProgramId = self.dataInput.autoProcProgramId.value
+                    xsDataInputStoreAutoProcProgramAttachment.addAutoProcProgramAttachment(autoProcProgramAttachment)
+                edPluginStoreAutoProcProgramAttachment = self.loadPlugin("EDPluginISPyBStoreAutoProcProgramAttachmentv1_4")
+                edPluginStoreAutoProcProgramAttachment.dataInput = xsDataInputStoreAutoProcProgramAttachment
+                edPluginStoreAutoProcProgramAttachment.executeSynchronous()
+                
 
             
-    def copyResultsToPyarch(self, strImagePrefix, strPyarchRootPath, xsDataResultDimple):
+    def copyResultsToPyarch(self, strImagePrefix, strPyarchRootPath, xsDataResultDimple, strPdfFile):
         listOfTargetPaths = []
         # Check that pyarch root exists
         if not os.path.exists(strPyarchRootPath):
@@ -170,6 +187,10 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             strTargetRefmac5restrLogPath = os.path.join(strPyarchRootPath, "%s_refmac5restr_dimple.log" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.refmac5restrLog.path.value, strTargetRefmac5restrLogPath)
             listOfTargetPaths.append(strTargetRefmac5restrLogPath)
+            # Result PDF file
+            strTargetPdfPath = os.path.join(strPyarchRootPath, "%s_dimple.pdf" % strImagePrefix)
+            shutil.copyfile(strPdfFile, strTargetPdfPath)
+            listOfTargetPaths.append(strTargetPdfPath)
         return listOfTargetPaths
             
     

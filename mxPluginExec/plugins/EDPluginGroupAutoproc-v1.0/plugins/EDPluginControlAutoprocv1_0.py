@@ -39,6 +39,7 @@ import traceback
 import shutil
 import socket
 import smtplib
+import shutil
 from stat import *
 
 from EDPluginControl import EDPluginControl
@@ -255,6 +256,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             self.image_prefix = self.image_prefix + '_edna'  
 
         self.results_dir = os.path.join(self.root_dir, 'results', 'fast_processing')
+        if os.path.exists(self.results_dir):
+            # Remove existing results
+            shutil.rmtree(self.results_dir)
         try:
             os.makedirs(self.results_dir)
         except OSError: # it most likely exists
@@ -1211,6 +1215,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.store_autoproc_noanom.dataInput = ispyb_input
         t0=time.time()
         self.store_autoproc_noanom.executeSynchronous()
+        autoProcProgramId = self.store_autoproc_noanom.dataOutput.autoProcProgramId.value
         self.retrieveFailureMessages(self.store_autoproc_noanom, "Store autoproc noanom")
         self.stats['ispyb_upload'] = time.time() - t0
 
@@ -1236,6 +1241,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             xsDataInputControlDimple.pdbDirectory = XSDataFile(XSDataString(self.root_dir))
             if pyarch_path is not None:
                 xsDataInputControlDimple.pyarchPath = XSDataFile(XSDataString(pyarch_path))
+            if autoProcProgramId is not None:
+                xsDataInputControlDimple.autoProcProgramId = XSDataInteger(autoProcProgramId)
             edPluginControlRunDimple = self.loadPlugin("EDPluginControlRunDimplev1_0")
             edPluginControlRunDimple.dataInput = xsDataInputControlDimple
             edPluginControlRunDimple.executeSynchronous()

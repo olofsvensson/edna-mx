@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<XSDataInputAutoProcProgramAttachment>
+	<AutoProcProgramAttachment>
+		<fileType>Result</fileType>
+		<fileName>DIMPLE.pdf</fileName>
+		<filePath>/data/pyarch/id23eh2/opid232/20150826/PROCESSED_DATA</filePath>
+		<autoProcProgramId>749102</autoProcProgramId>
+	</AutoProcProgramAttachment>	
+</XSDataInputAutoProcProgramAttachment>
