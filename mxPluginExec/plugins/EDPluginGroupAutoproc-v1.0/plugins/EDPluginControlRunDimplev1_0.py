@@ -135,7 +135,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             if self.dataInput.pyarchPath is not None:
                 listOfTargetPaths = self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
                                                              self.dataInput.pyarchPath.path.value, 
-                                                             xsDataResultControlDimple,
+                                                             xsDataResultDimple,
                                                              strPdfFile)
             # Upload files to ISPyB
             if self.dataInput.autoProcProgramId is not None:
