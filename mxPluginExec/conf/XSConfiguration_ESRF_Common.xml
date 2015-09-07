@@ -479,10 +479,6 @@
 					<name>timeOut</name>
 					<value>7200</value>
 				</XSParamItem>
-			    <XSParamItem>
-			        <name>contactEmail</name>
-			        <value>svensson@esrf.fr</value>
-			    </XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 
