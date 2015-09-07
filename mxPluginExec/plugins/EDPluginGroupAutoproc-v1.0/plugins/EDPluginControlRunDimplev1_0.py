@@ -188,7 +188,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             shutil.copyfile(xsDataResultDimple.refmac5restrLog.path.value, strTargetRefmac5restrLogPath)
             listOfTargetPaths.append(strTargetRefmac5restrLogPath)
             # Result PDF file
-            strTargetPdfPath = os.path.join(strPyarchRootPath, "%s_dimple.pdf" % strImagePrefix)
+            strTargetPdfPath = os.path.join(strPyarchRootPath, "%s_results_dimple.pdf" % strImagePrefix)
             shutil.copyfile(strPdfFile, strTargetPdfPath)
             listOfTargetPaths.append(strTargetPdfPath)
         return listOfTargetPaths
