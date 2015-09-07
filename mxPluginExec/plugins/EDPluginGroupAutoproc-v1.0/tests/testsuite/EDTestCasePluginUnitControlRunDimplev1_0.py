@@ -68,7 +68,7 @@ class EDTestCasePluginUnitControlRunDimplev1_0(EDTestCasePluginUnit):
         EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "xtal5w1_1_dimple.pdb")), "dimple.pdb")
         EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "xtal5w1_1_findblobs_dimple.log")), "findblobs.log")
         EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "xtal5w1_1_refmac5restr_dimple.log")), "refmac5restr.log")
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "xtal5w1_1_dimple.pdf")), "dimple.pdf")
+        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "xtal5w1_1_results_dimple.pdf")), "dimple.pdf")
         shutil.rmtree(strPyarchRootDir)
 
     def test_createHtmlPage(self):

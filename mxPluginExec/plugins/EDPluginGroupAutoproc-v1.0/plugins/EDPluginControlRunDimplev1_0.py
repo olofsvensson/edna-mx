@@ -137,19 +137,19 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
                                                              self.dataInput.pyarchPath.path.value, 
                                                              xsDataResultDimple,
                                                              strPdfFile)
-            # Upload files to ISPyB
-            if self.dataInput.autoProcProgramId is not None:
-                xsDataInputStoreAutoProcProgramAttachment = XSDataInputStoreAutoProcProgramAttachment()
-                for targetPath in listOfTargetPaths:
-                    autoProcProgramAttachment = AutoProcProgramAttachment()
-                    autoProcProgramAttachment.fileType = "Result"
-                    autoProcProgramAttachment.fileName = os.path.basename(targetPath)
-                    autoProcProgramAttachment.filePath = os.path.dirname(targetPath)
-                    autoProcProgramAttachment.autoProcProgramId = self.dataInput.autoProcProgramId.value
-                    xsDataInputStoreAutoProcProgramAttachment.addAutoProcProgramAttachment(autoProcProgramAttachment)
-                edPluginStoreAutoProcProgramAttachment = self.loadPlugin("EDPluginISPyBStoreAutoProcProgramAttachmentv1_4")
-                edPluginStoreAutoProcProgramAttachment.dataInput = xsDataInputStoreAutoProcProgramAttachment
-                edPluginStoreAutoProcProgramAttachment.executeSynchronous()
+                # Upload files to ISPyB
+                if self.dataInput.autoProcProgramId is not None:
+                    xsDataInputStoreAutoProcProgramAttachment = XSDataInputStoreAutoProcProgramAttachment()
+                    for targetPath in listOfTargetPaths:
+                        autoProcProgramAttachment = AutoProcProgramAttachment()
+                        autoProcProgramAttachment.fileType = "Result"
+                        autoProcProgramAttachment.fileName = os.path.basename(targetPath)
+                        autoProcProgramAttachment.filePath = os.path.dirname(targetPath)
+                        autoProcProgramAttachment.autoProcProgramId = self.dataInput.autoProcProgramId.value
+                        xsDataInputStoreAutoProcProgramAttachment.addAutoProcProgramAttachment(autoProcProgramAttachment)
+                    edPluginStoreAutoProcProgramAttachment = self.loadPlugin("EDPluginISPyBStoreAutoProcProgramAttachmentv1_4")
+                    edPluginStoreAutoProcProgramAttachment.dataInput = xsDataInputStoreAutoProcProgramAttachment
+                    edPluginStoreAutoProcProgramAttachment.executeSynchronous()
                 
 
             
