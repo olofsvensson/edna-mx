@@ -118,14 +118,15 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         xsDataResultDimple = self.runDimple(self.strPdbPath, self.strPathNoanomAimlessMtz)
         if xsDataResultDimple is not None:
             # Create HTML page
-            strHtmlPath = self.createHtmlPage(self.dataInput.imagePrefix.value,
-                                              xsDataResultDimple,
-                                              os.path.join(self.getWorkingDirectory(), "html"),
-                                              self.dataInput.proposal.value,
-                                              self.dataInput.sessionDate.value,
-                                              self.dataInput.beamline.value)
+            listHtmlPath = self.createHtmlPage(self.dataInput.imagePrefix.value,
+                                               xsDataResultDimple,
+                                               os.path.join(self.getWorkingDirectory(), "html"),
+                                               self.dataInput.proposal.value,
+                                               self.dataInput.sessionDate.value,
+                                               self.dataInput.beamline.value)
             xsDataInputHTML2PDF = XSDataInputHTML2PDF()
-            xsDataInputHTML2PDF.htmlFile = XSDataFile(XSDataString(strHtmlPath))
+            for strHtmlPath in listHtmlPath:
+                xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(strHtmlPath)))
             xsDataInputHTML2PDF.resultDirectory = xsDataResultDimple.resultsDirectory
             edPluginHTML2PDF = self.loadPlugin("EDPluginHTML2PDFv1_0")
             edPluginHTML2PDF.dataInput = xsDataInputHTML2PDF
@@ -223,6 +224,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         page.pre(open(xsDataResultDimple.findBlobsLog.path.value).read())
         # Blobs
         page.br()
+        listImageHTML = []
         for xsDataFileBlob in xsDataResultDimple.blob:
             # Copy blob file to html directory
             strBlobName = os.path.basename(xsDataFileBlob.path.value).split(".")[0]
@@ -239,10 +241,11 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             pageBlob.div.close()
             pageBlob.br()
             pageBlob.div( align_="LEFT")
-            pageBlob.a("Back to previous page", href_=strPath)
+            pageBlob.a("Back to previous page", href_=os.path.basename(strPath))
             pageBlob.div.close()
             EDUtilsFile.writeFile(strPageBlobPath, str(pageBlob))
-            page.a( href=strPageBlobPath)
+            listImageHTML.append(strPageBlobPath)
+            page.a( href=os.path.basename(strPageBlobPath))
             page.img( src=strBlobImage, width=200, height=200, title=strBlobName )
             page.a.close()
             if strBlobName == "blob1v3":
@@ -251,7 +254,8 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         # FInalise html page
         strHTML = str(page)
         EDUtilsFile.writeFile(strPath, strHTML)
-        return strPath
+        listHTML = [strPath] + listImageHTML
+        return listHTML
         
         
         

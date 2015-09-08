@@ -87,10 +87,13 @@ class EDPluginHTML2PDFv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginHTML2PDFv1_0.generateCommands")
         
-        htmlFile = _xsDataInputHTML2PDF.htmlFile.path.value
-        pdfFileName = os.path.basename(htmlFile).split(".")[0] + ".pdf"
+        listHtmlFile = _xsDataInputHTML2PDF.htmlFile
+        pdfFileName = os.path.basename(listHtmlFile[0].path.value).split(".")[0] + ".pdf"
         pdfFile = os.path.join(_resultDirectory, pdfFileName)
-        scriptCommandLine = "{0} {1}".format(htmlFile, pdfFile)
+        scriptCommandLine = ""
+        for htmlFile in listHtmlFile:
+            scriptCommandLine += "{0} ".format(htmlFile.path.value, pdfFile)
+        scriptCommandLine += "{0}".format(pdfFile)
         self.pdfFile = pdfFile
         
         return scriptCommandLine

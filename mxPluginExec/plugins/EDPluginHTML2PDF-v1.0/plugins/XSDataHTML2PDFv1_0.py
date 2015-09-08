@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Sep 2 01:58::39 2015 by EDGenerateDS.
+# Generated Tue Sep 8 09:19::37 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -117,11 +117,11 @@ class XSDataInputHTML2PDF(XSDataInput):
     def __init__(self, configuration=None, resultDirectory=None, htmlFile=None):
         XSDataInput.__init__(self, configuration)
         if htmlFile is None:
-            self._htmlFile = None
-        elif htmlFile.__class__.__name__ == "XSDataFile":
+            self._htmlFile = []
+        elif htmlFile.__class__.__name__ == "list":
             self._htmlFile = htmlFile
         else:
-            strMessage = "ERROR! XSDataInputHTML2PDF constructor argument 'htmlFile' is not XSDataFile but %s" % self._htmlFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputHTML2PDF constructor argument 'htmlFile' is not list but %s" % self._htmlFile.__class__.__name__
             raise BaseException(strMessage)
         if resultDirectory is None:
             self._resultDirectory = None
@@ -134,14 +134,35 @@ class XSDataInputHTML2PDF(XSDataInput):
     def getHtmlFile(self): return self._htmlFile
     def setHtmlFile(self, htmlFile):
         if htmlFile is None:
-            self._htmlFile = None
-        elif htmlFile.__class__.__name__ == "XSDataFile":
+            self._htmlFile = []
+        elif htmlFile.__class__.__name__ == "list":
             self._htmlFile = htmlFile
         else:
-            strMessage = "ERROR! XSDataInputHTML2PDF.setHtmlFile argument is not XSDataFile but %s" % htmlFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputHTML2PDF.setHtmlFile argument is not list but %s" % htmlFile.__class__.__name__
             raise BaseException(strMessage)
     def delHtmlFile(self): self._htmlFile = None
     htmlFile = property(getHtmlFile, setHtmlFile, delHtmlFile, "Property for htmlFile")
+    def addHtmlFile(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataInputHTML2PDF.addHtmlFile argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._htmlFile.append(value)
+        else:
+            strMessage = "ERROR! XSDataInputHTML2PDF.addHtmlFile argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertHtmlFile(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataInputHTML2PDF.insertHtmlFile argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataInputHTML2PDF.insertHtmlFile argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._htmlFile[index] = value
+        else:
+            strMessage = "ERROR! XSDataInputHTML2PDF.addHtmlFile argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     # Methods and properties for the 'resultDirectory' attribute
     def getResultDirectory(self): return self._resultDirectory
     def setResultDirectory(self, resultDirectory):
@@ -162,9 +183,9 @@ class XSDataInputHTML2PDF(XSDataInput):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataInputHTML2PDF'):
         XSDataInput.exportChildren(self, outfile, level, name_)
-        if self._htmlFile is not None:
-            self.htmlFile.export(outfile, level, name_='htmlFile')
-        else:
+        for htmlFile_ in self.getHtmlFile():
+            htmlFile_.export(outfile, level, name_='htmlFile')
+        if self.getHtmlFile() == []:
             warnEmptyAttribute("htmlFile", "XSDataFile")
         if self._resultDirectory is not None:
             self.resultDirectory.export(outfile, level, name_='resultDirectory')
@@ -177,7 +198,7 @@ class XSDataInputHTML2PDF(XSDataInput):
             nodeName_ == 'htmlFile':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setHtmlFile(obj_)
+            self.htmlFile.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'resultDirectory':
             obj_ = XSDataFile()

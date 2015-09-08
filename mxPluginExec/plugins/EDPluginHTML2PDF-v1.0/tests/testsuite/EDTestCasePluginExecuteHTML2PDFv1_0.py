@@ -44,9 +44,6 @@ class EDTestCasePluginExecuteHTML2PDFv1_0(EDTestCasePluginExecute):
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputHTML2PDF_reference.xml"))
 
-    def preProcess(self):
-        EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "ref-ednatest_1__master.h5", "series_35_data_000001.h5" ])
 
     def testExecute(self):
         self.run()

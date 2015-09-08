@@ -5,7 +5,7 @@ import XSDataCommon.XSDataInput
 import XSDataCommon.XSDataResult
 
 complex type XSDataInputHTML2PDF extends XSDataInput {
-	htmlFile : XSDataFile
+	htmlFile : XSDataFile []
 	resultDirectory : XSDataFile optional
 }
 
