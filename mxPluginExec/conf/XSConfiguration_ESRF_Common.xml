@@ -619,7 +619,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/phenix.xtriage</value>
+					<value>/opt/pxsoft/phenix/v1.10-2155/linux-x86_64/phenix-1.10-2155/build/bin/phenix.xtriage</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
