@@ -84,30 +84,30 @@ class EDApplication(object):
                   _strBaseDir=None, \
                   _strWorkingDir=None, \
                   _strDataOutputFilePath=None):
-        self.__strName = _strName
-        self.__strVersion = _strVersion
-        self.__strPluginName = _strPluginName
-        self.__strConfigurationFileName = _strConfigurationFileName
-        self.__strDataInputFilePath = _strDataInputFilePath
-        self.__strDataOutputFilePath = _strDataOutputFilePath
-        self.__edLogFile = _edLogFile
-        self.__strBaseDir = _strBaseDir
-        self.__strWorkingDir = _strWorkingDir
-        self.__strFullApplicationWorkingDirectory = None
-        self.__strXMLData = None
-        self.__listErrorMessages = []
-        self.__listWarningMessages = []
-        self.__xsDataOutput = None
-        self.__edObtainedOutputDataFile = None
-        self.__strDataOutputFilePath = None
-        self.__edPlugin = None
-        self.__edCommandLine = EDCommandLine(sys.argv)
-        self.__strApplicationInstanceName = self.__strName + "_" + time.strftime("%Y%m%d-%H%M%S", time.localtime(time.time()))
-        self.__strLogFileName = self.__strApplicationInstanceName + ".log"
-        self.__bIsFailure = False
-        self.__strCurrentWorkingDirectory = os.getcwd()
-        self.__strConfigurationHome = None
-        self.__strPathToLogFile = None
+        self._strName = _strName
+        self._strVersion = _strVersion
+        self._strPluginName = _strPluginName
+        self._strConfigurationFileName = _strConfigurationFileName
+        self._strDataInputFilePath = _strDataInputFilePath
+        self._strDataOutputFilePath = _strDataOutputFilePath
+        self._edLogFile = _edLogFile
+        self._strBaseDir = _strBaseDir
+        self._strWorkingDir = _strWorkingDir
+        self._strFullApplicationWorkingDirectory = None
+        self._strXMLData = None
+        self._listErrorMessages = []
+        self._listWarningMessages = []
+        self._xsDataOutput = None
+        self._edObtainedOutputDataFile = None
+        self._strDataOutputFilePath = None
+        self._edPlugin = None
+        self._edCommandLine = EDCommandLine(sys.argv)
+        self._strApplicationInstanceName = self._strName + "_" + time.strftime("%Y%m%d-%H%M%S", time.localtime(time.time()))
+        self._strLogFileName = self._strApplicationInstanceName + ".log"
+        self._bIsFailure = False
+        self._strCurrentWorkingDirectory = os.getcwd()
+        self._strConfigurationHome = None
+        self._strPathToLogFile = None
 
 
     def execute(self):
@@ -127,46 +127,46 @@ class EDApplication(object):
         """
         EDVerbose.DEBUG("EDApplication.preProcess")
         self.processCommandline()
-        if (not self.__bIsFailure):
+        if (not self._bIsFailure):
             # Check that the plugin can be located
-            strPluginLocation = EDFactoryPluginStatic.getFactoryPlugin().getModuleLocation(self.__strPluginName)
+            strPluginLocation = EDFactoryPluginStatic.getFactoryPlugin().getModuleLocation(self._strPluginName)
             if (strPluginLocation is None):
-                EDVerbose.error("Plugin  %s cannot be loaded!" % self.__strPluginName)
-                self.__bIsFailure = True
+                EDVerbose.error("Plugin  %s cannot be loaded!" % self._strPluginName)
+                self._bIsFailure = True
             # Check that the input file can be read
-            if (self.getDataInputFilePath() is not None) and (not os.path.exists(self.__strDataInputFilePath)):
-                EDVerbose.error("Input XML file not found : %s" % self.__strDataInputFilePath)
-                self.__bIsFailure = True
+            if (self.getDataInputFilePath() is not None) and (not os.path.exists(self._strDataInputFilePath)):
+                EDVerbose.error("Input XML file not found : %s" % self._strDataInputFilePath)
+                self._bIsFailure = True
             # Check that the output file can be created
-            if (self.__strDataOutputFilePath is not None):
-                strOutputDirectory = os.path.dirname(self.__strDataOutputFilePath)
+            if (self._strDataOutputFilePath is not None):
+                strOutputDirectory = os.path.dirname(self._strDataOutputFilePath)
                 if (strOutputDirectory is None or strOutputDirectory == ""):
                     strOutputDirectory = os.getcwd()
-                    self.__strDataOutputFilePath = os.path.join(strOutputDirectory, self.__strDataOutputFilePath)
+                    self._strDataOutputFilePath = os.path.join(strOutputDirectory, self._strDataOutputFilePath)
                 if (not os.access(strOutputDirectory, os.W_OK)):
                     EDVerbose.error("Output directory not writable: %s" % strOutputDirectory)
-                    self.__bIsFailure = True
-                elif (os.path.exists(self.__strDataOutputFilePath)):
-                    if (not os.access(self.__strDataOutputFilePath, os.W_OK)):
-                        EDVerbose.error("Output file not writable: %s" % self.__strDataOutputFilePath)
-                        self.__bIsFailure = True
-        if (not self.__bIsFailure):
+                    self._bIsFailure = True
+                elif (os.path.exists(self._strDataOutputFilePath)):
+                    if (not os.access(self._strDataOutputFilePath, os.W_OK)):
+                        EDVerbose.error("Output file not writable: %s" % self._strDataOutputFilePath)
+                        self._bIsFailure = True
+        if (not self._bIsFailure):
             EDVerbose.DEBUG("EDApplication.PLUGIN_PARAM_LABEL: " + EDApplication.PLUGIN_PARAM_LABEL)
 
-            if self.__strConfigurationFileName is not None:
+            if self._strConfigurationFileName is not None:
                 # Load the configuration file
-                if (os.path.exists(self.__strConfigurationFileName)):
-                    EDVerbose.screen("Loading Configuration file: %s" % self.__strConfigurationFileName)
-                    EDConfigurationStatic.addConfigurationFile(self.__strConfigurationFileName, _bReplace=True)
+                if (os.path.exists(self._strConfigurationFileName)):
+                    EDVerbose.screen("Loading Configuration file: %s" % self._strConfigurationFileName)
+                    EDConfigurationStatic.addConfigurationFile(self._strConfigurationFileName, _bReplace=True)
                 else:
-                    EDVerbose.warning("Cannot find configuration file: %s" % self.__strConfigurationFileName)
+                    EDVerbose.warning("Cannot find configuration file: %s" % self._strConfigurationFileName)
             pyDictionary = {}
             pyDictionary[ "${EDNA_HOME}" ] = EDUtilsPath.getEdnaHome()
             if self.getDataInputFilePath() is not None:
-                self.__strXMLData = EDUtilsFile.readFileAndParseVariables(self.getDataInputFilePath(), pyDictionary)
+                self._strXMLData = EDUtilsFile.readFileAndParseVariables(self.getDataInputFilePath(), pyDictionary)
             # Create the application working directory    
-            if(self.__strWorkingDir is None):
-                self.__strWorkingDir = self.__strApplicationInstanceName
+            if(self._strWorkingDir is None):
+                self._strWorkingDir = self._strApplicationInstanceName
             self.createApplicationWorkingDirectory()
 
 
@@ -174,20 +174,20 @@ class EDApplication(object):
         """
         Calls the Plugin to be executed
         """
-        if (not self.__bIsFailure):
-            self.__edPlugin = EDFactoryPluginStatic.loadPlugin(self.__strPluginName)
-            if(self.__edPlugin is not None):
-                self.__edPlugin.setBaseDirectory(self.__strFullApplicationWorkingDirectory)
-                self.__edPlugin.setBaseName(self.__strPluginName)
-                self.__edPlugin.setDataInput(self.__strXMLData)
-                self.__edPlugin.connectSUCCESS(self.doSuccessActionPlugin)
-                self.__edPlugin.connectFAILURE(self.doFailureActionPlugin)
-                EDVerbose.DEBUG("EDApplication.process: Executing " + self.__strPluginName)
-                self.__edPlugin.execute()
-                self.__edPlugin.synchronize()
+        if (not self._bIsFailure):
+            self._edPlugin = EDFactoryPluginStatic.loadPlugin(self._strPluginName)
+            if(self._edPlugin is not None):
+                self._edPlugin.setBaseDirectory(self._strFullApplicationWorkingDirectory)
+                self._edPlugin.setBaseName(self._strPluginName)
+                self._edPlugin.setDataInput(self._strXMLData)
+                self._edPlugin.connectSUCCESS(self.doSuccessActionPlugin)
+                self._edPlugin.connectFAILURE(self.doFailureActionPlugin)
+                EDVerbose.DEBUG("EDApplication.process: Executing " + self._strPluginName)
+                self._edPlugin.execute()
+                self._edPlugin.synchronize()
             else:
-                EDVerbose.error(EDMessage.ERROR_PLUGIN_NOT_LOADED_02 % ('EDApplication.process', self.__strPluginName))
-                self.__bIsFailure = True
+                EDVerbose.error(EDMessage.ERROR_PLUGIN_NOT_LOADED_02 % ('EDApplication.process', self._strPluginName))
+                self._bIsFailure = True
 
 
 
@@ -202,34 +202,34 @@ class EDApplication(object):
         
         """
         EDVerbose.DEBUG("EDApplication.execute")
-        EDVerbose.log(self.__edCommandLine.getCommandLine())
+        EDVerbose.log(self._edCommandLine.getCommandLine())
         self.processCommandLineDebugVerboseLogFile()
         # Determine the base directory
-        if(self.__strBaseDir is None):
+        if(self._strBaseDir is None):
             self.processCommandLineBaseDirectory()
         # Set the name of the log file
-        self.__strPathToLogFile = os.path.abspath(os.path.join(self.__strBaseDir, self.__strLogFileName))
-        EDVerbose.setLogFileName(self.__strPathToLogFile)
+        self._strPathToLogFile = os.path.abspath(os.path.join(self._strBaseDir, self._strLogFileName))
+        EDVerbose.setLogFileName(self._strPathToLogFile)
         self.processCommandLineHelp()
-        if (not self.__bIsFailure):
+        if (not self._bIsFailure):
             self.processCommandLineVersion()
-        if (not self.__bIsFailure):
+        if (not self._bIsFailure):
             # Name of the plugin to be executed        
-            if (self.__strPluginName is None):
+            if (self._strPluginName is None):
                 self.processCommandLinePluginName()
             # Path to the input XML file
-            if (self.__strDataInputFilePath is None):
+            if (self._strDataInputFilePath is None):
                 self.processCommandLineInputFilePath()
             # Path to the output XML file
-            if(self.__strDataOutputFilePath is None):
+            if(self._strDataOutputFilePath is None):
                 self.processCommandLineOutputFilePath()
-            if (self.__bIsFailure):
+            if (self._bIsFailure):
                 self.usage()
-        if (not self.__bIsFailure):
+        if (not self._bIsFailure):
             # If strConfigurationFileName is None, this means that it has not been given to the constructor\
             # It has been given by the command line\
-            if(self.__strConfigurationFileName is None):
-                self.__strConfigurationFileName = self.getCommandLineArgument(EDApplication.CONFIGURATION_PARAM_LABEL)
+            if(self._strConfigurationFileName is None):
+                self._strConfigurationFileName = self.getCommandLineArgument(EDApplication.CONFIGURATION_PARAM_LABEL)
 
 
 
@@ -237,35 +237,35 @@ class EDApplication(object):
         EDVerbose.DEBUG("EDApplication.processCommandLineDebugVerboseLogFile")
         EDVerbose.setVerboseOff()
         # Check if no log file
-        if (self.__edCommandLine.existCommand(EDApplication.NO_LOG_LABEL)):
+        if (self._edCommandLine.existCommand(EDApplication.NO_LOG_LABEL)):
             EDVerbose.setLogFileOff()
             EDVerbose.DEBUG("Log file output switched off")
         # Check if debug mode
-        if (self.__edCommandLine.existCommand(EDApplication.DEBUG_PARAM_LABEL_1) or
-            self.__edCommandLine.existCommand(EDApplication.DEBUG_PARAM_LABEL_2)):
+        if (self._edCommandLine.existCommand(EDApplication.DEBUG_PARAM_LABEL_1) or
+            self._edCommandLine.existCommand(EDApplication.DEBUG_PARAM_LABEL_2)):
             EDVerbose.setVerboseDebugOn()
             EDVerbose.DEBUG("Debug Mode [ON]")
         # Check if verbose
-        if (self.__edCommandLine.existCommand(EDApplication.VERBOSE_MODE_LABEL)):
+        if (self._edCommandLine.existCommand(EDApplication.VERBOSE_MODE_LABEL)):
             EDVerbose.setVerboseOn()
 
 
     def processCommandLineHelp(self):
         EDVerbose.DEBUG("EDApplication.processCommandLineHelp")
-        if (self.__edCommandLine.existCommand(EDApplication.HELP_LABEL_1)
-            or self.__edCommandLine.existCommand(EDApplication.HELP_LABEL_2)):
+        if (self._edCommandLine.existCommand(EDApplication.HELP_LABEL_1)
+            or self._edCommandLine.existCommand(EDApplication.HELP_LABEL_2)):
             EDVerbose.setVerboseOn()
             self.usage()
-            self.__bIsFailure = True
+            self._bIsFailure = True
 
 
     def processCommandLineVersion(self):
         EDVerbose.DEBUG("EDApplication.processCommandLineVersion")
-        if (self.__edCommandLine.existCommand(EDApplication.VERSION_PARAM_LABEL_1) or
-            self.__edCommandLine.existCommand(EDApplication.VERSION_PARAM_LABEL_2)):
+        if (self._edCommandLine.existCommand(EDApplication.VERSION_PARAM_LABEL_1) or
+            self._edCommandLine.existCommand(EDApplication.VERSION_PARAM_LABEL_2)):
             EDVerbose.setVerboseOn()
-            EDVerbose.screen("%s version %s" % (self.__strName, self.__strVersion))
-            self.__bIsFailure = True
+            EDVerbose.screen("%s version %s" % (self._strName, self._strVersion))
+            self._bIsFailure = True
 
 
 
@@ -273,47 +273,47 @@ class EDApplication(object):
         """
         """
         EDVerbose.DEBUG("EDApplication.processCommandLinePluginName")
-        if (not self.__edCommandLine.existCommand(EDApplication.PLUGIN_PARAM_LABEL)):
+        if (not self._edCommandLine.existCommand(EDApplication.PLUGIN_PARAM_LABEL)):
             EDVerbose.error("No %s command line argument found!" % EDApplication.PLUGIN_PARAM_LABEL)
-            self.__bIsFailure = True
+            self._bIsFailure = True
         else:
-            self.__strPluginName = self.getCommandLineArgument(EDApplication.PLUGIN_PARAM_LABEL)
-            EDVerbose.DEBUG("EDApplication.processCommandLinePluginName : %s = %s" % (EDApplication.PLUGIN_PARAM_LABEL, self.__strPluginName))
+            self._strPluginName = self.getCommandLineArgument(EDApplication.PLUGIN_PARAM_LABEL)
+            EDVerbose.DEBUG("EDApplication.processCommandLinePluginName : %s = %s" % (EDApplication.PLUGIN_PARAM_LABEL, self._strPluginName))
 
 
     def processCommandLineInputFilePath(self):
         """
         """
         EDVerbose.DEBUG("EDApplication.processCommandLineInputFilePath")
-        if (not self.__edCommandLine.existCommand(EDApplication.DATASET_PARAM_LABEL)):
+        if (not self._edCommandLine.existCommand(EDApplication.DATASET_PARAM_LABEL)):
             EDVerbose.error("No %s command line argument found!" % EDApplication.DATASET_PARAM_LABEL)
-            self.__bIsFailure = True
+            self._bIsFailure = True
         else:
-            self.__strDataInputFilePath = self.getCommandLineArgument(EDApplication.DATASET_PARAM_LABEL)
-            EDVerbose.DEBUG("EDApplication.initApplication : %s = %s" % (EDApplication.DATASET_PARAM_LABEL, self.__strDataInputFilePath))
+            self._strDataInputFilePath = self.getCommandLineArgument(EDApplication.DATASET_PARAM_LABEL)
+            EDVerbose.DEBUG("EDApplication.initApplication : %s = %s" % (EDApplication.DATASET_PARAM_LABEL, self._strDataInputFilePath))
 
 
     def processCommandLineOutputFilePath(self):
         """
         """
         EDVerbose.DEBUG("EDApplication.processCommandLineOutputFilePath")
-        if (not self.__edCommandLine.existCommand(EDApplication.OUTPUT_PARAM_LABEL)):
+        if (not self._edCommandLine.existCommand(EDApplication.OUTPUT_PARAM_LABEL)):
             EDVerbose.DEBUG("No %s command line argument found" % EDApplication.OUTPUT_PARAM_LABEL)
         else:
-            self.__strDataOutputFilePath = self.getCommandLineArgument(EDApplication.OUTPUT_PARAM_LABEL)
-            EDVerbose.DEBUG("EDApplication.initApplication : %s = %s" % (EDApplication.OUTPUT_PARAM_LABEL, self.__strDataOutputFilePath))
+            self._strDataOutputFilePath = self.getCommandLineArgument(EDApplication.OUTPUT_PARAM_LABEL)
+            EDVerbose.DEBUG("EDApplication.initApplication : %s = %s" % (EDApplication.OUTPUT_PARAM_LABEL, self._strDataOutputFilePath))
 
 
     def processCommandLineBaseDirectory(self):
         """
         """
         EDVerbose.DEBUG("EDApplication.processCommandLineBaseDirectory")
-        self.__strBaseDir = self.getCommandLineArgument(EDApplication.DATASET_BASE_DIRECTORY)
-        if(self.__strBaseDir is None):
-            self.__strBaseDir = os.getcwd()
-            EDVerbose.DEBUG("Base directory set to current working directory = %s" % (self.__strBaseDir))
+        self._strBaseDir = self.getCommandLineArgument(EDApplication.DATASET_BASE_DIRECTORY)
+        if(self._strBaseDir is None):
+            self._strBaseDir = os.getcwd()
+            EDVerbose.DEBUG("Base directory set to current working directory = %s" % (self._strBaseDir))
         else:
-            EDVerbose.DEBUG("%s = %s" % (EDApplication.DATASET_BASE_DIRECTORY, self.__strBaseDir))
+            EDVerbose.DEBUG("%s = %s" % (EDApplication.DATASET_BASE_DIRECTORY, self._strBaseDir))
 
 
 
@@ -323,7 +323,7 @@ class EDApplication(object):
         """
         """
         # Restore the current working directory 
-        os.chdir(self.__strCurrentWorkingDirectory)
+        os.chdir(self._strCurrentWorkingDirectory)
 
 
     @classmethod
@@ -379,7 +379,7 @@ class EDApplication(object):
 
 
     def getDataInputFilePath(self):
-        return self.__strDataInputFilePath
+        return self._strDataInputFilePath
 
 
     def getBaseDir(self):
@@ -388,7 +388,7 @@ class EDApplication(object):
         @return: path of the base directory
         @rtype: string
         """
-        return self.__strBaseDir
+        return self._strBaseDir
 
 
     def createApplicationWorkingDirectory(self):
@@ -401,34 +401,38 @@ class EDApplication(object):
         EDVerbose.DEBUG("EDApplication.createApplicationWorkingDirectory")
         strBaseDirectory = self.getBaseDir()
         strDateTime = time.strftime("%Y%m%d-%H%M%S", time.localtime(time.time()))
-        self.__strFullApplicationWorkingDirectory = os.path.join(strBaseDirectory, self.__strWorkingDir)
+        self._strFullApplicationWorkingDirectory = os.path.join(strBaseDirectory, self._strWorkingDir)
         # Check that a folder / file with the same name already exists
-        if(os.path.exists(self.__strFullApplicationWorkingDirectory) or \
-            os.path.exists(self.__strFullApplicationWorkingDirectory)):
+        if(os.path.exists(self._strFullApplicationWorkingDirectory) or \
+            os.path.exists(self._strFullApplicationWorkingDirectory)):
             # It does exist so we have to modify the name of the working directory
             iIndex = 1
             bContinueFlag = True
             while (bContinueFlag):
-                self.__strFullApplicationWorkingDirectory = os.path.join(strBaseDirectory,
+                self._strFullApplicationWorkingDirectory = os.path.join(strBaseDirectory,
                                                                                         "%s_%d" % \
                                                                                         (strDateTime, \
                                                                                           iIndex))
-                if(os.path.isdir(self.__strFullApplicationWorkingDirectory) or \
-                    os.path.exists(self.__strFullApplicationWorkingDirectory)):
+                if(os.path.isdir(self._strFullApplicationWorkingDirectory) or \
+                    os.path.exists(self._strFullApplicationWorkingDirectory)):
                     iIndex += 1
                 else:
                     bContinueFlag = False
+        # Add _nobackup suffix if run at the ESRF
+        strEdnSite = EDUtilsPath.getEdnaSite()
+        if EDUtilsPath.isESRF():
+            self._strFullApplicationWorkingDirectory += "_nobackup"
         # Make the directory
-        os.mkdir(self.__strFullApplicationWorkingDirectory)
+        os.mkdir(self._strFullApplicationWorkingDirectory)
         # Change it to be the current working directory
-        os.chdir(self.__strFullApplicationWorkingDirectory)
+        os.chdir(self._strFullApplicationWorkingDirectory)
 
 
     def getFullApplicationWorkingDirectory(self):
-        return self.__strFullApplicationWorkingDirectory
+        return self._strFullApplicationWorkingDirectory
 
     def getCurrentWorkingDirectory(self):
-        return self.__strCurrentWorkingDirectory
+        return self._strCurrentWorkingDirectory
 
 
     def doSuccessActionPlugin(self, _edPlugin):
@@ -436,20 +440,20 @@ class EDApplication(object):
         """
         EDVerbose.DEBUG("EDApplication.doSuccessActionPlugin")
         # Print the potential Warnings and Errors
-        self.__listWarningMessages = _edPlugin.getListOfWarningMessages()
-        EDVerbose.DEBUG("EDApplication.doSuccessActionPlugin: Plugin %s Successful with : %i Warnings " % (_edPlugin.getPluginName(), len(self.__listWarningMessages)))
-        for warningMessage in self.__listWarningMessages:
+        self._listWarningMessages = _edPlugin.getListOfWarningMessages()
+        EDVerbose.DEBUG("EDApplication.doSuccessActionPlugin: Plugin %s Successful with : %i Warnings " % (_edPlugin.getPluginName(), len(self._listWarningMessages)))
+        for warningMessage in self._listWarningMessages:
             EDVerbose.screen(warningMessage)
-        self.__listErrorMessages = _edPlugin.getListOfErrorMessages()
-        EDVerbose.DEBUG("EDApplication.doSuccessActionPlugin: Plugin %s Successful with : %i Errors" % (_edPlugin.getPluginName(), len(self.__listErrorMessages)))
-        for errorMessage in self.__listErrorMessages:
+        self._listErrorMessages = _edPlugin.getListOfErrorMessages()
+        EDVerbose.DEBUG("EDApplication.doSuccessActionPlugin: Plugin %s Successful with : %i Errors" % (_edPlugin.getPluginName(), len(self._listErrorMessages)))
+        for errorMessage in self._listErrorMessages:
             EDVerbose.error(errorMessage)
         if (_edPlugin.hasDataOutput()):
             xsDataOutput = _edPlugin.getDataOutput()
-            if (xsDataOutput is not None and self.__strDataOutputFilePath is not None):
-                xsDataOutput.exportToFile(self.__strDataOutputFilePath)
-            if (xsDataOutput is not None and self.__edObtainedOutputDataFile is not None):
-                xsDataOutput.exportToFile(self.__edObtainedOutputDataFile)
+            if (xsDataOutput is not None and self._strDataOutputFilePath is not None):
+                xsDataOutput.exportToFile(self._strDataOutputFilePath)
+            if (xsDataOutput is not None and self._edObtainedOutputDataFile is not None):
+                xsDataOutput.exportToFile(self._edObtainedOutputDataFile)
 
 
     def doFailureActionPlugin(self, _edPlugin):
@@ -457,53 +461,53 @@ class EDApplication(object):
 
         # Print the potential Warnings and Errors
         EDVerbose.DEBUG("EDApplication.doFailureActionPlugin: Plugin %s failed" % _edPlugin.getClassName())
-        self.__listWarningMessages = _edPlugin.getListOfWarningMessages()
-        for warningMessage in self.__listWarningMessages:
+        self._listWarningMessages = _edPlugin.getListOfWarningMessages()
+        for warningMessage in self._listWarningMessages:
             EDVerbose.screen(warningMessage)
 
-        self.__listErrorMessages = _edPlugin.getListOfErrorMessages()
-        for errorMessage in self.__listErrorMessages:
+        self._listErrorMessages = _edPlugin.getListOfErrorMessages()
+        for errorMessage in self._listErrorMessages:
             EDVerbose.screen(errorMessage)
         if (_edPlugin.hasDataOutput()):
             xsDataOutput = _edPlugin.getDataOutput()
-            if (xsDataOutput is not None and self.__strDataOutputFilePath is not None):
-                xsDataOutput.exportToFile(self.__strDataOutputFilePath)
-            if (xsDataOutput is not None and self.__edObtainedOutputDataFile is not None):
-                xsDataOutput.exportToFile(self.__edObtainedOutputDataFile)
+            if (xsDataOutput is not None and self._strDataOutputFilePath is not None):
+                xsDataOutput.exportToFile(self._strDataOutputFilePath)
+            if (xsDataOutput is not None and self._edObtainedOutputDataFile is not None):
+                xsDataOutput.exportToFile(self._edObtainedOutputDataFile)
 
 
     def getPlugin(self):
-        return self.__edPlugin
+        return self._edPlugin
 
 
     def getPluginOutputData(self):
-        return self.__xsDataOutput
+        return self._xsDataOutput
 
 
     def getWarningMessages(self):
-        return self.__listWarningMessages
+        return self._listWarningMessages
 
 
     def getErrorMessages(self):
-        return self.__listErrorMessages
+        return self._listErrorMessages
 
 
     def getEdCommandLine(self):
-        return self.__edCommandLine
+        return self._edCommandLine
 
 
     def getCommandLine(self):
-        return self.__edCommandLine.getCommandLine()
+        return self._edCommandLine.getCommandLine()
 
 
     def getCommandLineArguments(self):
         with self.__class__.__semaphore:
-            edCommandLine = self.__edCommandLine.getCommandLine()
+            edCommandLine = self._edCommandLine.getCommandLine()
         return edCommandLine
 
     def getCommandLineArgument(self, _strKey):
         with self.__class__.__semaphore:
-            strCommandLineArgument = self.__edCommandLine.getArgument(_strKey)
+            strCommandLineArgument = self._edCommandLine.getArgument(_strKey)
         return strCommandLineArgument
 
     @classmethod
@@ -523,7 +527,7 @@ class EDApplication(object):
 
 
     def getApplicationName(self):
-        return self.__strName + "-" + self.__strVersion
+        return self._strName + "-" + self._strVersion
 
 
     def getWorkingDir(self):
@@ -532,7 +536,7 @@ class EDApplication(object):
         @rtype: string
         @return working dir 
         """
-        return self.__strWorkingDir
+        return self._strWorkingDir
 
 
     def setWorkingDir(self, _strDir):
@@ -541,16 +545,16 @@ class EDApplication(object):
         @type _strDir: string
         @param _strDir: working dir 
         """
-        self.__strWorkingDir = _strDir
+        self._strWorkingDir = _strDir
 
 
     def isFailure(self):
-        return self.__bIsFailure
+        return self._bIsFailure
 
 
     def setFailure(self, _bFailure):
-        self.__bIsFailure = _bFailure
+        self._bIsFailure = _bFailure
 
 
     def getPluginName(self):
-        return self.__strPluginName
+        return self._strPluginName
