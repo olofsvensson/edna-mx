@@ -95,7 +95,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.ix_max = self.config.get("ix_max")
         self.iy_min = self.config.get("iy_min")
         self.iy_max = self.config.get("iy_max")
-        self.setScriptCommandline("dozor.dat")
+        self.setScriptCommandline("-p dozor.dat")
         strCommands = self.generateCommands(xsDataInputDozor)
         EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), "dozor.dat"), strCommands)
 
@@ -177,11 +177,11 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         # Skip the four first lines
         listOutput = strOutput.split("\n")[6:]
         for strLine in listOutput:
-            xsDataImageDozor = XSDataImageDozor()
             # Remove "|" 
             listLine = shlex.split(strLine.replace("|", " "))
 #            print listLine
             if listLine != [] and not strLine.startswith("-"):
+                xsDataImageDozor = XSDataImageDozor()
                 xsDataImageDozor.number = XSDataInteger(listLine[0])
                 if listLine[4].startswith("-"):
                     xsDataImageDozor.spots_num_of = XSDataInteger(listLine[1])
@@ -198,6 +198,12 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                     xsDataImageDozor.powder_wilson_correlation = self.parseDouble(listLine[7])
                     xsDataImageDozor.powder_wilson_rfactor = self.parseDouble(listLine[8])
                     xsDataImageDozor.score = self.parseDouble(listLine[9])
+                # Dozor spot file
+                strWorkingDir = self.getWorkingDirectory()
+                if strWorkingDir is not None:
+                    strSpotFile = os.path.join(self.getWorkingDirectory(), "%05d.spot" % xsDataImageDozor.number.value)
+                    if os.path.exists(strSpotFile):
+                        xsDataImageDozor.spotFile = XSDataFile(XSDataString(strSpotFile))
 #                print xsDataImageDozor.marshal()
                 xsDataResultDozor.addImageDozor(xsDataImageDozor)
         return xsDataResultDozor

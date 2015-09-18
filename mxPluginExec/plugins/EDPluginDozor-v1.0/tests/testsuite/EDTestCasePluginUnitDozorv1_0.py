@@ -66,12 +66,6 @@ class EDTestCasePluginUnitDozorv1_0(EDTestCasePluginUnit):
         xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "dozor_no_results.log"))
         EDAssert.equal(1, len(xsDataResult.imageDozor), "Result from 1 image")
         
-    def test_createImageLinks(self):
-        edPlugin = self.getPlugin()
-        strInputXML = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataInputDozor_reference.xml"))
-        xsDataInput = XSDataInputDozor.parseString(strInputXML)
-        strCommandText = edPlugin.createImageLinks(xsDataInput)
-
     def test_parseDouble(self):
         edPlugin = self.getPlugin()
         EDAssert.strAlmostEqual(1.0, edPlugin.parseDouble("1.0").value, "Parsing '1.0'")
@@ -81,5 +75,4 @@ class EDTestCasePluginUnitDozorv1_0(EDTestCasePluginUnit):
     def process(self):
         self.addTestMethod(self.test_generateCommands)
         self.addTestMethod(self.test_parseOutput)
-        self.addTestMethod(self.test_createImageLinks)
         self.addTestMethod(self.test_parseDouble)
