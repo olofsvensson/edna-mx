@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<XSConfiguration>
+	<XSPluginList>
+                <XSPluginItem>
+                        <name>EDPluginISPyBv1_1</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>dbserverHost</name>
+                                        <value>sci-serv3.diamond.ac.uk</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>dbserverPort</name>
+                                        <value>1994</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginISPyBv1_2</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>dbserverHost</name>
+                                        <value>sci-serv3.diamond.ac.uk</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>dbserverPort</name>
+                                        <value>1994</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+	</XSPluginList>
+</XSConfiguration> 
+
+
