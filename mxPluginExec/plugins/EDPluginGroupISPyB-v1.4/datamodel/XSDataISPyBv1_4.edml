@@ -310,6 +310,7 @@ complex type XSDataISPyBDiffractionPlan extends XSData {
 	oscillationRange : XSDataDouble optional
 	preferredBeamSizeX : XSDataDouble optional
 	preferredBeamSizeY : XSDataDouble optional
+	preferredBeamDiameter : XSDataDouble optional
 	radiationSensitivity : XSDataDouble optional
 	radiationSensitivityBeta : XSDataDouble optional
 	radiationSensitivityGamma : XSDataDouble optional
