@@ -25,6 +25,7 @@ package XSDataMXv1 {
 
 		complex type XSDataImageQualityIndicators extends XSData {
 			dozor_score : XSDataDouble optional
+			dozorSpotFile : XSDataFile optional
 			binPopCutOffMethod2Res : XSDataDouble
 			goodBraggCandidates : XSDataInteger
 			iceRings : XSDataInteger

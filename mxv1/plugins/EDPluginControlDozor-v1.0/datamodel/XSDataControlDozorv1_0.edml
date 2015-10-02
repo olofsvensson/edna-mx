@@ -19,6 +19,7 @@ complex type XSDataControlImageDozor {
 	powder_wilson_correlation : XSDataDouble optional
 	powder_wilson_rfactor : XSDataDouble optional
 	score : XSDataDouble optional
+	spotFile : XSDataFile optional
 }	
 
 
