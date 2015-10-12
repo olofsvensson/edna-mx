@@ -59,8 +59,16 @@ complex type XSDataInputStoreAutoProc extends XSDataInput {
 complex type XSDataResultStoreAutoProc extends XSDataResult {
 	autoProcId : XSDataInteger optional
 	autoProcScalingId : XSDataInteger optional
+	autoProcProgramId : XSDataInteger optional
 } 
 
+complex type XSDataInputStoreAutoProcProgramAttachment extends XSDataInput {
+	AutoProcProgramAttachment : AutoProcProgramAttachment []
+} 
+
+complex type XSDataResultStoreAutoProcProgramAttachment extends XSDataResult {
+	autoProcProgramAttachmentId : XSDataInteger []
+} 
 
 complex type AutoProc {
 	autoProcId : integer optional
@@ -152,6 +160,7 @@ complex type AutoProcProgram {
 
 complex type AutoProcProgramAttachment {
 	autoProcProgramAttachmentId : integer optional
+	autoProcProgramId : integer optional
 	fileType : string
 	fileName : string
 	filePath : string
@@ -301,6 +310,7 @@ complex type XSDataISPyBDiffractionPlan extends XSData {
 	oscillationRange : XSDataDouble optional
 	preferredBeamSizeX : XSDataDouble optional
 	preferredBeamSizeY : XSDataDouble optional
+	preferredBeamDiameter : XSDataDouble optional
 	radiationSensitivity : XSDataDouble optional
 	radiationSensitivityBeta : XSDataDouble optional
 	radiationSensitivityGamma : XSDataDouble optional

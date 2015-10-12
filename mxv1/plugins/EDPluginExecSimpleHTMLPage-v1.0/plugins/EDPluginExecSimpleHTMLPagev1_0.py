@@ -803,7 +803,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.page.tr.close()
             self.page.table.close()
             self.page.br()
-            self.page.strong("*) XOalign is a part of XDSme writtent by Pierre Legrand (https://code.google.com/p/xdsme)")
+            self.page.strong("*) XOalign is a part of XDSme written by Pierre Legrand (https://code.google.com/p/xdsme)")
             self.page.br()
             self.page.br()
             self.page.br()

@@ -6,7 +6,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>symopHome</name>
-					<value>/opt/pxsoft/ccp4/v6.1.2/linux/lib/data</value>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/lib/data</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>KAPPA</name>
@@ -19,7 +19,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>symopHome</name>
-					<value>/opt/pxsoft/ccp4/v6.1.2/linux/lib/data</value>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/lib/data</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>KAPPA</name>

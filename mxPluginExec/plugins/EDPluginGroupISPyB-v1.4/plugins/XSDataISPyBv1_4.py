@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu May 7 01:33::41 2015 by EDGenerateDS.
+# Generated Wed Sep 30 10:27::44 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -974,6 +974,285 @@ class AutoProcIntegration(object):
 # end class AutoProcIntegration
 
 
+class AutoProcProgramContainer(object):
+    def __init__(self, AutoProcProgramAttachment=None, AutoProcProgram=None):
+        if AutoProcProgram is None:
+            self._AutoProcProgram = None
+        elif AutoProcProgram.__class__.__name__ == "AutoProcProgram":
+            self._AutoProcProgram = AutoProcProgram
+        else:
+            strMessage = "ERROR! AutoProcProgramContainer constructor argument 'AutoProcProgram' is not AutoProcProgram but %s" % self._AutoProcProgram.__class__.__name__
+            raise BaseException(strMessage)
+        if AutoProcProgramAttachment is None:
+            self._AutoProcProgramAttachment = []
+        elif AutoProcProgramAttachment.__class__.__name__ == "list":
+            self._AutoProcProgramAttachment = AutoProcProgramAttachment
+        else:
+            strMessage = "ERROR! AutoProcProgramContainer constructor argument 'AutoProcProgramAttachment' is not list but %s" % self._AutoProcProgramAttachment.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'AutoProcProgram' attribute
+    def getAutoProcProgram(self): return self._AutoProcProgram
+    def setAutoProcProgram(self, AutoProcProgram):
+        if AutoProcProgram is None:
+            self._AutoProcProgram = None
+        elif AutoProcProgram.__class__.__name__ == "AutoProcProgram":
+            self._AutoProcProgram = AutoProcProgram
+        else:
+            strMessage = "ERROR! AutoProcProgramContainer.setAutoProcProgram argument is not AutoProcProgram but %s" % AutoProcProgram.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcProgram(self): self._AutoProcProgram = None
+    AutoProcProgram = property(getAutoProcProgram, setAutoProcProgram, delAutoProcProgram, "Property for AutoProcProgram")
+    # Methods and properties for the 'AutoProcProgramAttachment' attribute
+    def getAutoProcProgramAttachment(self): return self._AutoProcProgramAttachment
+    def setAutoProcProgramAttachment(self, AutoProcProgramAttachment):
+        if AutoProcProgramAttachment is None:
+            self._AutoProcProgramAttachment = []
+        elif AutoProcProgramAttachment.__class__.__name__ == "list":
+            self._AutoProcProgramAttachment = AutoProcProgramAttachment
+        else:
+            strMessage = "ERROR! AutoProcProgramContainer.setAutoProcProgramAttachment argument is not list but %s" % AutoProcProgramAttachment.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcProgramAttachment(self): self._AutoProcProgramAttachment = None
+    AutoProcProgramAttachment = property(getAutoProcProgramAttachment, setAutoProcProgramAttachment, delAutoProcProgramAttachment, "Property for AutoProcProgramAttachment")
+    def addAutoProcProgramAttachment(self, value):
+        if value is None:
+            strMessage = "ERROR! AutoProcProgramContainer.addAutoProcProgramAttachment argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "AutoProcProgramAttachment":
+            self._AutoProcProgramAttachment.append(value)
+        else:
+            strMessage = "ERROR! AutoProcProgramContainer.addAutoProcProgramAttachment argument is not AutoProcProgramAttachment but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertAutoProcProgramAttachment(self, index, value):
+        if index is None:
+            strMessage = "ERROR! AutoProcProgramContainer.insertAutoProcProgramAttachment argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! AutoProcProgramContainer.insertAutoProcProgramAttachment argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "AutoProcProgramAttachment":
+            self._AutoProcProgramAttachment[index] = value
+        else:
+            strMessage = "ERROR! AutoProcProgramContainer.addAutoProcProgramAttachment argument is not AutoProcProgramAttachment but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def export(self, outfile, level, name_='AutoProcProgramContainer'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='AutoProcProgramContainer'):
+        pass
+        if self._AutoProcProgram is not None:
+            self.AutoProcProgram.export(outfile, level, name_='AutoProcProgram')
+        else:
+            warnEmptyAttribute("AutoProcProgram", "AutoProcProgram")
+        for AutoProcProgramAttachment_ in self.getAutoProcProgramAttachment():
+            AutoProcProgramAttachment_.export(outfile, level, name_='AutoProcProgramAttachment')
+        if self.getAutoProcProgramAttachment() == []:
+            warnEmptyAttribute("AutoProcProgramAttachment", "AutoProcProgramAttachment")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcProgram':
+            obj_ = AutoProcProgram()
+            obj_.build(child_)
+            self.setAutoProcProgram(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcProgramAttachment':
+            obj_ = AutoProcProgramAttachment()
+            obj_.build(child_)
+            self.AutoProcProgramAttachment.append(obj_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="AutoProcProgramContainer" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='AutoProcProgramContainer' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class AutoProcProgramContainer is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return AutoProcProgramContainer.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = AutoProcProgramContainer()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="AutoProcProgramContainer" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = AutoProcProgramContainer()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class AutoProcProgramContainer
+
+
+class AutoProcContainer(object):
+    def __init__(self, AutoProcProgramContainer=None, AutoProcScalingContainer=None, AutoProc=None):
+        if AutoProc is None:
+            self._AutoProc = None
+        elif AutoProc.__class__.__name__ == "AutoProc":
+            self._AutoProc = AutoProc
+        else:
+            strMessage = "ERROR! AutoProcContainer constructor argument 'AutoProc' is not AutoProc but %s" % self._AutoProc.__class__.__name__
+            raise BaseException(strMessage)
+        if AutoProcScalingContainer is None:
+            self._AutoProcScalingContainer = None
+        elif AutoProcScalingContainer.__class__.__name__ == "AutoProcScalingContainer":
+            self._AutoProcScalingContainer = AutoProcScalingContainer
+        else:
+            strMessage = "ERROR! AutoProcContainer constructor argument 'AutoProcScalingContainer' is not AutoProcScalingContainer but %s" % self._AutoProcScalingContainer.__class__.__name__
+            raise BaseException(strMessage)
+        if AutoProcProgramContainer is None:
+            self._AutoProcProgramContainer = None
+        elif AutoProcProgramContainer.__class__.__name__ == "AutoProcProgramContainer":
+            self._AutoProcProgramContainer = AutoProcProgramContainer
+        else:
+            strMessage = "ERROR! AutoProcContainer constructor argument 'AutoProcProgramContainer' is not AutoProcProgramContainer but %s" % self._AutoProcProgramContainer.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'AutoProc' attribute
+    def getAutoProc(self): return self._AutoProc
+    def setAutoProc(self, AutoProc):
+        if AutoProc is None:
+            self._AutoProc = None
+        elif AutoProc.__class__.__name__ == "AutoProc":
+            self._AutoProc = AutoProc
+        else:
+            strMessage = "ERROR! AutoProcContainer.setAutoProc argument is not AutoProc but %s" % AutoProc.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProc(self): self._AutoProc = None
+    AutoProc = property(getAutoProc, setAutoProc, delAutoProc, "Property for AutoProc")
+    # Methods and properties for the 'AutoProcScalingContainer' attribute
+    def getAutoProcScalingContainer(self): return self._AutoProcScalingContainer
+    def setAutoProcScalingContainer(self, AutoProcScalingContainer):
+        if AutoProcScalingContainer is None:
+            self._AutoProcScalingContainer = None
+        elif AutoProcScalingContainer.__class__.__name__ == "AutoProcScalingContainer":
+            self._AutoProcScalingContainer = AutoProcScalingContainer
+        else:
+            strMessage = "ERROR! AutoProcContainer.setAutoProcScalingContainer argument is not AutoProcScalingContainer but %s" % AutoProcScalingContainer.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcScalingContainer(self): self._AutoProcScalingContainer = None
+    AutoProcScalingContainer = property(getAutoProcScalingContainer, setAutoProcScalingContainer, delAutoProcScalingContainer, "Property for AutoProcScalingContainer")
+    # Methods and properties for the 'AutoProcProgramContainer' attribute
+    def getAutoProcProgramContainer(self): return self._AutoProcProgramContainer
+    def setAutoProcProgramContainer(self, AutoProcProgramContainer):
+        if AutoProcProgramContainer is None:
+            self._AutoProcProgramContainer = None
+        elif AutoProcProgramContainer.__class__.__name__ == "AutoProcProgramContainer":
+            self._AutoProcProgramContainer = AutoProcProgramContainer
+        else:
+            strMessage = "ERROR! AutoProcContainer.setAutoProcProgramContainer argument is not AutoProcProgramContainer but %s" % AutoProcProgramContainer.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcProgramContainer(self): self._AutoProcProgramContainer = None
+    AutoProcProgramContainer = property(getAutoProcProgramContainer, setAutoProcProgramContainer, delAutoProcProgramContainer, "Property for AutoProcProgramContainer")
+    def export(self, outfile, level, name_='AutoProcContainer'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='AutoProcContainer'):
+        pass
+        if self._AutoProc is not None:
+            self.AutoProc.export(outfile, level, name_='AutoProc')
+        else:
+            warnEmptyAttribute("AutoProc", "AutoProc")
+        if self._AutoProcScalingContainer is not None:
+            self.AutoProcScalingContainer.export(outfile, level, name_='AutoProcScalingContainer')
+        else:
+            warnEmptyAttribute("AutoProcScalingContainer", "AutoProcScalingContainer")
+        if self._AutoProcProgramContainer is not None:
+            self.AutoProcProgramContainer.export(outfile, level, name_='AutoProcProgramContainer')
+        else:
+            warnEmptyAttribute("AutoProcProgramContainer", "AutoProcProgramContainer")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProc':
+            obj_ = AutoProc()
+            obj_.build(child_)
+            self.setAutoProc(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcScalingContainer':
+            obj_ = AutoProcScalingContainer()
+            obj_.build(child_)
+            self.setAutoProcScalingContainer(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcProgramContainer':
+            obj_ = AutoProcProgramContainer()
+            obj_.build(child_)
+            self.setAutoProcProgramContainer(obj_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="AutoProcContainer" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='AutoProcContainer' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class AutoProcContainer is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return AutoProcContainer.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = AutoProcContainer()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="AutoProcContainer" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = AutoProcContainer()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class AutoProcContainer
+
+
 class AutoProcIntegrationContainer(object):
     def __init__(self, AutoProcIntegration=None, Image=None):
         if Image is None:
@@ -1314,11 +1593,15 @@ class AutoProcProgram(object):
 
 
 class AutoProcProgramAttachment(object):
-    def __init__(self, recordTimeStamp=None, filePath=None, fileName=None, fileType=None, autoProcProgramAttachmentId=None):
+    def __init__(self, recordTimeStamp=None, filePath=None, fileName=None, fileType=None, autoProcProgramId=None, autoProcProgramAttachmentId=None):
         if autoProcProgramAttachmentId is None:
             self._autoProcProgramAttachmentId = None
         else:
             self._autoProcProgramAttachmentId = int(autoProcProgramAttachmentId)
+        if autoProcProgramId is None:
+            self._autoProcProgramId = None
+        else:
+            self._autoProcProgramId = int(autoProcProgramId)
         self._fileType = str(fileType)
         self._fileName = str(fileName)
         self._filePath = str(filePath)
@@ -1332,6 +1615,15 @@ class AutoProcProgramAttachment(object):
             self._autoProcProgramAttachmentId = int(autoProcProgramAttachmentId)
     def delAutoProcProgramAttachmentId(self): self._autoProcProgramAttachmentId = None
     autoProcProgramAttachmentId = property(getAutoProcProgramAttachmentId, setAutoProcProgramAttachmentId, delAutoProcProgramAttachmentId, "Property for autoProcProgramAttachmentId")
+    # Methods and properties for the 'autoProcProgramId' attribute
+    def getAutoProcProgramId(self): return self._autoProcProgramId
+    def setAutoProcProgramId(self, autoProcProgramId):
+        if autoProcProgramId is None:
+            self._autoProcProgramId = None
+        else:
+            self._autoProcProgramId = int(autoProcProgramId)
+    def delAutoProcProgramId(self): self._autoProcProgramId = None
+    autoProcProgramId = property(getAutoProcProgramId, setAutoProcProgramId, delAutoProcProgramId, "Property for autoProcProgramId")
     # Methods and properties for the 'fileType' attribute
     def getFileType(self): return self._fileType
     def setFileType(self, fileType):
@@ -1367,6 +1659,9 @@ class AutoProcProgramAttachment(object):
         if self._autoProcProgramAttachmentId is not None:
             showIndent(outfile, level)
             outfile.write(unicode('<autoProcProgramAttachmentId>%d</autoProcProgramAttachmentId>\n' % self._autoProcProgramAttachmentId))
+        if self._autoProcProgramId is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<autoProcProgramId>%d</autoProcProgramId>\n' % self._autoProcProgramId))
         if self._fileType is not None:
             showIndent(outfile, level)
             outfile.write(unicode('<fileType>%s</fileType>\n' % self._fileType))
@@ -1401,6 +1696,15 @@ class AutoProcProgramAttachment(object):
                 except ValueError:
                     raise ValueError('requires integer -- %s' % child_.toxml())
                 self._autoProcProgramAttachmentId = ival_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'autoProcProgramId':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    ival_ = int(sval_)
+                except ValueError:
+                    raise ValueError('requires integer -- %s' % child_.toxml())
+                self._autoProcProgramId = ival_
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'fileType':
             value_ = ''
@@ -1471,142 +1775,6 @@ class AutoProcProgramAttachment(object):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class AutoProcProgramAttachment
-
-
-class AutoProcProgramContainer(object):
-    def __init__(self, AutoProcProgramAttachment=None, AutoProcProgram=None):
-        if AutoProcProgram is None:
-            self._AutoProcProgram = None
-        elif AutoProcProgram.__class__.__name__ == "AutoProcProgram":
-            self._AutoProcProgram = AutoProcProgram
-        else:
-            strMessage = "ERROR! AutoProcProgramContainer constructor argument 'AutoProcProgram' is not AutoProcProgram but %s" % self._AutoProcProgram.__class__.__name__
-            raise BaseException(strMessage)
-        if AutoProcProgramAttachment is None:
-            self._AutoProcProgramAttachment = []
-        elif AutoProcProgramAttachment.__class__.__name__ == "list":
-            self._AutoProcProgramAttachment = AutoProcProgramAttachment
-        else:
-            strMessage = "ERROR! AutoProcProgramContainer constructor argument 'AutoProcProgramAttachment' is not list but %s" % self._AutoProcProgramAttachment.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'AutoProcProgram' attribute
-    def getAutoProcProgram(self): return self._AutoProcProgram
-    def setAutoProcProgram(self, AutoProcProgram):
-        if AutoProcProgram is None:
-            self._AutoProcProgram = None
-        elif AutoProcProgram.__class__.__name__ == "AutoProcProgram":
-            self._AutoProcProgram = AutoProcProgram
-        else:
-            strMessage = "ERROR! AutoProcProgramContainer.setAutoProcProgram argument is not AutoProcProgram but %s" % AutoProcProgram.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProcProgram(self): self._AutoProcProgram = None
-    AutoProcProgram = property(getAutoProcProgram, setAutoProcProgram, delAutoProcProgram, "Property for AutoProcProgram")
-    # Methods and properties for the 'AutoProcProgramAttachment' attribute
-    def getAutoProcProgramAttachment(self): return self._AutoProcProgramAttachment
-    def setAutoProcProgramAttachment(self, AutoProcProgramAttachment):
-        if AutoProcProgramAttachment is None:
-            self._AutoProcProgramAttachment = []
-        elif AutoProcProgramAttachment.__class__.__name__ == "list":
-            self._AutoProcProgramAttachment = AutoProcProgramAttachment
-        else:
-            strMessage = "ERROR! AutoProcProgramContainer.setAutoProcProgramAttachment argument is not list but %s" % AutoProcProgramAttachment.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProcProgramAttachment(self): self._AutoProcProgramAttachment = None
-    AutoProcProgramAttachment = property(getAutoProcProgramAttachment, setAutoProcProgramAttachment, delAutoProcProgramAttachment, "Property for AutoProcProgramAttachment")
-    def addAutoProcProgramAttachment(self, value):
-        if value is None:
-            strMessage = "ERROR! AutoProcProgramContainer.addAutoProcProgramAttachment argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "AutoProcProgramAttachment":
-            self._AutoProcProgramAttachment.append(value)
-        else:
-            strMessage = "ERROR! AutoProcProgramContainer.addAutoProcProgramAttachment argument is not AutoProcProgramAttachment but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertAutoProcProgramAttachment(self, index, value):
-        if index is None:
-            strMessage = "ERROR! AutoProcProgramContainer.insertAutoProcProgramAttachment argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! AutoProcProgramContainer.insertAutoProcProgramAttachment argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "AutoProcProgramAttachment":
-            self._AutoProcProgramAttachment[index] = value
-        else:
-            strMessage = "ERROR! AutoProcProgramContainer.addAutoProcProgramAttachment argument is not AutoProcProgramAttachment but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def export(self, outfile, level, name_='AutoProcProgramContainer'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='AutoProcProgramContainer'):
-        pass
-        if self._AutoProcProgram is not None:
-            self.AutoProcProgram.export(outfile, level, name_='AutoProcProgram')
-        else:
-            warnEmptyAttribute("AutoProcProgram", "AutoProcProgram")
-        for AutoProcProgramAttachment_ in self.getAutoProcProgramAttachment():
-            AutoProcProgramAttachment_.export(outfile, level, name_='AutoProcProgramAttachment')
-        if self.getAutoProcProgramAttachment() == []:
-            warnEmptyAttribute("AutoProcProgramAttachment", "AutoProcProgramAttachment")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProcProgram':
-            obj_ = AutoProcProgram()
-            obj_.build(child_)
-            self.setAutoProcProgram(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProcProgramAttachment':
-            obj_ = AutoProcProgramAttachment()
-            obj_.build(child_)
-            self.AutoProcProgramAttachment.append(obj_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="AutoProcProgramContainer" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='AutoProcProgramContainer' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class AutoProcProgramContainer is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return AutoProcProgramContainer.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = AutoProcProgramContainer()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="AutoProcProgramContainer" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = AutoProcProgramContainer()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class AutoProcProgramContainer
 
 
 class AutoProcScaling(object):
@@ -1710,313 +1878,6 @@ class AutoProcScaling(object):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class AutoProcScaling
-
-
-class AutoProcScalingContainer(object):
-    def __init__(self, AutoProcIntegrationContainer=None, AutoProcScalingStatistics=None, AutoProcScaling=None):
-        if AutoProcScaling is None:
-            self._AutoProcScaling = None
-        elif AutoProcScaling.__class__.__name__ == "AutoProcScaling":
-            self._AutoProcScaling = AutoProcScaling
-        else:
-            strMessage = "ERROR! AutoProcScalingContainer constructor argument 'AutoProcScaling' is not AutoProcScaling but %s" % self._AutoProcScaling.__class__.__name__
-            raise BaseException(strMessage)
-        if AutoProcScalingStatistics is None:
-            self._AutoProcScalingStatistics = []
-        elif AutoProcScalingStatistics.__class__.__name__ == "list":
-            self._AutoProcScalingStatistics = AutoProcScalingStatistics
-        else:
-            strMessage = "ERROR! AutoProcScalingContainer constructor argument 'AutoProcScalingStatistics' is not list but %s" % self._AutoProcScalingStatistics.__class__.__name__
-            raise BaseException(strMessage)
-        if AutoProcIntegrationContainer is None:
-            self._AutoProcIntegrationContainer = None
-        elif AutoProcIntegrationContainer.__class__.__name__ == "AutoProcIntegrationContainer":
-            self._AutoProcIntegrationContainer = AutoProcIntegrationContainer
-        else:
-            strMessage = "ERROR! AutoProcScalingContainer constructor argument 'AutoProcIntegrationContainer' is not AutoProcIntegrationContainer but %s" % self._AutoProcIntegrationContainer.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'AutoProcScaling' attribute
-    def getAutoProcScaling(self): return self._AutoProcScaling
-    def setAutoProcScaling(self, AutoProcScaling):
-        if AutoProcScaling is None:
-            self._AutoProcScaling = None
-        elif AutoProcScaling.__class__.__name__ == "AutoProcScaling":
-            self._AutoProcScaling = AutoProcScaling
-        else:
-            strMessage = "ERROR! AutoProcScalingContainer.setAutoProcScaling argument is not AutoProcScaling but %s" % AutoProcScaling.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProcScaling(self): self._AutoProcScaling = None
-    AutoProcScaling = property(getAutoProcScaling, setAutoProcScaling, delAutoProcScaling, "Property for AutoProcScaling")
-    # Methods and properties for the 'AutoProcScalingStatistics' attribute
-    def getAutoProcScalingStatistics(self): return self._AutoProcScalingStatistics
-    def setAutoProcScalingStatistics(self, AutoProcScalingStatistics):
-        if AutoProcScalingStatistics is None:
-            self._AutoProcScalingStatistics = []
-        elif AutoProcScalingStatistics.__class__.__name__ == "list":
-            self._AutoProcScalingStatistics = AutoProcScalingStatistics
-        else:
-            strMessage = "ERROR! AutoProcScalingContainer.setAutoProcScalingStatistics argument is not list but %s" % AutoProcScalingStatistics.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProcScalingStatistics(self): self._AutoProcScalingStatistics = None
-    AutoProcScalingStatistics = property(getAutoProcScalingStatistics, setAutoProcScalingStatistics, delAutoProcScalingStatistics, "Property for AutoProcScalingStatistics")
-    def addAutoProcScalingStatistics(self, value):
-        if value is None:
-            strMessage = "ERROR! AutoProcScalingContainer.addAutoProcScalingStatistics argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "AutoProcScalingStatistics":
-            self._AutoProcScalingStatistics.append(value)
-        else:
-            strMessage = "ERROR! AutoProcScalingContainer.addAutoProcScalingStatistics argument is not AutoProcScalingStatistics but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertAutoProcScalingStatistics(self, index, value):
-        if index is None:
-            strMessage = "ERROR! AutoProcScalingContainer.insertAutoProcScalingStatistics argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! AutoProcScalingContainer.insertAutoProcScalingStatistics argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "AutoProcScalingStatistics":
-            self._AutoProcScalingStatistics[index] = value
-        else:
-            strMessage = "ERROR! AutoProcScalingContainer.addAutoProcScalingStatistics argument is not AutoProcScalingStatistics but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'AutoProcIntegrationContainer' attribute
-    def getAutoProcIntegrationContainer(self): return self._AutoProcIntegrationContainer
-    def setAutoProcIntegrationContainer(self, AutoProcIntegrationContainer):
-        if AutoProcIntegrationContainer is None:
-            self._AutoProcIntegrationContainer = None
-        elif AutoProcIntegrationContainer.__class__.__name__ == "AutoProcIntegrationContainer":
-            self._AutoProcIntegrationContainer = AutoProcIntegrationContainer
-        else:
-            strMessage = "ERROR! AutoProcScalingContainer.setAutoProcIntegrationContainer argument is not AutoProcIntegrationContainer but %s" % AutoProcIntegrationContainer.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProcIntegrationContainer(self): self._AutoProcIntegrationContainer = None
-    AutoProcIntegrationContainer = property(getAutoProcIntegrationContainer, setAutoProcIntegrationContainer, delAutoProcIntegrationContainer, "Property for AutoProcIntegrationContainer")
-    def export(self, outfile, level, name_='AutoProcScalingContainer'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='AutoProcScalingContainer'):
-        pass
-        if self._AutoProcScaling is not None:
-            self.AutoProcScaling.export(outfile, level, name_='AutoProcScaling')
-        else:
-            warnEmptyAttribute("AutoProcScaling", "AutoProcScaling")
-        for AutoProcScalingStatistics_ in self.getAutoProcScalingStatistics():
-            AutoProcScalingStatistics_.export(outfile, level, name_='AutoProcScalingStatistics')
-        if self.getAutoProcScalingStatistics() == []:
-            warnEmptyAttribute("AutoProcScalingStatistics", "AutoProcScalingStatistics")
-        if self._AutoProcIntegrationContainer is not None:
-            self.AutoProcIntegrationContainer.export(outfile, level, name_='AutoProcIntegrationContainer')
-        else:
-            warnEmptyAttribute("AutoProcIntegrationContainer", "AutoProcIntegrationContainer")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProcScaling':
-            obj_ = AutoProcScaling()
-            obj_.build(child_)
-            self.setAutoProcScaling(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProcScalingStatistics':
-            obj_ = AutoProcScalingStatistics()
-            obj_.build(child_)
-            self.AutoProcScalingStatistics.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProcIntegrationContainer':
-            obj_ = AutoProcIntegrationContainer()
-            obj_.build(child_)
-            self.setAutoProcIntegrationContainer(obj_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="AutoProcScalingContainer" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='AutoProcScalingContainer' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class AutoProcScalingContainer is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return AutoProcScalingContainer.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = AutoProcScalingContainer()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="AutoProcScalingContainer" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = AutoProcScalingContainer()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class AutoProcScalingContainer
-
-
-class AutoProcContainer(object):
-    def __init__(self, AutoProcProgramContainer=None, AutoProcScalingContainer=None, AutoProc=None):
-        if AutoProc is None:
-            self._AutoProc = None
-        elif AutoProc.__class__.__name__ == "AutoProc":
-            self._AutoProc = AutoProc
-        else:
-            strMessage = "ERROR! AutoProcContainer constructor argument 'AutoProc' is not AutoProc but %s" % self._AutoProc.__class__.__name__
-            raise BaseException(strMessage)
-        if AutoProcScalingContainer is None:
-            self._AutoProcScalingContainer = None
-        elif AutoProcScalingContainer.__class__.__name__ == "AutoProcScalingContainer":
-            self._AutoProcScalingContainer = AutoProcScalingContainer
-        else:
-            strMessage = "ERROR! AutoProcContainer constructor argument 'AutoProcScalingContainer' is not AutoProcScalingContainer but %s" % self._AutoProcScalingContainer.__class__.__name__
-            raise BaseException(strMessage)
-        if AutoProcProgramContainer is None:
-            self._AutoProcProgramContainer = None
-        elif AutoProcProgramContainer.__class__.__name__ == "AutoProcProgramContainer":
-            self._AutoProcProgramContainer = AutoProcProgramContainer
-        else:
-            strMessage = "ERROR! AutoProcContainer constructor argument 'AutoProcProgramContainer' is not AutoProcProgramContainer but %s" % self._AutoProcProgramContainer.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'AutoProc' attribute
-    def getAutoProc(self): return self._AutoProc
-    def setAutoProc(self, AutoProc):
-        if AutoProc is None:
-            self._AutoProc = None
-        elif AutoProc.__class__.__name__ == "AutoProc":
-            self._AutoProc = AutoProc
-        else:
-            strMessage = "ERROR! AutoProcContainer.setAutoProc argument is not AutoProc but %s" % AutoProc.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProc(self): self._AutoProc = None
-    AutoProc = property(getAutoProc, setAutoProc, delAutoProc, "Property for AutoProc")
-    # Methods and properties for the 'AutoProcScalingContainer' attribute
-    def getAutoProcScalingContainer(self): return self._AutoProcScalingContainer
-    def setAutoProcScalingContainer(self, AutoProcScalingContainer):
-        if AutoProcScalingContainer is None:
-            self._AutoProcScalingContainer = None
-        elif AutoProcScalingContainer.__class__.__name__ == "AutoProcScalingContainer":
-            self._AutoProcScalingContainer = AutoProcScalingContainer
-        else:
-            strMessage = "ERROR! AutoProcContainer.setAutoProcScalingContainer argument is not AutoProcScalingContainer but %s" % AutoProcScalingContainer.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProcScalingContainer(self): self._AutoProcScalingContainer = None
-    AutoProcScalingContainer = property(getAutoProcScalingContainer, setAutoProcScalingContainer, delAutoProcScalingContainer, "Property for AutoProcScalingContainer")
-    # Methods and properties for the 'AutoProcProgramContainer' attribute
-    def getAutoProcProgramContainer(self): return self._AutoProcProgramContainer
-    def setAutoProcProgramContainer(self, AutoProcProgramContainer):
-        if AutoProcProgramContainer is None:
-            self._AutoProcProgramContainer = None
-        elif AutoProcProgramContainer.__class__.__name__ == "AutoProcProgramContainer":
-            self._AutoProcProgramContainer = AutoProcProgramContainer
-        else:
-            strMessage = "ERROR! AutoProcContainer.setAutoProcProgramContainer argument is not AutoProcProgramContainer but %s" % AutoProcProgramContainer.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProcProgramContainer(self): self._AutoProcProgramContainer = None
-    AutoProcProgramContainer = property(getAutoProcProgramContainer, setAutoProcProgramContainer, delAutoProcProgramContainer, "Property for AutoProcProgramContainer")
-    def export(self, outfile, level, name_='AutoProcContainer'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='AutoProcContainer'):
-        pass
-        if self._AutoProc is not None:
-            self.AutoProc.export(outfile, level, name_='AutoProc')
-        else:
-            warnEmptyAttribute("AutoProc", "AutoProc")
-        if self._AutoProcScalingContainer is not None:
-            self.AutoProcScalingContainer.export(outfile, level, name_='AutoProcScalingContainer')
-        else:
-            warnEmptyAttribute("AutoProcScalingContainer", "AutoProcScalingContainer")
-        if self._AutoProcProgramContainer is not None:
-            self.AutoProcProgramContainer.export(outfile, level, name_='AutoProcProgramContainer')
-        else:
-            warnEmptyAttribute("AutoProcProgramContainer", "AutoProcProgramContainer")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProc':
-            obj_ = AutoProc()
-            obj_.build(child_)
-            self.setAutoProc(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProcScalingContainer':
-            obj_ = AutoProcScalingContainer()
-            obj_.build(child_)
-            self.setAutoProcScalingContainer(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProcProgramContainer':
-            obj_ = AutoProcProgramContainer()
-            obj_.build(child_)
-            self.setAutoProcProgramContainer(obj_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="AutoProcContainer" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='AutoProcContainer' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class AutoProcContainer is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return AutoProcContainer.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = AutoProcContainer()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="AutoProcContainer" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = AutoProcContainer()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class AutoProcContainer
 
 
 class AutoProcScalingStatistics(object):
@@ -2616,6 +2477,170 @@ class AutoProcScalingStatistics(object):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class AutoProcScalingStatistics
+
+
+class AutoProcScalingContainer(object):
+    def __init__(self, AutoProcIntegrationContainer=None, AutoProcScalingStatistics=None, AutoProcScaling=None):
+        if AutoProcScaling is None:
+            self._AutoProcScaling = None
+        elif AutoProcScaling.__class__.__name__ == "AutoProcScaling":
+            self._AutoProcScaling = AutoProcScaling
+        else:
+            strMessage = "ERROR! AutoProcScalingContainer constructor argument 'AutoProcScaling' is not AutoProcScaling but %s" % self._AutoProcScaling.__class__.__name__
+            raise BaseException(strMessage)
+        if AutoProcScalingStatistics is None:
+            self._AutoProcScalingStatistics = []
+        elif AutoProcScalingStatistics.__class__.__name__ == "list":
+            self._AutoProcScalingStatistics = AutoProcScalingStatistics
+        else:
+            strMessage = "ERROR! AutoProcScalingContainer constructor argument 'AutoProcScalingStatistics' is not list but %s" % self._AutoProcScalingStatistics.__class__.__name__
+            raise BaseException(strMessage)
+        if AutoProcIntegrationContainer is None:
+            self._AutoProcIntegrationContainer = None
+        elif AutoProcIntegrationContainer.__class__.__name__ == "AutoProcIntegrationContainer":
+            self._AutoProcIntegrationContainer = AutoProcIntegrationContainer
+        else:
+            strMessage = "ERROR! AutoProcScalingContainer constructor argument 'AutoProcIntegrationContainer' is not AutoProcIntegrationContainer but %s" % self._AutoProcIntegrationContainer.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'AutoProcScaling' attribute
+    def getAutoProcScaling(self): return self._AutoProcScaling
+    def setAutoProcScaling(self, AutoProcScaling):
+        if AutoProcScaling is None:
+            self._AutoProcScaling = None
+        elif AutoProcScaling.__class__.__name__ == "AutoProcScaling":
+            self._AutoProcScaling = AutoProcScaling
+        else:
+            strMessage = "ERROR! AutoProcScalingContainer.setAutoProcScaling argument is not AutoProcScaling but %s" % AutoProcScaling.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcScaling(self): self._AutoProcScaling = None
+    AutoProcScaling = property(getAutoProcScaling, setAutoProcScaling, delAutoProcScaling, "Property for AutoProcScaling")
+    # Methods and properties for the 'AutoProcScalingStatistics' attribute
+    def getAutoProcScalingStatistics(self): return self._AutoProcScalingStatistics
+    def setAutoProcScalingStatistics(self, AutoProcScalingStatistics):
+        if AutoProcScalingStatistics is None:
+            self._AutoProcScalingStatistics = []
+        elif AutoProcScalingStatistics.__class__.__name__ == "list":
+            self._AutoProcScalingStatistics = AutoProcScalingStatistics
+        else:
+            strMessage = "ERROR! AutoProcScalingContainer.setAutoProcScalingStatistics argument is not list but %s" % AutoProcScalingStatistics.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcScalingStatistics(self): self._AutoProcScalingStatistics = None
+    AutoProcScalingStatistics = property(getAutoProcScalingStatistics, setAutoProcScalingStatistics, delAutoProcScalingStatistics, "Property for AutoProcScalingStatistics")
+    def addAutoProcScalingStatistics(self, value):
+        if value is None:
+            strMessage = "ERROR! AutoProcScalingContainer.addAutoProcScalingStatistics argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "AutoProcScalingStatistics":
+            self._AutoProcScalingStatistics.append(value)
+        else:
+            strMessage = "ERROR! AutoProcScalingContainer.addAutoProcScalingStatistics argument is not AutoProcScalingStatistics but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertAutoProcScalingStatistics(self, index, value):
+        if index is None:
+            strMessage = "ERROR! AutoProcScalingContainer.insertAutoProcScalingStatistics argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! AutoProcScalingContainer.insertAutoProcScalingStatistics argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "AutoProcScalingStatistics":
+            self._AutoProcScalingStatistics[index] = value
+        else:
+            strMessage = "ERROR! AutoProcScalingContainer.addAutoProcScalingStatistics argument is not AutoProcScalingStatistics but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'AutoProcIntegrationContainer' attribute
+    def getAutoProcIntegrationContainer(self): return self._AutoProcIntegrationContainer
+    def setAutoProcIntegrationContainer(self, AutoProcIntegrationContainer):
+        if AutoProcIntegrationContainer is None:
+            self._AutoProcIntegrationContainer = None
+        elif AutoProcIntegrationContainer.__class__.__name__ == "AutoProcIntegrationContainer":
+            self._AutoProcIntegrationContainer = AutoProcIntegrationContainer
+        else:
+            strMessage = "ERROR! AutoProcScalingContainer.setAutoProcIntegrationContainer argument is not AutoProcIntegrationContainer but %s" % AutoProcIntegrationContainer.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcIntegrationContainer(self): self._AutoProcIntegrationContainer = None
+    AutoProcIntegrationContainer = property(getAutoProcIntegrationContainer, setAutoProcIntegrationContainer, delAutoProcIntegrationContainer, "Property for AutoProcIntegrationContainer")
+    def export(self, outfile, level, name_='AutoProcScalingContainer'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='AutoProcScalingContainer'):
+        pass
+        if self._AutoProcScaling is not None:
+            self.AutoProcScaling.export(outfile, level, name_='AutoProcScaling')
+        else:
+            warnEmptyAttribute("AutoProcScaling", "AutoProcScaling")
+        for AutoProcScalingStatistics_ in self.getAutoProcScalingStatistics():
+            AutoProcScalingStatistics_.export(outfile, level, name_='AutoProcScalingStatistics')
+        if self.getAutoProcScalingStatistics() == []:
+            warnEmptyAttribute("AutoProcScalingStatistics", "AutoProcScalingStatistics")
+        if self._AutoProcIntegrationContainer is not None:
+            self.AutoProcIntegrationContainer.export(outfile, level, name_='AutoProcIntegrationContainer')
+        else:
+            warnEmptyAttribute("AutoProcIntegrationContainer", "AutoProcIntegrationContainer")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcScaling':
+            obj_ = AutoProcScaling()
+            obj_.build(child_)
+            self.setAutoProcScaling(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcScalingStatistics':
+            obj_ = AutoProcScalingStatistics()
+            obj_.build(child_)
+            self.AutoProcScalingStatistics.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcIntegrationContainer':
+            obj_ = AutoProcIntegrationContainer()
+            obj_.build(child_)
+            self.setAutoProcIntegrationContainer(obj_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="AutoProcScalingContainer" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='AutoProcScalingContainer' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class AutoProcScalingContainer is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return AutoProcScalingContainer.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = AutoProcScalingContainer()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="AutoProcScalingContainer" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = AutoProcScalingContainer()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class AutoProcScalingContainer
 
 
 class AutoProcStatus(object):
@@ -4273,7 +4298,7 @@ class XSDataISPyBDataCollection(object):
 
 
 class XSDataISPyBDiffractionPlan(XSData):
-    def __init__(self, xmlDocumentId=None, strategyOption=None, anomalousScatterer=None, screeningResolution=None, requiredResolution=None, requiredMultiplicity=None, requiredCompleteness=None, radiationSensitivityGamma=None, radiationSensitivityBeta=None, radiationSensitivity=None, preferredBeamSizeY=None, preferredBeamSizeX=None, oscillationRange=None, observedResolution=None, numberOfPositions=None, minimalResolution=None, minDimAccrossSpindleAxis=None, maximalResolution=None, maxDimAccrossSpindleAxis=None, kappaStrategyOption=None, forcedSpaceGroup=None, exposureTime=None, experimentKind=None, estimateRadiationDamage=None, diffractionPlanId=None, complexity=None, comments=None, anomalousData=None, aimedResolution=None, aimedMultiplicity=None, aimedIOverSigmaAtHighestResolution=None, aimedCompleteness=None):
+    def __init__(self, xmlDocumentId=None, strategyOption=None, anomalousScatterer=None, screeningResolution=None, requiredResolution=None, requiredMultiplicity=None, requiredCompleteness=None, radiationSensitivityGamma=None, radiationSensitivityBeta=None, radiationSensitivity=None, preferredBeamDiameter=None, preferredBeamSizeY=None, preferredBeamSizeX=None, oscillationRange=None, observedResolution=None, numberOfPositions=None, minimalResolution=None, minDimAccrossSpindleAxis=None, maximalResolution=None, maxDimAccrossSpindleAxis=None, kappaStrategyOption=None, forcedSpaceGroup=None, exposureTime=None, experimentKind=None, estimateRadiationDamage=None, diffractionPlanId=None, complexity=None, comments=None, anomalousData=None, aimedResolution=None, aimedMultiplicity=None, aimedIOverSigmaAtHighestResolution=None, aimedCompleteness=None):
         XSData.__init__(self, )
         if aimedCompleteness is None:
             self._aimedCompleteness = None
@@ -4428,6 +4453,13 @@ class XSDataISPyBDiffractionPlan(XSData):
             self._preferredBeamSizeY = preferredBeamSizeY
         else:
             strMessage = "ERROR! XSDataISPyBDiffractionPlan constructor argument 'preferredBeamSizeY' is not XSDataDouble but %s" % self._preferredBeamSizeY.__class__.__name__
+            raise BaseException(strMessage)
+        if preferredBeamDiameter is None:
+            self._preferredBeamDiameter = None
+        elif preferredBeamDiameter.__class__.__name__ == "XSDataDouble":
+            self._preferredBeamDiameter = preferredBeamDiameter
+        else:
+            strMessage = "ERROR! XSDataISPyBDiffractionPlan constructor argument 'preferredBeamDiameter' is not XSDataDouble but %s" % self._preferredBeamDiameter.__class__.__name__
             raise BaseException(strMessage)
         if radiationSensitivity is None:
             self._radiationSensitivity = None
@@ -4763,6 +4795,18 @@ class XSDataISPyBDiffractionPlan(XSData):
             raise BaseException(strMessage)
     def delPreferredBeamSizeY(self): self._preferredBeamSizeY = None
     preferredBeamSizeY = property(getPreferredBeamSizeY, setPreferredBeamSizeY, delPreferredBeamSizeY, "Property for preferredBeamSizeY")
+    # Methods and properties for the 'preferredBeamDiameter' attribute
+    def getPreferredBeamDiameter(self): return self._preferredBeamDiameter
+    def setPreferredBeamDiameter(self, preferredBeamDiameter):
+        if preferredBeamDiameter is None:
+            self._preferredBeamDiameter = None
+        elif preferredBeamDiameter.__class__.__name__ == "XSDataDouble":
+            self._preferredBeamDiameter = preferredBeamDiameter
+        else:
+            strMessage = "ERROR! XSDataISPyBDiffractionPlan.setPreferredBeamDiameter argument is not XSDataDouble but %s" % preferredBeamDiameter.__class__.__name__
+            raise BaseException(strMessage)
+    def delPreferredBeamDiameter(self): self._preferredBeamDiameter = None
+    preferredBeamDiameter = property(getPreferredBeamDiameter, setPreferredBeamDiameter, delPreferredBeamDiameter, "Property for preferredBeamDiameter")
     # Methods and properties for the 'radiationSensitivity' attribute
     def getRadiationSensitivity(self): return self._radiationSensitivity
     def setRadiationSensitivity(self, radiationSensitivity):
@@ -4935,6 +4979,8 @@ class XSDataISPyBDiffractionPlan(XSData):
             self.preferredBeamSizeX.export(outfile, level, name_='preferredBeamSizeX')
         if self._preferredBeamSizeY is not None:
             self.preferredBeamSizeY.export(outfile, level, name_='preferredBeamSizeY')
+        if self._preferredBeamDiameter is not None:
+            self.preferredBeamDiameter.export(outfile, level, name_='preferredBeamDiameter')
         if self._radiationSensitivity is not None:
             self.radiationSensitivity.export(outfile, level, name_='radiationSensitivity')
         if self._radiationSensitivityBeta is not None:
@@ -5070,6 +5116,11 @@ class XSDataISPyBDiffractionPlan(XSData):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setPreferredBeamSizeY(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'preferredBeamDiameter':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setPreferredBeamDiameter(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'radiationSensitivity':
             obj_ = XSDataDouble()
@@ -13615,6 +13666,116 @@ class XSDataInputStoreAutoProc(XSDataInput):
 # end class XSDataInputStoreAutoProc
 
 
+class XSDataInputStoreAutoProcProgramAttachment(XSDataInput):
+    def __init__(self, configuration=None, AutoProcProgramAttachment=None):
+        XSDataInput.__init__(self, configuration)
+        if AutoProcProgramAttachment is None:
+            self._AutoProcProgramAttachment = []
+        elif AutoProcProgramAttachment.__class__.__name__ == "list":
+            self._AutoProcProgramAttachment = AutoProcProgramAttachment
+        else:
+            strMessage = "ERROR! XSDataInputStoreAutoProcProgramAttachment constructor argument 'AutoProcProgramAttachment' is not list but %s" % self._AutoProcProgramAttachment.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'AutoProcProgramAttachment' attribute
+    def getAutoProcProgramAttachment(self): return self._AutoProcProgramAttachment
+    def setAutoProcProgramAttachment(self, AutoProcProgramAttachment):
+        if AutoProcProgramAttachment is None:
+            self._AutoProcProgramAttachment = []
+        elif AutoProcProgramAttachment.__class__.__name__ == "list":
+            self._AutoProcProgramAttachment = AutoProcProgramAttachment
+        else:
+            strMessage = "ERROR! XSDataInputStoreAutoProcProgramAttachment.setAutoProcProgramAttachment argument is not list but %s" % AutoProcProgramAttachment.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcProgramAttachment(self): self._AutoProcProgramAttachment = None
+    AutoProcProgramAttachment = property(getAutoProcProgramAttachment, setAutoProcProgramAttachment, delAutoProcProgramAttachment, "Property for AutoProcProgramAttachment")
+    def addAutoProcProgramAttachment(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataInputStoreAutoProcProgramAttachment.addAutoProcProgramAttachment argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "AutoProcProgramAttachment":
+            self._AutoProcProgramAttachment.append(value)
+        else:
+            strMessage = "ERROR! XSDataInputStoreAutoProcProgramAttachment.addAutoProcProgramAttachment argument is not AutoProcProgramAttachment but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertAutoProcProgramAttachment(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataInputStoreAutoProcProgramAttachment.insertAutoProcProgramAttachment argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataInputStoreAutoProcProgramAttachment.insertAutoProcProgramAttachment argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "AutoProcProgramAttachment":
+            self._AutoProcProgramAttachment[index] = value
+        else:
+            strMessage = "ERROR! XSDataInputStoreAutoProcProgramAttachment.addAutoProcProgramAttachment argument is not AutoProcProgramAttachment but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def export(self, outfile, level, name_='XSDataInputStoreAutoProcProgramAttachment'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataInputStoreAutoProcProgramAttachment'):
+        XSDataInput.exportChildren(self, outfile, level, name_)
+        for AutoProcProgramAttachment_ in self.getAutoProcProgramAttachment():
+            AutoProcProgramAttachment_.export(outfile, level, name_='AutoProcProgramAttachment')
+        if self.getAutoProcProgramAttachment() == []:
+            warnEmptyAttribute("AutoProcProgramAttachment", "AutoProcProgramAttachment")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcProgramAttachment':
+            obj_ = AutoProcProgramAttachment()
+            obj_.build(child_)
+            self.AutoProcProgramAttachment.append(obj_)
+        XSDataInput.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataInputStoreAutoProcProgramAttachment" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataInputStoreAutoProcProgramAttachment' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataInputStoreAutoProcProgramAttachment is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataInputStoreAutoProcProgramAttachment.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataInputStoreAutoProcProgramAttachment()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataInputStoreAutoProcProgramAttachment" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataInputStoreAutoProcProgramAttachment()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataInputStoreAutoProcProgramAttachment
+
+
 class XSDataInputStoreAutoProcStatus(XSDataInput):
     def __init__(self, configuration=None, AutoProcStatus=None, autoProcStatusId=None, autoProcIntegrationId=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
@@ -16214,7 +16375,7 @@ class XSDataResultRetrieveDataCollection(XSDataResult):
 
 
 class XSDataResultStoreAutoProc(XSDataResult):
-    def __init__(self, status=None, autoProcScalingId=None, autoProcId=None):
+    def __init__(self, status=None, autoProcProgramId=None, autoProcScalingId=None, autoProcId=None):
         XSDataResult.__init__(self, status)
         if autoProcId is None:
             self._autoProcId = None
@@ -16229,6 +16390,13 @@ class XSDataResultStoreAutoProc(XSDataResult):
             self._autoProcScalingId = autoProcScalingId
         else:
             strMessage = "ERROR! XSDataResultStoreAutoProc constructor argument 'autoProcScalingId' is not XSDataInteger but %s" % self._autoProcScalingId.__class__.__name__
+            raise BaseException(strMessage)
+        if autoProcProgramId is None:
+            self._autoProcProgramId = None
+        elif autoProcProgramId.__class__.__name__ == "XSDataInteger":
+            self._autoProcProgramId = autoProcProgramId
+        else:
+            strMessage = "ERROR! XSDataResultStoreAutoProc constructor argument 'autoProcProgramId' is not XSDataInteger but %s" % self._autoProcProgramId.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'autoProcId' attribute
     def getAutoProcId(self): return self._autoProcId
@@ -16254,6 +16422,18 @@ class XSDataResultStoreAutoProc(XSDataResult):
             raise BaseException(strMessage)
     def delAutoProcScalingId(self): self._autoProcScalingId = None
     autoProcScalingId = property(getAutoProcScalingId, setAutoProcScalingId, delAutoProcScalingId, "Property for autoProcScalingId")
+    # Methods and properties for the 'autoProcProgramId' attribute
+    def getAutoProcProgramId(self): return self._autoProcProgramId
+    def setAutoProcProgramId(self, autoProcProgramId):
+        if autoProcProgramId is None:
+            self._autoProcProgramId = None
+        elif autoProcProgramId.__class__.__name__ == "XSDataInteger":
+            self._autoProcProgramId = autoProcProgramId
+        else:
+            strMessage = "ERROR! XSDataResultStoreAutoProc.setAutoProcProgramId argument is not XSDataInteger but %s" % autoProcProgramId.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcProgramId(self): self._autoProcProgramId = None
+    autoProcProgramId = property(getAutoProcProgramId, setAutoProcProgramId, delAutoProcProgramId, "Property for autoProcProgramId")
     def export(self, outfile, level, name_='XSDataResultStoreAutoProc'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -16266,6 +16446,8 @@ class XSDataResultStoreAutoProc(XSDataResult):
             self.autoProcId.export(outfile, level, name_='autoProcId')
         if self._autoProcScalingId is not None:
             self.autoProcScalingId.export(outfile, level, name_='autoProcScalingId')
+        if self._autoProcProgramId is not None:
+            self.autoProcProgramId.export(outfile, level, name_='autoProcProgramId')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -16281,6 +16463,11 @@ class XSDataResultStoreAutoProc(XSDataResult):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setAutoProcScalingId(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'autoProcProgramId':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setAutoProcProgramId(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -16324,6 +16511,116 @@ class XSDataResultStoreAutoProc(XSDataResult):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataResultStoreAutoProc
+
+
+class XSDataResultStoreAutoProcProgramAttachment(XSDataResult):
+    def __init__(self, status=None, autoProcProgramAttachmentId=None):
+        XSDataResult.__init__(self, status)
+        if autoProcProgramAttachmentId is None:
+            self._autoProcProgramAttachmentId = []
+        elif autoProcProgramAttachmentId.__class__.__name__ == "list":
+            self._autoProcProgramAttachmentId = autoProcProgramAttachmentId
+        else:
+            strMessage = "ERROR! XSDataResultStoreAutoProcProgramAttachment constructor argument 'autoProcProgramAttachmentId' is not list but %s" % self._autoProcProgramAttachmentId.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'autoProcProgramAttachmentId' attribute
+    def getAutoProcProgramAttachmentId(self): return self._autoProcProgramAttachmentId
+    def setAutoProcProgramAttachmentId(self, autoProcProgramAttachmentId):
+        if autoProcProgramAttachmentId is None:
+            self._autoProcProgramAttachmentId = []
+        elif autoProcProgramAttachmentId.__class__.__name__ == "list":
+            self._autoProcProgramAttachmentId = autoProcProgramAttachmentId
+        else:
+            strMessage = "ERROR! XSDataResultStoreAutoProcProgramAttachment.setAutoProcProgramAttachmentId argument is not list but %s" % autoProcProgramAttachmentId.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcProgramAttachmentId(self): self._autoProcProgramAttachmentId = None
+    autoProcProgramAttachmentId = property(getAutoProcProgramAttachmentId, setAutoProcProgramAttachmentId, delAutoProcProgramAttachmentId, "Property for autoProcProgramAttachmentId")
+    def addAutoProcProgramAttachmentId(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataResultStoreAutoProcProgramAttachment.addAutoProcProgramAttachmentId argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataInteger":
+            self._autoProcProgramAttachmentId.append(value)
+        else:
+            strMessage = "ERROR! XSDataResultStoreAutoProcProgramAttachment.addAutoProcProgramAttachmentId argument is not XSDataInteger but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertAutoProcProgramAttachmentId(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataResultStoreAutoProcProgramAttachment.insertAutoProcProgramAttachmentId argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataResultStoreAutoProcProgramAttachment.insertAutoProcProgramAttachmentId argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataInteger":
+            self._autoProcProgramAttachmentId[index] = value
+        else:
+            strMessage = "ERROR! XSDataResultStoreAutoProcProgramAttachment.addAutoProcProgramAttachmentId argument is not XSDataInteger but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def export(self, outfile, level, name_='XSDataResultStoreAutoProcProgramAttachment'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataResultStoreAutoProcProgramAttachment'):
+        XSDataResult.exportChildren(self, outfile, level, name_)
+        for autoProcProgramAttachmentId_ in self.getAutoProcProgramAttachmentId():
+            autoProcProgramAttachmentId_.export(outfile, level, name_='autoProcProgramAttachmentId')
+        if self.getAutoProcProgramAttachmentId() == []:
+            warnEmptyAttribute("autoProcProgramAttachmentId", "XSDataInteger")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'autoProcProgramAttachmentId':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.autoProcProgramAttachmentId.append(obj_)
+        XSDataResult.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataResultStoreAutoProcProgramAttachment" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataResultStoreAutoProcProgramAttachment' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataResultStoreAutoProcProgramAttachment is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataResultStoreAutoProcProgramAttachment.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultStoreAutoProcProgramAttachment()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataResultStoreAutoProcProgramAttachment" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultStoreAutoProcProgramAttachment()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataResultStoreAutoProcProgramAttachment
 
 
 class XSDataResultStoreAutoProcStatus(XSDataResult):

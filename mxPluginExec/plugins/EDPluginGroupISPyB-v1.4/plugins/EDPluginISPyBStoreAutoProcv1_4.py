@@ -158,6 +158,8 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
             xsDataResultStoreAutoProc.setAutoProcId(XSDataInteger(self.iAutoProcId))
         if self.iAutoProcScalingId is not None:
             xsDataResultStoreAutoProc.setAutoProcScalingId(XSDataInteger(self.iAutoProcScalingId))
+        if self.iAutoProcProgramId is not None:
+            xsDataResultStoreAutoProc.setAutoProcProgramId(XSDataInteger(self.iAutoProcProgramId))
         self.setDataOutput(xsDataResultStoreAutoProc)
 
 

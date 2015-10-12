@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Apr 16 09:08::35 2014 by EDGenerateDS.
+# Generated Fri Oct 2 04:29::10 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -120,7 +120,7 @@ class MixedContainer(object):
 
 
 class XSDataControlImageDozor(object):
-    def __init__(self, score=None, powder_wilson_rfactor=None, powder_wilson_correlation=None, powder_wilson_resolution=None, powder_wilson_bfactor=None, powder_wilson_scale=None, spots_resolution=None, spots_int_aver=None, spots_num_of=None, image=None):
+    def __init__(self, spotFile=None, score=None, powder_wilson_rfactor=None, powder_wilson_correlation=None, powder_wilson_resolution=None, powder_wilson_bfactor=None, powder_wilson_scale=None, spots_resolution=None, spots_int_aver=None, spots_num_of=None, image=None):
         if image is None:
             self._image = None
         elif image.__class__.__name__ == "XSDataFile":
@@ -190,6 +190,13 @@ class XSDataControlImageDozor(object):
             self._score = score
         else:
             strMessage = "ERROR! XSDataControlImageDozor constructor argument 'score' is not XSDataDouble but %s" % self._score.__class__.__name__
+            raise BaseException(strMessage)
+        if spotFile is None:
+            self._spotFile = None
+        elif spotFile.__class__.__name__ == "XSDataFile":
+            self._spotFile = spotFile
+        else:
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'spotFile' is not XSDataFile but %s" % self._spotFile.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
@@ -311,6 +318,18 @@ class XSDataControlImageDozor(object):
             raise BaseException(strMessage)
     def delScore(self): self._score = None
     score = property(getScore, setScore, delScore, "Property for score")
+    # Methods and properties for the 'spotFile' attribute
+    def getSpotFile(self): return self._spotFile
+    def setSpotFile(self, spotFile):
+        if spotFile is None:
+            self._spotFile = None
+        elif spotFile.__class__.__name__ == "XSDataFile":
+            self._spotFile = spotFile
+        else:
+            strMessage = "ERROR! XSDataControlImageDozor.setSpotFile argument is not XSDataFile but %s" % spotFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpotFile(self): self._spotFile = None
+    spotFile = property(getSpotFile, setSpotFile, delSpotFile, "Property for spotFile")
     def export(self, outfile, level, name_='XSDataControlImageDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -345,6 +364,8 @@ class XSDataControlImageDozor(object):
             self.powder_wilson_rfactor.export(outfile, level, name_='powder_wilson_rfactor')
         if self._score is not None:
             self.score.export(outfile, level, name_='score')
+        if self._spotFile is not None:
+            self.spotFile.export(outfile, level, name_='spotFile')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -400,6 +421,11 @@ class XSDataControlImageDozor(object):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setScore(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spotFile':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setSpotFile(obj_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()

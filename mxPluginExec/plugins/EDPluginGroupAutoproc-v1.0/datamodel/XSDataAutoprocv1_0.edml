@@ -259,6 +259,7 @@ complex type XSDataInputControlDimple extends XSDataInput {
 	sessionDate : XSDataString
 	beamline : XSDataString
 	pdbDirectory : XSDataFile optional
+	autoProcProgramId : XSDataInteger optional
 }
 
 complex type XSDataResultControlDimple extends XSDataResult {

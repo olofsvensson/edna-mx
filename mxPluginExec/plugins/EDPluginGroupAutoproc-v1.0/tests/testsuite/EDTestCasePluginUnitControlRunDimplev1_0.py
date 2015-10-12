@@ -55,7 +55,8 @@ class EDTestCasePluginUnitControlRunDimplev1_0(EDTestCasePluginUnit):
         edPlugin = self.getPlugin()
         strPyarchRootDir = tempfile.mkdtemp(prefix="EDTestCasePluginUnitControlRunDimplev1_0_")
         strPrefix = "xtal5w1_1"
-        listPath = edPlugin.copyResultsToPyarch(strPrefix, strPyarchRootDir, xsDataResultDimple)
+        strPdfPath = os.path.join(xsDataResultDimple.resultsDirectory.path.value, "DIMPLE.pdf")
+        listPath = edPlugin.copyResultsToPyarch(strPrefix, strPyarchRootDir, xsDataResultDimple, strPdfPath)
         EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "xtal5w1_1_blob1v1_dimple.png")), "blob1v1.png")
         EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "xtal5w1_1_blob1v2_dimple.png")), "blob1v2.png")
         EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "xtal5w1_1_blob1v3_dimple.png")), "blob1v3.png")
@@ -67,21 +68,25 @@ class EDTestCasePluginUnitControlRunDimplev1_0(EDTestCasePluginUnit):
         EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "xtal5w1_1_dimple.pdb")), "dimple.pdb")
         EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "xtal5w1_1_findblobs_dimple.log")), "findblobs.log")
         EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "xtal5w1_1_refmac5restr_dimple.log")), "refmac5restr.log")
+        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "xtal5w1_1_results_dimple.pdf")), "dimple.pdf")
         shutil.rmtree(strPyarchRootDir)
 
     def test_createHtmlPage(self):
         strDimpleOutput = os.path.join(self.strDataPath,  "dimple", "Dimplev1_0_dataOutput.xml")
         strResultDimple = self.readAndParseFile(strDimpleOutput)
         xsDataResultDimple = XSDataResultDimple.parseString(strResultDimple)
+        strPdfPath = os.path.join(xsDataResultDimple.resultsDirectory.path.value, "DIMPLE.pdf")
         edPlugin = self.getPlugin()
         strPyarchRootDir = tempfile.mkdtemp(prefix="html_", dir=os.path.join(self.strDataPath,  "dimple"))
         strPrefix = "xtal5w1_1"
         strProposal = "mx415"
         strSessionDate = "2015-02-23"
         strBeamline = "id29"
-        listPath = edPlugin.copyResultsToPyarch(strPrefix, strPyarchRootDir, xsDataResultDimple)
-        pathHtml = edPlugin.createHtmlPage(strPrefix, xsDataResultDimple, strPyarchRootDir, strProposal, strSessionDate, strBeamline)
-        EDAssert.equal(True, os.path.exists(pathHtml), "HTML page generated")
+        listPath = edPlugin.copyResultsToPyarch(strPrefix, strPyarchRootDir, xsDataResultDimple, strPdfPath)
+        listPathHtml = edPlugin.createHtmlPage(strPrefix, xsDataResultDimple, strPyarchRootDir, strProposal, strSessionDate, strBeamline)
+        print listPathHtml
+        for pathHtml in listPathHtml:
+            EDAssert.equal(True, os.path.exists(pathHtml), "HTML page generated")
         shutil.rmtree(strPyarchRootDir)
 
         

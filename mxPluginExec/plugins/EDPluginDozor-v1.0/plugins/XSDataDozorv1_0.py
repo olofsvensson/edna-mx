@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Mar 30 03:31::39 2015 by EDGenerateDS.
+# Generated Fri Sep 18 02:52::20 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -17,10 +17,12 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
     from XSDataCommon import XSDataDouble
+    from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataResult
@@ -36,6 +38,7 @@ except ImportError as error:
     else:
         raise error
 from XSDataCommon import XSDataDouble
+from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataResult
@@ -120,7 +123,7 @@ class MixedContainer(object):
 
 
 class XSDataImageDozor(object):
-    def __init__(self, score=None, powder_wilson_rfactor=None, powder_wilson_correlation=None, powder_wilson_resolution=None, powder_wilson_bfactor=None, powder_wilson_scale=None, spots_resolution=None, spots_int_aver=None, spots_num_of=None, number=None):
+    def __init__(self, spotFile=None, score=None, powder_wilson_rfactor=None, powder_wilson_correlation=None, powder_wilson_resolution=None, powder_wilson_bfactor=None, powder_wilson_scale=None, spots_resolution=None, spots_int_aver=None, spots_num_of=None, number=None):
         if number is None:
             self._number = None
         elif number.__class__.__name__ == "XSDataInteger":
@@ -190,6 +193,13 @@ class XSDataImageDozor(object):
             self._score = score
         else:
             strMessage = "ERROR! XSDataImageDozor constructor argument 'score' is not XSDataDouble but %s" % self._score.__class__.__name__
+            raise BaseException(strMessage)
+        if spotFile is None:
+            self._spotFile = None
+        elif spotFile.__class__.__name__ == "XSDataFile":
+            self._spotFile = spotFile
+        else:
+            strMessage = "ERROR! XSDataImageDozor constructor argument 'spotFile' is not XSDataFile but %s" % self._spotFile.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'number' attribute
     def getNumber(self): return self._number
@@ -311,6 +321,18 @@ class XSDataImageDozor(object):
             raise BaseException(strMessage)
     def delScore(self): self._score = None
     score = property(getScore, setScore, delScore, "Property for score")
+    # Methods and properties for the 'spotFile' attribute
+    def getSpotFile(self): return self._spotFile
+    def setSpotFile(self, spotFile):
+        if spotFile is None:
+            self._spotFile = None
+        elif spotFile.__class__.__name__ == "XSDataFile":
+            self._spotFile = spotFile
+        else:
+            strMessage = "ERROR! XSDataImageDozor.setSpotFile argument is not XSDataFile but %s" % spotFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpotFile(self): self._spotFile = None
+    spotFile = property(getSpotFile, setSpotFile, delSpotFile, "Property for spotFile")
     def export(self, outfile, level, name_='XSDataImageDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -345,6 +367,8 @@ class XSDataImageDozor(object):
             self.powder_wilson_rfactor.export(outfile, level, name_='powder_wilson_rfactor')
         if self._score is not None:
             self.score.export(outfile, level, name_='score')
+        if self._spotFile is not None:
+            self.spotFile.export(outfile, level, name_='spotFile')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -400,6 +424,11 @@ class XSDataImageDozor(object):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setScore(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spotFile':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setSpotFile(obj_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()

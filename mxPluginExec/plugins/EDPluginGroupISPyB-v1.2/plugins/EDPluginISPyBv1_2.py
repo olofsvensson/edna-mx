@@ -235,6 +235,11 @@ class EDPluginISPyBv1_2(EDPluginExec):
             xsDataISPyBScreeningRankSet = xsDataISPyBScreeningRankSets[0]
 
         # Store all the different screening* objects:
+	comments = os.environ.get('COMMENTS', None)
+	short_comments = os.environ.get('SHORT_COMMENTS', None)
+	if (comments is not None) and (short_comments is not None):
+		xsDataISPyBScreening.setComments(XSDataString(comments))
+		xsDataISPyBScreening.setShortComments(XSDataString(short_comments))
         xsDataIntegerScreeningId = self.store(xsDataISPyBScreening)
 
         if xsDataISPyBScreeningInputs != None:

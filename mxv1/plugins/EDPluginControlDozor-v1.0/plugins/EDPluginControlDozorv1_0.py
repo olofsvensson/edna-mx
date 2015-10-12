@@ -112,7 +112,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             strSuffix = EDUtilsImage.getSuffix(strFileName)
             strXDSTemplate = "%s_????.%s" % (strPrefix, strSuffix)
             xsDataInputDozor.nameTemplateImage = XSDataString(os.path.join(os.path.dirname(strFileName), strXDSTemplate))
-            edPluginDozor = self.loadPlugin(self.strEDPluginDozorName, "Dozor")
+            edPluginDozor = self.loadPlugin(self.strEDPluginDozorName, "Dozor_%05d" % subWedge.image[0].number.value)
             edPluginDozor.dataInput = xsDataInputDozor
             edPluginDozor.executeSynchronous()
             if edPluginDozor.dataOutput.imageDozor != []:
@@ -128,6 +128,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 xsDataControlImageDozor.powder_wilson_correlation = xsDataResultDozor.powder_wilson_correlation
                 xsDataControlImageDozor.powder_wilson_rfactor = xsDataResultDozor.powder_wilson_rfactor
                 xsDataControlImageDozor.score = xsDataResultDozor.score
+                xsDataControlImageDozor.spotFile = xsDataResultDozor.spotFile
                 xsDataResultControlDozor.addImageDozor(xsDataControlImageDozor)
         self.dataOutput = xsDataResultControlDozor
 

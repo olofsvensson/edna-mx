@@ -195,6 +195,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
             edPluginControlDozor.synchronize()
             if edPluginControlDozor.dataOutput.imageDozor != []:
                 xsDataImageQualityIndicators.dozor_score = edPluginControlDozor.dataOutput.imageDozor[0].score
+                xsDataImageQualityIndicators.dozorSpotFile = edPluginControlDozor.dataOutput.imageDozor[0].spotFile
             self.xsDataResultControlImageQualityIndicators.addImageQualityIndicators(xsDataImageQualityIndicators)
             if self.dataInput.doUploadToIspyb is not None and self.dataInput.doUploadToIspyb.value:
                 xsDataISPyBImageQualityIndicators = \

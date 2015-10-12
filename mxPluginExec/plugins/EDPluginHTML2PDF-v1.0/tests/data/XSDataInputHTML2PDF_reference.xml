@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<XSDataInputH5ToCBF>
+  <htmlFile>
+  	<path>
+      <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/xtal5w1_1_index.html</value>  	
+  	</path>
+  </htmlFile>
+  <htmlFile>
+  	<path>
+      <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/xtal5w1_1_blob1v1_dimple.html</value>  	
+  	</path>
+  </htmlFile>
+  <htmlFile>
+  	<path>
+      <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/xtal5w1_1_blob1v2_dimple.html</value>  	
+  	</path>
+  </htmlFile>
+  <htmlFile>
+  	<path>
+      <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/xtal5w1_1_blob1v3_dimple.html</value>  	
+  	</path>
+  </htmlFile>
+  <htmlFile>
+  	<path>
+      <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/xtal5w1_1_blob2v1_dimple.html</value>  	
+  	</path>
+  </htmlFile>
+  <htmlFile>
+  	<path>
+      <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/xtal5w1_1_blob2v2_dimple.html</value>  	
+  	</path>
+  </htmlFile>
+  <htmlFile>
+  	<path>
+      <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/xtal5w1_1_blob2v3_dimple.html</value>  	
+  	</path>
+  </htmlFile></XSDataInputH5ToCBF>

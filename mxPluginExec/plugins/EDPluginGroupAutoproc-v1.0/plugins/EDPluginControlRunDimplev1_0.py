@@ -42,12 +42,17 @@ from XSDataAutoprocv1_0  import XSDataResultControlDimple
 # pdb file retrieval
 EDFactoryPluginStatic.loadModule('XSDataISPyBv1_4')
 from XSDataISPyBv1_4 import XSDataInputISPyBGetPdbFilePath
+from XSDataISPyBv1_4 import XSDataInputStoreAutoProcProgramAttachment
+from XSDataISPyBv1_4 import AutoProcProgramAttachment
 
 EDFactoryPluginStatic.loadModule("XSDataCCP4v1_0")
 from XSDataCCP4v1_0 import XSDataInputDimple
 
 EDFactoryPluginStatic.loadModule("markupv1_10")
 import markupv1_10
+
+EDFactoryPluginStatic.loadModule("XSDataHTML2PDFv1_0")
+from XSDataHTML2PDFv1_0 import XSDataInputHTML2PDF
 
 
 class EDPluginControlRunDimplev1_0( EDPluginControl ):
@@ -113,21 +118,43 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         xsDataResultDimple = self.runDimple(self.strPdbPath, self.strPathNoanomAimlessMtz)
         if xsDataResultDimple is not None:
             # Create HTML page
-            strHtmlPath = self.createHtmlPage(self.dataInput.imagePrefix.value,
-                                              xsDataResultDimple,
-                                              os.path.join(self.getWorkingDirectory(), "html"),
-                                              self.dataInput.proposal.value,
-                                              self.dataInput.sessionDate.value,
-                                              self.dataInput.beamline.value)
-#            # Copy result files to pyarch
-#            if self.dataInput.pyarchPath is not None:
-#                listOfTargetPaths = self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
-#                                                             self.dataInput.pyarchPath.path.value, 
-#                                                             xsDataResultControlDimple)
-#                listOfTargetPaths.append(htmlPath)
+            listHtmlPath = self.createHtmlPage(self.dataInput.imagePrefix.value,
+                                               xsDataResultDimple,
+                                               os.path.join(self.getWorkingDirectory(), "html"),
+                                               self.dataInput.proposal.value,
+                                               self.dataInput.sessionDate.value,
+                                               self.dataInput.beamline.value)
+            xsDataInputHTML2PDF = XSDataInputHTML2PDF()
+            for strHtmlPath in listHtmlPath:
+                xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(strHtmlPath)))
+            xsDataInputHTML2PDF.resultDirectory = xsDataResultDimple.resultsDirectory
+            edPluginHTML2PDF = self.loadPlugin("EDPluginHTML2PDFv1_0")
+            edPluginHTML2PDF.dataInput = xsDataInputHTML2PDF
+            edPluginHTML2PDF.executeSynchronous()
+            strPdfFile = edPluginHTML2PDF.dataOutput.pdfFile.path.value
+            # Copy result files to pyarch
+            if self.dataInput.pyarchPath is not None:
+                listOfTargetPaths = self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
+                                                             self.dataInput.pyarchPath.path.value, 
+                                                             xsDataResultDimple,
+                                                             strPdfFile)
+                # Upload files to ISPyB
+                if self.dataInput.autoProcProgramId is not None:
+                    xsDataInputStoreAutoProcProgramAttachment = XSDataInputStoreAutoProcProgramAttachment()
+                    for targetPath in listOfTargetPaths:
+                        autoProcProgramAttachment = AutoProcProgramAttachment()
+                        autoProcProgramAttachment.fileType = "Result"
+                        autoProcProgramAttachment.fileName = os.path.basename(targetPath)
+                        autoProcProgramAttachment.filePath = os.path.dirname(targetPath)
+                        autoProcProgramAttachment.autoProcProgramId = self.dataInput.autoProcProgramId.value
+                        xsDataInputStoreAutoProcProgramAttachment.addAutoProcProgramAttachment(autoProcProgramAttachment)
+                    edPluginStoreAutoProcProgramAttachment = self.loadPlugin("EDPluginISPyBStoreAutoProcProgramAttachmentv1_4")
+                    edPluginStoreAutoProcProgramAttachment.dataInput = xsDataInputStoreAutoProcProgramAttachment
+                    edPluginStoreAutoProcProgramAttachment.executeSynchronous()
+                
 
             
-    def copyResultsToPyarch(self, strImagePrefix, strPyarchRootPath, xsDataResultDimple):
+    def copyResultsToPyarch(self, strImagePrefix, strPyarchRootPath, xsDataResultDimple, strPdfFile):
         listOfTargetPaths = []
         # Check that pyarch root exists
         if not os.path.exists(strPyarchRootPath):
@@ -161,6 +188,10 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             strTargetRefmac5restrLogPath = os.path.join(strPyarchRootPath, "%s_refmac5restr_dimple.log" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.refmac5restrLog.path.value, strTargetRefmac5restrLogPath)
             listOfTargetPaths.append(strTargetRefmac5restrLogPath)
+            # Result PDF file
+            strTargetPdfPath = os.path.join(strPyarchRootPath, "%s_results_dimple.pdf" % strImagePrefix)
+            shutil.copyfile(strPdfFile, strTargetPdfPath)
+            listOfTargetPaths.append(strTargetPdfPath)
         return listOfTargetPaths
             
     
@@ -193,6 +224,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         page.pre(open(xsDataResultDimple.findBlobsLog.path.value).read())
         # Blobs
         page.br()
+        listImageHTML = []
         for xsDataFileBlob in xsDataResultDimple.blob:
             # Copy blob file to html directory
             strBlobName = os.path.basename(xsDataFileBlob.path.value).split(".")[0]
@@ -209,10 +241,11 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             pageBlob.div.close()
             pageBlob.br()
             pageBlob.div( align_="LEFT")
-            pageBlob.a("Back to previous page", href_=strPath)
+            pageBlob.a("Back to previous page", href_=os.path.basename(strPath))
             pageBlob.div.close()
             EDUtilsFile.writeFile(strPageBlobPath, str(pageBlob))
-            page.a( href=strPageBlobPath)
+            listImageHTML.append(strPageBlobPath)
+            page.a( href=os.path.basename(strPageBlobPath))
             page.img( src=strBlobImage, width=200, height=200, title=strBlobName )
             page.a.close()
             if strBlobName == "blob1v3":
@@ -221,7 +254,8 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         # FInalise html page
         strHTML = str(page)
         EDUtilsFile.writeFile(strPath, strHTML)
-        return strPath
+        listHTML = [strPath] + listImageHTML
+        return listHTML
         
         
         
