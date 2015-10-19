@@ -118,7 +118,10 @@ class EDPluginH5ToCBFv1_0(EDPluginExecProcessScript):
         hdf5File = _xsDataInputH5ToCBF.hdf5File.path.value
         directory = os.path.dirname(hdf5File)
         prefix = EDUtilsImage.getPrefix(hdf5File)
-        masterFile = os.path.join(directory, prefix + "__master.h5")
+        if "master" in hdf5File:
+            masterFile = hdf5File
+        else:
+            masterFile = os.path.join(directory, prefix + "__master.h5")
         
         imageNumber = _xsDataInputH5ToCBF.imageNumber.value
         
