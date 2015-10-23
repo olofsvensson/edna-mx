@@ -45,6 +45,7 @@ from XSDataMXv1 import XSDataInputReadImageHeader
 from XSDataMXv1 import XSDataInputSubWedgeAssemble
 from XSDataMXv1 import XSDataCollection
 from XSDataMXv1 import XSDataIndexingInput
+from XSDataMXv1 import XSDataDozorInput
 
 from EDHandlerXSDataMOSFLMv10 import EDHandlerXSDataMOSFLMv10
 
@@ -196,6 +197,10 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
             if edPluginControlDozor.dataOutput.imageDozor != []:
                 xsDataImageQualityIndicators.dozor_score = edPluginControlDozor.dataOutput.imageDozor[0].score
                 xsDataImageQualityIndicators.dozorSpotFile = edPluginControlDozor.dataOutput.imageDozor[0].spotFile
+                if self.xsDataResultControlImageQualityIndicators.inputDozor is None:
+                    if edPluginControlDozor.dataOutput.inputDozor is not None:
+                        self.xsDataResultControlImageQualityIndicators.inputDozor = XSDataDozorInput().parseString(
+                                       edPluginControlDozor.dataOutput.inputDozor.marshal())
             self.xsDataResultControlImageQualityIndicators.addImageQualityIndicators(xsDataImageQualityIndicators)
             if self.dataInput.doUploadToIspyb is not None and self.dataInput.doUploadToIspyb.value:
                 xsDataISPyBImageQualityIndicators = \

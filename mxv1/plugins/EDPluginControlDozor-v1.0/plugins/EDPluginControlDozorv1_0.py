@@ -43,6 +43,7 @@ from XSDataMXv1 import XSDataInputReadImageHeader
 from XSDataControlDozorv1_0 import XSDataInputControlDozor
 from XSDataControlDozorv1_0 import XSDataResultControlDozor
 from XSDataControlDozorv1_0 import XSDataControlImageDozor
+from XSDataControlDozorv1_0 import XSDataDozorInput
 
 
 class EDPluginControlDozorv1_0(EDPluginControl):
@@ -59,6 +60,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.edPluginControlReadImageHeader = None
         self.strEDPluginDozorName = "EDPluginDozorv1_0"
         self.edPluginDozor = None
+        self.xsDataControlDozorInput = None
 
 
     def checkParameters(self):
@@ -130,6 +132,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 xsDataControlImageDozor.score = xsDataResultDozor.score
                 xsDataControlImageDozor.spotFile = xsDataResultDozor.spotFile
                 xsDataResultControlDozor.addImageDozor(xsDataControlImageDozor)
+                if xsDataResultControlDozor.inputDozor is None:
+                    xsDataResultControlDozor.inputDozor = XSDataDozorInput().parseString(xsDataInputDozor.marshal())
         self.dataOutput = xsDataResultControlDozor
 
      

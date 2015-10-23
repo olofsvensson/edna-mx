@@ -46,7 +46,24 @@ package XSDataMXv1 {
 			spotTotal : XSDataInteger
 			totalIntegratedSignal : XSDataDouble optional
 		}
-
+		
+		complex type XSDataDozorInput extends XSDataInput {
+			detectorType : XSDataString
+			exposureTime : XSDataDouble
+			spotSize : XSDataInteger
+			detectorDistance : XSDataDouble
+			wavelength : XSDataDouble
+			fractionPolarization : XSDataDouble optional
+			orgx : XSDataDouble
+			orgy : XSDataDouble
+			oscillationRange : XSDataDouble
+			imageStep : XSDataDouble optional
+			startingAngle : XSDataDouble optional
+			firstImageNumber : XSDataInteger
+			numberImages : XSDataInteger
+			nameTemplateImage : XSDataString
+		}		
+		
 		complex type XSDataInputCharacterisation extends XSDataInput {
 			dataCollection : XSDataCollection
 		}
@@ -126,6 +143,7 @@ package XSDataMXv1 {
 
 		complex type XSDataResultControlImageQualityIndicators extends XSDataResult {
 			imageQualityIndicators : XSDataImageQualityIndicators [] optional
+			inputDozor : XSDataDozorInput optional
 		}
 
 		complex type XSDataResultControlXDSGenerateBackgroundImage extends XSDataResult {
