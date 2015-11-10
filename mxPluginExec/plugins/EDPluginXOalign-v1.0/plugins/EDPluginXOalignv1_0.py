@@ -152,7 +152,9 @@ class EDPluginXOalignv1_0(EDPluginExecProcessScript):
                         if fKappa >= self.fMinKappaAngle and fKappa <= self.fMaxKappaAngle: 
                             xsDataXOalignSolution.kappa = XSDataDouble(fKappa)
                             fPhi = float(listSettings[2])
-                            xsDataXOalignSolution.phi = XSDataDouble(fPhi)
+                            # Offset phi with omega value
+                            fNewPhi = (fPhi-self.fOmega) % 360
+                            xsDataXOalignSolution.phi = XSDataDouble(fNewPhi)
                             strSettings = "".join(listSettings[3:])
                             xsDataXOalignSolution.settings = XSDataString(strSettings)
                             xsDataResultXOalign.addSolution(xsDataXOalignSolution)
