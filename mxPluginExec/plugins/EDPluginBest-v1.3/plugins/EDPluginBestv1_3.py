@@ -28,7 +28,7 @@ __authors__ = [ "Olof Svensson", "Marie-Francoise Incardona" ]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20150610"
+__date__ = "20151118"
 __status__ = "production"
 
 import os
@@ -351,6 +351,12 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
         if dataInput.radiationDamageModelGamma is not None:
             fRadiationDamageModelGamma = str(dataInput.radiationDamageModelGamma.value)
             self.strCommandBest += " -gama " + fRadiationDamageModelGamma + " "
+
+        if dataInput.doseLimit is not None:
+            self.strCommandBest += " -DMAX {0} ".format(dataInput.doseLimit.value) 
+
+        if dataInput.rFriedel is not None:
+            self.strCommandBest += " -Rf {0} ".format(dataInput.rFriedel.value) 
 
         self.strCommandBest += " -T " + str(fMaxExposureTime) + " " + \
                                      "-o " + os.path.join(self.getWorkingDirectory(), self.getScriptBaseName() + "_plots.mtv ") + \

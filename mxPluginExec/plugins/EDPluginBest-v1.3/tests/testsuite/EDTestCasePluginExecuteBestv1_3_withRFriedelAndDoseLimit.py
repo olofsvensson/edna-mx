@@ -28,31 +28,28 @@ __authors__ = [ "Olof Svensson", "Marie-Francoise Incardona" ]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20120712"
+__date__ = "20151118"
 __status__ = "production"
 
+import os
 
-from EDTestSuite                                  import EDTestSuite
 
-class EDTestSuitePluginExecuteBestv1_3(EDTestSuite):
+from EDAssert                            import EDAssert
+from EDUtilsTest                         import EDUtilsTest
+from EDUtilsPath                         import EDUtilsPath
+from EDTestCasePluginExecuteBestv1_3     import EDTestCasePluginExecuteBestv1_3
+
+
+
+class EDTestCasePluginExecuteBestv1_3_withRFriedelAndDoseLimit(EDTestCasePluginExecuteBestv1_3):
+
+    def __init__(self, _oalStringTestName=None):
+        EDTestCasePluginExecuteBestv1_3.__init__(self, "EDPluginBestv1_3")
+
+        self.setConfigurationFile(self.getRefConfigFile())
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputBest_withRFriedelAndDoseLimit.xml"))
 
 
     def process(self):
-        """
-        """
-        self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3")
-        self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3_withAnomalousData")
-        self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3_withTransmissionInput")
-        self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3_withDamPar")
-        self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3_withBonly")
-        self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3_withNumberOfCrystalPositions")
-        self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3_withUserDefinedRotationRange")
-        self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3_withRadiationDamageModelBetaGamma")
-        self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3_withRFriedelAndDoseLimit")
-
-
-if __name__ == '__main__':
-
-    edTestSuitePluginExecuteBestv1_3 = EDTestSuitePluginExecuteBestv1_3("EDTestSuitePluginExecuteBestv1_3")
-    edTestSuitePluginExecuteBestv1_3.execute()
+        self.addTestMethod(self.testExecute)
 

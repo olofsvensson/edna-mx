@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Jun 17 09:47::16 2015 by EDGenerateDS.
+# Generated Wed Nov 18 01:38::18 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -1716,7 +1716,7 @@ class XSDataInputBest(XSDataInput):
 
 - detectorDistanceMin and detectorDistanceMax (in mm) will work only with version v3.4.3 or higher of Best
 """
-    def __init__(self, configuration=None, xdsBackgroundImage=None, userDefinedRotationStart=None, userDefinedRotationRange=None, transmission=None, strategyOption=None, radiationDamageModelGamma=None, radiationDamageModelBeta=None, omegaMin=None, numberOfCrystalPositions=None, minTransmission=None, goniostatMinRotationWidth=None, goniostatMaxRotationSpeed=None, detectorType=None, detectorDistanceMin=None, detectorDistanceMax=None, crystalSusceptibility=None, crystalShape=None, crystalSize=None, crystalAbsorbedDoseRate=None, complexity=None, bestFileContentPar=None, bestFileContentHKL=None, bestFileContentDat=None, beamSize=None, beamShift=None, beamMinExposureTime=None, beamMaxExposureTime=None, beamFlux=None, beamExposureTime=None, apertureSize=None, anomalousData=None, aimedResolution=None, aimedRedundancy=None, aimedIOverSigma=None, aimedCompleteness=None):
+    def __init__(self, configuration=None, xdsBackgroundImage=None, userDefinedRotationStart=None, userDefinedRotationRange=None, transmission=None, strategyOption=None, rFriedel=None, radiationDamageModelGamma=None, radiationDamageModelBeta=None, omegaMin=None, numberOfCrystalPositions=None, minTransmission=None, goniostatMinRotationWidth=None, goniostatMaxRotationSpeed=None, doseLimit=None, detectorType=None, detectorDistanceMin=None, detectorDistanceMax=None, crystalSusceptibility=None, crystalShape=None, crystalSize=None, crystalAbsorbedDoseRate=None, complexity=None, bestFileContentPar=None, bestFileContentHKL=None, bestFileContentDat=None, beamSize=None, beamShift=None, beamMinExposureTime=None, beamMaxExposureTime=None, beamFlux=None, beamExposureTime=None, apertureSize=None, anomalousData=None, aimedResolution=None, aimedRedundancy=None, aimedIOverSigma=None, aimedCompleteness=None):
         XSDataInput.__init__(self, configuration)
         if aimedCompleteness is None:
             self._aimedCompleteness = None
@@ -1879,6 +1879,13 @@ class XSDataInputBest(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputBest constructor argument 'detectorType' is not XSDataString but %s" % self._detectorType.__class__.__name__
             raise BaseException(strMessage)
+        if doseLimit is None:
+            self._doseLimit = None
+        elif doseLimit.__class__.__name__ == "XSDataString":
+            self._doseLimit = doseLimit
+        else:
+            strMessage = "ERROR! XSDataInputBest constructor argument 'doseLimit' is not XSDataString but %s" % self._doseLimit.__class__.__name__
+            raise BaseException(strMessage)
         if goniostatMaxRotationSpeed is None:
             self._goniostatMaxRotationSpeed = None
         elif goniostatMaxRotationSpeed.__class__.__name__ == "XSDataAngularSpeed":
@@ -1927,6 +1934,13 @@ class XSDataInputBest(XSDataInput):
             self._radiationDamageModelGamma = radiationDamageModelGamma
         else:
             strMessage = "ERROR! XSDataInputBest constructor argument 'radiationDamageModelGamma' is not XSDataDouble but %s" % self._radiationDamageModelGamma.__class__.__name__
+            raise BaseException(strMessage)
+        if rFriedel is None:
+            self._rFriedel = None
+        elif rFriedel.__class__.__name__ == "XSDataDouble":
+            self._rFriedel = rFriedel
+        else:
+            strMessage = "ERROR! XSDataInputBest constructor argument 'rFriedel' is not XSDataDouble but %s" % self._rFriedel.__class__.__name__
             raise BaseException(strMessage)
         if strategyOption is None:
             self._strategyOption = None
@@ -2260,6 +2274,18 @@ class XSDataInputBest(XSDataInput):
             raise BaseException(strMessage)
     def delDetectorType(self): self._detectorType = None
     detectorType = property(getDetectorType, setDetectorType, delDetectorType, "Property for detectorType")
+    # Methods and properties for the 'doseLimit' attribute
+    def getDoseLimit(self): return self._doseLimit
+    def setDoseLimit(self, doseLimit):
+        if doseLimit is None:
+            self._doseLimit = None
+        elif doseLimit.__class__.__name__ == "XSDataString":
+            self._doseLimit = doseLimit
+        else:
+            strMessage = "ERROR! XSDataInputBest.setDoseLimit argument is not XSDataString but %s" % doseLimit.__class__.__name__
+            raise BaseException(strMessage)
+    def delDoseLimit(self): self._doseLimit = None
+    doseLimit = property(getDoseLimit, setDoseLimit, delDoseLimit, "Property for doseLimit")
     # Methods and properties for the 'goniostatMaxRotationSpeed' attribute
     def getGoniostatMaxRotationSpeed(self): return self._goniostatMaxRotationSpeed
     def setGoniostatMaxRotationSpeed(self, goniostatMaxRotationSpeed):
@@ -2344,6 +2370,18 @@ class XSDataInputBest(XSDataInput):
             raise BaseException(strMessage)
     def delRadiationDamageModelGamma(self): self._radiationDamageModelGamma = None
     radiationDamageModelGamma = property(getRadiationDamageModelGamma, setRadiationDamageModelGamma, delRadiationDamageModelGamma, "Property for radiationDamageModelGamma")
+    # Methods and properties for the 'rFriedel' attribute
+    def getRFriedel(self): return self._rFriedel
+    def setRFriedel(self, rFriedel):
+        if rFriedel is None:
+            self._rFriedel = None
+        elif rFriedel.__class__.__name__ == "XSDataDouble":
+            self._rFriedel = rFriedel
+        else:
+            strMessage = "ERROR! XSDataInputBest.setRFriedel argument is not XSDataDouble but %s" % rFriedel.__class__.__name__
+            raise BaseException(strMessage)
+    def delRFriedel(self): self._rFriedel = None
+    rFriedel = property(getRFriedel, setRFriedel, delRFriedel, "Property for rFriedel")
     # Methods and properties for the 'strategyOption' attribute
     def getStrategyOption(self): return self._strategyOption
     def setStrategyOption(self, strategyOption):
@@ -2468,6 +2506,8 @@ class XSDataInputBest(XSDataInput):
             self.detectorType.export(outfile, level, name_='detectorType')
         else:
             warnEmptyAttribute("detectorType", "XSDataString")
+        if self._doseLimit is not None:
+            self.doseLimit.export(outfile, level, name_='doseLimit')
         if self._goniostatMaxRotationSpeed is not None:
             self.goniostatMaxRotationSpeed.export(outfile, level, name_='goniostatMaxRotationSpeed')
         if self._goniostatMinRotationWidth is not None:
@@ -2482,6 +2522,8 @@ class XSDataInputBest(XSDataInput):
             self.radiationDamageModelBeta.export(outfile, level, name_='radiationDamageModelBeta')
         if self._radiationDamageModelGamma is not None:
             self.radiationDamageModelGamma.export(outfile, level, name_='radiationDamageModelGamma')
+        if self._rFriedel is not None:
+            self.rFriedel.export(outfile, level, name_='rFriedel')
         if self._strategyOption is not None:
             self.strategyOption.export(outfile, level, name_='strategyOption')
         if self._transmission is not None:
@@ -2613,6 +2655,11 @@ class XSDataInputBest(XSDataInput):
             obj_.build(child_)
             self.setDetectorType(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'doseLimit':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setDoseLimit(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'goniostatMaxRotationSpeed':
             obj_ = XSDataAngularSpeed()
             obj_.build(child_)
@@ -2647,6 +2694,11 @@ class XSDataInputBest(XSDataInput):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setRadiationDamageModelGamma(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rFriedel':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setRFriedel(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'strategyOption':
             obj_ = XSDataString()
