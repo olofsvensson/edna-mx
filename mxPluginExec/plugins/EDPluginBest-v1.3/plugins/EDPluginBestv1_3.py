@@ -73,6 +73,7 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
         # This version of the Best plugin requires the latest
         # version of Best. 
         self.addCompatibleVersion("Version 5.1.0 //  07.07.2015")
+        self.addCompatibleVersion("Version 5.1.1 //  18.11.2015")
 
         self.strCONF_BEST_HOME_LABEL = "besthome"
 
