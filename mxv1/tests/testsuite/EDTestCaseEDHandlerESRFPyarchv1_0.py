@@ -67,10 +67,10 @@ class EDTestCaseEDHandlerESRFPyarchv1_0(EDTestCasePluginUnit):
         EDAssert.equal("/data/pyarch/id30a3/mx415/20100212", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/visitor/mx415/id30a3/20100212"))
         EDAssert.equal("/data/pyarch/id30a3/mx415/20100212/1", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/visitor/mx415/id30a3/20100212/1"))
         EDAssert.equal("/data/pyarch/id30a3/mx415/20100212/1/2", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/visitor/mx415/id30a3/20100212/1/2"))
-        EDAssert.equal("/data/pyarch/id30a3/opid232/20100525", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/id30a3/inhouse/opid232/20100525"))
-        EDAssert.equal("/data/pyarch/id30a3/opid232/20100525/1", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/id30a3/inhouse/opid232/20100525/1"))
-        EDAssert.equal("/data/pyarch/id30a3/opid232/20100525/1/2", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/id30a3/inhouse/opid232/20100525/1/2"))
-        EDAssert.equal("/data/pyarch/id30a3/opid30a1/20140717/RAW_DATA/opid30a1_1_dnafiles", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/gz/id30a3/inhouse/opid30a1/20140717/RAW_DATA/opid30a1_1_dnafiles"))
+        EDAssert.equal("/data/pyarch/id30a3/opid232/20100525", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id30a3/inhouse/opid232/20100525"))
+        EDAssert.equal("/data/pyarch/id30a3/opid232/20100525/1", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id30a3/inhouse/opid232/20100525/1"))
+        EDAssert.equal("/data/pyarch/id30a3/opid232/20100525/1/2", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id30a3/inhouse/opid232/20100525/1/2"))
+        EDAssert.equal("/data/pyarch/id30a3/opid30a1/20140717/RAW_DATA/opid30a1_1_dnafiles", EDHandlerESRFPyarchv1_0.createPyarchFilePath("/data/id30a3/inhouse/opid30a1/20140717/RAW_DATA/opid30a1_1_dnafiles"))
         
 
 
