@@ -104,7 +104,7 @@ package XSDataBestv13 {
 		detectorDistanceMax : XSDataLength optional
 		detectorDistanceMin : XSDataLength optional
 		detectorType : XSDataString
-		doseLimit : XSDataString optional
+		doseLimit : XSDataDouble optional
 		goniostatMaxRotationSpeed : XSDataAngularSpeed optional
 		goniostatMinRotationWidth : XSDataAngle optional
 		minTransmission : XSDataDouble optional

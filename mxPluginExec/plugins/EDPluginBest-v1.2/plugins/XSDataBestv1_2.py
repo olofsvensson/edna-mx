@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Nov 18 02:10::21 2015 by EDGenerateDS.
+# Generated Wed Nov 18 02:49::23 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -1840,10 +1840,10 @@ class XSDataInputBest(XSDataInput):
             raise BaseException(strMessage)
         if doseLimit is None:
             self._doseLimit = None
-        elif doseLimit.__class__.__name__ == "XSDataString":
+        elif doseLimit.__class__.__name__ == "XSDataDouble":
             self._doseLimit = doseLimit
         else:
-            strMessage = "ERROR! XSDataInputBest constructor argument 'doseLimit' is not XSDataString but %s" % self._doseLimit.__class__.__name__
+            strMessage = "ERROR! XSDataInputBest constructor argument 'doseLimit' is not XSDataDouble but %s" % self._doseLimit.__class__.__name__
             raise BaseException(strMessage)
         if goniostatMaxRotationSpeed is None:
             self._goniostatMaxRotationSpeed = None
@@ -2171,10 +2171,10 @@ class XSDataInputBest(XSDataInput):
     def setDoseLimit(self, doseLimit):
         if doseLimit is None:
             self._doseLimit = None
-        elif doseLimit.__class__.__name__ == "XSDataString":
+        elif doseLimit.__class__.__name__ == "XSDataDouble":
             self._doseLimit = doseLimit
         else:
-            strMessage = "ERROR! XSDataInputBest.setDoseLimit argument is not XSDataString but %s" % doseLimit.__class__.__name__
+            strMessage = "ERROR! XSDataInputBest.setDoseLimit argument is not XSDataDouble but %s" % doseLimit.__class__.__name__
             raise BaseException(strMessage)
     def delDoseLimit(self): self._doseLimit = None
     doseLimit = property(getDoseLimit, setDoseLimit, delDoseLimit, "Property for doseLimit")
@@ -2499,7 +2499,7 @@ class XSDataInputBest(XSDataInput):
             self.setDetectorType(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'doseLimit':
-            obj_ = XSDataString()
+            obj_ = XSDataDouble()
             obj_.build(child_)
             self.setDoseLimit(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \

@@ -284,9 +284,9 @@ package XSDataMXv1 {
 			aimedResolution : XSDataDouble optional
 			anomalousData : XSDataBoolean optional
 			complexity : XSDataString optional
-			detectorDistanceMax : XSDataLength
-			optional
+			detectorDistanceMax : XSDataLength optional
 			detectorDistanceMin : XSDataLength optional
+			doseLimit : XSDataDouble optional
 			estimateRadiationDamage : XSDataBoolean optional
 			forcedSpaceGroup : XSDataString optional
 			goniostatMaxOscillationSpeed : XSDataAngularSpeed optional
@@ -299,6 +299,7 @@ package XSDataMXv1 {
 			requiredCompleteness : XSDataDouble optional
 			requiredMultiplicity : XSDataDouble optional
 			requiredResolution : XSDataDouble optional
+			rFriedel : XSDataDouble optional
 			strategyOption : XSDataString optional
 			userDefinedRotationRange : XSDataAngle optional
 			userDefinedRotationStart : XSDataAngle optional
