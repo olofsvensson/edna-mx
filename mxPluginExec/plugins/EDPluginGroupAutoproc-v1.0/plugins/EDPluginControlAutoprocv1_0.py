@@ -485,20 +485,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.screen('FINISHED first XDS run')
 
 
-        # use the cell dimensions and spacegroup from XDS to create a
-        # file in the results directory
-        filename = '_'.join([str(self.xds_first.dataOutput.sg_number.value),
-                             str(self.xds_first.dataOutput.cell_a.value),
-                             str(self.xds_first.dataOutput.cell_b.value),
-                             str(self.xds_first.dataOutput.cell_c.value),
-                             str(self.xds_first.dataOutput.cell_alpha.value),
-                             str(self.xds_first.dataOutput.cell_beta.value),
-                             str(self.xds_first.dataOutput.cell_gamma.value)])
-        try:
-            os.mknod(os.path.join(self.results_dir, filename), 0755)
-        except OSError: #file exists
-            pass
-
         # Copy the XDS.INP file that was used for the successful run
         # to the results directory
         tmppath = os.path.join(self.results_dir, self.image_prefix + '_successful_XDS.INP')
@@ -789,6 +775,20 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             strErrorMessage = "File import failed"
             self.addErrorMessage(strErrorMessage)
             self.ERROR(strErrorMessage)
+
+        # use the cell dimensions and spacegroup from pointless to create a
+        # file in the results directory
+        filename = '_'.join([str(self.file_conversion.dataOutput.pointless_sgnumber.value),
+                             str(self.file_conversion.dataOutput.pointless_cell[0].value),
+                             str(self.file_conversion.dataOutput.pointless_cell[1].value),
+                             str(self.file_conversion.dataOutput.pointless_cell[2].value),
+                             str(self.file_conversion.dataOutput.pointless_cell[3].value),
+                             str(self.file_conversion.dataOutput.pointless_cell[4].value),
+                             str(self.file_conversion.dataOutput.pointless_cell[5].value)])
+        try:
+            os.mknod(os.path.join(self.results_dir, filename), 0755)
+        except OSError: #file exists
+            pass
 
 
         # now we just have to run XScale to generate w/ and w/out
