@@ -5,7 +5,7 @@
 #    Copyright (C) 2008-2011 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -93,7 +93,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         self.listPluginMOSFLM = []
         self.defaultMinImageSize = 1000000
         self.minImageSize = None
-        
+
 
     def checkParameters(self):
         """
@@ -111,7 +111,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         if self.minImageSize is None:
             self.minImageSize = self.defaultMinImageSize
 
-    
+
 
     def process(self, _edPlugin=None):
         """
@@ -198,6 +198,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                 xsDataImageQualityIndicators.dozor_score = edPluginControlDozor.dataOutput.imageDozor[0].score
                 xsDataImageQualityIndicators.dozorSpotFile = edPluginControlDozor.dataOutput.imageDozor[0].spotFile
                 xsDataImageQualityIndicators.dozorSpotsIntAver = edPluginControlDozor.dataOutput.imageDozor[0].spots_int_aver
+                xsDataImageQualityIndicators.dozorSpotsResolution = edPluginControlDozor.dataOutput.imageDozor[0].spots_resolution
                 if self.xsDataResultControlImageQualityIndicators.inputDozor is None:
                     if edPluginControlDozor.dataOutput.inputDozor is not None:
                         self.xsDataResultControlImageQualityIndicators.inputDozor = XSDataDozorInput().parseString(
@@ -261,8 +262,8 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
 #                xsDataResultISPyB = edPluginISPyB.dataOutput
 #                if xsDataResultISPyB is not None:
                 # print xsDataResultISPyB.marshal()
-            
-        
+
+
 
     def finallyProcess(self, _edPlugin=None):
         EDPluginControl.finallyProcess(self, _edPlugin)
@@ -273,7 +274,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
             listId = []
             for xsDataInteger in self.edPluginISPyB.dataOutput.imageQualityIndicatorsId:
                 listId.append(xsDataInteger.value)
-            self.DEBUG("ISPyB imageQualityIndicatorIds = %r" % listId) 
+            self.DEBUG("ISPyB imageQualityIndicatorIds = %r" % listId)
         self.setDataOutput(self.xsDataResultControlImageQualityIndicators)
 
 

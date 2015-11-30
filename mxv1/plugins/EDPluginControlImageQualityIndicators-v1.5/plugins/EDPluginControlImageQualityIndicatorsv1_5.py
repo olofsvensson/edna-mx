@@ -5,7 +5,7 @@
 #    Copyright (C) 2008-2011 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -93,7 +93,7 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
         self.listPluginLabelit = []
         self.defaultMinImageSize = 1000000
         self.minImageSize = None
-        
+
 
     def checkParameters(self):
         """
@@ -111,7 +111,7 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
         if self.minImageSize is None:
             self.minImageSize = self.defaultMinImageSize
 
-    
+
 
     def process(self, _edPlugin=None):
         """
@@ -207,6 +207,8 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
             if edPluginControlDozor.dataOutput.imageDozor != []:
                 xsDataImageQualityIndicators.dozor_score = edPluginControlDozor.dataOutput.imageDozor[0].score
                 xsDataImageQualityIndicators.dozorSpotFile = edPluginControlDozor.dataOutput.imageDozor[0].spotFile
+                xsDataImageQualityIndicators.dozorSpotsIntAver = edPluginControlDozor.dataOutput.imageDozor[0].spots_int_aver
+                xsDataImageQualityIndicators.dozorSpotsResolution = edPluginControlDozor.dataOutput.imageDozor[0].spots_resolution
             self.xsDataResultControlImageQualityIndicators.addImageQualityIndicators(xsDataImageQualityIndicators)
             if self.dataInput.doUploadToIspyb is not None and self.dataInput.doUploadToIspyb.value:
                 xsDataISPyBImageQualityIndicators = \
@@ -242,7 +244,7 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
                     xsDataResultReadImageHeader = self.edPluginReadImageHeader.dataOutput
                     if xsDataResultReadImageHeader is not None:
                         edPluginLabelitIndexing = self.loadPlugin(self.strIndexingLabelitPluginName)
-                        edPluginLabelitIndexing.setDataInput(XSDataImage(xsDataResultControlImageQualityIndicator.image.path), "referenceImage", )
+                        edPluginLabelitIndexing.setDataInput(XSDataImage(xsDataResultControlImageQualityIndicator.image.path), "referenceImage",)
                         self.listPluginLabelit.append([edPluginLabelitIndexing, xsDataResultControlImageQualityIndicator])
                         edPluginLabelitIndexing.execute()
             for tupleLabelit in self.listPluginLabelit:
@@ -257,8 +259,8 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
                         selectedSolution = xsDataIndexingResult.selectedSolution
                         if selectedSolution is not None:
                             xsDataResultControlImageQualityIndicator.selectedIndexingSolution = selectedSolution
-            
-        
+
+
 
     def finallyProcess(self, _edPlugin=None):
         EDPluginControl.finallyProcess(self, _edPlugin)
@@ -269,7 +271,7 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
             listId = []
             for xsDataInteger in self.edPluginISPyB.dataOutput.imageQualityIndicatorsId:
                 listId.append(xsDataInteger.value)
-            self.DEBUG("ISPyB imageQualityIndicatorIds = %r" % listId) 
+            self.DEBUG("ISPyB imageQualityIndicatorIds = %r" % listId)
         self.setDataOutput(self.xsDataResultControlImageQualityIndicators)
 
 

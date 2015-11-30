@@ -27,6 +27,7 @@ package XSDataMXv1 {
 			dozor_score : XSDataDouble optional
 			dozorSpotFile : XSDataFile optional
 			dozorSpotsIntAver : XSDataDouble optional
+			dozorSpotsResolution : XSDataDouble optional
 			binPopCutOffMethod2Res : XSDataDouble
 			goodBraggCandidates : XSDataInteger
 			iceRings : XSDataInteger
