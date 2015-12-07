@@ -42,6 +42,7 @@ complex type XSDataDozorInput extends XSDataInput {
 
 complex type XSDataInputControlDozor extends XSDataInput {
 	image : XSDataFile []
+	batchSize : XSDataInteger optional
 }
 
 complex type XSDataResultControlDozor extends XSDataResult {

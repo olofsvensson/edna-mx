@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Oct 23 11:22::27 2015 by EDGenerateDS.
+# Generated Mon Dec 7 11:00::03 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -921,7 +921,7 @@ class XSDataDozorInput(XSDataInput):
 
 
 class XSDataInputControlDozor(XSDataInput):
-    def __init__(self, configuration=None, image=None):
+    def __init__(self, configuration=None, batchSize=None, image=None):
         XSDataInput.__init__(self, configuration)
         if image is None:
             self._image = []
@@ -929,6 +929,13 @@ class XSDataInputControlDozor(XSDataInput):
             self._image = image
         else:
             strMessage = "ERROR! XSDataInputControlDozor constructor argument 'image' is not list but %s" % self._image.__class__.__name__
+            raise BaseException(strMessage)
+        if batchSize is None:
+            self._batchSize = None
+        elif batchSize.__class__.__name__ == "XSDataInteger":
+            self._batchSize = batchSize
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor constructor argument 'batchSize' is not XSDataInteger but %s" % self._batchSize.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
@@ -963,6 +970,18 @@ class XSDataInputControlDozor(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputControlDozor.addImage argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
+    # Methods and properties for the 'batchSize' attribute
+    def getBatchSize(self): return self._batchSize
+    def setBatchSize(self, batchSize):
+        if batchSize is None:
+            self._batchSize = None
+        elif batchSize.__class__.__name__ == "XSDataInteger":
+            self._batchSize = batchSize
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor.setBatchSize argument is not XSDataInteger but %s" % batchSize.__class__.__name__
+            raise BaseException(strMessage)
+    def delBatchSize(self): self._batchSize = None
+    batchSize = property(getBatchSize, setBatchSize, delBatchSize, "Property for batchSize")
     def export(self, outfile, level, name_='XSDataInputControlDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -975,6 +994,8 @@ class XSDataInputControlDozor(XSDataInput):
             image_.export(outfile, level, name_='image')
         if self.getImage() == []:
             warnEmptyAttribute("image", "XSDataFile")
+        if self._batchSize is not None:
+            self.batchSize.export(outfile, level, name_='batchSize')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -985,6 +1006,11 @@ class XSDataInputControlDozor(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.image.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'batchSize':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setBatchSize(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

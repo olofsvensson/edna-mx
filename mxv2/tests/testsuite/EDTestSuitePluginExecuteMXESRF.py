@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
 #
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -54,6 +54,7 @@ class EDTestSuitePluginExecuteMXESRF(EDTestSuite):
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlCharacterisationv1_3")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlCharacterisationv1_4")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlInterfaceToMXCuBEv1_3")
+        self.addTestSuiteFromName("EDTestSuitePluginControlDozorv1_0")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_3")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_4")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_5")
