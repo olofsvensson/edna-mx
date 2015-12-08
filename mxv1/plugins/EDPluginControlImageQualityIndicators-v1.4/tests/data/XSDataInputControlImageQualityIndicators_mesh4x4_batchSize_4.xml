@@ -3,6 +3,9 @@
 	<doIndexing>
 		<value>False</value>
 	</doIndexing>
+	<doDistlSignalStrength>
+		<value>False</value>
+	</doDistlSignalStrength>
 	<batchSize>
 		<value>4</value>
 	</batchSize>

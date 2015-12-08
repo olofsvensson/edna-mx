@@ -179,7 +179,7 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
                     xsDataInputDistlSignalStrength.setReferenceImage(xsDataImage)
                     edPluginPluginExecImageQualityIndicator.setDataInput(xsDataInputDistlSignalStrength)
                     edPluginPluginExecImageQualityIndicator.execute()
-                listPluginDistl.append((xsDataImage, edPluginPluginExecImageQualityIndicator))
+                listPluginDistl.append((xsDataImage.copy(), edPluginPluginExecImageQualityIndicator))
                 listBatch.append(xsDataImage.copy())
                 if len(listBatch) == batchSize:
                     edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor)
@@ -205,9 +205,9 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
         # Synchronize all image quality indicator plugins and upload to ISPyB
         xsDataInputStoreListOfImageQualityIndicators = XSDataInputStoreListOfImageQualityIndicators()
 
-        for (xdDataImage, edPluginPluginExecImageQualityIndicator) in listPluginDistl:
+        for (xsDataImage, edPluginPluginExecImageQualityIndicator) in listPluginDistl:
             xsDataImageQualityIndicators = XSDataImageQualityIndicators()
-            xsDataImageQualityIndicators.image = xsDataImage
+            xsDataImageQualityIndicators.image = xsDataImage.copy()
             if edPluginPluginExecImageQualityIndicator is not None:
                 edPluginPluginExecImageQualityIndicator.synchronize()
                 if edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators is not None:
