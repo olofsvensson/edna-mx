@@ -82,6 +82,7 @@ package XSDataMXv1 {
 			doIndexing : XSDataBoolean optional
 			doUploadToIspyb : XSDataBoolean optional
 			image : XSDataImage []
+			batchSize : XSDataInteger optional
 		}
 
 		complex type XSDataInputControlXDSGenerateBackgroundImage extends XSDataInput {

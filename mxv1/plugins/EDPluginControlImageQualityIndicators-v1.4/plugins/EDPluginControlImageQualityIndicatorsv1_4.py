@@ -120,6 +120,11 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         EDPluginControl.process(self, _edPlugin)
         self.DEBUG("EDPluginControlImageQualityIndicatorsv1_4.process")
         EDUtilsParallel.initializeNbThread()
+        # Check batch size
+        if self.dataInput.batchSize is None:
+            batchSize = 1
+        else:
+            batchSize = self.dataInput.batchSize.value
         # Check if we should do distlSignalStrength:
         bDoDistlSignalStrength = True
         if self.dataInput.doDistlSignalStrength is not None:
@@ -134,7 +139,10 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         listXSDataImage = self.dataInput.image
         xsDataInputMXWaitFile = XSDataInputMXWaitFile()
         self.xsDataResultControlImageQualityIndicators = XSDataResultControlImageQualityIndicators()
-        listPlugin = []
+        listPluginDistl = []
+        listPluginDozor = []
+        listBatch = []
+        indexBatch = 0
         for xsDataImage in listXSDataImage:
             self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
             xsDataInputMXWaitFile.file = XSDataFile(xsDataImage.path)
@@ -157,6 +165,8 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                 self.addErrorMessage(strError)
                 self.setFailure()
             else:
+                # Check if we should run distl.signalStrength
+                edPluginPluginExecImageQualityIndicator = None
                 if bDoDistlSignalStrength:
                     if self.bUseThinClient:
                         strPluginName = self.strPluginNameThinClient
@@ -168,42 +178,55 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                     xsDataInputDistlSignalStrength.setReferenceImage(xsDataImage)
                     edPluginPluginExecImageQualityIndicator.setDataInput(xsDataInputDistlSignalStrength)
                     edPluginPluginExecImageQualityIndicator.execute()
-                else:
-                    edPluginPluginExecImageQualityIndicator = xsDataImage
-                edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor)
-                xsDataInputControlDozor = XSDataInputControlDozor()
-                xsDataInputControlDozor.addImage(XSDataFile(xsDataImage.path))
-                edPluginControlDozor.dataInput = xsDataInputControlDozor
-                edPluginControlDozor.execute()
-                listPlugin.append([edPluginPluginExecImageQualityIndicator, edPluginControlDozor])
+                listPluginDistl.append((xsDataImage, edPluginPluginExecImageQualityIndicator))
+                listBatch.append(xsDataImage.copy())
+                if len(listBatch) == batchSize:
+                    edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor)
+                    xsDataInputControlDozor = XSDataInputControlDozor()
+                    for image in listBatch:
+                        xsDataInputControlDozor.addImage(XSDataFile(image.path))
+                    xsDataInputControlDozor.batchSize = XSDataInteger(batchSize)
+                    edPluginControlDozor.dataInput = xsDataInputControlDozor
+                    edPluginControlDozor.execute()
+                    listPluginDozor.append((edPluginControlDozor, listBatch))
+                    listBatch = []
+        if len(listBatch) > 0:
+            # Process the remaining images...
+            edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor)
+            xsDataInputControlDozor = XSDataInputControlDozor()
+            for image in listBatch:
+                xsDataInputControlDozor.addImage(XSDataFile(image.path))
+            xsDataInputControlDozor.batchSize = XSDataInteger(batchSize)
+            edPluginControlDozor.dataInput = xsDataInputControlDozor
+            edPluginControlDozor.execute()
+            listPluginDozor.append([edPluginControlDozor, listBatch])
         listIndexing = []
         # Synchronize all image quality indicator plugins and upload to ISPyB
         xsDataInputStoreListOfImageQualityIndicators = XSDataInputStoreListOfImageQualityIndicators()
-        for pluginPair in listPlugin:
-            if bDoDistlSignalStrength:
-                edPluginPluginExecImageQualityIndicator = pluginPair[0]
+
+        for (xdDataImage, edPluginPluginExecImageQualityIndicator) in listPluginDistl:
+            xsDataImageQualityIndicators = XSDataImageQualityIndicators()
+            xsDataImageQualityIndicators.image = xsDataImage
+            if edPluginPluginExecImageQualityIndicator is not None:
                 edPluginPluginExecImageQualityIndicator.synchronize()
-                if edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators is None:
-                    xsDataImageQualityIndicators = XSDataImageQualityIndicators()
-                else:
+                if edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators is not None:
                     xsDataImageQualityIndicators = XSDataImageQualityIndicators.parseString(\
                             edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators.marshal())
-            else:
-                xsDataImageQualityIndicators = XSDataImageQualityIndicators()
-                xsDataImage = pluginPair[0]
-                xsDataImageQualityIndicators.image = xsDataImage
-            edPluginControlDozor = pluginPair[1]
-            edPluginControlDozor.synchronize()
-            if edPluginControlDozor.dataOutput.imageDozor != []:
-                xsDataImageQualityIndicators.dozor_score = edPluginControlDozor.dataOutput.imageDozor[0].score
-                xsDataImageQualityIndicators.dozorSpotFile = edPluginControlDozor.dataOutput.imageDozor[0].spotFile
-                xsDataImageQualityIndicators.dozorSpotsIntAver = edPluginControlDozor.dataOutput.imageDozor[0].spots_int_aver
-                xsDataImageQualityIndicators.dozorSpotsResolution = edPluginControlDozor.dataOutput.imageDozor[0].spots_resolution
-                if self.xsDataResultControlImageQualityIndicators.inputDozor is None:
-                    if edPluginControlDozor.dataOutput.inputDozor is not None:
-                        self.xsDataResultControlImageQualityIndicators.inputDozor = XSDataDozorInput().parseString(
-                                       edPluginControlDozor.dataOutput.inputDozor.marshal())
             self.xsDataResultControlImageQualityIndicators.addImageQualityIndicators(xsDataImageQualityIndicators)
+
+        for (edPluginControlDozor, listBatch) in listPluginDozor:
+            edPluginControlDozor.synchronize()
+            for imageDozor in edPluginControlDozor.dataOutput.imageDozor:
+                for xsDataImageQualityIndicators in self.xsDataResultControlImageQualityIndicators.imageQualityIndicators:
+                    if xsDataImageQualityIndicators.image.path.value == imageDozor.image.path.value:
+                        xsDataImageQualityIndicators.dozor_score = imageDozor.score
+                        xsDataImageQualityIndicators.dozorSpotFile = imageDozor.spotFile
+                        xsDataImageQualityIndicators.dozorSpotsIntAver = imageDozor.spots_int_aver
+                        xsDataImageQualityIndicators.dozorSpotsResolution = imageDozor.spots_resolution
+                        if self.xsDataResultControlImageQualityIndicators.inputDozor is None:
+                            if edPluginControlDozor.dataOutput.inputDozor is not None:
+                                self.xsDataResultControlImageQualityIndicators.inputDozor = XSDataDozorInput().parseString(
+                                               edPluginControlDozor.dataOutput.inputDozor.marshal())
             if self.dataInput.doUploadToIspyb is not None and self.dataInput.doUploadToIspyb.value:
                 xsDataISPyBImageQualityIndicators = \
                     XSDataISPyBImageQualityIndicators.parseString(xsDataImageQualityIndicators.marshal())
