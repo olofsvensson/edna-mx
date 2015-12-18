@@ -189,11 +189,11 @@ class EDPluginControlRunXdsFastProcv1_0( EDPluginControl ):
             params.spacegroup = self.dataInput.spacegroup
             params.unit_cell = self.dataInput.unit_cell
 
-            # Limited spot range: 1 to 32 or max no data points
+            # Limited spot range: 1 to 20 or max no data points
             
             xsDataRangeLimited = XSDataRange()
             xsDataRangeLimited.begin = 1
-            xsDataRangeLimited.end = 32 if self.end_image_no > 32 else self.end_image_no
+            xsDataRangeLimited.end = 20 if self.end_image_no > 20 else self.end_image_no
 
             params.addSpot_range(xsDataRangeLimited)
 

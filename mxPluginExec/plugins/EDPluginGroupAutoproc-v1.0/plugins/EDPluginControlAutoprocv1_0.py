@@ -392,7 +392,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 #        self.dimple = self.loadPlugin('EDPluginControlDIMPLEPipelineCalcDiffMapv10')
 
         # ESRF specific: wait till we got the last image
-        if EDUtilsPath.isESRF() and not "id30a3" in self.first_image:
+        if EDUtilsPath.isESRF():
             if any(beamline in self.first_image for beamline in ["id23eh1", "id29"]):
                 minSize = 6000000
             elif any(beamline in self.first_image for beamline in ["id23eh2", "id30a1"]):

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <XSDataInputH5ToCBF>
   <imageNumber>
-  	<value>0</value>
+  	<value>1</value>
   </imageNumber>
   <hdf5File>
   	<path>
