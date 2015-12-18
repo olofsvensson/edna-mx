@@ -104,10 +104,10 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
             xsDataInputMXWaitFile = XSDataInputMXWaitFile()
             # Quite ugly hack to avoid lag problems at the ESRF:
             if EDUtilsPath.isESRF():
-                if any( beamline in strPathToDiffractionImage for beamline in ["id23eh1", "id29"]):
+                if any( beamline in strPathToDiffractionImage for beamline in ["id23eh1", "id29", "id30b"]):
                     # Pilatus 6M
                     self.minImageSize = 6000000
-                elif any( beamline in strPathToDiffractionImage for beamline in ["id23eh2", "id30a1"]):
+                elif any( beamline in strPathToDiffractionImage for beamline in ["id23eh2", "id30a1", "id30a3"]):
                     # Pilatus3 2M
                     self.minImageSize = 2000000
             elif EDUtilsPath.isEMBL():
@@ -116,7 +116,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
             xsDataInputMXWaitFile.setFile(self.getDataInput().getDiffractionImage())
             if self.getDataInput().getWaitForFileTimeOut():
                 xsDataInputMXWaitFile.setTimeOut(self.getDataInput().getWaitForFileTimeOut())
-            self.edPluginMXWaitFile = EDPluginMXWaitFilev1_1()
+            self.edPluginMXWaitFile = self.loadPlugin(self.strMXWaitFilePluginName)
             self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
             # Load the execution plugin
             self.edPluginExecThumbnail = self.loadPlugin(self.strExecThumbnailPluginName)

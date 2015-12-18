@@ -30,13 +30,13 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 from EDTestSuite import EDTestSuite
 
 
-class EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_5(EDTestSuite):
+class EDTestSuitePluginControlDozorv1_0(EDTestSuite):
 
 
     def process(self):
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_waitFile")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_timeOut")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_mesh4x4")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_mesh4x4_batchSize_4")
+        self.addTestCaseFromName("EDTestCasePluginUnitControlDozorv1_0")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlDozorv1_0")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlDozorv1_0_batchSize_2")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlDozorv1_0_batchSize_2a")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlDozorv1_0_batchSize_5")
 

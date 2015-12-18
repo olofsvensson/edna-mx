@@ -26,6 +26,8 @@ package XSDataMXv1 {
 		complex type XSDataImageQualityIndicators extends XSData {
 			dozor_score : XSDataDouble optional
 			dozorSpotFile : XSDataFile optional
+			dozorSpotsIntAver : XSDataDouble optional
+			dozorSpotsResolution : XSDataDouble optional
 			binPopCutOffMethod2Res : XSDataDouble
 			goodBraggCandidates : XSDataInteger
 			iceRings : XSDataInteger
@@ -46,7 +48,24 @@ package XSDataMXv1 {
 			spotTotal : XSDataInteger
 			totalIntegratedSignal : XSDataDouble optional
 		}
-
+		
+		complex type XSDataDozorInput extends XSDataInput {
+			detectorType : XSDataString
+			exposureTime : XSDataDouble
+			spotSize : XSDataInteger
+			detectorDistance : XSDataDouble
+			wavelength : XSDataDouble
+			fractionPolarization : XSDataDouble optional
+			orgx : XSDataDouble
+			orgy : XSDataDouble
+			oscillationRange : XSDataDouble
+			imageStep : XSDataDouble optional
+			startingAngle : XSDataDouble optional
+			firstImageNumber : XSDataInteger
+			numberImages : XSDataInteger
+			nameTemplateImage : XSDataString
+		}		
+		
 		complex type XSDataInputCharacterisation extends XSDataInput {
 			dataCollection : XSDataCollection
 		}
@@ -63,6 +82,7 @@ package XSDataMXv1 {
 			doIndexing : XSDataBoolean optional
 			doUploadToIspyb : XSDataBoolean optional
 			image : XSDataImage []
+			batchSize : XSDataInteger optional
 		}
 
 		complex type XSDataInputControlXDSGenerateBackgroundImage extends XSDataInput {
@@ -126,6 +146,7 @@ package XSDataMXv1 {
 
 		complex type XSDataResultControlImageQualityIndicators extends XSDataResult {
 			imageQualityIndicators : XSDataImageQualityIndicators [] optional
+			inputDozor : XSDataDozorInput optional
 		}
 
 		complex type XSDataResultControlXDSGenerateBackgroundImage extends XSDataResult {
@@ -265,9 +286,9 @@ package XSDataMXv1 {
 			aimedResolution : XSDataDouble optional
 			anomalousData : XSDataBoolean optional
 			complexity : XSDataString optional
-			detectorDistanceMax : XSDataLength
-			optional
+			detectorDistanceMax : XSDataLength optional
 			detectorDistanceMin : XSDataLength optional
+			doseLimit : XSDataDouble optional
 			estimateRadiationDamage : XSDataBoolean optional
 			forcedSpaceGroup : XSDataString optional
 			goniostatMaxOscillationSpeed : XSDataAngularSpeed optional
@@ -280,6 +301,7 @@ package XSDataMXv1 {
 			requiredCompleteness : XSDataDouble optional
 			requiredMultiplicity : XSDataDouble optional
 			requiredResolution : XSDataDouble optional
+			rFriedel : XSDataDouble optional
 			strategyOption : XSDataString optional
 			userDefinedRotationRange : XSDataAngle optional
 			userDefinedRotationStart : XSDataAngle optional

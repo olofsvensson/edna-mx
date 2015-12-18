@@ -20,8 +20,7 @@ package XSDataBestv12 {
 		comment : XSDataString optional
 		crystalScale : XSDataCrystalScale optional
 		statisticalPrediction : XSDataBestStatisticalPrediction optional
-		strategySummary : XSDataBestStrategySummary
-		optional
+		strategySummary : XSDataBestStrategySummary optional
 	}
 
 	complex type XSDataBestCollectionRun {
@@ -44,16 +43,14 @@ package XSDataBestv12 {
 	complex type XSDataBestResolutionBin {
 		IOverSigma : XSDataDouble
 		averageIntensity : XSDataDouble
-		averageIntensityOverAverageSigma : XSDataDouble
-		optional
+		averageIntensityOverAverageSigma : XSDataDouble optional
 		averageSigma : XSDataDouble
 		completeness : XSDataDouble
 		maxResolution : XSDataDouble
 		minResolution : XSDataDouble
 		percentageOverload : XSDataDouble
 		rFactor : XSDataDouble
-		rFriedel : XSDataDouble
-		optional
+		rFriedel : XSDataDouble optional
 		redundancy : XSDataDouble
 	}
 
@@ -83,8 +80,7 @@ package XSDataBestv12 {
 		"- anomalousData is deprecated, please use strategyOption instead.\n\n- minTransmission will work only with version v3.4 or higher of Best\n\n- xdsBackgroundFile will only work with version v3.4.1 or higher of Best\n\n- detectorDistanceMin and detectorDistanceMax (in mm) will work only with version v3.4.3 or higher of Best\n"
 		aimedCompleteness : XSDataDouble optional
 		aimedIOverSigma : XSDataDouble optional
-		aimedRedundancy : XSDataDouble
-		optional
+		aimedRedundancy : XSDataDouble optional
 		aimedResolution : XSDataDouble optional
 		anomalousData : XSDataBoolean optional
 		beamExposureTime : XSDataTime
@@ -100,12 +96,14 @@ package XSDataBestv12 {
 		detectorDistanceMax : XSDataLength optional
 		detectorDistanceMin : XSDataLength optional
 		detectorType : XSDataString
+		doseLimit : XSDataDouble optional
 		goniostatMaxRotationSpeed : XSDataAngularSpeed optional
 		goniostatMinRotationWidth : XSDataAngle optional
 		minTransmission : XSDataDouble optional
 		numberOfCrystalPositions : XSDataInteger optional
 		radiationDamageModelBeta : XSDataDouble optional
 		radiationDamageModelGamma : XSDataDouble optional
+		rFriedel : XSDataDouble optional
 		strategyOption : XSDataString optional
 		transmission : XSDataDouble optional
 		userDefinedRotationRange : XSDataAngle optional

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Jun 17 09:47::16 2015 by EDGenerateDS.
+# Generated Wed Nov 18 02:48::50 2015 by EDGenerateDS.
 #
 
 import os, sys
@@ -31,12 +31,12 @@ dictLocation = { \
 try:
     from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataDouble
-    from XSDataCommon import XSDataInteger
-    from XSDataCommon import XSDataResult
-    from XSDataCommon import XSDataString
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
+    from XSDataCommon import XSDataInteger
+    from XSDataCommon import XSDataResult
     from XSDataCommon import XSDataSize
+    from XSDataCommon import XSDataString
     from XSDataCommon import XSDataAbsorbedDoseRate
     from XSDataCommon import XSDataAngularSpeed
     from XSDataCommon import XSDataFlux
@@ -55,12 +55,12 @@ except ImportError as error:
         raise error
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataDouble
-from XSDataCommon import XSDataInteger
-from XSDataCommon import XSDataResult
-from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
+from XSDataCommon import XSDataInteger
+from XSDataCommon import XSDataResult
 from XSDataCommon import XSDataSize
+from XSDataCommon import XSDataString
 from XSDataCommon import XSDataAbsorbedDoseRate
 from XSDataCommon import XSDataAngularSpeed
 from XSDataCommon import XSDataFlux
@@ -447,6 +447,329 @@ class XSDataBestCollectionRun(object):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataBestCollectionRun
+
+
+class XSDataBestStrategySummary(object):
+    def __init__(self, transmission=None, totalExposureTime=None, totalDataCollectionTime=None, resolutionReasoning=None, resolution=None, redundancy=None, rankingResolution=None, iSigma=None, distance=None, completeness=None):
+        if completeness is None:
+            self._completeness = None
+        elif completeness.__class__.__name__ == "XSDataDouble":
+            self._completeness = completeness
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'completeness' is not XSDataDouble but %s" % self._completeness.__class__.__name__
+            raise BaseException(strMessage)
+        if distance is None:
+            self._distance = None
+        elif distance.__class__.__name__ == "XSDataLength":
+            self._distance = distance
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'distance' is not XSDataLength but %s" % self._distance.__class__.__name__
+            raise BaseException(strMessage)
+        if iSigma is None:
+            self._iSigma = None
+        elif iSigma.__class__.__name__ == "XSDataDouble":
+            self._iSigma = iSigma
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'iSigma' is not XSDataDouble but %s" % self._iSigma.__class__.__name__
+            raise BaseException(strMessage)
+        if rankingResolution is None:
+            self._rankingResolution = None
+        elif rankingResolution.__class__.__name__ == "XSDataDouble":
+            self._rankingResolution = rankingResolution
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'rankingResolution' is not XSDataDouble but %s" % self._rankingResolution.__class__.__name__
+            raise BaseException(strMessage)
+        if redundancy is None:
+            self._redundancy = None
+        elif redundancy.__class__.__name__ == "XSDataDouble":
+            self._redundancy = redundancy
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'redundancy' is not XSDataDouble but %s" % self._redundancy.__class__.__name__
+            raise BaseException(strMessage)
+        if resolution is None:
+            self._resolution = None
+        elif resolution.__class__.__name__ == "XSDataDouble":
+            self._resolution = resolution
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'resolution' is not XSDataDouble but %s" % self._resolution.__class__.__name__
+            raise BaseException(strMessage)
+        if resolutionReasoning is None:
+            self._resolutionReasoning = None
+        elif resolutionReasoning.__class__.__name__ == "XSDataString":
+            self._resolutionReasoning = resolutionReasoning
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'resolutionReasoning' is not XSDataString but %s" % self._resolutionReasoning.__class__.__name__
+            raise BaseException(strMessage)
+        if totalDataCollectionTime is None:
+            self._totalDataCollectionTime = None
+        elif totalDataCollectionTime.__class__.__name__ == "XSDataTime":
+            self._totalDataCollectionTime = totalDataCollectionTime
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'totalDataCollectionTime' is not XSDataTime but %s" % self._totalDataCollectionTime.__class__.__name__
+            raise BaseException(strMessage)
+        if totalExposureTime is None:
+            self._totalExposureTime = None
+        elif totalExposureTime.__class__.__name__ == "XSDataTime":
+            self._totalExposureTime = totalExposureTime
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'totalExposureTime' is not XSDataTime but %s" % self._totalExposureTime.__class__.__name__
+            raise BaseException(strMessage)
+        if transmission is None:
+            self._transmission = None
+        elif transmission.__class__.__name__ == "XSDataDouble":
+            self._transmission = transmission
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'transmission' is not XSDataDouble but %s" % self._transmission.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'completeness' attribute
+    def getCompleteness(self): return self._completeness
+    def setCompleteness(self, completeness):
+        if completeness is None:
+            self._completeness = None
+        elif completeness.__class__.__name__ == "XSDataDouble":
+            self._completeness = completeness
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary.setCompleteness argument is not XSDataDouble but %s" % completeness.__class__.__name__
+            raise BaseException(strMessage)
+    def delCompleteness(self): self._completeness = None
+    completeness = property(getCompleteness, setCompleteness, delCompleteness, "Property for completeness")
+    # Methods and properties for the 'distance' attribute
+    def getDistance(self): return self._distance
+    def setDistance(self, distance):
+        if distance is None:
+            self._distance = None
+        elif distance.__class__.__name__ == "XSDataLength":
+            self._distance = distance
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary.setDistance argument is not XSDataLength but %s" % distance.__class__.__name__
+            raise BaseException(strMessage)
+    def delDistance(self): self._distance = None
+    distance = property(getDistance, setDistance, delDistance, "Property for distance")
+    # Methods and properties for the 'iSigma' attribute
+    def getISigma(self): return self._iSigma
+    def setISigma(self, iSigma):
+        if iSigma is None:
+            self._iSigma = None
+        elif iSigma.__class__.__name__ == "XSDataDouble":
+            self._iSigma = iSigma
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary.setISigma argument is not XSDataDouble but %s" % iSigma.__class__.__name__
+            raise BaseException(strMessage)
+    def delISigma(self): self._iSigma = None
+    iSigma = property(getISigma, setISigma, delISigma, "Property for iSigma")
+    # Methods and properties for the 'rankingResolution' attribute
+    def getRankingResolution(self): return self._rankingResolution
+    def setRankingResolution(self, rankingResolution):
+        if rankingResolution is None:
+            self._rankingResolution = None
+        elif rankingResolution.__class__.__name__ == "XSDataDouble":
+            self._rankingResolution = rankingResolution
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary.setRankingResolution argument is not XSDataDouble but %s" % rankingResolution.__class__.__name__
+            raise BaseException(strMessage)
+    def delRankingResolution(self): self._rankingResolution = None
+    rankingResolution = property(getRankingResolution, setRankingResolution, delRankingResolution, "Property for rankingResolution")
+    # Methods and properties for the 'redundancy' attribute
+    def getRedundancy(self): return self._redundancy
+    def setRedundancy(self, redundancy):
+        if redundancy is None:
+            self._redundancy = None
+        elif redundancy.__class__.__name__ == "XSDataDouble":
+            self._redundancy = redundancy
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary.setRedundancy argument is not XSDataDouble but %s" % redundancy.__class__.__name__
+            raise BaseException(strMessage)
+    def delRedundancy(self): self._redundancy = None
+    redundancy = property(getRedundancy, setRedundancy, delRedundancy, "Property for redundancy")
+    # Methods and properties for the 'resolution' attribute
+    def getResolution(self): return self._resolution
+    def setResolution(self, resolution):
+        if resolution is None:
+            self._resolution = None
+        elif resolution.__class__.__name__ == "XSDataDouble":
+            self._resolution = resolution
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary.setResolution argument is not XSDataDouble but %s" % resolution.__class__.__name__
+            raise BaseException(strMessage)
+    def delResolution(self): self._resolution = None
+    resolution = property(getResolution, setResolution, delResolution, "Property for resolution")
+    # Methods and properties for the 'resolutionReasoning' attribute
+    def getResolutionReasoning(self): return self._resolutionReasoning
+    def setResolutionReasoning(self, resolutionReasoning):
+        if resolutionReasoning is None:
+            self._resolutionReasoning = None
+        elif resolutionReasoning.__class__.__name__ == "XSDataString":
+            self._resolutionReasoning = resolutionReasoning
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary.setResolutionReasoning argument is not XSDataString but %s" % resolutionReasoning.__class__.__name__
+            raise BaseException(strMessage)
+    def delResolutionReasoning(self): self._resolutionReasoning = None
+    resolutionReasoning = property(getResolutionReasoning, setResolutionReasoning, delResolutionReasoning, "Property for resolutionReasoning")
+    # Methods and properties for the 'totalDataCollectionTime' attribute
+    def getTotalDataCollectionTime(self): return self._totalDataCollectionTime
+    def setTotalDataCollectionTime(self, totalDataCollectionTime):
+        if totalDataCollectionTime is None:
+            self._totalDataCollectionTime = None
+        elif totalDataCollectionTime.__class__.__name__ == "XSDataTime":
+            self._totalDataCollectionTime = totalDataCollectionTime
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary.setTotalDataCollectionTime argument is not XSDataTime but %s" % totalDataCollectionTime.__class__.__name__
+            raise BaseException(strMessage)
+    def delTotalDataCollectionTime(self): self._totalDataCollectionTime = None
+    totalDataCollectionTime = property(getTotalDataCollectionTime, setTotalDataCollectionTime, delTotalDataCollectionTime, "Property for totalDataCollectionTime")
+    # Methods and properties for the 'totalExposureTime' attribute
+    def getTotalExposureTime(self): return self._totalExposureTime
+    def setTotalExposureTime(self, totalExposureTime):
+        if totalExposureTime is None:
+            self._totalExposureTime = None
+        elif totalExposureTime.__class__.__name__ == "XSDataTime":
+            self._totalExposureTime = totalExposureTime
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary.setTotalExposureTime argument is not XSDataTime but %s" % totalExposureTime.__class__.__name__
+            raise BaseException(strMessage)
+    def delTotalExposureTime(self): self._totalExposureTime = None
+    totalExposureTime = property(getTotalExposureTime, setTotalExposureTime, delTotalExposureTime, "Property for totalExposureTime")
+    # Methods and properties for the 'transmission' attribute
+    def getTransmission(self): return self._transmission
+    def setTransmission(self, transmission):
+        if transmission is None:
+            self._transmission = None
+        elif transmission.__class__.__name__ == "XSDataDouble":
+            self._transmission = transmission
+        else:
+            strMessage = "ERROR! XSDataBestStrategySummary.setTransmission argument is not XSDataDouble but %s" % transmission.__class__.__name__
+            raise BaseException(strMessage)
+    def delTransmission(self): self._transmission = None
+    transmission = property(getTransmission, setTransmission, delTransmission, "Property for transmission")
+    def export(self, outfile, level, name_='XSDataBestStrategySummary'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataBestStrategySummary'):
+        pass
+        if self._completeness is not None:
+            self.completeness.export(outfile, level, name_='completeness')
+        if self._distance is not None:
+            self.distance.export(outfile, level, name_='distance')
+        else:
+            warnEmptyAttribute("distance", "XSDataLength")
+        if self._iSigma is not None:
+            self.iSigma.export(outfile, level, name_='iSigma')
+        if self._rankingResolution is not None:
+            self.rankingResolution.export(outfile, level, name_='rankingResolution')
+        if self._redundancy is not None:
+            self.redundancy.export(outfile, level, name_='redundancy')
+        if self._resolution is not None:
+            self.resolution.export(outfile, level, name_='resolution')
+        else:
+            warnEmptyAttribute("resolution", "XSDataDouble")
+        if self._resolutionReasoning is not None:
+            self.resolutionReasoning.export(outfile, level, name_='resolutionReasoning')
+        if self._totalDataCollectionTime is not None:
+            self.totalDataCollectionTime.export(outfile, level, name_='totalDataCollectionTime')
+        if self._totalExposureTime is not None:
+            self.totalExposureTime.export(outfile, level, name_='totalExposureTime')
+        if self._transmission is not None:
+            self.transmission.export(outfile, level, name_='transmission')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'completeness':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setCompleteness(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'distance':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setDistance(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'iSigma':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setISigma(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rankingResolution':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setRankingResolution(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'redundancy':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setRedundancy(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'resolution':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setResolution(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'resolutionReasoning':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setResolutionReasoning(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'totalDataCollectionTime':
+            obj_ = XSDataTime()
+            obj_.build(child_)
+            self.setTotalDataCollectionTime(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'totalExposureTime':
+            obj_ = XSDataTime()
+            obj_.build(child_)
+            self.setTotalExposureTime(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'transmission':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setTransmission(obj_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataBestStrategySummary" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataBestStrategySummary' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataBestStrategySummary is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataBestStrategySummary.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataBestStrategySummary()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataBestStrategySummary" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataBestStrategySummary()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataBestStrategySummary
 
 
 class XSDataBestCollectionPlan(object):
@@ -1269,329 +1592,6 @@ class XSDataBestStatisticalPrediction(object):
 # end class XSDataBestStatisticalPrediction
 
 
-class XSDataBestStrategySummary(object):
-    def __init__(self, transmission=None, totalExposureTime=None, totalDataCollectionTime=None, resolutionReasoning=None, resolution=None, redundancy=None, rankingResolution=None, iSigma=None, distance=None, completeness=None):
-        if completeness is None:
-            self._completeness = None
-        elif completeness.__class__.__name__ == "XSDataDouble":
-            self._completeness = completeness
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'completeness' is not XSDataDouble but %s" % self._completeness.__class__.__name__
-            raise BaseException(strMessage)
-        if distance is None:
-            self._distance = None
-        elif distance.__class__.__name__ == "XSDataLength":
-            self._distance = distance
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'distance' is not XSDataLength but %s" % self._distance.__class__.__name__
-            raise BaseException(strMessage)
-        if iSigma is None:
-            self._iSigma = None
-        elif iSigma.__class__.__name__ == "XSDataDouble":
-            self._iSigma = iSigma
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'iSigma' is not XSDataDouble but %s" % self._iSigma.__class__.__name__
-            raise BaseException(strMessage)
-        if rankingResolution is None:
-            self._rankingResolution = None
-        elif rankingResolution.__class__.__name__ == "XSDataDouble":
-            self._rankingResolution = rankingResolution
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'rankingResolution' is not XSDataDouble but %s" % self._rankingResolution.__class__.__name__
-            raise BaseException(strMessage)
-        if redundancy is None:
-            self._redundancy = None
-        elif redundancy.__class__.__name__ == "XSDataDouble":
-            self._redundancy = redundancy
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'redundancy' is not XSDataDouble but %s" % self._redundancy.__class__.__name__
-            raise BaseException(strMessage)
-        if resolution is None:
-            self._resolution = None
-        elif resolution.__class__.__name__ == "XSDataDouble":
-            self._resolution = resolution
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'resolution' is not XSDataDouble but %s" % self._resolution.__class__.__name__
-            raise BaseException(strMessage)
-        if resolutionReasoning is None:
-            self._resolutionReasoning = None
-        elif resolutionReasoning.__class__.__name__ == "XSDataString":
-            self._resolutionReasoning = resolutionReasoning
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'resolutionReasoning' is not XSDataString but %s" % self._resolutionReasoning.__class__.__name__
-            raise BaseException(strMessage)
-        if totalDataCollectionTime is None:
-            self._totalDataCollectionTime = None
-        elif totalDataCollectionTime.__class__.__name__ == "XSDataTime":
-            self._totalDataCollectionTime = totalDataCollectionTime
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'totalDataCollectionTime' is not XSDataTime but %s" % self._totalDataCollectionTime.__class__.__name__
-            raise BaseException(strMessage)
-        if totalExposureTime is None:
-            self._totalExposureTime = None
-        elif totalExposureTime.__class__.__name__ == "XSDataTime":
-            self._totalExposureTime = totalExposureTime
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'totalExposureTime' is not XSDataTime but %s" % self._totalExposureTime.__class__.__name__
-            raise BaseException(strMessage)
-        if transmission is None:
-            self._transmission = None
-        elif transmission.__class__.__name__ == "XSDataDouble":
-            self._transmission = transmission
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary constructor argument 'transmission' is not XSDataDouble but %s" % self._transmission.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'completeness' attribute
-    def getCompleteness(self): return self._completeness
-    def setCompleteness(self, completeness):
-        if completeness is None:
-            self._completeness = None
-        elif completeness.__class__.__name__ == "XSDataDouble":
-            self._completeness = completeness
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary.setCompleteness argument is not XSDataDouble but %s" % completeness.__class__.__name__
-            raise BaseException(strMessage)
-    def delCompleteness(self): self._completeness = None
-    completeness = property(getCompleteness, setCompleteness, delCompleteness, "Property for completeness")
-    # Methods and properties for the 'distance' attribute
-    def getDistance(self): return self._distance
-    def setDistance(self, distance):
-        if distance is None:
-            self._distance = None
-        elif distance.__class__.__name__ == "XSDataLength":
-            self._distance = distance
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary.setDistance argument is not XSDataLength but %s" % distance.__class__.__name__
-            raise BaseException(strMessage)
-    def delDistance(self): self._distance = None
-    distance = property(getDistance, setDistance, delDistance, "Property for distance")
-    # Methods and properties for the 'iSigma' attribute
-    def getISigma(self): return self._iSigma
-    def setISigma(self, iSigma):
-        if iSigma is None:
-            self._iSigma = None
-        elif iSigma.__class__.__name__ == "XSDataDouble":
-            self._iSigma = iSigma
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary.setISigma argument is not XSDataDouble but %s" % iSigma.__class__.__name__
-            raise BaseException(strMessage)
-    def delISigma(self): self._iSigma = None
-    iSigma = property(getISigma, setISigma, delISigma, "Property for iSigma")
-    # Methods and properties for the 'rankingResolution' attribute
-    def getRankingResolution(self): return self._rankingResolution
-    def setRankingResolution(self, rankingResolution):
-        if rankingResolution is None:
-            self._rankingResolution = None
-        elif rankingResolution.__class__.__name__ == "XSDataDouble":
-            self._rankingResolution = rankingResolution
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary.setRankingResolution argument is not XSDataDouble but %s" % rankingResolution.__class__.__name__
-            raise BaseException(strMessage)
-    def delRankingResolution(self): self._rankingResolution = None
-    rankingResolution = property(getRankingResolution, setRankingResolution, delRankingResolution, "Property for rankingResolution")
-    # Methods and properties for the 'redundancy' attribute
-    def getRedundancy(self): return self._redundancy
-    def setRedundancy(self, redundancy):
-        if redundancy is None:
-            self._redundancy = None
-        elif redundancy.__class__.__name__ == "XSDataDouble":
-            self._redundancy = redundancy
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary.setRedundancy argument is not XSDataDouble but %s" % redundancy.__class__.__name__
-            raise BaseException(strMessage)
-    def delRedundancy(self): self._redundancy = None
-    redundancy = property(getRedundancy, setRedundancy, delRedundancy, "Property for redundancy")
-    # Methods and properties for the 'resolution' attribute
-    def getResolution(self): return self._resolution
-    def setResolution(self, resolution):
-        if resolution is None:
-            self._resolution = None
-        elif resolution.__class__.__name__ == "XSDataDouble":
-            self._resolution = resolution
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary.setResolution argument is not XSDataDouble but %s" % resolution.__class__.__name__
-            raise BaseException(strMessage)
-    def delResolution(self): self._resolution = None
-    resolution = property(getResolution, setResolution, delResolution, "Property for resolution")
-    # Methods and properties for the 'resolutionReasoning' attribute
-    def getResolutionReasoning(self): return self._resolutionReasoning
-    def setResolutionReasoning(self, resolutionReasoning):
-        if resolutionReasoning is None:
-            self._resolutionReasoning = None
-        elif resolutionReasoning.__class__.__name__ == "XSDataString":
-            self._resolutionReasoning = resolutionReasoning
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary.setResolutionReasoning argument is not XSDataString but %s" % resolutionReasoning.__class__.__name__
-            raise BaseException(strMessage)
-    def delResolutionReasoning(self): self._resolutionReasoning = None
-    resolutionReasoning = property(getResolutionReasoning, setResolutionReasoning, delResolutionReasoning, "Property for resolutionReasoning")
-    # Methods and properties for the 'totalDataCollectionTime' attribute
-    def getTotalDataCollectionTime(self): return self._totalDataCollectionTime
-    def setTotalDataCollectionTime(self, totalDataCollectionTime):
-        if totalDataCollectionTime is None:
-            self._totalDataCollectionTime = None
-        elif totalDataCollectionTime.__class__.__name__ == "XSDataTime":
-            self._totalDataCollectionTime = totalDataCollectionTime
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary.setTotalDataCollectionTime argument is not XSDataTime but %s" % totalDataCollectionTime.__class__.__name__
-            raise BaseException(strMessage)
-    def delTotalDataCollectionTime(self): self._totalDataCollectionTime = None
-    totalDataCollectionTime = property(getTotalDataCollectionTime, setTotalDataCollectionTime, delTotalDataCollectionTime, "Property for totalDataCollectionTime")
-    # Methods and properties for the 'totalExposureTime' attribute
-    def getTotalExposureTime(self): return self._totalExposureTime
-    def setTotalExposureTime(self, totalExposureTime):
-        if totalExposureTime is None:
-            self._totalExposureTime = None
-        elif totalExposureTime.__class__.__name__ == "XSDataTime":
-            self._totalExposureTime = totalExposureTime
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary.setTotalExposureTime argument is not XSDataTime but %s" % totalExposureTime.__class__.__name__
-            raise BaseException(strMessage)
-    def delTotalExposureTime(self): self._totalExposureTime = None
-    totalExposureTime = property(getTotalExposureTime, setTotalExposureTime, delTotalExposureTime, "Property for totalExposureTime")
-    # Methods and properties for the 'transmission' attribute
-    def getTransmission(self): return self._transmission
-    def setTransmission(self, transmission):
-        if transmission is None:
-            self._transmission = None
-        elif transmission.__class__.__name__ == "XSDataDouble":
-            self._transmission = transmission
-        else:
-            strMessage = "ERROR! XSDataBestStrategySummary.setTransmission argument is not XSDataDouble but %s" % transmission.__class__.__name__
-            raise BaseException(strMessage)
-    def delTransmission(self): self._transmission = None
-    transmission = property(getTransmission, setTransmission, delTransmission, "Property for transmission")
-    def export(self, outfile, level, name_='XSDataBestStrategySummary'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataBestStrategySummary'):
-        pass
-        if self._completeness is not None:
-            self.completeness.export(outfile, level, name_='completeness')
-        if self._distance is not None:
-            self.distance.export(outfile, level, name_='distance')
-        else:
-            warnEmptyAttribute("distance", "XSDataLength")
-        if self._iSigma is not None:
-            self.iSigma.export(outfile, level, name_='iSigma')
-        if self._rankingResolution is not None:
-            self.rankingResolution.export(outfile, level, name_='rankingResolution')
-        if self._redundancy is not None:
-            self.redundancy.export(outfile, level, name_='redundancy')
-        if self._resolution is not None:
-            self.resolution.export(outfile, level, name_='resolution')
-        else:
-            warnEmptyAttribute("resolution", "XSDataDouble")
-        if self._resolutionReasoning is not None:
-            self.resolutionReasoning.export(outfile, level, name_='resolutionReasoning')
-        if self._totalDataCollectionTime is not None:
-            self.totalDataCollectionTime.export(outfile, level, name_='totalDataCollectionTime')
-        if self._totalExposureTime is not None:
-            self.totalExposureTime.export(outfile, level, name_='totalExposureTime')
-        if self._transmission is not None:
-            self.transmission.export(outfile, level, name_='transmission')
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'completeness':
-            obj_ = XSDataDouble()
-            obj_.build(child_)
-            self.setCompleteness(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'distance':
-            obj_ = XSDataLength()
-            obj_.build(child_)
-            self.setDistance(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'iSigma':
-            obj_ = XSDataDouble()
-            obj_.build(child_)
-            self.setISigma(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rankingResolution':
-            obj_ = XSDataDouble()
-            obj_.build(child_)
-            self.setRankingResolution(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'redundancy':
-            obj_ = XSDataDouble()
-            obj_.build(child_)
-            self.setRedundancy(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'resolution':
-            obj_ = XSDataDouble()
-            obj_.build(child_)
-            self.setResolution(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'resolutionReasoning':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setResolutionReasoning(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'totalDataCollectionTime':
-            obj_ = XSDataTime()
-            obj_.build(child_)
-            self.setTotalDataCollectionTime(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'totalExposureTime':
-            obj_ = XSDataTime()
-            obj_.build(child_)
-            self.setTotalExposureTime(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'transmission':
-            obj_ = XSDataDouble()
-            obj_.build(child_)
-            self.setTransmission(obj_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataBestStrategySummary" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataBestStrategySummary' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataBestStrategySummary is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataBestStrategySummary.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataBestStrategySummary()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataBestStrategySummary" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataBestStrategySummary()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataBestStrategySummary
-
-
 class XSDataCrystalScale(object):
     def __init__(self, scale=None, bFactor=None):
         if bFactor is None:
@@ -1716,7 +1716,7 @@ class XSDataInputBest(XSDataInput):
 
 - detectorDistanceMin and detectorDistanceMax (in mm) will work only with version v3.4.3 or higher of Best
 """
-    def __init__(self, configuration=None, xdsBackgroundImage=None, userDefinedRotationStart=None, userDefinedRotationRange=None, transmission=None, strategyOption=None, radiationDamageModelGamma=None, radiationDamageModelBeta=None, omegaMin=None, numberOfCrystalPositions=None, minTransmission=None, goniostatMinRotationWidth=None, goniostatMaxRotationSpeed=None, detectorType=None, detectorDistanceMin=None, detectorDistanceMax=None, crystalSusceptibility=None, crystalShape=None, crystalSize=None, crystalAbsorbedDoseRate=None, complexity=None, bestFileContentPar=None, bestFileContentHKL=None, bestFileContentDat=None, beamSize=None, beamShift=None, beamMinExposureTime=None, beamMaxExposureTime=None, beamFlux=None, beamExposureTime=None, apertureSize=None, anomalousData=None, aimedResolution=None, aimedRedundancy=None, aimedIOverSigma=None, aimedCompleteness=None):
+    def __init__(self, configuration=None, xdsBackgroundImage=None, userDefinedRotationStart=None, userDefinedRotationRange=None, transmission=None, strategyOption=None, rFriedel=None, radiationDamageModelGamma=None, radiationDamageModelBeta=None, omegaMin=None, numberOfCrystalPositions=None, minTransmission=None, goniostatMinRotationWidth=None, goniostatMaxRotationSpeed=None, doseLimit=None, detectorType=None, detectorDistanceMin=None, detectorDistanceMax=None, crystalSusceptibility=None, crystalShape=None, crystalSize=None, crystalAbsorbedDoseRate=None, complexity=None, bestFileContentPar=None, bestFileContentHKL=None, bestFileContentDat=None, beamSize=None, beamShift=None, beamMinExposureTime=None, beamMaxExposureTime=None, beamFlux=None, beamExposureTime=None, apertureSize=None, anomalousData=None, aimedResolution=None, aimedRedundancy=None, aimedIOverSigma=None, aimedCompleteness=None):
         XSDataInput.__init__(self, configuration)
         if aimedCompleteness is None:
             self._aimedCompleteness = None
@@ -1879,6 +1879,13 @@ class XSDataInputBest(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputBest constructor argument 'detectorType' is not XSDataString but %s" % self._detectorType.__class__.__name__
             raise BaseException(strMessage)
+        if doseLimit is None:
+            self._doseLimit = None
+        elif doseLimit.__class__.__name__ == "XSDataDouble":
+            self._doseLimit = doseLimit
+        else:
+            strMessage = "ERROR! XSDataInputBest constructor argument 'doseLimit' is not XSDataDouble but %s" % self._doseLimit.__class__.__name__
+            raise BaseException(strMessage)
         if goniostatMaxRotationSpeed is None:
             self._goniostatMaxRotationSpeed = None
         elif goniostatMaxRotationSpeed.__class__.__name__ == "XSDataAngularSpeed":
@@ -1927,6 +1934,13 @@ class XSDataInputBest(XSDataInput):
             self._radiationDamageModelGamma = radiationDamageModelGamma
         else:
             strMessage = "ERROR! XSDataInputBest constructor argument 'radiationDamageModelGamma' is not XSDataDouble but %s" % self._radiationDamageModelGamma.__class__.__name__
+            raise BaseException(strMessage)
+        if rFriedel is None:
+            self._rFriedel = None
+        elif rFriedel.__class__.__name__ == "XSDataDouble":
+            self._rFriedel = rFriedel
+        else:
+            strMessage = "ERROR! XSDataInputBest constructor argument 'rFriedel' is not XSDataDouble but %s" % self._rFriedel.__class__.__name__
             raise BaseException(strMessage)
         if strategyOption is None:
             self._strategyOption = None
@@ -2260,6 +2274,18 @@ class XSDataInputBest(XSDataInput):
             raise BaseException(strMessage)
     def delDetectorType(self): self._detectorType = None
     detectorType = property(getDetectorType, setDetectorType, delDetectorType, "Property for detectorType")
+    # Methods and properties for the 'doseLimit' attribute
+    def getDoseLimit(self): return self._doseLimit
+    def setDoseLimit(self, doseLimit):
+        if doseLimit is None:
+            self._doseLimit = None
+        elif doseLimit.__class__.__name__ == "XSDataDouble":
+            self._doseLimit = doseLimit
+        else:
+            strMessage = "ERROR! XSDataInputBest.setDoseLimit argument is not XSDataDouble but %s" % doseLimit.__class__.__name__
+            raise BaseException(strMessage)
+    def delDoseLimit(self): self._doseLimit = None
+    doseLimit = property(getDoseLimit, setDoseLimit, delDoseLimit, "Property for doseLimit")
     # Methods and properties for the 'goniostatMaxRotationSpeed' attribute
     def getGoniostatMaxRotationSpeed(self): return self._goniostatMaxRotationSpeed
     def setGoniostatMaxRotationSpeed(self, goniostatMaxRotationSpeed):
@@ -2344,6 +2370,18 @@ class XSDataInputBest(XSDataInput):
             raise BaseException(strMessage)
     def delRadiationDamageModelGamma(self): self._radiationDamageModelGamma = None
     radiationDamageModelGamma = property(getRadiationDamageModelGamma, setRadiationDamageModelGamma, delRadiationDamageModelGamma, "Property for radiationDamageModelGamma")
+    # Methods and properties for the 'rFriedel' attribute
+    def getRFriedel(self): return self._rFriedel
+    def setRFriedel(self, rFriedel):
+        if rFriedel is None:
+            self._rFriedel = None
+        elif rFriedel.__class__.__name__ == "XSDataDouble":
+            self._rFriedel = rFriedel
+        else:
+            strMessage = "ERROR! XSDataInputBest.setRFriedel argument is not XSDataDouble but %s" % rFriedel.__class__.__name__
+            raise BaseException(strMessage)
+    def delRFriedel(self): self._rFriedel = None
+    rFriedel = property(getRFriedel, setRFriedel, delRFriedel, "Property for rFriedel")
     # Methods and properties for the 'strategyOption' attribute
     def getStrategyOption(self): return self._strategyOption
     def setStrategyOption(self, strategyOption):
@@ -2468,6 +2506,8 @@ class XSDataInputBest(XSDataInput):
             self.detectorType.export(outfile, level, name_='detectorType')
         else:
             warnEmptyAttribute("detectorType", "XSDataString")
+        if self._doseLimit is not None:
+            self.doseLimit.export(outfile, level, name_='doseLimit')
         if self._goniostatMaxRotationSpeed is not None:
             self.goniostatMaxRotationSpeed.export(outfile, level, name_='goniostatMaxRotationSpeed')
         if self._goniostatMinRotationWidth is not None:
@@ -2482,6 +2522,8 @@ class XSDataInputBest(XSDataInput):
             self.radiationDamageModelBeta.export(outfile, level, name_='radiationDamageModelBeta')
         if self._radiationDamageModelGamma is not None:
             self.radiationDamageModelGamma.export(outfile, level, name_='radiationDamageModelGamma')
+        if self._rFriedel is not None:
+            self.rFriedel.export(outfile, level, name_='rFriedel')
         if self._strategyOption is not None:
             self.strategyOption.export(outfile, level, name_='strategyOption')
         if self._transmission is not None:
@@ -2613,6 +2655,11 @@ class XSDataInputBest(XSDataInput):
             obj_.build(child_)
             self.setDetectorType(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'doseLimit':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setDoseLimit(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'goniostatMaxRotationSpeed':
             obj_ = XSDataAngularSpeed()
             obj_.build(child_)
@@ -2647,6 +2694,11 @@ class XSDataInputBest(XSDataInput):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setRadiationDamageModelGamma(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rFriedel':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setRFriedel(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'strategyOption':
             obj_ = XSDataString()

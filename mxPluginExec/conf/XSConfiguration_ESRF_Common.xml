@@ -272,7 +272,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/BEST/v5.1.0_20150707/linux/best</value>
+					<value>/opt/pxsoft/BEST/v5.1.1_20151118/linux/best</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -568,7 +568,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/xds/vdefault/redhate4-x86_64/xds_par</value>
+					<value>/opt/pxsoft/bin/xds</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -585,7 +585,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/xds/vdefault/redhate4-x86_64/xscale_par</value>
+					<value>/opt/pxsoft/bin/xscale_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>

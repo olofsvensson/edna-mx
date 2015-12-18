@@ -27,16 +27,37 @@ __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 
-from EDTestSuite import EDTestSuite
+import os
+
+from EDTestCasePluginExecute import EDTestCasePluginExecute
 
 
-class EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_5(EDTestSuite):
+class EDTestCasePluginExecuteControlDozorv1_0_batchSize_2a(EDTestCasePluginExecute):
+
+
+    def __init__(self, _edStringTestName=None):
+        EDTestCasePluginExecute.__init__(self, "EDPluginControlDozorv1_0")
+        self.setRequiredPluginConfiguration("EDPluginDozorv1_0")
+        self.setConfigurationFile(self.getRefConfigFile())
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputControlDozor_batchSize_2a.xml"))
+
+
+
+    def preProcess(self):
+        EDTestCasePluginExecute.preProcess(self)
+        self.loadTestImage([ "mesh2d-x1_1_0001.cbf",
+                            "mesh2d-x1_1_0002.cbf",
+                            "mesh2d-x1_1_0003.cbf",
+                            "mesh2d-x1_1_0004.cbf",
+                            "mesh2d-x1_1_0005.cbf",
+                             ])
+
+
+    def testExecute(self):
+        self.run()
 
 
     def process(self):
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_waitFile")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_timeOut")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_mesh4x4")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_mesh4x4_batchSize_4")
+        self.addTestMethod(self.testExecute)
+
 

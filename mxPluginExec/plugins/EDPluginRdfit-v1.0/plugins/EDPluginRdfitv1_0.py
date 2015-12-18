@@ -25,7 +25,13 @@ __author__ = "Olof Svensson"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
-import os, time
+import os
+import time
+
+try:
+    import Image
+except:
+    from PIL import Image
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 from EDUtilsTable              import EDUtilsTable
@@ -190,6 +196,8 @@ class EDPluginRdfitv1_0(EDPluginExecProcessScript):
         return xsDataResultRdfit
 
     def createHtmlPage(self):
+        plotImage = Image.open(os.path.join(self.getWorkingDirectory(), self.strScaleIntensityPlot))
+        plotImageWidth, plotImageHeight = plotImage.size # (width,height) tuple
         page = markupv1_10.page(mode='loose_html')
         page.init(title="Burn Strategy Results",
                         footer="Generated on %s" % time.asctime())
@@ -197,7 +205,8 @@ class EDPluginRdfitv1_0(EDPluginExecProcessScript):
         page.h1()
         page.strong("Burn Strategy  Results")
         page.h1.close()
-        page.img(src=self.strScaleIntensityPlot, title=self.strScaleIntensityPlot)
+        page.img(src=self.strScaleIntensityPlot, title=self.strScaleIntensityPlot,
+                 height=plotImageHeight, width=plotImageWidth)
         page.div.close()
         strHTML = str(page)
         EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), self.strHtmlPath), strHTML)
