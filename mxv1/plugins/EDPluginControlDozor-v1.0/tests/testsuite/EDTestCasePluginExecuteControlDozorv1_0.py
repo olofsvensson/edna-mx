@@ -5,7 +5,7 @@
 #    Copyright (C) 2008-2013 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -45,11 +45,11 @@ class EDTestCasePluginExecuteControlDozorv1_0(EDTestCasePluginExecute):
 
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "mesh2d-x1_1_0001.cbf",
-                            "mesh2d-x1_1_0002.cbf",
-                            "mesh2d-x1_1_0003.cbf",
-                            "mesh2d-x1_1_0004.cbf",
-                            "mesh2d-x1_1_0005.cbf",
+        self.loadTestImage([ "mesh-test_1_0001.cbf",
+                            "mesh-test_1_0002.cbf",
+                            "mesh-test_1_0003.cbf",
+                            "mesh-test_1_0004.cbf",
+                            "mesh-test_1_0005.cbf",
                              ])
 
 

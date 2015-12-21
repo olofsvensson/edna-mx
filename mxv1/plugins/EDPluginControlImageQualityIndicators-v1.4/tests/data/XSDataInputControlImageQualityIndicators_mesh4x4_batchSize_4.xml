@@ -11,82 +11,82 @@
 	</batchSize>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0001.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0001.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0002.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0002.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0003.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0003.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0004.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0004.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0005.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0005.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0006.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0006.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0007.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0007.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0008.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0008.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0009.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0009.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0010.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0010.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0011.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0011.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0012.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0012.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0013.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0013.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0014.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0014.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0015.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0015.cbf</value>
         </path>
     </image>
     <image>
         <path>
-            <value>/scisoft/pxsoft/data/Mesh/opid231/20130507/RAW_DATA/mesh003/mesh-test_1_0016.cbf</value>
+            <value>${EDNA_TESTIMAGES}/mesh-test_1_0016.cbf</value>
         </path>
     </image>
 </XSDataInputControlImageQualityIndicators>

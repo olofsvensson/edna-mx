@@ -112,7 +112,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             orgy = detector.beamPositionX.value / detector.pixelSizeX.value
             xsDataInputDozor.orgx = XSDataDouble(orgx)
             xsDataInputDozor.orgy = XSDataDouble(orgy)
-            xsDataInputDozor.oscillationRange = XSDataDouble(goniostat.oscillationWidth.value)
+            xsDataInputDozor.oscillationRange = XSDataDouble(goniostat.oscillationWidth.value * len(listBatch))
 #            xsDataInputDozor.imageStep : XSDataDouble optional
             xsDataInputDozor.startingAngle = XSDataDouble(goniostat.rotationAxisStart.value)
             xsDataInputDozor.firstImageNumber = subWedge.image[0].number

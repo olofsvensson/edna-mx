@@ -53,7 +53,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
     """
     This plugin runs the Dozor program written by Sasha Popov
     """
-    
+
 
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
@@ -68,17 +68,17 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.ix_max = None
         self.iy_max = None
         # Default values for ESRF Pilatus6M
-        self.ix_min_pilatus6m = 1 
+        self.ix_min_pilatus6m = 1
         self.ix_max_pilatus6m = 1270
         self.iy_min_pilatus6m = 1190
         self.iy_max_pilatus6m = 1310
         # Default values for ESRF Pilatus2M
-        self.ix_min_pilatus2m = 1 
+        self.ix_min_pilatus2m = 1
         self.ix_max_pilatus2m = 840
         self.iy_min_pilatus2m = 776
         self.iy_max_pilatus2m = 852
         # Default values for ESRF Eiger4M
-        self.ix_min_eiger4m = 1 
+        self.ix_min_eiger4m = 1
         self.ix_max_eiger4m = 840
         self.iy_min_eiger4m = 776
         self.iy_max_eiger4m = 852
@@ -90,7 +90,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginDozorv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
-    
+
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginDozorv1_0.preProcess")
@@ -112,7 +112,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                                                         self.getScriptLogFileName()))
 
 
-    
+
     def generateCommands(self, _xsDataInputDozor):
         """
         This method creates the input file for dozor
@@ -126,13 +126,13 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 self.ix_max = self.ix_max_pilatus2m
                 self.iy_min = self.iy_min_pilatus2m
                 self.iy_max = self.iy_max_pilatus2m
-            elif _xsDataInputDozor.detectorType.value == "pilatus2m":
-                self.ix_min = self.ix_min_pilatus6m                
+            elif _xsDataInputDozor.detectorType.value == "pilatus6m":
+                self.ix_min = self.ix_min_pilatus6m
                 self.ix_max = self.ix_max_pilatus6m
                 self.iy_min = self.iy_min_pilatus6m
                 self.iy_max = self.iy_max_pilatus6m
             elif _xsDataInputDozor.detectorType.value == "eiger4m":
-                self.ix_min = self.ix_min_eiger4m                
+                self.ix_min = self.ix_min_eiger4m
                 self.ix_max = self.ix_max_eiger4m
                 self.iy_min = self.iy_min_eiger4m
                 self.iy_max = self.iy_max_eiger4m
@@ -176,7 +176,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "name_template_image %s\n" % _xsDataInputDozor.nameTemplateImage.value
             strCommandText += "end\n"
         return strCommandText
-    
+
 
     def parseOutput(self, _strFileName):
         """
@@ -187,7 +187,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         # Skip the four first lines
         listOutput = strOutput.split("\n")[6:]
         for strLine in listOutput:
-            # Remove "|" 
+            # Remove "|"
             listLine = shlex.split(strLine.replace("|", " "))
 #            print listLine
             if listLine != [] and not strLine.startswith("-"):
@@ -217,7 +217,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
 #                print xsDataImageDozor.marshal()
                 xsDataResultDozor.addImageDozor(xsDataImageDozor)
         return xsDataResultDozor
-        
+
     def parseDouble(self, _strValue):
         returnValue = None
         try:

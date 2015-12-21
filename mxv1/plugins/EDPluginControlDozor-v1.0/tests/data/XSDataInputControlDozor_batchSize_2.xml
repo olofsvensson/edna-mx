@@ -5,27 +5,27 @@
 	</batchSize>
 	<image>
 	  <path>
-	    <value>${EDNA_TESTIMAGES}/mesh2d-x1_1_0001.cbf</value>
+	    <value>${EDNA_TESTIMAGES}/mesh-test_1_0001.cbf</value>
 	  </path>
 	</image>
 	<image>
 	  <path>
-	    <value>${EDNA_TESTIMAGES}/mesh2d-x1_1_0002.cbf</value>
+	    <value>${EDNA_TESTIMAGES}/mesh-test_1_0002.cbf</value>
 	  </path>
 	</image>
 	<image>
 	  <path>
-	    <value>${EDNA_TESTIMAGES}/mesh2d-x1_1_0003.cbf</value>
+	    <value>${EDNA_TESTIMAGES}/mesh-test_1_0003.cbf</value>
 	  </path>
 	</image>
 	<image>
 	  <path>
-	    <value>${EDNA_TESTIMAGES}/mesh2d-x1_1_0004.cbf</value>
+	    <value>${EDNA_TESTIMAGES}/mesh-test_1_0004.cbf</value>
 	  </path>
 	</image>
 	<image>
 	  <path>
-	    <value>${EDNA_TESTIMAGES}/mesh2d-x1_1_0005.cbf</value>
+	    <value>${EDNA_TESTIMAGES}/mesh-test_1_0005.cbf</value>
 	  </path>
 	</image>
 </XSDataInputControlDozor>

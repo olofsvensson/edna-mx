@@ -5,7 +5,7 @@
 #    Copyright (C) 2008-2013 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -42,6 +42,26 @@ class EDTestCasePluginExecuteControlImageQualityIndicatorsv1_4_mesh4x4(EDTestCas
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputControlImageQualityIndicators_mesh4x4.xml"))
 #        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultControlImageQualityIndicators_mesh4x4.xml"))
 
+
+    def preProcess(self):
+        EDTestCasePluginExecute.preProcess(self)
+        self.loadTestImage([ "mesh-test_1_0001.cbf",
+                            "mesh-test_1_0002.cbf",
+                            "mesh-test_1_0003.cbf",
+                            "mesh-test_1_0004.cbf",
+                            "mesh-test_1_0005.cbf",
+                            "mesh-test_1_0006.cbf",
+                            "mesh-test_1_0007.cbf",
+                            "mesh-test_1_0008.cbf",
+                            "mesh-test_1_0009.cbf",
+                            "mesh-test_1_0010.cbf",
+                            "mesh-test_1_0011.cbf",
+                            "mesh-test_1_0012.cbf",
+                            "mesh-test_1_0013.cbf",
+                            "mesh-test_1_0014.cbf",
+                            "mesh-test_1_0015.cbf",
+                            "mesh-test_1_0016.cbf",
+                             ])
 
 
     def testExecute(self):

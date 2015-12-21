@@ -45,11 +45,11 @@ class EDTestCasePluginExecuteControlDozorv1_0_batchSize_2(EDTestCasePluginExecut
 
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "mesh2d-x1_1_0001.cbf",
-                            "mesh2d-x1_1_0002.cbf",
-                            "mesh2d-x1_1_0003.cbf",
-                            "mesh2d-x1_1_0004.cbf",
-                            "mesh2d-x1_1_0005.cbf",
+        self.loadTestImage([ "mesh-test_1_0001.cbf",
+                            "mesh-test_1_0002.cbf",
+                            "mesh-test_1_0003.cbf",
+                            "mesh-test_1_0004.cbf",
+                            "mesh-test_1_0005.cbf",
                              ])
 
 
