@@ -55,7 +55,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>30</value>
+					<value>60</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
