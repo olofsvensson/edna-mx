@@ -241,8 +241,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         if not any(abs(float(num)) < 0.1 for num in unit_cell.value.split()):
             xds_in.unit_cell = unit_cell
 
-        self.log_file_path = os.path.join(self.root_dir, 'stats.json')
-        self.DEBUG('will log timing information to {0}'.format(self.log_file_path))
         self.stats = dict()
 
         # Get the image prefix from the directory name
@@ -470,10 +468,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.retrieveFailureMessages(self.xds_first, "Fast proc")
 
         self.stats['first_xds'] = time.time() - t0
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
-#        self.custom_stats['xds_runtime']=self.stats['first_xds']
-
 
         if self.xds_first.isFailure():
             self.ERROR('first XDS run failed')
@@ -560,10 +554,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                          'Successful',
                          'Resolution cutoff finished')
 
-
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
-
         resolution = self.first_res_cutoff.dataOutput.res
 
         # for the generate w/ and w/out anom we have to specify where
@@ -584,9 +574,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.retrieveFailureMessages(self.generate, "anom/noanom_generation")
 
         self.stats['anom/noanom_generation'] = time.time() - t0
-
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
 
         self.DEBUG('FINISHED anom/noanom generation')
 
@@ -686,9 +673,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.retrieveFailureMessages(self.res_cutoff_anom, "Res cut anom")
         self.stats['res_cutoff_anom'] = time.time() - t0
 
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
-
         if self.res_cutoff_anom.isFailure():
             self.ERROR('res cutoff for anom data failed')
             self.setFailure()
@@ -725,9 +709,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.res_cutoff_noanom.executeSynchronous()
         self.retrieveFailureMessages(self.res_cutoff_anom, "Res cut noanom")
         self.stats['res_cutoff_noanom'] = time.time() - t0
-
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
 
         if self.res_cutoff_noanom.isFailure():
             self.ERROR('res cutoff for non anom data failed')
@@ -774,9 +755,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.file_conversion.executeSynchronous()
         self.retrieveFailureMessages(self.file_conversion, "File conversion")
         self.stats['autoproc_import'] = time.time() - t0
-
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
 
         if self.file_conversion.isFailure():
             strErrorMessage = "File import failed"
@@ -839,9 +817,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.xscale_generate.executeSynchronous()
         self.retrieveFailureMessages(self.xscale_generate, "XSCALE")
         self.stats['xscale_generate'] = time.time() - t0
-
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
 
         if self.xscale_generate.isFailure():
             strErrorMessage = "Xscale generation failed"
@@ -1197,9 +1172,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.retrieveFailureMessages(self.store_autoproc_anom, "Store autoproc anom")
         self.stats['ispyb_upload'] = time.time() - t0
 
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
-
         if self.store_autoproc_anom.isFailure():
             self.ERROR('could not send results to ispyb')
         else:
@@ -1225,9 +1197,6 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         autoProcProgramId = self.store_autoproc_noanom.dataOutput.autoProcProgramId.value
         self.retrieveFailureMessages(self.store_autoproc_noanom, "Store autoproc noanom")
         self.stats['ispyb_upload'] = time.time() - t0
-
-        with open(self.log_file_path, 'w') as f:
-            json.dump(self.stats, f)
 
         if self.store_autoproc_noanom.isFailure():
             self.ERROR('could not send results to ispyb')

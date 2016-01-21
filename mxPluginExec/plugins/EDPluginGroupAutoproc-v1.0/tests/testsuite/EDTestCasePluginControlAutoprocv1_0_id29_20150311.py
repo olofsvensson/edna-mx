@@ -23,7 +23,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="<author>"
+__author__ = "<author>"
 __license__ = "GPLv3+"
 __copyright__ = "<copyright>"
 
@@ -39,7 +39,7 @@ class EDTestCasePluginControlAutoprocv1_0_id29_20150311(EDTestCasePluginExecute)
     Those are all execution tests for the EDNA Exec plugin SolveContent
     """
 
-    def __init__(self, _strTestName = None):
+    def __init__(self, _strTestName=None):
         """
         """
         EDTestCasePluginExecute.__init__(self, "EDPluginControlAutoprocv1_0")
@@ -57,16 +57,12 @@ class EDTestCasePluginControlAutoprocv1_0_id29_20150311(EDTestCasePluginExecute)
         strResultDir = os.path.join(self.strTestDir, "results")
         if os.path.exists(strResultDir):
             shutil.rmtree(strResultDir)
-        if os.path.exists(os.path.join(self.strTestDir, "stats.json")):
-            os.remove(os.path.join(self.strTestDir, "stats.json"))
 
     def testExecute(self):
         self.run()
         # Remove files from this run
         if os.path.exists(os.path.join(self.strTestDir, "results")):
             shutil.rmtree(os.path.join(self.strTestDir, "results"))
-        if os.path.exists(os.path.join(self.strTestDir, "stats.json")):
-            os.remove(os.path.join(self.strTestDir, "stats.json"))
 
     def process(self):
         self.addTestMethod(self.testExecute)

@@ -23,7 +23,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="<author>"
+__author__ = "<author>"
 __license__ = "GPLv3+"
 __copyright__ = "<copyright>"
 
@@ -39,13 +39,13 @@ class EDTestCasePluginControlAutoprocv1_0_id29_20140505(EDTestCasePluginExecute)
     Those are all execution tests for the EDNA Exec plugin SolveContent
     """
 
-    def __init__(self, _strTestName = None):
+    def __init__(self, _strTestName=None):
         EDTestCasePluginExecute.__init__(self, "EDPluginControlAutoprocv1_0")
         self.strTestDir = os.path.join(self.getPluginTestsDataHome(), "id29_20140505")
         self.setDataInputFile(os.path.join(self.strTestDir,
                                            "edna-autoproc-input.xml"))
         self.setNoExpectedWarningMessages(1)
-        self.setNoExpectedErrorMessages(1) # insufficient percentage of indexed reflections
+        self.setNoExpectedErrorMessages(1)  # insufficient percentage of indexed reflections
 
 
     def preProcess(self, _edPlugin=None):
@@ -53,16 +53,12 @@ class EDTestCasePluginControlAutoprocv1_0_id29_20140505(EDTestCasePluginExecute)
         # Remove files from previous runs
         if os.path.exists(os.path.join(self.strTestDir, "results")):
             shutil.rmtree(os.path.join(self.strTestDir, "results"))
-        if os.path.exists(os.path.join(self.strTestDir, "stats.json")):
-            os.remove(os.path.join(self.strTestDir, "stats.json"))
 
     def testExecute(self):
         self.run()
         # Remove files from this run
         if os.path.exists(os.path.join(self.strTestDir, "results")):
             shutil.rmtree(os.path.join(self.strTestDir, "results"))
-        if os.path.exists(os.path.join(self.strTestDir, "stats.json")):
-            os.remove(os.path.join(self.strTestDir, "stats.json"))
 
     def process(self):
         self.addTestMethod(self.testExecute)
