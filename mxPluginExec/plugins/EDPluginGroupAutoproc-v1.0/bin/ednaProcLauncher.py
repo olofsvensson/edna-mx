@@ -196,8 +196,8 @@ inputFile = "$inputFile"
 
 pluginName = "EDPluginControlAutoprocv1_0"
 os.environ["EDNA_SITE"] = "ESRF_ISPyBTest"
-os.environ["ISPyB_user"]="opid231"
-os.environ["ISPyB_pass"]="tonic231"
+os.environ["ISPyB_user"]="user"
+os.environ["ISPyB_pass"]="password"
 
 EDVerbose.screen("Executing EDNA plugin %s" % pluginName)
 EDVerbose.screen("EDNA_SITE %s" % os.environ["EDNA_SITE"])
