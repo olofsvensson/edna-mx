@@ -23,12 +23,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__authors__=["Thomas Boeglin", "Olof Svensson"]
+__authors__ = ["Thomas Boeglin", "Olof Svensson"]
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
 
-WS_URL='http://ispyb.esrf.fr:8080/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl'
+WS_URL = 'http://ispyb.esrf.fr:8080/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl'
 
 import os
 import os.path
@@ -82,11 +82,11 @@ from XSDataISPyBv1_4 import XSDataResultStoreAutoProc
 
 # this depends on the CCTBX modules so perhaps we could make running
 # dimple dependent on whether those are installed or not
-#edFactoryPlugin.loadModule('XSDataCCP4DIMPLE')
-#from XSDataCCP4DIMPLE import CCP4DataInputControlPipelineCalcDiffMap
-#from XSDataCCP4DIMPLE import HKL, XYZ, CCP4MTZColLabels, CCP4LogFile
+# edFactoryPlugin.loadModule('XSDataCCP4DIMPLE')
+# from XSDataCCP4DIMPLE import CCP4DataInputControlPipelineCalcDiffMap
+# from XSDataCCP4DIMPLE import HKL, XYZ, CCP4MTZColLabels, CCP4LogFile
 
-#edFactoryPlugin.loadModule('EDPluginControlDIMPLEPipelineCalcDiffMapv10.py')
+# edFactoryPlugin.loadModule('EDPluginControlDIMPLEPipelineCalcDiffMapv10.py')
 
 # what actually goes inside
 from XSDataISPyBv1_4 import AutoProcContainer, AutoProc, AutoProcScalingContainer
@@ -113,15 +113,15 @@ from XSDataPhenixv1_1 import XSDataInputPhenixXtriage
 
 from xdscfgparser import parse_xds_file, dump_xds_file
 
-#import autoproclog
-#autoproclog.LOG_SERVER='rnice655:5000'
+# import autoproclog
+# autoproclog.LOG_SERVER='rnice655:5000'
 
-WAIT_FOR_FRAME_TIMEOUT=240 #max uses 50*5
+WAIT_FOR_FRAME_TIMEOUT = 240  # max uses 50*5
 
 # We used to go through the results directory and add all files to the
 # ispyb upload. Now some files should not be uploaded, so we'll
 # discriminate by extension for now
-ISPYB_UPLOAD_EXTENSIONS=['.lp', '.mtz', '.log', '.inp', '.gz']
+ISPYB_UPLOAD_EXTENSIONS = ['.lp', '.mtz', '.log', '.inp', '.gz']
 
 class EDPluginControlAutoprocv1_0(EDPluginControl):
     """
@@ -130,7 +130,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
     """
 
 
-    def __init__( self ):
+    def __init__(self):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataAutoprocInput)
         self.dataOutput = XSDataResultStoreAutoProc()
@@ -184,7 +184,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                             newpath)
             self.dataInput.input_file.path = XSDataString(newpath)
 
-    def preProcess(self, _edObject = None):
+    def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlAutoprocv1_0.preProcess")
         self.screen("EDNA Auto Processing started")
@@ -195,16 +195,16 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             self.screen("System load avg: {0}".format(strLoad))
         except OSError:
             pass
-        
+
         data_in = self.dataInput
 
         if EDUtilsPath.isESRF():
             (self.strBeamline, self.strProposal, self.strSessionDate, self.strPrefix) = self.getBeamlinePrefixFromPath(self.dataInputOrig.input_file.path.value)
-            strSubject = "EDNA dp %s %s %s %s started" % (self.strBeamline, self.strProposal, 
+            strSubject = "EDNA dp %s %s %s %s started" % (self.strBeamline, self.strProposal,
                                                           self.strPrefix, self.strHost)
         else:
             strSubject = "EDNA dp started on host %s" % self.strHost
-            
+
         self.sendEmail(strSubject, "")
 
         # for info to send to the autoproc stats server
@@ -230,13 +230,13 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         xds_in.input_file = data_in.input_file.path
         if sgnumber is not None:
             xds_in.spacegroup = XSDataInteger(sgnumber)
-            
+
         # Workaround for mxCuBE unit cell comma separation and trailing "2"
         unit_cell = data_in.unit_cell
         unit_cell.value = unit_cell.value.replace(",", " ")
         if unit_cell.value.endswith("2"):
             unit_cell.value = unit_cell.value[:-1]
-            
+
         # Check that unit cell is not zero
         if not any(abs(float(num)) < 0.1 for num in unit_cell.value.split()):
             xds_in.unit_cell = unit_cell
@@ -253,15 +253,22 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             self.image_prefix = ''
 
         if EDUtilsPath.isEMBL():
-            self.image_prefix = self.image_prefix + '_edna'  
+            self.image_prefix = self.image_prefix + '_edna'
 
-        self.results_dir = os.path.join(self.root_dir, 'results', 'fast_processing')
+        # The resultsdir used to be root_dir/results/fast_processing
+        # self.results_dir = os.path.join(self.root_dir, 'results', 'fast_processing')
+        # Now it is the <directory of the output_file>/results
+        if self.dataInput.output_file is not None and "EDNAproc" in self.dataInput.output_file.path.value:
+            self.results_dir = os.path.join(os.path.dirname(self.dataInput.output_file.path.value), 'results')
+        else:
+            # Old way
+            self.results_dir = os.path.join(self.root_dir, 'results', 'fast_processing')
         if os.path.exists(self.results_dir):
             # Remove existing results
             shutil.rmtree(self.results_dir)
         try:
             os.makedirs(self.results_dir)
-        except OSError: # it most likely exists
+        except OSError:  # it most likely exists
             strWarningMessage = "Error creating the results directory: {0}".format(traceback.format_exc())
             self.addWarningMessage(strWarningMessage)
             self.WARNING(strWarningMessage)
@@ -275,7 +282,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.autoproc_ids_dir = os.path.join(self.results_dir, 'fastproc_integration_ids')
         try:
             os.makedirs(self.autoproc_ids_dir)
-        except OSError: # it's there
+        except OSError:  # it's there
             strWarningMessage = "Error creating the autoproc ids directory: {0}".format(traceback.format_exc())
             self.addWarningMessage(strWarningMessage)
             self.WARNING(strWarningMessage)
@@ -353,17 +360,17 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             self.DEBUG('file template {0} is not absolute'.format(template))
             base_dir = os.path.abspath(os.path.dirname(data_in.input_file.path.value))
             template = os.path.normpath(os.path.join(self.root_dir, template))
-            conf['NAME_TEMPLATE_OF_DATA_FRAMES=']=template
+            conf['NAME_TEMPLATE_OF_DATA_FRAMES='] = template
             self.DEBUG('file template fixed to {0}'.format(template))
             self.DEBUG('dumping back the file to {0}'.format(data_in.input_file.path.value))
             dump_xds_file(data_in.input_file.path.value, conf)
 
         self.first_image = _template_to_image(template, start_image)
-        self.last_image =  _template_to_image(template, end_image)
+        self.last_image = _template_to_image(template, end_image)
 
         self.xds_first = self.loadPlugin("EDPluginControlRunXdsFastProcv1_0", "XDS_first")
         self.xds_first.dataInput = xds_in
-        
+
         if EDUtilsPath.isESRF():
             self.waitFileFirst = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileFirst")
             self.waitFileLast = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileLast")
@@ -384,9 +391,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.store_autoproc_noanom = self.loadPlugin('EDPluginISPyBStoreAutoProcv1_4')
 
         self.file_conversion = self.loadPlugin('EDPluginControlAutoprocImportv1_0')
-        
+
         self.phenixXtriage = self.loadPlugin("EDPluginPhenixXtriagev1_1")
-        
+
         self.edPluginISPyBUpdateDataCollectionGroupComment = self.loadPlugin("EDPluginISPyBUpdateDataCollectionGroupCommentv1_4")
 
 #        self.dimple = self.loadPlugin('EDPluginControlDIMPLEPipelineCalcDiffMapv10')
@@ -400,7 +407,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             else:
                 minSize = 1000000
 
-            fWaitFileTimeout = 3600 # s
+            fWaitFileTimeout = 3600  # s
 
             xsDataInputMXWaitFileFirst = XSDataInputMXWaitFile()
             xsDataInputMXWaitFileFirst.file = XSDataFile(XSDataString(self.first_image))
@@ -427,12 +434,12 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         self.DEBUG('EDPluginControlAutoprocv1_0.preProcess finished')
 
-    def process(self, _edObject = None):
+    def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG('EDPluginControlAutoprocv1_0.process starting')
 
         self.process_start = time.time()
-        
+
 
         # get our two integration IDs
         try:
@@ -458,11 +465,11 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.log_to_ispyb(self.integration_id_noanom,
                      'Indexing', 'Launched', 'XDS started')
 
-        t0=time.time()
+        t0 = time.time()
         self.xds_first.executeSynchronous()
         self.retrieveFailureMessages(self.xds_first, "Fast proc")
 
-        self.stats['first_xds'] = time.time()-t0
+        self.stats['first_xds'] = time.time() - t0
         with open(self.log_file_path, 'w') as f:
             json.dump(self.stats, f)
 #        self.custom_stats['xds_runtime']=self.stats['first_xds']
@@ -471,7 +478,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         if self.xds_first.isFailure():
             self.ERROR('first XDS run failed')
             self.setFailure()
-            self.log_to_ispyb(self.integration_id_noanom, 
+            self.log_to_ispyb(self.integration_id_noanom,
                          'Indexing',
                          'Failed',
                          'XDS failed after {0:.1f}s'.format(self.stats['first_xds']))
@@ -508,7 +515,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # apply the first res cutoff with the res extracted from the first XDS run
         self.screen('STARTING first resolution cutoff')
-        t0=time.time()
+        t0 = time.time()
         xdsresult = self.xds_first.dataOutput
 
         # for the custom stats
@@ -525,18 +532,18 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         res_cutoff_in.completeness_entries = xdsresult.completeness_entries
         res_cutoff_in.detector_max_res = self.dataInput.detector_max_res
 
-        #XXX: remove from the data model as it is just pass-through?
+        # XXX: remove from the data model as it is just pass-through?
         res_cutoff_in.total_completeness = xdsresult.total_completeness
         res_cutoff_in.completeness_cutoff = self.dataInput.completeness_cutoff
         res_cutoff_in.isig_cutoff = XSDataDouble(1.0)
-        #res_cutoff_in.isig_cutoff = self.dataInput.isig_cutoff
+        # res_cutoff_in.isig_cutoff = self.dataInput.isig_cutoff
         res_cutoff_in.r_value_cutoff = self.dataInput.r_value_cutoff
         res_cutoff_in.cc_half_cutoff = self.dataInput.cc_half_cutoff
         self.first_res_cutoff.dataInput = res_cutoff_in
         self.first_res_cutoff.executeSynchronous()
         self.retrieveFailureMessages(self.first_res_cutoff, "First res cutoff")
-        
-        self.stats['first_res_cutoff'] = time.time()-t0
+
+        self.stats['first_res_cutoff'] = time.time() - t0
 
         if self.first_res_cutoff.isFailure():
             self.ERROR("res cutoff failed")
@@ -572,11 +579,11 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                      'Scaling', 'Launched', 'Start of scaling')
 
         self.DEBUG('STARTING anom/noanom generation')
-        t0=time.time()
+        t0 = time.time()
         self.generate.executeSynchronous()
         self.retrieveFailureMessages(self.generate, "anom/noanom_generation")
 
-        self.stats['anom/noanom_generation'] = time.time()-t0
+        self.stats['anom/noanom_generation'] = time.time() - t0
 
         with open(self.log_file_path, 'w') as f:
             json.dump(self.stats, f)
@@ -668,16 +675,16 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # pass in global cutoffs
         res_cutoff_anom_in.completeness_cutoff = self.dataInput.completeness_cutoff
         res_cutoff_anom_in.isig_cutoff = XSDataDouble(1.0)
-        #res_cutoff_anom_in.isig_cutoff = self.dataInput.isig_cutoff
+        # res_cutoff_anom_in.isig_cutoff = self.dataInput.isig_cutoff
         res_cutoff_anom_in.r_value_cutoff = self.dataInput.r_value_cutoff
         res_cutoff_anom_in.cc_half_cutoff = self.dataInput.cc_half_cutoff
         self.res_cutoff_anom.dataInput = res_cutoff_anom_in
 
         self.DEBUG('STARTING anom res cutoff')
-        t0=time.time()
+        t0 = time.time()
         self.res_cutoff_anom.executeSynchronous()
         self.retrieveFailureMessages(self.res_cutoff_anom, "Res cut anom")
-        self.stats['res_cutoff_anom'] = time.time()-t0
+        self.stats['res_cutoff_anom'] = time.time() - t0
 
         with open(self.log_file_path, 'w') as f:
             json.dump(self.stats, f)
@@ -708,16 +715,16 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # pass in global cutoffs
         res_cutoff_noanom_in.completeness_cutoff = self.dataInput.completeness_cutoff
         res_cutoff_noanom_in.isig_cutoff = XSDataDouble(1.0)
-        #res_cutoff_noanom_in.isig_cutoff = self.dataInput.isig_cutoff
+        # res_cutoff_noanom_in.isig_cutoff = self.dataInput.isig_cutoff
         res_cutoff_noanom_in.r_value_cutoff = self.dataInput.r_value_cutoff
         res_cutoff_noanom_in.cc_half_cutoff = self.dataInput.cc_half_cutoff
         self.res_cutoff_noanom.dataInput = res_cutoff_noanom_in
 
         self.DEBUG('STARTING noanom res cutoff')
-        t0=time.time()
+        t0 = time.time()
         self.res_cutoff_noanom.executeSynchronous()
         self.retrieveFailureMessages(self.res_cutoff_anom, "Res cut noanom")
-        self.stats['res_cutoff_noanom'] = time.time()-t0
+        self.stats['res_cutoff_noanom'] = time.time() - t0
 
         with open(self.log_file_path, 'w') as f:
             json.dump(self.stats, f)
@@ -766,7 +773,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         t0 = time.time()
         self.file_conversion.executeSynchronous()
         self.retrieveFailureMessages(self.file_conversion, "File conversion")
-        self.stats['autoproc_import']=time.time()-t0
+        self.stats['autoproc_import'] = time.time() - t0
 
         with open(self.log_file_path, 'w') as f:
             json.dump(self.stats, f)
@@ -787,7 +794,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                              str(self.file_conversion.dataOutput.pointless_cell[5].value)])
         try:
             os.mknod(os.path.join(self.results_dir, filename), 0755)
-        except OSError: #file exists
+        except OSError:  # file exists
             pass
 
 
@@ -806,7 +813,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         generate_xscale_input.unit_cell = XSDataString(pointless_cell)
         self.generate_xscale.dataInput = generate_xscale_input
         self.generate_xscale.executeSynchronous()
-        
+
 
 
         # We use another control plugin for that to isolate the whole thing
@@ -828,10 +835,10 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         self.log_to_ispyb(self.integration_id_noanom,
                      'Scaling', 'Launched', 'Start of XSCALE')
 
-        t0=time.time()
+        t0 = time.time()
         self.xscale_generate.executeSynchronous()
         self.retrieveFailureMessages(self.xscale_generate, "XSCALE")
-        self.stats['xscale_generate']=time.time()-t0
+        self.stats['xscale_generate'] = time.time() - t0
 
         with open(self.log_file_path, 'w') as f:
             json.dump(self.stats, f)
@@ -873,7 +880,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # Run phenix.xtriage
         xsDataInputPhenixXtriage = XSDataInputPhenixXtriage()
-        xsDataInputPhenixXtriage.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, 
+        xsDataInputPhenixXtriage.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value,
                                                                                 "{0}_unmerged_noanom_pointless_multirecord.mtz.gz".format(self.image_prefix))))
         self.phenixXtriage.dataInput = xsDataInputPhenixXtriage
         self.phenixXtriage.executeSynchronous()
@@ -884,11 +891,11 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                          "phenix.xtriage failed")
         else:
             xsDataResultPhenixXtriage = self.phenixXtriage.dataOutput
-    
+
             shutil.copy(xsDataResultPhenixXtriage.logFile.path.value,
                         os.path.join(self.file_conversion.dataInput.output_directory.value,
                                      "{0}_phenix_xtriage_noanom.log".format(self.image_prefix)))
-    
+
             if xsDataResultPhenixXtriage.pseudotranslation.value:
                 strMessage = "Pseudotranslation detected by phenix.xtriage!"
                 bPseudotranslation = True
@@ -900,7 +907,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                          'Scaling',
                          'Successful',
                          strMessage)
-            
+
             if xsDataResultPhenixXtriage.twinning.value:
                 strMessage = "Twinning detected by phenix.xtriage!"
                 bTwinning = True
@@ -912,7 +919,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                          'Scaling',
                          'Successful',
                          strMessage)
-            
+
             if bPseudotranslation or bTwinning:
                 if bPseudotranslation and bTwinning:
                     strISPyBComment = "EDNA dp: pseudo-translation and twinning detected."
@@ -925,7 +932,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                 xsDataInput.dataCollectionId = self.dataInput.data_collection_id
                 self.edPluginISPyBUpdateDataCollectionGroupComment.dataInput = xsDataInput
                 self.executePluginSynchronous(self.edPluginISPyBUpdateDataCollectionGroupComment)
-                    
+
 
         self.process_end = time.time()
 
@@ -934,7 +941,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
 
 
-    def postProcess(self, _edObject = None):
+    def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self)
         self.DEBUG("EDPluginControlAutoprocv1_0.postProcess")
 
@@ -942,13 +949,13 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # populated in it already so Max's code can be aware of that
         try:
             os.mknod(os.path.join(self.results_dir, '.finished'), 0755)
-        except OSError: # file exists
+        except OSError:  # file exists
             pass
 
 
-        #Now that we have executed the whole thing we need to create
-        #the suitable ISPyB plugin input and serialize it to the file
-        #we've been given as input
+        # Now that we have executed the whole thing we need to create
+        # the suitable ISPyB plugin input and serialize it to the file
+        # we've been given as input
         output = AutoProcContainer()
 
         # AutoProc attr
@@ -1054,7 +1061,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         integration_container_anom.Image = image
 
         integration_anom = AutoProcIntegration()
-        crystal_stats =  self.parse_xds_anom.dataOutput
+        crystal_stats = self.parse_xds_anom.dataOutput
         if self.integration_id_anom is not None:
             integration_anom.autoProcIntegrationId = self.integration_id_anom
         integration_anom.cell_a = unit_cell[0]
@@ -1089,12 +1096,12 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # remove the edna-autoproc-import suffix
         original_files_dir = self.file_conversion.dataInput.output_directory.value
-        #files_dir, _ = os.path.split(original_files_dir)
+        # files_dir, _ = os.path.split(original_files_dir)
         files_dir = original_files_dir
 
         # the whole transformation is fragile!
         if EDUtilsPath.isEMBL():
-            pyarch_path =  os.path.join(files_dir,'a_copy')
+            pyarch_path = os.path.join(files_dir, 'a_copy')
         elif EDUtilsPath.isESRF():
             if files_dir.startswith('/data/gz'):
                 if files_dir.startswith('/data/gz/visitor'):
@@ -1110,8 +1117,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                     if tokens[3] == 'inhouse':
                         pyarch_path = os.path.join('/data/pyarch', tokens[2],
                                                    *tokens[4:])
-                    
-                    
+
+
             elif files_dir.startswith('/data/visitor'):
                 # We might get empty elements at the head/tail of the list
                 tokens = [elem for elem in files_dir.split(os.path.sep)
@@ -1166,11 +1173,11 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                 else:
                     program_container_noanom.AutoProcProgramAttachment.append(attach_anom)
                     program_container_anom.AutoProcProgramAttachment.append(attach_noanom)
-                    
+
 
         program_container_anom.AutoProcProgram.processingStatus = True
         program_container_noanom.AutoProcProgram.processingStatus = True
-        
+
         # first with anom
 
         output.AutoProcProgramContainer = program_container_anom
@@ -1185,7 +1192,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # store results in ispyb
         self.store_autoproc_anom.dataInput = ispyb_input
-        t0=time.time()
+        t0 = time.time()
         self.store_autoproc_anom.executeSynchronous()
         self.retrieveFailureMessages(self.store_autoproc_anom, "Store autoproc anom")
         self.stats['ispyb_upload'] = time.time() - t0
@@ -1213,7 +1220,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # store results in ispyb
         self.store_autoproc_noanom.dataInput = ispyb_input
-        t0=time.time()
+        t0 = time.time()
         self.store_autoproc_noanom.executeSynchronous()
         autoProcProgramId = self.store_autoproc_noanom.dataOutput.autoProcProgramId.value
         self.retrieveFailureMessages(self.store_autoproc_noanom, "Store autoproc noanom")
@@ -1228,11 +1235,11 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             # store the autoproc id
             os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0755)
 
-        # Finally run dimple if executed at the ESRF     
+        # Finally run dimple if executed at the ESRF
         if EDUtilsPath.isESRF():
             xsDataInputControlDimple = XSDataInputControlDimple()
             xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
-            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, 
+            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value,
                                                                                     "{0}_noanom_aimless.mtz".format(self.image_prefix))))
             xsDataInputControlDimple.imagePrefix = XSDataString(self.image_prefix)
             xsDataInputControlDimple.proposal = XSDataString(self.strProposal)
@@ -1247,7 +1254,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             edPluginControlRunDimple.dataInput = xsDataInputControlDimple
             edPluginControlRunDimple.executeSynchronous()
             if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully is not None:
-                if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully.value: 
+                if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully.value:
                     self.bExecutedDimple = True
                     strISPyBComment = "DIMPLE results available for EDNAproc"
                     xsDataInput = XSDataInputISPyBUpdateDataCollectionGroupComment()
@@ -1260,13 +1267,13 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
 
 
-    def finallyProcess(self, _edObject = None):
+    def finallyProcess(self, _edObject=None):
         EDPluginControl.finallyProcess(self)
         strMessage = ""
         if self.getListOfWarningMessages() != []:
             strMessage += "Warning messages: \n\n"
             for strWarningMessage in self.getListOfWarningMessages():
-                strMessage += strWarningMessage  + "\n\n"         
+                strMessage += strWarningMessage + "\n\n"
         if self.getListOfErrorMessages() != []:
             strMessage += "Error messages: \n\n"
             for strErrorMessage in self.getListOfErrorMessages():
@@ -1277,16 +1284,16 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             strStatus = "SUCCESS"
         if EDUtilsPath.isESRF():
             if self.bExecutedDimple:
-                strSubject = "EDNA dp DIMPLE %s %s %s %s %s" % (self.strBeamline, self.strProposal, 
+                strSubject = "EDNA dp DIMPLE %s %s %s %s %s" % (self.strBeamline, self.strProposal,
                                                          self.strPrefix, self.strHost, strStatus)
             else:
-                strSubject = "EDNA dp %s %s %s %s %s" % (self.strBeamline, self.strProposal, 
+                strSubject = "EDNA dp %s %s %s %s %s" % (self.strBeamline, self.strProposal,
                                                          self.strPrefix, self.strHost, strStatus)
         else:
             strSubject = "EDNA dp host %s %s" % (self.strHost, strStatus)
-            
 
-        strMessage  += "\n\nPlugin execution time: %.2f s\n" % (time.time() - self.plugin_start )
+
+        strMessage += "\n\nPlugin execution time: %.2f s\n" % (time.time() - self.plugin_start)
         if self.process_end is not None:
             fProcessExecutionTime = self.process_end - self.process_start
             iStartImage = self.data_range[0]
@@ -1324,9 +1331,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             strSessionDate = listPath[5]
         strPrefix = listPath[-2][4:]
         return (strBeamline, strProposal, strSessionDate, strPrefix)
-        
 
-            
+
+
     def sendEmail(self, _strSubject, _strMessage):
         """Sends an email to the EDNA contact person (if configured)."""
 
@@ -1341,7 +1348,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             try:
                 self.DEBUG("Sending message to %s." % self.strEDNAContactEmail)
                 self.DEBUG("Message: %s" % _strMessage)
-                strMessage = "EDNA_HOME = %s\n" %  EDUtilsPath.getEdnaHome()
+                strMessage = "EDNA_HOME = %s\n" % EDUtilsPath.getEdnaHome()
                 strMessage += "EDNA_SITE = %s\n" % EDUtilsPath.getEdnaSite()
                 strMessage += "PLUGIN_NAME = %s\n" % self.getPluginName()
                 strMessage += "working_dir = %s\n\n" % self.getWorkingDirectory()
@@ -1372,8 +1379,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             self.log_to_ispyb_impl(integration_id, step, status, comments)
             if status == "Failed":
                 for strErrorMessage in self.getListOfErrorMessages():
-                    self.log_to_ispyb_impl(integration_id, step, status, strErrorMessage)                
-    
+                    self.log_to_ispyb_impl(integration_id, step, status, strErrorMessage)
+
     def log_to_ispyb_impl(self, integration_id, step, status, comments=""):
         # hack in the event we could not create an integration ID
         if integration_id is None:
@@ -1387,23 +1394,23 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         status_data.status = status
         status_data.comments = comments
         status_input.AutoProcStatus = status_data
-    
+
         autoproc_status.dataInput = status_input
-    
+
         autoproc_status.executeSynchronous()
-    
+
     def create_integration_id(self, datacollect_id, comments):
         autoproc_status = edFactoryPlugin.loadPlugin('EDPluginISPyBStoreAutoProcStatusv1_4')
         status_input = XSDataInputStoreAutoProcStatus()
         status_input.dataCollectionId = datacollect_id
-    
+
         # needed even if we only want to get an integration ID?
         status_data = AutoProcStatus()
         status_data.step = "Indexing"
         status_data.status = "Launched"
         status_data.comments = comments
         status_input.AutoProcStatus = status_data
-    
+
         autoproc_status.dataInput = status_input
         # get our autoproc status id
         autoproc_status.executeSynchronous()
@@ -1421,8 +1428,8 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             'Total number of observations': 'nTotalObservations',
             'Rmerge  (within I+/I-)': 'rMerge'
         }
-        
-        UNIT_CELL_PREFIX = 'Average unit cell:' # special case, 6 values
+
+        UNIT_CELL_PREFIX = 'Average unit cell:'  # special case, 6 values
         lines = []
         inner_stats = {'scalingStatisticsType':'innerShell'}
         outer_stats = {'scalingStatisticsType':'outerShell'}
@@ -1448,7 +1455,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                 if line.startswith(UNIT_CELL_PREFIX):
                     unit_cell = map(float, line.split()[-6:])
         return inner_stats, outer_stats, overall_stats, unit_cell
-    
+
 
 def _create_scaling_stats(xscale_stats, stats_type, lowres, anom):
     stats = AutoProcScalingStatistics()
@@ -1481,7 +1488,7 @@ def _template_to_image(fmt, num):
         # does not exist
         return ''
     prefix = fmt[:start]
-    suffix = fmt[end+1:]
+    suffix = fmt[end + 1:]
     length = end - start + 1
 
     # this is essentially the python format string equivalent to the
