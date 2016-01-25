@@ -670,7 +670,8 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                 htmlDir = tempfile.mktemp(prefix=os.path.basename(htmlDir),
                                           dir=os.path.dirname(htmlDir))
             shutil.copytree(os.path.dirname(_edPlugin.dataOutput.pathToHTMLFile.path.value), htmlDir)
-            self.xsDataResultMXCuBE.setHtmlPage(XSDataFile(XSDataString(htmlDir)))
+            htmlPage = os.path.join(htmlDir, os.path.basename(_edPlugin.dataOutput.pathToHTMLFile.path.value))
+            self.xsDataResultMXCuBE.setHtmlPage(XSDataFile(XSDataString(htmlPage)))
 
 
     def doFailureSimpleHTML(self, _edPlugin=None):
