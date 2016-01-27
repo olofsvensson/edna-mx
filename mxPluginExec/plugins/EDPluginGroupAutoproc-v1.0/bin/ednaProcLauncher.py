@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-#    Project: EDNAproc
+#    Project: EDNA_proc
 #             http://www.edna-site.org
 #
 #    Copyright (C) ESRF
@@ -66,7 +66,7 @@ for x in range(0, len(args), 2):
     options[args[x]] = args[x + 1]
 
 autoprocessingPath = options["-path"]
-ednaProcPath = os.path.join(autoprocessingPath, "EDNAproc")
+ednaProcPath = os.path.join(autoprocessingPath, "EDNA_proc")
 if not os.path.exists(ednaProcPath):
     os.makedirs(ednaProcPath, 0755)
 xdsInputFile = os.path.join(autoprocessingPath, "XDS.INP")
@@ -82,23 +82,23 @@ dataCollectionId = options["-datacollectionID"]
 # parse the input file to find the first image
 xdsAppeared = False
 waitXdsStart = time.time()
-logging.info("EDNAproc launcher: waiting for XDS.INP file")
+logging.info("EDNA_proc launcher: waiting for XDS.INP file")
 while not xdsAppeared and (time.time() - waitXdsStart < WAIT_XDS_TIMEOUT):
     time.sleep(1)
     if os.path.exists(xdsInputFile) and os.stat(xdsInputFile).st_size > 0:
         time.sleep(1)
         xdsAppeared = True
-        logging.info("EDNAproc launcher: XDS.INP file is there, size={0}".format(os.stat(xdsInputFile).st_size))
+        logging.info("EDNA_proc launcher: XDS.INP file is there, size={0}".format(os.stat(xdsInputFile).st_size))
 if not xdsAppeared:
     logging.error("XDS.INP file ({0}) failed to appear after {1} seconds".format(xdsInputFile, WAIT_XDS_TIMEOUT))
     sys.exit(1)
 
 
-ednaOutputFileName = "EDNAproc_ispyb.xml"
+ednaOutputFileName = "EDNA_proc_ispyb.xml"
 ednaOutputFilePath = os.path.join(ednaProcPath, ednaOutputFileName)
 if os.path.exists(ednaOutputFilePath):
     ednaOutputFile = tempfile.NamedTemporaryFile(suffix=".xml",
-                                                 prefix="EDNAproc_ispyb-",
+                                                 prefix="EDNA_proc_ispyb-",
                                                  dir=ednaProcPath,
                                                  delete=False)
     ednaOutputFilePath = os.path.join(ednaProcPath, ednaOutputFile.name)
@@ -159,12 +159,12 @@ inputXml = inputTemplate.format(xdsInputFile=xdsInputFile,
                                 spacegroupFragment=spacegroupFragment)
 
 # we now need a temp file in the data dir to write the data model to
-ednaInputFileName = "EDNAproc_input.xml"
+ednaInputFileName = "EDNA_proc_input.xml"
 ednaInputFilePath = os.path.join(ednaProcPath, ednaInputFileName)
 if os.path.exists(ednaInputFilePath):
     # Create unique file name
     ednaInputFile = tempfile.NamedTemporaryFile(suffix=".xml",
-                                                prefix="EDNAproc_input-",
+                                                prefix="EDNA_proc_input-",
                                                 dir=ednaProcPath,
                                                 delete=False)
     ednaInputFilePath = os.path.join(ednaProcPath, ednaInputFile.name)
@@ -209,7 +209,7 @@ strPluginBaseDir = os.path.join("/tmp", beamline, dateString)
 if not os.path.exists(strPluginBaseDir):
     os.makedirs(strPluginBaseDir, 0755)
 
-baseName = "{0}_EDNAproc".format(timeString)
+baseName = "{0}_EDNA_proc".format(timeString)
 baseDir = os.path.join(strPluginBaseDir, baseName)
 if not os.path.exists(baseDir):
     os.makedirs(baseDir, 0755)
@@ -220,7 +220,7 @@ linkName = "{hostname}_{date}-{time}".format(hostname=hostname,
                                              time=timeString)
 os.symlink(baseDir, os.path.join(ednaProcDirectory, linkName))
 
-ednaLogName = "EDNAproc_{0}-{1}.log".format(dateString, timeString)
+ednaLogName = "EDNA_proc_{0}-{1}.log".format(dateString, timeString)
 EDVerbose.setLogFileName(os.path.join(ednaProcDirectory, ednaLogName))
 EDVerbose.setVerboseOn()
 
@@ -256,12 +256,12 @@ script = template.substitute(beamline=beamline,
                              inputFile=ednaInputFilePath)
 
 # we also need some kind of script to run edna-plugin-launcher
-ednaScriptFileName = "EDNAproc_launcher.sh"
+ednaScriptFileName = "EDNA_proc_launcher.sh"
 ednaScriptFilePath = os.path.join(ednaProcPath, ednaScriptFileName)
 if os.path.exists(ednaScriptFilePath):
     # Create unique file name
     ednaScriptFile = tempfile.NamedTemporaryFile(suffix=".sh",
-                                                 prefix="EDNAproc_launcher-",
+                                                 prefix="EDNA_proc_launcher-",
                                                  dir=ednaProcPath,
                                                  delete=False)
     ednaScriptFilePath = os.path.join(ednaProcPath, ednaScriptFile.name)
@@ -278,7 +278,7 @@ remainingBesHosts = BES_HOSTS
 while not submitSuccess and len(remainingBesHosts) > 0:
     besHost = remainingBesHosts.pop()
     besPort = BES_PORT
-    log.info("EDNAproc launcher: trying to submit job on {host}:{port}".format(host=besHost, port=besPort))
+    log.info("EDNA_proc launcher: trying to submit job on {host}:{port}".format(host=besHost, port=besPort))
     try:
         conn = httplib.HTTPConnection(besHost, besPort)
         params = urllib.urlencode({"ednaDpLaunchPath":os.path.join(ednaProcPath, ednaScriptFilePath),
@@ -295,7 +295,7 @@ while not submitSuccess and len(remainingBesHosts) > 0:
             log.error("RUN response status = {0}".format(response.status))
         else:
             submitSuccess = True
-            log.info("EDNAproc launcher: job successfully submitted on {host}:{port}".format(host=besHost, port=besPort))
+            log.info("EDNA_proc launcher: job successfully submitted on {host}:{port}".format(host=besHost, port=besPort))
     except:
-        log.error("EDNAproc launcher: cannot connect to BES server on {host}:{port}!".format(host=besHost, port=besPort))
+        log.error("EDNA_proc launcher: cannot connect to BES server on {host}:{port}!".format(host=besHost, port=besPort))
 
