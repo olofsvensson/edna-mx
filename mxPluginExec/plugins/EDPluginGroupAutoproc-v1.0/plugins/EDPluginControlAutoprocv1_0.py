@@ -3,8 +3,6 @@
 #    Project: Autoproc
 #             http://www.edna-site.org
 #
-#    File: "$Id$"
-#
 #    Copyright (C) ESRF
 #
 #    Principal authors: Thomas Boeglin and Olof Svensson
@@ -398,19 +396,29 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
 
         # ESRF specific: wait till we got the last image
         if EDUtilsPath.isESRF():
+            first_image = self.first_image
+            last_image = self.last_image
             if any(beamline in self.first_image for beamline in ["id23eh1", "id29"]):
-                minSize = 6000000
+                minSizeFirst = 6000000
+                minSizeLast = 6000000
             elif any(beamline in self.first_image for beamline in ["id23eh2", "id30a1"]):
-                minSize = 2000000
+                minSizeFirst = 2000000
+                minSizeLast = 2000000
+            elif any(beamline in self.first_image for beamline in ["id30a3"]):
+                minSizeFirst = 100000
+                minSizeLast = 100000
+                first_image = self.eiger_template_to_image(template, start_image)
+                last_image = self.eiger_template_to_image(template, end_image)
             else:
-                minSize = 1000000
+                minSizeFirst = 1000000
+                minSizeLast = 1000000
 
             fWaitFileTimeout = 3600  # s
 
             xsDataInputMXWaitFileFirst = XSDataInputMXWaitFile()
-            xsDataInputMXWaitFileFirst.file = XSDataFile(XSDataString(self.first_image))
+            xsDataInputMXWaitFileFirst.file = XSDataFile(XSDataString(first_image))
             xsDataInputMXWaitFileFirst.timeOut = XSDataTime(fWaitFileTimeout)
-            self.waitFileFirst.size = XSDataInteger(minSize)
+            self.waitFileFirst.size = XSDataInteger(minSizeFirst)
             self.waitFileFirst.dataInput = xsDataInputMXWaitFileFirst
             self.waitFileFirst.executeSynchronous()
             if self.waitFileFirst.dataOutput.timedOut.value:
@@ -419,9 +427,9 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                 self.WARNING(strWarningMessage)
 
             xsDataInputMXWaitFileLast = XSDataInputMXWaitFile()
-            xsDataInputMXWaitFileLast.file = XSDataFile(XSDataString(self.last_image))
+            xsDataInputMXWaitFileLast.file = XSDataFile(XSDataString(last_image))
             xsDataInputMXWaitFileLast.timeOut = XSDataTime(fWaitFileTimeout)
-            self.waitFileLast.size = XSDataInteger(minSize)
+            self.waitFileLast.size = XSDataInteger(minSizeLast)
             self.waitFileLast.dataInput = xsDataInputMXWaitFileLast
             self.waitFileLast.executeSynchronous()
             if self.waitFileLast.dataOutput.timedOut.value:
@@ -1425,6 +1433,13 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
                     unit_cell = map(float, line.split()[-6:])
         return inner_stats, outer_stats, overall_stats, unit_cell
 
+
+    def eiger_template_to_image(self, fmt, num):
+        fileNumber = int(num / 100)
+        if fileNumber == 0:
+            fileNumber = 1
+        fmt_string = fmt.replace("master", "data_%05d" % fileNumber)
+        return fmt_string.format(num)
 
 def _create_scaling_stats(xscale_stats, stats_type, lowres, anom):
     stats = AutoProcScalingStatistics()
