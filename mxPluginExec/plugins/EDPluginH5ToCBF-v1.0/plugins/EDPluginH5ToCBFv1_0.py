@@ -121,7 +121,7 @@ class EDPluginH5ToCBFv1_0(EDPluginExecProcessScript):
         if "master" in hdf5File:
             masterFile = hdf5File
         else:
-            masterFile = os.path.join(directory, prefix + "__master.h5")
+            masterFile = os.path.join(directory, prefix + "_1_master.h5")
 
         imageNumber = _xsDataInputH5ToCBF.imageNumber.value
 
@@ -138,7 +138,7 @@ class EDPluginH5ToCBFv1_0(EDPluginExecProcessScript):
     def generateMiniCBFHeader(self, _xsDataInputH5ToCBF):
         dataCollection = _xsDataInputH5ToCBF.dataCollection
         miniCBFHeader = ""
-        miniCBFHeader += "# Detector: Dectris Eiger 4M, S/N E-08-0106, ESRF ID30a3\r\n"
+        miniCBFHeader += "# Detector: Dectris Eiger 4M, S/N E-08-0104, ESRF ID30a3\r\n"
         miniCBFHeader += "# {0}\r\n".format(dataCollection.startTime)
         miniCBFHeader += "# Pixel_size 75e-6 m x 75e-6 m\r\n"
         miniCBFHeader += "# Silicon sensor, thickness 0.000320 m\r\n"
