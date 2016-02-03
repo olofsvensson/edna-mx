@@ -1438,7 +1438,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         fileNumber = int(num / 100)
         if fileNumber == 0:
             fileNumber = 1
-        fmt_string = fmt.replace("master", "data_%05d" % fileNumber)
+        fmt_string = fmt.replace("%04d", "1_data_%06d" % fileNumber)
         return fmt_string.format(num)
 
 def _create_scaling_stats(xscale_stats, stats_type, lowres, anom):
