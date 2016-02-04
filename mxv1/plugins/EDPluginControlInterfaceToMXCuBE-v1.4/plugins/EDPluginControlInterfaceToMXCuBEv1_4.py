@@ -147,7 +147,6 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.edPluginExecSimpleHTML = self.loadPlugin(self.strPluginExecSimpleHTMLName, "SimpleHTML")
         self.edPluginISPyBRetrieveDataCollection = self.loadPlugin(self.strPluginISPyBRetrieveDataCollection, \
                                                                    "ISPyBRetrieveDataCollection")
-        self.edPluginControlH5ToCBF = self.loadPlugin(self.strPluginControlH5ToCBF, "ControlH5ToCBF")
         self.xsDataResultMXCuBE = XSDataResultMXCuBE()
 
 
@@ -167,12 +166,13 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
                     xsDataInputControlH5ToCBF.hdf5File = XSDataFile(xsDataFile.path)
                     xsDataInputControlH5ToCBF.imageNumber = XSDataInteger(EDUtilsImage.getImageNumber(xsDataFile.path.value))
-                    self.edPluginControlH5ToCBF.dataInput = xsDataInputControlH5ToCBF
-                    self.edPluginControlH5ToCBF.executeSynchronous()
-                    cbfFile = self.edPluginControlH5ToCBF.dataOutput.outputCBFFile
+                    edPluginControlH5ToCBF = self.loadPlugin(self.strPluginControlH5ToCBF, "ControlH5ToCBF")
+                    edPluginControlH5ToCBF.dataInput = xsDataInputControlH5ToCBF
+                    edPluginControlH5ToCBF.executeSynchronous()
+                    cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
                     xsDataInputInterface.addImagePath(cbfFile)
-                    break
-                xsDataInputInterface.addImagePath(xsDataFile)
+                else:
+                    xsDataInputInterface.addImagePath(xsDataFile)
                 if xsDataFirstImage is None:
                     xsDataFirstImage = xsDataFile
 
