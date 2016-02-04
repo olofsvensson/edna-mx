@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Mar 4 10:44::06 2015 by EDGenerateDS.
+# Generated Thu Feb 4 06:04::23 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -1471,7 +1471,7 @@ class XSDataISPyBDataCollection(object):
 
 
 class XSDataInputH5ToCBF(XSDataInput):
-    def __init__(self, configuration=None, dataCollection=None, hdf5File=None, imageNumber=None):
+    def __init__(self, configuration=None, dataCollection=None, hdf5File=None, hdf5ImageNumber=None, imageNumber=None):
         XSDataInput.__init__(self, configuration)
         if imageNumber is None:
             self._imageNumber = None
@@ -1479,6 +1479,13 @@ class XSDataInputH5ToCBF(XSDataInput):
             self._imageNumber = imageNumber
         else:
             strMessage = "ERROR! XSDataInputH5ToCBF constructor argument 'imageNumber' is not XSDataInteger but %s" % self._imageNumber.__class__.__name__
+            raise BaseException(strMessage)
+        if hdf5ImageNumber is None:
+            self._hdf5ImageNumber = None
+        elif hdf5ImageNumber.__class__.__name__ == "XSDataInteger":
+            self._hdf5ImageNumber = hdf5ImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputH5ToCBF constructor argument 'hdf5ImageNumber' is not XSDataInteger but %s" % self._hdf5ImageNumber.__class__.__name__
             raise BaseException(strMessage)
         if hdf5File is None:
             self._hdf5File = None
@@ -1506,6 +1513,18 @@ class XSDataInputH5ToCBF(XSDataInput):
             raise BaseException(strMessage)
     def delImageNumber(self): self._imageNumber = None
     imageNumber = property(getImageNumber, setImageNumber, delImageNumber, "Property for imageNumber")
+    # Methods and properties for the 'hdf5ImageNumber' attribute
+    def getHdf5ImageNumber(self): return self._hdf5ImageNumber
+    def setHdf5ImageNumber(self, hdf5ImageNumber):
+        if hdf5ImageNumber is None:
+            self._hdf5ImageNumber = None
+        elif hdf5ImageNumber.__class__.__name__ == "XSDataInteger":
+            self._hdf5ImageNumber = hdf5ImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputH5ToCBF.setHdf5ImageNumber argument is not XSDataInteger but %s" % hdf5ImageNumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delHdf5ImageNumber(self): self._hdf5ImageNumber = None
+    hdf5ImageNumber = property(getHdf5ImageNumber, setHdf5ImageNumber, delHdf5ImageNumber, "Property for hdf5ImageNumber")
     # Methods and properties for the 'hdf5File' attribute
     def getHdf5File(self): return self._hdf5File
     def setHdf5File(self, hdf5File):
@@ -1542,6 +1561,8 @@ class XSDataInputH5ToCBF(XSDataInput):
             self.imageNumber.export(outfile, level, name_='imageNumber')
         else:
             warnEmptyAttribute("imageNumber", "XSDataInteger")
+        if self._hdf5ImageNumber is not None:
+            self.hdf5ImageNumber.export(outfile, level, name_='hdf5ImageNumber')
         if self._hdf5File is not None:
             self.hdf5File.export(outfile, level, name_='hdf5File')
         else:
@@ -1560,6 +1581,11 @@ class XSDataInputH5ToCBF(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setImageNumber(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'hdf5ImageNumber':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setHdf5ImageNumber(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'hdf5File':
             obj_ = XSDataFile()

@@ -64,6 +64,7 @@ complex type XSDataISPyBDataCollection {
 
 complex type XSDataInputH5ToCBF extends XSDataInput {
 	imageNumber : XSDataInteger 
+	hdf5ImageNumber : XSDataInteger optional
 	hdf5File : XSDataFile
 	dataCollection : XSDataISPyBDataCollection
 }

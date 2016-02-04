@@ -21,7 +21,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="Olof Svensson"
+__author__ = "Olof Svensson"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
@@ -35,9 +35,9 @@ class EDTestCasePluginUnitControlAutoprocv1_0(EDTestCasePluginUnit):
     Those are all units tests for the EDNA control plugin Autoprocv1_0
     """
 
-    def __init__(self, _strTestName = None):
+    def __init__(self, _strTestName=None):
         EDTestCasePluginUnit.__init__(self, "EDPluginControlAutoprocv1_0")
-              
+
 
     def test_getBeamlinePrefixFromPath(self):
         edPlugin = self.getPlugin()
@@ -61,11 +61,17 @@ class EDTestCasePluginUnitControlAutoprocv1_0(EDTestCasePluginUnit):
         EDAssert.equal("opid30a3", strProposal, "Inhouse gz proposal")
         EDAssert.equal("20150831", strSessionDate, "Inhouse gz session date")
         EDAssert.equal("thaumatin_run3_1", strPrefix, "Inhouse gz prefix")
-        
-    
-    
+
+
+    def test_eiger_template_to_image(self):
+        edPlugin = self.getPlugin()
+        print(edPlugin.eiger_template_to_image("eigertest_1_1_??????.h5", 1))
+        print(edPlugin.eiger_template_to_image("eigertest_1_1_??????.h5", 1000))
+
+
     def process(self):
         self.addTestMethod(self.test_getBeamlinePrefixFromPath)
+        self.addTestMethod(self.test_eiger_template_to_image)
 
-    
+
 

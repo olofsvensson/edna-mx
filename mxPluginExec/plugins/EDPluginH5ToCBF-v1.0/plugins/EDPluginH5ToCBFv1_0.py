@@ -121,10 +121,15 @@ class EDPluginH5ToCBFv1_0(EDPluginExecProcessScript):
 
         imageNumber = _xsDataInputH5ToCBF.imageNumber.value
 
+        if _xsDataInputH5ToCBF.hdf5ImageNumber is None:
+            hdf5ImageNumber = imageNumber
+        else:
+            hdf5ImageNumber = _xsDataInputH5ToCBF.hdf5ImageNumber.value
+
         if "master" in hdf5File:
             masterFile = hdf5File
         else:
-            masterFile = os.path.join(directory, prefix + "_{0}_master.h5".format(imageNumber))
+            masterFile = os.path.join(directory, prefix + "_{0}_master.h5".format(hdf5ImageNumber))
 
         CBFFileName = prefix + "_%04d" % imageNumber + ".cbf"
         tmpCBFFileName = "tmp_" + CBFFileName
@@ -132,7 +137,7 @@ class EDPluginH5ToCBFv1_0(EDPluginExecProcessScript):
         self.CBFFile = os.path.join(directory, CBFFileName)
         self.tmpCBFFile = os.path.join(self.getWorkingDirectory(), tmpCBFFileName)
 
-        scriptCommandLine = "{0} {1} {2}".format(masterFile, 1, tmpCBFFileName)
+        scriptCommandLine = "{0} {1} {2}".format(masterFile, imageNumber - hdf5ImageNumber + 1, tmpCBFFileName)
 
         return scriptCommandLine
 
