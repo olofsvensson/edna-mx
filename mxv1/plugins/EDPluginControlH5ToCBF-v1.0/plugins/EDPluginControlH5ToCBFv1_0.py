@@ -53,7 +53,7 @@ class EDPluginControlH5ToCBFv1_0(EDPluginControl):
     """
     This plugin runs the ControlH5ToCBF program written by Sasha Popov
     """
-    
+
 
     def __init__(self):
         EDPluginControl.__init__(self)
@@ -72,13 +72,13 @@ class EDPluginControlH5ToCBFv1_0(EDPluginControl):
         self.DEBUG("EDPluginControlH5ToCBFv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
-    
+
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlH5ToCBFv1_0.preProcess")
         self.edPluginEDPluginH5ToCBF = self.loadPlugin(self.strEDPluginH5ToCBF, "H5ToCBF")
         self.edPluginISPyBRetrieveDataCollection = self.loadPlugin(self.strPluginISPyBRetrieveDataCollection, "ISPyBRetrieveDataCollection")
-        
+
 
 
     def process(self, _edObject=None):
@@ -91,6 +91,15 @@ class EDPluginControlH5ToCBFv1_0(EDPluginControl):
         self.edPluginISPyBRetrieveDataCollection.executeSynchronous()
         xsDataResultRetrieveDataCollection = self.edPluginISPyBRetrieveDataCollection.dataOutput
         dataCollection = xsDataResultRetrieveDataCollection.dataCollection
+        imageNumber = self.dataInput.imageNumber.value
+        if dataCollection.overlap is None:
+            overlap = 0.0
+        else:
+            overlap = dataCollection.overlap
+        axisStart = dataCollection.axisStart
+        oscillationRange = dataCollection.axisRange
+        axisStartNew = axisStart - (overlap + oscillationRange) * (imageNumber - 1)
+        dataCollection.axisStart = axisStartNew
         if dataCollection is not None:
             xsDataISPyBDataCollection = XSDataISPyBDataCollection.parseString(dataCollection.marshal())
             xsDataInputH5ToCBF = XSDataInputH5ToCBF()
