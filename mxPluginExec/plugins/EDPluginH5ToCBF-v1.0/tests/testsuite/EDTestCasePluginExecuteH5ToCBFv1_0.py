@@ -5,7 +5,7 @@
 #    Copyright (C) 2012 European Synchrotron Radiation Facility
 #                       Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -46,7 +46,7 @@ class EDTestCasePluginExecuteH5ToCBFv1_0(EDTestCasePluginExecute):
 
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "ref-ednatest_1__master.h5", "series_35_data_000001.h5" ])
+        self.loadTestImage([ "ref-test_3_1_master.h5", "ref-test_3_1_data_000001.h5" ])
 
     def testExecute(self):
         self.run()

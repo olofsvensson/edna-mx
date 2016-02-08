@@ -25,7 +25,9 @@ __author__ = "Olof Svensson"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
-import os, time
+import os
+import time
+import shutil
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 from EDUtilsImage import EDUtilsImage
@@ -57,7 +59,6 @@ class EDPluginH5ToCBFv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginH5ToCBFv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
         self.checkMandatoryParameters(self.dataInput.hdf5File, "HDF5 file is None")
-        self.checkMandatoryParameters(self.dataInput.dataCollection, "Data collection is None")
 
 
     def preProcess(self, _edObject=None):
@@ -75,26 +76,30 @@ class EDPluginH5ToCBFv1_0(EDPluginExecProcessScript):
     def postProcess(self, _edObject=None):
         EDPluginExecProcessScript.postProcess(self)
         self.DEBUG("EDPluginH5ToCBFv1_0.postProcess")
-        # Fill in metadata
-        fileTmpCBF = open(self.tmpCBFFile)
-        tmpCBF = fileTmpCBF.read()
-        fileTmpCBF.close()
 
-        # Replace opening line
-        tmpCBF = tmpCBF.replace("CBF: VERSION 1.5, CBFlib v0.7.8 - SLS/DECTRIS PILATUS detectors",
-                                "CBF: VERSION 1.5, CBFlib v0.7.8")
+        if self.dataInput.dataCollection is None:
+            shutil.copy(self.tmpCBFFile, self.CBFFile)
+        else:
+            # Fill in metadata
+            fileTmpCBF = open(self.tmpCBFFile)
+            tmpCBF = fileTmpCBF.read()
+            fileTmpCBF.close()
+
+            # Replace opening line
+            tmpCBF = tmpCBF.replace("CBF: VERSION 1.5, CBFlib v0.7.8 - SLS/DECTRIS PILATUS detectors",
+                                    "CBF: VERSION 1.5, CBFlib v0.7.8")
 
 
-        index1 = tmpCBF.find("# WARNING: FOR XDS PROCESSING ONLY.")
-        string2 = "# SOFTWARE VERSION: 1.1.0-RELEASE"
-        index2 = tmpCBF.find(string2) + len(string2)
+            index1 = tmpCBF.find("# WARNING: FOR XDS PROCESSING ONLY.")
+            string2 = "# SOFTWARE VERSION: 1.1.0-RELEASE"
+            index2 = tmpCBF.find(string2) + len(string2)
 
-        miniCBFHeader = self.generateMiniCBFHeader(self.dataInput)
+            miniCBFHeader = self.generateMiniCBFHeader(self.dataInput)
 
-        newCBF = tmpCBF[:index1] + miniCBFHeader + tmpCBF[index2:]
-        newCBFFile = open(self.CBFFile, "w")
-        newCBFFile.write(newCBF)
-        newCBFFile.close()
+            newCBF = tmpCBF[:index1] + miniCBFHeader + tmpCBF[index2:]
+            newCBFFile = open(self.CBFFile, "w")
+            newCBFFile.write(newCBF)
+            newCBFFile.close()
 
 
 
@@ -134,7 +139,14 @@ class EDPluginH5ToCBFv1_0(EDPluginExecProcessScript):
         CBFFileName = prefix + "_%04d" % imageNumber + ".cbf"
         tmpCBFFileName = "tmp_" + CBFFileName
 
-        self.CBFFile = os.path.join(directory, CBFFileName)
+        if self.dataInput.forcedOutputDirectory is None:
+            self.CBFFile = os.path.join(directory, CBFFileName)
+        else:
+            forcedOutputDirectory = self.dataInput.forcedOutputDirectory.path.value
+            if not os.path.exists(forcedOutputDirectory):
+                os.makedirs(forcedOutputDirectory, 0755)
+            self.CBFFile = os.path.join(forcedOutputDirectory, CBFFileName)
+
         self.tmpCBFFile = os.path.join(self.getWorkingDirectory(), tmpCBFFileName)
 
         scriptCommandLine = "{0} {1} {2}".format(masterFile, imageNumber - hdf5ImageNumber + 1, tmpCBFFileName)
