@@ -46,7 +46,7 @@ class EDPluginControlPyarchThumbnailGeneratorParallelv1_0(EDPluginControl):
         self.strControlThumbnailPluginName = "EDPluginControlPyarchThumbnailGeneratorv1_0"
         self.xsDataResult = XSDataResultPyarchThumbnailGeneratorParallel()
         self.setDataOutput(self.xsDataResult)
-        
+
 
 
 
@@ -66,10 +66,10 @@ class EDPluginControlPyarchThumbnailGeneratorParallelv1_0(EDPluginControl):
         # Check that the input image exists and is of the expected type
         strPathToDiffractionImage = self.getDataInput().getDiffractionImage()[0].getPath().getValue()
         strImageFileNameExtension = os.path.splitext(strPathToDiffractionImage)[1]
-        if not strImageFileNameExtension in [".img", ".marccd", ".mccd", ".cbf"]:
+        if not strImageFileNameExtension in [".img", ".marccd", ".mccd", ".cbf", ".h5"]:
             self.error("Unknown image file name extension for pyarch thumbnail generator: %s" % strPathToDiffractionImage)
             self.setFailure()
-            
+
 
 
     def process(self, _edObject=None):
@@ -92,4 +92,4 @@ class EDPluginControlPyarchThumbnailGeneratorParallelv1_0(EDPluginControl):
             self.dataOutput.addPathToThumbImage(edPlugin.dataOutput.pathToThumbImage)
 
 
-        
+
