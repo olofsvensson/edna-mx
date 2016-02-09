@@ -116,7 +116,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
                 if any(beamline in strPathToDiffractionImage for beamline in ["id23eh1", "id29", "id30b"]):
                     # Pilatus 6M
                     self.minImageSize = 6000000
-                elif any(beamline in strPathToDiffractionImage for beamline in ["id23eh2", "id30a1", "id30a3"]):
+                elif any(beamline in strPathToDiffractionImage for beamline in ["id23eh2", "id30a1"]):
                     # Pilatus3 2M
                     self.minImageSize = 2000000
                 elif strImageFileNameExtension == ".h5":
