@@ -256,7 +256,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         # The resultsdir used to be root_dir/results/fast_processing
         # self.results_dir = os.path.join(self.root_dir, 'results', 'fast_processing')
         # Now it is the <directory of the output_file>/results
-        if self.dataInput.output_file is not None and "EDNAproc" in self.dataInput.output_file.path.value:
+        if self.dataInput.output_file is not None and "EDNA_proc" in self.dataInput.output_file.path.value:
             self.results_dir = os.path.join(os.path.dirname(self.dataInput.output_file.path.value), 'results')
         else:
             # Old way
@@ -1057,12 +1057,12 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
         program_container_anom = AutoProcProgramContainer()
         program_container_anom.AutoProcProgram = AutoProcProgram()
         program_container_anom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container_anom.AutoProcProgram.processingPrograms = 'EDNAproc'
+        program_container_anom.AutoProcProgram.processingPrograms = 'EDNA_proc'
 
         program_container_noanom = AutoProcProgramContainer()
         program_container_noanom.AutoProcProgram = AutoProcProgram()
         program_container_noanom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container_noanom.AutoProcProgram.processingPrograms = 'EDNAproc'
+        program_container_noanom.AutoProcProgram.processingPrograms = 'EDNA_proc'
 
         # now for the generated files. There's some magic to do with
         # their paths to determine where to put them on pyarch
