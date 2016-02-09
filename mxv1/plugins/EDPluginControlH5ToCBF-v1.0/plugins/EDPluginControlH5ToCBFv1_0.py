@@ -101,23 +101,27 @@ class EDPluginControlH5ToCBFv1_0(EDPluginControl):
             dataCollection = xsDataResultRetrieveDataCollection.dataCollection
         else:
             dataCollection = self.dataInput.ispybDataCollection
-        self.dataOutput.ispybDataCollection = XSDataISPyBDataCollection.parseString(dataCollection.marshal())
-        if dataCollection.overlap is None:
-            overlap = 0.0
-        else:
-            overlap = dataCollection.overlap
-        axisStart = dataCollection.axisStart
-        oscillationRange = dataCollection.axisRange
-        axisStartNew = axisStart - (overlap + oscillationRange) * (imageNumber - 1)
-        dataCollection.axisStart = axisStartNew
         if dataCollection is not None:
+            if dataCollection.overlap is None:
+                overlap = 0.0
+            else:
+                overlap = dataCollection.overlap
+            axisStart = dataCollection.axisStart
+            oscillationRange = dataCollection.axisRange
+            axisStartNew = axisStart - (overlap + oscillationRange) * (imageNumber - 1)
+            dataCollection.axisStart = axisStartNew
             xsDataISPyBDataCollection = XSDataISPyBDataCollection.parseString(dataCollection.marshal())
-            xsDataInputH5ToCBF = XSDataInputH5ToCBF()
-            xsDataInputH5ToCBF.hdf5File = self.dataInput.hdf5File
-            xsDataInputH5ToCBF.imageNumber = self.dataInput.imageNumber
-            xsDataInputH5ToCBF.hdf5ImageNumber = XSDataInteger(hdf5ImageNumber)
-            xsDataInputH5ToCBF.dataCollection = xsDataISPyBDataCollection
-            self.edPluginEDPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
-            self.edPluginEDPluginH5ToCBF.executeSynchronous()
-            if self.edPluginEDPluginH5ToCBF.dataOutput is not None:
-                self.dataOutput.outputCBFFile = self.edPluginEDPluginH5ToCBF.dataOutput.outputCBFFile
+        else:
+            xsDataISPyBDataCollection = None
+        xsDataInputH5ToCBF = XSDataInputH5ToCBF()
+        xsDataInputH5ToCBF.hdf5File = self.dataInput.hdf5File
+        xsDataInputH5ToCBF.imageNumber = self.dataInput.imageNumber
+        xsDataInputH5ToCBF.hdf5ImageNumber = XSDataInteger(hdf5ImageNumber)
+        xsDataInputH5ToCBF.dataCollection = xsDataISPyBDataCollection
+        xsDataInputH5ToCBF.forcedOutputDirectory = self.dataInput.forcedOutputDirectory
+        self.edPluginEDPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
+        self.edPluginEDPluginH5ToCBF.executeSynchronous()
+        if self.edPluginEDPluginH5ToCBF.dataOutput is not None:
+            self.dataOutput.outputCBFFile = self.edPluginEDPluginH5ToCBF.dataOutput.outputCBFFile
+            if dataCollection is not None:
+                self.dataOutput.ispybDataCollection = XSDataISPyBDataCollection.parseString(dataCollection.marshal())
