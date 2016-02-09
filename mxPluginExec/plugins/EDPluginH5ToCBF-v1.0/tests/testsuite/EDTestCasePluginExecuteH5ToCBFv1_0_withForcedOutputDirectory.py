@@ -5,7 +5,7 @@
 #    Copyright (C) 2012 European Synchrotron Radiation Facility
 #                       Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -37,19 +37,23 @@ from EDTestCasePluginExecute          import EDTestCasePluginExecute
 
 
 
-class EDTestCasePluginExecuteH5ToCBFv1_0_EIGER_X_16M(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteH5ToCBFv1_0_withForcedOutputDirectory(EDTestCasePluginExecute):
 
     def __init__(self, _oalStringTestName=None):
         EDTestCasePluginExecute.__init__(self, "EDPluginH5ToCBFv1_0")
         self.setConfigurationFile(self.getRefConfigFile())
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputH5ToCBF_EIGER_X_16M_lyso.xml"))
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputH5ToCBF_withForcedOutputDirectory.xml"))
 
-#    def preProcess(self):
-#        EDTestCasePluginExecute.preProcess(self)
-#        self.loadTestImage([ "collect_01_00001_master.h5", "collect_01_00001_data_000001.h5" ])
+    def preProcess(self):
+        EDTestCasePluginExecute.preProcess(self)
+        self.loadTestImage([ "ref-test_3_1_master.h5", "ref-test_3_1_data_000001.h5" ])
 
     def testExecute(self):
         self.run()
+        expectedPath = "/tmp/ref-test_3_0001.cbf"
+        EDAssert.equal(True, os.path.exists(expectedPath))
+        os.remove(expectedPath)
+
 
 
     def process(self):

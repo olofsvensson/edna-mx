@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <XSDataInputMXCuBE>
     <dataCollectionId>
-        <value>1404461</value>
+        <value>1652844</value>
     </dataCollectionId>
     <diffractionPlan>
         <aimedCompleteness>
@@ -22,20 +22,26 @@
         <complexity>
             <value>none</value>
         </complexity>
+        <detectorDistanceMax>
+            <value>7.000000e+02</value>
+        </detectorDistanceMax>
+        <detectorDistanceMin>
+            <value>1.652000e+02</value>
+        </detectorDistanceMin>
         <forcedSpaceGroup>
             <value></value>
         </forcedSpaceGroup>
         <goniostatMaxOscillationSpeed>
-            <value>3.600000e+02</value>
+            <value>1.200000e+02</value>
         </goniostatMaxOscillationSpeed>
         <goniostatMinOscillationWidth>
             <value>2.000000e-01</value>
         </goniostatMinOscillationWidth>
         <maxExposureTimePerDataCollection>
-            <value>1.200000e+02</value>
+            <value>3.000000e+01</value>
         </maxExposureTimePerDataCollection>
         <minExposureTimePerImage>
-            <value>1.000000e-01</value>
+            <value>1.000000e-02</value>
         </minExposureTimePerImage>
     </diffractionPlan>
     <experimentalCondition>
@@ -44,7 +50,7 @@
                 <value>0.000000e+00</value>
             </flux>
             <minExposureTimePerImage>
-                <value>1.000000e-01</value>
+                <value>1.000000e-02</value>
             </minExposureTimePerImage>
             <size>
                 <x>
@@ -55,18 +61,18 @@
                 </y>
             </size>
             <transmission>
-                <value>3.000000e+01</value>
+                <value>1.019195e+01</value>
             </transmission>
             <wavelength>
-                <value>9.650000e-01</value>
+                <value>9.677000e-01</value>
             </wavelength>
         </beam>
         <goniostat>
             <maxOscillationSpeed>
-                <value>3.600000e+02</value>
+                <value>1.200000e+02</value>
             </maxOscillationSpeed>
             <minOscillationWidth>
-                <value>2.000000e-01</value>
+                <value>2.000000e-02</value>
             </minOscillationWidth>
         </goniostat>
     </experimentalCondition>
@@ -89,28 +95,18 @@
             </z>
         </size>
         <susceptibility>
-            <value>1.000000e+00</value>
+            <value>9.000000e-01</value>
         </susceptibility>
     </sample>
     <dataSet>
         <imageFile>
             <path>
-                <value>/data/gzvisitor/test/id30/id30a3/inhouse/opid30a3/20150312/RAW_DATA/lysozime/ref-opid30a3_2_0001.h5</value>
+                <value>/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/proteintest5/ref-proteintest5_1_0001.h5</value>
             </path>
         </imageFile>
         <imageFile>
             <path>
-                <value>/data/gzvisitor/test/id30/id30a3/inhouse/opid30a3/20150312/RAW_DATA/lysozime/ref-opid30a3_2_0002.h5</value>
-            </path>
-        </imageFile>
-        <imageFile>
-            <path>
-                <value>/data/gzvisitor/test/id30/id30a3/inhouse/opid30a3/20150312/RAW_DATA/lysozime/ref-opid30a3_2_0003.h5</value>
-            </path>
-        </imageFile>
-        <imageFile>
-            <path>
-                <value>/data/gzvisitor/test/id30/id30a3/inhouse/opid30a3/20150312/RAW_DATA/lysozime/ref-opid30a3_2_0004.h5</value>
+                <value>/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/proteintest5/ref-proteintest5_1_0002.h5</value>
             </path>
         </imageFile>
     </dataSet>

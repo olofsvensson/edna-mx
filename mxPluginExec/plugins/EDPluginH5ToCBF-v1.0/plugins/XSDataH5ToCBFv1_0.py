@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Mar 4 10:44::06 2015 by EDGenerateDS.
+# Generated Mon Feb 8 03:14::42 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -1471,7 +1471,7 @@ class XSDataISPyBDataCollection(object):
 
 
 class XSDataInputH5ToCBF(XSDataInput):
-    def __init__(self, configuration=None, dataCollection=None, hdf5File=None, imageNumber=None):
+    def __init__(self, configuration=None, forcedOutputDirectory=None, dataCollection=None, hdf5File=None, hdf5ImageNumber=None, imageNumber=None):
         XSDataInput.__init__(self, configuration)
         if imageNumber is None:
             self._imageNumber = None
@@ -1479,6 +1479,13 @@ class XSDataInputH5ToCBF(XSDataInput):
             self._imageNumber = imageNumber
         else:
             strMessage = "ERROR! XSDataInputH5ToCBF constructor argument 'imageNumber' is not XSDataInteger but %s" % self._imageNumber.__class__.__name__
+            raise BaseException(strMessage)
+        if hdf5ImageNumber is None:
+            self._hdf5ImageNumber = None
+        elif hdf5ImageNumber.__class__.__name__ == "XSDataInteger":
+            self._hdf5ImageNumber = hdf5ImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputH5ToCBF constructor argument 'hdf5ImageNumber' is not XSDataInteger but %s" % self._hdf5ImageNumber.__class__.__name__
             raise BaseException(strMessage)
         if hdf5File is None:
             self._hdf5File = None
@@ -1494,6 +1501,13 @@ class XSDataInputH5ToCBF(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputH5ToCBF constructor argument 'dataCollection' is not XSDataISPyBDataCollection but %s" % self._dataCollection.__class__.__name__
             raise BaseException(strMessage)
+        if forcedOutputDirectory is None:
+            self._forcedOutputDirectory = None
+        elif forcedOutputDirectory.__class__.__name__ == "XSDataFile":
+            self._forcedOutputDirectory = forcedOutputDirectory
+        else:
+            strMessage = "ERROR! XSDataInputH5ToCBF constructor argument 'forcedOutputDirectory' is not XSDataFile but %s" % self._forcedOutputDirectory.__class__.__name__
+            raise BaseException(strMessage)
     # Methods and properties for the 'imageNumber' attribute
     def getImageNumber(self): return self._imageNumber
     def setImageNumber(self, imageNumber):
@@ -1506,6 +1520,18 @@ class XSDataInputH5ToCBF(XSDataInput):
             raise BaseException(strMessage)
     def delImageNumber(self): self._imageNumber = None
     imageNumber = property(getImageNumber, setImageNumber, delImageNumber, "Property for imageNumber")
+    # Methods and properties for the 'hdf5ImageNumber' attribute
+    def getHdf5ImageNumber(self): return self._hdf5ImageNumber
+    def setHdf5ImageNumber(self, hdf5ImageNumber):
+        if hdf5ImageNumber is None:
+            self._hdf5ImageNumber = None
+        elif hdf5ImageNumber.__class__.__name__ == "XSDataInteger":
+            self._hdf5ImageNumber = hdf5ImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputH5ToCBF.setHdf5ImageNumber argument is not XSDataInteger but %s" % hdf5ImageNumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delHdf5ImageNumber(self): self._hdf5ImageNumber = None
+    hdf5ImageNumber = property(getHdf5ImageNumber, setHdf5ImageNumber, delHdf5ImageNumber, "Property for hdf5ImageNumber")
     # Methods and properties for the 'hdf5File' attribute
     def getHdf5File(self): return self._hdf5File
     def setHdf5File(self, hdf5File):
@@ -1530,6 +1556,18 @@ class XSDataInputH5ToCBF(XSDataInput):
             raise BaseException(strMessage)
     def delDataCollection(self): self._dataCollection = None
     dataCollection = property(getDataCollection, setDataCollection, delDataCollection, "Property for dataCollection")
+    # Methods and properties for the 'forcedOutputDirectory' attribute
+    def getForcedOutputDirectory(self): return self._forcedOutputDirectory
+    def setForcedOutputDirectory(self, forcedOutputDirectory):
+        if forcedOutputDirectory is None:
+            self._forcedOutputDirectory = None
+        elif forcedOutputDirectory.__class__.__name__ == "XSDataFile":
+            self._forcedOutputDirectory = forcedOutputDirectory
+        else:
+            strMessage = "ERROR! XSDataInputH5ToCBF.setForcedOutputDirectory argument is not XSDataFile but %s" % forcedOutputDirectory.__class__.__name__
+            raise BaseException(strMessage)
+    def delForcedOutputDirectory(self): self._forcedOutputDirectory = None
+    forcedOutputDirectory = property(getForcedOutputDirectory, setForcedOutputDirectory, delForcedOutputDirectory, "Property for forcedOutputDirectory")
     def export(self, outfile, level, name_='XSDataInputH5ToCBF'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1542,14 +1580,16 @@ class XSDataInputH5ToCBF(XSDataInput):
             self.imageNumber.export(outfile, level, name_='imageNumber')
         else:
             warnEmptyAttribute("imageNumber", "XSDataInteger")
+        if self._hdf5ImageNumber is not None:
+            self.hdf5ImageNumber.export(outfile, level, name_='hdf5ImageNumber')
         if self._hdf5File is not None:
             self.hdf5File.export(outfile, level, name_='hdf5File')
         else:
             warnEmptyAttribute("hdf5File", "XSDataFile")
         if self._dataCollection is not None:
             self.dataCollection.export(outfile, level, name_='dataCollection')
-        else:
-            warnEmptyAttribute("dataCollection", "XSDataISPyBDataCollection")
+        if self._forcedOutputDirectory is not None:
+            self.forcedOutputDirectory.export(outfile, level, name_='forcedOutputDirectory')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1561,6 +1601,11 @@ class XSDataInputH5ToCBF(XSDataInput):
             obj_.build(child_)
             self.setImageNumber(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'hdf5ImageNumber':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setHdf5ImageNumber(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'hdf5File':
             obj_ = XSDataFile()
             obj_.build(child_)
@@ -1570,6 +1615,11 @@ class XSDataInputH5ToCBF(XSDataInput):
             obj_ = XSDataISPyBDataCollection()
             obj_.build(child_)
             self.setDataCollection(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'forcedOutputDirectory':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setForcedOutputDirectory(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

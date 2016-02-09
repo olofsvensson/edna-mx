@@ -630,8 +630,10 @@ class EDHandlerXSDataMOSFLMv10:
         elif (strDetectorType == "mar165") or \
                (strDetectorType == "mar225"):
             xsDataMOSFLMDetector.setType(XSDataString("MARCCD"))
-        elif (strDetectorType == "pilatus6m" or strDetectorType == "pilatus2m" or strDetectorType == "eiger4m"):
+        elif (strDetectorType == "pilatus6m" or strDetectorType == "pilatus2m"):
             xsDataMOSFLMDetector.setType(XSDataString("PILATUS"))
+        elif (strDetectorType == "eiger4m"):
+            xsDataMOSFLMDetector.setType(XSDataString("EIGER"))
         elif (strDetectorType == "raxis4"):
             xsDataMOSFLMDetector.setType(XSDataString("RAXISIV"))
         else:
