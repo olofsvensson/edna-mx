@@ -27,6 +27,7 @@ __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os
+import time
 
 from EDVerbose import EDVerbose
 from EDUtilsParallel import EDUtilsParallel
@@ -169,12 +170,14 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                     self.edPluginMXWaitFile.executeSynchronous()
                     hdf5FilePath = xsDataImage.path.value.replace(".cbf", ".h5")
                     ispybDataCollection = None
+                    time.sleep(5)
                 xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
                 xsDataInputControlH5ToCBF.hdf5File = XSDataFile(XSDataString(hdf5FilePath))
-                xsDataInputControlH5ToCBF.imageNumber = XSDataInteger(EDUtilsImage.getImageNumber(xsDataImage.path.value))
+                imageNumber = EDUtilsImage.getImageNumber(xsDataImage.path.value)
+                xsDataInputControlH5ToCBF.imageNumber = XSDataInteger(imageNumber)
                 xsDataInputControlH5ToCBF.hdf5ImageNumber = XSDataInteger(hdf5ImageNumber)
                 xsDataInputControlH5ToCBF.ispybDataCollection = ispybDataCollection
-                edPluginControlH5ToCBF = self.loadPlugin(self.strPluginControlH5ToCBF, "ControlH5ToCBF")
+                edPluginControlH5ToCBF = self.loadPlugin(self.strPluginControlH5ToCBF, "ControlH5ToCBF_%04d" % imageNumber)
                 edPluginControlH5ToCBF.dataInput = xsDataInputControlH5ToCBF
                 edPluginControlH5ToCBF.executeSynchronous()
                 cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
