@@ -23,7 +23,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="Thomas Boeglin"
+__author__ = "Thomas Boeglin"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
@@ -43,7 +43,7 @@ class EDPluginControlXscaleGeneratev1_0(EDPluginControl):
     """
 
 
-    def __init__( self ):
+    def __init__(self):
         """
         """
         EDPluginControl.__init__(self)
@@ -58,45 +58,45 @@ class EDPluginControlXscaleGeneratev1_0(EDPluginControl):
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
 
-    def preProcess(self, _edObject = None):
+    def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlXscaleGeneratev1_0.preProcess")
 
         # Load the execution plugin
-        self.xscale_anom_merged  = self.loadPlugin("EDPluginExecXscalev1_0")
+        self.xscale_anom_merged = self.loadPlugin("EDPluginExecXscalev1_0")
         anom_merged_in = self.dataInput.copyViaDict()
-        anom_merged_in.friedels_law = XSDataBoolean(True)
+        anom_merged_in.friedels_law = XSDataBoolean(False)
         anom_merged_in.merge = XSDataBoolean(True)
         self.xscale_anom_merged.dataInput = anom_merged_in
         self.xscale_anom_merged.connectSUCCESS(self.xscale_success)
         self.xscale_anom_merged.connectFAILURE(self.xscale_failure)
 
 
-        self.xscale_anom_unmerged  = self.loadPlugin("EDPluginExecXscalev1_0")
+        self.xscale_anom_unmerged = self.loadPlugin("EDPluginExecXscalev1_0")
         anom_unmerged_in = self.dataInput.copyViaDict()
-        anom_unmerged_in.friedels_law = XSDataBoolean(True)
+        anom_unmerged_in.friedels_law = XSDataBoolean(False)
         anom_unmerged_in.merge = XSDataBoolean(False)
         self.xscale_anom_unmerged.dataInput = anom_unmerged_in
         self.xscale_anom_unmerged.connectSUCCESS(self.xscale_success)
         self.xscale_anom_unmerged.connectFAILURE(self.xscale_failure)
 
-        self.xscale_noanom_merged  = self.loadPlugin("EDPluginExecXscalev1_0")
+        self.xscale_noanom_merged = self.loadPlugin("EDPluginExecXscalev1_0")
         noanom_merged_in = self.dataInput.copyViaDict()
-        noanom_merged_in.friedels_law = XSDataBoolean(False)
+        noanom_merged_in.friedels_law = XSDataBoolean(True)
         noanom_merged_in.merge = XSDataBoolean(True)
         self.xscale_noanom_merged.dataInput = noanom_merged_in
         self.xscale_noanom_merged.connectSUCCESS(self.xscale_success)
         self.xscale_noanom_merged.connectFAILURE(self.xscale_failure)
 
-        self.xscale_noanom_unmerged  = self.loadPlugin("EDPluginExecXscalev1_0")
+        self.xscale_noanom_unmerged = self.loadPlugin("EDPluginExecXscalev1_0")
         noanom_unmerged_in = self.dataInput.copyViaDict()
-        noanom_unmerged_in.friedels_law = XSDataBoolean(False)
+        noanom_unmerged_in.friedels_law = XSDataBoolean(True)
         noanom_unmerged_in.merge = XSDataBoolean(False)
         self.xscale_noanom_unmerged.dataInput = noanom_unmerged_in
         self.xscale_noanom_unmerged.connectSUCCESS(self.xscale_success)
         self.xscale_noanom_unmerged.connectFAILURE(self.xscale_failure)
 
-    def process(self, _edObject = None):
+    def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlXscaleGeneratev1_0.process")
 
@@ -145,7 +145,7 @@ class EDPluginControlXscaleGeneratev1_0(EDPluginControl):
                 EDVerbose.ERROR('the input was {0}'.format(p.dataInput.marshal()))
 
 
-    def postProcess(self, _edObject = None):
+    def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self)
         self.DEBUG("EDPluginControlXscaleGeneratev1_0.postProcess")
 
