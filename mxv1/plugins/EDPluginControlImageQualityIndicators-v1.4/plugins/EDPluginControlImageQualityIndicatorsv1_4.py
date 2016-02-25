@@ -187,11 +187,11 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
 #                    print(cbfFile)
 #                    print(indexLoop)
                     if cbfFile is not None:
-                        print(cbfFile.path.value)
-                        if os.path.exists(cbfFile.path.value) or indexLoop > 10:
+#                        print(cbfFile.path.value)
+                        if os.path.exists(cbfFile.path.value):
                             continueLoop = False
 #                    print(continueLoop)
-                    if continueLoop:
+                    if continueLoop or indexLoop > 10:
                         indexLoop += 1
                         time.sleep(5)
                 ispybDataCollection = edPluginControlH5ToCBF.dataOutput.ispybDataCollection
