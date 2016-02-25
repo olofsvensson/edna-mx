@@ -157,8 +157,8 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
             # If Eiger, just wait for the h5 file
             if "id30a3" in listXSDataImage[0].path.value:
                 h5FilePath, hdf5ImageNumber = self.getH5FilePath(xsDataImage.path.value, batchSize)
-                print(h5FilePath)
-                print(hdf5ImageNumber)
+#                print(h5FilePath)
+#                print(hdf5ImageNumber)
                 if not h5FilePath in listH5FilePath:
                     listH5FilePath.append(h5FilePath)
                     self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
@@ -170,17 +170,30 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                     self.edPluginMXWaitFile.executeSynchronous()
                     hdf5FilePath = xsDataImage.path.value.replace(".cbf", ".h5")
                     ispybDataCollection = None
-                    time.sleep(5)
-                xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
-                xsDataInputControlH5ToCBF.hdf5File = XSDataFile(XSDataString(hdf5FilePath))
-                imageNumber = EDUtilsImage.getImageNumber(xsDataImage.path.value)
-                xsDataInputControlH5ToCBF.imageNumber = XSDataInteger(imageNumber)
-                xsDataInputControlH5ToCBF.hdf5ImageNumber = XSDataInteger(hdf5ImageNumber)
-                xsDataInputControlH5ToCBF.ispybDataCollection = ispybDataCollection
-                edPluginControlH5ToCBF = self.loadPlugin(self.strPluginControlH5ToCBF, "ControlH5ToCBF_%04d" % imageNumber)
-                edPluginControlH5ToCBF.dataInput = xsDataInputControlH5ToCBF
-                edPluginControlH5ToCBF.executeSynchronous()
-                cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
+                    time.sleep(1)
+                indexLoop = 0
+                continueLoop = True
+                while continueLoop:
+                    xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
+                    xsDataInputControlH5ToCBF.hdf5File = XSDataFile(XSDataString(hdf5FilePath))
+                    imageNumber = EDUtilsImage.getImageNumber(xsDataImage.path.value)
+                    xsDataInputControlH5ToCBF.imageNumber = XSDataInteger(imageNumber)
+                    xsDataInputControlH5ToCBF.hdf5ImageNumber = XSDataInteger(hdf5ImageNumber)
+                    xsDataInputControlH5ToCBF.ispybDataCollection = ispybDataCollection
+                    edPluginControlH5ToCBF = self.loadPlugin(self.strPluginControlH5ToCBF, "ControlH5ToCBF_%04d_%02d" % (imageNumber, indexLoop))
+                    edPluginControlH5ToCBF.dataInput = xsDataInputControlH5ToCBF
+                    edPluginControlH5ToCBF.executeSynchronous()
+                    cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
+#                    print(cbfFile)
+#                    print(indexLoop)
+                    if cbfFile is not None:
+                        print(cbfFile.path.value)
+                        if os.path.exists(cbfFile.path.value) or indexLoop > 10:
+                            continueLoop = False
+#                    print(continueLoop)
+                    if continueLoop:
+                        indexLoop += 1
+                        time.sleep(5)
                 ispybDataCollection = edPluginControlH5ToCBF.dataOutput.ispybDataCollection
 
 
