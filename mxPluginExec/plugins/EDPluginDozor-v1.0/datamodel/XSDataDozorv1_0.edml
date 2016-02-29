@@ -37,8 +37,10 @@ complex type XSDataInputDozor extends XSDataInput {
 	firstImageNumber : XSDataInteger
 	numberImages : XSDataInteger
 	nameTemplateImage : XSDataString
+	wedgeNumber : XSDataInteger optional
 }
 
 complex type XSDataResultDozor extends XSDataResult {
 	imageDozor : XSDataImageDozor [] optional
+	halfDoseTime : XSDataDouble optional
 }

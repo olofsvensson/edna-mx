@@ -122,6 +122,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             strSuffix = EDUtilsImage.getSuffix(strFileName)
             strXDSTemplate = "%s_????.%s" % (strPrefix, strSuffix)
             xsDataInputDozor.nameTemplateImage = XSDataString(os.path.join(os.path.dirname(strFileName), strXDSTemplate))
+            xsDataInputDozor.wedgeNumber = self.dataInput.wedgeNumber
             edPluginDozor = self.loadPlugin(self.strEDPluginDozorName, "Dozor_%05d" % subWedge.image[0].number.value)
             edPluginDozor.dataInput = xsDataInputDozor
             edPluginDozor.executeSynchronous()
@@ -143,6 +144,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 if xsDataResultControlDozor.inputDozor is None:
                     xsDataResultControlDozor.inputDozor = XSDataDozorInput().parseString(xsDataInputDozor.marshal())
                 indexImage += 1
+            xsDataResultControlDozor.halfDoseTime = edPluginDozor.dataOutput.halfDoseTime
         self.dataOutput = xsDataResultControlDozor
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Dec 7 11:00::03 2015 by EDGenerateDS.
+# Generated Mon Feb 29 03:04::36 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -921,7 +921,7 @@ class XSDataDozorInput(XSDataInput):
 
 
 class XSDataInputControlDozor(XSDataInput):
-    def __init__(self, configuration=None, batchSize=None, image=None):
+    def __init__(self, configuration=None, wedgeNumber=None, batchSize=None, image=None):
         XSDataInput.__init__(self, configuration)
         if image is None:
             self._image = []
@@ -936,6 +936,13 @@ class XSDataInputControlDozor(XSDataInput):
             self._batchSize = batchSize
         else:
             strMessage = "ERROR! XSDataInputControlDozor constructor argument 'batchSize' is not XSDataInteger but %s" % self._batchSize.__class__.__name__
+            raise BaseException(strMessage)
+        if wedgeNumber is None:
+            self._wedgeNumber = None
+        elif wedgeNumber.__class__.__name__ == "XSDataInteger":
+            self._wedgeNumber = wedgeNumber
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor constructor argument 'wedgeNumber' is not XSDataInteger but %s" % self._wedgeNumber.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
@@ -982,6 +989,18 @@ class XSDataInputControlDozor(XSDataInput):
             raise BaseException(strMessage)
     def delBatchSize(self): self._batchSize = None
     batchSize = property(getBatchSize, setBatchSize, delBatchSize, "Property for batchSize")
+    # Methods and properties for the 'wedgeNumber' attribute
+    def getWedgeNumber(self): return self._wedgeNumber
+    def setWedgeNumber(self, wedgeNumber):
+        if wedgeNumber is None:
+            self._wedgeNumber = None
+        elif wedgeNumber.__class__.__name__ == "XSDataInteger":
+            self._wedgeNumber = wedgeNumber
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor.setWedgeNumber argument is not XSDataInteger but %s" % wedgeNumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delWedgeNumber(self): self._wedgeNumber = None
+    wedgeNumber = property(getWedgeNumber, setWedgeNumber, delWedgeNumber, "Property for wedgeNumber")
     def export(self, outfile, level, name_='XSDataInputControlDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -996,6 +1015,8 @@ class XSDataInputControlDozor(XSDataInput):
             warnEmptyAttribute("image", "XSDataFile")
         if self._batchSize is not None:
             self.batchSize.export(outfile, level, name_='batchSize')
+        if self._wedgeNumber is not None:
+            self.wedgeNumber.export(outfile, level, name_='wedgeNumber')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1011,6 +1032,11 @@ class XSDataInputControlDozor(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setBatchSize(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'wedgeNumber':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setWedgeNumber(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -1057,7 +1083,7 @@ class XSDataInputControlDozor(XSDataInput):
 
 
 class XSDataResultControlDozor(XSDataResult):
-    def __init__(self, status=None, inputDozor=None, imageDozor=None):
+    def __init__(self, status=None, halfDoseTime=None, inputDozor=None, imageDozor=None):
         XSDataResult.__init__(self, status)
         if imageDozor is None:
             self._imageDozor = []
@@ -1072,6 +1098,13 @@ class XSDataResultControlDozor(XSDataResult):
             self._inputDozor = inputDozor
         else:
             strMessage = "ERROR! XSDataResultControlDozor constructor argument 'inputDozor' is not XSDataDozorInput but %s" % self._inputDozor.__class__.__name__
+            raise BaseException(strMessage)
+        if halfDoseTime is None:
+            self._halfDoseTime = None
+        elif halfDoseTime.__class__.__name__ == "XSDataDouble":
+            self._halfDoseTime = halfDoseTime
+        else:
+            strMessage = "ERROR! XSDataResultControlDozor constructor argument 'halfDoseTime' is not XSDataDouble but %s" % self._halfDoseTime.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'imageDozor' attribute
     def getImageDozor(self): return self._imageDozor
@@ -1118,6 +1151,18 @@ class XSDataResultControlDozor(XSDataResult):
             raise BaseException(strMessage)
     def delInputDozor(self): self._inputDozor = None
     inputDozor = property(getInputDozor, setInputDozor, delInputDozor, "Property for inputDozor")
+    # Methods and properties for the 'halfDoseTime' attribute
+    def getHalfDoseTime(self): return self._halfDoseTime
+    def setHalfDoseTime(self, halfDoseTime):
+        if halfDoseTime is None:
+            self._halfDoseTime = None
+        elif halfDoseTime.__class__.__name__ == "XSDataDouble":
+            self._halfDoseTime = halfDoseTime
+        else:
+            strMessage = "ERROR! XSDataResultControlDozor.setHalfDoseTime argument is not XSDataDouble but %s" % halfDoseTime.__class__.__name__
+            raise BaseException(strMessage)
+    def delHalfDoseTime(self): self._halfDoseTime = None
+    halfDoseTime = property(getHalfDoseTime, setHalfDoseTime, delHalfDoseTime, "Property for halfDoseTime")
     def export(self, outfile, level, name_='XSDataResultControlDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1130,6 +1175,8 @@ class XSDataResultControlDozor(XSDataResult):
             imageDozor_.export(outfile, level, name_='imageDozor')
         if self._inputDozor is not None:
             self.inputDozor.export(outfile, level, name_='inputDozor')
+        if self._halfDoseTime is not None:
+            self.halfDoseTime.export(outfile, level, name_='halfDoseTime')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1145,6 +1192,11 @@ class XSDataResultControlDozor(XSDataResult):
             obj_ = XSDataDozorInput()
             obj_.build(child_)
             self.setInputDozor(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'halfDoseTime':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setHalfDoseTime(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

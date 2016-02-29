@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Sep 18 02:52::20 2015 by EDGenerateDS.
+# Generated Mon Feb 29 02:39::36 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -474,7 +474,7 @@ class XSDataImageDozor(object):
 
 
 class XSDataInputDozor(XSDataInput):
-    def __init__(self, configuration=None, nameTemplateImage=None, numberImages=None, firstImageNumber=None, startingAngle=None, imageStep=None, oscillationRange=None, orgy=None, orgx=None, fractionPolarization=None, wavelength=None, detectorDistance=None, spotSize=None, exposureTime=None, detectorType=None):
+    def __init__(self, configuration=None, wedgeNumber=None, nameTemplateImage=None, numberImages=None, firstImageNumber=None, startingAngle=None, imageStep=None, oscillationRange=None, orgy=None, orgx=None, fractionPolarization=None, wavelength=None, detectorDistance=None, spotSize=None, exposureTime=None, detectorType=None):
         XSDataInput.__init__(self, configuration)
         if detectorType is None:
             self._detectorType = None
@@ -573,6 +573,13 @@ class XSDataInputDozor(XSDataInput):
             self._nameTemplateImage = nameTemplateImage
         else:
             strMessage = "ERROR! XSDataInputDozor constructor argument 'nameTemplateImage' is not XSDataString but %s" % self._nameTemplateImage.__class__.__name__
+            raise BaseException(strMessage)
+        if wedgeNumber is None:
+            self._wedgeNumber = None
+        elif wedgeNumber.__class__.__name__ == "XSDataInteger":
+            self._wedgeNumber = wedgeNumber
+        else:
+            strMessage = "ERROR! XSDataInputDozor constructor argument 'wedgeNumber' is not XSDataInteger but %s" % self._wedgeNumber.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'detectorType' attribute
     def getDetectorType(self): return self._detectorType
@@ -742,6 +749,18 @@ class XSDataInputDozor(XSDataInput):
             raise BaseException(strMessage)
     def delNameTemplateImage(self): self._nameTemplateImage = None
     nameTemplateImage = property(getNameTemplateImage, setNameTemplateImage, delNameTemplateImage, "Property for nameTemplateImage")
+    # Methods and properties for the 'wedgeNumber' attribute
+    def getWedgeNumber(self): return self._wedgeNumber
+    def setWedgeNumber(self, wedgeNumber):
+        if wedgeNumber is None:
+            self._wedgeNumber = None
+        elif wedgeNumber.__class__.__name__ == "XSDataInteger":
+            self._wedgeNumber = wedgeNumber
+        else:
+            strMessage = "ERROR! XSDataInputDozor.setWedgeNumber argument is not XSDataInteger but %s" % wedgeNumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delWedgeNumber(self): self._wedgeNumber = None
+    wedgeNumber = property(getWedgeNumber, setWedgeNumber, delWedgeNumber, "Property for wedgeNumber")
     def export(self, outfile, level, name_='XSDataInputDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -800,6 +819,8 @@ class XSDataInputDozor(XSDataInput):
             self.nameTemplateImage.export(outfile, level, name_='nameTemplateImage')
         else:
             warnEmptyAttribute("nameTemplateImage", "XSDataString")
+        if self._wedgeNumber is not None:
+            self.wedgeNumber.export(outfile, level, name_='wedgeNumber')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -875,6 +896,11 @@ class XSDataInputDozor(XSDataInput):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setNameTemplateImage(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'wedgeNumber':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setWedgeNumber(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -921,7 +947,7 @@ class XSDataInputDozor(XSDataInput):
 
 
 class XSDataResultDozor(XSDataResult):
-    def __init__(self, status=None, imageDozor=None):
+    def __init__(self, status=None, halfDoseTime=None, imageDozor=None):
         XSDataResult.__init__(self, status)
         if imageDozor is None:
             self._imageDozor = []
@@ -929,6 +955,13 @@ class XSDataResultDozor(XSDataResult):
             self._imageDozor = imageDozor
         else:
             strMessage = "ERROR! XSDataResultDozor constructor argument 'imageDozor' is not list but %s" % self._imageDozor.__class__.__name__
+            raise BaseException(strMessage)
+        if halfDoseTime is None:
+            self._halfDoseTime = None
+        elif halfDoseTime.__class__.__name__ == "XSDataDouble":
+            self._halfDoseTime = halfDoseTime
+        else:
+            strMessage = "ERROR! XSDataResultDozor constructor argument 'halfDoseTime' is not XSDataDouble but %s" % self._halfDoseTime.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'imageDozor' attribute
     def getImageDozor(self): return self._imageDozor
@@ -963,6 +996,18 @@ class XSDataResultDozor(XSDataResult):
         else:
             strMessage = "ERROR! XSDataResultDozor.addImageDozor argument is not XSDataImageDozor but %s" % value.__class__.__name__
             raise BaseException(strMessage)
+    # Methods and properties for the 'halfDoseTime' attribute
+    def getHalfDoseTime(self): return self._halfDoseTime
+    def setHalfDoseTime(self, halfDoseTime):
+        if halfDoseTime is None:
+            self._halfDoseTime = None
+        elif halfDoseTime.__class__.__name__ == "XSDataDouble":
+            self._halfDoseTime = halfDoseTime
+        else:
+            strMessage = "ERROR! XSDataResultDozor.setHalfDoseTime argument is not XSDataDouble but %s" % halfDoseTime.__class__.__name__
+            raise BaseException(strMessage)
+    def delHalfDoseTime(self): self._halfDoseTime = None
+    halfDoseTime = property(getHalfDoseTime, setHalfDoseTime, delHalfDoseTime, "Property for halfDoseTime")
     def export(self, outfile, level, name_='XSDataResultDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -973,6 +1018,8 @@ class XSDataResultDozor(XSDataResult):
         XSDataResult.exportChildren(self, outfile, level, name_)
         for imageDozor_ in self.getImageDozor():
             imageDozor_.export(outfile, level, name_='imageDozor')
+        if self._halfDoseTime is not None:
+            self.halfDoseTime.export(outfile, level, name_='halfDoseTime')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -983,6 +1030,11 @@ class XSDataResultDozor(XSDataResult):
             obj_ = XSDataImageDozor()
             obj_.build(child_)
             self.imageDozor.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'halfDoseTime':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setHalfDoseTime(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

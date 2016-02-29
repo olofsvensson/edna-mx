@@ -100,7 +100,10 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.ix_max = self.config.get("ix_max")
         self.iy_min = self.config.get("iy_min")
         self.iy_max = self.config.get("iy_max")
-        self.setScriptCommandline("-p dozor.dat")
+        if xsDataInputDozor.wedgeNumber is None:
+            self.setScriptCommandline("-p dozor.dat")
+        else:
+            self.setScriptCommandline("-rd dozor.dat")
         strCommands = self.generateCommands(xsDataInputDozor)
         EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), "dozor.dat"), strCommands)
 
@@ -173,6 +176,8 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "starting_angle %.3f\n" % startingAngle
             strCommandText += "first_image_number %d\n" % _xsDataInputDozor.firstImageNumber.value
             strCommandText += "number_images %d\n" % _xsDataInputDozor.numberImages.value
+            if _xsDataInputDozor.wedgeNumber is not None:
+                strCommandText += "wedge_number %d\n" % _xsDataInputDozor.wedgeNumber.value
             strCommandText += "name_template_image %s\n" % _xsDataInputDozor.nameTemplateImage.value
             strCommandText += "end\n"
         return strCommandText
@@ -190,7 +195,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             # Remove "|"
             listLine = shlex.split(strLine.replace("|", " "))
 #            print listLine
-            if listLine != [] and not strLine.startswith("-"):
+            if listLine != [] and not strLine.startswith("-") and not strLine.startswith("h"):
                 xsDataImageDozor = XSDataImageDozor()
                 xsDataImageDozor.number = XSDataInteger(listLine[0])
                 if listLine[4].startswith("-"):
@@ -216,6 +221,8 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                         xsDataImageDozor.spotFile = XSDataFile(XSDataString(strSpotFile))
 #                print xsDataImageDozor.marshal()
                 xsDataResultDozor.addImageDozor(xsDataImageDozor)
+            elif strLine.startswith("h"):
+                xsDataResultDozor.halfDoseTime = XSDataDouble(strLine.split("=")[1])
         return xsDataResultDozor
 
     def parseDouble(self, _strValue):

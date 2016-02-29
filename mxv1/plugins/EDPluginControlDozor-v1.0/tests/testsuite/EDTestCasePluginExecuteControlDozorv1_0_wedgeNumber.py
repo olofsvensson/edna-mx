@@ -27,17 +27,35 @@ __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 
-from EDTestSuite import EDTestSuite
+import os
+
+from EDTestCasePluginExecute import EDTestCasePluginExecute
+from EDAssert import EDAssert
+
+class EDTestCasePluginExecuteControlDozorv1_0_wedgeNumber(EDTestCasePluginExecute):
 
 
-class EDTestSuitePluginControlDozorv1_0(EDTestSuite):
+    def __init__(self, _edStringTestName=None):
+        EDTestCasePluginExecute.__init__(self, "EDPluginControlDozorv1_0")
+        self.setRequiredPluginConfiguration("EDPluginDozorv1_0")
+        self.setConfigurationFile(self.getRefConfigFile())
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputControlDozor_wedgeNumber.xml"))
+
+
+
+    def preProcess(self):
+        EDTestCasePluginExecute.preProcess(self)
+#        self.loadTestImage([ "lyso_12_0001.cbf" ])
+
+
+    def testExecute(self):
+        self.run()
+        # Check that we have the halfDoseTime
+        edPlugin = self.getPlugin()
+        EDAssert.equal(True, edPlugin.dataOutput.halfDoseTime is not None, "Half dose time")
 
 
     def process(self):
-        self.addTestCaseFromName("EDTestCasePluginUnitControlDozorv1_0")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlDozorv1_0")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlDozorv1_0_batchSize_2")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlDozorv1_0_batchSize_2a")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlDozorv1_0_batchSize_5")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlDozorv1_0_wedgeNumber")
+        self.addTestMethod(self.testExecute)
+
 
