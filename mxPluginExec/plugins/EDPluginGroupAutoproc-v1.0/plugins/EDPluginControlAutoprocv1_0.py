@@ -1233,7 +1233,7 @@ class EDPluginControlAutoprocv1_0(EDPluginControl):
             if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully is not None:
                 if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully.value:
                     self.bExecutedDimple = True
-                    strISPyBComment = "DIMPLE results available for EDNAproc"
+                    strISPyBComment = "DIMPLE results available for EDNA_proc"
                     xsDataInput = XSDataInputISPyBUpdateDataCollectionGroupComment()
                     xsDataInput.newComment = XSDataString(strISPyBComment)
                     xsDataInput.dataCollectionId = self.dataInput.data_collection_id
