@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu May 22 08:07::29 2014 by EDGenerateDS.
+# Generated Tue Mar 1 03:11::56 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -120,7 +120,7 @@ class MixedContainer(object):
 
 
 class XSDataInputSimpleHTMLPage(XSDataInput):
-    def __init__(self, configuration=None, helicalDistance=None, fileGraph=None, characterisationResult=None):
+    def __init__(self, configuration=None, logFile=None, helicalDistance=None, fileGraph=None, characterisationResult=None):
         XSDataInput.__init__(self, configuration)
         if characterisationResult is None:
             self._characterisationResult = None
@@ -142,6 +142,13 @@ class XSDataInputSimpleHTMLPage(XSDataInput):
             self._helicalDistance = helicalDistance
         else:
             strMessage = "ERROR! XSDataInputSimpleHTMLPage constructor argument 'helicalDistance' is not XSDataDouble but %s" % self._helicalDistance.__class__.__name__
+            raise BaseException(strMessage)
+        if logFile is None:
+            self._logFile = None
+        elif logFile.__class__.__name__ == "XSDataFile":
+            self._logFile = logFile
+        else:
+            strMessage = "ERROR! XSDataInputSimpleHTMLPage constructor argument 'logFile' is not XSDataFile but %s" % self._logFile.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'characterisationResult' attribute
     def getCharacterisationResult(self): return self._characterisationResult
@@ -200,6 +207,18 @@ class XSDataInputSimpleHTMLPage(XSDataInput):
             raise BaseException(strMessage)
     def delHelicalDistance(self): self._helicalDistance = None
     helicalDistance = property(getHelicalDistance, setHelicalDistance, delHelicalDistance, "Property for helicalDistance")
+    # Methods and properties for the 'logFile' attribute
+    def getLogFile(self): return self._logFile
+    def setLogFile(self, logFile):
+        if logFile is None:
+            self._logFile = None
+        elif logFile.__class__.__name__ == "XSDataFile":
+            self._logFile = logFile
+        else:
+            strMessage = "ERROR! XSDataInputSimpleHTMLPage.setLogFile argument is not XSDataFile but %s" % logFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delLogFile(self): self._logFile = None
+    logFile = property(getLogFile, setLogFile, delLogFile, "Property for logFile")
     def export(self, outfile, level, name_='XSDataInputSimpleHTMLPage'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -216,6 +235,8 @@ class XSDataInputSimpleHTMLPage(XSDataInput):
             fileGraph_.export(outfile, level, name_='fileGraph')
         if self._helicalDistance is not None:
             self.helicalDistance.export(outfile, level, name_='helicalDistance')
+        if self._logFile is not None:
+            self.logFile.export(outfile, level, name_='logFile')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -236,6 +257,11 @@ class XSDataInputSimpleHTMLPage(XSDataInput):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setHelicalDistance(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'logFile':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setLogFile(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

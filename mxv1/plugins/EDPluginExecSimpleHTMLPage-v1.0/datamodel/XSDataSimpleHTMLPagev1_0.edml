@@ -10,6 +10,7 @@ complex type XSDataInputSimpleHTMLPage extends XSDataInput {
 	characterisationResult : XSDataResultCharacterisation
 	fileGraph : XSDataFile [] optional
 	helicalDistance : XSDataDouble optional
+	logFile : XSDataFile optional
 }
 
 complex type XSDataResultSimpleHTMLPage extends XSDataResult {

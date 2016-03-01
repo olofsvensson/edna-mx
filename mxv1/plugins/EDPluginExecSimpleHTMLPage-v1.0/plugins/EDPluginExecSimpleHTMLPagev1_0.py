@@ -90,7 +90,10 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             else:
                 self.page.strong("No Characterisation Results! ")
             # Link to the EDNA log file
-            strPathToLogFile = self.getLogFileName()
+            if self.dataInput.logFile is None:
+                strPathToLogFile = self.getLogFileName()
+            else:
+                strPathToLogFile = self.dataInput.logFile.path.value
             if strPathToLogFile is not None:
                 self.page.strong("(")
                 self.strPageEDNALog = os.path.join(self.getWorkingDirectory(), "edna_log.html")
