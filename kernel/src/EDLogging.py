@@ -7,7 +7,7 @@
 #    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors: Olof Svensson (svensson@esrf.fr) 
+#    Principal authors: Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -20,13 +20,13 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
 #
-# This class has been inspired by the corresponding AALib class 
-# (20090518-PyAALib-JyAALib-111) and modified according to the needs 
+# This class has been inspired by the corresponding AALib class
+# (20090518-PyAALib-JyAALib-111) and modified according to the needs
 # for the EDNA project.
 #
 
@@ -215,6 +215,14 @@ class EDLogging(EDObject):
         @type _strPrefix: python string
         """
         self.edLogging.writeErrorTrace(_strPrefix)
+
+
+    def getLogFileName(self):
+        """
+        @return: the path to the current log file.
+        @type: string
+        """
+        return self.edLogging.getLogFileName()
 
 
     def setLogFileName(self, _strLogFileName):

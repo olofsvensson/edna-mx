@@ -8,7 +8,7 @@
 #    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors: Olof Svensson (svensson@esrf.fr) 
+#    Principal authors: Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 from __future__ import with_statement
@@ -251,6 +251,14 @@ class EDLoggingVerbose(object):
             self.__writeStderr("%s    %s%s" % (_strPrefix, pyListLine[3], os.linesep))
         strErrorMessage = traceback.format_exception_only(exc_type, exc_value)[0][:-1]
         self.__writeStderr(_strPrefix + strErrorMessage + os.linesep)
+
+
+    def getLogFileName(self):
+        """
+        @return: the path to the current log file.
+        @type: string
+        """
+        return self.__edLogFile.getLogFileName()
 
 
     def setLogFileName(self, _strLogFileName):
