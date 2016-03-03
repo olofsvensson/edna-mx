@@ -9,7 +9,7 @@
 #    Principal authors: Sandor Brockhauser (brockhauser@embl-grenoble.fr)
 #                       Pierre Legrand (pierre.legrand@synchrotron-soleil.fr)
 #
-#    Contributors:      Olof Svensson (svensson@esrf.fr) 
+#    Contributors:      Olof Svensson (svensson@esrf.fr)
 
 
 __authors__ = [ "Sandor Brockhauser", "Olof Svensson", "Pierre Legrand" ]
@@ -80,7 +80,7 @@ class EDHandlerXSDataXDSv1_0:
         xsDataXDSDetector = EDHandlerXSDataXDSv1_0.getXSDataXDSDetector(xsDataDetector)
         xsDataInputXDS.setDetector(xsDataXDSDetector)
 
-        # Then the beam 
+        # Then the beam
 
         xsDataXDSBeam = XSDataXDSBeam()
 
@@ -122,12 +122,12 @@ class EDHandlerXSDataXDSv1_0:
 #
 #        xsDataXDSCrystal.setFriedels_law(XSDataString("FALSE"))
 #
-##        if ( xsDataCrystal is not None ):
-##            xsDataSpaceGroup = xsDataCrystal.getSpaceGroup()
-##            if ( xsDataSpaceGroup is not None ):
-##                xsDataStringName = xsDataSpaceGroup.getName()
-##                if ( xsDataStringName is not None ):
-##                    xsDataInputXDS.setSymmetry( XSDataString( xsDataStringName.getValue() ) )      
+# #        if ( xsDataCrystal is not None ):
+# #            xsDataSpaceGroup = xsDataCrystal.getSpaceGroup()
+# #            if ( xsDataSpaceGroup is not None ):
+# #                xsDataStringName = xsDataSpaceGroup.getName()
+# #                if ( xsDataStringName is not None ):
+# #                    xsDataInputXDS.setSymmetry( XSDataString( xsDataStringName.getValue() ) )
 #        xsDataXDSCrystal.setSpace_group_number(XSDataInteger(0))
 #
 #        xsDataXDSCrystal.setStrong_pixel(XSDataInteger(8))
@@ -172,7 +172,7 @@ class EDHandlerXSDataXDSv1_0:
             elif (fGonioStatOscillationStartMin > fGonioStatOscillationStart):
                 fGonioStatOscillationStartMin = fGonioStatOscillationStart
 
-        # Loop through the list of sub wedges 
+        # Loop through the list of sub wedges
 
         for xsDataSubWedge in xsDataSubWedgeList:
 
@@ -197,7 +197,7 @@ class EDHandlerXSDataXDSv1_0:
                 iImageNumber = xsDataImage.getNumber().getValue()
                 fImageOscillationStart = fGonioStatOscillationStart + (iImageNumber - iLowestImageNumber) * fGonioStatOscillationRange
                 iXDSImageNumber = iXDSLowestImageNumberGlobal + int((fImageOscillationStart - fGonioStatOscillationStartMin) / fGonioStatOscillationRange)
-                #print iXDSImageNumber, fImageOscillationStart, fGonioStatOscillationStartMin, fGonioStatOscillationRange
+                # print iXDSImageNumber, fImageOscillationStart, fGonioStatOscillationStartMin, fGonioStatOscillationRange
                 pyStrSourcePath = xsDataImage.getPath()
                 pyStrTarget = "%s_xdslink_%05d.%s" % (pyStrPrefix, iXDSImageNumber, pyStrSuffix)
                 xsDataXDSImageLink = XSDataXDSImageLink()
@@ -338,7 +338,10 @@ class EDHandlerXSDataXDSv1_0:
                [[ 1029, 1040, 0, 2167], \
                 [ 0, 2070, 512, 550], \
                 [ 0, 2070, 1063, 1103], \
-                [ 0, 2070, 1614, 1654]]
+                [ 0, 2070, 1614, 1654],
+                # The following line is for a defective chip on id30a3
+                [ 257, 481, 551, 807],
+                ]
             for listRectangle in listUntrustedRectangle:
                 xsDataXDSRectangle = XSDataXDSRectangle()
                 xsDataXDSRectangle.setX1(XSDataInteger(listRectangle[0]))
