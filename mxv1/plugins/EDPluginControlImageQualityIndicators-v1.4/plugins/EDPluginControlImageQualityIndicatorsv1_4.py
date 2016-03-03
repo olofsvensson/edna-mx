@@ -41,6 +41,7 @@ from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataTime
+from XSDataCommon import XSDataImage
 
 from XSDataMXv1 import XSDataImageQualityIndicators
 from XSDataMXv1 import XSDataInputControlImageQualityIndicators
@@ -154,29 +155,32 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         listH5FilePath = []
         ispybDataCollection = None
         for xsDataImage in listXSDataImage:
+            strPathToImage = xsDataImage.path.value
             # If Eiger, just wait for the h5 file
-            if "id30a3" in listXSDataImage[0].path.value:
-                h5FilePath, hdf5ImageNumber = self.getH5FilePath(xsDataImage.path.value, batchSize)
+            if "id30a3" in strPathToImage:
+                h5FilePath, hdf5ImageNumber = self.getH5FilePath(strPathToImage, batchSize)
 #                print(h5FilePath)
 #                print(hdf5ImageNumber)
                 if not h5FilePath in listH5FilePath:
+                    self.screen("ID30a3 Eiger data, waiting for master and data files...")
                     listH5FilePath.append(h5FilePath)
                     self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
                     xsDataInputMXWaitFile.file = XSDataFile(XSDataString(h5FilePath))
                     xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
                     xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
+                    self.screen("Waiting for file {0}".format(h5FilePath))
                     self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
                     self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
                     self.edPluginMXWaitFile.executeSynchronous()
-                    hdf5FilePath = xsDataImage.path.value.replace(".cbf", ".h5")
+#                    hdf5FilePath = strPathToImage.replace(".cbf", ".h5")
                     ispybDataCollection = None
                     time.sleep(1)
-                indexLoop = 0
+                indexLoop = 1
                 continueLoop = True
                 while continueLoop:
                     xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
-                    xsDataInputControlH5ToCBF.hdf5File = XSDataFile(XSDataString(hdf5FilePath))
-                    imageNumber = EDUtilsImage.getImageNumber(xsDataImage.path.value)
+                    xsDataInputControlH5ToCBF.hdf5File = XSDataFile(XSDataString(strPathToImage))
+                    imageNumber = EDUtilsImage.getImageNumber(strPathToImage)
                     xsDataInputControlH5ToCBF.imageNumber = XSDataInteger(imageNumber)
                     xsDataInputControlH5ToCBF.hdf5ImageNumber = XSDataInteger(hdf5ImageNumber)
                     xsDataInputControlH5ToCBF.ispybDataCollection = ispybDataCollection
@@ -184,45 +188,42 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                     edPluginControlH5ToCBF.dataInput = xsDataInputControlH5ToCBF
                     edPluginControlH5ToCBF.executeSynchronous()
                     cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
+                    strPathToImage = cbfFile.path.value
 #                    print(cbfFile)
 #                    print(indexLoop)
                     if cbfFile is not None:
 #                        print(cbfFile.path.value)
-                        if os.path.exists(cbfFile.path.value):
+                        if os.path.exists(strPathToImage):
+                            self.screen("Image has been converted to CBF file: {0}".format(strPathToImage))
                             continueLoop = False
 #                    print(continueLoop)
                     if continueLoop:
+                        self.screen("Still waiting for converting to CBF file: {0}".format(strPathToImage))
                         indexLoop += 1
                         time.sleep(5)
-                        if indexLoop > 5:
+                        if indexLoop > 10:
                             continueLoop = False
 
                 ispybDataCollection = edPluginControlH5ToCBF.dataOutput.ispybDataCollection
 
 
-            else:
+            elif not os.path.exists(strPathToImage):
+                self.screen("Waiting for file {0}".format(strPathToImage))
                 self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
-                xsDataInputMXWaitFile.file = XSDataFile(xsDataImage.path)
+                xsDataInputMXWaitFile.file = XSDataFile(XSDataString(strPathToImage))
                 xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
                 xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
                 self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
                 self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
                 self.edPluginMXWaitFile.executeSynchronous()
-                if not os.path.exists(xsDataImage.path.value):
-                    self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
-                    xsDataInputMXWaitFile.file = XSDataFile(xsDataImage.path)
-                    xsDataInputMXWaitFile.setSize(XSDataInteger(5000000))
-                    xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
-                    self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
-                    self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
-                    self.edPluginMXWaitFile.executeSynchronous()
-            if not os.path.exists(xsDataImage.path.value):
-                strError = "Time-out while waiting for image %s" % xsDataImage.path.value
+            if not os.path.exists(strPathToImage):
+                strError = "Time-out while waiting for image %s" % strPathToImage
                 self.error(strError)
                 self.addErrorMessage(strError)
                 self.setFailure()
             else:
                 # Check if we should run distl.signalStrength
+                xsDataImageNew = XSDataImage(XSDataString(strPathToImage))
                 edPluginPluginExecImageQualityIndicator = None
                 if bDoDistlSignalStrength:
                     if self.bUseThinClient:
@@ -232,11 +233,11 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                     edPluginPluginExecImageQualityIndicator = self.loadPlugin(strPluginName)
                     self.listPluginExecImageQualityIndicator.append(edPluginPluginExecImageQualityIndicator)
                     xsDataInputDistlSignalStrength = XSDataInputDistlSignalStrength()
-                    xsDataInputDistlSignalStrength.setReferenceImage(xsDataImage)
+                    xsDataInputDistlSignalStrength.setReferenceImage(xsDataImageNew)
                     edPluginPluginExecImageQualityIndicator.setDataInput(xsDataInputDistlSignalStrength)
                     edPluginPluginExecImageQualityIndicator.execute()
-                listPluginDistl.append((xsDataImage.copy(), edPluginPluginExecImageQualityIndicator))
-                listBatch.append(xsDataImage.copy())
+                listPluginDistl.append((xsDataImageNew.copy(), edPluginPluginExecImageQualityIndicator))
+                listBatch.append(xsDataImageNew.copy())
                 if len(listBatch) == batchSize:
                     edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor)
                     xsDataInputControlDozor = XSDataInputControlDozor()
