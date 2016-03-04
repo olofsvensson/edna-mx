@@ -82,6 +82,8 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.ix_max_eiger4m = 840
         self.iy_min_eiger4m = 776
         self.iy_max_eiger4m = 852
+        # Bad zones
+        self.strBad_zona = None
 
     def checkParameters(self):
         """
@@ -100,6 +102,8 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.ix_max = self.config.get("ix_max")
         self.iy_min = self.config.get("iy_min")
         self.iy_max = self.config.get("iy_max")
+        # Eventual bad zones
+        self.strBad_zona = self.config.get("bad_zona")
         if xsDataInputDozor.wedgeNumber is None:
             self.setScriptCommandline("-p dozor.dat")
         else:
@@ -161,6 +165,8 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "ix_max %d\n" % self.ix_max
             strCommandText += "iy_min %d\n" % self.iy_min
             strCommandText += "iy_max %d\n" % self.iy_max
+            if self.strBad_zona is not None:
+                strCommandText += "bad_zona %s\n" % self.strBad_zona
             strCommandText += "orgx %.1f\n" % _xsDataInputDozor.orgx.value
             strCommandText += "orgy %.1f\n" % _xsDataInputDozor.orgy.value
             strCommandText += "oscillation_range %.3f\n" % _xsDataInputDozor.oscillationRange.value
