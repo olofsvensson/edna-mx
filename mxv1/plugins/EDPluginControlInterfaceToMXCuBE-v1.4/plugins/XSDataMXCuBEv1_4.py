@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Mar 13 03:53::54 2015 by EDGenerateDS.
+# Generated Fri Mar 4 05:43::11 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -1319,7 +1319,7 @@ class XSDataMXCuBEParameters(XSData):
 
 
 class XSDataInputMXCuBE(XSDataInput):
-    def __init__(self, configuration=None, dataSet=None, sample=None, outputFileDirectory=None, experimentalCondition=None, diffractionPlan=None, dataCollectionId=None, characterisationInput=None):
+    def __init__(self, configuration=None, htmlDir=None, dataSet=None, sample=None, outputFileDirectory=None, experimentalCondition=None, diffractionPlan=None, dataCollectionId=None, characterisationInput=None):
         XSDataInput.__init__(self, configuration)
         if characterisationInput is None:
             self._characterisationInput = None
@@ -1369,6 +1369,13 @@ class XSDataInputMXCuBE(XSDataInput):
             self._dataSet = dataSet
         else:
             strMessage = "ERROR! XSDataInputMXCuBE constructor argument 'dataSet' is not list but %s" % self._dataSet.__class__.__name__
+            raise BaseException(strMessage)
+        if htmlDir is None:
+            self._htmlDir = None
+        elif htmlDir.__class__.__name__ == "XSDataFile":
+            self._htmlDir = htmlDir
+        else:
+            strMessage = "ERROR! XSDataInputMXCuBE constructor argument 'htmlDir' is not XSDataFile but %s" % self._htmlDir.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'characterisationInput' attribute
     def getCharacterisationInput(self): return self._characterisationInput
@@ -1475,6 +1482,18 @@ class XSDataInputMXCuBE(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputMXCuBE.addDataSet argument is not XSDataMXCuBEDataSet but %s" % value.__class__.__name__
             raise BaseException(strMessage)
+    # Methods and properties for the 'htmlDir' attribute
+    def getHtmlDir(self): return self._htmlDir
+    def setHtmlDir(self, htmlDir):
+        if htmlDir is None:
+            self._htmlDir = None
+        elif htmlDir.__class__.__name__ == "XSDataFile":
+            self._htmlDir = htmlDir
+        else:
+            strMessage = "ERROR! XSDataInputMXCuBE.setHtmlDir argument is not XSDataFile but %s" % htmlDir.__class__.__name__
+            raise BaseException(strMessage)
+    def delHtmlDir(self): self._htmlDir = None
+    htmlDir = property(getHtmlDir, setHtmlDir, delHtmlDir, "Property for htmlDir")
     def export(self, outfile, level, name_='XSDataInputMXCuBE'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1497,6 +1516,8 @@ class XSDataInputMXCuBE(XSDataInput):
             self.sample.export(outfile, level, name_='sample')
         for dataSet_ in self.getDataSet():
             dataSet_.export(outfile, level, name_='dataSet')
+        if self._htmlDir is not None:
+            self.htmlDir.export(outfile, level, name_='htmlDir')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1537,6 +1558,11 @@ class XSDataInputMXCuBE(XSDataInput):
             obj_ = XSDataMXCuBEDataSet()
             obj_.build(child_)
             self.dataSet.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'htmlDir':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setHtmlDir(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

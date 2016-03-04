@@ -22,6 +22,7 @@ complex type XSDataInputMXCuBE extends XSDataInput {
 	outputFileDirectory : XSDataFile optional
 	sample : XSDataSampleCrystalMM optional
 	dataSet : XSDataMXCuBEDataSet [] optional
+	htmlDir : XSDataFile optional
 }
 
 complex type XSDataMXCuBEDataSet {
