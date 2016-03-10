@@ -23,7 +23,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="Thomsa Boeglin"
+__author__ = "Thomsa Boeglin"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
@@ -36,9 +36,9 @@ from XSDataCommon import XSDataFile, XSDataString
 
 from XSDataEDNAprocv1_0  import XSDataMinimalXdsIn, XSDataXdsOutputFile
 
-class EDPluginControlRunXdsv1_0( EDPluginControl ):
+class EDPluginControlRunXdsv1_0(EDPluginControl):
     """
-    Runx XDS 3 times like Max's autoproc does.
+    Runx XDS 3 times like Max's Grenades programs do.
     1. First run is a vanilla run
     2. Second run set JOB to DEFPIX INTEGRATE CORRECT
     3. Third run set JOB to ALL, maxproc to 4 and maxjobs to 1
@@ -47,7 +47,7 @@ class EDPluginControlRunXdsv1_0( EDPluginControl ):
     """
 
 
-    def __init__( self ):
+    def __init__(self):
         """
         """
         EDPluginControl.__init__(self)
@@ -71,14 +71,14 @@ class EDPluginControlRunXdsv1_0( EDPluginControl ):
         self.checkMandatoryParameters(self.dataInput.input_file, "No XDS input file")
 
 
-    def preProcess(self, _edObject = None):
+    def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControl<pluginName>.preProcess")
         # Load the execution plugin
         self.first_run = self.loadPlugin(self.controlled_plugin_name)
 
 
-    def process(self, _edObject = None):
+    def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlRunXdsv1_0.process")
         # First run is vanilla without any modification
@@ -182,7 +182,7 @@ class EDPluginControlRunXdsv1_0( EDPluginControl ):
                 return
             self.dataOutput = parser.dataOutput
 
-    def postProcess(self, _edObject = None):
+    def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self)
         self.DEBUG("EDPluginControlRunXdsv1_0.postProcess")
         # XXX: maybe move the XDS output parsing there?

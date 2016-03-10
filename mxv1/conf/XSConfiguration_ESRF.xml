@@ -141,5 +141,14 @@
                 </XSParamItem>
             </XSParamList>
         </XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginControlEDNAprocv1_0</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>7200</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
 	</XSPluginList> 
 </XSConfiguration> 

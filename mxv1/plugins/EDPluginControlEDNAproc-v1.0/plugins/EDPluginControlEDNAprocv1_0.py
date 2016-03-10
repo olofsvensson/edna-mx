@@ -126,7 +126,7 @@ ISPYB_UPLOAD_EXTENSIONS = ['.lp', '.mtz', '.log', '.inp', '.gz']
 
 class EDPluginControlEDNAprocv1_0(EDPluginControl):
     """
-    Runs the part of the autoproc pipeline that has to be run on the
+    Runs the part of the EDNAproc pipeline that has to be run on the
     cluster.
     """
 
@@ -208,7 +208,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         self.sendEmail(strSubject, "")
 
-        # for info to send to the autoproc stats server
+        # for info to send to the EDNAproc stats server
 #        self.custom_stats = dict(creation_time=time.time(),
 #                                 processing_type='edna fastproc',
 #                                 datacollect_id=self.dataInput.data_collection_id.value,
@@ -277,12 +277,12 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         shutil.copy(self.dataInput.input_file.path.value,
                     infile_dest)
 
-        # Ensure the autoproc ids directory is there
+        # Ensure the EDNAproc ids directory is there
         self.autoproc_ids_dir = os.path.join(self.results_dir, 'fastproc_integration_ids')
         try:
             os.makedirs(self.autoproc_ids_dir)
         except OSError:  # it's there
-            strWarningMessage = "Error creating the autoproc ids directory: {0}".format(traceback.format_exc())
+            strWarningMessage = "Error creating the EDNAproc ids directory: {0}".format(traceback.format_exc())
             self.addWarningMessage(strWarningMessage)
             self.WARNING(strWarningMessage)
 
@@ -945,7 +945,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         output = AutoProcContainer()
 
         # AutoProc attr
-        autoproc = AutoProc()
+        EDNAproc = AutoProc()
 
         # There's also
         pointless_sg_str = self.file_conversion.dataOutput.pointless_sgstring
@@ -1180,13 +1180,13 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.store_autoproc_anom.dataInput = ispyb_input
         t0 = time.time()
         self.store_autoproc_anom.executeSynchronous()
-        self.retrieveFailureMessages(self.store_autoproc_anom, "Store autoproc anom")
+        self.retrieveFailureMessages(self.store_autoproc_anom, "Store EDNAproc anom")
         self.stats['ispyb_upload'] = time.time() - t0
 
         if self.store_autoproc_anom.isFailure():
             self.ERROR('could not send results to ispyb')
         else:
-            # store the autoproc ID as a filename in the
+            # store the EDNAproc ID as a filename in the
             # fastproc_integration_ids directory
             os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_anom)), 0755)
         # then noanom stats
@@ -1206,13 +1206,13 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         t0 = time.time()
         self.store_autoproc_noanom.executeSynchronous()
         autoProcProgramId = self.store_autoproc_noanom.dataOutput.autoProcProgramId.value
-        self.retrieveFailureMessages(self.store_autoproc_noanom, "Store autoproc noanom")
+        self.retrieveFailureMessages(self.store_autoproc_noanom, "Store EDNAproc noanom")
         self.stats['ispyb_upload'] = time.time() - t0
 
         if self.store_autoproc_noanom.isFailure():
             self.ERROR('could not send results to ispyb')
         else:
-            # store the autoproc id
+            # store the EDNAproc id
             os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0755)
 
         # Finally run dimple if executed at the ESRF
@@ -1392,7 +1392,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         status_input.AutoProcStatus = status_data
 
         autoproc_status.dataInput = status_input
-        # get our autoproc status id
+        # get our EDNAproc status id
         autoproc_status.executeSynchronous()
         return autoproc_status.dataOutput.autoProcIntegrationId
 

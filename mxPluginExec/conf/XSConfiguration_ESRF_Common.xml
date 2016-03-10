@@ -486,19 +486,6 @@
 			</XSParamList>
 		</XSPluginItem>
 
-		<!-- The autoproc control plugin itself. We use a loooong timeout value 
-			just in case -->
-
-		<XSPluginItem>
-			<name>EDPluginControlAutoprocv1_0</name>
-			<XSParamList>
-				<XSParamItem>
-					<name>timeOut</name>
-					<value>7200</value>
-				</XSParamItem>
-			</XSParamList>
-		</XSPluginItem>
-
 		<!-- the plugins for the file conversion -->
 		<XSPluginItem>
 			<name>EDPluginExecPointlessv1_0</name>
