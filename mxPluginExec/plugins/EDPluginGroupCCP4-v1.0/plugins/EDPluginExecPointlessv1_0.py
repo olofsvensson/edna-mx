@@ -2,7 +2,7 @@ from __future__ import with_statement
 
 # coding: utf8
 #
-#    Project: Autoproc
+#    Project: EDNAproc
 #             http://www.edna-site.org
 #
 #    File: "$Id$"

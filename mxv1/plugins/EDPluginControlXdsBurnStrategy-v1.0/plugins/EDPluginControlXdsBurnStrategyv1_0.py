@@ -1,6 +1,6 @@
 # coding: utf8
 #
-#    Project: Autoproc
+#    Project: EDNAproc
 #             http://www.edna-site.org
 #
 #    File: "$Id$"
@@ -23,7 +23,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="Thomas Boeglin"
+__author__ = "Thomas Boeglin"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
@@ -32,13 +32,14 @@ import shutil
 
 from EDPluginControl import EDPluginControl
 from EDVerbose import EDVerbose
+from EDFactoryPlugin import edFactoryPlugin
 
 from XSDataCommon import XSDataString, XSDataBoolean, XSDataStatus
 from XSDataBurnStrategyv1_0 import XSDataInputXdsBurnStrategy, XSDataOutputXdsBurnStrategy
 from EDFactoryPlugin import edFactoryPlugin
 
-edFactoryPlugin.loadPlugin('EDPluginExecMinimalXdsv1_0')
-from XSDataAutoprocv1_0 import XSDataMinimalXdsIn
+edFactoryPlugin.loadModule('XSDataXDSv1_0')
+from XSDataXDSv1_0 import XSDataMinimalXdsIn
 
 from xdscfgparser import parse_xds_file, dump_xds_file
 
@@ -70,7 +71,7 @@ class EDPluginControlXdsBurnStrategyv1_0(EDPluginControl):
             self.ERROR('The specified input file does not exist (path: {0})'.format(self.dataInput.input_file.value))
 
 
-    def preProcess(self, _edObject = None):
+    def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlXdsBest.preProcess")
         self._xds = self.loadPlugin('EDPluginExecMinimalXdsv1_0')
@@ -131,7 +132,7 @@ class EDPluginControlXdsBurnStrategyv1_0(EDPluginControl):
         self._xds.dataInput = input_dm
 
 
-    def process(self, _edObject = None):
+    def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlXdsBest.process")
         self._xds.executeSynchronous()
@@ -146,10 +147,10 @@ class EDPluginControlXdsBurnStrategyv1_0(EDPluginControl):
             input_dm2.input_file = XSDataString(self.real_input_file)
             self._xds2.dataInput = input_dm2
             self._xds2.executeSynchronous()
-        
 
 
-    def postProcess(self, _edObject = None):
+
+    def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self)
         self.DEBUG("EDPluginControlXdsBest.postProcess")
 

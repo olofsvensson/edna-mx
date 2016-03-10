@@ -1,0 +1,100 @@
+targetNamespace "http://www.edna-site.org"
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataString
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataVectorDouble
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataBoolean
+import XSDataCommon.XSDataFile
+
+
+
+complex type XSDataAutoprocInput extends XSDataInput {
+        input_file		: XSDataFile
+        res_override		: XSDataDouble optional
+        //cutoffs
+        completeness_cutoff	: XSDataDouble optional
+        isig_cutoff		: XSDataDouble optional
+        r_value_cutoff		: XSDataDouble optional
+        cc_half_cutoff		: XSDataDouble optional
+
+        data_collection_id	: XSDataInteger optional
+        detector_max_res	: XSDataDouble optional
+        low_resolution_limit	: XSDataDouble optional
+        nres			: XSDataDouble optional
+
+	spacegroup		: XSDataString optional
+	unit_cell		: XSDataString optional // space separated numerical values
+
+        output_file		: XSDataFile
+}
+
+
+// these are use by the subplugins of the general file conversion
+// control plugin
+
+
+// this contpains the information for the 4 conversion plugins
+complex type XSDataFileConversion extends XSDataInput {
+        input_file       : XSDataString
+        output_file      : XSDataString
+        dataCollectionID : XSDataInteger
+        start_image      : XSDataInteger
+        end_image        : XSDataInteger
+        res              : XSDataDouble
+        nres             : XSDataDouble
+        anom             : XSDataBoolean
+        choose_spacegroup : XSDataString optional
+	// optional because the way we get it is fragile and may break
+	image_prefix     : XSDataString optional
+}
+
+complex type XSDataFileConversionOut extends XSDataResult {
+	pointless_sgnumber : XSDataInteger
+	pointless_sgstring : XSDataString
+	pointless_cell     : XSDataDouble []
+	aimless_log        : XSDataString
+}
+
+complex type XSDataAutoprocImport extends XSDataInput {
+	input_anom	    	: XSDataString
+	input_noanom		: XSDataString
+	output_directory	: XSDataString
+	dataCollectionID	: XSDataInteger
+	start_image		    : XSDataInteger
+        end_image		: XSDataInteger
+        res			    : XSDataDouble
+        nres			: XSDataDouble
+	image_prefix        : XSDataString optional
+    choose_spacegroup   : XSDataString optional
+}
+
+complex type XSDataAutoprocImportOut extends XSDataResult {
+	files			: XSDataString []
+	// Those two come from the noanom data
+	pointless_sgnumber	: XSDataInteger
+	pointless_sgstring	: XSDataString
+	pointless_cell      : XSDataDouble []
+	aimless_log_anom    : XSDataString
+	aimless_log_noanom	: XSDataString
+}
+
+complex type XSDataInputControlDimple extends XSDataInput {
+	dataCollectionId : XSDataInteger
+	mtzFile : XSDataFile
+	pyarchPath : XSDataFile
+	imagePrefix : XSDataString
+	proposal : XSDataString
+	sessionDate : XSDataString
+	beamline : XSDataString
+	pdbDirectory : XSDataFile optional
+	autoProcProgramId : XSDataInteger optional
+}
+
+complex type XSDataResultControlDimple extends XSDataResult {
+	dimpleExecutedSuccessfully : XSDataBoolean
+}
+
+

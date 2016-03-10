@@ -1,12 +1,11 @@
 #
-#    Project: EDNA mxPluginExec
+#    Project: mxPluginExec
 #             http://www.edna-site.org
 #
-#    Copyright (C) 2008 EMBL-Grenoble, Grenoble, France
+#    Copyright (C) 2008-2013 European Synchrotron Radiation Facility
+#                            Grenoble, France
 #
-#    Principal authors: Sandor Brockhauser (brockhauser@embl-grenoble.fr)
-#                       Olof Svensson (svensson@esrf.fr)
-#                       Pierre Legrand (pierre.legrand@synchrotron-soleil.fr)
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -23,26 +22,25 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
-__authors__ = [ "Sandor Brockhauser", "Olof Svensson", "Pierre Legrand" ]
-__contact__ = "brockhauser@embl-grenoble.fr"
+__author__ = "Olof Svensson"
+__contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
-__copyright__ = "EMBL-Grenoble, Grenoble, France"
-__date__ = "20120712"
+__copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
+__date__ = "20130328"
 __status__ = "production"
 
 
-from EDTestSuite import EDTestSuite
+from EDTestSuite                                  import EDTestSuite
 
-
-class EDTestSuitePluginExecuteXDSv1_0(EDTestSuite):
+class EDTestSuitePluginControlEDNAprocv1_0(EDTestSuite):
 
 
     def process(self):
-#        self.addTestCaseFromName("EDTestCasePluginExecuteXDSIndexingv1_0")
-        self.addTestCaseFromName("EDTestCasePluginExecuteExecMinimalXdsv1_0")
+        self.addTestCaseFromName("EDTestCasePluginUnitControlEDNAprocv1_0")
+        self.addTestCaseFromName("EDTestCasePluginUnitControlRunDimplev1_0")
+        self.addTestCaseFromName("EDTestCasePluginControlFileConversionv1_0")
         self.addTestCaseFromName("EDTestCasePluginExecuteExecXscalev1_0")
-        self.addTestCaseFromName("EDTestCasePluginExecuteXDSGenerateBackgroundImagev1_0")
         self.addTestCaseFromName("EDTestCasePluginParseXdsOutputv1_0")
         self.addTestCaseFromName("EDTestCasePluginResCutoffv1_0")
-        self.addTestCaseFromName("EDTestCasePluginUnitXdscfgparser")
-
+        self.addTestCaseFromName("EDTestCasePluginControlEDNAprocv1_0_id29_20130301")
+#        self.addTestCaseFromName("EDTestCasePluginControlEDNAprocv1_0_id29_20140505")
