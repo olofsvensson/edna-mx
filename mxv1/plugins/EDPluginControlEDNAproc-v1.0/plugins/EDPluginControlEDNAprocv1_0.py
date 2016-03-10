@@ -945,7 +945,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         output = AutoProcContainer()
 
         # AutoProc attr
-        EDNAproc = AutoProc()
+        autoproc = AutoProc()
 
         # There's also
         pointless_sg_str = self.file_conversion.dataOutput.pointless_sgstring
