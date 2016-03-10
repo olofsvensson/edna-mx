@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
 #
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -45,12 +45,7 @@ class EDTestSuitePluginExecuteAllMXPluginExec(EDTestSuite):
         self.addTestSuiteFromName("EDTestSuitePluginExecuteBestv10")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteBestv1_1")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteBestv1_2")
-        #self.addTestSuiteFromName( "EDTestSuitePluginExecuteSTACv2_0" )
-        #self.addTestSuiteFromName( "EDTestSuitePluginExecuteISPyBv10" )
+        self.addTestSuiteFromName("EDTestSuitePluginExecuteXDSv1_0.py")
 
 
 
-if __name__ == '__main__':
-
-    edTestSuitePluginExecuteAllMXPluginExec = EDTestSuitePluginExecuteAllMXPluginExec("EDTestSuitePluginExecuteAllMXPluginExec")
-    edTestSuitePluginExecuteAllMXPluginExec.execute()
