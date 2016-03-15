@@ -209,7 +209,8 @@ complex type XSDataResultStoreDataCollection extends XSDataResult {
 }
 
 complex type XSDataInputRetrieveDataCollection extends XSDataInput {
-	image : XSDataImage
+	image : XSDataImage optional
+	dataCollectionId : XSDataInteger optional
 }
 
 complex type XSDataResultRetrieveDataCollection extends XSDataResult {

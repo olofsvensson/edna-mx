@@ -17,7 +17,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -88,19 +88,24 @@ class EDPluginISPyBRetrieveDataCollectionv1_4(EDPluginExec):
         EDPluginExec.process(self)
         self.DEBUG("EDPluginISPyBRetrieveDataCollectionv1_4.process")
         infile = self.getDataInput()
-        inpath = infile.getImage().getPath().getValue()
-        indir = os.path.dirname(inpath)
-        infilename = os.path.basename(inpath)
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
         clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
-        self.collectParameters = None
 
-        # DataCollectionProgram
-        collect_params = clientToolsForCollectionWebService.service.findDataCollectionFromFileLocationAndFileName(
-                         indir,
-                         infilename)
+        self.collectParameters = None
+        if infile.image is not None:
+            inpath = infile.image.path.value
+            indir = os.path.dirname(inpath)
+            infilename = os.path.basename(inpath)
+            collect_params = clientToolsForCollectionWebService.service.findDataCollectionFromFileLocationAndFileName(
+                             indir,
+                             infilename)
+        elif infile.dataCollectionId is not None:
+            dataCollectionId = infile.dataCollectionId.value
+            collect_params = clientToolsForCollectionWebService.service.findDataCollection(dataCollectionId)
+        else:
+            self.ERROR("Neither image nor data collection id given as input!")
         if collect_params is None:
-            self.ERROR("Couldn't find collect for file %s in ISPyB!" % inpath)
+            self.ERROR("Couldn't find collect in ISPyB!" % inpath)
             self.setFailure()
         else:
             # the result is a suds.sudsobject.Object, we need to convert it
@@ -120,7 +125,7 @@ class EDPluginISPyBRetrieveDataCollectionv1_4(EDPluginExec):
         EDPluginExec.postProcess(self)
         self.DEBUG("EDPluginISPyBRetrieveDataCollectionv1_4.finallyProcess")
         if self.collectParameters is None:
-            self.collectParameters = XSDataResultRetrieveDataCollection()            
+            self.collectParameters = XSDataResultRetrieveDataCollection()
         self.setDataOutput(self.collectParameters)
 
 
