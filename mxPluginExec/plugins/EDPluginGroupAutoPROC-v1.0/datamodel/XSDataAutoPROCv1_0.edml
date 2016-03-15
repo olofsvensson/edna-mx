@@ -9,13 +9,17 @@ import XSDataCommon.XSDataBoolean
 import XSDataCommon.XSDataString
 import XSDataCommon.XSDataInteger
 
+
+complex type XSDataAutoPROCIdentifier extends XSData {
+	idN : XSDataString 
+	dirN : XSDataFile 
+	templateN : XSDataString 
+	fromN : XSDataInteger 
+	toN : XSDataInteger 	
+}
+
 complex type XSDataInputAutoPROC extends XSDataInput {
-	imageDirectory : XSDataFile optional
-	idN : XSDataString optional
-	dirN : XSDataFile optional
-	templateN : XSDataString optional
-	fromN : XSDataInteger optional
-	toN : XSDataInteger optional
+	identifier : XSDataAutoPROCIdentifier []
 	lowResolutionLimit : XSDataDouble optional
 	highResolutionLimit : XSDataDouble optional
 	anomalous : XSDataBoolean optional
@@ -25,6 +29,6 @@ complex type XSDataInputAutoPROC extends XSDataInput {
 
 complex type XSDataResultAutoPROC extends XSDataResult {
 	logFile : XSDataFile
-	processDirectory : XSDataFile
+	processDirectory : XSDataFile []
 	ispybXML : XSDataFile
 }

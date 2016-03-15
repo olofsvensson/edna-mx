@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Sun Mar 13 03:55::25 2016 by EDGenerateDS.
+# Generated Mon Mar 14 04:23::56 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -19,16 +19,18 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSData
     from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataDouble
-    from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataResult
     from XSDataCommon import XSDataString
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
+    from XSDataCommon import XSDataInteger
 except ImportError as error:
     if strEdnaHome is not None:
         for strXsdName in dictLocation:
@@ -39,13 +41,14 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSData
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataDouble
-from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataResult
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
+from XSDataCommon import XSDataInteger
 
 
 
@@ -125,50 +128,216 @@ class MixedContainer(object):
 
 
 
-class XSDataInputAutoPROC(XSDataInput):
-    def __init__(self, configuration=None, masterH5=None, refMTZ=None, anomalous=None, highResolutionLimit=None, lowResolutionLimit=None, toN=None, fromN=None, templateN=None, dirN=None, idN=None, imageDirectory=None):
-        XSDataInput.__init__(self, configuration)
-        if imageDirectory is None:
-            self._imageDirectory = None
-        elif imageDirectory.__class__.__name__ == "XSDataFile":
-            self._imageDirectory = imageDirectory
-        else:
-            strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'imageDirectory' is not XSDataFile but %s" % self._imageDirectory.__class__.__name__
-            raise BaseException(strMessage)
+class XSDataAutoPROCIdentifier(XSData):
+    def __init__(self, toN=None, fromN=None, templateN=None, dirN=None, idN=None):
+        XSData.__init__(self, )
         if idN is None:
             self._idN = None
         elif idN.__class__.__name__ == "XSDataString":
             self._idN = idN
         else:
-            strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'idN' is not XSDataString but %s" % self._idN.__class__.__name__
+            strMessage = "ERROR! XSDataAutoPROCIdentifier constructor argument 'idN' is not XSDataString but %s" % self._idN.__class__.__name__
             raise BaseException(strMessage)
         if dirN is None:
             self._dirN = None
         elif dirN.__class__.__name__ == "XSDataFile":
             self._dirN = dirN
         else:
-            strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'dirN' is not XSDataFile but %s" % self._dirN.__class__.__name__
+            strMessage = "ERROR! XSDataAutoPROCIdentifier constructor argument 'dirN' is not XSDataFile but %s" % self._dirN.__class__.__name__
             raise BaseException(strMessage)
         if templateN is None:
             self._templateN = None
         elif templateN.__class__.__name__ == "XSDataString":
             self._templateN = templateN
         else:
-            strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'templateN' is not XSDataString but %s" % self._templateN.__class__.__name__
+            strMessage = "ERROR! XSDataAutoPROCIdentifier constructor argument 'templateN' is not XSDataString but %s" % self._templateN.__class__.__name__
             raise BaseException(strMessage)
         if fromN is None:
             self._fromN = None
         elif fromN.__class__.__name__ == "XSDataInteger":
             self._fromN = fromN
         else:
-            strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'fromN' is not XSDataInteger but %s" % self._fromN.__class__.__name__
+            strMessage = "ERROR! XSDataAutoPROCIdentifier constructor argument 'fromN' is not XSDataInteger but %s" % self._fromN.__class__.__name__
             raise BaseException(strMessage)
         if toN is None:
             self._toN = None
         elif toN.__class__.__name__ == "XSDataInteger":
             self._toN = toN
         else:
-            strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'toN' is not XSDataInteger but %s" % self._toN.__class__.__name__
+            strMessage = "ERROR! XSDataAutoPROCIdentifier constructor argument 'toN' is not XSDataInteger but %s" % self._toN.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'idN' attribute
+    def getIdN(self): return self._idN
+    def setIdN(self, idN):
+        if idN is None:
+            self._idN = None
+        elif idN.__class__.__name__ == "XSDataString":
+            self._idN = idN
+        else:
+            strMessage = "ERROR! XSDataAutoPROCIdentifier.setIdN argument is not XSDataString but %s" % idN.__class__.__name__
+            raise BaseException(strMessage)
+    def delIdN(self): self._idN = None
+    idN = property(getIdN, setIdN, delIdN, "Property for idN")
+    # Methods and properties for the 'dirN' attribute
+    def getDirN(self): return self._dirN
+    def setDirN(self, dirN):
+        if dirN is None:
+            self._dirN = None
+        elif dirN.__class__.__name__ == "XSDataFile":
+            self._dirN = dirN
+        else:
+            strMessage = "ERROR! XSDataAutoPROCIdentifier.setDirN argument is not XSDataFile but %s" % dirN.__class__.__name__
+            raise BaseException(strMessage)
+    def delDirN(self): self._dirN = None
+    dirN = property(getDirN, setDirN, delDirN, "Property for dirN")
+    # Methods and properties for the 'templateN' attribute
+    def getTemplateN(self): return self._templateN
+    def setTemplateN(self, templateN):
+        if templateN is None:
+            self._templateN = None
+        elif templateN.__class__.__name__ == "XSDataString":
+            self._templateN = templateN
+        else:
+            strMessage = "ERROR! XSDataAutoPROCIdentifier.setTemplateN argument is not XSDataString but %s" % templateN.__class__.__name__
+            raise BaseException(strMessage)
+    def delTemplateN(self): self._templateN = None
+    templateN = property(getTemplateN, setTemplateN, delTemplateN, "Property for templateN")
+    # Methods and properties for the 'fromN' attribute
+    def getFromN(self): return self._fromN
+    def setFromN(self, fromN):
+        if fromN is None:
+            self._fromN = None
+        elif fromN.__class__.__name__ == "XSDataInteger":
+            self._fromN = fromN
+        else:
+            strMessage = "ERROR! XSDataAutoPROCIdentifier.setFromN argument is not XSDataInteger but %s" % fromN.__class__.__name__
+            raise BaseException(strMessage)
+    def delFromN(self): self._fromN = None
+    fromN = property(getFromN, setFromN, delFromN, "Property for fromN")
+    # Methods and properties for the 'toN' attribute
+    def getToN(self): return self._toN
+    def setToN(self, toN):
+        if toN is None:
+            self._toN = None
+        elif toN.__class__.__name__ == "XSDataInteger":
+            self._toN = toN
+        else:
+            strMessage = "ERROR! XSDataAutoPROCIdentifier.setToN argument is not XSDataInteger but %s" % toN.__class__.__name__
+            raise BaseException(strMessage)
+    def delToN(self): self._toN = None
+    toN = property(getToN, setToN, delToN, "Property for toN")
+    def export(self, outfile, level, name_='XSDataAutoPROCIdentifier'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataAutoPROCIdentifier'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._idN is not None:
+            self.idN.export(outfile, level, name_='idN')
+        else:
+            warnEmptyAttribute("idN", "XSDataString")
+        if self._dirN is not None:
+            self.dirN.export(outfile, level, name_='dirN')
+        else:
+            warnEmptyAttribute("dirN", "XSDataFile")
+        if self._templateN is not None:
+            self.templateN.export(outfile, level, name_='templateN')
+        else:
+            warnEmptyAttribute("templateN", "XSDataString")
+        if self._fromN is not None:
+            self.fromN.export(outfile, level, name_='fromN')
+        else:
+            warnEmptyAttribute("fromN", "XSDataInteger")
+        if self._toN is not None:
+            self.toN.export(outfile, level, name_='toN')
+        else:
+            warnEmptyAttribute("toN", "XSDataInteger")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'idN':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setIdN(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'dirN':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setDirN(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'templateN':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setTemplateN(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'fromN':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setFromN(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'toN':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setToN(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataAutoPROCIdentifier" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataAutoPROCIdentifier' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataAutoPROCIdentifier is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataAutoPROCIdentifier.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataAutoPROCIdentifier()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataAutoPROCIdentifier" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataAutoPROCIdentifier()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataAutoPROCIdentifier
+
+
+class XSDataInputAutoPROC(XSDataInput):
+    def __init__(self, configuration=None, masterH5=None, refMTZ=None, anomalous=None, highResolutionLimit=None, lowResolutionLimit=None, identifier=None):
+        XSDataInput.__init__(self, configuration)
+        if identifier is None:
+            self._identifier = []
+        elif identifier.__class__.__name__ == "list":
+            self._identifier = identifier
+        else:
+            strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'identifier' is not list but %s" % self._identifier.__class__.__name__
             raise BaseException(strMessage)
         if lowResolutionLimit is None:
             self._lowResolutionLimit = None
@@ -205,78 +374,39 @@ class XSDataInputAutoPROC(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'masterH5' is not XSDataFile but %s" % self._masterH5.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'imageDirectory' attribute
-    def getImageDirectory(self): return self._imageDirectory
-    def setImageDirectory(self, imageDirectory):
-        if imageDirectory is None:
-            self._imageDirectory = None
-        elif imageDirectory.__class__.__name__ == "XSDataFile":
-            self._imageDirectory = imageDirectory
+    # Methods and properties for the 'identifier' attribute
+    def getIdentifier(self): return self._identifier
+    def setIdentifier(self, identifier):
+        if identifier is None:
+            self._identifier = []
+        elif identifier.__class__.__name__ == "list":
+            self._identifier = identifier
         else:
-            strMessage = "ERROR! XSDataInputAutoPROC.setImageDirectory argument is not XSDataFile but %s" % imageDirectory.__class__.__name__
+            strMessage = "ERROR! XSDataInputAutoPROC.setIdentifier argument is not list but %s" % identifier.__class__.__name__
             raise BaseException(strMessage)
-    def delImageDirectory(self): self._imageDirectory = None
-    imageDirectory = property(getImageDirectory, setImageDirectory, delImageDirectory, "Property for imageDirectory")
-    # Methods and properties for the 'idN' attribute
-    def getIdN(self): return self._idN
-    def setIdN(self, idN):
-        if idN is None:
-            self._idN = None
-        elif idN.__class__.__name__ == "XSDataString":
-            self._idN = idN
+    def delIdentifier(self): self._identifier = None
+    identifier = property(getIdentifier, setIdentifier, delIdentifier, "Property for identifier")
+    def addIdentifier(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataInputAutoPROC.addIdentifier argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataAutoPROCIdentifier":
+            self._identifier.append(value)
         else:
-            strMessage = "ERROR! XSDataInputAutoPROC.setIdN argument is not XSDataString but %s" % idN.__class__.__name__
+            strMessage = "ERROR! XSDataInputAutoPROC.addIdentifier argument is not XSDataAutoPROCIdentifier but %s" % value.__class__.__name__
             raise BaseException(strMessage)
-    def delIdN(self): self._idN = None
-    idN = property(getIdN, setIdN, delIdN, "Property for idN")
-    # Methods and properties for the 'dirN' attribute
-    def getDirN(self): return self._dirN
-    def setDirN(self, dirN):
-        if dirN is None:
-            self._dirN = None
-        elif dirN.__class__.__name__ == "XSDataFile":
-            self._dirN = dirN
+    def insertIdentifier(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataInputAutoPROC.insertIdentifier argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataInputAutoPROC.insertIdentifier argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataAutoPROCIdentifier":
+            self._identifier[index] = value
         else:
-            strMessage = "ERROR! XSDataInputAutoPROC.setDirN argument is not XSDataFile but %s" % dirN.__class__.__name__
+            strMessage = "ERROR! XSDataInputAutoPROC.addIdentifier argument is not XSDataAutoPROCIdentifier but %s" % value.__class__.__name__
             raise BaseException(strMessage)
-    def delDirN(self): self._dirN = None
-    dirN = property(getDirN, setDirN, delDirN, "Property for dirN")
-    # Methods and properties for the 'templateN' attribute
-    def getTemplateN(self): return self._templateN
-    def setTemplateN(self, templateN):
-        if templateN is None:
-            self._templateN = None
-        elif templateN.__class__.__name__ == "XSDataString":
-            self._templateN = templateN
-        else:
-            strMessage = "ERROR! XSDataInputAutoPROC.setTemplateN argument is not XSDataString but %s" % templateN.__class__.__name__
-            raise BaseException(strMessage)
-    def delTemplateN(self): self._templateN = None
-    templateN = property(getTemplateN, setTemplateN, delTemplateN, "Property for templateN")
-    # Methods and properties for the 'fromN' attribute
-    def getFromN(self): return self._fromN
-    def setFromN(self, fromN):
-        if fromN is None:
-            self._fromN = None
-        elif fromN.__class__.__name__ == "XSDataInteger":
-            self._fromN = fromN
-        else:
-            strMessage = "ERROR! XSDataInputAutoPROC.setFromN argument is not XSDataInteger but %s" % fromN.__class__.__name__
-            raise BaseException(strMessage)
-    def delFromN(self): self._fromN = None
-    fromN = property(getFromN, setFromN, delFromN, "Property for fromN")
-    # Methods and properties for the 'toN' attribute
-    def getToN(self): return self._toN
-    def setToN(self, toN):
-        if toN is None:
-            self._toN = None
-        elif toN.__class__.__name__ == "XSDataInteger":
-            self._toN = toN
-        else:
-            strMessage = "ERROR! XSDataInputAutoPROC.setToN argument is not XSDataInteger but %s" % toN.__class__.__name__
-            raise BaseException(strMessage)
-    def delToN(self): self._toN = None
-    toN = property(getToN, setToN, delToN, "Property for toN")
     # Methods and properties for the 'lowResolutionLimit' attribute
     def getLowResolutionLimit(self): return self._lowResolutionLimit
     def setLowResolutionLimit(self, lowResolutionLimit):
@@ -345,18 +475,10 @@ class XSDataInputAutoPROC(XSDataInput):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataInputAutoPROC'):
         XSDataInput.exportChildren(self, outfile, level, name_)
-        if self._imageDirectory is not None:
-            self.imageDirectory.export(outfile, level, name_='imageDirectory')
-        if self._idN is not None:
-            self.idN.export(outfile, level, name_='idN')
-        if self._dirN is not None:
-            self.dirN.export(outfile, level, name_='dirN')
-        if self._templateN is not None:
-            self.templateN.export(outfile, level, name_='templateN')
-        if self._fromN is not None:
-            self.fromN.export(outfile, level, name_='fromN')
-        if self._toN is not None:
-            self.toN.export(outfile, level, name_='toN')
+        for identifier_ in self.getIdentifier():
+            identifier_.export(outfile, level, name_='identifier')
+        if self.getIdentifier() == []:
+            warnEmptyAttribute("identifier", "XSDataAutoPROCIdentifier")
         if self._lowResolutionLimit is not None:
             self.lowResolutionLimit.export(outfile, level, name_='lowResolutionLimit')
         if self._highResolutionLimit is not None:
@@ -373,35 +495,10 @@ class XSDataInputAutoPROC(XSDataInput):
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'imageDirectory':
-            obj_ = XSDataFile()
+            nodeName_ == 'identifier':
+            obj_ = XSDataAutoPROCIdentifier()
             obj_.build(child_)
-            self.setImageDirectory(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'idN':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setIdN(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'dirN':
-            obj_ = XSDataFile()
-            obj_.build(child_)
-            self.setDirN(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'templateN':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setTemplateN(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'fromN':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setFromN(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'toN':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setToN(obj_)
+            self.identifier.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'lowResolutionLimit':
             obj_ = XSDataDouble()
@@ -483,11 +580,11 @@ class XSDataResultAutoPROC(XSDataResult):
             strMessage = "ERROR! XSDataResultAutoPROC constructor argument 'logFile' is not XSDataFile but %s" % self._logFile.__class__.__name__
             raise BaseException(strMessage)
         if processDirectory is None:
-            self._processDirectory = None
-        elif processDirectory.__class__.__name__ == "XSDataFile":
+            self._processDirectory = []
+        elif processDirectory.__class__.__name__ == "list":
             self._processDirectory = processDirectory
         else:
-            strMessage = "ERROR! XSDataResultAutoPROC constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
+            strMessage = "ERROR! XSDataResultAutoPROC constructor argument 'processDirectory' is not list but %s" % self._processDirectory.__class__.__name__
             raise BaseException(strMessage)
         if ispybXML is None:
             self._ispybXML = None
@@ -512,14 +609,35 @@ class XSDataResultAutoPROC(XSDataResult):
     def getProcessDirectory(self): return self._processDirectory
     def setProcessDirectory(self, processDirectory):
         if processDirectory is None:
-            self._processDirectory = None
-        elif processDirectory.__class__.__name__ == "XSDataFile":
+            self._processDirectory = []
+        elif processDirectory.__class__.__name__ == "list":
             self._processDirectory = processDirectory
         else:
-            strMessage = "ERROR! XSDataResultAutoPROC.setProcessDirectory argument is not XSDataFile but %s" % processDirectory.__class__.__name__
+            strMessage = "ERROR! XSDataResultAutoPROC.setProcessDirectory argument is not list but %s" % processDirectory.__class__.__name__
             raise BaseException(strMessage)
     def delProcessDirectory(self): self._processDirectory = None
     processDirectory = property(getProcessDirectory, setProcessDirectory, delProcessDirectory, "Property for processDirectory")
+    def addProcessDirectory(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataResultAutoPROC.addProcessDirectory argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._processDirectory.append(value)
+        else:
+            strMessage = "ERROR! XSDataResultAutoPROC.addProcessDirectory argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertProcessDirectory(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataResultAutoPROC.insertProcessDirectory argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataResultAutoPROC.insertProcessDirectory argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._processDirectory[index] = value
+        else:
+            strMessage = "ERROR! XSDataResultAutoPROC.addProcessDirectory argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     # Methods and properties for the 'ispybXML' attribute
     def getIspybXML(self): return self._ispybXML
     def setIspybXML(self, ispybXML):
@@ -544,9 +662,9 @@ class XSDataResultAutoPROC(XSDataResult):
             self.logFile.export(outfile, level, name_='logFile')
         else:
             warnEmptyAttribute("logFile", "XSDataFile")
-        if self._processDirectory is not None:
-            self.processDirectory.export(outfile, level, name_='processDirectory')
-        else:
+        for processDirectory_ in self.getProcessDirectory():
+            processDirectory_.export(outfile, level, name_='processDirectory')
+        if self.getProcessDirectory() == []:
             warnEmptyAttribute("processDirectory", "XSDataFile")
         if self._ispybXML is not None:
             self.ispybXML.export(outfile, level, name_='ispybXML')
@@ -566,7 +684,7 @@ class XSDataResultAutoPROC(XSDataResult):
             nodeName_ == 'processDirectory':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setProcessDirectory(obj_)
+            self.processDirectory.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'ispybXML':
             obj_ = XSDataFile()

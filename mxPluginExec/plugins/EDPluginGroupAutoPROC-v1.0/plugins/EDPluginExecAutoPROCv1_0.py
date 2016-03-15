@@ -73,9 +73,10 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         if os.path.exists(ispybXML):
             self.dataOutput.ispybXML = XSDataFile(XSDataString(ispybXML))
         # processDirectory
-        processDirectory = os.path.join(strWorkingDir, self.dataInput.idN.value)
-        if os.path.exists(processDirectory):
-            self.dataOutput.processDirectory = XSDataFile(XSDataString(processDirectory))
+        for identifier in self.dataInput.identifier:
+            processDirectory = os.path.join(strWorkingDir, identifier.idN.value)
+            if os.path.exists(processDirectory):
+                self.dataOutput.addProcessDirectory(XSDataFile(XSDataString(processDirectory)))
 
 
     def generateCommandLine(self, _xsDataInputAutoPROC):
@@ -84,20 +85,14 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginExecAutoPROCv1_0.generateCommands")
         strCommandText = "-B -xml"
-        # imageDirectory
-        imageDirectory = _xsDataInputAutoPROC.imageDirectory
-        if imageDirectory is not None:
-            strCommandText += " -I {0}".format(imageDirectory.path.value)
-        # Id
-        idN = _xsDataInputAutoPROC.idN
-        dirN = _xsDataInputAutoPROC.dirN
-        templateN = _xsDataInputAutoPROC.templateN
-        fromN = _xsDataInputAutoPROC.fromN
-        toN = _xsDataInputAutoPROC.toN
-        if all(v is not None for v in [idN, dirN, templateN, fromN, toN]):
+        # Identifier(s)
+        for identifier in _xsDataInputAutoPROC.identifier:
             strCommandText += " -Id {idN},{dirN},{templateN},{fromN},{toN}".format(
-                              idN=idN.value, dirN=dirN.path.value, templateN=templateN.value,
-                              fromN=fromN.value, toN=toN.value)
+                              idN=identifier.idN.value,
+                              dirN=identifier.dirN.path.value,
+                              templateN=identifier.templateN.value,
+                              fromN=identifier.fromN.value,
+                              toN=identifier.toN.value)
         # Resolution
         lowResolutionLimit = _xsDataInputAutoPROC.lowResolutionLimit
         highResolutionLimit = _xsDataInputAutoPROC.highResolutionLimit
