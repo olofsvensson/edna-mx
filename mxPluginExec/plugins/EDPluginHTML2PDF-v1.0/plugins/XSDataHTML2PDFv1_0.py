@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue Sep 8 09:19::37 2015 by EDGenerateDS.
+# Generated Mon Mar 14 11:04::06 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -15,9 +15,13 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSDataBoolean
+    from XSDataCommon import XSDataString
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataResult
@@ -31,6 +35,8 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSDataBoolean
+from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataResult
@@ -114,7 +120,7 @@ class MixedContainer(object):
 
 
 class XSDataInputHTML2PDF(XSDataInput):
-    def __init__(self, configuration=None, resultDirectory=None, htmlFile=None):
+    def __init__(self, configuration=None, lowQuality=None, paperSize=None, resultDirectory=None, htmlFile=None):
         XSDataInput.__init__(self, configuration)
         if htmlFile is None:
             self._htmlFile = []
@@ -129,6 +135,20 @@ class XSDataInputHTML2PDF(XSDataInput):
             self._resultDirectory = resultDirectory
         else:
             strMessage = "ERROR! XSDataInputHTML2PDF constructor argument 'resultDirectory' is not XSDataFile but %s" % self._resultDirectory.__class__.__name__
+            raise BaseException(strMessage)
+        if paperSize is None:
+            self._paperSize = None
+        elif paperSize.__class__.__name__ == "XSDataString":
+            self._paperSize = paperSize
+        else:
+            strMessage = "ERROR! XSDataInputHTML2PDF constructor argument 'paperSize' is not XSDataString but %s" % self._paperSize.__class__.__name__
+            raise BaseException(strMessage)
+        if lowQuality is None:
+            self._lowQuality = None
+        elif lowQuality.__class__.__name__ == "XSDataBoolean":
+            self._lowQuality = lowQuality
+        else:
+            strMessage = "ERROR! XSDataInputHTML2PDF constructor argument 'lowQuality' is not XSDataBoolean but %s" % self._lowQuality.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'htmlFile' attribute
     def getHtmlFile(self): return self._htmlFile
@@ -175,6 +195,30 @@ class XSDataInputHTML2PDF(XSDataInput):
             raise BaseException(strMessage)
     def delResultDirectory(self): self._resultDirectory = None
     resultDirectory = property(getResultDirectory, setResultDirectory, delResultDirectory, "Property for resultDirectory")
+    # Methods and properties for the 'paperSize' attribute
+    def getPaperSize(self): return self._paperSize
+    def setPaperSize(self, paperSize):
+        if paperSize is None:
+            self._paperSize = None
+        elif paperSize.__class__.__name__ == "XSDataString":
+            self._paperSize = paperSize
+        else:
+            strMessage = "ERROR! XSDataInputHTML2PDF.setPaperSize argument is not XSDataString but %s" % paperSize.__class__.__name__
+            raise BaseException(strMessage)
+    def delPaperSize(self): self._paperSize = None
+    paperSize = property(getPaperSize, setPaperSize, delPaperSize, "Property for paperSize")
+    # Methods and properties for the 'lowQuality' attribute
+    def getLowQuality(self): return self._lowQuality
+    def setLowQuality(self, lowQuality):
+        if lowQuality is None:
+            self._lowQuality = None
+        elif lowQuality.__class__.__name__ == "XSDataBoolean":
+            self._lowQuality = lowQuality
+        else:
+            strMessage = "ERROR! XSDataInputHTML2PDF.setLowQuality argument is not XSDataBoolean but %s" % lowQuality.__class__.__name__
+            raise BaseException(strMessage)
+    def delLowQuality(self): self._lowQuality = None
+    lowQuality = property(getLowQuality, setLowQuality, delLowQuality, "Property for lowQuality")
     def export(self, outfile, level, name_='XSDataInputHTML2PDF'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -189,6 +233,10 @@ class XSDataInputHTML2PDF(XSDataInput):
             warnEmptyAttribute("htmlFile", "XSDataFile")
         if self._resultDirectory is not None:
             self.resultDirectory.export(outfile, level, name_='resultDirectory')
+        if self._paperSize is not None:
+            self.paperSize.export(outfile, level, name_='paperSize')
+        if self._lowQuality is not None:
+            self.lowQuality.export(outfile, level, name_='lowQuality')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -204,6 +252,16 @@ class XSDataInputHTML2PDF(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setResultDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'paperSize':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setPaperSize(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'lowQuality':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setLowQuality(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

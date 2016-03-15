@@ -3,10 +3,14 @@ targetNamespace "http://www.edna-site.org"
 import XSDataCommon.XSDataFile
 import XSDataCommon.XSDataInput
 import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataString
+import XSDataCommon.XSDataBoolean
 
 complex type XSDataInputHTML2PDF extends XSDataInput {
 	htmlFile : XSDataFile []
 	resultDirectory : XSDataFile optional
+	paperSize : XSDataString optional
+	lowQuality : XSDataBoolean optional
 }
 
 complex type XSDataResultHTML2PDF extends XSDataResult {

@@ -40,7 +40,7 @@ class EDPluginHTML2PDFv1_0(EDPluginExecProcessScript):
     """
     This plugin runs wkhtmltopdf to create a PDF file from an html file.
     """
-    
+
 
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
@@ -56,7 +56,7 @@ class EDPluginHTML2PDFv1_0(EDPluginExecProcessScript):
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
         self.checkMandatoryParameters(self.dataInput.htmlFile, "html file is None")
 
-    
+
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginHTML2PDFv1_0.preProcess")
@@ -67,12 +67,12 @@ class EDPluginHTML2PDFv1_0(EDPluginExecProcessScript):
             resultDirectory = xsDataInputHTML2PDF.resultDirectory.path.value
         self.setScriptCommandline(self.generateCommands(xsDataInputHTML2PDF, resultDirectory))
 
-        
+
     def postProcess(self, _edObject=None):
         EDPluginExecProcessScript.postProcess(self)
         self.DEBUG("EDPluginHTML2PDFv1_0.postProcess")
-        
-        
+
+
     def finallyProcess(self, _edObject=None):
         EDPluginExecProcessScript.finallyProcess(self)
         self.DEBUG("EDPluginHTML2PDFv1_0.finallyProcess")
@@ -80,21 +80,26 @@ class EDPluginHTML2PDFv1_0(EDPluginExecProcessScript):
             if os.path.exists(self.pdfFile):
                 self.dataOutput.pdfFile = XSDataFile(XSDataString(self.pdfFile))
 
-    
+
     def generateCommands(self, _xsDataInputHTML2PDF, _resultDirectory):
         """
         This method create the command line for wkhtmltopdf
         """
         self.DEBUG("EDPluginHTML2PDFv1_0.generateCommands")
-        
+
         listHtmlFile = _xsDataInputHTML2PDF.htmlFile
         pdfFileName = os.path.basename(listHtmlFile[0].path.value).split(".")[0] + ".pdf"
         pdfFile = os.path.join(_resultDirectory, pdfFileName)
         scriptCommandLine = ""
+        if _xsDataInputHTML2PDF.lowQuality is not None:
+            if _xsDataInputHTML2PDF.lowQuality.value:
+                scriptCommandLine += "-l "
+        if _xsDataInputHTML2PDF.paperSize is not None:
+            scriptCommandLine += "-s {0} ".format(_xsDataInputHTML2PDF.paperSize.value)
         for htmlFile in listHtmlFile:
             scriptCommandLine += "{0} ".format(htmlFile.path.value, pdfFile)
         scriptCommandLine += "{0}".format(pdfFile)
         self.pdfFile = pdfFile
-        
+
         return scriptCommandLine
 
