@@ -53,6 +53,7 @@ from XSDataAutoPROCv1_0 import XSDataInputAutoPROC
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 # plugin input/output
 from XSDataISPyBv1_4 import AutoProcContainer
+from XSDataISPyBv1_4 import AutoProcProgramAttachment
 from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
 from XSDataISPyBv1_4 import XSDataResultStoreAutoProc
@@ -99,7 +100,6 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         except OSError:
             pass
 
-
         self.edPluginWaitFileFirst = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileFirst")
         self.edPluginWaitFileLast = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileLast")
 
@@ -135,9 +135,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             imageNoStart = ispybDataCollection.startImageNumber
             imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
 
-            # DEBUG we set the end image to 20 in order to speed up things
-            self.warning("End image set to 20 (was {0})".format(imageNoEnd))
-            imageNoEnd = 20
+#            # DEBUG we set the end image to 20 in order to speed up things
+#            self.warning("End image set to 20 (was {0})".format(imageNoEnd))
+#            imageNoEnd = 20
             pathToStartImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoEnd)
         else:
@@ -150,12 +150,25 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             pathToStartImage = os.path.join(directory, fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
 
+        # Process directory
+        if self.dataInput.processDirectory is not None:
+            strProcessDirectory = self.dataInput.processDirectory.path.value
+        else:
+            strProcessDirectory = directory.replace("RAW_DATA", "PROCESSED_DATA")
+
+        # Make results directory
+        strResultsDirectory = os.path.join(strProcessDirectory, "results")
+        if not os.path.exists(strResultsDirectory):
+            os.makedirs(strResultsDirectory, 0755)
+
         # Create path to pyarch
-        pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(directory)
+        pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(strResultsDirectory)
         if pyarchDirectory is not None and not os.path.exists(pyarchDirectory):
             os.makedirs(pyarchDirectory, 0755)
 
-
+        # Determine pyarch prefix
+        listPrefix = template.split("_")
+        strPyarchPrefix = "{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
 
 
         if any(beamline in pathToStartImage for beamline in ["id23eh1", "id29"]):
@@ -219,7 +232,11 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
         for autoProcScalingStatistics in autoProcScalingContainer.AutoProcScalingStatistics:
             autoProcScalingStatistics.anomalous = True
+            if autoProcScalingStatistics.rMerge < 1.0:
+                autoProcScalingStatistics.rMerge *= 100.0
         autoProcIntegrationContainer = autoProcScalingContainer.AutoProcIntegrationContainer
+        image = autoProcIntegrationContainer.Image
+        image.dataCollectionId = self.dataInput.dataCollectionId.value
         autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
         autoProcIntegration.anomalous = True
         autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
@@ -238,14 +255,36 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 self.edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
                 self.edPluginHTML2Pdf.executeSynchronous()
                 pdfFile = self.edPluginHTML2Pdf.dataOutput.pdfFile.path.value
-                # Copy file to pyarch
-                shutil.copy(pdfFile, pyarchDirectory)
-                autoProcProgramAttachment.fileName = os.path.basename(pdfFile)
+                strPyarchPdfFile = strPyarchPrefix + "_" + os.path.basename(pdfFile)
+                # Copy file to results directory and pyarch
+                shutil.copy(pdfFile, os.path.join(strResultsDirectory, strPyarchPdfFile))
+                shutil.copy(pdfFile, os.path.join(pyarchDirectory, strPyarchPdfFile))
+                autoProcProgramAttachment.fileName = strPyarchPdfFile
+                autoProcProgramAttachment.filePath = pyarchDirectory
+            elif autoProcProgramAttachment.fileName == "truncate-unique.mtz":
+                strPathtoFile = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
+                strPyarchFile = strPyarchPrefix + "_anom_truncate.mtz"
+                shutil.copy(strPathtoFile, os.path.join(strResultsDirectory, strPyarchFile))
+                shutil.copy(strPathtoFile, os.path.join(pyarchDirectory, strPyarchFile))
+                autoProcProgramAttachment.fileName = strPyarchFile
                 autoProcProgramAttachment.filePath = pyarchDirectory
             else:
-                shutil.copy(os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName),
-                            pyarchDirectory)
+                strPathtoFile = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
+                strPyarchFile = strPyarchPrefix + "_" + autoProcProgramAttachment.fileName
+                shutil.copy(strPathtoFile, os.path.join(strResultsDirectory, strPyarchFile))
+                shutil.copy(strPathtoFile, os.path.join(pyarchDirectory, strPyarchFile))
+                autoProcProgramAttachment.fileName = strPyarchFile
                 autoProcProgramAttachment.filePath = pyarchDirectory
+        # Add log file
+        strPathToLogFile = self.edPluginExecAutoPROC.dataOutput.logFile.path.value
+        strPyarchLogFile = strPyarchPrefix + "_autoPROC.log"
+        shutil.copy(strPathToLogFile, os.path.join(strResultsDirectory, strPyarchLogFile))
+        shutil.copy(strPathToLogFile, os.path.join(pyarchDirectory, strPyarchLogFile))
+        autoProcProgramAttachment = AutoProcProgramAttachment()
+        autoProcProgramAttachment.fileName = strPyarchLogFile
+        autoProcProgramAttachment.filePath = pyarchDirectory
+        autoProcProgramAttachment.fileType = "Log"
+        autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
         print(autoProcContainer.marshal())
 
         # Upload the xml to ISPyB

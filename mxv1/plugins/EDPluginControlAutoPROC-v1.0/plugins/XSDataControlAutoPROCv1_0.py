@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Mar 14 04:12::12 2016 by EDGenerateDS.
+# Generated Tue Mar 15 12:50::36 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -120,7 +120,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlAutoPROC(XSDataInput):
-    def __init__(self, configuration=None, toN=None, fromN=None, templateN=None, dirN=None, dataCollectionId=None):
+    def __init__(self, configuration=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -156,6 +156,13 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self._toN = toN
         else:
             strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'toN' is not XSDataInteger but %s" % self._toN.__class__.__name__
+            raise BaseException(strMessage)
+        if processDirectory is None:
+            self._processDirectory = None
+        elif processDirectory.__class__.__name__ == "XSDataFile":
+            self._processDirectory = processDirectory
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -217,6 +224,18 @@ class XSDataInputControlAutoPROC(XSDataInput):
             raise BaseException(strMessage)
     def delToN(self): self._toN = None
     toN = property(getToN, setToN, delToN, "Property for toN")
+    # Methods and properties for the 'processDirectory' attribute
+    def getProcessDirectory(self): return self._processDirectory
+    def setProcessDirectory(self, processDirectory):
+        if processDirectory is None:
+            self._processDirectory = None
+        elif processDirectory.__class__.__name__ == "XSDataFile":
+            self._processDirectory = processDirectory
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.setProcessDirectory argument is not XSDataFile but %s" % processDirectory.__class__.__name__
+            raise BaseException(strMessage)
+    def delProcessDirectory(self): self._processDirectory = None
+    processDirectory = property(getProcessDirectory, setProcessDirectory, delProcessDirectory, "Property for processDirectory")
     def export(self, outfile, level, name_='XSDataInputControlAutoPROC'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -235,6 +254,8 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self.fromN.export(outfile, level, name_='fromN')
         if self._toN is not None:
             self.toN.export(outfile, level, name_='toN')
+        if self._processDirectory is not None:
+            self.processDirectory.export(outfile, level, name_='processDirectory')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -265,6 +286,11 @@ class XSDataInputControlAutoPROC(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setToN(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'processDirectory':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setProcessDirectory(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
