@@ -188,10 +188,10 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                     edPluginControlH5ToCBF.dataInput = xsDataInputControlH5ToCBF
                     edPluginControlH5ToCBF.executeSynchronous()
                     cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
-                    strPathToImage = cbfFile.path.value
 #                    print(cbfFile)
 #                    print(indexLoop)
                     if cbfFile is not None:
+                        strPathToImage = cbfFile.path.value
 #                        print(cbfFile.path.value)
                         if os.path.exists(strPathToImage):
                             self.screen("Image has been converted to CBF file: {0}".format(strPathToImage))
