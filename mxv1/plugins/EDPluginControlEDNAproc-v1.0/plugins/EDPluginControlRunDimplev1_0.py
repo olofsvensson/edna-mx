@@ -21,7 +21,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="Olof Svensson"
+__author__ = "Olof Svensson"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
@@ -55,7 +55,7 @@ EDFactoryPluginStatic.loadModule("XSDataHTML2PDFv1_0")
 from XSDataHTML2PDFv1_0 import XSDataInputHTML2PDF
 
 
-class EDPluginControlRunDimplev1_0( EDPluginControl ):
+class EDPluginControlRunDimplev1_0(EDPluginControl):
     """
     Checks if there's a PDB file available either in ISPyB or on disk.
     If there's a PDB file:
@@ -65,7 +65,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
     """
 
 
-    def __init__( self ):
+    def __init__(self):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataInputControlDimple)
         self.dataOutput = XSDataResultControlDimple()
@@ -82,7 +82,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         self.checkMandatoryParameters(self.dataInput.mtzFile, "No MTZ file")
 
 
-    def preProcess(self, _edObject = None):
+    def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlRunDimplev1_0.preProcess")
         self.strPathNoanomAimlessMtz = self.dataInput.mtzFile.path.value
@@ -108,7 +108,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             self.strPdbPath = xsDataFilePdb.value
 
 
-    def process(self, _edObject = None):
+    def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlRunDimplev1_0.process")
         if self.strPdbPath is None:
@@ -135,7 +135,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             # Copy result files to pyarch
             if self.dataInput.pyarchPath is not None:
                 listOfTargetPaths = self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
-                                                             self.dataInput.pyarchPath.path.value, 
+                                                             self.dataInput.pyarchPath.path.value,
                                                              xsDataResultDimple,
                                                              strPdfFile)
                 # Upload files to ISPyB
@@ -151,9 +151,9 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
                     edPluginStoreAutoProcProgramAttachment = self.loadPlugin("EDPluginISPyBStoreAutoProcProgramAttachmentv1_4")
                     edPluginStoreAutoProcProgramAttachment.dataInput = xsDataInputStoreAutoProcProgramAttachment
                     edPluginStoreAutoProcProgramAttachment.executeSynchronous()
-                
 
-            
+
+
     def copyResultsToPyarch(self, strImagePrefix, strPyarchRootPath, xsDataResultDimple, strPdfFile):
         listOfTargetPaths = []
         # Check that pyarch root exists
@@ -164,52 +164,52 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             for xsDataFileBlob in xsDataResultDimple.blob:
                 # Copy blob file to pyarch
                 strBlobName = os.path.basename(xsDataFileBlob.path.value).split(".")[0]
-                strTargetFileName = "%s_%s_dimple.png" % (strImagePrefix, strBlobName)
+                strTargetFileName = "ep_%s_%s_dimple.png" % (strImagePrefix, strBlobName)
                 strTargetPath = os.path.join(strPyarchRootPath, strTargetFileName)
                 shutil.copyfile(xsDataFileBlob.path.value, strTargetPath)
                 listOfTargetPaths.append(strTargetPath)
             # Log file
-            strTargetLogPath = os.path.join(strPyarchRootPath, "%s_dimple.log" % strImagePrefix)
+            strTargetLogPath = os.path.join(strPyarchRootPath, "ep_%s_dimple.log" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.log.path.value, strTargetLogPath)
             listOfTargetPaths.append(strTargetLogPath)
             # Final MTZ file
-            strTargetFinalMtzPath = os.path.join(strPyarchRootPath, "%s_dimple.mtz" % strImagePrefix)
+            strTargetFinalMtzPath = os.path.join(strPyarchRootPath, "ep_%s_dimple.mtz" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.finalMtz.path.value, strTargetFinalMtzPath)
             listOfTargetPaths.append(strTargetFinalMtzPath)
             # Final PDB file
-            strTargetFinalPdbPath = os.path.join(strPyarchRootPath, "%s_dimple.pdb" % strImagePrefix)
+            strTargetFinalPdbPath = os.path.join(strPyarchRootPath, "ep_%s_dimple.pdb" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.finalPdb.path.value, strTargetFinalPdbPath)
             listOfTargetPaths.append(strTargetFinalPdbPath)
             # Findblobs log file
-            strTargetFindBlobsLogPath = os.path.join(strPyarchRootPath, "%s_findblobs_dimple.log" % strImagePrefix)
+            strTargetFindBlobsLogPath = os.path.join(strPyarchRootPath, "ep_%s_findblobs_dimple.log" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.findBlobsLog.path.value, strTargetFindBlobsLogPath)
             listOfTargetPaths.append(strTargetFindBlobsLogPath)
             # Refmac5_restr log file
-            strTargetRefmac5restrLogPath = os.path.join(strPyarchRootPath, "%s_refmac5restr_dimple.log" % strImagePrefix)
+            strTargetRefmac5restrLogPath = os.path.join(strPyarchRootPath, "ep_%s_refmac5restr_dimple.log" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.refmac5restrLog.path.value, strTargetRefmac5restrLogPath)
             listOfTargetPaths.append(strTargetRefmac5restrLogPath)
             # Result PDF file
-            strTargetPdfPath = os.path.join(strPyarchRootPath, "%s_results_dimple.pdf" % strImagePrefix)
+            strTargetPdfPath = os.path.join(strPyarchRootPath, "ep_%s_results_dimple.pdf" % strImagePrefix)
             shutil.copyfile(strPdfFile, strTargetPdfPath)
             listOfTargetPaths.append(strTargetPdfPath)
         return listOfTargetPaths
-            
-    
+
+
     def createHtmlPage(self, strImagePrefix, xsDataResultDimple, strHtmlPath, strProposal, strSessionDate, strBeamline):
         """Create an HTML page with the results"""
         if not os.path.exists(strHtmlPath):
             os.makedirs(strHtmlPath, 0755)
         strSample = "_".join(strImagePrefix.split("_")[0:-1])
-        strHtmlFileName = "%s_index.html" % strImagePrefix
+        strHtmlFileName = "ep_%s_index.html" % strImagePrefix
         strPath = os.path.join(strHtmlPath, strHtmlFileName)
         strResultsDirectory = xsDataResultDimple.resultsDirectory.path.value
         page = markupv1_10.page(mode='loose_html')
         # Title and footer
-        page.init( title="Dimple Results", 
+        page.init(title="Dimple Results",
                    footer="Generated on %s" % time.asctime())
-        page.div( align_="LEFT")
+        page.div(align_="LEFT")
         page.h1()
-        page.strong( "Dimple Results for sample {0} from proposal {1}".format(strSample, strProposal) )
+        page.strong("Dimple Results for sample {0} from proposal {1}".format(strSample, strProposal))
         page.h1.close()
         page.h3("Session date: {0}-{1}-{2}".format(strSessionDate[0:4], strSessionDate[4:6], strSessionDate[6:]))
         page.h3("Beamline: {0}".format(strBeamline))
@@ -228,25 +228,25 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         for xsDataFileBlob in xsDataResultDimple.blob:
             # Copy blob file to html directory
             strBlobName = os.path.basename(xsDataFileBlob.path.value).split(".")[0]
-            strBlobImage = "%s_%s_dimple.png" % (strImagePrefix, strBlobName) 
+            strBlobImage = "ep_%s_%s_dimple.png" % (strImagePrefix, strBlobName)
             strTargetPath = os.path.join(strHtmlPath, strBlobImage)
             shutil.copyfile(xsDataFileBlob.path.value, strTargetPath)
-            strPageBlobPath = os.path.join(strHtmlPath, "%s_%s_dimple.html" % (strImagePrefix, strBlobName))
+            strPageBlobPath = os.path.join(strHtmlPath, "ep_%s_%s_dimple.html" % (strImagePrefix, strBlobName))
             pageBlob = markupv1_10.page()
-            pageBlob.init( title=strBlobName, 
+            pageBlob.init(title=strBlobName,
                            footer="Generated on %s" % time.asctime())
             pageBlob.h1(strBlobName)
-            pageBlob.div( align_="LEFT")
+            pageBlob.div(align_="LEFT")
             pageBlob.img(src=strBlobImage, title=strBlobName)
             pageBlob.div.close()
             pageBlob.br()
-            pageBlob.div( align_="LEFT")
+            pageBlob.div(align_="LEFT")
             pageBlob.a("Back to previous page", href_=os.path.basename(strPath))
             pageBlob.div.close()
             EDUtilsFile.writeFile(strPageBlobPath, str(pageBlob))
             listImageHTML.append(strPageBlobPath)
-            page.a( href=os.path.basename(strPageBlobPath))
-            page.img( src=strBlobImage, width=200, height=200, title=strBlobName )
+            page.a(href=os.path.basename(strPageBlobPath))
+            page.img(src=strBlobImage, width=200, height=200, title=strBlobName)
             page.a.close()
             if strBlobName == "blob1v3":
                 page.br()
@@ -256,10 +256,10 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
         EDUtilsFile.writeFile(strPath, strHTML)
         listHTML = [strPath] + listImageHTML
         return listHTML
-        
-        
-        
-            
+
+
+
+
     def runDimple(self, strPdbPath, strPathNoanomAimlessMtz):
         self.screen('Running dimple with pdb file {0}'.format(strPdbPath))
         xsDataResultControlDimple = None
@@ -285,7 +285,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
                 xsDataResultControlDimple = edPluginDimple.dataOutput
         return xsDataResultControlDimple
 
-    def postProcess(self, _edObject = None):
+    def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self)
         self.DEBUG("EDPluginControlRunDimplev1_0.postProcess")
 
@@ -301,7 +301,7 @@ class EDPluginControlRunDimplev1_0( EDPluginControl ):
             else:
                 iIndex += 1
         strFinalResults = ""
-        for strLine in listLines[iIndex+1:iIndex+7]:
+        for strLine in listLines[iIndex + 1:iIndex + 7]:
             strFinalResults += strLine
         return strFinalResults
-        
+

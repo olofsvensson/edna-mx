@@ -25,7 +25,7 @@ from __future__ import with_statement
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="Thomas Boeglin"
+__author__ = "Thomas Boeglin"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
@@ -73,18 +73,18 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         self.uniqueify = self.loadPlugin("EDPluginExecUniqueifyv1_0")
 
         self.strAnomSuffix = "anom" if self.dataInput.anom.value else "noanom"
-        
+
         if self.dataInput.image_prefix is not None:
             self.image_prefix = self.dataInput.image_prefix.value + '_'
         else:
             self.image_prefix = ''
 
-        #TODO: change that to a directory in the data model
+        # TODO: change that to a directory in the data model
         self.results_dir = os.path.join(os.path.dirname(self.dataInput.output_file.value))
-        self.pointless_out = "{0}unmerged_{1}_pointless_multirecord.mtz".format(self.image_prefix, self.strAnomSuffix)
-        self.truncate_out = '{0}{1}_truncate.mtz'.format(self.image_prefix, self.strAnomSuffix)
-        self.aimless_out = '{0}{1}_aimless.mtz'.format(self.image_prefix, self.strAnomSuffix)
-        self.aimless_commands_out = '{0}{1}_aimless.inp'.format(self.image_prefix, self.strAnomSuffix)
+        self.pointless_out = "ep_{0}unmerged_{1}_pointless_multirecord.mtz".format(self.image_prefix, self.strAnomSuffix)
+        self.truncate_out = 'ep_{0}{1}_truncate.mtz'.format(self.image_prefix, self.strAnomSuffix)
+        self.aimless_out = 'ep_{0}{1}_aimless.mtz'.format(self.image_prefix, self.strAnomSuffix)
+        self.aimless_commands_out = 'ep_{0}{1}_aimless.inp'.format(self.image_prefix, self.strAnomSuffix)
 
 
     def checkParameters(self):
@@ -150,7 +150,7 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
                                   self.aimless.getScriptLogFileName())
         self.aimless_log = source_log
         target_log = os.path.join(self.results_dir,
-                                  '{0}aimless_{1}.log'.format(self.image_prefix,
+                                  'ep_{0}aimless_{1}.log'.format(self.image_prefix,
                                                               "anom" if self.dataInput.anom.value else "noanom"))
         try:
             shutil.copyfile(source_log, target_log)
@@ -167,7 +167,7 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
                                                 delete=False)
         truncate_out = temp_file.name
         temp_file.close()
-        os.chmod(truncate_out, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)
+        os.chmod(truncate_out, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
         truncate_in.output_file = XSDataString(truncate_out)
 
         truncate_in.nres = self.dataInput.nres
@@ -188,7 +188,7 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         source_log = os.path.join(self.truncate.getWorkingDirectory(),
                                   self.truncate.getScriptLogFileName())
         target_log = os.path.join(self.results_dir,
-                                  '{0}truncate_{1}.log'.format(self.image_prefix,
+                                  'ep_{0}truncate_{1}.log'.format(self.image_prefix,
                                                                "anom" if self.dataInput.anom.value else "noanom"))
         try:
             shutil.copyfile(source_log,

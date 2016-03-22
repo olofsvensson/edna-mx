@@ -257,11 +257,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         # The resultsdir used to be root_dir/results/fast_processing
         # self.results_dir = os.path.join(self.root_dir, 'results', 'fast_processing')
         # Now it is the <directory of the output_file>/results
-        if self.dataInput.output_file is not None and "EDNA_proc" in self.dataInput.output_file.path.value:
-            self.results_dir = os.path.join(os.path.dirname(self.dataInput.output_file.path.value), 'results')
-        else:
-            # Old way
-            self.results_dir = os.path.join(self.root_dir, 'results', 'fast_processing')
+        self.results_dir = os.path.join(os.path.dirname(self.dataInput.output_file.path.value), 'results')
         if os.path.exists(self.results_dir):
             # Remove existing results
             shutil.rmtree(self.results_dir)
@@ -273,7 +269,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             self.WARNING(strWarningMessage)
 
         # Copy the vanilla XDS input file to the results dir
-        infile_dest = os.path.join(self.results_dir, self.image_prefix + '_input_XDS.INP')
+        infile_dest = os.path.join(self.results_dir, "ep_" + self.image_prefix + '_input_XDS.INP')
         shutil.copy(self.dataInput.input_file.path.value,
                     infile_dest)
 
@@ -499,12 +495,12 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         # Copy the XDS.INP file that was used for the successful run
         # to the results directory
-        tmppath = os.path.join(self.results_dir, self.image_prefix + '_successful_XDS.INP')
+        tmppath = os.path.join(self.results_dir, 'ep_' + self.image_prefix + '_successful_XDS.INP')
         shutil.copy(os.path.join(self.xds_first.dataOutput.xds_run_directory.value, 'XDS.INP'),
                     tmppath)
 
         # Copy the INTEGRATE.LP file as well
-        integrate_path = os.path.join(self.results_dir, self.image_prefix + '_INTEGRATE.LP')
+        integrate_path = os.path.join(self.results_dir, 'ep_' + self.image_prefix + '_INTEGRATE.LP')
         try:
             shutil.copy(os.path.join(self.xds_first.dataOutput.xds_run_directory.value,
                                      'INTEGRATE.LP'),
@@ -605,8 +601,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         # Copy the integrate and xds_ascii files to the results directory (for
         # max)
-        shutil.copy(self.generate.dataOutput.hkl_anom.value, os.path.join(self.results_dir, 'XDS_ASCII.HKL'))
-        shutil.copy(self.generate.dataOutput.integrate_anom.value, os.path.join(self.results_dir, 'INTEGRATE.HKL'))
+        shutil.copy(self.generate.dataOutput.hkl_anom.value, os.path.join(self.results_dir, 'ep_XDS_ASCII.HKL'))
+        shutil.copy(self.generate.dataOutput.integrate_anom.value, os.path.join(self.results_dir, 'ep_INTEGRATE.HKL'))
 
 
         # we can now use the xds output parser on the two correct.lp
@@ -853,7 +849,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         xscale_logs = [log.value for log in xscale_logs if log is not None]
         for log in xscale_logs:
             target = os.path.join(self.results_dir,
-                                  '_'.join([self.image_prefix, os.path.basename(log)]))
+                                  '_'.join(['ep_' + self.image_prefix, os.path.basename(log)]))
             try:
                 shutil.copyfile(log, target)
             except IOError:
@@ -867,7 +863,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         # Run phenix.xtriage
         xsDataInputPhenixXtriage = XSDataInputPhenixXtriage()
         xsDataInputPhenixXtriage.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value,
-                                                                                "{0}_unmerged_noanom_pointless_multirecord.mtz.gz".format(self.image_prefix))))
+                                                                                "ep_{0}_unmerged_noanom_pointless_multirecord.mtz.gz".format(self.image_prefix))))
         self.phenixXtriage.dataInput = xsDataInputPhenixXtriage
         self.phenixXtriage.executeSynchronous()
         if self.phenixXtriage.isFailure():
@@ -880,7 +876,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
             shutil.copy(xsDataResultPhenixXtriage.logFile.path.value,
                         os.path.join(self.file_conversion.dataInput.output_directory.value,
-                                     "{0}_phenix_xtriage_noanom.log".format(self.image_prefix)))
+                                     "ep_{0}_phenix_xtriage_noanom.log".format(self.image_prefix)))
 
             if xsDataResultPhenixXtriage.pseudotranslation.value:
                 strMessage = "Pseudotranslation detected by phenix.xtriage!"
@@ -1220,7 +1216,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             xsDataInputControlDimple = XSDataInputControlDimple()
             xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
             xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value,
-                                                                                    "{0}_noanom_aimless.mtz".format(self.image_prefix))))
+                                                                                    "ep_{0}_noanom_aimless.mtz".format(self.image_prefix))))
             xsDataInputControlDimple.imagePrefix = XSDataString(self.image_prefix)
             xsDataInputControlDimple.proposal = XSDataString(self.strProposal)
             xsDataInputControlDimple.sessionDate = XSDataString(self.strSessionDate)
