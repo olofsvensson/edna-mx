@@ -168,7 +168,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
 
         # Determine pyarch prefix
         listPrefix = template.split("_")
-        strPyarchPrefix = "{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
+        strPyarchPrefix = "ap_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
 
 
         if any(beamline in pathToStartImage for beamline in ["id23eh1", "id29"]):
@@ -275,6 +275,18 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 shutil.copy(strPathtoFile, os.path.join(pyarchDirectory, strPyarchFile))
                 autoProcProgramAttachment.fileName = strPyarchFile
                 autoProcProgramAttachment.filePath = pyarchDirectory
+        # Add XSCALE.LP file if present
+        strProcessDirectory = self.edPluginExecAutoPROC.dataOutput.processDirectory[0].path.value
+        strPathToXSCALELog = os.path.join(strProcessDirectory, "xscale_XSCALE.LP")
+        if os.path.exists(strPathToXSCALELog):
+            strPyarchXSCALELog = strPyarchPrefix + "_merged_anom_XSCALE.LP"
+            shutil.copy(strPathToXSCALELog, os.path.join(strResultsDirectory, strPyarchXSCALELog))
+            shutil.copy(strPathToXSCALELog, os.path.join(pyarchDirectory, strPyarchXSCALELog))
+            autoProcProgramAttachment = AutoProcProgramAttachment()
+            autoProcProgramAttachment.fileName = strPyarchXSCALELog
+            autoProcProgramAttachment.filePath = pyarchDirectory
+            autoProcProgramAttachment.fileType = "Result"
+            autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
         # Add log file
         strPathToLogFile = self.edPluginExecAutoPROC.dataOutput.logFile.path.value
         strPyarchLogFile = strPyarchPrefix + "_autoPROC.log"

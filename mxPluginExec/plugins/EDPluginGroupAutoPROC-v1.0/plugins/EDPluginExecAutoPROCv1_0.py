@@ -84,7 +84,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         This method creates the input command line for autoPROC
         """
         self.DEBUG("EDPluginExecAutoPROCv1_0.generateCommands")
-        strCommandText = "-B -xml"
+        strCommandText = "-B -xml -nthreads 10 autoPROC_ScaleWithXscale='yes'"
         # Identifier(s)
         for identifier in _xsDataInputAutoPROC.identifier:
             strCommandText += " -Id {idN},{dirN},{templateN},{fromN},{toN}".format(
