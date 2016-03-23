@@ -42,13 +42,19 @@ class EDTestCasePluginUnitControlImageQualityIndicatorsv1_4(EDTestCasePluginUnit
     def testGetH5FilePath(self):
         edPlugin = self.getPlugin()
         filePath1 = "/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/meshtest/XrayCentering_01/mesh-meshtest_1_0001.cbf"
-        h5FilePath1 = edPlugin.getH5FilePath(filePath1, 9)
-        h5FilePath1Reference = "/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/meshtest/XrayCentering_01/mesh-meshtest_1_1_master.h5"
-        EDAssert.equal(h5FilePath1, h5FilePath1Reference, "path1")
-        filePath2 = "/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/meshtest/XrayCentering_01/mesh-meshtest_1_00012.cbf"
-        h5FilePath2 = edPlugin.getH5FilePath(filePath2, 9)
-        h5FilePath2Reference = "/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/meshtest/XrayCentering_01/mesh-meshtest_1_10_master.h5"
-        EDAssert.equal(h5FilePath2, h5FilePath2Reference, "path2")
+        h5MasterFilePath1, h5DataFilePath1, h5FileNumber = edPlugin.getH5FilePath(filePath1, 9)
+        h5MasterFilePath1Reference = "/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/meshtest/XrayCentering_01/mesh-meshtest_1_1_master.h5"
+        h5DataFilePath1Reference = "/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/meshtest/XrayCentering_01/mesh-meshtest_1_1_data_000001.h5"
+        print h5MasterFilePath1
+        print h5MasterFilePath1Reference
+        print h5DataFilePath1
+        print h5DataFilePath1Reference
+        EDAssert.equal(h5MasterFilePath1, h5MasterFilePath1Reference, "masterPath1")
+        EDAssert.equal(h5DataFilePath1, h5DataFilePath1Reference, "dataPath1")
+#        filePath2 = "/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/meshtest/XrayCentering_01/mesh-meshtest_1_00012.cbf"
+#        h5FilePath2 = edPlugin.getH5FilePath(filePath2, 9)
+#        h5FilePath2Reference = "/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/meshtest/XrayCentering_01/mesh-meshtest_1_10_master.h5"
+#        EDAssert.equal(h5FilePath2, h5FilePath2Reference, "path2")
 
 
 
