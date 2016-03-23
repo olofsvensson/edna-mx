@@ -158,17 +158,17 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
             strPathToImage = xsDataImage.path.value
             # If Eiger, just wait for the h5 file
             if "id30a3" in strPathToImage:
-                h5FilePath, hdf5ImageNumber = self.getH5FilePath(strPathToImage, batchSize)
+                h5MasterFilePath, h5DataFilePath, hdf5ImageNumber = self.getH5FilePath(strPathToImage, batchSize)
 #                print(h5FilePath)
 #                print(hdf5ImageNumber)
-                if not h5FilePath in listH5FilePath:
+                if not h5DataFilePath in listH5FilePath:
                     self.screen("ID30a3 Eiger data, waiting for master and data files...")
-                    listH5FilePath.append(h5FilePath)
+                    listH5FilePath.append(h5DataFilePath)
                     self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
-                    xsDataInputMXWaitFile.file = XSDataFile(XSDataString(h5FilePath))
+                    xsDataInputMXWaitFile.file = XSDataFile(XSDataString(h5DataFilePath))
                     xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
                     xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
-                    self.screen("Waiting for file {0}".format(h5FilePath))
+                    self.screen("Waiting for file {0}".format(h5DataFilePath))
                     self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
                     self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
                     self.edPluginMXWaitFile.executeSynchronous()
@@ -373,7 +373,10 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         imageNumber = EDUtilsImage.getImageNumber(filePath)
         prefix = EDUtilsImage.getPrefix(filePath)
         h5FileNumber = int((imageNumber - 1) / batchSize) * batchSize + 1
-        h5FileName = "{prefix}_{h5FileNumber}_master.h5".format(prefix=prefix,
-                                                                h5FileNumber=h5FileNumber)
-        h5FilePath = os.path.join(os.path.dirname(filePath), h5FileName)
-        return h5FilePath, h5FileNumber
+        h5MasterFileName = "{prefix}_{h5FileNumber}_master.h5".format(prefix=prefix,
+                                                                      h5FileNumber=h5FileNumber)
+        h5MasterFilePath = os.path.join(os.path.dirname(filePath), h5MasterFileName)
+        h5DataFileName = "{prefix}_{h5FileNumber}_data_000001.h5".format(prefix=prefix,
+                                                                      h5FileNumber=h5FileNumber)
+        h5DataFilePath = os.path.join(os.path.dirname(filePath), h5DataFileName)
+        return h5MasterFilePath, h5DataFilePath, h5FileNumber
