@@ -150,6 +150,13 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             pathToStartImage = os.path.join(directory, fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
 
+        if imageNoEnd - imageNoStart < 8:
+            error_message = "There are fewer than 8 images, aborting"
+            self.addErrorMessage(error_message)
+            self.ERROR(error_message)
+            self.setFailure()
+            return
+
         # Process directory
         if self.dataInput.processDirectory is not None:
             strProcessDirectory = self.dataInput.processDirectory.path.value
@@ -225,85 +232,86 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         self.edPluginExecAutoPROC.dataInput = xsDataInputAutoPROC
         self.edPluginExecAutoPROC.executeSynchronous()
 
-        # Read the generated ISPyB xml file
-        autoProcContainer = AutoProcContainer.parseFile(self.edPluginExecAutoPROC.dataOutput.ispybXML.path.value)
+        # Read the generated ISPyB xml file - if any
+        if self.edPluginExecAutoPROC.dataOutput.ispybXML is not None:
+            autoProcContainer = AutoProcContainer.parseFile(self.edPluginExecAutoPROC.dataOutput.ispybXML.path.value)
 
-        # "Fix" certain entries in the ISPyB xml file
-        autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
-        for autoProcScalingStatistics in autoProcScalingContainer.AutoProcScalingStatistics:
-            autoProcScalingStatistics.anomalous = True
-            if autoProcScalingStatistics.rMerge < 1.0:
-                autoProcScalingStatistics.rMerge *= 100.0
-        autoProcIntegrationContainer = autoProcScalingContainer.AutoProcIntegrationContainer
-        image = autoProcIntegrationContainer.Image
-        image.dataCollectionId = self.dataInput.dataCollectionId.value
-        autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
-        autoProcIntegration.anomalous = True
-        autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
-        autoProcProgram = autoProcProgramContainer.AutoProcProgram
-        autoProcProgram.processingPrograms = "autoPROC"
-        autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingStartTime, "%a %b %d %H:%M:%S %Z %Y"))
-        autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingEndTime, "%a %b %d %H:%M:%S %Z %Y"))
-        for autoProcProgramAttachment in autoProcProgramContainer.AutoProcProgramAttachment:
-            if autoProcProgramAttachment.fileName == "summary.html":
-                # Convert the summary.html to summary.pdf
-                summaryHtmlPath = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
-                xsDataInputHTML2PDF = XSDataInputHTML2PDF()
-                xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(summaryHtmlPath)))
-                xsDataInputHTML2PDF.paperSize = XSDataString("A3")
-                xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
-                self.edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
-                self.edPluginHTML2Pdf.executeSynchronous()
-                pdfFile = self.edPluginHTML2Pdf.dataOutput.pdfFile.path.value
-                strPyarchPdfFile = strPyarchPrefix + "_" + os.path.basename(pdfFile)
-                # Copy file to results directory and pyarch
-                shutil.copy(pdfFile, os.path.join(strResultsDirectory, strPyarchPdfFile))
-                shutil.copy(pdfFile, os.path.join(pyarchDirectory, strPyarchPdfFile))
-                autoProcProgramAttachment.fileName = strPyarchPdfFile
+            # "Fix" certain entries in the ISPyB xml file
+            autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
+            for autoProcScalingStatistics in autoProcScalingContainer.AutoProcScalingStatistics:
+                autoProcScalingStatistics.anomalous = True
+                if autoProcScalingStatistics.rMerge < 1.0:
+                    autoProcScalingStatistics.rMerge *= 100.0
+            autoProcIntegrationContainer = autoProcScalingContainer.AutoProcIntegrationContainer
+            image = autoProcIntegrationContainer.Image
+            image.dataCollectionId = self.dataInput.dataCollectionId.value
+            autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
+            autoProcIntegration.anomalous = True
+            autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
+            autoProcProgram = autoProcProgramContainer.AutoProcProgram
+            autoProcProgram.processingPrograms = "autoPROC"
+            autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingStartTime, "%a %b %d %H:%M:%S %Z %Y"))
+            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingEndTime, "%a %b %d %H:%M:%S %Z %Y"))
+            for autoProcProgramAttachment in autoProcProgramContainer.AutoProcProgramAttachment:
+                if autoProcProgramAttachment.fileName == "summary.html":
+                    # Convert the summary.html to summary.pdf
+                    summaryHtmlPath = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
+                    xsDataInputHTML2PDF = XSDataInputHTML2PDF()
+                    xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(summaryHtmlPath)))
+                    xsDataInputHTML2PDF.paperSize = XSDataString("A3")
+                    xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
+                    self.edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
+                    self.edPluginHTML2Pdf.executeSynchronous()
+                    pdfFile = self.edPluginHTML2Pdf.dataOutput.pdfFile.path.value
+                    strPyarchPdfFile = strPyarchPrefix + "_" + os.path.basename(pdfFile)
+                    # Copy file to results directory and pyarch
+                    shutil.copy(pdfFile, os.path.join(strResultsDirectory, strPyarchPdfFile))
+                    shutil.copy(pdfFile, os.path.join(pyarchDirectory, strPyarchPdfFile))
+                    autoProcProgramAttachment.fileName = strPyarchPdfFile
+                    autoProcProgramAttachment.filePath = pyarchDirectory
+                elif autoProcProgramAttachment.fileName == "truncate-unique.mtz":
+                    strPathtoFile = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
+                    strPyarchFile = strPyarchPrefix + "_anom_truncate.mtz"
+                    shutil.copy(strPathtoFile, os.path.join(strResultsDirectory, strPyarchFile))
+                    shutil.copy(strPathtoFile, os.path.join(pyarchDirectory, strPyarchFile))
+                    autoProcProgramAttachment.fileName = strPyarchFile
+                    autoProcProgramAttachment.filePath = pyarchDirectory
+                else:
+                    strPathtoFile = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
+                    strPyarchFile = strPyarchPrefix + "_" + autoProcProgramAttachment.fileName
+                    shutil.copy(strPathtoFile, os.path.join(strResultsDirectory, strPyarchFile))
+                    shutil.copy(strPathtoFile, os.path.join(pyarchDirectory, strPyarchFile))
+                    autoProcProgramAttachment.fileName = strPyarchFile
+                    autoProcProgramAttachment.filePath = pyarchDirectory
+            # Add XSCALE.LP file if present
+            strProcessDirectory = self.edPluginExecAutoPROC.dataOutput.processDirectory[0].path.value
+            strPathToXSCALELog = os.path.join(strProcessDirectory, "xscale_XSCALE.LP")
+            if os.path.exists(strPathToXSCALELog):
+                strPyarchXSCALELog = strPyarchPrefix + "_merged_anom_XSCALE.LP"
+                shutil.copy(strPathToXSCALELog, os.path.join(strResultsDirectory, strPyarchXSCALELog))
+                shutil.copy(strPathToXSCALELog, os.path.join(pyarchDirectory, strPyarchXSCALELog))
+                autoProcProgramAttachment = AutoProcProgramAttachment()
+                autoProcProgramAttachment.fileName = strPyarchXSCALELog
                 autoProcProgramAttachment.filePath = pyarchDirectory
-            elif autoProcProgramAttachment.fileName == "truncate-unique.mtz":
-                strPathtoFile = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
-                strPyarchFile = strPyarchPrefix + "_anom_truncate.mtz"
-                shutil.copy(strPathtoFile, os.path.join(strResultsDirectory, strPyarchFile))
-                shutil.copy(strPathtoFile, os.path.join(pyarchDirectory, strPyarchFile))
-                autoProcProgramAttachment.fileName = strPyarchFile
-                autoProcProgramAttachment.filePath = pyarchDirectory
-            else:
-                strPathtoFile = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
-                strPyarchFile = strPyarchPrefix + "_" + autoProcProgramAttachment.fileName
-                shutil.copy(strPathtoFile, os.path.join(strResultsDirectory, strPyarchFile))
-                shutil.copy(strPathtoFile, os.path.join(pyarchDirectory, strPyarchFile))
-                autoProcProgramAttachment.fileName = strPyarchFile
-                autoProcProgramAttachment.filePath = pyarchDirectory
-        # Add XSCALE.LP file if present
-        strProcessDirectory = self.edPluginExecAutoPROC.dataOutput.processDirectory[0].path.value
-        strPathToXSCALELog = os.path.join(strProcessDirectory, "xscale_XSCALE.LP")
-        if os.path.exists(strPathToXSCALELog):
-            strPyarchXSCALELog = strPyarchPrefix + "_merged_anom_XSCALE.LP"
-            shutil.copy(strPathToXSCALELog, os.path.join(strResultsDirectory, strPyarchXSCALELog))
-            shutil.copy(strPathToXSCALELog, os.path.join(pyarchDirectory, strPyarchXSCALELog))
+                autoProcProgramAttachment.fileType = "Result"
+                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
+            # Add log file
+            strPathToLogFile = self.edPluginExecAutoPROC.dataOutput.logFile.path.value
+            strPyarchLogFile = strPyarchPrefix + "_autoPROC.log"
+            shutil.copy(strPathToLogFile, os.path.join(strResultsDirectory, strPyarchLogFile))
+            shutil.copy(strPathToLogFile, os.path.join(pyarchDirectory, strPyarchLogFile))
             autoProcProgramAttachment = AutoProcProgramAttachment()
-            autoProcProgramAttachment.fileName = strPyarchXSCALELog
+            autoProcProgramAttachment.fileName = strPyarchLogFile
             autoProcProgramAttachment.filePath = pyarchDirectory
-            autoProcProgramAttachment.fileType = "Result"
+            autoProcProgramAttachment.fileType = "Log"
             autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-        # Add log file
-        strPathToLogFile = self.edPluginExecAutoPROC.dataOutput.logFile.path.value
-        strPyarchLogFile = strPyarchPrefix + "_autoPROC.log"
-        shutil.copy(strPathToLogFile, os.path.join(strResultsDirectory, strPyarchLogFile))
-        shutil.copy(strPathToLogFile, os.path.join(pyarchDirectory, strPyarchLogFile))
-        autoProcProgramAttachment = AutoProcProgramAttachment()
-        autoProcProgramAttachment.fileName = strPyarchLogFile
-        autoProcProgramAttachment.filePath = pyarchDirectory
-        autoProcProgramAttachment.fileType = "Log"
-        autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-        print(autoProcContainer.marshal())
+            print(autoProcContainer.marshal())
 
-        # Upload the xml to ISPyB
-        xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
-        xsDataInputStoreAutoProc.AutoProcContainer = autoProcContainer
-        self.edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
-        self.edPluginStoreAutoproc.executeSynchronous()
+            # Upload the xml to ISPyB
+            xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
+            xsDataInputStoreAutoProc.AutoProcContainer = autoProcContainer
+            self.edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
+            self.edPluginStoreAutoproc.executeSynchronous()
 
     def eiger_template_to_image(self, fmt, num):
         fileNumber = int(num / 100)
