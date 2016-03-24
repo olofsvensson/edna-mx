@@ -305,7 +305,6 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             autoProcProgramAttachment.filePath = pyarchDirectory
             autoProcProgramAttachment.fileType = "Log"
             autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-            print(autoProcContainer.marshal())
 
             # Upload the xml to ISPyB
             xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
