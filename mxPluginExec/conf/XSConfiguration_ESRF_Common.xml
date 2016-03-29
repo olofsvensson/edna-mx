@@ -93,7 +93,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>distlServerHost</name>
-					<value>mxedna.esrf.fr</value>
+					<value>mxhpc2-1705.esrf.fr</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>distlServerPort</name>
