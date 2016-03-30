@@ -306,7 +306,7 @@ complex type XSDataISPyBDiffractionPlan extends XSData {
 	maximalResolution : XSDataDouble optional
 	minDimAccrossSpindleAxis : XSDataDouble optional
 	minimalResolution : XSDataDouble optional
-	minOscWidth : float
+	minOscWidth : XSDataDouble optional
 	numberOfPositions : XSDataInteger optional
 	observedResolution : XSDataDouble optional
 	oscillationRange : XSDataDouble optional
