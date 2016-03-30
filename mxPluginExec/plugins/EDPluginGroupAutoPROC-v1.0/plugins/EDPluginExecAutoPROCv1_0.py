@@ -73,10 +73,15 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         if os.path.exists(ispybXML):
             self.dataOutput.ispybXML = XSDataFile(XSDataString(ispybXML))
         # processDirectory
-        for identifier in self.dataInput.identifier:
-            processDirectory = os.path.join(strWorkingDir, identifier.idN.value)
+        if self.dataInput.masterH5:
+            processDirectory = os.path.join(strWorkingDir, "HDF5_1")
             if os.path.exists(processDirectory):
                 self.dataOutput.addProcessDirectory(XSDataFile(XSDataString(processDirectory)))
+        else:
+            for identifier in self.dataInput.identifier:
+                processDirectory = os.path.join(strWorkingDir, identifier.idN.value)
+                if os.path.exists(processDirectory):
+                    self.dataOutput.addProcessDirectory(XSDataFile(XSDataString(processDirectory)))
 
 
     def generateCommandLine(self, _xsDataInputAutoPROC):
@@ -86,7 +91,9 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginExecAutoPROCv1_0.generateCommands")
         strCommandText = "-B -xml -nthreads 10 autoPROC_ScaleWithXscale='yes'"
 
-        if _xsDataInputAutoPROC.masterH5 is None:
+        # Master H5 file
+        masterH5 = _xsDataInputAutoPROC.masterH5
+        if masterH5 is None:
             # Identifier(s)
             for identifier in _xsDataInputAutoPROC.identifier:
                 strCommandText += " -Id {idN},{dirN},{templateN},{fromN},{toN}".format(
@@ -96,7 +103,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
                                     fromN=identifier.fromN.value,
                                     toN=identifier.toN.value)
         else:
-            strCommandText += " -h5 {0}".format(_xsDataInputAutoPROC.masterH5.path.value)
+            strCommandText += " -h5 {0}".format(masterH5.path.value)
         # Resolution
         lowResolutionLimit = _xsDataInputAutoPROC.lowResolutionLimit
         highResolutionLimit = _xsDataInputAutoPROC.highResolutionLimit
@@ -113,8 +120,4 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         refMTZ = _xsDataInputAutoPROC.refMTZ
         if refMTZ is not None:
             strCommandText += " -ref {0}".format(refMTZ.path.value)
-        # Master H5 file
-        masterH5 = _xsDataInputAutoPROC.masterH5
-        if masterH5 is not None:
-            strCommandText += " -h5 {0}".format(masterH5.path.value)
         return strCommandText
