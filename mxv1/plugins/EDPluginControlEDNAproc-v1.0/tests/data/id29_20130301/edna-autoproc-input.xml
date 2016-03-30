@@ -10,7 +10,7 @@
   </data_collection_id>
   <output_file>
     <path>
-      <value>edna-autoproc-results-V_c2Dg.xml</value>
+      <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/id29_20130301/EDNA_proc_ispyb.xml</value>
     </path>
   </output_file>
   <nres>
