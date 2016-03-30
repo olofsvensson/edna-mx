@@ -177,7 +177,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         listPrefix = template.split("_")
         strPyarchPrefix = "ap_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
 
-
+        isH5 = False
         if any(beamline in pathToStartImage for beamline in ["id23eh1", "id29"]):
             minSizeFirst = 6000000
             minSizeLast = 6000000
@@ -187,8 +187,11 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         elif any(beamline in pathToStartImage for beamline in ["id30a3"]):
             minSizeFirst = 100000
             minSizeLast = 100000
-            pathToStartImage = self.eiger_template_to_image(template, start_image)
-            pathToEndImage = self.eiger_template_to_image(template, end_image)
+            pathToStartImage = os.path.join(directory,
+                                            self.eiger_template_to_image(template, imageNoStart))
+            pathToEndImage = os.path.join(directory,
+                                          self.eiger_template_to_image(template, imageNoEnd))
+            isH5 = True
         else:
             minSizeFirst = 1000000
             minSizeLast = 1000000
@@ -229,6 +232,10 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         xsDataAutoPROCIdentifier.fromN = XSDataInteger(imageNoStart)
         xsDataAutoPROCIdentifier.toN = XSDataInteger(imageNoEnd)
         xsDataInputAutoPROC.addIdentifier(xsDataAutoPROCIdentifier)
+        if isH5:
+            masterFilePath = os.path.join(directory,
+                                          self.eiger_template_to_master(template))
+            xsDataInputAutoPROC.masterH5 = XSDataFile(XSDataString(masterFilePath))
         self.edPluginExecAutoPROC.dataInput = xsDataInputAutoPROC
         self.edPluginExecAutoPROC.executeSynchronous()
 
@@ -316,5 +323,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         fileNumber = int(num / 100)
         if fileNumber == 0:
             fileNumber = 1
-        fmt_string = fmt.replace("??????", "data_%06d" % fileNumber)
+        fmt_string = fmt.replace("####", "1_data_%06d" % fileNumber)
         return fmt_string.format(num)
+
+    def eiger_template_to_master(self, fmt):
+        fmt_string = fmt.replace("####", "1_master")
+        return fmt_string

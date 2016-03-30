@@ -85,14 +85,18 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginExecAutoPROCv1_0.generateCommands")
         strCommandText = "-B -xml -nthreads 10 autoPROC_ScaleWithXscale='yes'"
-        # Identifier(s)
-        for identifier in _xsDataInputAutoPROC.identifier:
-            strCommandText += " -Id {idN},{dirN},{templateN},{fromN},{toN}".format(
-                              idN=identifier.idN.value,
-                              dirN=identifier.dirN.path.value,
-                              templateN=identifier.templateN.value,
-                              fromN=identifier.fromN.value,
-                              toN=identifier.toN.value)
+
+        if _xsDataInputAutoPROC.masterH5 is None:
+            # Identifier(s)
+            for identifier in _xsDataInputAutoPROC.identifier:
+                strCommandText += " -Id {idN},{dirN},{templateN},{fromN},{toN}".format(
+                                    idN=identifier.idN.value,
+                                    dirN=identifier.dirN.path.value,
+                                    templateN=identifier.templateN.value,
+                                    fromN=identifier.fromN.value,
+                                    toN=identifier.toN.value)
+        else:
+            strCommandText += " -h5 {0}".format(_xsDataInputAutoPROC.masterH5.path.value)
         # Resolution
         lowResolutionLimit = _xsDataInputAutoPROC.lowResolutionLimit
         highResolutionLimit = _xsDataInputAutoPROC.highResolutionLimit
