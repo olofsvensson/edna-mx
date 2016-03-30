@@ -5,7 +5,7 @@
 #    Copyright (C) 2011-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -64,8 +64,8 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
         self.strToolsForScreeningEDNAWebServiceWsdl = None
         self.iScreeningId = None
         self.iDataCollectionId = None
-        
-    
+
+
     def configure(self):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
@@ -91,7 +91,7 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
         if self.strToolsForCollectionWebServiceWsdl is None:
             self.ERROR("EDPluginISPyBStoreScreeningv1_4.configure: No toolsForCollectionWebServiceWsdl found in configuration!")
             self.setFailure()
-               
+
 
     def process(self, _edObject=None):
         """
@@ -169,9 +169,9 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
                                 self.ERROR("Couldn't create entry for screening strategy in ISPyB!")
                                 self.setFailure()
                                 self.bContinue = False
-                        
-                    
-            
+
+
+
 
 
     def finallyProcess(self, _edObject=None):
@@ -203,7 +203,7 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
                 self.warning("Truncated string: %s" % oReturnValue)
         return oReturnValue
 
-    
+
     def getDateValue(self, _strValue, _strFormat, _oDefaultValue):
         if _strValue is None:
             oReturnValue = _oDefaultValue
@@ -213,9 +213,9 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
             except:
                 oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
         return oReturnValue
-    
 
-    def findDataCollectionFromFileLocationAndFileName(self, _clientToolsForCollectionWebService, _strDirName, _strFileName):   
+
+    def findDataCollectionFromFileLocationAndFileName(self, _clientToolsForCollectionWebService, _strDirName, _strFileName):
         """Returns the data collection id for an image path"""
         if _strDirName.endswith(os.sep):
             strDirName = _strDirName[:-1]
@@ -228,15 +228,15 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
                 )
         if dataCollectionWS3VO is None:
             iDataCollectionId = None
-            self.WARNING("Cannot find data collection id for dir %s name %s" % (strDirName, _strFileName))            
+            self.WARNING("Cannot find data collection id for dir %s name %s" % (strDirName, _strFileName))
         else:
             iDataCollectionId = dataCollectionWS3VO.dataCollectionId
             self.DEBUG("Data collection id for dir %s name %s is %d" % (strDirName, _strFileName, iDataCollectionId))
         return iDataCollectionId
 
-    
-    
-    
+
+
+
     def storeOrUpdateDiffractionPlan(self, _clientToolsForBLSampleWebServiceWsdl, _xsDataISPyBDiffractionPlan):
         """Creates an entry in ISPyB for the DiffractionPlan table"""
         self.DEBUG("EDPluginISPyBStoreScreeningv1_4.storeDiffractionPlan")
@@ -269,6 +269,7 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
         strStrategyOption = self.getXSValue(_xsDataISPyBDiffractionPlan.strategyOption)
         strKappaStrategyOption = self.getXSValue(_xsDataISPyBDiffractionPlan.kappaStrategyOption)
         iNumberOfPositions = self.getXSValue(_xsDataISPyBDiffractionPlan.numberOfPositions)
+        fMinOscWidth = self.getXSValue(_xsDataISPyBDiffractionPlan.minOscWidth)
         iDiffractionPlanId = _clientToolsForBLSampleWebServiceWsdl.service.storeOrUpdateDiffractionPlan(
             arg0=iDiffractionPlanId, \
             xmlDocumentId=iXmlDocumentId, \
@@ -299,6 +300,7 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
             strategyOption=strStrategyOption, \
             kappaStrategyOption=strKappaStrategyOption, \
             numberOfPositions=iNumberOfPositions, \
+            minOscWidth=fMinOscWidth, \
             )
         self.DEBUG("DiffractionPlanId: %d" % iDiffractionPlanId)
         return iDiffractionPlanId

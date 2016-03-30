@@ -431,6 +431,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.page.th("Aimed<br>completeness")
         self.page.th("Aimed I/sigma<br>at highest res.")
         self.page.th("Aimed<br>resolution (&Aring;)")
+        self.page.th("Min osc.<br>width")
         if strExtraColumnTitle is not None:
             self.page.th(strExtraColumnTitle)
         self.page.tr.close()
@@ -471,6 +472,12 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         else:
             strAimedResolution = "%0.2f" % xsDataDiffractionPlan.getAimedResolution().getValue()
         self.page.th(strAimedResolution)
+        # Min osc width
+        if xsDataDiffractionPlan.goniostatMinOscillationWidth is None:
+            strMinOscWidth = "Default"
+        else:
+            strMinOscWidth = "%0.2f" % xsDataDiffractionPlan.goniostatMinOscillationWidth.value
+        self.page.th(strMinOscWidth)
         if strExtraColumnValue is not None:
             self.page.th(strExtraColumnValue)
         # Close the table

@@ -27,6 +27,9 @@
                 <maxExposureTimePerDataCollection>
                     <value>1.000000e+05</value>
                 </maxExposureTimePerDataCollection>
+                <goniostatMinOscillationWidth>
+                    <value>0.2</value>
+                </goniostatMinOscillationWidth>
             </diffractionPlan>
             <sample>
                 <size>
