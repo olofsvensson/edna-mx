@@ -339,8 +339,6 @@ class EDHandlerXSDataXDSv1_0:
                 [ 0, 2070, 512, 550], \
                 [ 0, 2070, 1063, 1103], \
                 [ 0, 2070, 1614, 1654],
-                # The following line is for a defective chip on id30a3
-                [ 257, 481, 551, 807],
                 ]
             for listRectangle in listUntrustedRectangle:
                 xsDataXDSRectangle = XSDataXDSRectangle()

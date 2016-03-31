@@ -18,10 +18,6 @@
 					<name>execProcessScriptExecutable</name>
 					<value>/opt/pxsoft/bin/dozor</value>
 				</XSParamItem>
-				<XSParamItem>
-					<name>bad_zona</name>
-					<value>257  481    551  807</value>
-				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 	</XSPluginList>
