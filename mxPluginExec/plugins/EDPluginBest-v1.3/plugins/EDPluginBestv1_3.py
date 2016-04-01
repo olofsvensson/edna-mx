@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -19,7 +19,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -71,7 +71,7 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
         self.setDataOutput(XSDataResultBest())
 
         # This version of the Best plugin requires the latest
-        # version of Best. 
+        # version of Best.
         self.addCompatibleVersion("Version 5.1.0 //  07.07.2015")
         self.addCompatibleVersion("Version 5.1.1 //  18.11.2015")
 
@@ -204,9 +204,9 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
 
 
     def initializeCommands(self):
-        
+
         dataInput = self.dataInput
-        
+
         self.addListCommandPreExecution(self.strCommandBestHome)
 
         listFileBestHKL = self.getListFileBestHKL()
@@ -239,7 +239,7 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
             self.strCommandBest += " -flux {0}".format(xsDataBeamFlux.value)
             strBestCrystalDatFileName = "best_crystal.dat"
             strBestCrystalDatPath = os.path.join(self.getWorkingDirectory(), strBestCrystalDatFileName)
-            strContent  = "! - this is comments\n"
+            strContent = "! - this is comments\n"
             strContent += "! all sizes in mm\n"
             strContent += "! beam size\n"
             strContent += "horizontal_size {0}\n".format(xsDataBeamSize.x.value)
@@ -258,23 +258,23 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
             strContent += "!description of crystal shape and position- a,c,b\n"
             strContent += "end\n"
             EDUtilsFile.writeFile(strBestCrystalDatPath, strContent)
-            
+
             self.strCommandBest += " -3D {0}".format(strBestCrystalDatFileName)
-            
+
         else:
 
             if dataInput.crystalAbsorbedDoseRate is not None:
                 strCrystalAbsorbedDoseRate = str(dataInput.crystalAbsorbedDoseRate.value)
                 self.strCommandBest += " -GpS " + strCrystalAbsorbedDoseRate + " "
-    
+
             if dataInput.crystalShape is not None:
                 strCrystalShape = str(dataInput.crystalShape.value)
                 self.strCommandBest += " -sh " + strCrystalShape + " "
-    
+
             if dataInput.crystalSusceptibility is not None:
                 strCrystalSusceptibility = str(dataInput.crystalSusceptibility.value)
                 self.strCommandBest += " -su " + strCrystalSusceptibility + " "
-    
+
             if dataInput.anomalousData is not None:
                 bAnomalousData = dataInput.anomalousData.value
                 if (bAnomalousData):
@@ -323,17 +323,17 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
             iNumberOfCrystalPositions = str(dataInput.numberOfCrystalPositions.value)
             self.strCommandBest += " -Npos " + iNumberOfCrystalPositions + " "
 
-        
+
         if dataInput.detectorDistanceMin is not None:
             fDetectorDistanceMin = str(dataInput.detectorDistanceMin.value)
             self.strCommandBest += " -DIS_MIN " + fDetectorDistanceMin + " "
 
-        
+
         if dataInput.detectorDistanceMax is not None:
             fDetectorDistanceMax = str(dataInput.detectorDistanceMax.value)
             self.strCommandBest += " -DIS_MAX " + fDetectorDistanceMax + " "
 
-        
+
         xsDataStrategyOption = dataInput.strategyOption
         if xsDataStrategyOption is not None:
             self.strCommandBest += " %s " % xsDataStrategyOption.value
@@ -353,18 +353,18 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
             self.strCommandBest += " -gama " + fRadiationDamageModelGamma + " "
 
         if dataInput.doseLimit is not None:
-            self.strCommandBest += " -DMAX {0} ".format(dataInput.doseLimit.value) 
+            self.strCommandBest += " -DMAX {0} ".format(dataInput.doseLimit.value)
 
         if dataInput.rFriedel is not None:
-            self.strCommandBest += " -Rf {0} ".format(dataInput.rFriedel.value) 
+            self.strCommandBest += " -Rf {0} ".format(dataInput.rFriedel.value)
 
         self.strCommandBest += " -T " + str(fMaxExposureTime) + " " + \
                                      "-o " + os.path.join(self.getWorkingDirectory(), self.getScriptBaseName() + "_plots.mtv ") + \
                                      "-e " + self.getComplexity() + " "
-                                     
+
         if dataInput.xdsBackgroundImage:
             strPathToXdsBackgroundImage = dataInput.xdsBackgroundImage.path.value
-            self.strCommandBest += "-MXDS " + self.getFileBestPar() + " " + strPathToXdsBackgroundImage + " " + listFileBestHKLCommand            
+            self.strCommandBest += "-MXDS " + self.getFileBestPar() + " " + strPathToXdsBackgroundImage + " " + listFileBestHKLCommand
         else:
             self.strCommandBest += "-mos " + self.getFileBestDat() + " " + self.getFileBestPar() + " " + listFileBestHKLCommand
 
@@ -379,7 +379,7 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
         xsDataResultBest.setPathToLogFile(xsDataFilePathToLog)
         strError = self.readProcessErrorLogFile()
         if((strError is not None) and (strError != "")):
-            strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginBestv1_3.finallyProcess', 'EDPluginBestv1_3', strError)
+            strErrorMessage = "Error when executing BEST: {0}".format(strError)
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             # Append error message to best log
@@ -430,7 +430,7 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
         listLog = _strBestLog.split("\n")
         indexLine = 0
         xsDataResultBest = XSDataResultBest()
-        xsDataBestCollectionPlan  = XSDataBestCollectionPlan()
+        xsDataBestCollectionPlan = XSDataBestCollectionPlan()
         xsDataCrystalScale = XSDataCrystalScale()
         #
         while not "Relative scale" in listLog[indexLine]:
@@ -454,10 +454,10 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
         iCollectionPlanNumber = 1
         while indexLine < len(listLog):
             if "Plan of data collection for radiation damage characterisation" in listLog[indexLine]:
-                xsDataBestCollectionPlan  = XSDataBestCollectionPlan()
+                xsDataBestCollectionPlan = XSDataBestCollectionPlan()
                 xsDataBestStrategySummary = XSDataBestStrategySummary()
                 indexLine += 2
-                regEx= re.compile(""" Resolution limit =\s*(\d+\.\d+) Angstrom\s*Distance =\s*(\d+\.\d+)mm""")
+                regEx = re.compile(""" Resolution limit =\s*(\d+\.\d+) Angstrom\s*Distance =\s*(\d+\.\d+)mm""")
                 matchObj = regEx.search(listLog[indexLine])
                 if matchObj == None:
                     raise BaseException("Cannot parse best log file!")
@@ -485,11 +485,11 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                         collectionRunNumber += 1
                     indexLine += 1
                 xsDataBestCollectionPlan.collectionPlanNumber = XSDataInteger(iCollectionPlanNumber)
-                xsDataResultBest.addCollectionPlan(xsDataBestCollectionPlan)                
+                xsDataResultBest.addCollectionPlan(xsDataBestCollectionPlan)
             if "Main Wedge" in listLog[indexLine] or "Low resolution Wedge" in listLog[indexLine] \
                 or "Strategy for SAD data collection" in listLog[indexLine]:
                 isScanningWedge = True
-                xsDataBestCollectionPlan  = XSDataBestCollectionPlan()
+                xsDataBestCollectionPlan = XSDataBestCollectionPlan()
                 xsDataBestStrategySummary = XSDataBestStrategySummary()
                 if "Main Wedge" in listLog[indexLine]:
                     indexLine += 2
@@ -504,7 +504,7 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                 indexLine += 1
                 while not "Resolution limit" in listLog[indexLine]:
                     indexLine += 1
-                regEx= re.compile(""" Resolution limit =\s*(\d+\.\d+) Angstrom   Transmission =\s*(\d+\.\d+)%  Distance =\s*(\d+\.\d+)mm""")
+                regEx = re.compile(""" Resolution limit =\s*(\d+\.\d+) Angstrom   Transmission =\s*(\d+\.\d+)%  Distance =\s*(\d+\.\d+)mm""")
                 matchObj = regEx.search(listLog[indexLine])
                 if matchObj == None:
                     raise BaseException("Cannot parse best log file!")
@@ -537,7 +537,7 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                 #
                 while not "I/Sigma (outer shell)" in listLog[indexLine]:
                     indexLine += 1
-                xsDataBestStrategySummary.iSigma = XSDataDouble(listLog[indexLine].split()[6].replace(")",""))
+                xsDataBestStrategySummary.iSigma = XSDataDouble(listLog[indexLine].split()[6].replace(")", ""))
                 #
                 while not "Total Exposure time" in listLog[indexLine]:
                     indexLine += 1
@@ -550,7 +550,7 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                 while not "Wedge Data Collection Statistics according to the Strategy" in listLog[indexLine]:
                     indexLine += 1
                 (xsDataBestStatisticalPrediction, indexLine) = self.getXSDataBestStatisticalPrediction(listLog, indexLine)
-                
+
                 xsDataBestCollectionPlan.strategySummary = xsDataBestStrategySummary
                 xsDataBestCollectionPlan.statisticalPrediction = xsDataBestStatisticalPrediction
                 xsDataBestCollectionPlan.collectionPlanNumber = XSDataInteger(iCollectionPlanNumber)
@@ -577,8 +577,8 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                     collectionPlan.strategySummary.rankingResolution = XSDataDouble(rankingResolution)
             indexLine += 1
         return xsDataResultBest
-                
-                
+
+
     def getXSDataBestStatisticalPrediction(self, _listLog, _indexLine):
         minResolution = None
         maxResolution = None
@@ -606,7 +606,7 @@ class EDPluginBestv1_3(EDPluginExecProcessScript):
                         maxResolution = listLine[1]
                     xsDataBestResolutionBin.minResolution = XSDataDouble(listLine[0])
                     xsDataBestResolutionBin.maxResolution = XSDataDouble(listLine[1])
-                xsDataBestResolutionBin.completeness = XSDataDouble(float(listLine[2])/100.0)
+                xsDataBestResolutionBin.completeness = XSDataDouble(float(listLine[2]) / 100.0)
                 xsDataBestResolutionBin.averageIntensity = XSDataDouble(listLine[3])
                 xsDataBestResolutionBin.averageSigma = XSDataDouble(listLine[4])
                 xsDataBestResolutionBin.averageIntensityOverAverageSigma = XSDataDouble(listLine[5])

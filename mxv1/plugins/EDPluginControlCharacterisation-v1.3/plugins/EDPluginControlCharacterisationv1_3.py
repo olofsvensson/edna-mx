@@ -538,7 +538,7 @@ class EDPluginControlCharacterisationv1_3(EDPluginControl):
 
     def doFailureStrategy(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_3.doFailureStrategy")
-        strErrorMessage = "Execution of strategy plugin failed."
+        strErrorMessage = "Strategy calculation FAILURE."
         self.ERROR(strErrorMessage)
         self.addErrorMessage(strErrorMessage)
         xsDataStrategyResult = self._edPluginControlStrategy.getDataOutput()
