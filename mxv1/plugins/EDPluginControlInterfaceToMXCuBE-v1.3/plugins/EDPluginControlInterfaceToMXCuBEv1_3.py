@@ -491,7 +491,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
             if xsDataResultRetrieveDataCollection is not None:
                 xsDataISPyBDataCollection = xsDataResultRetrieveDataCollection.getDataCollection()
                 if xsDataISPyBDataCollection is not None:
-                    fFlux = xsDataISPyBDataCollection.getFlux()
+                    fFlux = xsDataISPyBDataCollection.getFlux_end()
                     if fFlux is not None:
                         self.screen("ISPyB reports flux to be: %g photons/sec" % fFlux)
                         if fFlux > self.fFluxThreshold:

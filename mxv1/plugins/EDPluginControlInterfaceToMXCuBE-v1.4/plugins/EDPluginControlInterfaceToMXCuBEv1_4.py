@@ -113,6 +113,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.tStart = None
         self.tStop = None
         self.fFluxThreshold = 1e3
+        self.bIsEigerDetector = False
 
 
     def checkParameters(self):
@@ -162,6 +163,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         for xsDataSetMXCuBE in xsDataInputMXCuBE.getDataSet():
             for xsDataFile in xsDataSetMXCuBE.getImageFile():
                 if xsDataFile.path.value.endswith(".h5"):
+                    self.bIsEigerDetector = True
                     xsDataFirstImage = xsDataFile
                     xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
                     xsDataInputControlH5ToCBF.hdf5File = XSDataFile(xsDataFile.path)
@@ -236,6 +238,8 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         strSubject = _strSubject
         strMessage = _strMessage
         xsDataResultCharacterisation = self.edPluginControlInterface.getDataOutput().getResultCharacterisation()
+        if self.bIsEigerDetector:
+            xsDataResultCharacterisation = self.makeNumberOfImagesMultipleOf100(xsDataResultCharacterisation)
         self.xsDataResultMXCuBE.setCharacterisationResult(xsDataResultCharacterisation)
         xsDataResultControlISPyB = self.edPluginControlInterface.getDataOutput().getResultControlISPyB()
         if xsDataResultControlISPyB != None:
@@ -509,7 +513,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             if xsDataResultRetrieveDataCollection is not None:
                 xsDataISPyBDataCollection = xsDataResultRetrieveDataCollection.getDataCollection()
                 if xsDataISPyBDataCollection is not None:
-                    fFlux = xsDataISPyBDataCollection.getFlux()
+                    fFlux = xsDataISPyBDataCollection.getFlux_end()
                     if fFlux is not None:
                         self.screen("ISPyB reports flux to be: %g photons/sec" % fFlux)
                         if fFlux > self.fFluxThreshold:
@@ -694,3 +698,18 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
 
     def doFailureSimpleHTML(self, _edPlugin=None):
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_4.doFailureSimpleHTML...")
+
+
+    def makeNumberOfImagesMultipleOf100(self, _xsDataResultCharacterisation):
+        xsDataResultCharacterisation = _xsDataResultCharacterisation.copy()
+        strategyResult = xsDataResultCharacterisation.strategyResult
+        if strategyResult is not None:
+            for collectionPlan in strategyResult.collectionPlan:
+                for subWedge in collectionPlan.collectionStrategy.subWedge:
+                    rotationAxisStart = subWedge.experimentalCondition.goniostat.rotationAxisStart.value
+                    rotationAxisEnd = subWedge.experimentalCondition.goniostat.rotationAxisEnd.value
+                    oscillationWidth = subWedge.experimentalCondition.goniostat.oscillationWidth.value
+                    noImages = int((rotationAxisEnd - rotationAxisStart) / oscillationWidth)
+                    self.screen("Strategy: number of images for subWedge #{0}: {1}".format(subWedge.subWedgeNumber.value, noImages))
+
+        return xsDataResultCharacterisation
