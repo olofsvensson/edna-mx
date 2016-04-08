@@ -124,6 +124,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
             self._oServerProxy = ServerProxy(self._strMxCuBE_URI)
         self._runKappa = self.config.get("runKappa", False)
+        self._fMinTransmission = self.config.get("minTransmissionWarning", self._fMinTransmission)
 
 
 

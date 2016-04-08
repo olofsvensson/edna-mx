@@ -67,6 +67,14 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.bIsMultiPositional = False
 
 
+    def configure(self):
+        """
+        Gets the configuration parameters (if any).
+        """
+        EDPluginExec.configure(self)
+        self.DEBUG("EDPluginExecSimpleHTMLPagev1_0.configure")
+        self.fMinTransmission = self.config.get("minTransmissionWarning", self.fMinTransmission)
+
     def preProcess(self, _edPlugin=None):
         EDPluginExec.preProcess(self, _edPlugin)
         self.DEBUG("EDPluginExecSimpleHTMLPagev1_0.preProcess...")
