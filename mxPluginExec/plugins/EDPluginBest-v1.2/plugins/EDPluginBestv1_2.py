@@ -496,9 +496,10 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
             # Not part of strategySummaryItemListToStrategySummary method since it is in the general_form part
             xsTableGeneralInform = EDUtilsTable.getTableFromTables(_xsDataDnaTables, "general_inform")
             xsRankingResolutionItemList = EDUtilsTable.getListsFromTable(xsTableGeneralInform, "ranking_resolution")
-            xsItemRankingResolution = EDUtilsTable.getItemFromList(xsRankingResolutionItemList[0], "dmin")
-            fRankingResolution = float(xsItemRankingResolution.getValueOf_())
-            xsDataStrategySummary.setRankingResolution(XSDataDouble(fRankingResolution))
+            if len(xsRankingResolutionItemList) > 0:
+                xsItemRankingResolution = EDUtilsTable.getItemFromList(xsRankingResolutionItemList[0], "dmin")
+                fRankingResolution = float(xsItemRankingResolution.getValueOf_())
+                xsDataStrategySummary.setRankingResolution(XSDataDouble(fRankingResolution))
 
             xsDataBestCollectionPlan.setStrategySummary(xsDataStrategySummary)
 
