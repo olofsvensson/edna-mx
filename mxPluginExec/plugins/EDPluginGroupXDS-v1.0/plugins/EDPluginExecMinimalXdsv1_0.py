@@ -51,6 +51,12 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         self.setXSDataInputClass(XSDataMinimalXdsIn)
         self.setDataOutput(XSDataMinimalXdsOut())
         self.dataOutput.succeeded = XSDataBoolean(False)
+        self.maxNoProcessors = 10
+
+    def configure(self):
+        EDPluginExecProcessScript.configure(self)
+        self.DEBUG("EDPluginExecMinimalXdsv1_0.configure")
+        self.maxNoProcessors = self.config.get("maxNoProcessors", self.maxNoProcessors)
 
 
     def checkParameters(self):
@@ -175,6 +181,10 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
             if not os.path.exists(ygeo_path):
                 os.symlink(ygeo, ygeo_path)
             parsed_config['Y-GEO_CORR='] = os.path.basename(ygeo)
+
+        # Max no processors
+        parsed_config['MAXIMUM_NUMBER_OF_PROCESSORS='] = str(self.maxNoProcessors)
+        parsed_config['MAXIMUM_NUMBER_OF_JOBS='] = 1
 
         # Save back the changes
         dump_xds_file(xds_file, parsed_config)

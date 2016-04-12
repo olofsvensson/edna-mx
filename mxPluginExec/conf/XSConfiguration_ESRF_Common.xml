@@ -555,11 +555,15 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/xds</value>
+					<value>/opt/pxsoft/bin/xds_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
 					<value>3600</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>maxNoProcessors</name>
+					<value>10</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
