@@ -221,7 +221,7 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         output_file = self.dataInput.output_file.value
 
         # gzip the aimless unmerged file
-        aimless_unmerged_out = '{0}{1}_aimless_unmerged.mtz'.format(self.image_prefix, self.strAnomSuffix)
+        aimless_unmerged_out = 'ep_{0}{1}_aimless_unmerged.mtz'.format(self.image_prefix, self.strAnomSuffix)
         aimless_unmerged_path = os.path.join(os.path.dirname(self.dataInput.output_file.value),
                                              aimless_unmerged_out)
         try:
