@@ -1,11 +1,11 @@
 # GONIO Calibration Settings
-OmegaRot 1.0E-5 -2.6E-4 1.0
-KappaRot -0.28076 0.29076 0.91468
-PhiRot -0.01837 -0.01967 0.99964
-KappaTrans -0.44679 -0.19056 1.21313
-PhiTrans -0.34871 0.02024 1.13202
-KappaTransD 0.28809 0.29278 -0.91175
-PhiTransD 0.02162 -0.02229 -0.99952
+OmegaRot 4.0E-4 -4.7E-4 1.0
+KappaRot -0.28522 0.28856 0.91399
+PhiRot 0.00442 0.00151 0.99999
+KappaTrans -0.35517 -0.11198 0.92857
+PhiTrans -0.33076 0.00561 1.15266
+KappaTransD 0.283 0.28967 -0.91433
+PhiTransD -0.00505 9.0E-4 -0.99999
 
 SECTION Alignment_Plugins
 ##################################
