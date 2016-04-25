@@ -5,7 +5,7 @@
 #    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal author:       Olof Svensson (svensson@esrf.fr) 
+#    Principal author:       Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -100,11 +100,23 @@ class EDTestCasePluginUnitControlInterfaceToMXCuBEv1_4(EDTestCasePluginUnit):
         print testPath1
         print  pluginMXCuBE.getBeamlineProposalFromPath(testPath1)
 
+
+    def testMakeNumberOfImagesMultipleOf100(self):
+        pluginMXCuBE = self.createPlugin()
+        strResultCharacterisationFileName = "XSDataResultCharacterisation_reference.xml"
+        strPathToReferenceFile = os.path.join(self.getPluginTestsDataHome(),
+                                              strResultCharacterisationFileName)
+        strXML = self.readAndParseFile(strPathToReferenceFile)
+        xsDataResultCharacterisation = XSDataResultCharacterisation.parseString(strXML)
+        xsDataResultCharacterisationNew = pluginMXCuBE.makeNumberOfImagesMultipleOf100(xsDataResultCharacterisation)
+
+
     def process(self):
         self.addTestMethod(self.testCreateDNAFileDirectoryPath)
         self.addTestMethod(self.testCreateOutputFileDictionary)
         self.addTestMethod(self.testSplitHeadDirectory)
         self.addTestMethod(self.testGetBeamlineProposalFromPath)
+        self.addTestMethod(self.testMakeNumberOfImagesMultipleOf100)
 
 
 

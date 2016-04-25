@@ -101,12 +101,12 @@
     <dataSet>
         <imageFile>
             <path>
-                <value>/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/proteintest5/ref-proteintest5_1_0001.h5</value>
+                <value>/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/proteintest6/ref-proteintest6_3_0001.h5</value>
             </path>
         </imageFile>
         <imageFile>
             <path>
-                <value>/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/proteintest5/ref-proteintest5_1_0002.h5</value>
+                <value>/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/proteintest6/ref-proteintest6_3_0002.h5</value>
             </path>
         </imageFile>
     </dataSet>

@@ -2,7 +2,7 @@
 #    Project: EDNA MXv1
 #             http://www.edna-site.org
 #
-#    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2016 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal author:       Olof Svensson (svensson@esrf.fr)
@@ -180,7 +180,6 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
 
         xsDataExperimentalCondition = self.getFluxAndBeamSizeFromISPyB(xsDataFirstImage, \
                                                             xsDataInputMXCuBE.getExperimentalCondition())
-
 
         xsDataInputInterface.setExperimentalCondition(xsDataExperimentalCondition)
         xsDataInputInterface.setDiffractionPlan(xsDataInputMXCuBE.getDiffractionPlan())
