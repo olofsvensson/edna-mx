@@ -70,8 +70,8 @@ EDFactoryPluginStatic.loadModule("XSDataISPyBv1_4")
 from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 from XSDataISPyBv1_4 import XSDataInputISPyBSetBestWilsonPlotPath
 
-EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_0")
-from XSDataControlH5ToCBFv1_0 import XSDataInputControlH5ToCBF
+EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_1")
+from XSDataControlH5ToCBFv1_1 import XSDataInputControlH5ToCBF
 
 from EDHandlerXSDataISPyBv1_4 import EDHandlerXSDataISPyBv1_4
 
@@ -106,7 +106,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.edPluginExecSimpleHTML = None
         self.strPluginISPyBRetrieveDataCollection = "EDPluginISPyBRetrieveDataCollectionv1_4"
         self.edPluginISPyBRetrieveDataCollection = None
-        self.strPluginControlH5ToCBF = "EDPluginControlH5ToCBFv1_0"
+        self.strPluginControlH5ToCBF = "EDPluginControlH5ToCBFv1_1"
         self.edPluginControlH5ToCBF = None
         self.strEDNAContactEmail = None
         self.strEDNAEmailSender = "edna-support@esrf.fr"

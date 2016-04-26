@@ -322,6 +322,23 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginH5ToCBFv1_1</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/minicbf</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>120</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
 		<XSPluginItem> 
 			<name>EDPluginXDSGenerateBackgroundImagev1_0</name>  
 			<XSParamList>

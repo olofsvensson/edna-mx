@@ -1,0 +1,75 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+
+complex type XSDataISPyBDataCollection {
+	actualCenteringPosition : string
+	averageTemperature : float
+	axisEnd : float
+	axisRange : float
+	axisStart : float
+	beamShape : string
+	beamSizeAtSampleX : float
+	beamSizeAtSampleY : float
+	blSampleId : integer
+	centeringMethod : string
+	comments : string
+	crystalClass : string
+	dataCollectionId : integer
+	dataCollectionNumber : integer
+	detector2theta : float
+	detectorDistance : float
+	detectorMode : string
+	endTime : string
+	exposureTime : float
+	experimentType : string
+	fileTemplate : string
+	flux : float
+	imageDirectory : string
+	imagePrefix : string
+	imageSuffix : string
+	kappaStart : float
+	numberOfImages : integer
+	numberOfPasses : integer
+	omegaStart : float
+	overlap : float
+	phiStart : float
+	printableForReport : boolean
+	resolution : float
+	resolutionAtCorner : float
+	rotationAxis : string
+	runStatus : string
+	sessionId : integer
+	slitGapVertical : float
+	slitGapHorizontal : float
+	startImageNumber : integer
+	strategySubWedgeOrigId : integer optional
+	startTime : string
+	synchrotronMode : string
+	transmission : float
+	undulatorGap1 : float
+	undulatorGap2 : float
+	undulatorGap3 : float
+	wavelength : float
+	xbeam : float
+	xtalSnapshotFullPath1 : string
+	xtalSnapshotFullPath2 : string
+	xtalSnapshotFullPath3 : string
+	xtalSnapshotFullPath4 : string
+	ybeam : float
+}
+
+complex type XSDataInputH5ToCBF extends XSDataInput {
+	imageNumber : XSDataInteger 
+	hdf5ImageNumber : XSDataInteger optional
+	hdf5File : XSDataFile
+	dataCollection : XSDataISPyBDataCollection optional
+	forcedOutputDirectory : XSDataFile optional
+}
+
+complex type XSDataResultH5ToCBF extends XSDataResult {
+	outputCBFFile : XSDataFile
+}

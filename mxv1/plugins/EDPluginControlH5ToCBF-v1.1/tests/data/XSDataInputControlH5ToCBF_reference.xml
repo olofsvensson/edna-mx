@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<XSDataInputH5ToCBF>
+  <imageNumber>
+  	<value>1</value>
+  </imageNumber>
+  <hdf5File>
+  	<path>
+    <!--  <value>/data/gzvisitor/test/id30/id30a3/inhouse/opid30a3/20150227/RAW_DATA/test/lyso_12_0001.h5</value>  -->  
+    <!--  <value>/data/gz/id30a3/inhouse/opid30a3/20160128/RAW_DATA/eigerfirst/eigerfirst_5_0001.h5</value>  -->   
+    <!--  <value>/data/id30a3/inhouse/opid30a3/20160128/RAW_DATA/eigerfirst/eigerfirst_5_0001.h5</value>  -->   
+      <value>/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/det_calib_Eiger_2/250_Si_1_0001.h5</value> 
+  	</path>
+  </hdf5File>
+</XSDataInputH5ToCBF>

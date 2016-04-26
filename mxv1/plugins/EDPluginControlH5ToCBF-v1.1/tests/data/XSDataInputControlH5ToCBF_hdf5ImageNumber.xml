@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<XSDataInputH5ToCBF>
+  <hdf5File>
+  	<path>
+      <value>/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/meshtest/XrayCentering_01/mesh-meshtest_1_0002.h5</value> 
+  	</path>
+  </hdf5File>
+  <hdf5ImageNumber>
+  	<value>1</value>
+  </hdf5ImageNumber>
+</XSDataInputH5ToCBF>
