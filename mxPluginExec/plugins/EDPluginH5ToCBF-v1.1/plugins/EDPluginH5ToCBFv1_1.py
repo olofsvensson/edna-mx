@@ -82,9 +82,6 @@ class EDPluginH5ToCBFv1_1(EDPluginExecProcessScript):
     def finallyProcess(self, _edObject=None):
         EDPluginExecProcessScript.finallyProcess(self)
         self.DEBUG("EDPluginH5ToCBFv1_1.finallyProcess")
-        if self.tmpCBFFile is not None:
-            if os.path.exists(self.tmpCBFFile):
-                os.remove(self.tmpCBFFile)
         if self.CBFFile is not None:
             if os.path.exists(self.CBFFile):
                 self.dataOutput.outputCBFFile = XSDataFile(XSDataString(self.CBFFile))
@@ -123,9 +120,7 @@ class EDPluginH5ToCBFv1_1(EDPluginExecProcessScript):
                 os.makedirs(forcedOutputDirectory, 0755)
             self.CBFFile = os.path.join(forcedOutputDirectory, CBFFileName)
 
-        self.tmpCBFFile = os.path.join(self.getWorkingDirectory(), tmpCBFFileName)
-
-        scriptCommandLine = "{0} {1} {2}".format(masterFile, imageNumber - hdf5ImageNumber + 1, tmpCBFFileName)
+        scriptCommandLine = "{0} {1} {2}".format(masterFile, imageNumber - hdf5ImageNumber + 1, self.CBFFile)
 
         return scriptCommandLine
 
