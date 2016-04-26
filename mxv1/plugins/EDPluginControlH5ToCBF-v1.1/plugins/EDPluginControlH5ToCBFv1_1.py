@@ -77,7 +77,7 @@ class EDPluginControlH5ToCBFv1_1(EDPluginControl):
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlH5ToCBFv1_1.preProcess")
-        self.edPluginEDPluginH5ToCBF = self.loadPlugin(self.strEDPluginH5ToCBF, "H5ToCBF")
+        self.edPluginEDPluginH5ToCBF = self.loadPlugin(self.strEDPluginH5ToCBF)
         self.edPluginISPyBRetrieveDataCollection = self.loadPlugin(self.strPluginISPyBRetrieveDataCollection, "ISPyBRetrieveDataCollection")
 
 
