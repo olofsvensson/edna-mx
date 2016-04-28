@@ -48,28 +48,28 @@ class EDTestCasePluginUnitControlRunDimplev1_0(EDTestCasePluginUnit):
         self.loadTestImage(["final.mtz", "final.pdb", "blob1v1.png", "blob1v2.png", "blob1v3.png",
                             "blob2v1.png", "blob2v2.png", "blob2v3.png"])
 
-    def test_copyResultsToPyarch(self):
+    def test_copyResults(self):
         strDimpleOutput = os.path.join(self.strDataPath, "dimple", "Dimplev1_0_dataOutput.xml")
         strResultDimple = self.readAndParseFile(strDimpleOutput)
         xsDataResultDimple = XSDataResultDimple.parseString(strResultDimple)
         edPlugin = self.getPlugin()
-        strPyarchRootDir = tempfile.mkdtemp(prefix="EDTestCasePluginUnitControlRunDimplev1_0_")
+        strResultDir = tempfile.mkdtemp(prefix="EDTestCasePluginUnitControlRunDimplev1_0_")
         strPrefix = "xtal5w1_1"
         strPdfPath = os.path.join(xsDataResultDimple.resultsDirectory.path.value, "DIMPLE.pdf")
-        listPath = edPlugin.copyResultsToPyarch(strPrefix, strPyarchRootDir, xsDataResultDimple, strPdfPath)
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "ep_xtal5w1_1_blob1v1_dimple.png")), "blob1v1.png")
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "ep_xtal5w1_1_blob1v2_dimple.png")), "blob1v2.png")
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "ep_xtal5w1_1_blob1v3_dimple.png")), "blob1v3.png")
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "ep_xtal5w1_1_blob2v1_dimple.png")), "blob2v1.png")
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "ep_xtal5w1_1_blob2v2_dimple.png")), "blob2v2.png")
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "ep_xtal5w1_1_blob2v3_dimple.png")), "blob2v3.png")
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "ep_xtal5w1_1_dimple.log")), "dimple.log")
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "ep_xtal5w1_1_dimple.mtz")), "dimple.mtz")
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "ep_xtal5w1_1_dimple.pdb")), "dimple.pdb")
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "ep_xtal5w1_1_findblobs_dimple.log")), "findblobs.log")
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "ep_xtal5w1_1_refmac5restr_dimple.log")), "refmac5restr.log")
-        EDAssert.equal(True, os.path.exists(os.path.join(strPyarchRootDir, "ep_xtal5w1_1_results_dimple.pdf")), "dimple.pdf")
-        shutil.rmtree(strPyarchRootDir)
+        listPath = edPlugin.copyResults(strPrefix, strResultDir, xsDataResultDimple, strPdfPath)
+        EDAssert.equal(True, os.path.exists(os.path.join(strResultDir, "ep_xtal5w1_1_blob1v1_dimple.png")), "blob1v1.png")
+        EDAssert.equal(True, os.path.exists(os.path.join(strResultDir, "ep_xtal5w1_1_blob1v2_dimple.png")), "blob1v2.png")
+        EDAssert.equal(True, os.path.exists(os.path.join(strResultDir, "ep_xtal5w1_1_blob1v3_dimple.png")), "blob1v3.png")
+        EDAssert.equal(True, os.path.exists(os.path.join(strResultDir, "ep_xtal5w1_1_blob2v1_dimple.png")), "blob2v1.png")
+        EDAssert.equal(True, os.path.exists(os.path.join(strResultDir, "ep_xtal5w1_1_blob2v2_dimple.png")), "blob2v2.png")
+        EDAssert.equal(True, os.path.exists(os.path.join(strResultDir, "ep_xtal5w1_1_blob2v3_dimple.png")), "blob2v3.png")
+        EDAssert.equal(True, os.path.exists(os.path.join(strResultDir, "ep_xtal5w1_1_dimple.log")), "dimple.log")
+        EDAssert.equal(True, os.path.exists(os.path.join(strResultDir, "ep_xtal5w1_1_dimple.mtz")), "dimple.mtz")
+        EDAssert.equal(True, os.path.exists(os.path.join(strResultDir, "ep_xtal5w1_1_dimple.pdb")), "dimple.pdb")
+        EDAssert.equal(True, os.path.exists(os.path.join(strResultDir, "ep_xtal5w1_1_findblobs_dimple.log")), "findblobs.log")
+        EDAssert.equal(True, os.path.exists(os.path.join(strResultDir, "ep_xtal5w1_1_refmac5restr_dimple.log")), "refmac5restr.log")
+        EDAssert.equal(True, os.path.exists(os.path.join(strResultDir, "ep_xtal5w1_1_results_dimple.pdf")), "dimple.pdf")
+        shutil.rmtree(strResultDir)
 
     def test_createHtmlPage(self):
         strDimpleOutput = os.path.join(self.strDataPath, "dimple", "Dimplev1_0_dataOutput.xml")
@@ -82,7 +82,7 @@ class EDTestCasePluginUnitControlRunDimplev1_0(EDTestCasePluginUnit):
         strProposal = "mx415"
         strSessionDate = "2015-02-23"
         strBeamline = "id29"
-        listPath = edPlugin.copyResultsToPyarch(strPrefix, strPyarchRootDir, xsDataResultDimple, strPdfPath)
+        listPath = edPlugin.copyResults(strPrefix, strPyarchRootDir, xsDataResultDimple, strPdfPath)
         listPathHtml = edPlugin.createHtmlPage(strPrefix, xsDataResultDimple, strPyarchRootDir, strProposal, strSessionDate, strBeamline)
         print listPathHtml
         for pathHtml in listPathHtml:
@@ -100,7 +100,7 @@ class EDTestCasePluginUnitControlRunDimplev1_0(EDTestCasePluginUnit):
 
     def process(self):
         self.addTestMethod(self.test_extractFinalResultsFromRefmac5RestrLog)
-        self.addTestMethod(self.test_copyResultsToPyarch)
+        self.addTestMethod(self.test_copyResults)
         self.addTestMethod(self.test_createHtmlPage)
 
 

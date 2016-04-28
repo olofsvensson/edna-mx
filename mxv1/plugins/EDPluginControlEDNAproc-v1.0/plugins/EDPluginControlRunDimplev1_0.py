@@ -71,6 +71,7 @@ class EDPluginControlRunDimplev1_0(EDPluginControl):
         self.dataOutput = XSDataResultControlDimple()
         self.strPdbPath = None
         self.strPathNoanomAimlessMtz = None
+        self.strPathToResults = None
 
 
     def checkParameters(self):
@@ -86,6 +87,8 @@ class EDPluginControlRunDimplev1_0(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlRunDimplev1_0.preProcess")
         self.strPathNoanomAimlessMtz = self.dataInput.mtzFile.path.value
+        # Use the directory oof the mtzFile for storing the DIMPLE result files
+        self.strPathToResults = os.path.dirname(self.strPathNoanomAimlessMtz)
         # we need a PDB file either in ispyb or in the image directory
         edPluginGetPdbFile = self.loadPlugin("EDPluginISPyBGetPdbFilePathv1_4")
         xsDataInputGetPdbFilePath = XSDataInputISPyBGetPdbFilePath()
@@ -132,64 +135,65 @@ class EDPluginControlRunDimplev1_0(EDPluginControl):
             edPluginHTML2PDF.dataInput = xsDataInputHTML2PDF
             edPluginHTML2PDF.executeSynchronous()
             strPdfFile = edPluginHTML2PDF.dataOutput.pdfFile.path.value
-            # Copy result files to pyarch
-            if self.dataInput.pyarchPath is not None:
-                listOfTargetPaths = self.copyResultsToPyarch(self.dataInput.imagePrefix.value,
-                                                             self.dataInput.pyarchPath.path.value,
-                                                             xsDataResultDimple,
-                                                             strPdfFile)
-                # Upload files to ISPyB
-                if self.dataInput.autoProcProgramId is not None:
-                    xsDataInputStoreAutoProcProgramAttachment = XSDataInputStoreAutoProcProgramAttachment()
-                    for targetPath in listOfTargetPaths:
-                        autoProcProgramAttachment = AutoProcProgramAttachment()
-                        autoProcProgramAttachment.fileType = "Result"
-                        autoProcProgramAttachment.fileName = os.path.basename(targetPath)
-                        autoProcProgramAttachment.filePath = os.path.dirname(targetPath)
-                        autoProcProgramAttachment.autoProcProgramId = self.dataInput.autoProcProgramId.value
-                        xsDataInputStoreAutoProcProgramAttachment.addAutoProcProgramAttachment(autoProcProgramAttachment)
-                    edPluginStoreAutoProcProgramAttachment = self.loadPlugin("EDPluginISPyBStoreAutoProcProgramAttachmentv1_4")
-                    edPluginStoreAutoProcProgramAttachment.dataInput = xsDataInputStoreAutoProcProgramAttachment
-                    edPluginStoreAutoProcProgramAttachment.executeSynchronous()
+            # Copy result files
+            listOfTargetPaths = self.copyResults(self.dataInput.imagePrefix.value,
+                                                 self.strPathToResults,
+                                                 xsDataResultDimple,
+                                                 strPdfFile)
+            # Upload files to ISPyB
+            if self.dataInput.autoProcProgramId is not None and self.dataInput.pyarchPath is not None:
+                strPyarchRootPath = self.dataInput.pyarchPath.path.value
+                xsDataInputStoreAutoProcProgramAttachment = XSDataInputStoreAutoProcProgramAttachment()
+                for targetPath in listOfTargetPaths:
+                    shutil.copy(targetPath, strPyarchRootPath)
+                    autoProcProgramAttachment = AutoProcProgramAttachment()
+                    autoProcProgramAttachment.fileType = "Result"
+                    autoProcProgramAttachment.fileName = os.path.basename(targetPath)
+                    autoProcProgramAttachment.filePath = os.path.dirname(strPyarchRootPath)
+                    autoProcProgramAttachment.autoProcProgramId = self.dataInput.autoProcProgramId.value
+                    xsDataInputStoreAutoProcProgramAttachment.addAutoProcProgramAttachment(autoProcProgramAttachment)
+                edPluginStoreAutoProcProgramAttachment = self.loadPlugin("EDPluginISPyBStoreAutoProcProgramAttachmentv1_4")
+                edPluginStoreAutoProcProgramAttachment.dataInput = xsDataInputStoreAutoProcProgramAttachment
+                edPluginStoreAutoProcProgramAttachment.executeSynchronous()
 
 
 
-    def copyResultsToPyarch(self, strImagePrefix, strPyarchRootPath, xsDataResultDimple, strPdfFile):
+    def copyResults(self, strImagePrefix, strResultDir, xsDataResultDimple, strPdfFile):
         listOfTargetPaths = []
         # Check that pyarch root exists
-        if not os.path.exists(strPyarchRootPath):
-            self.ERROR("Pyarch root directory does not exists! %s" % strPyarchRootPath)
+        if not os.path.exists(strResultDir):
+            self.ERROR("Result directory does not exists! %s" % strResultDir)
         else:
-            self.DEBUG("Copying results of dimple to : %s" % strPyarchRootPath)
+            self.DEBUG("Copying results of dimple to : %s" % strResultDir)
             for xsDataFileBlob in xsDataResultDimple.blob:
                 # Copy blob file to pyarch
                 strBlobName = os.path.basename(xsDataFileBlob.path.value).split(".")[0]
                 strTargetFileName = "ep_%s_%s_dimple.png" % (strImagePrefix, strBlobName)
-                strTargetPath = os.path.join(strPyarchRootPath, strTargetFileName)
+                strTargetPath = os.path.join(strResultDir, strTargetFileName)
                 shutil.copyfile(xsDataFileBlob.path.value, strTargetPath)
                 listOfTargetPaths.append(strTargetPath)
             # Log file
-            strTargetLogPath = os.path.join(strPyarchRootPath, "ep_%s_dimple.log" % strImagePrefix)
+            strTargetLogPath = os.path.join(strResultDir, "ep_%s_dimple.log" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.log.path.value, strTargetLogPath)
             listOfTargetPaths.append(strTargetLogPath)
             # Final MTZ file
-            strTargetFinalMtzPath = os.path.join(strPyarchRootPath, "ep_%s_dimple.mtz" % strImagePrefix)
+            strTargetFinalMtzPath = os.path.join(strResultDir, "ep_%s_dimple.mtz" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.finalMtz.path.value, strTargetFinalMtzPath)
             listOfTargetPaths.append(strTargetFinalMtzPath)
             # Final PDB file
-            strTargetFinalPdbPath = os.path.join(strPyarchRootPath, "ep_%s_dimple.pdb" % strImagePrefix)
+            strTargetFinalPdbPath = os.path.join(strResultDir, "ep_%s_dimple.pdb" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.finalPdb.path.value, strTargetFinalPdbPath)
             listOfTargetPaths.append(strTargetFinalPdbPath)
             # Findblobs log file
-            strTargetFindBlobsLogPath = os.path.join(strPyarchRootPath, "ep_%s_findblobs_dimple.log" % strImagePrefix)
+            strTargetFindBlobsLogPath = os.path.join(strResultDir, "ep_%s_findblobs_dimple.log" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.findBlobsLog.path.value, strTargetFindBlobsLogPath)
             listOfTargetPaths.append(strTargetFindBlobsLogPath)
             # Refmac5_restr log file
-            strTargetRefmac5restrLogPath = os.path.join(strPyarchRootPath, "ep_%s_refmac5restr_dimple.log" % strImagePrefix)
+            strTargetRefmac5restrLogPath = os.path.join(strResultDir, "ep_%s_refmac5restr_dimple.log" % strImagePrefix)
             shutil.copyfile(xsDataResultDimple.refmac5restrLog.path.value, strTargetRefmac5restrLogPath)
             listOfTargetPaths.append(strTargetRefmac5restrLogPath)
             # Result PDF file
-            strTargetPdfPath = os.path.join(strPyarchRootPath, "ep_%s_results_dimple.pdf" % strImagePrefix)
+            strTargetPdfPath = os.path.join(strResultDir, "ep_%s_results_dimple.pdf" % strImagePrefix)
             shutil.copyfile(strPdfFile, strTargetPdfPath)
             listOfTargetPaths.append(strTargetPdfPath)
         return listOfTargetPaths
