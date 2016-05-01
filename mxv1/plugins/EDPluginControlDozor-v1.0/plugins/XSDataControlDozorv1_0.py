@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Feb 29 03:04::36 2016 by EDGenerateDS.
+# Generated Tue Mar 15 03:56::19 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -18,9 +18,11 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataDouble
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
@@ -37,6 +39,7 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
@@ -123,7 +126,14 @@ class MixedContainer(object):
 
 
 class XSDataControlImageDozor(object):
-    def __init__(self, spotFile=None, score=None, powder_wilson_rfactor=None, powder_wilson_correlation=None, powder_wilson_resolution=None, powder_wilson_bfactor=None, powder_wilson_scale=None, spots_resolution=None, spots_int_aver=None, spots_num_of=None, image=None):
+    def __init__(self, spotFile=None, score=None, powder_wilson_rfactor=None, powder_wilson_correlation=None, powder_wilson_resolution=None, powder_wilson_bfactor=None, powder_wilson_scale=None, spots_resolution=None, spots_int_aver=None, spots_num_of=None, image=None, number=None):
+        if number is None:
+            self._number = None
+        elif number.__class__.__name__ == "XSDataInteger":
+            self._number = number
+        else:
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'number' is not XSDataInteger but %s" % self._number.__class__.__name__
+            raise BaseException(strMessage)
         if image is None:
             self._image = None
         elif image.__class__.__name__ == "XSDataFile":
@@ -201,6 +211,18 @@ class XSDataControlImageDozor(object):
         else:
             strMessage = "ERROR! XSDataControlImageDozor constructor argument 'spotFile' is not XSDataFile but %s" % self._spotFile.__class__.__name__
             raise BaseException(strMessage)
+    # Methods and properties for the 'number' attribute
+    def getNumber(self): return self._number
+    def setNumber(self, number):
+        if number is None:
+            self._number = None
+        elif number.__class__.__name__ == "XSDataInteger":
+            self._number = number
+        else:
+            strMessage = "ERROR! XSDataControlImageDozor.setNumber argument is not XSDataInteger but %s" % number.__class__.__name__
+            raise BaseException(strMessage)
+    def delNumber(self): self._number = None
+    number = property(getNumber, setNumber, delNumber, "Property for number")
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
     def setImage(self, image):
@@ -341,6 +363,10 @@ class XSDataControlImageDozor(object):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataControlImageDozor'):
         pass
+        if self._number is not None:
+            self.number.export(outfile, level, name_='number')
+        else:
+            warnEmptyAttribute("number", "XSDataInteger")
         if self._image is not None:
             self.image.export(outfile, level, name_='image')
         else:
@@ -375,6 +401,11 @@ class XSDataControlImageDozor(object):
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'number':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setNumber(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'image':
             obj_ = XSDataFile()
             obj_.build(child_)
@@ -921,7 +952,7 @@ class XSDataDozorInput(XSDataInput):
 
 
 class XSDataInputControlDozor(XSDataInput):
-    def __init__(self, configuration=None, wedgeNumber=None, batchSize=None, image=None):
+    def __init__(self, configuration=None, radiationDamage=None, wedgeNumber=None, batchSize=None, endNo=None, startNo=None, template=None, directory=None, image=None):
         XSDataInput.__init__(self, configuration)
         if image is None:
             self._image = []
@@ -929,6 +960,34 @@ class XSDataInputControlDozor(XSDataInput):
             self._image = image
         else:
             strMessage = "ERROR! XSDataInputControlDozor constructor argument 'image' is not list but %s" % self._image.__class__.__name__
+            raise BaseException(strMessage)
+        if directory is None:
+            self._directory = None
+        elif directory.__class__.__name__ == "XSDataFile":
+            self._directory = directory
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor constructor argument 'directory' is not XSDataFile but %s" % self._directory.__class__.__name__
+            raise BaseException(strMessage)
+        if template is None:
+            self._template = None
+        elif template.__class__.__name__ == "XSDataString":
+            self._template = template
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor constructor argument 'template' is not XSDataString but %s" % self._template.__class__.__name__
+            raise BaseException(strMessage)
+        if startNo is None:
+            self._startNo = None
+        elif startNo.__class__.__name__ == "XSDataInteger":
+            self._startNo = startNo
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor constructor argument 'startNo' is not XSDataInteger but %s" % self._startNo.__class__.__name__
+            raise BaseException(strMessage)
+        if endNo is None:
+            self._endNo = None
+        elif endNo.__class__.__name__ == "XSDataInteger":
+            self._endNo = endNo
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor constructor argument 'endNo' is not XSDataInteger but %s" % self._endNo.__class__.__name__
             raise BaseException(strMessage)
         if batchSize is None:
             self._batchSize = None
@@ -943,6 +1002,13 @@ class XSDataInputControlDozor(XSDataInput):
             self._wedgeNumber = wedgeNumber
         else:
             strMessage = "ERROR! XSDataInputControlDozor constructor argument 'wedgeNumber' is not XSDataInteger but %s" % self._wedgeNumber.__class__.__name__
+            raise BaseException(strMessage)
+        if radiationDamage is None:
+            self._radiationDamage = None
+        elif radiationDamage.__class__.__name__ == "XSDataBoolean":
+            self._radiationDamage = radiationDamage
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor constructor argument 'radiationDamage' is not XSDataBoolean but %s" % self._radiationDamage.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
@@ -977,6 +1043,54 @@ class XSDataInputControlDozor(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputControlDozor.addImage argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
+    # Methods and properties for the 'directory' attribute
+    def getDirectory(self): return self._directory
+    def setDirectory(self, directory):
+        if directory is None:
+            self._directory = None
+        elif directory.__class__.__name__ == "XSDataFile":
+            self._directory = directory
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor.setDirectory argument is not XSDataFile but %s" % directory.__class__.__name__
+            raise BaseException(strMessage)
+    def delDirectory(self): self._directory = None
+    directory = property(getDirectory, setDirectory, delDirectory, "Property for directory")
+    # Methods and properties for the 'template' attribute
+    def getTemplate(self): return self._template
+    def setTemplate(self, template):
+        if template is None:
+            self._template = None
+        elif template.__class__.__name__ == "XSDataString":
+            self._template = template
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor.setTemplate argument is not XSDataString but %s" % template.__class__.__name__
+            raise BaseException(strMessage)
+    def delTemplate(self): self._template = None
+    template = property(getTemplate, setTemplate, delTemplate, "Property for template")
+    # Methods and properties for the 'startNo' attribute
+    def getStartNo(self): return self._startNo
+    def setStartNo(self, startNo):
+        if startNo is None:
+            self._startNo = None
+        elif startNo.__class__.__name__ == "XSDataInteger":
+            self._startNo = startNo
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor.setStartNo argument is not XSDataInteger but %s" % startNo.__class__.__name__
+            raise BaseException(strMessage)
+    def delStartNo(self): self._startNo = None
+    startNo = property(getStartNo, setStartNo, delStartNo, "Property for startNo")
+    # Methods and properties for the 'endNo' attribute
+    def getEndNo(self): return self._endNo
+    def setEndNo(self, endNo):
+        if endNo is None:
+            self._endNo = None
+        elif endNo.__class__.__name__ == "XSDataInteger":
+            self._endNo = endNo
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor.setEndNo argument is not XSDataInteger but %s" % endNo.__class__.__name__
+            raise BaseException(strMessage)
+    def delEndNo(self): self._endNo = None
+    endNo = property(getEndNo, setEndNo, delEndNo, "Property for endNo")
     # Methods and properties for the 'batchSize' attribute
     def getBatchSize(self): return self._batchSize
     def setBatchSize(self, batchSize):
@@ -1001,6 +1115,18 @@ class XSDataInputControlDozor(XSDataInput):
             raise BaseException(strMessage)
     def delWedgeNumber(self): self._wedgeNumber = None
     wedgeNumber = property(getWedgeNumber, setWedgeNumber, delWedgeNumber, "Property for wedgeNumber")
+    # Methods and properties for the 'radiationDamage' attribute
+    def getRadiationDamage(self): return self._radiationDamage
+    def setRadiationDamage(self, radiationDamage):
+        if radiationDamage is None:
+            self._radiationDamage = None
+        elif radiationDamage.__class__.__name__ == "XSDataBoolean":
+            self._radiationDamage = radiationDamage
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor.setRadiationDamage argument is not XSDataBoolean but %s" % radiationDamage.__class__.__name__
+            raise BaseException(strMessage)
+    def delRadiationDamage(self): self._radiationDamage = None
+    radiationDamage = property(getRadiationDamage, setRadiationDamage, delRadiationDamage, "Property for radiationDamage")
     def export(self, outfile, level, name_='XSDataInputControlDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1011,12 +1137,20 @@ class XSDataInputControlDozor(XSDataInput):
         XSDataInput.exportChildren(self, outfile, level, name_)
         for image_ in self.getImage():
             image_.export(outfile, level, name_='image')
-        if self.getImage() == []:
-            warnEmptyAttribute("image", "XSDataFile")
+        if self._directory is not None:
+            self.directory.export(outfile, level, name_='directory')
+        if self._template is not None:
+            self.template.export(outfile, level, name_='template')
+        if self._startNo is not None:
+            self.startNo.export(outfile, level, name_='startNo')
+        if self._endNo is not None:
+            self.endNo.export(outfile, level, name_='endNo')
         if self._batchSize is not None:
             self.batchSize.export(outfile, level, name_='batchSize')
         if self._wedgeNumber is not None:
             self.wedgeNumber.export(outfile, level, name_='wedgeNumber')
+        if self._radiationDamage is not None:
+            self.radiationDamage.export(outfile, level, name_='radiationDamage')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1028,6 +1162,26 @@ class XSDataInputControlDozor(XSDataInput):
             obj_.build(child_)
             self.image.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'directory':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'template':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setTemplate(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'startNo':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setStartNo(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'endNo':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setEndNo(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'batchSize':
             obj_ = XSDataInteger()
             obj_.build(child_)
@@ -1037,6 +1191,11 @@ class XSDataInputControlDozor(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setWedgeNumber(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'radiationDamage':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setRadiationDamage(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

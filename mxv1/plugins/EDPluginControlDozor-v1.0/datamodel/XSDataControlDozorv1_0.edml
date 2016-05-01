@@ -6,9 +6,11 @@ import XSDataCommon.XSDataString
 import XSDataCommon.XSDataInput
 import XSDataCommon.XSDataResult
 import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataBoolean
 
 
 complex type XSDataControlImageDozor {
+	number : XSDataInteger
 	image : XSDataFile
 	spots_num_of : XSDataInteger
 	spots_int_aver : XSDataDouble 
@@ -41,9 +43,14 @@ complex type XSDataDozorInput extends XSDataInput {
 
 
 complex type XSDataInputControlDozor extends XSDataInput {
-	image : XSDataFile []
+	image : XSDataFile [] optional
+	directory : XSDataFile optional
+	template : XSDataString optional
+	startNo : XSDataInteger optional
+	endNo : XSDataInteger optional
 	batchSize : XSDataInteger optional
 	wedgeNumber : XSDataInteger optional
+	radiationDamage : XSDataBoolean optional
 }
 
 complex type XSDataResultControlDozor extends XSDataResult {

@@ -33,6 +33,7 @@ from EDUtilsImage import EDUtilsImage
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
+from XSDataCommon import XSDataFile
 
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 EDFactoryPluginStatic.loadModule("XSDataDozorv1_0")
@@ -87,7 +88,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             batchSize = 1
         else:
             batchSize = self.dataInput.batchSize.value
-        dictImage = self.createImageDict(self.dataInput.image)
+        dictImage = self.createImageDict(self.dataInput)
         listAllBatches = self.createListOfBatches(dictImage.keys(), batchSize)
         for listBatch in listAllBatches:
             # Read the header from the first image in the batch
@@ -123,12 +124,14 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             strXDSTemplate = "%s_????.%s" % (strPrefix, strSuffix)
             xsDataInputDozor.nameTemplateImage = XSDataString(os.path.join(os.path.dirname(strFileName), strXDSTemplate))
             xsDataInputDozor.wedgeNumber = self.dataInput.wedgeNumber
+            xsDataInputDozor.radiationDamage = self.dataInput.radiationDamage
             edPluginDozor = self.loadPlugin(self.strEDPluginDozorName, "Dozor_%05d" % subWedge.image[0].number.value)
             edPluginDozor.dataInput = xsDataInputDozor
             edPluginDozor.executeSynchronous()
             indexImage = 0
             for xsDataResultDozor in edPluginDozor.dataOutput.imageDozor:
                 xsDataControlImageDozor = XSDataControlImageDozor()
+                xsDataControlImageDozor.number = xsDataResultDozor.number
                 xsDataControlImageDozor.image = dictImage[listBatch[indexImage]]
                 xsDataControlImageDozor.spots_num_of = xsDataResultDozor.spots_num_of
                 xsDataControlImageDozor.spots_int_aver = xsDataResultDozor.spots_int_aver
@@ -147,10 +150,33 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             xsDataResultControlDozor.halfDoseTime = edPluginDozor.dataOutput.halfDoseTime
         self.dataOutput = xsDataResultControlDozor
 
+    def postProcess(self, _edObject=None):
+        EDPluginControl.postProcess(self)
+        self.DEBUG("EDPluginControlDozorv1_0.postProcess")
+        # Write a file to be used with ISPyB or GNUPLOT
+        gnuplotFile = open(os.path.join(self.getWorkingDirectory(), "gnuplot.dat"), "w")
+        for imageDozor in self.dataOutput.imageDozor:
+            gnuplotFile.write("{0} {1}\n".format(imageDozor.number.value, imageDozor.score.value))
+        gnuplotFile.close()
 
-    def createImageDict(self, listImage):
+
+
+    def createImageDict(self, _xsDataControlDozorInput):
         # Create dictionary of all images with the image number as key
         dictImage = {}
+        if len(_xsDataControlDozorInput.image) > 0:
+            listImage = _xsDataControlDozorInput.image
+        else:
+            # Create list of images
+            listImage = []
+            directory = _xsDataControlDozorInput.directory.path.value
+            template = _xsDataControlDozorInput.template.value
+            startNo = _xsDataControlDozorInput.startNo.value
+            endNo = _xsDataControlDozorInput.endNo.value
+            for imageIndex in range(startNo, endNo + 1):
+                imageName = template % imageIndex
+                imagePath = os.path.join(directory, imageName)
+                listImage.append(XSDataFile(XSDataString(imagePath)))
         for image in listImage:
             imagePath = image.path.value
             imageNo = EDUtilsImage.getImageNumber(imagePath)

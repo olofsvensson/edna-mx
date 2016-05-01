@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Feb 29 02:39::36 2016 by EDGenerateDS.
+# Generated Tue Mar 15 02:40::56 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -18,9 +18,11 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataDouble
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
@@ -37,6 +39,7 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
@@ -474,7 +477,7 @@ class XSDataImageDozor(object):
 
 
 class XSDataInputDozor(XSDataInput):
-    def __init__(self, configuration=None, wedgeNumber=None, nameTemplateImage=None, numberImages=None, firstImageNumber=None, startingAngle=None, imageStep=None, oscillationRange=None, orgy=None, orgx=None, fractionPolarization=None, wavelength=None, detectorDistance=None, spotSize=None, exposureTime=None, detectorType=None):
+    def __init__(self, configuration=None, radiationDamage=None, wedgeNumber=None, nameTemplateImage=None, numberImages=None, firstImageNumber=None, startingAngle=None, imageStep=None, oscillationRange=None, orgy=None, orgx=None, fractionPolarization=None, wavelength=None, detectorDistance=None, spotSize=None, exposureTime=None, detectorType=None):
         XSDataInput.__init__(self, configuration)
         if detectorType is None:
             self._detectorType = None
@@ -580,6 +583,13 @@ class XSDataInputDozor(XSDataInput):
             self._wedgeNumber = wedgeNumber
         else:
             strMessage = "ERROR! XSDataInputDozor constructor argument 'wedgeNumber' is not XSDataInteger but %s" % self._wedgeNumber.__class__.__name__
+            raise BaseException(strMessage)
+        if radiationDamage is None:
+            self._radiationDamage = None
+        elif radiationDamage.__class__.__name__ == "XSDataBoolean":
+            self._radiationDamage = radiationDamage
+        else:
+            strMessage = "ERROR! XSDataInputDozor constructor argument 'radiationDamage' is not XSDataBoolean but %s" % self._radiationDamage.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'detectorType' attribute
     def getDetectorType(self): return self._detectorType
@@ -761,6 +771,18 @@ class XSDataInputDozor(XSDataInput):
             raise BaseException(strMessage)
     def delWedgeNumber(self): self._wedgeNumber = None
     wedgeNumber = property(getWedgeNumber, setWedgeNumber, delWedgeNumber, "Property for wedgeNumber")
+    # Methods and properties for the 'radiationDamage' attribute
+    def getRadiationDamage(self): return self._radiationDamage
+    def setRadiationDamage(self, radiationDamage):
+        if radiationDamage is None:
+            self._radiationDamage = None
+        elif radiationDamage.__class__.__name__ == "XSDataBoolean":
+            self._radiationDamage = radiationDamage
+        else:
+            strMessage = "ERROR! XSDataInputDozor.setRadiationDamage argument is not XSDataBoolean but %s" % radiationDamage.__class__.__name__
+            raise BaseException(strMessage)
+    def delRadiationDamage(self): self._radiationDamage = None
+    radiationDamage = property(getRadiationDamage, setRadiationDamage, delRadiationDamage, "Property for radiationDamage")
     def export(self, outfile, level, name_='XSDataInputDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -821,6 +843,8 @@ class XSDataInputDozor(XSDataInput):
             warnEmptyAttribute("nameTemplateImage", "XSDataString")
         if self._wedgeNumber is not None:
             self.wedgeNumber.export(outfile, level, name_='wedgeNumber')
+        if self._radiationDamage is not None:
+            self.radiationDamage.export(outfile, level, name_='radiationDamage')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -901,6 +925,11 @@ class XSDataInputDozor(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setWedgeNumber(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'radiationDamage':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setRadiationDamage(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

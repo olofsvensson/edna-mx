@@ -104,10 +104,10 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.iy_max = self.config.get("iy_max")
         # Eventual bad zones
         self.strBad_zona = self.config.get("bad_zona")
-        if xsDataInputDozor.wedgeNumber is None:
-            self.setScriptCommandline("-p dozor.dat")
-        else:
+        if xsDataInputDozor.radiationDamage is not None and xsDataInputDozor.radiationDamage.value:
             self.setScriptCommandline("-rd dozor.dat")
+        else:
+            self.setScriptCommandline("-p dozor.dat")
         strCommands = self.generateCommands(xsDataInputDozor)
         EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), "dozor.dat"), strCommands)
 

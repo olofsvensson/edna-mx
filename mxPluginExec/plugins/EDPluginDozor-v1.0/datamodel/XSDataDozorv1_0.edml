@@ -6,6 +6,7 @@ import XSDataCommon.XSDataString
 import XSDataCommon.XSDataInput
 import XSDataCommon.XSDataFile
 import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataBoolean
 
 
 complex type XSDataImageDozor {
@@ -38,6 +39,7 @@ complex type XSDataInputDozor extends XSDataInput {
 	numberImages : XSDataInteger
 	nameTemplateImage : XSDataString
 	wedgeNumber : XSDataInteger optional
+	radiationDamage : XSDataBoolean optional
 }
 
 complex type XSDataResultDozor extends XSDataResult {
