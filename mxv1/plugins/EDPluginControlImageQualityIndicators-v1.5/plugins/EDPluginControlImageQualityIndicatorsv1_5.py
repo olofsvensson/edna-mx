@@ -55,6 +55,7 @@ from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
 EDFactoryPluginStatic.loadModule("XSDataPhenixv1_1")
 from XSDataPhenixv1_1 import XSDataInputDistlSignalStrength
+from XSDataPhenixv1_1 import XSDataInputLabelitIndexing
 
 EDFactoryPluginStatic.loadModule("XSDataISPyBv1_4")
 from XSDataISPyBv1_4 import XSDataISPyBImageQualityIndicators
@@ -262,21 +263,21 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
                     xsDataResultReadImageHeader = self.edPluginReadImageHeader.dataOutput
                     if xsDataResultReadImageHeader is not None:
                         edPluginLabelitIndexing = self.loadPlugin(self.strIndexingLabelitPluginName)
-                        edPluginLabelitIndexing.setDataInput(XSDataImage(xsDataResultControlImageQualityIndicator.image.path), "referenceImage",)
+                        xsDataInputLabelitIndexing = XSDataInputLabelitIndexing()
+                        xsDataInputLabelitIndexing.image.append(XSDataImage(xsDataResultControlImageQualityIndicator.image.path))
+                        edPluginLabelitIndexing.setDataInput(xsDataInputLabelitIndexing)
                         self.listPluginLabelit.append([edPluginLabelitIndexing, xsDataResultControlImageQualityIndicator])
                         edPluginLabelitIndexing.execute()
             for tupleLabelit in self.listPluginLabelit:
                 edPluginLabelitIndexing = tupleLabelit[0]
                 xsDataResultControlImageQualityIndicator = tupleLabelit[1]
                 edPluginLabelitIndexing.synchronize()
-                if not edPluginLabelitIndexing.isFailure():
-                    if edPluginLabelitIndexing.hasDataOutput("labelitScreenOutput") and edPluginLabelitIndexing.hasDataOutput("mosflmScriptsOutput"):
-                        xsDataLabelitOutput = edPluginLabelitIndexing.getDataOutput("labelitScreenOutput")[0]
-                        xsDataLabelitMosflmScriptsOutput = edPluginLabelitIndexing.getDataOutput("mosflmScriptsOutput")[0]
-                        xsDataIndexingResult = EDHandlerXSDataPhenixv1_1.generateXSDataIndexingResult(xsDataLabelitOutput, xsDataLabelitMosflmScriptsOutput)
-                        selectedSolution = xsDataIndexingResult.selectedSolution
-                        if selectedSolution is not None:
-                            xsDataResultControlImageQualityIndicator.selectedIndexingSolution = selectedSolution
+                if not edPluginLabelitIndexing.isFailure() and edPluginLabelitIndexing.dataOutput is not None:
+                    xsDataResultLabelitIndexing = edPluginLabelitIndexing.getDataOutput()
+                    xsDataIndexingResult = EDHandlerXSDataPhenixv1_1.generateXSDataIndexingResult(xsDataResultLabelitIndexing)
+                    selectedSolution = xsDataIndexingResult.selectedSolution
+                    if selectedSolution is not None:
+                        xsDataResultControlImageQualityIndicator.selectedIndexingSolution = selectedSolution
 
 
 

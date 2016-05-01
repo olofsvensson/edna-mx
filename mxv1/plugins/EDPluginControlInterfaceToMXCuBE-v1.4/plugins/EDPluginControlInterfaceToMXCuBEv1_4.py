@@ -268,7 +268,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             bRunExecOutputHTML = False
             xsDataInputMXCuBE = self.getDataInput()
             xsDataDiffractionPlan = xsDataInputMXCuBE.getDiffractionPlan()
-            if xsDataDiffractionPlan.getStrategyOption() is not None:
+            if xsDataDiffractionPlan is not None and xsDataDiffractionPlan.getStrategyOption() is not None:
                 strStrategyOption = xsDataDiffractionPlan.getStrategyOption().getValue()
                 if strStrategyOption.find("-DamPar") != -1:
                     bRunExecOutputHTML = False

@@ -2,7 +2,7 @@
 #    Project: EDNA MXv1
 #             http://www.edna-site.org
 #
-#    File: "$Id$"
+#    File: "$Id: EDTestCasePluginExecuteControlIndexingv10WithLabelit.py 1592 2010-05-31 09:27:50Z svensson $"
 #
 #    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
 #                            Grenoble, France
@@ -31,20 +31,19 @@ __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 
-from EDTestSuite import EDTestSuite
+import os
+
+from EDTestCasePluginExecuteControlIndexingv10WithLabelit import EDTestCasePluginExecuteControlIndexingv10WithLabelit
 
 
-class EDTestSuitePluginExecuteControlIndexingv10(EDTestSuite):
+class EDTestCasePluginExecuteControlIndexingv10WithFiveImages(EDTestCasePluginExecuteControlIndexingv10WithLabelit):
 
 
-    def process(self):
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10withForcedSymmetry")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10WithLabelit")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10WithFiveImages")
+    def __init__(self, _edStringTestName=None):
+        EDTestCasePluginExecuteControlIndexingv10WithLabelit.__init__(self, _edStringTestName)
+        self.setRequiredPluginConfiguration("EDPluginLabelitIndexingv1_1")
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataIndexingInput_withFiveImages.xml"))
 
-
-if __name__ == '__main__':
-
-    edTestSuitePluginExecuteControlIndexingv10 = EDTestSuitePluginExecuteControlIndexingv10("EDTestSuitePluginExecuteControlIndexingv10")
-    edTestSuitePluginExecuteControlIndexingv10.execute()
+    def preProcess(self):
+        EDTestCasePluginExecuteControlIndexingv10WithLabelit.preProcess(self)
+        self.loadTestImage([ "thau_1_0001.cbf", "thau_1_0002.cbf", "thau_1_0003.cbf", "thau_1_0004.cbf", "thau_1_0005.cbf" ])

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Dec 17 02:13::12 2014 by EDGenerateDS.
+# Generated Sun May 1 08:42::05 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -30,12 +30,12 @@ try:
     from XSDataCommon import XSData
     from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataDouble
-    from XSDataCommon import XSDataInteger
-    from XSDataCommon import XSDataMatrixDouble
-    from XSDataCommon import XSDataString
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
+    from XSDataCommon import XSDataInteger
+    from XSDataCommon import XSDataMatrixDouble
     from XSDataCommon import XSDataResult
+    from XSDataCommon import XSDataString
     from XSDataCommon import XSDataImage
     from XSDataCommon import XSDataLength
     from XSDataCommon import XSDataAngle
@@ -52,12 +52,12 @@ except ImportError as error:
 from XSDataCommon import XSData
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataDouble
-from XSDataCommon import XSDataInteger
-from XSDataCommon import XSDataMatrixDouble
-from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
+from XSDataCommon import XSDataInteger
+from XSDataCommon import XSDataMatrixDouble
 from XSDataCommon import XSDataResult
+from XSDataCommon import XSDataString
 from XSDataCommon import XSDataImage
 from XSDataCommon import XSDataLength
 from XSDataCommon import XSDataAngle
@@ -1964,6 +1964,142 @@ class XSDataInputDistlSignalStrength(XSDataInput):
 # end class XSDataInputDistlSignalStrength
 
 
+class XSDataInputLabelitIndexing(XSDataInput):
+    def __init__(self, configuration=None, forcedSpaceGroup=None, image=None):
+        XSDataInput.__init__(self, configuration)
+        if image is None:
+            self._image = []
+        elif image.__class__.__name__ == "list":
+            self._image = image
+        else:
+            strMessage = "ERROR! XSDataInputLabelitIndexing constructor argument 'image' is not list but %s" % self._image.__class__.__name__
+            raise BaseException(strMessage)
+        if forcedSpaceGroup is None:
+            self._forcedSpaceGroup = None
+        elif forcedSpaceGroup.__class__.__name__ == "XSDataString":
+            self._forcedSpaceGroup = forcedSpaceGroup
+        else:
+            strMessage = "ERROR! XSDataInputLabelitIndexing constructor argument 'forcedSpaceGroup' is not XSDataString but %s" % self._forcedSpaceGroup.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'image' attribute
+    def getImage(self): return self._image
+    def setImage(self, image):
+        if image is None:
+            self._image = []
+        elif image.__class__.__name__ == "list":
+            self._image = image
+        else:
+            strMessage = "ERROR! XSDataInputLabelitIndexing.setImage argument is not list but %s" % image.__class__.__name__
+            raise BaseException(strMessage)
+    def delImage(self): self._image = None
+    image = property(getImage, setImage, delImage, "Property for image")
+    def addImage(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataInputLabelitIndexing.addImage argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataImage":
+            self._image.append(value)
+        else:
+            strMessage = "ERROR! XSDataInputLabelitIndexing.addImage argument is not XSDataImage but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertImage(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataInputLabelitIndexing.insertImage argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataInputLabelitIndexing.insertImage argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataImage":
+            self._image[index] = value
+        else:
+            strMessage = "ERROR! XSDataInputLabelitIndexing.addImage argument is not XSDataImage but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'forcedSpaceGroup' attribute
+    def getForcedSpaceGroup(self): return self._forcedSpaceGroup
+    def setForcedSpaceGroup(self, forcedSpaceGroup):
+        if forcedSpaceGroup is None:
+            self._forcedSpaceGroup = None
+        elif forcedSpaceGroup.__class__.__name__ == "XSDataString":
+            self._forcedSpaceGroup = forcedSpaceGroup
+        else:
+            strMessage = "ERROR! XSDataInputLabelitIndexing.setForcedSpaceGroup argument is not XSDataString but %s" % forcedSpaceGroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delForcedSpaceGroup(self): self._forcedSpaceGroup = None
+    forcedSpaceGroup = property(getForcedSpaceGroup, setForcedSpaceGroup, delForcedSpaceGroup, "Property for forcedSpaceGroup")
+    def export(self, outfile, level, name_='XSDataInputLabelitIndexing'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataInputLabelitIndexing'):
+        XSDataInput.exportChildren(self, outfile, level, name_)
+        for image_ in self.getImage():
+            image_.export(outfile, level, name_='image')
+        if self.getImage() == []:
+            warnEmptyAttribute("image", "XSDataImage")
+        if self._forcedSpaceGroup is not None:
+            self.forcedSpaceGroup.export(outfile, level, name_='forcedSpaceGroup')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'image':
+            obj_ = XSDataImage()
+            obj_.build(child_)
+            self.image.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'forcedSpaceGroup':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setForcedSpaceGroup(obj_)
+        XSDataInput.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataInputLabelitIndexing" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataInputLabelitIndexing' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataInputLabelitIndexing is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataInputLabelitIndexing.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataInputLabelitIndexing()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataInputLabelitIndexing" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataInputLabelitIndexing()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataInputLabelitIndexing
+
+
 class XSDataInputPhenixXtriage(XSDataInput):
     def __init__(self, configuration=None, obsLabels=None, mtzFile=None):
         XSDataInput.__init__(self, configuration)
@@ -2166,6 +2302,119 @@ class XSDataResultDistlSignalStrength(XSDataResult):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataResultDistlSignalStrength
+
+
+class XSDataResultLabelitIndexing(XSDataInput):
+    def __init__(self, configuration=None, mosflmScriptsOutput=None, screenOutput=None):
+        XSDataInput.__init__(self, configuration)
+        if screenOutput is None:
+            self._screenOutput = None
+        elif screenOutput.__class__.__name__ == "XSDataLabelitScreenOutput":
+            self._screenOutput = screenOutput
+        else:
+            strMessage = "ERROR! XSDataResultLabelitIndexing constructor argument 'screenOutput' is not XSDataLabelitScreenOutput but %s" % self._screenOutput.__class__.__name__
+            raise BaseException(strMessage)
+        if mosflmScriptsOutput is None:
+            self._mosflmScriptsOutput = None
+        elif mosflmScriptsOutput.__class__.__name__ == "XSDataLabelitMosflmScriptsOutput":
+            self._mosflmScriptsOutput = mosflmScriptsOutput
+        else:
+            strMessage = "ERROR! XSDataResultLabelitIndexing constructor argument 'mosflmScriptsOutput' is not XSDataLabelitMosflmScriptsOutput but %s" % self._mosflmScriptsOutput.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'screenOutput' attribute
+    def getScreenOutput(self): return self._screenOutput
+    def setScreenOutput(self, screenOutput):
+        if screenOutput is None:
+            self._screenOutput = None
+        elif screenOutput.__class__.__name__ == "XSDataLabelitScreenOutput":
+            self._screenOutput = screenOutput
+        else:
+            strMessage = "ERROR! XSDataResultLabelitIndexing.setScreenOutput argument is not XSDataLabelitScreenOutput but %s" % screenOutput.__class__.__name__
+            raise BaseException(strMessage)
+    def delScreenOutput(self): self._screenOutput = None
+    screenOutput = property(getScreenOutput, setScreenOutput, delScreenOutput, "Property for screenOutput")
+    # Methods and properties for the 'mosflmScriptsOutput' attribute
+    def getMosflmScriptsOutput(self): return self._mosflmScriptsOutput
+    def setMosflmScriptsOutput(self, mosflmScriptsOutput):
+        if mosflmScriptsOutput is None:
+            self._mosflmScriptsOutput = None
+        elif mosflmScriptsOutput.__class__.__name__ == "XSDataLabelitMosflmScriptsOutput":
+            self._mosflmScriptsOutput = mosflmScriptsOutput
+        else:
+            strMessage = "ERROR! XSDataResultLabelitIndexing.setMosflmScriptsOutput argument is not XSDataLabelitMosflmScriptsOutput but %s" % mosflmScriptsOutput.__class__.__name__
+            raise BaseException(strMessage)
+    def delMosflmScriptsOutput(self): self._mosflmScriptsOutput = None
+    mosflmScriptsOutput = property(getMosflmScriptsOutput, setMosflmScriptsOutput, delMosflmScriptsOutput, "Property for mosflmScriptsOutput")
+    def export(self, outfile, level, name_='XSDataResultLabelitIndexing'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataResultLabelitIndexing'):
+        XSDataInput.exportChildren(self, outfile, level, name_)
+        if self._screenOutput is not None:
+            self.screenOutput.export(outfile, level, name_='screenOutput')
+        if self._mosflmScriptsOutput is not None:
+            self.mosflmScriptsOutput.export(outfile, level, name_='mosflmScriptsOutput')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'screenOutput':
+            obj_ = XSDataLabelitScreenOutput()
+            obj_.build(child_)
+            self.setScreenOutput(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'mosflmScriptsOutput':
+            obj_ = XSDataLabelitMosflmScriptsOutput()
+            obj_.build(child_)
+            self.setMosflmScriptsOutput(obj_)
+        XSDataInput.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataResultLabelitIndexing" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataResultLabelitIndexing' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataResultLabelitIndexing is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataResultLabelitIndexing.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultLabelitIndexing()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataResultLabelitIndexing" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultLabelitIndexing()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataResultLabelitIndexing
 
 
 class XSDataResultPhenixXtriage(XSDataResult):

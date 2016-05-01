@@ -2,13 +2,11 @@
 #    Project: EDNA MXv1
 #             http://www.edna-site.org
 #
-#    File: "$Id$"
-#
-#    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2016 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -62,31 +60,11 @@ class EDPluginControlIndexingLabelitv10(EDPluginControlIndexingv10):
         else:
             self.strSymopLib = os.path.join(strSymopHome, "symop.lib")
 
-    def setDataInput(self, _dataInput):
-        """
-        Sets the Plugin input data. A part from using the EDPlugin.setDataInput method,
-        this method also converts the input data to the Labelit specific data model indexing input.
-        """
-        self.DEBUG("EDPluginControlIndexingLabelitv10.setDataInput")
-        EDPluginControlIndexingv10.setDataInput(self, _dataInput)
-        # Convert the input data to MOSFLM specific input data
-        from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
-        self.__listXSDataImageReference = EDHandlerXSDataPhenixv1_1.generateListXSDataImageReference(self.getDataInput())
-
-
     def loadPluginIndexingInputData(self):
         self.verboseDebug("EDPluginControlIndexingLabelitv10.loadPluginIndexingInputData...")
-        for xsDataImage in self.__listXSDataImageReference:
-            self.getPluginIndexing().setDataInput(xsDataImage, "referenceImage")
         xsDataIndexingInput = self.getDataInput()
-        xsDataCrystal = xsDataIndexingInput.getCrystal()
-        if xsDataCrystal is not None:
-            xsDataSpaceGroup = xsDataCrystal.getSpaceGroup()
-            if xsDataSpaceGroup is not None:
-                xsDataStringName = xsDataSpaceGroup.getName()
-                if xsDataStringName is not None:
-                    self.getPluginIndexing().setDataInput(xsDataStringName.marshal(), "forcedSpaceGroup")
-
+        from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
+        self.getPluginIndexing().dataInput = EDHandlerXSDataPhenixv1_1.generateXSDataInputLabelitIndexing(xsDataIndexingInput)
 
 
     def getDataIndexingResult(self, _edPlugin):
@@ -94,11 +72,9 @@ class EDPluginControlIndexingLabelitv10(EDPluginControlIndexingv10):
         This method retrieves the indexing results from a MOSFLM indexing plugin.
         """
         self.DEBUG("EDPluginControlIndexingLabelitv10.getDataIndexingResultFromMOSFLM")
-        xsDataLabelitScreenOutput = _edPlugin.getDataOutput("labelitScreenOutput")[0]
-        xsDataLabelitMosflmScriptsOutput = _edPlugin.getDataOutput("mosflmScriptsOutput")[0]
+        xsDataResultLabelitIndexing = _edPlugin.dataOutput
         from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
-        xsDataIndexingResult = EDHandlerXSDataPhenixv1_1.generateXSDataIndexingResult(xsDataLabelitScreenOutput,
-                                                                                       xsDataLabelitMosflmScriptsOutput,
+        xsDataIndexingResult = EDHandlerXSDataPhenixv1_1.generateXSDataIndexingResult(xsDataResultLabelitIndexing,
                                                                                        self.getExperimentalCondition(),
                                                                                        self.strSymopLib)
         xsDataIndexingResult.setLabelitIndexing(XSDataBoolean(True))
