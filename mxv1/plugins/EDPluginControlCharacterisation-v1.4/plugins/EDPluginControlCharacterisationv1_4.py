@@ -373,8 +373,6 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         if bIndexingSuccess:
             xsDataIndexingResult = self._edPluginExecEvaluationIndexingLABELIT.getDataOutput("indexingResult")[0]
             self._xsDataResultCharacterisation.setIndexingResult(xsDataIndexingResult)
-            if self._edPluginControlIndexingIndicators.hasDataOutput("indexingShortSummary"):
-                self._strCharacterisationShortSummary += self._edPluginControlIndexingIndicators.getDataOutput("indexingShortSummary")[0].getValue()
             xsDataCollection = self._xsDataResultCharacterisation.getDataCollection()
             xsDataGeneratePredictionInput = XSDataGeneratePredictionInput()
             xsDataGeneratePredictionInput.setDataCollection(XSDataCollection.parseString(xsDataCollection.marshal()))
