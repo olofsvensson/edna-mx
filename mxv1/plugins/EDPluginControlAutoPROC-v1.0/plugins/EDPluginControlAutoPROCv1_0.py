@@ -284,7 +284,6 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                     summaryHtmlPath = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
                     # Replace opidXX with user name
                     htmlSummary = open(summaryHtmlPath).read()
-                    proposal = "mx415"
                     userString1 = "User      : {0} (".format(os.environ["USER"])
                     userString2 = "User      : {0} (".format(proposal)
                     htmlSummary = htmlSummary.replace(userString1, userString2)
