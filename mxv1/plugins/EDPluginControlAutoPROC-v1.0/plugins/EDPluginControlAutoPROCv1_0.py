@@ -287,11 +287,10 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                     userString1 = "User      : {0} (".format(os.environ["USER"])
                     userString2 = "User      : {0} (".format(proposal)
                     htmlSummary = htmlSummary.replace(userString1, userString2)
-                    localHtmlSummaryPath = os.path.join(self.getWorkingDirectory(), "summary.html")
-                    open(localHtmlSummaryPath, "w").write(htmlSummary)
+                    open(summaryHtmlPath, "w").write(htmlSummary)
                     # Convert the summary.html to summary.pdf
                     xsDataInputHTML2PDF = XSDataInputHTML2PDF()
-                    xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(localHtmlSummaryPath)))
+                    xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(summaryHtmlPath)))
                     xsDataInputHTML2PDF.paperSize = XSDataString("A3")
                     xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
                     self.edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
