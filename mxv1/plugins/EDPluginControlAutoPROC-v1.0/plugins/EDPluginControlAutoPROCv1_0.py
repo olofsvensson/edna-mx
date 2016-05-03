@@ -158,13 +158,13 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         if EDUtilsPath.isESRF():
             listDirectory = directory.split(os.sep)
             try:
-                if directories[1] == "data":
-                    if directories[2] == "visitor":
-                        beamline = directories[4]
-                        proposal = directories[3]
+                if listDirectory[1] == "data":
+                    if listDirectory[2] == "visitor":
+                        beamline = listDirectory[4]
+                        proposal = listDirectory[3]
                     else:
-                        beamline = directories[2]
-                        proposal = directories[4]
+                        beamline = listDirectory[2]
+                        proposal = listDirectory[4]
             except:
                 beamline = "unknown"
                 proposal = userName
