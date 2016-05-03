@@ -32,6 +32,7 @@ import socket
 
 from EDPluginControl import EDPluginControl
 from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
+from EDUtilsPath import EDUtilsPath
 
 from EDFactoryPlugin import edFactoryPlugin
 
@@ -120,6 +121,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         imageNoEnd = None
         pathToStartImage = None
         pathToEndImage = None
+        userName = os.environ["USER"]
+        beamline = "unknown"
+        proposal = "unknown"
 
         # If we have a data collection id, use it
         if self.dataInput.dataCollectionId is not None:
@@ -149,6 +153,22 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             fileTemplate = template.replace("####", "%04d")
             pathToStartImage = os.path.join(directory, fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
+
+        # Try to get proposal from path
+        if EDUtilsPath.isESRF():
+            listDirectory = directory.split(os.sep)
+            try:
+                if directories[1] == "data":
+                    if directories[2] == "visitor":
+                        beamline = directories[4]
+                        proposal = directories[3]
+                    else:
+                        beamline = directories[2]
+                        proposal = directories[4]
+            except:
+                beamline = "unknown"
+                proposal = userName
+
 
         if imageNoEnd - imageNoStart < 8:
             error_message = "There are fewer than 8 images, aborting"
@@ -261,10 +281,18 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingEndTime, "%a %b %d %H:%M:%S %Z %Y"))
             for autoProcProgramAttachment in autoProcProgramContainer.AutoProcProgramAttachment:
                 if autoProcProgramAttachment.fileName == "summary.html":
-                    # Convert the summary.html to summary.pdf
                     summaryHtmlPath = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
+                    # Replace opidXX with user name
+                    htmlSummary = open(summaryHtmlPath).read()
+                    proposal = "mx415"
+                    userString1 = "User      : {0} (".format(os.environ["USER"])
+                    userString2 = "User      : {0} (".format(proposal)
+                    htmlSummary = htmlSummary.replace(userString1, userString2)
+                    localHtmlSummaryPath = os.path.join(self.getWorkingDirectory(), "summary.html")
+                    open(localHtmlSummaryPath, "w").write(htmlSummary)
+                    # Convert the summary.html to summary.pdf
                     xsDataInputHTML2PDF = XSDataInputHTML2PDF()
-                    xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(summaryHtmlPath)))
+                    xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(localHtmlSummaryPath)))
                     xsDataInputHTML2PDF.paperSize = XSDataString("A3")
                     xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
                     self.edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
