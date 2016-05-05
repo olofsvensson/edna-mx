@@ -16,4 +16,5 @@ complex type XSDataInputSimpleHTMLPage extends XSDataInput {
 complex type XSDataResultSimpleHTMLPage extends XSDataResult {
 	pathToHTMLFile : XSDataFile
 	pathToHTMLDirectory : XSDataFile
+	pathToJsonFile : XSDataFile
 }

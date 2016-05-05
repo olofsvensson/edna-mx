@@ -22,7 +22,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import os, shutil, time, cgi, cgi
+import os
+import cgi
+import json
+import time
+import shutil
+
 from PIL import Image
 
 from EDPluginExec import EDPluginExec
@@ -66,6 +71,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.fMinTransmission = 10  # %
         self.bIsHelical = False
         self.bIsMultiPositional = False
+        self.dictHtml = {}
 
 
     def configure(self):
@@ -88,6 +94,11 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         EDPluginExec.process(self, _edPlugin)
         self.DEBUG("EDPluginExecSimpleHTMLPagev1_0.process...")
         if self.xsDataResultCharacterisation is not None:
+            # Create json dictionary at the same time for EXI
+            self.dictHtml = {}
+            self.dictHtml["version"] = "1.0"
+            self.dictHtml["type"] = "Characterisation"
+            self.dictHtml["items"] = []
             # Create the simple characterisation result page
             self.page = markupv1_10.page(mode='loose_html')
             self.page.init(title="Characterisation Results",
@@ -96,8 +107,10 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.page.h1()
             if self.xsDataResultCharacterisation is not None:
                 self.page.strong("Characterisation Results ")
+                self.dictHtml["title"] = "Characterisation Results"
             else:
                 self.page.strong("No Characterisation Results! ")
+                self.dictHtml["title"] = "No Characterisation Results!"
             # Link to the EDNA log file
             if self.dataInput.logFile is None:
                 strPathToLogFile = self.getLogFileName()
@@ -136,7 +149,6 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         xsDataResultSimpleHTMLPage = XSDataResultSimpleHTMLPage()
         xsDataResultSimpleHTMLPage.setPathToHTMLFile(XSDataFile(XSDataString(self.strPath)))
         xsDataResultSimpleHTMLPage.setPathToHTMLDirectory(XSDataFile(XSDataString(os.path.dirname(self.strPath))))
-        self.setDataOutput(xsDataResultSimpleHTMLPage)
         # Store in Pyarch
         if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():
             strPyarchPath = None
@@ -146,6 +158,12 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 # For debugging purposes
                 strPyarchPath = EDUtilsPath.getEdnaUserTempFolder()
             EDHandlerESRFPyarchv1_0.copyHTMLDir(_strPathToHTMLDir=os.path.dirname(self.strPath), _strPathToPyarchDirectory=strPyarchPath)
+        # Write json file
+        pathToJsonFile = os.path.join(self.getWorkingDirectory(), "characterisation.json")
+        open(pathToJsonFile, "w").write(json.dumps(self.dictHtml, indent=4))
+        xsDataResultSimpleHTMLPage.pathToJsonFile = XSDataFile(XSDataString(pathToJsonFile))
+        self.setDataOutput(xsDataResultSimpleHTMLPage)
+
 
 
 
@@ -384,6 +402,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     self.page.h2(strWarningMessage1 + "<br>" + strWarningMessage2)
                     self.page.i.close()
                     self.page.font.close()
+                    self.dictHtml["items"].append({"type": "info", "value": strWarningMessage1})
+                    self.dictHtml["items"].append({"type": "info", "value": strWarningMessage2})
             self.page.h2("Data collection info")
             firstImage = firstSubWedge.image[0]
             if firstImage.date is not None:
@@ -393,20 +413,32 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             strPrefix = EDUtilsImage.getPrefix(firstImage.path.value)
             strDirName = os.path.dirname(firstImage.path.value)
             self.page.table(class_='dataCollectionInfo', border_="1", cellpadding_="0")
+            dictTable = {"type": "table",
+                         "title": "Data collection info",
+                         "columns": [],
+                         "data": []}
+            listRow = []
             self.page.tr(align_="CENTER")
             self.page.th("Data collection date", bgcolor_=self.strTableColourTitle2)
+            dictTable["columns"].append("Data collection date")
             self.page.th(strDate, bgcolor_=self.strTableColourRows)
+            listRow.append(strDate)
             self.page.tr.close()
             self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
             self.page.th("Image prefix", bgcolor_=self.strTableColourTitle2)
+            dictTable["columns"].append("Image prefix")
             self.page.th(strPrefix, bgcolor_=self.strTableColourRows)
+            listRow.append(strPrefix)
             self.page.tr.close()
             self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
             self.page.th("Directory", bgcolor_=self.strTableColourTitle2)
+            dictTable["columns"].append("Directory")
             self.page.th(strDirName, bgcolor_=self.strTableColourRows)
+            listRow.append(strDirName)
             self.page.tr.close()
             self.page.table.close()
-
+            dictTable["data"].append(listRow)
+            self.dictHtml["items"].append(dictTable)
 
 
     def diffractionPlan(self):
@@ -433,65 +465,88 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.bIsMultiPositional = True
         self.page.h2(strTitle)
         self.page.table(class_='diffractionPlan', border_="1", cellpadding_="0")
+        dictTable = {"type": "table",
+                     "title": "Diffraction Plan",
+                     "columns": [],
+                     "data": []}
         self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
         self.page.th("Forced<br>space group")
+        dictTable["columns"].append("Forced space group")
         self.page.th("Anomalous<br>data")
+        dictTable["columns"].append("Anomalous data")
         self.page.th("Aimed<br>multiplicity")
+        dictTable["columns"].append("Aimed multiplicity")
         self.page.th("Aimed<br>completeness")
+        dictTable["columns"].append("Aimed completeness")
         self.page.th("Aimed I/sigma<br>at highest res.")
+        dictTable["columns"].append("Aimed I/sigma at highest res.")
         self.page.th("Aimed<br>resolution (&Aring;)")
+        dictTable["columns"].append("Aimed resolution (&Aring;)")
         self.page.th("Min osc.<br>width")
+        dictTable["columns"].append("Min osc. width")
         if strExtraColumnTitle is not None:
             self.page.th(strExtraColumnTitle)
+            dictTable["columns"].append(strExtraColumnTitle)
         self.page.tr.close()
         self.page.tr(align_="CENTER", bgcolor_=self.strTableColourRows)
+        listRow = []
         # Forced space group
         if xsDataDiffractionPlan.getForcedSpaceGroup() is None:
             strForcedSpaceGroup = "None"
         else:
             strForcedSpaceGroup = xsDataDiffractionPlan.getForcedSpaceGroup().getValue()
         self.page.th(strForcedSpaceGroup)
+        listRow.append(strForcedSpaceGroup)
         # Anomalous data
         if xsDataDiffractionPlan.getAnomalousData() is None or xsDataDiffractionPlan.getAnomalousData().getValue() == False:
             strAnomalousData = "False"
         else:
             strAnomalousData = "True"
         self.page.th(strAnomalousData)
+        listRow.append(strAnomalousData)
         # Aimed multiplicity
         if xsDataDiffractionPlan.getAimedMultiplicity() is None:
             strAimedMultiplicity = "Default<br>(optimized)"
         else:
             strAimedMultiplicity = "%.2f" % xsDataDiffractionPlan.getAimedMultiplicity().getValue()
         self.page.th(strAimedMultiplicity)
+        listRow.append(strAimedMultiplicity)
         # Aimed completeness
         if xsDataDiffractionPlan.getAimedCompleteness() is None:
             strAimedCompleteness = "Default<br>(>= 0.99)"
         else:
             strAimedCompleteness = "%.2f" % xsDataDiffractionPlan.getAimedCompleteness().getValue()
         self.page.th(strAimedCompleteness)
+        listRow.append(strAimedCompleteness)
         # Aimed aimedIOverSigmaAtHighestResolution
         if xsDataDiffractionPlan.getAimedIOverSigmaAtHighestResolution() is None:
             strAimedIOverSigmaAtHighestResolution = "BEST Default"
         else:
             strAimedIOverSigmaAtHighestResolution = "%.2f" % xsDataDiffractionPlan.getAimedIOverSigmaAtHighestResolution().getValue()
         self.page.th(strAimedIOverSigmaAtHighestResolution)
+        listRow.append(strAimedIOverSigmaAtHighestResolution)
         # Aimed resolution
         if xsDataDiffractionPlan.getAimedResolution() is None:
             strAimedResolution = "Default<br>(highest possible)"
         else:
             strAimedResolution = "%0.2f" % xsDataDiffractionPlan.getAimedResolution().getValue()
         self.page.th(strAimedResolution)
+        listRow.append(strAimedResolution)
         # Min osc width
         if xsDataDiffractionPlan.goniostatMinOscillationWidth is None:
             strMinOscWidth = "Default"
         else:
             strMinOscWidth = "%0.2f" % xsDataDiffractionPlan.goniostatMinOscillationWidth.value
         self.page.th(strMinOscWidth)
+        listRow.append(strMinOscWidth)
         if strExtraColumnValue is not None:
             self.page.th(strExtraColumnValue)
+            listRow.append(strExtraColumnValue)
         # Close the table
         self.page.tr.close()
         self.page.table.close()
+        dictTable["data"].append(listRow)
+        self.dictHtml["items"].append(dictTable)
 
 
     def createLinkToBestLogFile(self):
