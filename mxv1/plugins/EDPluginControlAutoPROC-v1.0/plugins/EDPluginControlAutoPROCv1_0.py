@@ -190,6 +190,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
 
         # Create path to pyarch
         pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(strResultsDirectory)
+        pyarchDirectory = pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
         if pyarchDirectory is not None and not os.path.exists(pyarchDirectory):
             os.makedirs(pyarchDirectory, 0755)
 
