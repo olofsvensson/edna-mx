@@ -331,6 +331,11 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
             # Add log file
             strPathToLogFile = self.edPluginExecAutoPROC.dataOutput.logFile.path.value
+            autoPROClog = open(strPathToLogFile).read()
+            userString1 = "User      : {0} (".format(os.environ["USER"])
+            userString2 = "User      : {0} (".format(proposal)
+            autoPROClog = autoPROClog.replace(userString1, userString2)
+            open(strPathToLogFile, "w").write(autoPROClog)
             strPyarchLogFile = strPyarchPrefix + "_autoPROC.log"
             shutil.copy(strPathToLogFile, os.path.join(strResultsDirectory, strPyarchLogFile))
             shutil.copy(strPathToLogFile, os.path.join(pyarchDirectory, strPyarchLogFile))
