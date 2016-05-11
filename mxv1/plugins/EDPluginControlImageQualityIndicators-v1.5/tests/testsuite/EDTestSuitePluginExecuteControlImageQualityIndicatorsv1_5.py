@@ -5,7 +5,7 @@
 #    Copyright (C) 2008-2013 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -38,4 +38,5 @@ class EDTestSuitePluginExecuteControlImageQualityIndicatorsv1_5(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_waitFile")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_timeOut")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_mesh4x4")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_mesh4x4_batchSize_4")
 

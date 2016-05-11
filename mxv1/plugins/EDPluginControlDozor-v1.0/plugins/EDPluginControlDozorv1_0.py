@@ -43,13 +43,14 @@ from XSDataMXv1 import XSDataInputReadImageHeader
 from XSDataControlDozorv1_0 import XSDataInputControlDozor
 from XSDataControlDozorv1_0 import XSDataResultControlDozor
 from XSDataControlDozorv1_0 import XSDataControlImageDozor
+from XSDataControlDozorv1_0 import XSDataDozorInput
 
 
 class EDPluginControlDozorv1_0(EDPluginControl):
     """
     This plugin runs the Dozor program written by Sasha Popov
     """
-    
+
 
     def __init__(self):
         EDPluginControl.__init__(self)
@@ -59,6 +60,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.edPluginControlReadImageHeader = None
         self.strEDPluginDozorName = "EDPluginDozorv1_0"
         self.edPluginDozor = None
+        self.xsDataControlDozorInput = None
 
 
     def checkParameters(self):
@@ -68,20 +70,28 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.DEBUG("EDPluginControlDozorv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
-    
+
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlDozorv1_0.preProcess")
         self.edPluginControlReadImageHeader = self.loadPlugin(self.strEDPluginControlReadImageHeaderName, "SubWedgeAssemble")
         self.edPluginDozor = self.loadPlugin(self.strEDPluginDozorName, "Dozor")
-        
+
 
 
     def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlDozorv1_0.process")
         xsDataResultControlDozor = XSDataResultControlDozor()
-        for xsDataFile in self.dataInput.image:
+        if self.dataInput.batchSize is None:
+            batchSize = 1
+        else:
+            batchSize = self.dataInput.batchSize.value
+        dictImage = self.createImageDict(self.dataInput.image)
+        listAllBatches = self.createListOfBatches(dictImage.keys(), batchSize)
+        for listBatch in listAllBatches:
+            # Read the header from the first image in the batch
+            xsDataFile = dictImage[listBatch[0]]
             edPluginControlReadImageHeader = self.loadPlugin(self.strEDPluginControlReadImageHeaderName)
             xsDataInputReadImageHeader = XSDataInputReadImageHeader()
             xsDataInputReadImageHeader.image = xsDataFile
@@ -106,19 +116,20 @@ class EDPluginControlDozorv1_0(EDPluginControl):
 #            xsDataInputDozor.imageStep : XSDataDouble optional
             xsDataInputDozor.startingAngle = XSDataDouble(goniostat.rotationAxisStart.value)
             xsDataInputDozor.firstImageNumber = subWedge.image[0].number
-            xsDataInputDozor.numberImages = XSDataInteger(1)
+            xsDataInputDozor.numberImages = XSDataInteger(len(listBatch))
             strFileName = subWedge.image[0].path.value
             strPrefix = EDUtilsImage.getPrefix(strFileName)
             strSuffix = EDUtilsImage.getSuffix(strFileName)
             strXDSTemplate = "%s_????.%s" % (strPrefix, strSuffix)
             xsDataInputDozor.nameTemplateImage = XSDataString(os.path.join(os.path.dirname(strFileName), strXDSTemplate))
-            edPluginDozor = self.loadPlugin(self.strEDPluginDozorName, "Dozor")
+            xsDataInputDozor.wedgeNumber = self.dataInput.wedgeNumber
+            edPluginDozor = self.loadPlugin(self.strEDPluginDozorName, "Dozor_%05d" % subWedge.image[0].number.value)
             edPluginDozor.dataInput = xsDataInputDozor
             edPluginDozor.executeSynchronous()
-            if edPluginDozor.dataOutput.imageDozor != []:
-                xsDataResultDozor = edPluginDozor.dataOutput.imageDozor[0]
+            indexImage = 0
+            for xsDataResultDozor in edPluginDozor.dataOutput.imageDozor:
                 xsDataControlImageDozor = XSDataControlImageDozor()
-                xsDataControlImageDozor.image = xsDataFile
+                xsDataControlImageDozor.image = dictImage[listBatch[indexImage]]
                 xsDataControlImageDozor.spots_num_of = xsDataResultDozor.spots_num_of
                 xsDataControlImageDozor.spots_int_aver = xsDataResultDozor.spots_int_aver
                 xsDataControlImageDozor.spots_resolution = xsDataResultDozor.spots_resolution
@@ -128,7 +139,54 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 xsDataControlImageDozor.powder_wilson_correlation = xsDataResultDozor.powder_wilson_correlation
                 xsDataControlImageDozor.powder_wilson_rfactor = xsDataResultDozor.powder_wilson_rfactor
                 xsDataControlImageDozor.score = xsDataResultDozor.score
+                xsDataControlImageDozor.spotFile = xsDataResultDozor.spotFile
                 xsDataResultControlDozor.addImageDozor(xsDataControlImageDozor)
+                if xsDataResultControlDozor.inputDozor is None:
+                    xsDataResultControlDozor.inputDozor = XSDataDozorInput().parseString(xsDataInputDozor.marshal())
+                indexImage += 1
+            xsDataResultControlDozor.halfDoseTime = edPluginDozor.dataOutput.halfDoseTime
         self.dataOutput = xsDataResultControlDozor
 
-     
+
+    def createImageDict(self, listImage):
+        # Create dictionary of all images with the image number as key
+        dictImage = {}
+        for image in listImage:
+            imagePath = image.path.value
+            imageNo = EDUtilsImage.getImageNumber(imagePath)
+            dictImage[imageNo] = image
+        return dictImage
+
+
+
+    def createListOfBatches(self, listImage, batchSize):
+        # Create the list of batches containing the image no
+        listAllBatches = []
+        listImagesInBatch = []
+        indexBatch = 0
+        indexNextImageInBatch = None
+        listImageSorted = sorted(listImage)
+        for imageNo in listImageSorted:
+            if indexNextImageInBatch is None:
+                # This image can be appended to this batch
+                indexBatch = 1
+                indexNextImageInBatch = imageNo + 1
+                listImagesInBatch.append(imageNo)
+                if batchSize == 1:
+                    listAllBatches.append(listImagesInBatch)
+                    listImagesInBatch = []
+                    indexNextImageInBatch = None
+            elif imageNo != indexNextImageInBatch or indexBatch == batchSize:
+                # A new batch must be started
+                indexBatch = 1
+                listAllBatches.append(listImagesInBatch)
+                listImagesInBatch = [imageNo]
+                indexNextImageInBatch = imageNo + 1
+            else:
+                # This image can be appended to this batch
+                listImagesInBatch.append(imageNo)
+                indexNextImageInBatch += 1
+                indexBatch += 1
+        if listImagesInBatch != []:
+            listAllBatches.append(listImagesInBatch)
+        return listAllBatches

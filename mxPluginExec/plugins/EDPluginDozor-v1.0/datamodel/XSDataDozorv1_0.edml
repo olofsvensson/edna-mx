@@ -4,6 +4,7 @@ import XSDataCommon.XSDataInteger
 import XSDataCommon.XSDataDouble
 import XSDataCommon.XSDataString
 import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataFile
 import XSDataCommon.XSDataResult
 
 
@@ -18,6 +19,7 @@ complex type XSDataImageDozor {
 	powder_wilson_correlation : XSDataDouble optional
 	powder_wilson_rfactor : XSDataDouble optional
 	score : XSDataDouble optional
+	spotFile : XSDataFile optional
 }
 
 complex type XSDataInputDozor extends XSDataInput {
@@ -35,8 +37,10 @@ complex type XSDataInputDozor extends XSDataInput {
 	firstImageNumber : XSDataInteger
 	numberImages : XSDataInteger
 	nameTemplateImage : XSDataString
+	wedgeNumber : XSDataInteger optional
 }
 
 complex type XSDataResultDozor extends XSDataResult {
 	imageDozor : XSDataImageDozor [] optional
+	halfDoseTime : XSDataDouble optional
 }

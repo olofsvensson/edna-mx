@@ -6,4 +6,19 @@
 	<XSImportConfiguration>
 		<name>XSConfiguration_ESRF_ISPyB_Common</name>
 	</XSImportConfiguration>
+	<XSPluginList>
+		<XSPluginItem> 
+			<name>EDPluginDozorv1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/dozor</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+	</XSPluginList>
 </XSConfiguration> 

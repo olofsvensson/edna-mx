@@ -76,12 +76,12 @@ class EDTestCasePluginExecute(EDTestCasePlugin):
         """
         EDTestCasePlugin.preProcess(self)
         if(EDUtilsPath.EDNA_SITE == None):
-            raise RuntimeError, "EDNA_SITE must be set"
+            raise RuntimeError("EDNA_SITE must be set")
         # Load the plugin that should be executed
         self._edPlugin = EDFactoryPluginStatic.loadPlugin(self.getPluginName())
         if(self._edPlugin is not None):
             for strInputDataKey in self._dictStrDataInputFiles.keys():
-                if (type(self._dictStrDataInputFiles[ strInputDataKey ]) == types.ListType):
+                if (type(self._dictStrDataInputFiles[ strInputDataKey ]) == list):
                     for strDataInputFile in self._dictStrDataInputFiles[ strInputDataKey ]:
                         strXMLData = self.readAndParseFile(strDataInputFile)
                         if (strInputDataKey == self._strDefaultInputDataKey):
@@ -161,7 +161,7 @@ class EDTestCasePluginExecute(EDTestCasePlugin):
         else:
             strErrorMessage = "ERROR: " + str(self.__class__) + ".setDataInputFile, no data input file defined for key: " + strDataInputKey
             EDVerbose.error(strErrorMessage)
-            raise RuntimeError, strErrorMessage
+            raise RuntimeError(strErrorMessage)
         return strDataInputFile
 
 
@@ -195,7 +195,7 @@ class EDTestCasePluginExecute(EDTestCasePlugin):
         else:
             strErrorMessage = "ERROR: " + str(self.__class__) + ".getReferenceDataOutputFile, no data output file defined for key: " + strDataOutputKey
             EDVerbose.error(strErrorMessage)
-            raise RuntimeError, strErrorMessage
+            raise RuntimeError(strErrorMessage)
         return strReferenceDataOutputFile
 
 
@@ -228,7 +228,7 @@ class EDTestCasePluginExecute(EDTestCasePlugin):
             if (strReferenceOutputDataKey in listOfDataOutputKeys):
                 EDVerbose.unitTest("Testing data output for %s" % strReferenceOutputDataKey)
                 listReferenceFile = self._dictStrReferenceDataOutputFiles[ strReferenceOutputDataKey ]
-                if (type(listReferenceFile) != types.ListType):
+                if (type(listReferenceFile) != list):
                     listReferenceFile = [ listReferenceFile ]
                 listReferenceOutput = []
                 for strReferenceFile in listReferenceFile:
@@ -237,7 +237,7 @@ class EDTestCasePluginExecute(EDTestCasePlugin):
                 listObtainedOutputXML = []
                 pyObjectObtainedDataOutput = self._edPlugin.getDataOutput(strReferenceOutputDataKey)
                 listObtainedOutput = None
-                if (type(pyObjectObtainedDataOutput) == types.ListType):
+                if (type(pyObjectObtainedDataOutput) == list):
                     listObtainedOutput = pyObjectObtainedDataOutput
                 else:
                     listObtainedOutput = [ pyObjectObtainedDataOutput ]

@@ -106,3 +106,14 @@ complex type XSDataResultPhenixXtriage extends XSDataResult {
 	pattersonPValue : XSDataDouble
 	pseudotranslation : XSDataBoolean
 }
+
+complex type XSDataInputLabelitIndexing extends XSDataInput {
+	image : XSDataImage []
+	forcedSpaceGroup : XSDataString optional
+}
+
+
+complex type XSDataResultLabelitIndexing extends XSDataInput {
+	screenOutput : XSDataLabelitScreenOutput optional
+	mosflmScriptsOutput : XSDataLabelitMosflmScriptsOutput optional
+}

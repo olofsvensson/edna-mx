@@ -37,6 +37,7 @@ from EDUtilsFile                         import EDUtilsFile
 from EDAssert                            import EDAssert
 from EDTestCasePluginUnit                import EDTestCasePluginUnit
 from EDUtilsTest                         import EDUtilsTest
+from EDConfiguration                     import EDConfiguration
 
 from XSDataCommon import XSDataFlux
 from XSDataCommon import XSDataWavelength
@@ -77,16 +78,20 @@ class EDTestCasePluginUnitControlStrategyv1_3(EDTestCasePluginUnit):
 
     def testConfigureOK(self):
         edPluginStrategy = self.createPlugin()
-        xsPluginItemGood01 = self.getPluginConfiguration(os.path.join(self.strDataPath, "XSConfiguration_ESRF.xml"))
-        edPluginStrategy.setConfiguration(xsPluginItemGood01)
+        strPathToTestConfigFile = os.path.join(self.getPluginTestsDataHome(), "XSConfiguration_ESRF.xml")
+        edConfiguration = EDConfiguration(strPathToTestConfigFile)
+        dictItem = edConfiguration.get(edPluginStrategy.getPluginName())
+        edPluginStrategy.setConfig(dictItem)
         edPluginStrategy.configure()
         EDAssert.equal("/opt/pxsoft/ccp4-6.0.2/lib/data", edPluginStrategy.getSymopHome())
 
 
     def testSetDataModelInput(self):
         edPluginStrategy = self.createPlugin()
-        xsPluginItemGood01 = self.getPluginConfiguration(os.path.join(self.strDataPath, "XSConfiguration_ESRF.xml"))
-        edPluginStrategy.setConfiguration(xsPluginItemGood01)
+        strPathToTestConfigFile = os.path.join(self.getPluginTestsDataHome(), "XSConfiguration_ESRF.xml")
+        edConfiguration = EDConfiguration(strPathToTestConfigFile)
+        dictItem = edConfiguration.get(edPluginStrategy.getPluginName())
+        edPluginStrategy.setConfig(dictItem)
         edPluginStrategy.configure()
 
         xsDataStrategy = XSDataInputStrategy()
@@ -234,8 +239,10 @@ class EDTestCasePluginUnitControlStrategyv1_3(EDTestCasePluginUnit):
     def testUpdateChemicalCompositionWithNativeSulfurAtom(self):
 
         edPluginStrategy = self.createPlugin()
-        xsPluginItemGood01 = self.getPluginConfiguration(os.path.join(self.strDataPath, "XSConfiguration_ESRF.xml"))
-        edPluginStrategy.setConfiguration(xsPluginItemGood01)
+        strPathToTestConfigFile = os.path.join(self.getPluginTestsDataHome(), "XSConfiguration_ESRF.xml")
+        edConfiguration = EDConfiguration(strPathToTestConfigFile)
+        dictItem = edConfiguration.get(edPluginStrategy.getPluginName())
+        edPluginStrategy.setConfig(dictItem)
         edPluginStrategy.configure()
 
         xsDataStructure = XSDataStructure()

@@ -42,13 +42,8 @@ from EDFactoryPlugin        import EDFactoryPlugin
 from EDLogging              import EDLogging
 from EDSlot                 import EDSlot
 from EDThreading import Semaphore
-#asizeof does not work with Jython not with PyPy
-if  (os.name == "java") or ("PyPy" in sys.version):
-    asizeof = None
-else:
-    EDFactoryPluginStatic.loadModule("asizeof")
-    import asizeof
-
+#The use of asizeof is removed from edna-mx
+asizeof = None
 
 class EDJob(EDLogging):
     """

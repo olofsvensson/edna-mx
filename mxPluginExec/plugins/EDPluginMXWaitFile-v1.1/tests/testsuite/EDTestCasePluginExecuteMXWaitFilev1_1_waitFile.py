@@ -44,8 +44,8 @@ class EDTestCasePluginExecuteMXWaitFilev1_1_waitFile(EDTestCasePluginExecute):
     def __init__(self, _edStringTestName=None):
         EDTestCasePluginExecute.__init__(self, "EDPluginMXWaitFilev1_1")
         self.strTmpDir = tempfile.mkdtemp(prefix="EDPluginMXWaitFilev1_1", dir=EDUtilsPath.getEdnaTestDataImagesPath())
-        os.chmod(self.strTmpDir, 0755)
-        if "EDNA_TMP_DIR" in os.environ.keys():
+        os.chmod(self.strTmpDir, 0o755)
+        if "EDNA_TMP_DIR" in os.environ:
             self.strTmpDirOrig = os.environ["EDNA_TMP_DIR"]
         else:
             self.strTmpDirOrig = None

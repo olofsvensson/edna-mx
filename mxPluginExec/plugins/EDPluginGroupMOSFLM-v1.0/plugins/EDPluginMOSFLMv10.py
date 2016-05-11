@@ -55,6 +55,7 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
         self.addCompatibleVersion("Mosflm version 7.1.2  for Image plate and CCD data 16th June 2014")
         self.addCompatibleVersion("Mosflm version 7.1.3  for Image plate and CCD data 17th February 2015")
         self.addCompatibleVersion("Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015")
+        self.addCompatibleVersion("Mosflm version 7.2.1  for IP, CCD and PAD data 10th September 2015")
 
         self.strMOSFLMNewmatFileName = None
         self.strMOSFLMMatrixFileName = None
@@ -68,7 +69,7 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
         self.DEBUG("EDPluginMOSFLMv10.process")
         # It should not be possible to execute this abstract plugin
         if (self.getPluginName() == "EDPluginMOSFLMv10"):
-            raise RuntimeError, "ExectuteAbstractPluginError"
+            raise RuntimeError("ExectuteAbstractPluginError")
 
 
     def process(self, _edObject=None):
@@ -76,7 +77,7 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
         self.DEBUG("EDPluginMOSFLMv10.process")
         # It should not be possible to execute this abstract plugin
         if (self.getPluginName() == "EDPluginMOSFLMv10"):
-            raise RuntimeError, "ExectuteAbstractPluginError"
+            raise RuntimeError("ExectuteAbstractPluginError")
 
     
     def configure(self):

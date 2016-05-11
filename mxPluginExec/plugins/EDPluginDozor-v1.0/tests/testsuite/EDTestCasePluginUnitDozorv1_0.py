@@ -5,7 +5,7 @@
 #    Copyright (C) 2012 European Synchrotron Radiation Facility
 #                       Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -65,21 +65,16 @@ class EDTestCasePluginUnitDozorv1_0(EDTestCasePluginUnit):
         EDAssert.equal(2, len(xsDataResult.imageDozor), "Result from 2 images with version 20141203")
         xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "dozor_no_results.log"))
         EDAssert.equal(1, len(xsDataResult.imageDozor), "Result from 1 image")
-        
-    def test_createImageLinks(self):
-        edPlugin = self.getPlugin()
-        strInputXML = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataInputDozor_reference.xml"))
-        xsDataInput = XSDataInputDozor.parseString(strInputXML)
-        strCommandText = edPlugin.createImageLinks(xsDataInput)
+        xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "dozorHalfDoseTime.log"))
+        EDAssert.equal(True, xsDataResult.halfDoseTime is not None, "Half dose time")
 
     def test_parseDouble(self):
         edPlugin = self.getPlugin()
         EDAssert.strAlmostEqual(1.0, edPlugin.parseDouble("1.0").value, "Parsing '1.0'")
         EDAssert.equal(None, edPlugin.parseDouble("****"), "Parsing '****'")
-        
+
 
     def process(self):
         self.addTestMethod(self.test_generateCommands)
         self.addTestMethod(self.test_parseOutput)
-        self.addTestMethod(self.test_createImageLinks)
         self.addTestMethod(self.test_parseDouble)

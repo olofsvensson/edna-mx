@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<XSDataImage>
+  <image>
+	<path>
+	  <value>${EDNA_TESTIMAGES}/thau_1_0001.cbf</value>
+	</path>
+  </image>
+  <image>
+    <path>
+      <value>${EDNA_TESTIMAGES}/thau_1_0003.cbf</value>
+    </path>
+  </image>
+</XSDataImage>

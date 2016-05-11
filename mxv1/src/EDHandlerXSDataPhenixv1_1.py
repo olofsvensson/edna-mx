@@ -7,7 +7,7 @@
 #    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal author:       Olof Svensson (svensson@esrf.fr) 
+#    Principal author:       Olof Svensson (svensson@esrf.fr)
 #
 #    Contributors:           Marie-Francoise Incardona (incardon@esrf.fr)
 #                            Karl Levik (karl.levik@diamond.ac.uk)
@@ -28,6 +28,7 @@
 
 from EDVerbose import EDVerbose
 from EDUtilsSymmetry import EDUtilsSymmetry
+from EDFactoryPluginStatic import EDFactoryPluginStatic
 
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataDouble
@@ -49,39 +50,40 @@ from XSDataMXv1 import XSDataOrientation
 class EDHandlerXSDataPhenixv1_1:
 
 
-    def generateListXSDataImageReference(_xsDataIndexingInput):
-
+    def generateXSDataInputLabelitIndexing(_xsDataIndexingInput):
+        EDFactoryPluginStatic.loadModule("XSDataPhenixv1_1")
+        from XSDataPhenixv1_1 import XSDataInputLabelitIndexing
+        inputLabelitIndexing = XSDataInputLabelitIndexing()
         listXSDataImageReference = []
-        xsDataCollection = _xsDataIndexingInput.getDataCollection()
-        xsDataSubWedgeList = xsDataCollection.getSubWedge()
-        xsDataImageFirst = xsDataSubWedgeList[0].getImage()[0]
-        listXSDataImageReference.append(XSDataImage.parseString(xsDataImageFirst.marshal()))
-        fPhiStartFirst = xsDataSubWedgeList[0].getExperimentalCondition().getGoniostat().getRotationAxisStart().getValue()
+        dataCollection = _xsDataIndexingInput.dataCollection
+        for subWedge in dataCollection.subWedge:
+            for image in subWedge.image:
+                inputLabelitIndexing.image.append(image.copy())
 
-        if (len(xsDataSubWedgeList) > 1):
+        xsDataCrystal = _xsDataIndexingInput.getCrystal()
+        if xsDataCrystal is not None:
+            xsDataSpaceGroup = xsDataCrystal.getSpaceGroup()
+            if xsDataSpaceGroup is not None:
+                xsDataStringName = xsDataSpaceGroup.getName()
+                if xsDataStringName is not None:
+                    inputLabelitIndexing.forcedSpaceGroup = xsDataStringName
 
-            xsDataImageSecond = xsDataSubWedgeList[-1].getImage()[0]
-            fPhiStartSecond = xsDataSubWedgeList[-1].getExperimentalCondition().getGoniostat().getRotationAxisStart().getValue()
-
-            # Add modulus!            
-            if (abs(fPhiStartSecond - fPhiStartFirst) > 4):
-
-                listXSDataImageReference.append(XSDataImage.parseString(xsDataImageSecond.marshal()))
-
-        return listXSDataImageReference
-    generateListXSDataImageReference = staticmethod(generateListXSDataImageReference)
+        return inputLabelitIndexing
+    generateXSDataInputLabelitIndexing = staticmethod(generateXSDataInputLabelitIndexing)
 
 
-    def generateXSDataIndexingResult(_xsDataLabelitScreenOutput, _xsDataLabelitMosflmScriptsOutput, \
-                                     _xsDataExperimentalCondition=None, _strSymopFileName=None):
+    def generateXSDataIndexingResult(_xsDataResultLabelitIndexing, _xsDataExperimentalCondition=None, _strSymopFileName=None):
         EDVerbose.DEBUG("EDHandlerXSDataLabelitv1_1.generateXSDataIndexingOutput")
 
-        iSelectedSolutionNumber = _xsDataLabelitScreenOutput.getSelectedSolutionNumber().getValue()
+        xsDataLabelitScreenOutput = _xsDataResultLabelitIndexing.screenOutput
+        xsDataLabelitMosflmScriptsOutput = _xsDataResultLabelitIndexing.mosflmScriptsOutput
+
+        iSelectedSolutionNumber = xsDataLabelitScreenOutput.getSelectedSolutionNumber().getValue()
 
         xsDataIndexingResult = XSDataIndexingResult()
         xsDataIndexingSolutionSelected = None
 
-        for xsDataLabelitSolution in _xsDataLabelitScreenOutput.getLabelitScreenSolution():
+        for xsDataLabelitSolution in xsDataLabelitScreenOutput.getLabelitScreenSolution():
             xsDataCrystal = XSDataCrystal()
             xsDataSpaceGroup = XSDataSpaceGroup()
             edStringSpaceGroupName = EDUtilsSymmetry.getMinimumSymmetrySpaceGroupFromBravaisLattice(xsDataLabelitSolution.getBravaisLattice().getValue())
@@ -108,12 +110,12 @@ class EDHandlerXSDataPhenixv1_1:
             xsDataSpaceGroupSelected.setITNumber(XSDataInteger(EDUtilsSymmetry.getITNumberFromSpaceGroupName(edStringSelectedSpaceGroupName, _strSymopFileName)))
         xsDataCrystalSelected.setSpaceGroup(xsDataSpaceGroupSelected)
         xsDataCrystalSelected.setCell(xsDataCellSelected)
-        xsDataCrystalSelected.setMosaicity(XSDataDouble(_xsDataLabelitScreenOutput.getMosaicity().getValue()))
+        xsDataCrystalSelected.setMosaicity(XSDataDouble(xsDataLabelitScreenOutput.getMosaicity().getValue()))
         xsDataIndexingSolutionSelected.setCrystal(xsDataCrystalSelected)
 
         xsDataOrientation = XSDataOrientation()
-        xsDataOrientation.setMatrixA(_xsDataLabelitMosflmScriptsOutput.getAMatrix())
-        xsDataOrientation.setMatrixU(_xsDataLabelitMosflmScriptsOutput.getUMatrix())
+        xsDataOrientation.setMatrixA(xsDataLabelitMosflmScriptsOutput.getAMatrix())
+        xsDataOrientation.setMatrixU(xsDataLabelitMosflmScriptsOutput.getUMatrix())
         xsDataIndexingSolutionSelected.setOrientation(xsDataOrientation)
 
         xsDataStatisticsIndexing = XSDataStatisticsIndexing()
@@ -121,12 +123,12 @@ class EDHandlerXSDataPhenixv1_1:
         if (_xsDataExperimentalCondition is not None):
             fBeamPositionXOrig = _xsDataExperimentalCondition.getDetector().getBeamPositionX().getValue()
             fBeamPositionYOrig = _xsDataExperimentalCondition.getDetector().getBeamPositionY().getValue()
-            fBeamPositionXNew = _xsDataLabelitScreenOutput.getBeamCentreX().getValue()
-            fBeamPositionYNew = _xsDataLabelitScreenOutput.getBeamCentreY().getValue()
+            fBeamPositionXNew = xsDataLabelitScreenOutput.getBeamCentreX().getValue()
+            fBeamPositionYNew = xsDataLabelitScreenOutput.getBeamCentreY().getValue()
             xsDataStatisticsIndexing.setBeamPositionShiftX(XSDataLength(fBeamPositionXOrig - fBeamPositionXNew))
             xsDataStatisticsIndexing.setBeamPositionShiftY(XSDataLength(fBeamPositionYOrig - fBeamPositionYNew))
 
-        #xsDataStatisticsIndexing.setSpotDeviXSDataLength( dDistanceRefinedationAngular( XSDataAngle( dDeviationAngular ) )
+        # xsDataStatisticsIndexing.setSpotDeviXSDataLength( dDistanceRefinedationAngular( XSDataAngle( dDeviationAngular ) )
         xsDataStatisticsIndexing.setSpotDeviationPositional(XSDataLength(fRmsdSelected))
         xsDataStatisticsIndexing.setSpotsUsed(XSDataInteger(iNumberOfSpotsSelected))
         xsDataStatisticsIndexing.setSpotsTotal(XSDataInteger(iNumberOfSpotsSelected))
@@ -144,16 +146,16 @@ class EDHandlerXSDataPhenixv1_1:
         if (xsDataDetector is None):
             xsDataDetector = XSDataDetector()
 
-        xsDataDetector.setBeamPositionX(_xsDataLabelitScreenOutput.getBeamCentreX())
-        xsDataDetector.setBeamPositionY(_xsDataLabelitScreenOutput.getBeamCentreY())
-        xsDataDetector.setDistance(_xsDataLabelitScreenOutput.getDistance())
+        xsDataDetector.setBeamPositionX(xsDataLabelitScreenOutput.getBeamCentreX())
+        xsDataDetector.setBeamPositionY(xsDataLabelitScreenOutput.getBeamCentreY())
+        xsDataDetector.setDistance(xsDataLabelitScreenOutput.getDistance())
 
         xsDataExperimentalConditionRefined.setDetector(xsDataDetector)
         xsDataIndexingSolutionSelected.setExperimentalConditionRefined(xsDataExperimentalConditionRefined)
 
         xsDataIndexingResult.setSelectedSolution(xsDataIndexingSolutionSelected)
 
-        xsDataIndexingResult.setIndexingLogFile(_xsDataLabelitScreenOutput.getPathToLogFile())
+        xsDataIndexingResult.setIndexingLogFile(xsDataLabelitScreenOutput.getPathToLogFile())
 
         return xsDataIndexingResult
     generateXSDataIndexingResult = staticmethod(generateXSDataIndexingResult)

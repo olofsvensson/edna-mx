@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@ import math
 from EDVerbose                         import EDVerbose
 
 from EDPluginControl                   import EDPluginControl
-from EDMessage                         import EDMessage
 from EDConfiguration                   import EDConfiguration
 from EDUtilsSymmetry                   import EDUtilsSymmetry
 from EDFactoryPluginStatic             import EDFactoryPluginStatic
@@ -93,7 +92,7 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
 
         # This varaible determines if Raddose should be executed or not
         self._bEstimateRadiationDamage = None
-        
+
         # Raddose log file
         self.xsDataFileRaddoseLog = None
 
@@ -189,7 +188,7 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup, strFileSymop)
                             bSpaceGroupForced = True
                         except Exception, detail:
-                            strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlStrategyv1_3.preProcess', "Problem to calculate Number of symmetry operators", detail)
+                            strErrorMessage = "EDPluginControlStrategyv1_3: Problem to calculate Number of symmetry operators: {0}".format(detail)
                             self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
                             raise RuntimeError, strErrorMessage
@@ -203,7 +202,7 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroupName, strFileSymop)
                         except Exception, detail:
-                            strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlStrategyv1_3.preProcess', "Problem to calculate Number of symmetry operators", detail)
+                            strErrorMessage = "EDPluginControlStrategyv1_3: Problem to calculate Number of symmetry operators: {0}".format(detail)
                             self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
                             raise RuntimeError, strErrorMessage
@@ -214,7 +213,7 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupITNumber(str(iSpaceGroupITNumber), strFileSymop)
                         except Exception, detail:
-                            strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlStrategyv1_3.preProcess', "Problem to calculate Number of symmetry operators", detail)
+                            strErrorMessage = "EDPluginControlStrategyv1_3: Problem to calculate Number of symmetry operators: {0}".format(detail)
                             self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
                             raise RuntimeError, strErrorMessage
@@ -222,7 +221,7 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                 if (strNumOperators is not None):
                     iNumOperators = int(strNumOperators)
                 else:
-                    strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlStrategyv1_3.preProcess', "No symmetry operators found for Space Group: ", strNumOperators)
+                    strErrorMessage = "EDPluginControlStrategyv1_3: No symmetry operators found for Space Group: {0}".format(strNumOperators)
                     self.error(strErrorMessage)
                     self.addErrorMessage(strErrorMessage)
                     raise RuntimeError, strErrorMessage
@@ -251,9 +250,9 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                     for xsDataSubWedge in xsDataCollection.subWedge:
                         xsDataGoniostat = xsDataSubWedge.experimentalCondition.goniostat
                         iOscStart = xsDataGoniostat.rotationAxisStart.value
-                        iOscEnd   = xsDataGoniostat.rotationAxisEnd.value
+                        iOscEnd = xsDataGoniostat.rotationAxisEnd.value
                         iOscWidth = xsDataGoniostat.oscillationWidth.value
-                        iNumberOfImages += int(round((iOscEnd-iOscStart)/iOscWidth,0))
+                        iNumberOfImages += int(round((iOscEnd - iOscStart) / iOscWidth, 0))
                 if iNumberOfImages is None:
                     iNumberOfImages = 1
                     self.WARNING("No goniostat information, number of images for RADDOSE set to 1")
@@ -312,7 +311,7 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
             xsDataInputPlotGle.filePlotMtv = xsDataResultBest.pathToPlotMtvFile
         self._edPluginPlotGle.dataInput = xsDataInputPlotGle
         self._edPluginPlotGle.executeSynchronous()
-        
+
 
 
     def finallyProcess(self, _edObject=None):
@@ -375,7 +374,7 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
         """
         self.DEBUG("EDPluginControlStrategyv1_3.doFailureActionRaddose")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlStrategyv1_3.doFailureActionRaddose")
-        strWarningMessage = EDMessage.WARNING_CANNOT_USE_PLUGIN_03 % ('EDPluginControlStrategyv1_3.doFailureActionRaddose', self._strPluginRaddoseName, "Raddose failure")
+        strWarningMessage = "EDPluginControlStrategyv1_3: Raddose failure"
         self.warning(strWarningMessage)
         self.addWarningMessage(strWarningMessage)
         self.executeBest(self)
@@ -665,5 +664,5 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                 strStrategyShortSummary += "\n"
                 strStrategyShortSummary += "NOTE! "*20 + "\n"
                 strStrategyShortSummary += "\n"
-        
+
         self.setDataOutput(XSDataString(strStrategyShortSummary), "strategyShortSummary")

@@ -5,7 +5,7 @@
 #    Copyright (C) 2011-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -65,8 +65,8 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
         self.iAutoProcScalingId = None
         self.bContinue = True
         self.iAutoProcScalingHasIntId = None
-        
-    
+
+
     def configure(self):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
@@ -84,7 +84,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
         if self.strToolsForAutoprocessingWebServiceWsdl is None:
             self.ERROR("EDPluginISPyBStoreAutoProcv1_4.configure: No toolsForAutoprocessingWebServiceWsdl found in configuration!")
             self.setFailure()
-                
+
 
     def process(self, _edObject=None):
         """
@@ -147,7 +147,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
                     self.ERROR("Couldn't create entry for AutoProcScalingStatistics in ISPyB!")
                     self.setFailure()
                     self.bContinue = False
-            
+
 
 
     def finallyProcess(self, _edObject=None):
@@ -158,6 +158,8 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
             xsDataResultStoreAutoProc.setAutoProcId(XSDataInteger(self.iAutoProcId))
         if self.iAutoProcScalingId is not None:
             xsDataResultStoreAutoProc.setAutoProcScalingId(XSDataInteger(self.iAutoProcScalingId))
+        if self.iAutoProcProgramId is not None:
+            xsDataResultStoreAutoProc.setAutoProcProgramId(XSDataInteger(self.iAutoProcProgramId))
         self.setDataOutput(xsDataResultStoreAutoProc)
 
 
@@ -175,18 +177,18 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
             if len(oReturnValue) > _iMaxStringLength:
                 strOldString = oReturnValue
                 oReturnValue = oReturnValue[0:_iMaxStringLength - 3] + "..."
-                self.warning("String truncated to %d characters for ISPyB! Original string: %s" % (_iMaxStringLength, strOldString))
+                self.warning("String truncated to %d characters for ISPyB! Original string (%d characters): %s" % (_iMaxStringLength, len(strOldString), strOldString))
                 self.warning("Truncated string: %s" % oReturnValue)
         return oReturnValue
 
-    
+
     def getDateValue(self, _strValue, _strFormat, _oDefaultValue):
         if _strValue is None or _strValue == "None":
             oReturnValue = _oDefaultValue
         else:
             oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
         return oReturnValue
-    
+
 
     def storeOrUpdateAutoProcProgram(self, _clientToolsForAutoprocessingWebService, _xsDataAutoProcProgram):
         """Creates an entry in the ISPyB AutoProcProgram table"""
@@ -258,7 +260,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
         fCellBeta = self.getXSValue(xsDataProcIntegration.getCell_beta())
         fCellGamma = self.getXSValue(xsDataProcIntegration.getCell_gamma())
         bAnomalous = self.getXSValue(xsDataProcIntegration.getAnomalous(), False)
-        iDataCollectionId = _xsDataAutoProcIntegrationContainer.getImage().getDataCollectionId()        
+        iDataCollectionId = _xsDataAutoProcIntegrationContainer.getImage().getDataCollectionId()
         recordTimeStamp = DateTime(datetime.datetime.now())
         iAutoProcIntegrationId = _clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcIntegration(
                 arg0=iAutoProcIntegrationId, \
@@ -314,8 +316,8 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
                 )
         self.DEBUG("AutoProcId: %r" % iAutoProcId)
         return iAutoProcId
-    
-    
+
+
     def storeOrUpdateAutoProcScaling(self, _clientToolsForAutoprocessingWebService, _xsDataAutoProcScaling):
         """Creates an entry in the ISPyB AutoProcScaling table"""
         iAutoProcScalingId = self.getXSValue(_xsDataAutoProcScaling.getAutoProcScalingId())
@@ -328,9 +330,9 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
                 )
         self.DEBUG("AutoProcScalingId: %r" % iAutoProcScalingId)
         return iAutoProcScalingId
-        
-    
-    
+
+
+
     def storeOrUpdateAutoProcScalingStatistics(self, _clientToolsForAutoprocessingWebService, _xsDataAutoProcScalingStatistics):
         """Creates an entry in the ISPyB AutoProcScalingStatistics table"""
         iAutoProcScalingStatisticsId = self.getXSValue(_xsDataAutoProcScalingStatistics.getAutoProcScalingStatisticsId())

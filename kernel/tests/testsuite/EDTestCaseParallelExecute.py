@@ -71,7 +71,7 @@ class EDTestCaseParallelExecute(EDTestCase):
         """
         iNbCPU = EDUtilsParallel.detectNumberOfCPUs()
         EDVerbose.unitTest("Detection of the number of Cores: %s" % iNbCPU)
-        EDAssert.equal(types.IntType, type(iNbCPU), "Number of CPU is an integer")
+        EDAssert.equal(int, type(iNbCPU), "Number of CPU is an integer")
         iNbCPU = EDUtilsParallel.detectNumberOfCPUs(1) #limited to 1
         EDAssert.equal(1, iNbCPU, "Limit number of CPU")
         iNbCPU = EDUtilsParallel.detectNumberOfCPUs(100, True) #forced to 100

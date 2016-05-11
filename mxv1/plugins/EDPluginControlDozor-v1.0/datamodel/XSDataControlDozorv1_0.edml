@@ -19,13 +19,35 @@ complex type XSDataControlImageDozor {
 	powder_wilson_correlation : XSDataDouble optional
 	powder_wilson_rfactor : XSDataDouble optional
 	score : XSDataDouble optional
+	spotFile : XSDataFile optional
 }	
+
+complex type XSDataDozorInput extends XSDataInput {
+	detectorType : XSDataString
+	exposureTime : XSDataDouble
+	spotSize : XSDataInteger
+	detectorDistance : XSDataDouble
+	wavelength : XSDataDouble
+	fractionPolarization : XSDataDouble optional
+	orgx : XSDataDouble
+	orgy : XSDataDouble
+	oscillationRange : XSDataDouble
+	imageStep : XSDataDouble optional
+	startingAngle : XSDataDouble optional
+	firstImageNumber : XSDataInteger
+	numberImages : XSDataInteger
+	nameTemplateImage : XSDataString
+}
 
 
 complex type XSDataInputControlDozor extends XSDataInput {
 	image : XSDataFile []
+	batchSize : XSDataInteger optional
+	wedgeNumber : XSDataInteger optional
 }
 
 complex type XSDataResultControlDozor extends XSDataResult {
 	imageDozor : XSDataControlImageDozor [] optional
+	inputDozor : XSDataDozorInput optional
+	halfDoseTime : XSDataDouble optional
 }

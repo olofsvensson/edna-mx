@@ -7,7 +7,7 @@
 #    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors: Olof Svensson (svensson@esrf.fr) 
+#    Principal authors: Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -20,13 +20,13 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
 #
-# This class has been inspired by the corresponding AALib class 
-# (20090518-PyAALib-JyAALib-111) and modified according to the needs 
+# This class has been inspired by the corresponding AALib class
+# (20090518-PyAALib-JyAALib-111) and modified according to the needs
 # for the EDNA project.
 #
 
@@ -221,6 +221,15 @@ class EDVerbose(object):
     writeErrorTrace = staticmethod(writeErrorTrace)
 
 
+    def getLogFileName():
+        """
+        @return: the path to the current log file.
+        @type: string
+        """
+        return EDVerbose.__edLogging.getLogFileName()
+    getLogFileName = staticmethod(getLogFileName)
+
+
     def setLogFileName(_strLogFileName):
         """
         This method can be used for customising the file name of the log file.
@@ -234,7 +243,7 @@ class EDVerbose(object):
 
     def setLogFileOff():
         """
-        This method truns off output to the log file.
+        This method turns off output to the log file.
         """
         EDVerbose.__edLogging.setLogFileOff()
     setLogFileOff = staticmethod(setLogFileOff)

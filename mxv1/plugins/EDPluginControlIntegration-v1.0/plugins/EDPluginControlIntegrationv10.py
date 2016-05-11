@@ -140,7 +140,7 @@ class EDPluginControlIntegrationv10(EDPluginControl):
                     edPluginIntegration.connectFAILURE(self.doFailureActionIntegration)
                     # Here we store the sub wedge number for use in the results
                     self.__edPluginIntegrationList.append([iSubWedgeNumber, edPluginIntegration])
-                except Exception, strErrorMessage:
+                except Exception as strErrorMessage:
                     self.addErrorMessage(strErrorMessage)
                     self.ERROR(strErrorMessage)
                     self.setFailure()
@@ -189,7 +189,7 @@ class EDPluginControlIntegrationv10(EDPluginControl):
                 xsDataIntegrationSubWedgeResult = None
                 try:
                     xsDataIntegrationSubWedgeResult = EDHandlerXSDataMOSFLMv10.generateXSDataIntegrationSubWedgeResult(xsDataMOSFLMOutputIntegration, self.__xsDataExperimentalConditionRefined)
-                except Exception, error:
+                except Exception as error:
                     strWarningMessage = str(error)
                     self.addWarningMessage(strWarningMessage)
                     self.WARNING(strWarningMessage)

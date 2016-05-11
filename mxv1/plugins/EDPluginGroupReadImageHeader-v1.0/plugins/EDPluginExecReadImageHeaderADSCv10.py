@@ -28,6 +28,7 @@ __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os
+import sys
 
 from EDVerbose    import EDVerbose
 from EDPlugin     import EDPlugin
@@ -130,7 +131,7 @@ class EDPluginExecReadImageHeaderADSCv10(EDPluginExec):
                 strErrorMessage = EDMessage.ERROR_DATA_HANDLER_02 % ("EDPluginExecReadImageHeaderADSCv10.process", "Unknown detector type")
                 self.error(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
-                raise RuntimeError, strErrorMessage
+                raise RuntimeError(strErrorMessage)
 
             xsDataExperimentalCondition.setDetector(xsDataDetector)
 
@@ -193,7 +194,10 @@ class EDPluginExecReadImageHeaderADSCv10(EDPluginExec):
         pyFile = None
         dictionary = None
         try:
-            pyFile = open(_strImageFileName, "r")
+            if sys.version.startswith('3'):
+                pyFile = open(_strImageFileName, "r", encoding = "ISO-8859-1")
+            else:
+                pyFile = open(_strImageFileName, "r")
         except:
             self.warning("**** EDPluginExecReadImageHeaderADSCv10.readHeaderADSC: couldn't open file: " + _strImageFileName)
 

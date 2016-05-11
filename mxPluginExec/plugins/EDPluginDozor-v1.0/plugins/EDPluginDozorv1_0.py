@@ -32,8 +32,8 @@ from EDUtilsTable              import EDUtilsTable
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDUtilsFile import EDUtilsFile
 
-EDFactoryPluginStatic.loadModule("markupv1_7")
-import markupv1_7
+EDFactoryPluginStatic.loadModule("markupv1_10")
+import markupv1_10
 
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
@@ -53,7 +53,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
     """
     This plugin runs the Dozor program written by Sasha Popov
     """
-    
+
 
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
@@ -68,15 +68,22 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.ix_max = None
         self.iy_max = None
         # Default values for ESRF Pilatus6M
-        self.ix_min_pilatus6m = 1 
+        self.ix_min_pilatus6m = 1
         self.ix_max_pilatus6m = 1270
         self.iy_min_pilatus6m = 1190
         self.iy_max_pilatus6m = 1310
         # Default values for ESRF Pilatus2M
-        self.ix_min_pilatus2m = 1 
+        self.ix_min_pilatus2m = 1
         self.ix_max_pilatus2m = 840
         self.iy_min_pilatus2m = 776
         self.iy_max_pilatus2m = 852
+        # Default values for ESRF Eiger4M
+        self.ix_min_eiger4m = 1
+        self.ix_max_eiger4m = 840
+        self.iy_min_eiger4m = 776
+        self.iy_max_eiger4m = 852
+        # Bad zones
+        self.strBad_zona = None
 
     def checkParameters(self):
         """
@@ -85,7 +92,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginDozorv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
-    
+
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginDozorv1_0.preProcess")
@@ -95,7 +102,12 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.ix_max = self.config.get("ix_max")
         self.iy_min = self.config.get("iy_min")
         self.iy_max = self.config.get("iy_max")
-        self.setScriptCommandline("dozor.dat")
+        # Eventual bad zones
+        self.strBad_zona = self.config.get("bad_zona")
+        if xsDataInputDozor.wedgeNumber is None:
+            self.setScriptCommandline("-p dozor.dat")
+        else:
+            self.setScriptCommandline("-rd dozor.dat")
         strCommands = self.generateCommands(xsDataInputDozor)
         EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), "dozor.dat"), strCommands)
 
@@ -107,7 +119,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                                                         self.getScriptLogFileName()))
 
 
-    
+
     def generateCommands(self, _xsDataInputDozor):
         """
         This method creates the input file for dozor
@@ -121,11 +133,16 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 self.ix_max = self.ix_max_pilatus2m
                 self.iy_min = self.iy_min_pilatus2m
                 self.iy_max = self.iy_max_pilatus2m
-            else:
-                self.ix_min = self.ix_min_pilatus6m                
+            elif _xsDataInputDozor.detectorType.value == "pilatus6m":
+                self.ix_min = self.ix_min_pilatus6m
                 self.ix_max = self.ix_max_pilatus6m
                 self.iy_min = self.iy_min_pilatus6m
                 self.iy_max = self.iy_max_pilatus6m
+            elif _xsDataInputDozor.detectorType.value == "eiger4m":
+                self.ix_min = self.ix_min_eiger4m
+                self.ix_max = self.ix_max_eiger4m
+                self.iy_min = self.iy_min_eiger4m
+                self.iy_max = self.iy_max_eiger4m
         if _xsDataInputDozor is not None:
             self.setProcessInfo("name template: %s, first image no: %d, no images: %d" % (
                 _xsDataInputDozor.nameTemplateImage.value,
@@ -148,6 +165,8 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "ix_max %d\n" % self.ix_max
             strCommandText += "iy_min %d\n" % self.iy_min
             strCommandText += "iy_max %d\n" % self.iy_max
+            if self.strBad_zona is not None:
+                strCommandText += "bad_zona %s\n" % self.strBad_zona
             strCommandText += "orgx %.1f\n" % _xsDataInputDozor.orgx.value
             strCommandText += "orgy %.1f\n" % _xsDataInputDozor.orgy.value
             strCommandText += "oscillation_range %.3f\n" % _xsDataInputDozor.oscillationRange.value
@@ -163,10 +182,12 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "starting_angle %.3f\n" % startingAngle
             strCommandText += "first_image_number %d\n" % _xsDataInputDozor.firstImageNumber.value
             strCommandText += "number_images %d\n" % _xsDataInputDozor.numberImages.value
+            if _xsDataInputDozor.wedgeNumber is not None:
+                strCommandText += "wedge_number %d\n" % _xsDataInputDozor.wedgeNumber.value
             strCommandText += "name_template_image %s\n" % _xsDataInputDozor.nameTemplateImage.value
             strCommandText += "end\n"
         return strCommandText
-    
+
 
     def parseOutput(self, _strFileName):
         """
@@ -177,11 +198,11 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         # Skip the four first lines
         listOutput = strOutput.split("\n")[6:]
         for strLine in listOutput:
-            xsDataImageDozor = XSDataImageDozor()
-            # Remove "|" 
+            # Remove "|"
             listLine = shlex.split(strLine.replace("|", " "))
 #            print listLine
-            if listLine != [] and not strLine.startswith("-"):
+            if listLine != [] and not strLine.startswith("-") and not strLine.startswith("h"):
+                xsDataImageDozor = XSDataImageDozor()
                 xsDataImageDozor.number = XSDataInteger(listLine[0])
                 if listLine[4].startswith("-"):
                     xsDataImageDozor.spots_num_of = XSDataInteger(listLine[1])
@@ -198,14 +219,22 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                     xsDataImageDozor.powder_wilson_correlation = self.parseDouble(listLine[7])
                     xsDataImageDozor.powder_wilson_rfactor = self.parseDouble(listLine[8])
                     xsDataImageDozor.score = self.parseDouble(listLine[9])
+                # Dozor spot file
+                strWorkingDir = self.getWorkingDirectory()
+                if strWorkingDir is not None:
+                    strSpotFile = os.path.join(self.getWorkingDirectory(), "%05d.spot" % xsDataImageDozor.number.value)
+                    if os.path.exists(strSpotFile):
+                        xsDataImageDozor.spotFile = XSDataFile(XSDataString(strSpotFile))
 #                print xsDataImageDozor.marshal()
                 xsDataResultDozor.addImageDozor(xsDataImageDozor)
+            elif strLine.startswith("h"):
+                xsDataResultDozor.halfDoseTime = XSDataDouble(strLine.split("=")[1])
         return xsDataResultDozor
-        
+
     def parseDouble(self, _strValue):
         returnValue = None
         try:
             returnValue = XSDataDouble(_strValue)
-        except BaseException as ex:
+        except Exception as ex:
             self.warning("Error when trying to parse '" + _strValue + "': %r" % ex)
         return returnValue

@@ -142,12 +142,21 @@
             </XSParamList>
         </XSPluginItem>
 		<XSPluginItem>
-			<name>EDPluginControlInterfaceToMXCuBEv1_3</name>  
+			<name>EDPluginControlEDNAprocv1_0</name>
 			<XSParamList>
-			    <XSParamItem>
-			        <name>contactEmail</name>
-			        <value>svensson@esrf.fr</value>
-			    </XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>7200</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginControlAutoPROCv1_0</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>7200</value>
+				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 	</XSPluginList> 

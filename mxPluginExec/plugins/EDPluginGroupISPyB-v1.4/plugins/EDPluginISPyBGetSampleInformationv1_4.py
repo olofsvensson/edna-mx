@@ -5,7 +5,7 @@
 #    Copyright (C) 2011-2014 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -66,8 +66,8 @@ class EDPluginISPyBGetSampleInformationv1_4(EDPluginExec):
         self.strToolsForBLSampleWebServiceWsdl = None
         self.xsDataResultISPyBGetSampleInformation = XSDataResultGetSampleInformation()
         self.setDataOutput(self.xsDataResultISPyBGetSampleInformation)
-        
-    
+
+
     def configure(self):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
@@ -85,7 +85,7 @@ class EDPluginISPyBGetSampleInformationv1_4(EDPluginExec):
         if self.strToolsForBLSampleWebServiceWsdl is None:
             self.ERROR("EDPluginISPyBGetSampleInformationv1_4.configure: No toolsForBLSampleWebServiceWsdl found in configuration!")
             self.setFailure()
-                
+
     def getXSValue(self, _xsData, _oDefaultValue=None, _iMaxStringLength=255):
         if _xsData is None:
             oReturnValue = _oDefaultValue
@@ -104,7 +104,7 @@ class EDPluginISPyBGetSampleInformationv1_4(EDPluginExec):
                 self.warning("Truncated string: %s" % oReturnValue)
         return oReturnValue
 
-    
+
     def getDateValue(self, _strValue, _strFormat, _oDefaultValue):
         if _strValue is None or _strValue == "None":
             oReturnValue = _oDefaultValue
@@ -194,6 +194,8 @@ class EDPluginISPyBGetSampleInformationv1_4(EDPluginExec):
                     xsDataISPyBDiffractionPlan.minDimAccrossSpindleAxis = XSDataDouble(sampleInfo.diffractionPlan.minDimAccrossSpindleAxis)
                 if "minimalResolution" in sampleInfo.diffractionPlan:
                     xsDataISPyBDiffractionPlan.minimalResolution = XSDataDouble(sampleInfo.diffractionPlan.minimalResolution)
+                if "minOscWidth" in sampleInfo.diffractionPlan:
+                    xsDataISPyBDiffractionPlan.minOscWidth = XSDataDouble(sampleInfo.diffractionPlan.minOscWidth)
                 if "numberOfPositions" in sampleInfo.diffractionPlan:
                     xsDataISPyBDiffractionPlan.numberOfPositions = XSDataInteger(sampleInfo.diffractionPlan.numberOfPositions)
                 if "observedResolution" in sampleInfo.diffractionPlan:
@@ -224,8 +226,8 @@ class EDPluginISPyBGetSampleInformationv1_4(EDPluginExec):
                     xsDataISPyBDiffractionPlan.strategyOption = XSDataString(sampleInfo.diffractionPlan.strategyOption)
                 self.xsDataResultISPyBGetSampleInformation.diffractionPlan = xsDataISPyBDiffractionPlan
         self.DEBUG("EDPluginISPyBGetSampleInformationv1_4.process: result=%s" % pprint.pformat(self.xsDataResultISPyBGetSampleInformation))
-            
-             
+
+
 
 
 

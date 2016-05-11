@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<XSDataInputControlDozor>
+	<image>
+	  <path>
+	    <value>${EDNA_TESTIMAGES}/lyso_12_0001.cbf</value>
+	  </path>
+	</image>
+</XSDataInputControlDozor>

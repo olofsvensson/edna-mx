@@ -156,6 +156,8 @@ class EDHandlerXSDataBestv1_2(EDObject):
             xsDataInputBest.setDetectorDistanceMax(xsDataDiffractionPlan.getDetectorDistanceMax())
             xsDataInputBest.setUserDefinedRotationStart(xsDataDiffractionPlan.getUserDefinedRotationStart())
             xsDataInputBest.setUserDefinedRotationRange(xsDataDiffractionPlan.getUserDefinedRotationRange())            
+            xsDataInputBest.doseLimit = xsDataDiffractionPlan.doseLimit
+            xsDataInputBest.rFriedel = xsDataDiffractionPlan.rFriedel
 
 
         # Best Files

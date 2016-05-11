@@ -1,0 +1,34 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSData
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataBoolean
+import XSDataCommon.XSDataString
+import XSDataCommon.XSDataInteger
+
+
+complex type XSDataAutoPROCIdentifier extends XSData {
+	idN : XSDataString 
+	dirN : XSDataFile 
+	templateN : XSDataString 
+	fromN : XSDataInteger 
+	toN : XSDataInteger 	
+}
+
+complex type XSDataInputAutoPROC extends XSDataInput {
+	identifier : XSDataAutoPROCIdentifier []
+	lowResolutionLimit : XSDataDouble optional
+	highResolutionLimit : XSDataDouble optional
+	anomalous : XSDataBoolean optional
+	refMTZ : XSDataFile optional
+	masterH5 : XSDataFile optional
+}
+
+complex type XSDataResultAutoPROC extends XSDataResult {
+	logFile : XSDataFile
+	processDirectory : XSDataFile []
+	ispybXML : XSDataFile
+}

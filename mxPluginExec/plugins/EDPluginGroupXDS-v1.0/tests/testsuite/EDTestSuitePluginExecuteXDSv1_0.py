@@ -5,7 +5,7 @@
 #    Copyright (C) 2008 EMBL-Grenoble, Grenoble, France
 #
 #    Principal authors: Sandor Brockhauser (brockhauser@embl-grenoble.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #                       Pierre Legrand (pierre.legrand@synchrotron-soleil.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -38,11 +38,11 @@ class EDTestSuitePluginExecuteXDSv1_0(EDTestSuite):
 
 
     def process(self):
-        """
-        """
-        self.addTestCaseFromName("EDTestCasePluginExecuteXDSIndexingv1_0")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteXDSIndexingv1_0")
+        self.addTestCaseFromName("EDTestCasePluginExecuteExecMinimalXdsv1_0")
+        self.addTestCaseFromName("EDTestCasePluginExecuteExecXscalev1_0")
+        self.addTestCaseFromName("EDTestCasePluginExecuteXDSGenerateBackgroundImagev1_0")
+        self.addTestCaseFromName("EDTestCasePluginParseXdsOutputv1_0")
+        self.addTestCaseFromName("EDTestCasePluginResCutoffv1_0")
+        self.addTestCaseFromName("EDTestCasePluginUnitXdscfgparser")
 
-if __name__ == '__main__':
-
-    edTestSuitePluginExecuteXDSv1_0 = EDTestSuitePluginExecute("EDTestSuitePluginExecuteXDSv1_0")
-    edTestSuitePluginExecuteXDSv1_0.execute()

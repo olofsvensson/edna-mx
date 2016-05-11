@@ -9,7 +9,7 @@
 #    Principal authors: Sandor Brockhauser (brockhauser@embl-grenoble.fr)
 #                       Pierre Legrand (pierre.legrand@synchrotron-soleil.fr)
 #
-#    Contributors:      Olof Svensson (svensson@esrf.fr) 
+#    Contributors:      Olof Svensson (svensson@esrf.fr)
 
 
 __authors__ = [ "Sandor Brockhauser", "Olof Svensson", "Pierre Legrand" ]
@@ -80,7 +80,7 @@ class EDHandlerXSDataXDSv1_0:
         xsDataXDSDetector = EDHandlerXSDataXDSv1_0.getXSDataXDSDetector(xsDataDetector)
         xsDataInputXDS.setDetector(xsDataXDSDetector)
 
-        # Then the beam 
+        # Then the beam
 
         xsDataXDSBeam = XSDataXDSBeam()
 
@@ -122,12 +122,12 @@ class EDHandlerXSDataXDSv1_0:
 #
 #        xsDataXDSCrystal.setFriedels_law(XSDataString("FALSE"))
 #
-##        if ( xsDataCrystal is not None ):
-##            xsDataSpaceGroup = xsDataCrystal.getSpaceGroup()
-##            if ( xsDataSpaceGroup is not None ):
-##                xsDataStringName = xsDataSpaceGroup.getName()
-##                if ( xsDataStringName is not None ):
-##                    xsDataInputXDS.setSymmetry( XSDataString( xsDataStringName.getValue() ) )      
+# #        if ( xsDataCrystal is not None ):
+# #            xsDataSpaceGroup = xsDataCrystal.getSpaceGroup()
+# #            if ( xsDataSpaceGroup is not None ):
+# #                xsDataStringName = xsDataSpaceGroup.getName()
+# #                if ( xsDataStringName is not None ):
+# #                    xsDataInputXDS.setSymmetry( XSDataString( xsDataStringName.getValue() ) )
 #        xsDataXDSCrystal.setSpace_group_number(XSDataInteger(0))
 #
 #        xsDataXDSCrystal.setStrong_pixel(XSDataInteger(8))
@@ -172,7 +172,7 @@ class EDHandlerXSDataXDSv1_0:
             elif (fGonioStatOscillationStartMin > fGonioStatOscillationStart):
                 fGonioStatOscillationStartMin = fGonioStatOscillationStart
 
-        # Loop through the list of sub wedges 
+        # Loop through the list of sub wedges
 
         for xsDataSubWedge in xsDataSubWedgeList:
 
@@ -197,7 +197,7 @@ class EDHandlerXSDataXDSv1_0:
                 iImageNumber = xsDataImage.getNumber().getValue()
                 fImageOscillationStart = fGonioStatOscillationStart + (iImageNumber - iLowestImageNumber) * fGonioStatOscillationRange
                 iXDSImageNumber = iXDSLowestImageNumberGlobal + int((fImageOscillationStart - fGonioStatOscillationStartMin) / fGonioStatOscillationRange)
-                #print iXDSImageNumber, fImageOscillationStart, fGonioStatOscillationStartMin, fGonioStatOscillationRange
+                # print iXDSImageNumber, fImageOscillationStart, fGonioStatOscillationStartMin, fGonioStatOscillationRange
                 pyStrSourcePath = xsDataImage.getPath()
                 pyStrTarget = "%s_xdslink_%05d.%s" % (pyStrPrefix, iXDSImageNumber, pyStrSuffix)
                 xsDataXDSImageLink = XSDataXDSImageLink()
@@ -311,6 +311,35 @@ class EDHandlerXSDataXDSv1_0:
                 [   0, 1476, 1043, 1061], \
                 [   0, 1476, 1255, 1273], \
                 [   0, 1476, 1467, 1485]]
+            for listRectangle in listUntrustedRectangle:
+                xsDataXDSRectangle = XSDataXDSRectangle()
+                xsDataXDSRectangle.setX1(XSDataInteger(listRectangle[0]))
+                xsDataXDSRectangle.setX2(XSDataInteger(listRectangle[1]))
+                xsDataXDSRectangle.setY1(XSDataInteger(listRectangle[2]))
+                xsDataXDSRectangle.setY2(XSDataInteger(listRectangle[3]))
+                xsDataXDSDetector.addUntrusted_rectangle(xsDataXDSRectangle)
+            xsDataXDSDetector.setMinimum_valid_pixel_value(XSDataInteger(0))
+            xsDataXDSDetector.setOverload(XSDataInteger(1048500))
+
+            xsDataXDSIntegerRangeTrustedPixel = XSDataXDSIntegerRange()
+            xsDataXDSIntegerRangeTrustedPixel.setLower(XSDataInteger(7000))
+            xsDataXDSIntegerRangeTrustedPixel.setUpper(XSDataInteger(30000))
+            xsDataXDSDetector.setValue_range_for_trusted_detector_pixels(xsDataXDSIntegerRangeTrustedPixel)
+
+            xsDataXDSDoubleRangeTrustedRegion = XSDataXDSDoubleRange()
+            xsDataXDSDoubleRangeTrustedRegion.setLower(XSDataDouble(0.0))
+            xsDataXDSDoubleRangeTrustedRegion.setUpper(XSDataDouble(1.41))
+            xsDataXDSDetector.setTrusted_region(xsDataXDSDoubleRangeTrustedRegion)
+
+            xsDataXDSDetector.setSensor_thickness(XSDataDouble(0.32))
+        elif strDetectorType == "eiger4m":
+            xsDataXDSDetector.setDetector_name(XSDataString("PILATUS"))
+            listUntrustedRectangle = \
+               [[ 1029, 1040, 0, 2167], \
+                [ 0, 2070, 512, 550], \
+                [ 0, 2070, 1063, 1103], \
+                [ 0, 2070, 1614, 1654],
+                ]
             for listRectangle in listUntrustedRectangle:
                 xsDataXDSRectangle = XSDataXDSRectangle()
                 xsDataXDSRectangle.setX1(XSDataInteger(listRectangle[0]))

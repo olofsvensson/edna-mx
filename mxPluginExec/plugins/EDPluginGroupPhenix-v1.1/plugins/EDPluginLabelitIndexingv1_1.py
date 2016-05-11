@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
 #
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -29,7 +29,7 @@ __authors__ = [ "Olof Svensson", "Marie-Francoise Incardona", "Karl Levik" ]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20120712"
+__date__ = "20160501"
 __status__ = "production"
 
 import os
@@ -50,6 +50,8 @@ from XSDataPhenixv1_1 import XSDataCell
 from XSDataPhenixv1_1 import XSDataLabelitScreenSolution
 from XSDataPhenixv1_1 import XSDataLabelitScreenOutput
 from XSDataPhenixv1_1 import XSDataLabelitMosflmScriptsOutput
+from XSDataPhenixv1_1 import XSDataInputLabelitIndexing
+from XSDataPhenixv1_1 import XSDataResultLabelitIndexing
 
 class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
     """
@@ -63,8 +65,9 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
 
     def __init__(self):
         EDPluginLabelitv1_1.__init__(self)
-        self.setXSDataInputClass(XSDataString, "forcedSpaceGroup")
-        self.__strForcedSpaceGroup = None
+        self.setXSDataInputClass(XSDataInputLabelitIndexing)
+        self.setDataOutput(XSDataResultLabelitIndexing())
+        self.strForcedSpaceGroup = None
 
 
     def preProcess(self, _edObject=None):
@@ -73,18 +76,24 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
         """
         EDPluginLabelitv1_1.preProcess(self, _edObject)
         self.DEBUG("EDPluginLabelitIndexingv1_1.preProcess...")
-        self.setScriptExecutable("labelit.screen")
-        self.initaliseLabelitCommandLine()
-        if self.hasDataInput("forcedSpaceGroup"):
-            self.__strForcedSpaceGroup = self.getDataInput("forcedSpaceGroup")[0].getValue()
-            if self.__strForcedSpaceGroup != "":
+        strCommandLabelit = "--index_only"
+        if len(self.dataInput.image) > 2:
+            file = open(os.path.join(self.getWorkingDirectory(), "dataset_preferences.py"), "w")
+            file.write("wedgelimit={0}\n".format(len(self.dataInput.image)))
+            file.close()
+        for xsDataImage in self.dataInput.image:
+            strCommandLabelit = strCommandLabelit + " " + xsDataImage.getPath().getValue()
+        self.setScriptCommandline(strCommandLabelit)
+        if self.dataInput.forcedSpaceGroup is not None:
+            self.strForcedSpaceGroup = self.dataInput.forcedSpaceGroup.value
+            if self.strForcedSpaceGroup != "":
                 strScriptCommandline = self.getScriptCommandline()
-                self.setScriptCommandline("known_symmetry=%s %s" % (self.__strForcedSpaceGroup, strScriptCommandline))
+                self.setScriptCommandline("known_symmetry=%s %s" % (self.strForcedSpaceGroup, strScriptCommandline))
         self.addListCommandPreExecution("export PYTHONPATH=\"\" ")
         self.addListCommandPreExecution(". %s" % self.getPathToLabelitSetpathScript())
         self.addListCommandPostExecution("[ -f \"LABELIT_possible\" ] && labelit.mosflm_scripts")
         # Force name of log file
-        self.setScriptLogFileName(self.compactPluginName(self.getClassName())+".log")
+        self.setScriptLogFileName(self.compactPluginName(self.getClassName()) + ".log")
 
 
     def postProcess(self, _edObject=None):
@@ -118,8 +127,8 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
                     xsDataLabelitMosflmScriptsOutput = self.parseMosflmScriptsOutput(strLabelitMosflmScriptsOutput)
                     # Path to log file
                     xsDataLabelitScreenOutput.setPathToLogFile(XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), self.getScriptLogFileName()))))
-                    self.setDataOutput(xsDataLabelitScreenOutput, "labelitScreenOutput")
-                    self.setDataOutput(xsDataLabelitMosflmScriptsOutput, "mosflmScriptsOutput")
+                    self.dataOutput.screenOutput = xsDataLabelitScreenOutput
+                    self.dataOutput.mosflmScriptsOutput = xsDataLabelitMosflmScriptsOutput
 
 
 
@@ -236,11 +245,11 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
                     if (bFoundSelectedSolution == False):
                         if (xsDataLabelitScreenSolution.getHappy().getValue() == True):
                             # Check if forced space group
-                            if self.__strForcedSpaceGroup == None or self.__strForcedSpaceGroup == "":
+                            if self.strForcedSpaceGroup == None or self.strForcedSpaceGroup == "":
                                 bFoundSelectedSolution = True
                                 xsDataLabelitScreenOutput.setSelectedSolutionNumber(XSDataInteger(iSolutionNumber))
                             else:
-                                listBravaisLattice = self.getBravaisLatticeFromSpaceGroup(self.__strForcedSpaceGroup)
+                                listBravaisLattice = self.getBravaisLatticeFromSpaceGroup(self.strForcedSpaceGroup)
                                 for strPossibleBravaisLattice in listBravaisLattice:
                                     if strBravaisLattice == strPossibleBravaisLattice:
                                         bFoundSelectedSolution = True
@@ -324,14 +333,12 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
         Generates a summary of the execution of the Labelit plugin.
         """
         self.DEBUG("EDPluginLabelitIndexingv1_1.generateExecutiveSummary")
-        #xsDataInputLabelit = self.getDataInput()
-        #xsDataResultLabelit = self.getDataOutput()
         if self.hasDataOutput("labelitScreenOutput"):
             xsDataLabelitScreenOutput = self.getDataOutput("labelitScreenOutput")[0]
             if not self.isFailure():
                 self.addExecutiveSummaryLine("Execution of Labelit indexing successful.")
             iIndex = 1
-            for xsDataImage in self.getDataInput("referenceImage"):
+            for xsDataImage in self.dataInput.image:
                 self.addExecutiveSummaryLine("Image %d                : %s" % (iIndex, xsDataImage.getPath().getValue()))
                 iIndex += 1
             self.addExecutiveSummaryLine("")
@@ -409,7 +416,7 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
         """
         strBravaisLattice = None
         strSpaceGroupName = _strSpaceGroupName.upper()
-        
+
         if strSpaceGroupName in ["P1"]:
             listBravaisLattice = ["aP"]
 

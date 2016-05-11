@@ -15,6 +15,17 @@
 	                <wavelength>
 	                    <value>9.334000e-01</value>
 	                </wavelength>
+	                <flux>
+	                	<value>1e11</value>
+	                </flux>
+	                <size>
+	                    <x>
+	                        <value>0.050000</value>
+	                    </x>
+	                    <y>
+	                        <value>0.050000</value>
+	                    </y>
+	                </size>
 	            </beam>
 	            <detector>
 	                <beamPositionX>

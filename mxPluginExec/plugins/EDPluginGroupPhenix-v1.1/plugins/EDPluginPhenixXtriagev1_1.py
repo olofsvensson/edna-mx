@@ -82,6 +82,8 @@ class EDPluginPhenixXtriagev1_1(EDPluginExecProcessScript):
         else:
             strObsLabels = "I,SIGI,merged"
         strCommandPhenixXtriage = "{0} obs={1}".format(strPathMtz, strObsLabels)
+        # Necessary for Python 3 environment:
+        self.addListCommandPreExecution("unset PYTHONPATH")
         self.setScriptCommandline(strCommandPhenixXtriage)
 
     def postProcess(self, _edObject=None):

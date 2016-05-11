@@ -157,7 +157,7 @@ class EDUtilsParallel(object):
 
 
     @classmethod
-    def detectNumberOfCPUs(cls, _iMaxCPU=sys.maxint, _bForce=False):
+    def detectNumberOfCPUs(cls, _iMaxCPU=sys.maxsize, _bForce=False):
         """
         class method :
         Detects the number of CPUs on a system. Cribbed from pp.
@@ -171,7 +171,7 @@ class EDUtilsParallel(object):
         @rtype: integer
         """
         if not isinstance(_iMaxCPU, int):
-            _iMaxCPU = sys.maxint
+            _iMaxCPU = sys.maxsize
         else:
             _iMaxCPU = max(1, _iMaxCPU)
 
@@ -220,20 +220,6 @@ class EDUtilsParallel(object):
             cls._semaphoreNbThreads = None
 
 
-    @classmethod
-    def getSemaphoreValue(cls):
-        """
-        Class method:
-        getter for the current value of the semaphore counting the CPU-active threads
-        
-        @return: value of the semaphore (or None if not initialized) 
-        @rtype: int
-        """
-        if cls._semaphoreNbThreads is not None:
-            return cls._semaphoreNbThreads._Semaphore__value
-        else:
-            return None
-
 
     @classmethod
     def getNbRunning(cls):
@@ -269,8 +255,7 @@ class EDUtilsParallel(object):
         Method to release the semaphore that controls the number of threads running concurrently
         """
         if cls._semaphoreNbThreads is not None:
-            if cls._semaphoreNbThreads._Semaphore__value < cls._iNbThreads:
-                cls._semaphoreNbThreads.release()
+            cls._semaphoreNbThreads.release()
         else:
             EDVerbose.DEBUG("EDUtilsParallel: Unable to release an uninitialized semaphore (NbCPU).")
 

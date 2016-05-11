@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -19,7 +19,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -28,7 +28,7 @@ __authors__ = [ "Olof Svensson", "Marie-Francoise Incardona" ]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20120712"
+__date__ = "20151118"
 __status__ = "production"
 
 import os
@@ -73,7 +73,7 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         self.setDataOutput(XSDataResultBest())
 
         # This version of the Best plugin requires the latest
-        # version of Best. 
+        # version of Best.
         self.addCompatibleVersion("Version 4.1.0 //  02.10.2012")
 
         self.strCONF_BEST_HOME_LABEL = "besthome"
@@ -181,8 +181,8 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         try:
             if float(strVersion[8:11]) > 4.0:
                 self.bVersionHigherThan4_0 = True
-        except Exception, e:
-            pass 
+        except Exception as e:
+            pass
 
 
     def preProcess(self, _edObject=None):
@@ -284,17 +284,17 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
             iNumberOfCrystalPositions = str(self.getDataInput().getNumberOfCrystalPositions().getValue())
             self.strCommandBest = self.strCommandBest + "-Npos " + iNumberOfCrystalPositions + " "
 
-        
+
         if(self.getDataInput().getDetectorDistanceMin() is not None):
             fDetectorDistanceMin = str(self.getDataInput().getDetectorDistanceMin().getValue())
             self.strCommandBest = self.strCommandBest + "-DIS_MIN " + fDetectorDistanceMin + " "
 
-        
+
         if(self.getDataInput().getDetectorDistanceMax() is not None):
             fDetectorDistanceMax = str(self.getDataInput().getDetectorDistanceMax().getValue())
             self.strCommandBest = self.strCommandBest + "-DIS_MAX " + fDetectorDistanceMax + " "
 
-        
+
         if(self.getDataInput().getAnomalousData() is not None):
             bAnomalousData = self.getDataInput().getAnomalousData().getValue()
             if (bAnomalousData):
@@ -321,14 +321,20 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
             fRadiationDamageModelGamma = str(self.getDataInput().getRadiationDamageModelGamma().getValue())
             self.strCommandBest = self.strCommandBest + "-gama " + fRadiationDamageModelGamma + " "
 
+        if self.dataInput.doseLimit is not None:
+            self.strCommandBest += " -DMAX {0} ".format(self.dataInput.doseLimit.value)
+
+        if self.dataInput.rFriedel is not None:
+            self.strCommandBest += " -Rf {0} ".format(self.dataInput.rFriedel.value)
+
         self.strCommandBest = self.strCommandBest + "-T " + str(fMaxExposureTime) + " " + \
                                      "-dna " + self.getScriptBaseName() + "_dnaTables.xml" + " " + \
                                      "-o " + os.path.join(self.getWorkingDirectory(), self.getScriptBaseName() + "_plots.mtv ") + \
                                      "-e " + self.getComplexity() + " "
-                                     
+
         if self.getDataInput().getXdsBackgroundImage():
             strPathToXdsBackgroundImage = self.getDataInput().getXdsBackgroundImage().getPath().getValue()
-            self.strCommandBest = self.strCommandBest + "-MXDS " + self.getFileBestPar() + " " + strPathToXdsBackgroundImage + " " + listFileBestHKLCommand            
+            self.strCommandBest = self.strCommandBest + "-MXDS " + self.getFileBestPar() + " " + strPathToXdsBackgroundImage + " " + listFileBestHKLCommand
         else:
             self.strCommandBest = self.strCommandBest + "-mos " + self.getFileBestDat() + " " + self.getFileBestPar() + " " + listFileBestHKLCommand
 
@@ -343,7 +349,7 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         xsDataResultBest.setPathToLogFile(xsDataFilePathToLog)
         strError = self.readProcessErrorLogFile()
         if((strError is not None) and (strError != "")):
-            strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginBestv1_2.finallyProcess', 'EDPluginBestv1_2', strError)
+            strErrorMessage = "Error when executing BEST: {0}".format(strError)
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             # Append error message to best log
@@ -385,7 +391,7 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
             except Exception as e:
                 self.setFailure()
                 self.error("Parsing of BEST XML file failed: %s" % e)
-                
+
             # Loop through all the tables and fill in the relevant parts of xsDataResultBest
             if not self.isFailure():
                 xsDataStringStrategyOption = self.getDataInput().getStrategyOption()
@@ -490,9 +496,10 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
             # Not part of strategySummaryItemListToStrategySummary method since it is in the general_form part
             xsTableGeneralInform = EDUtilsTable.getTableFromTables(_xsDataDnaTables, "general_inform")
             xsRankingResolutionItemList = EDUtilsTable.getListsFromTable(xsTableGeneralInform, "ranking_resolution")
-            xsItemRankingResolution = EDUtilsTable.getItemFromList(xsRankingResolutionItemList[0], "dmin")
-            fRankingResolution = float(xsItemRankingResolution.getValueOf_())
-            xsDataStrategySummary.setRankingResolution(XSDataDouble(fRankingResolution))
+            if len(xsRankingResolutionItemList) > 0:
+                xsItemRankingResolution = EDUtilsTable.getItemFromList(xsRankingResolutionItemList[0], "dmin")
+                fRankingResolution = float(xsItemRankingResolution.getValueOf_())
+                xsDataStrategySummary.setRankingResolution(XSDataDouble(fRankingResolution))
 
             xsDataBestCollectionPlan.setStrategySummary(xsDataStrategySummary)
 

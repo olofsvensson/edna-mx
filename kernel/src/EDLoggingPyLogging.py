@@ -7,7 +7,7 @@
 #    Copyright (C) 2010-2010 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors: Olof Svensson (svensson@esrf.fr) 
+#    Principal authors: Olof Svensson (svensson@esrf.fr)
 #                       Mark Basham (Mark.Basham@diamon.ac.uk)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 from __future__ import with_statement
@@ -259,6 +259,14 @@ class EDLoggingPyLogging(EDObject):
         self.logger.error(_strPrefix + strErrorMessage + os.linesep)
 
 
+    def getLogFileName(self):
+        """
+        @return: the path to the current log file.
+        @type: string
+        """
+        return self.__strLogFileName
+
+
     def setLogFileName(self, _strLogFileName):
         """
         This method can be used for customising the file name of the log file.
@@ -278,13 +286,13 @@ class EDLoggingPyLogging(EDObject):
             self.logger.addHandler(self.info_hdlr)
             if self.__bIsVerboseDebug:
                 # Debug log file
-                debugLogFileName = _strLogFileName+"_debug"
+                debugLogFileName = _strLogFileName + "_debug"
                 self.debug_hdlr = logging.FileHandler(debugLogFileName)
                 debug_formatter = logging.Formatter('%(asctime)s %(levelname)-10s %(message)s')
                 self.debug_hdlr.setFormatter(debug_formatter)
                 self.debug_hdlr.setLevel(logging.DEBUG)
                 self.logger.addHandler(self.debug_hdlr)
-            
+
 
     def setLogFileOff(self):
         """

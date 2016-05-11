@@ -11,6 +11,19 @@
 					<name>mxCuBE_URI</name>
 					<value>http://aelita.esrf.fr:7171</value>
 				</XSParamItem>
+				<XSParamItem>
+					<name>minTransmissionWarning</name>
+					<value>1</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginExecSimpleHTMLPagev1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>minTransmissionWarning</name>
+					<value>1</value>
+				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
   	</XSPluginList>

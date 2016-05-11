@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu May 22 08:07::29 2014 by EDGenerateDS.
+# Generated Thu May 5 08:17::55 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -120,7 +120,7 @@ class MixedContainer(object):
 
 
 class XSDataInputSimpleHTMLPage(XSDataInput):
-    def __init__(self, configuration=None, helicalDistance=None, fileGraph=None, characterisationResult=None):
+    def __init__(self, configuration=None, logFile=None, helicalDistance=None, fileGraph=None, characterisationResult=None):
         XSDataInput.__init__(self, configuration)
         if characterisationResult is None:
             self._characterisationResult = None
@@ -142,6 +142,13 @@ class XSDataInputSimpleHTMLPage(XSDataInput):
             self._helicalDistance = helicalDistance
         else:
             strMessage = "ERROR! XSDataInputSimpleHTMLPage constructor argument 'helicalDistance' is not XSDataDouble but %s" % self._helicalDistance.__class__.__name__
+            raise BaseException(strMessage)
+        if logFile is None:
+            self._logFile = None
+        elif logFile.__class__.__name__ == "XSDataFile":
+            self._logFile = logFile
+        else:
+            strMessage = "ERROR! XSDataInputSimpleHTMLPage constructor argument 'logFile' is not XSDataFile but %s" % self._logFile.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'characterisationResult' attribute
     def getCharacterisationResult(self): return self._characterisationResult
@@ -200,6 +207,18 @@ class XSDataInputSimpleHTMLPage(XSDataInput):
             raise BaseException(strMessage)
     def delHelicalDistance(self): self._helicalDistance = None
     helicalDistance = property(getHelicalDistance, setHelicalDistance, delHelicalDistance, "Property for helicalDistance")
+    # Methods and properties for the 'logFile' attribute
+    def getLogFile(self): return self._logFile
+    def setLogFile(self, logFile):
+        if logFile is None:
+            self._logFile = None
+        elif logFile.__class__.__name__ == "XSDataFile":
+            self._logFile = logFile
+        else:
+            strMessage = "ERROR! XSDataInputSimpleHTMLPage.setLogFile argument is not XSDataFile but %s" % logFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delLogFile(self): self._logFile = None
+    logFile = property(getLogFile, setLogFile, delLogFile, "Property for logFile")
     def export(self, outfile, level, name_='XSDataInputSimpleHTMLPage'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -216,6 +235,8 @@ class XSDataInputSimpleHTMLPage(XSDataInput):
             fileGraph_.export(outfile, level, name_='fileGraph')
         if self._helicalDistance is not None:
             self.helicalDistance.export(outfile, level, name_='helicalDistance')
+        if self._logFile is not None:
+            self.logFile.export(outfile, level, name_='logFile')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -236,6 +257,11 @@ class XSDataInputSimpleHTMLPage(XSDataInput):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setHelicalDistance(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'logFile':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setLogFile(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -282,7 +308,7 @@ class XSDataInputSimpleHTMLPage(XSDataInput):
 
 
 class XSDataResultSimpleHTMLPage(XSDataResult):
-    def __init__(self, status=None, pathToHTMLDirectory=None, pathToHTMLFile=None):
+    def __init__(self, status=None, pathToJsonFile=None, pathToHTMLDirectory=None, pathToHTMLFile=None):
         XSDataResult.__init__(self, status)
         if pathToHTMLFile is None:
             self._pathToHTMLFile = None
@@ -297,6 +323,13 @@ class XSDataResultSimpleHTMLPage(XSDataResult):
             self._pathToHTMLDirectory = pathToHTMLDirectory
         else:
             strMessage = "ERROR! XSDataResultSimpleHTMLPage constructor argument 'pathToHTMLDirectory' is not XSDataFile but %s" % self._pathToHTMLDirectory.__class__.__name__
+            raise BaseException(strMessage)
+        if pathToJsonFile is None:
+            self._pathToJsonFile = None
+        elif pathToJsonFile.__class__.__name__ == "XSDataFile":
+            self._pathToJsonFile = pathToJsonFile
+        else:
+            strMessage = "ERROR! XSDataResultSimpleHTMLPage constructor argument 'pathToJsonFile' is not XSDataFile but %s" % self._pathToJsonFile.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'pathToHTMLFile' attribute
     def getPathToHTMLFile(self): return self._pathToHTMLFile
@@ -322,6 +355,18 @@ class XSDataResultSimpleHTMLPage(XSDataResult):
             raise BaseException(strMessage)
     def delPathToHTMLDirectory(self): self._pathToHTMLDirectory = None
     pathToHTMLDirectory = property(getPathToHTMLDirectory, setPathToHTMLDirectory, delPathToHTMLDirectory, "Property for pathToHTMLDirectory")
+    # Methods and properties for the 'pathToJsonFile' attribute
+    def getPathToJsonFile(self): return self._pathToJsonFile
+    def setPathToJsonFile(self, pathToJsonFile):
+        if pathToJsonFile is None:
+            self._pathToJsonFile = None
+        elif pathToJsonFile.__class__.__name__ == "XSDataFile":
+            self._pathToJsonFile = pathToJsonFile
+        else:
+            strMessage = "ERROR! XSDataResultSimpleHTMLPage.setPathToJsonFile argument is not XSDataFile but %s" % pathToJsonFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delPathToJsonFile(self): self._pathToJsonFile = None
+    pathToJsonFile = property(getPathToJsonFile, setPathToJsonFile, delPathToJsonFile, "Property for pathToJsonFile")
     def export(self, outfile, level, name_='XSDataResultSimpleHTMLPage'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -338,6 +383,10 @@ class XSDataResultSimpleHTMLPage(XSDataResult):
             self.pathToHTMLDirectory.export(outfile, level, name_='pathToHTMLDirectory')
         else:
             warnEmptyAttribute("pathToHTMLDirectory", "XSDataFile")
+        if self._pathToJsonFile is not None:
+            self.pathToJsonFile.export(outfile, level, name_='pathToJsonFile')
+        else:
+            warnEmptyAttribute("pathToJsonFile", "XSDataFile")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -353,6 +402,11 @@ class XSDataResultSimpleHTMLPage(XSDataResult):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setPathToHTMLDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pathToJsonFile':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setPathToJsonFile(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

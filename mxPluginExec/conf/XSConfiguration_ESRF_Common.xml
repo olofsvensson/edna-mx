@@ -6,7 +6,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>pathToLabelitSetpathScript</name>
-					<value>/opt/pxsoft/phenix/vdev-1696/linux-x86_64/phenix-dev-1696/phenix_env.sh</value>
+					<value>/opt/pxsoft/phenix/v1.10-2155/linux-x86_64/phenix-1.10-2155/phenix_env.sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
@@ -14,7 +14,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/phenix/vdev-1696/linux-x86_64/phenix-dev-1696/build/intel-linux-2.6-x86_64/bin/labelit.screen</value>
+					<value>/opt/pxsoft/phenix/v1.10-2155/linux-x86_64/phenix-1.10-2155/build/bin/labelit.screen</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -35,7 +35,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>pathToLabelitSetpathScript</name>
-					<value>/opt/pxsoft/phenix/vdev-1696/linux-x86_64/phenix-dev-1696/phenix_env.sh</value>
+					<value>/opt/pxsoft/phenix/v1.10-2155/linux-x86_64/phenix-1.10-2155/phenix_env.sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
@@ -43,7 +43,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/phenix/vdev-1696/linux-x86_64/phenix-dev-1696/build/intel-linux-2.6-x86_64/bin/labelit.screen</value>
+					<value>/opt/pxsoft/phenix/v1.10-2155/linux-x86_64/phenix-1.10-2155/build/bin/labelit.screen</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -55,7 +55,28 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>30</value>
+					<value>60</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem> 
+			<name>EDPluginLabelitIndexingv1_2</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>pathToLabelitSetpathScript</name>
+					<value>/opt/pxsoft/phenix/v1.10-2155/linux-x86_64/phenix-1.10-2155/phenix_env.sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/labelit.screen</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>60</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -93,7 +114,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>distlServerHost</name>
-					<value>mxedna.esrf.fr</value>
+					<value>mxhpc2-1705.esrf.fr</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>distlServerPort</name>
@@ -110,7 +131,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>pathToLabelitSetpathScript</name>
-					<value>/opt/pxsoft/phenix/vdev-1696/linux-x86_64/phenix-dev-1696/phenix_env.sh</value>
+					<value>/opt/pxsoft/phenix/v1.10-2155/linux-x86_64/phenix-1.10-2155/phenix_env.sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
@@ -118,7 +139,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/phenix/vdev-1696/linux-x86_64/phenix-dev-1696/build/intel-linux-2.6-x86_64/bin/labelit.distl</value>
+					<value>/opt/pxsoft/phenix/v1.10-2155/linux-x86_64/phenix-1.10-2155/build/bin/labelit.distl</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -143,7 +164,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v720_20150605</value>
+					<value>/opt/pxsoft/bin/mosflm__v721_20150910</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -151,7 +172,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015</value>
+					<value>Mosflm version 7.2.1  for IP, CCD and PAD data 10th September 2015</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -168,7 +189,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v720_20150605</value>
+					<value>/opt/pxsoft/bin/mosflm__v721_20150910</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -176,7 +197,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015</value>
+					<value>Mosflm version 7.2.1  for IP, CCD and PAD data 10th September 2015</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -193,7 +214,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v720_20150605</value>
+					<value>/opt/pxsoft/bin/mosflm__v721_20150910</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -201,7 +222,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015</value>
+					<value>Mosflm version 7.2.1  for IP, CCD and PAD data 10th September 2015</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -272,7 +293,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/BEST/v5.1.0_20150707/linux/best</value>
+					<value>/opt/pxsoft/BEST/v5.1.1_20151118/linux/best</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -298,6 +319,40 @@
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
 					<value>/opt/pxsoft/bin/rdfit</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>120</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginH5ToCBFv1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/H5ToXds</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>120</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginH5ToCBFv1_1</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/minicbf</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -469,23 +524,6 @@
 			</XSParamList>
 		</XSPluginItem>
 
-		<!-- The autoproc control plugin itself. We use a loooong timeout value 
-			just in case -->
-
-		<XSPluginItem>
-			<name>EDPluginControlAutoprocv1_0</name>
-			<XSParamList>
-				<XSParamItem>
-					<name>timeOut</name>
-					<value>7200</value>
-				</XSParamItem>
-			    <XSParamItem>
-			        <name>contactEmail</name>
-			        <value>svensson@esrf.fr</value>
-			    </XSParamItem>
-			</XSParamList>
-		</XSPluginItem>
-
 		<!-- the plugins for the file conversion -->
 		<XSPluginItem>
 			<name>EDPluginExecPointlessv1_0</name>
@@ -555,11 +593,15 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/xds/vdefault/redhate4-x86_64/xds_par</value>
+					<value>/opt/pxsoft/bin/xds_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
 					<value>3600</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>maxNoProcessors</name>
+					<value>10</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -572,7 +614,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/xds/vdefault/redhate4-x86_64/xscale_par</value>
+					<value>/opt/pxsoft/bin/xscale_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -623,11 +665,45 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/phenix.xtriage</value>
+					<value>/opt/pxsoft/phenix/v1.10-2155/linux-x86_64/phenix-1.10-2155/build/bin/phenix.xtriage</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
 					<value>600</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem> 
+			<name>EDPluginHTML2PDFv1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/wkhtmltopdf</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>30</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem> 
+			<name>EDPluginExecAutoPROCv1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/process</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>3600</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>

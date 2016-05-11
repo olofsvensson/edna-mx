@@ -36,7 +36,11 @@ This is a static utility class for handling of files.
 """
 
 
-import os, shutil
+import os, shutil, sys
+
+if sys.version.startswith('3'):
+    unicode = str
+
 from EDVerbose import EDVerbose
 
 
@@ -52,8 +56,17 @@ class EDUtilsFile(object):
         """
         strContent = None
         try:
-            strContent = open(_strFileName, "rb").read()
-        except Exception, e:
+            ### Guifre Cuni, 130507 ?!?!?! Possible bug here...
+            ### After some executions there may be an error because too much opened files...
+            ### It can be monitored with command watch "lsof -p $EDNA_TANGODS_PID"
+
+            ###strContent = open(_strFileName, "rb").read()
+            with open(_strFileName, "rb") as fd:
+                strContent = fd.read()
+            if sys.version.startswith('3'):
+                strContent = strContent.decode('utf-8')
+
+        except Exception as e:
             strError = "EDUtilsFile.readFile: Reading %s: %s" % (_strFileName, str(e))
             EDVerbose.ERROR(strError)
             raise IOError(strError)
@@ -70,12 +83,15 @@ class EDUtilsFile(object):
         """
         try:
             with open(_strFileName, "wb") as myFile:
-                if type(_strContent) == unicode:
-                    myFile.write(_strContent)
+                if sys.version.startswith('2'):
+                    if type(_strContent) == unicode:
+                        myFile.write(_strContent)
+                    else:
+                        myFile.write(unicode(_strContent, errors='ignore'))
                 else:
-                    myFile.write(unicode(_strContent, errors='ignore'))
+                    myFile.write(bytes(_strContent, 'UTF-8'))
                 myFile.flush()
-        except Exception, e:
+        except Exception as e:
             strError = "EDUtilsFile.writeFile: Writing %s: %s" % (_strFileName, str(e))
             EDVerbose.ERROR(strError)
             raise IOError(strError)

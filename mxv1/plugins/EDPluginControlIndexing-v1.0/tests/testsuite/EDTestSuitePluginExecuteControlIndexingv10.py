@@ -8,7 +8,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ class EDTestSuitePluginExecuteControlIndexingv10(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10withForcedSymmetry")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10WithLabelit")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10WithFiveImages")
 
 
 if __name__ == '__main__':

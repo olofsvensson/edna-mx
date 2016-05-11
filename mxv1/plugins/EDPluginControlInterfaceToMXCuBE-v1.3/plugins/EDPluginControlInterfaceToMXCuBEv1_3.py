@@ -2,10 +2,10 @@
 #    Project: EDNA MXv1
 #             http://www.edna-site.org
 #
-#    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2016 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal author:       Olof Svensson (svensson@esrf.fr) 
+#    Principal author:       Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -31,6 +31,8 @@ import shutil
 import smtplib
 import time
 import socket
+import shutil
+import tempfile
 
 from EDMessage import EDMessage
 from EDPluginControl import EDPluginControl
@@ -156,10 +158,10 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                 xsDataInputInterface.addImagePath(xsDataFile)
                 if xsDataFirstImage is None:
                     xsDataFirstImage = xsDataFile
-        
+
         xsDataExperimentalCondition = self.getFluxAndBeamSizeFromISPyB(xsDataFirstImage, \
                                                             xsDataInputMXCuBE.getExperimentalCondition())
-        
+
         xsDataInputInterface.setExperimentalCondition(xsDataExperimentalCondition)
         xsDataInputInterface.setDiffractionPlan(xsDataInputMXCuBE.getDiffractionPlan())
         xsDataInputInterface.setSample(xsDataInputMXCuBE.getSample())
@@ -186,7 +188,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
         strSubject = "SUCCESS"
         strMessage = "Characterisation success!"
         self.storeResultsInISPyB(strSubject, strMessage)
-        
+
     def doFailureActionInterface(self, _edPlugin=None):
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.doFailureActionInterface...")
         # Send failure email message (MXSUP-183):
@@ -199,7 +201,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
 #        if self.edPluginControlInterface.hasDataOutput("characterisation"):
 #            xsDataResultCharacterisation = self.edPluginControlInterface.getDataOutput("characterisation")[0]
 #        # Execute plugin which creates a simple HTML page
-#        self.executeSimpleHTML(xsDataResultCharacterisation)            
+#        self.executeSimpleHTML(xsDataResultCharacterisation)
 #        xsDataResultCharacterisation = self.edPluginControlInterface.dataOutput.resultCharacterisation
 #        if xsDataResultCharacterisation is not None:
 #            self.xsDataResultMXCuBE.characterisationResult = xsDataResultCharacterisation
@@ -210,8 +212,8 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
 #                strMessage += "\n\n"
 #                strMessage += xsDataResultCharacterisation.getShortSummary().getValue()
 #        self.sendEmail(strSubject, strMessage)
-        
-        
+
+
     def storeResultsInISPyB(self, _strSubject, _strMessage):
         strSubject = _strSubject
         strMessage = _strMessage
@@ -265,7 +267,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                         EDUtilsFile.writeFile(strPath, strBestfilePar)
                         break
             # Execute plugin which creates a simple HTML page
-            self.executeSimpleHTML(xsDataResultCharacterisation)    
+            self.executeSimpleHTML(xsDataResultCharacterisation)
             # Upload the best wilson plot path to ISPyB
             strBestWilsonPlotPath = EDHandlerXSDataISPyBv1_4.getBestWilsonPlotPath(xsDataResultCharacterisation)
             if strBestWilsonPlotPath is not None and strPyArchPathToDNAFileDirectory is not None:
@@ -284,7 +286,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                     edPluginSetBestWilsonPlotPath.dataInput = xsDataInputISPyBSetBestWilsonPlotPath
                     edPluginSetBestWilsonPlotPath.executeSynchronous()
 
-                    
+
 
 
 
@@ -356,7 +358,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                 strDNAFileBaseDirectory = os.path.split(_strDNAFileDirectoryPath)[0]
                 if (os.access(strDNAFileBaseDirectory, os.W_OK)):
                     self.DEBUG("Creating DNA files directory: %s" % _strDNAFileDirectoryPath)
-                    os.makedirs(_strDNAFileDirectoryPath, mode = 0755)
+                    os.makedirs(_strDNAFileDirectoryPath, mode=0o755)
                     bSuccess = True
                 else:
                     self.warning("Cannot create DNA files directory: %s" % _strDNAFileDirectoryPath)
@@ -471,7 +473,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
         strSubject = "%s : FAILURE!" % EDUtilsPath.getEdnaSite()
         strMessage = "Characterisation FAILURE!"
         self.sendEmail(strSubject, strMessage)
-        
+
 
     def getFluxAndBeamSizeFromISPyB(self, _xsDataFirstImage, _xsDataExperimentalCondition):
         """
@@ -489,7 +491,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
             if xsDataResultRetrieveDataCollection is not None:
                 xsDataISPyBDataCollection = xsDataResultRetrieveDataCollection.getDataCollection()
                 if xsDataISPyBDataCollection is not None:
-                    fFlux = xsDataISPyBDataCollection.getFlux()
+                    fFlux = xsDataISPyBDataCollection.getFlux_end()
                     if fFlux is not None:
                         self.screen("ISPyB reports flux to be: %g photons/sec" % fFlux)
                         if fFlux > self.fFluxThreshold:
@@ -523,10 +525,10 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                     # Force missing flux to 0.0
                     self.screen("No flux neither in ISPyB nor in mxCuBE, forcing flux to 0.0 photon/s")
                     xsDataExperimentalCondition.getBeam().setFlux(XSDataFlux(0.0))
-            
+
         return xsDataExperimentalCondition
-                            
-                            
+
+
 
 
 
@@ -593,7 +595,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
             strBeamline = "nobeamline"
             strProposal = "noproposal"
         return (strBeamline, strProposal, strPrefix)
-        
+
     def sendEmail(self, _strSubject, _strMessage):
         """Sends an email to the EDNA contact person (if configured)."""
         strTime = "%.1f s" % (self.tStop - self.tStart)
@@ -624,7 +626,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
             try:
                 self.DEBUG("Sending message to %s." % self.strEDNAContactEmail)
                 self.DEBUG("Message: %s" % _strMessage)
-                strMessage = "EDNA_HOME = %s\n" %  EDUtilsPath.getEdnaHome()
+                strMessage = "EDNA_HOME = %s\n" % EDUtilsPath.getEdnaHome()
                 strMessage += "EDNA_SITE = %s\n" % EDUtilsPath.getEdnaSite()
                 strMessage += "PLUGIN_NAME = %s\n" % self.getPluginName()
                 strMessage += "working_dir = %s\n\n" % self.getWorkingDirectory()
@@ -645,7 +647,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
                 self.ERROR("Error when sending email message!")
                 self.writeErrorTrace()
 
-    
+
     def executeSimpleHTML(self, _xsDataResultCharacterisation):
         xsDataInputSimpleHTMLPage = XSDataInputSimpleHTMLPage()
         xsDataInputSimpleHTMLPage.setCharacterisationResult(_xsDataResultCharacterisation)
@@ -658,7 +660,19 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
     def doSuccessSimpleHTML(self, _edPlugin=None):
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.doSuccessSimpleHTML...")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlInterfaceToMXCuBEv1_3.doSuccessSimpleHTML")
-        self.xsDataResultMXCuBE.setHtmlPage(_edPlugin.getDataOutput().getPathToHTMLFile())
+        # Copy files from working directory
+        if self.dataInput.htmlDir is None:
+            self.xsDataResultMXCuBE.setHtmlPage(_edPlugin.dataOutput.pathToHTMLFile)
+        else:
+            htmlDir = self.dataInput.htmlDir.path.value
+            if os.path.exists(htmlDir):
+                # Potentially unsafe but very unlikely that this will cause problems
+                htmlDir = tempfile.mktemp(prefix=os.path.basename(htmlDir),
+                                          dir=os.path.dirname(htmlDir))
+            shutil.copytree(os.path.dirname(_edPlugin.dataOutput.pathToHTMLFile.path.value), htmlDir)
+            htmlPage = os.path.join(htmlDir, os.path.basename(_edPlugin.dataOutput.pathToHTMLFile.path.value))
+            self.xsDataResultMXCuBE.setHtmlPage(XSDataFile(XSDataString(htmlPage)))
+
 
     def doFailureSimpleHTML(self, _edPlugin=None):
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.doFailureSimpleHTML...")

@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<XSDataInputInterface>
+    <diffractionPlan>
+        <complexity>
+            <value>none</value>
+        </complexity>
+        <maxExposureTimePerDataCollection>
+            <value>10000.000000</value>
+        </maxExposureTimePerDataCollection>
+    </diffractionPlan>
+    <imagePath>
+        <path>
+            <value>${EDNA_TESTIMAGES}/lyso_12_0001.cbf</value>
+        </path>
+    </imagePath>
+</XSDataInputInterface>

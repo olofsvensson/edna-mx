@@ -48,6 +48,7 @@ class EDTestSuitePluginExecuteBestv1_3(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3_withNumberOfCrystalPositions")
         self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3_withUserDefinedRotationRange")
         self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3_withRadiationDamageModelBetaGamma")
+        self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_3_withRFriedelAndDoseLimit")
 
 
 if __name__ == '__main__':

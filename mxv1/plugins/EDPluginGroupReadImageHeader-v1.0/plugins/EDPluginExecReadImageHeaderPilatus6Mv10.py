@@ -28,6 +28,7 @@ __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os
+import sys
 import struct
 
 from EDVerbose      import EDVerbose
@@ -170,7 +171,10 @@ class EDPluginExecReadImageHeaderPilatus6Mv10(EDPluginExec):
         dictPilatus6M = None
         pyFile = None
         try:
-            pyFile = open(_strImageFileName, "r")
+            if sys.version.startswith('3'):
+                pyFile = open(_strImageFileName, "r", encoding = "ISO-8859-1")
+            else:
+                pyFile = open(_strImageFileName, "r")
         except:
             self.ERROR("EDPluginExecReadImageHeaderPilatus6Mv10.readHeaderPilauts6M: couldn't open file: " + _strImageFileName)
             self.setFailure()
@@ -192,6 +196,13 @@ class EDPluginExecReadImageHeaderPilatus6Mv10(EDPluginExec):
                     strTmp = strLine[2:].replace("\r\n", "")
                     if strLine[6] == "/" and strLine[10] == "/":
                         dictPilatus6M["DateTime"] = strTmp
+                    elif strLine[6] == "-" and strLine[9] == "-":
+                        # At ALBA, we have the Pilatus 6M writing in the header                                                
+                        # the date and time with the following format:                                                         
+                        # '%Y-%m-%dT%H:%M:%S.%f'                                                                              
+                        import datetime
+                        dt = datetime.datetime.strptime(strTmp, '%Y-%m-%dT%H:%M:%S.%f')
+                        dictPilatus6M["DateTime"] = dt.strftime('%Y/%b/%d %H:%M:%S.%f')[:-3]
                     else:
                         strKey = strTmp.split(" ")[0]
                         strValue = strTmp.replace(strKey, "")[1:]

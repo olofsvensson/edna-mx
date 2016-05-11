@@ -31,6 +31,7 @@ from EDVerbose import EDVerbose
 from EDPluginControl import EDPluginControl
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDUtilsPath import EDUtilsPath
+from EDUtilsImage import EDUtilsImage
 
 EDFactoryPluginStatic.loadModule("EDHandlerESRFPyarchv1_0")
 
@@ -52,6 +53,8 @@ EDFactoryPluginStatic.loadModule("EDPluginMXWaitFilev1_1")
 from EDPluginMXWaitFilev1_1 import EDPluginMXWaitFilev1_1
 from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
+EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_0")
+from XSDataControlH5ToCBFv1_0 import XSDataInputControlH5ToCBF
 
 class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
     """
@@ -75,6 +78,11 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         self.minImageSize = 1000000
         self.strSuffix = "jpeg"
         self.strImageFormat = "JPEG"
+        self.isH5 = False
+        self.h5FilePath = None
+        self.h5FileNumber = None
+        self.strPluginControlH5ToCBF = "EDPluginControlH5ToCBFv1_0"
+
 
 
     def checkParameters(self):
@@ -88,7 +96,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
     def configure(self):
         EDPluginControl.configure(self)
         self.minImageSize = self.config.get("minImageSize", self.minImageSize)
-        
+
 
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
@@ -96,27 +104,32 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         # Check that the input image exists and is of the expected type
         strPathToDiffractionImage = self.dataInput.diffractionImage.path.value
         strImageFileNameExtension = os.path.splitext(strPathToDiffractionImage)[1]
-        if not strImageFileNameExtension in [".img", ".marccd", ".mccd", ".cbf"]:
+        if not strImageFileNameExtension in [".img", ".marccd", ".mccd", ".cbf", ".h5"]:
             self.error("Unknown image file name extension for pyarch thumbnail generator: %s" % strPathToDiffractionImage)
             self.setFailure()
         else:
             # Load the MXWaitFile plugin
             xsDataInputMXWaitFile = XSDataInputMXWaitFile()
+            pathToImageFile = strPathToDiffractionImage
             # Quite ugly hack to avoid lag problems at the ESRF:
             if EDUtilsPath.isESRF():
-                if any( beamline in strPathToDiffractionImage for beamline in ["id23eh1", "id29"]):
+                if any(beamline in strPathToDiffractionImage for beamline in ["id23eh1", "id29", "id30b"]):
                     # Pilatus 6M
                     self.minImageSize = 6000000
-                elif any( beamline in strPathToDiffractionImage for beamline in ["id23eh2", "id30a1"]):
+                elif any(beamline in strPathToDiffractionImage for beamline in ["id23eh2", "id30a1"]):
                     # Pilatus3 2M
                     self.minImageSize = 2000000
+                elif strImageFileNameExtension == ".h5":
+                    self.h5FilePath, self.h5FileNumber = self.getH5FilePath(pathToImageFile)
+                    pathToImageFile = self.h5FilePath
+                    self.isH5 = True
             elif EDUtilsPath.isEMBL():
                     self.minImageSize = 10000
             xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
-            xsDataInputMXWaitFile.setFile(self.getDataInput().getDiffractionImage())
+            xsDataInputMXWaitFile.setFile(XSDataFile(XSDataString(pathToImageFile)))
             if self.getDataInput().getWaitForFileTimeOut():
                 xsDataInputMXWaitFile.setTimeOut(self.getDataInput().getWaitForFileTimeOut())
-            self.edPluginMXWaitFile = EDPluginMXWaitFilev1_1()
+            self.edPluginMXWaitFile = self.loadPlugin(self.strMXWaitFilePluginName)
             self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
             # Load the execution plugin
             self.edPluginExecThumbnail = self.loadPlugin(self.strExecThumbnailPluginName)
@@ -146,7 +159,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
                         try:
                             os.makedirs(strOutputDirname)
                             bIsOk = True
-                        except BaseException, e:
+                        except Exception as e:
                             self.WARNING("Couldn't create the directory %s" % strOutputDirname)
                     elif os.access(strOutputDirname, os.W_OK):
                         bIsOk = True
@@ -162,7 +175,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
             if self.dataInput.format is not None:
                 self.strSuffix = self.dataInput.format.value.lower()
                 self.strImageFormat = self.dataInput.format.value.upper()
-            self.strOutputPath = os.path.join(self.strOutputPathWithoutExtension + "."+self.strSuffix)
+            self.strOutputPath = os.path.join(self.strOutputPathWithoutExtension + "." + self.strSuffix)
             xsDataInputMXThumbnail.setOutputPath(XSDataFile(XSDataString(self.strOutputPath)))
             self.edPluginExecThumbnail.setDataInput(xsDataInputMXThumbnail)
 
@@ -193,10 +206,25 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         self.DEBUG("EDPluginControlID29CreateThumbnailv1_0.doSuccessMXWaitFile")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlID29CreateThumbnailv1_0.doSuccessMXWaitFile")
         # Check that the image is really there
-        if not self.edPluginMXWaitFile.getDataOutput().getTimedOut().getValue():
+        if not self.edPluginMXWaitFile.dataOutput.timedOut.value:
             # Workaround for ESRF lag problem
             if EDUtilsPath.isESRF():
                 time.sleep(2)
+                if self.isH5:
+                    diffractionImagePath = self.dataInput.diffractionImage.path.value
+                    imageNumber = EDUtilsImage.getImageNumber(diffractionImagePath)
+                    xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
+                    xsDataInputControlH5ToCBF.hdf5File = XSDataFile(XSDataString(diffractionImagePath))
+                    xsDataInputControlH5ToCBF.imageNumber = XSDataInteger(imageNumber)
+                    xsDataInputControlH5ToCBF.hdf5ImageNumber = XSDataInteger(self.h5FileNumber)
+                    xsDataInputControlH5ToCBF.ispybDataCollection = None
+                    xsDataInputControlH5ToCBF.forcedOutputDirectory = XSDataFile(XSDataString(self.getWorkingDirectory()))
+                    edPluginControlH5ToCBF = self.loadPlugin(self.strPluginControlH5ToCBF, "ControlH5ToCBF_{0:04d}".format(imageNumber))
+                    edPluginControlH5ToCBF.dataInput = xsDataInputControlH5ToCBF
+                    edPluginControlH5ToCBF.executeSynchronous()
+                    cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
+                    self.edPluginExecThumbnail.dataInput.image = cbfFile
+
             # The image is here - make the first thumbnail
             self.edPluginExecThumbnail.connectSUCCESS(self.doSuccessExecThumbnail)
             self.edPluginExecThumbnail.connectFAILURE(self.doFailureExecThumbnail)
@@ -233,4 +261,12 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         # To be removed if failure of the exec plugin shouldn't make the control plugin to fail:
         self.setFailure()
 
+    def getH5FilePath(self, filePath, batchSize=1):
+        imageNumber = EDUtilsImage.getImageNumber(filePath)
+        prefix = EDUtilsImage.getPrefix(filePath)
+        h5FileNumber = int((imageNumber - 1) / batchSize) * batchSize + 1
+        h5FileName = "{prefix}_{h5FileNumber}_master.h5".format(prefix=prefix,
+                                                                h5FileNumber=h5FileNumber)
+        h5FilePath = os.path.join(os.path.dirname(filePath), h5FileName)
+        return h5FilePath, h5FileNumber
 

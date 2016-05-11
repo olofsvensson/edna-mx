@@ -1,0 +1,13 @@
+markup.py
+    
+    " instead of '
+    htmlentitydefs
+    re for substitution
+    indentation on/off 
+    write unittests
+    encoding of text should be defined in
+    __init__ not init because it is used
+    in element.render
+
+/doc
+    

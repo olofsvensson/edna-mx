@@ -42,3 +42,5 @@ pip-log.txt
 
 #Eclipse specific
 .settings
+.project
+.pydevproject

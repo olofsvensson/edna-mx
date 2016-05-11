@@ -43,6 +43,7 @@ complex type XSDataResultDimple extends XSDataResult {
 	log : XSDataFile optional
 	findBlobsLog :  XSDataFile optional	
 	refmac5restrLog : XSDataFile optional
+	resultsDirectory: XSDataFile optional
 }
 
 complex type XSDataAimless extends XSDataInput {

@@ -172,9 +172,10 @@ class EDFactoryPlugin(EDLogging):
                 strModuleLocationRelative = xsDataKeyValuePair.getValue().getValue()
                 strModuleLocationAbsolute = os.path.abspath(os.path.join(strEdnaHome, strModuleLocationRelative))
                 if not os.path.exists(strModuleLocationAbsolute):
-                    raise BaseException("Path loaded from disk does not exist: %s" % strModuleLocationAbsolute)
-                self.__dictModuleLocation[ strModuleName ] = strModuleLocationAbsolute
-        except BaseException, oExcpetionType:
+                    self.warning("Path loaded from disk does not exist: %s" % strModuleLocationAbsolute)
+                else:
+                    self.__dictModuleLocation[ strModuleName ] = strModuleLocationAbsolute
+        except Exception as oExcpetionType:
             self.warning("Error when reading module cache from disk: %s" % str(oExcpetionType))
             self.warning("Forcing reload of module locations.")
             self.__searchRootDirectories()
@@ -313,8 +314,8 @@ class EDFactoryPlugin(EDLogging):
         """
         self.__dictModuleLocation = {}
         for strPluginRootDirectory in self.__listPluginRootDirectory:
-            # The following Python call will be deprecated in Python 3.0, see bug #262
-            os.path.walk(strPluginRootDirectory, self.__addPluginLocation, strPluginRootDirectory)
+            for root, dirs, files in os.walk(strPluginRootDirectory):
+                self.__addPluginLocation(strPluginRootDirectory, root, files)
 
 
     def loadPlugin(self, _strPluginName):

@@ -43,6 +43,7 @@ class EDTestSuitePluginExecuteControlCharacterisationv1_5(EDTestSuite):
 #        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_5_iceRings")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_5_indexingError")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_5_integrationError")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_5_withRFriedelAndDoseLimit")
 
 
 

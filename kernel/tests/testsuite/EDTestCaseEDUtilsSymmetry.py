@@ -50,7 +50,7 @@ class EDTestCaseEDUtilsSymmetry(EDTestCase):
             EDAssert.equal(listSpaceGroup[ iIndex ], EDUtilsSymmetry.getMinimumSymmetrySpaceGroupFromBravaisLattice(listBravaisLattice[ iIndex]))
 
     def testGetITNumberFromSpaceGroupName(self):
-        strSymopFileName = "/opt/pxsoft/ccp4/v6.3.0/linux-x86_64/lib/data/symop.lib"
+        strSymopFileName = "/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/lib/data/symop.lib"
         if os.path.exists(strSymopFileName):
             EDAssert.equal(1, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P1", strSymopFileName), "ITNumber from space group P1")
             EDAssert.equal(3, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P2", strSymopFileName), "ITNumber from space group P2")
