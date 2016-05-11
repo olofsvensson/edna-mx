@@ -33,6 +33,7 @@ from EDUtilsParallel import EDUtilsParallel
 
 from EDPluginControl import EDPluginControl
 from EDFactoryPluginStatic import EDFactoryPluginStatic
+from EDUtilsPath import EDUtilsPath
 
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInteger
@@ -90,7 +91,10 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
         # Default time out for wait file
         self.fMXWaitFileTimeOut = 30  # s
         # Flag for using the thin client
-        self.bUseThinClient = True
+        if EDUtilsPath.isEMBL():
+            self.bUseThinClient = False
+        else:
+            self.bUseThinClient = True
         self.edPluginISPyB = None
         self.listPluginLabelit = []
         self.defaultMinImageSize = 1000000
