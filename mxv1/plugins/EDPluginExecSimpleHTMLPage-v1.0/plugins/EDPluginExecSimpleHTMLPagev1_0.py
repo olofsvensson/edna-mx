@@ -166,7 +166,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 strPyarchPath = EDUtilsPath.getEdnaUserTempFolder()
             EDHandlerESRFPyarchv1_0.copyHTMLDir(_strPathToHTMLDir=os.path.dirname(self.strPath), _strPathToPyarchDirectory=strPyarchPath)
         # Write workflowStepReport HTML page
-        pathToIndexFile = self.workflowStepReport.renderHtml(self.getWorkingDirectory(), nameOfIndexFile="index_step.html")
+#        pathToIndexFile = self.workflowStepReport.renderHtml(self.getWorkingDirectory(), nameOfIndexFile="index_step.html")
         pathToJsonFile = self.workflowStepReport.renderJson(self.getWorkingDirectory())
         # Write json file
         xsDataResultSimpleHTMLPage.pathToJsonFile = XSDataFile(XSDataString(pathToJsonFile))
@@ -242,7 +242,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.page.strong(" for more details")
                 self.page.h2.close()
                 self.page.font.close()
-                self.workflowStepReport.info("Strategy calculation not performed due to indexing failure")
+                self.workflowStepReport.addWarning("Strategy calculation not performed due to indexing failure")
             elif xsDataResultIntegration is None:
                 self.page.font(_color="red", size="+2")
                 self.page.h2()
@@ -251,7 +251,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.page.strong(" for more details")
                 self.page.h2.close()
                 self.page.font.close()
-                self.workflowStepReport.info("Strategy calculation not performed due to integration failure")
+                self.workflowStepReport.addWarning("Strategy calculation not performed due to integration failure")
             else:
                 self.page.font(_color="red", size="+2")
                 self.page.h2()
@@ -260,7 +260,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.page.strong(" for more details")
                 self.page.h2.close()
                 self.page.font.close()
-                self.workflowStepReport.info("Strategy calculation failed")
+                self.workflowStepReport.addWarning("Strategy calculation failed")
         else:
             # Add link to BEST log file:
             if xsDataResultStrategy.getBestLogFile():
@@ -296,7 +296,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     self.page.a(" (RADDOSE log file)", href="raddose_log.html")
                 self.page.h2.close()
                 self.page.font.close()
-                self.workflowStepReport.info("Strategy calculation failed")
+                self.workflowStepReport.addWarning("Strategy calculation failed")
             else:
                 iNoSubWedges = len(listXSDataCollectionPlan)
                 self.page.h2()
