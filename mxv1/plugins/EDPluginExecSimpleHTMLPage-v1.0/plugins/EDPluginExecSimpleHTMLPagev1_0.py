@@ -40,6 +40,8 @@ from EDUtilsImage import EDUtilsImage
 EDFactoryPluginStatic.loadModule("markupv1_10")
 import markupv1_10
 
+from report import WorkflowStepReport
+
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
 
@@ -72,6 +74,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.bIsHelical = False
         self.bIsMultiPositional = False
         self.dictHtml = {}
+        self.workflowStepReport = None
 
 
     def configure(self):
@@ -94,6 +97,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         EDPluginExec.process(self, _edPlugin)
         self.DEBUG("EDPluginExecSimpleHTMLPagev1_0.process...")
         if self.xsDataResultCharacterisation is not None:
+            # WorkflowStepReport
+            self.workflowStepReport = WorkflowStepReport("Characterisation")
             # Create json dictionary at the same time for EXI
             self.dictHtml = {}
             self.dictHtml["version"] = "1.0"
@@ -108,9 +113,11 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             if self.xsDataResultCharacterisation is not None:
                 self.page.strong("Characterisation Results ")
                 self.dictHtml["title"] = "Characterisation Results"
+                self.workflowStepReport.setTitle("Characterisation Results")
             else:
                 self.page.strong("No Characterisation Results! ")
                 self.dictHtml["title"] = "No Characterisation Results!"
+                self.workflowStepReport.setTitle("No Characterisation Results!")
             # Link to the EDNA log file
             if self.dataInput.logFile is None:
                 strPathToLogFile = self.getLogFileName()
@@ -158,9 +165,10 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 # For debugging purposes
                 strPyarchPath = EDUtilsPath.getEdnaUserTempFolder()
             EDHandlerESRFPyarchv1_0.copyHTMLDir(_strPathToHTMLDir=os.path.dirname(self.strPath), _strPathToPyarchDirectory=strPyarchPath)
+        # Write workflowStepReport HTML page
+        pathToIndexFile = self.workflowStepReport.renderHtml(self.getWorkingDirectory(), nameOfIndexFile="index_step.html")
+        pathToJsonFile = self.workflowStepReport.renderJson(self.getWorkingDirectory())
         # Write json file
-        pathToJsonFile = os.path.join(self.getWorkingDirectory(), "characterisation.json")
-        open(pathToJsonFile, "w").write(json.dumps(self.dictHtml, indent=4))
         xsDataResultSimpleHTMLPage.pathToJsonFile = XSDataFile(XSDataString(pathToJsonFile))
         self.setDataOutput(xsDataResultSimpleHTMLPage)
 
@@ -234,6 +242,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.page.strong(" for more details")
                 self.page.h2.close()
                 self.page.font.close()
+                self.workflowStepReport.info("Strategy calculation not performed due to indexing failure")
             elif xsDataResultIntegration is None:
                 self.page.font(_color="red", size="+2")
                 self.page.h2()
@@ -242,6 +251,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.page.strong(" for more details")
                 self.page.h2.close()
                 self.page.font.close()
+                self.workflowStepReport.info("Strategy calculation not performed due to integration failure")
             else:
                 self.page.font(_color="red", size="+2")
                 self.page.h2()
@@ -250,6 +260,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.page.strong(" for more details")
                 self.page.h2.close()
                 self.page.font.close()
+                self.workflowStepReport.info("Strategy calculation failed")
         else:
             # Add link to BEST log file:
             if xsDataResultStrategy.getBestLogFile():
@@ -285,17 +296,22 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     self.page.a(" (RADDOSE log file)", href="raddose_log.html")
                 self.page.h2.close()
                 self.page.font.close()
+                self.workflowStepReport.info("Strategy calculation failed")
             else:
                 iNoSubWedges = len(listXSDataCollectionPlan)
                 self.page.h2()
                 if self.bIsHelical:
                     self.page.strong("Helical collection plan strategy (")
+                    tabTitle = "Helical collection plan strategy"
                 elif self.bIsMultiPositional:
                     self.page.strong("Multi-positional collection plan strategy (")
+                    tabTitle = "Multi-positional collection plan strategy"
                 elif iNoSubWedges != 1:
                     self.page.strong("Multi-wedge collection plan strategy (")
+                    tabTitle = "Multi-wedge collection plan strategy"
                 else:
                     self.page.strong("Collection plan strategy (")
+                    tabTitle = "Collection plan strategy"
                 if strPageRaddoseLog is not None:
                     self.page.a("RADDOSE log file", href="raddose_log.html")
                     self.page.strong(", ")
@@ -336,6 +352,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                             # self.page.strong("In order to calculate a strategy to %.2f &Aring; set the detector distance to %.2f mm (%.2f &Aring;) and re-launch the EDNA characterisation." % (fRankingResolution,fDistanceMin,fRankingResolution))
                             self.page.strong("In order to calculate a strategy to %.2f &Aring; move the detector to collect %.2f &Aring; data and re-launch the EDNA characterisation." % (fRankingResolution, fRankingResolution))
                             self.page.font.close()
+                            self.workflowStepReport.addWarning("Best has detected that the sample can diffract to {0:.2f} &Aring;!".format(fRankingResolution))
+                            self.workflowStepReport.addWarning("Move the detector to collect {0:.2f} &Aring; data and re-launch the EDNA characterisation.".format(fRankingResolution))
                         bHigherResolutionDetected = True
 
 
@@ -350,6 +368,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     self.page.th(strResolutionReasoning, colspan_="9", bgcolor_=self.strTableColourTitle1)
                     self.page.tr.close()
                     self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
+                    tableColumns = ["Wedge", "Subwedge", "Start (&deg;)", "Width (&deg;)", "No images",
+                                    "Exp time (s)", "Max res (&Aring;)", "Rel trans (%)", "Distance (mm)"]
                     self.page.th("Wedge")
                     self.page.th("Subwedge")
                     self.page.th("Start (&deg;)")
@@ -361,6 +381,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     self.page.th("Distance (mm)")
                     self.page.tr.close()
                     xsDataCollectionStrategy = xsDataCollectionPlan.getCollectionStrategy()
+                    tableData = []
                     for xsDataSubWegde in xsDataCollectionStrategy.getSubWedge():
                         xsDataExperimentalCondition = xsDataSubWegde.getExperimentalCondition()
                         iWedge = xsDataCollectionPlan.getCollectionPlanNumber().getValue()
@@ -373,17 +394,29 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                         fTransmission = xsDataExperimentalCondition.getBeam().getTransmission().getValue()
                         fDistance = xsDataExperimentalCondition.getDetector().getDistance().getValue()
                         self.page.tr(align_="CENTER", bgcolor_=self.strTableColourRows)
+                        listRow = []
                         self.page.th(iWedge)
+                        listRow.append(iWedge)
                         self.page.th(iRunNumber)
+                        listRow.append(iRunNumber)
                         self.page.th("%.2f" % fRotationAxisStart)
+                        listRow.append("%.2f" % fRotationAxisStart)
                         self.page.th("%.2f" % fOscillationWidth)
+                        listRow.append("%.2f" % fOscillationWidth)
                         self.page.th(iNumberOfImages)
+                        listRow.append(iNumberOfImages)
                         self.page.th("%.3f" % fExposureTime)
+                        listRow.append("%.3f" % fExposureTime)
                         self.page.th("%.2f" % fResolutionMax)
+                        listRow.append("%.2f" % fResolutionMax)
                         self.page.th("%.2f" % fTransmission)
+                        listRow.append("%.2f" % fTransmission)
                         self.page.th("%.2f" % fDistance)
+                        listRow.append("%.2f" % fDistance)
                         self.page.tr.close()
+                        tableData.append(listRow)
                     self.page.table.close()
+                    self.workflowStepReport.addTable(strResolutionReasoning, tableColumns, tableData)
 
 
     def dataCollectionInfo(self):
@@ -439,6 +472,11 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.page.table.close()
             dictTable["data"].append(listRow)
             self.dictHtml["items"].append(dictTable)
+            #
+            self.workflowStepReport.addTable("Data collection info",
+                                             dictTable["columns"],
+                                             dictTable["data"],
+                                             orientation="vertical")
 
 
     def diffractionPlan(self):
@@ -547,6 +585,10 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.page.table.close()
         dictTable["data"].append(listRow)
         self.dictHtml["items"].append(dictTable)
+        #
+        self.workflowStepReport.addTable(strTitle,
+                                         dictTable["columns"],
+                                         dictTable["data"])
 
 
     def createLinkToBestLogFile(self):
@@ -573,11 +615,13 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                             strPathToJpegImage = xsDataImageJpeg.path.value
                             strJpegFileName = os.path.basename(strPathToJpegImage)
                             shutil.copyfile(strPathToJpegImage, os.path.join(self.getWorkingDirectory(), strJpegFileName))
+                            self.workflowStepReport.addImage(strPathToJpegImage, imageTitle=strJpegFileName)
                     for xsDataThumbnailImage in listThumbnailImage:
                         if xsDataThumbnailImage.number.value == xsDataImage.number.value:
                             strPathToThumbnailImage = xsDataThumbnailImage.path.value
                             strThumbnailFileName = os.path.basename(strPathToThumbnailImage)
                             shutil.copyfile(strPathToThumbnailImage, os.path.join(self.getWorkingDirectory(), strThumbnailFileName))
+                            self.workflowStepReport.addImage(strPathToThumbnailImage, imageTitle=strThumbnailFileName)
                             break
                     self.page.td()
                     self.page.table(class_='image')
@@ -604,6 +648,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     self.page.table.close()
                     self.page.td.close()
         else:
+            self.workflowStepReport.startImageList()
             for xsDataSubWedge in self.xsDataResultCharacterisation.dataCollection.subWedge:
                 for xsDataImage in xsDataSubWedge.image:
                     xsDataResultPrediction = xsDataResultIndexing.predictionResult
@@ -652,6 +697,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                         self.page.tr.close()
                         self.page.table.close()
                         self.page.td.close()
+                        self.workflowStepReport.addImage(strPathToPredictionImage, strFileName, thumbnailHeight=256, thumbnailWidth=256)
+            self.workflowStepReport.endImageList()
             self.page.table.close()
             self.page.div.close()
 
@@ -680,16 +727,27 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.page.th("beta (&deg;)")
         self.page.th("gamma (&deg;)")
         self.page.tr.close()
+        tableColumns = ["a (&Aring;)", "b (&Aring;)", "c (&Aring;)", "alpha (&deg;)", "beta (&deg;)", "gamma (&deg;)"]
         self.page.tr(align_="CENTER", bgcolor_=self.strTableColourRows)
+        listRow = []
+        tableData = []
         self.page.td("%.3f" % xsDataCell.getLength_a().getValue())
+        listRow.append("%.3f" % xsDataCell.getLength_a().getValue())
         self.page.td("%.3f" % xsDataCell.getLength_b().getValue())
+        listRow.append("%.3f" % xsDataCell.getLength_b().getValue())
         self.page.td("%.3f" % xsDataCell.getLength_c().getValue())
+        listRow.append("%.3f" % xsDataCell.getLength_c().getValue())
         self.page.td("%.3f" % xsDataCell.getAngle_alpha().getValue())
+        listRow.append("%.3f" % xsDataCell.getAngle_alpha().getValue())
         self.page.td("%.3f" % xsDataCell.getAngle_beta().getValue())
+        listRow.append("%.3f" % xsDataCell.getAngle_beta().getValue())
         self.page.td("%.3f" % xsDataCell.getAngle_gamma().getValue())
+        listRow.append("%.3f" % xsDataCell.getAngle_gamma().getValue())
         self.page.td.close()
         self.page.tr.close()
         self.page.table.close()
+        tableData.append(listRow)
+        self.workflowStepReport.addTable("Indexing results", tableColumns, tableData)
         if _xsDataResultIndexing.getIndexingLogFile():
             strPathToIndexingLogFile = _xsDataResultIndexing.getIndexingLogFile().getPath().getValue()
             strPageIndexingLog = os.path.join(self.getWorkingDirectory(), "indexing_log.html")
@@ -712,62 +770,96 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.page.h3("Image quality indicators")
         self.page.table(class_='imageQualityIndicatorResults', border_="1", cellpadding_="0")
         self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
+        tableColumns = []
         self.page.th("File")
+        tableColumns.append("File")
         if bDozor:
             self.page.th("Dozor score (1)")
+            tableColumns.append("Dozor score (1)")
             self.page.th("Tot integr signal (2)")
+            tableColumns.append("Tot integr signal (2)")
         else:
             self.page.th("Tot integr signal (1)")
+            tableColumns.append("Tot integr signal (1)")
         self.page.th("Spot total")
+        tableColumns.append("Spot total")
         self.page.th("In-Res Total")
+        tableColumns.append("In-Res Total")
         self.page.th("Good Bragg")
+        tableColumns.append("Good Bragg")
         self.page.th("Ice Rings")
+        tableColumns.append("Ice Rings")
         self.page.th("Meth 1 Res")
+        tableColumns.append("Meth 1 Res")
         self.page.th("Meth 2 Res")
+        tableColumns.append("Meth 2 Res")
         self.page.th("Max unit cell")
+        tableColumns.append("Max unit cell")
         self.page.tr.close()
+        tableData = []
         for xsDataResultImageQualityIndicators in listXSDataResultImageQualityIndicators:
+            listRow = []
             self.page.tr(align_="CENTER", bgcolor_=self.strTableColourRows)
             self.page.td("%s" % os.path.basename(xsDataResultImageQualityIndicators.image.path.value))
+            listRow.append("%s" % os.path.basename(xsDataResultImageQualityIndicators.image.path.value))
             if bDozor:
                 if xsDataResultImageQualityIndicators.dozor_score:
                     fDozor_score = xsDataResultImageQualityIndicators.dozor_score.value
                     if fDozor_score > 1.0:
                         self.page.td("%.1f" % fDozor_score)
+                        listRow.append("%.1f" % fDozor_score)
                     else:
                         self.page.td("%.3f" % fDozor_score)
+                        listRow.append("%.3f" % fDozor_score)
                 else:
                     self.page.td("NA")
+                    listRow.append("NA")
             if xsDataResultImageQualityIndicators.totalIntegratedSignal:
                 self.page.td("%.0f" % xsDataResultImageQualityIndicators.totalIntegratedSignal.value)
+                listRow.append("%.0f" % xsDataResultImageQualityIndicators.totalIntegratedSignal.value)
             else:
                 self.page.td("NA")
+                listRow.append("NA")
             self.page.td("%d" % xsDataResultImageQualityIndicators.spotTotal.value)
+            listRow.append("%d" % xsDataResultImageQualityIndicators.spotTotal.value)
             self.page.td("%d" % xsDataResultImageQualityIndicators.inResTotal.value)
+            listRow.append("%d" % xsDataResultImageQualityIndicators.inResTotal.value)
             self.page.td("%d" % xsDataResultImageQualityIndicators.goodBraggCandidates.value)
+            listRow.append("%d" % xsDataResultImageQualityIndicators.goodBraggCandidates.value)
             self.page.td("%d" % xsDataResultImageQualityIndicators.iceRings.value)
+            listRow.append("%d" % xsDataResultImageQualityIndicators.iceRings.value)
             self.page.td("%.2f" % xsDataResultImageQualityIndicators.method1Res.value)
+            listRow.append("%.2f" % xsDataResultImageQualityIndicators.method1Res.value)
             if xsDataResultImageQualityIndicators.method2Res:
                 self.page.td("%.2f" % xsDataResultImageQualityIndicators.method2Res.value)
+                listRow.append("%.2f" % xsDataResultImageQualityIndicators.method2Res.value)
             else:
                 self.page.td("NA")
+                listRow.append("NA")
             if xsDataResultImageQualityIndicators.maxUnitCell:
                 self.page.td("%.1f" % xsDataResultImageQualityIndicators.maxUnitCell.value)
+                listRow.append("%.1f" % xsDataResultImageQualityIndicators.maxUnitCell.value)
             else:
                 self.page.td("NA")
+                listRow.append("NA")
             self.page.td.close()
             self.page.tr.close()
+            tableData.append(listRow)
         self.page.table.close()
+        self.workflowStepReport.addTable("Image quality indicators", tableColumns, tableData)
         # Some info about Dozor and Labelit
         if bDozor:
             self.page.strong("1. Dozor score: criteria of diffraction signal strength that uses intensities over background vs resolution. Popov 2014, to be published.")
+            self.workflowStepReport.addInfo("1. Dozor score: criteria of diffraction signal strength that uses intensities over background vs resolution. Popov 2014, to be published.")
             self.page.br()
             self.page.strong("2. Total integrated signal, spot total etc: results from ")
+            self.workflowStepReport.addInfo("2. Total integrated signal, spot total etc: results from cctbx Spotfinder")
             self.page.a("cctbx Spotfinder", href="http://cci.lbl.gov/publications/download/ccn_jul2010_page18.pdf")
             self.page.br()
         else:
             self.page.strong("1. Total integrated signal, spot total etc: results from ")
             self.page.a("cctbx Spotfinder", href="http://cci.lbl.gov/publications/download/ccn_jul2010_page18.pdf")
+            self.workflowStepReport.addInfo("1. Total integrated signal, spot total etc: results from cctbx Spotfinder")
             self.page.br()
 
 
@@ -812,6 +904,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 listPlotsToDisplay = [0, 1, 2, 3]
             else:
                 listPlotsToDisplay = range(len(listXSDataFile))
+            self.workflowStepReport.startImageList()
             for iIndexPlot in listPlotsToDisplay:
                 xsDataFile = listXSDataFile[iIndexPlot]
                 strFileName = os.path.basename(xsDataFile.path.value)
@@ -835,6 +928,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 im.save(outfile, "JPEG")
                 self.page.a(href=strPageGraphFileName)
                 self.page.img(src=os.path.basename(outfile), title=strFileName)
+                self.workflowStepReport.addImage(xsDataFile.path.value, strFileName, pathToThumbnailImage=outfile)
                 self.page.a.close()
                 self.page.td.close()
                 iIndex += 1
@@ -842,6 +936,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     iIndex = 1
                     self.page.tr.close()
                     self.page.tr(align_="CENTER")
+            self.workflowStepReport.endImageList()
             self.page.tr.close()
             self.page.table.close()
 
