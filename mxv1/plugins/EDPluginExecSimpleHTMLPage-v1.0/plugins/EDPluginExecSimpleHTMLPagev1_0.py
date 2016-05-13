@@ -996,9 +996,10 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.page.br()
             tableData = []
             tableData.append(listRow)
-            self.workflowStepReport.addTable("Suggested kappa goniostat reorientation",
+            self.workflowStepReport.addTable("Suggested kappa goniostat reorientation (XOAlign*)",
                                              tableColumns, tableData)
             if strPathToKappaLogFile is not None:
                 self.workflowStepReport.addLogFile("Kappa re-orientation Log",
                                                    "Kappa re-orientation Log",
                                                    strPathToKappaLogFile)
+            self.addInfo("*) XOalign is a part of XDSme written by Pierre Legrand (https://code.google.com/p/xdsme)")
