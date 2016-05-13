@@ -144,6 +144,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.indexingResults()
             self.integrationResults()
             self.imageQualityIndicatorResults()
+            self.createThumbnailRowOfImages()
+
 
 
 
@@ -166,7 +168,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 strPyarchPath = EDUtilsPath.getEdnaUserTempFolder()
             EDHandlerESRFPyarchv1_0.copyHTMLDir(_strPathToHTMLDir=os.path.dirname(self.strPath), _strPathToPyarchDirectory=strPyarchPath)
         # Write workflowStepReport HTML page
-#        pathToIndexFile = self.workflowStepReport.renderHtml(self.getWorkingDirectory(), nameOfIndexFile="index_step.html")
+        pathToIndexFile = self.workflowStepReport.renderHtml(self.getWorkingDirectory(), nameOfIndexFile="index_step.html")
         pathToJsonFile = self.workflowStepReport.renderJson(self.getWorkingDirectory())
         # Write json file
         xsDataResultSimpleHTMLPage.pathToJsonFile = XSDataFile(XSDataString(pathToJsonFile))
@@ -195,12 +197,10 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.page.td.close()
             # Thumbnail images
             self.page.td()
-            self.createThumbnailRowOfImages()
+            self.createPredictionRowOfImages()
             self.page.td.close()
             self.page.tr.close()
             self.page.table.close()
-        else:
-            self.createThumbnailRowOfImages()
 
 
     def integrationResults(self):
@@ -601,106 +601,108 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         listThumbnailImage = self.xsDataResultCharacterisation.thumbnailImage
         if len(listThumbnailImage) == 0:
             return
-        listPaths = []
         self.page.div(align_="left")
         self.page.table(class_='imageRow')
         self.page.tr(align_="CENTER")
-        if xsDataResultIndexing is None:
-            for xsDataSubWedge in self.xsDataResultCharacterisation.dataCollection.subWedge:
-                for xsDataImage in xsDataSubWedge.image:
-                    strReferenceImageName = os.path.basename(xsDataImage.path.value)
-                    listJpegImage = self.xsDataResultCharacterisation.jpegImage
-                    for xsDataImageJpeg in listJpegImage:
-                        if xsDataImageJpeg.number.value == xsDataImage.number.value:
-                            strPathToJpegImage = xsDataImageJpeg.path.value
-                            strJpegFileName = os.path.basename(strPathToJpegImage)
-                            shutil.copyfile(strPathToJpegImage, os.path.join(self.getWorkingDirectory(), strJpegFileName))
-                            self.workflowStepReport.addImage(strPathToJpegImage, imageTitle=strJpegFileName)
-                    for xsDataThumbnailImage in listThumbnailImage:
-                        if xsDataThumbnailImage.number.value == xsDataImage.number.value:
-                            strPathToThumbnailImage = xsDataThumbnailImage.path.value
-                            strThumbnailFileName = os.path.basename(strPathToThumbnailImage)
-                            shutil.copyfile(strPathToThumbnailImage, os.path.join(self.getWorkingDirectory(), strThumbnailFileName))
-                            self.workflowStepReport.addImage(strPathToThumbnailImage, imageTitle=strThumbnailFileName)
-                            break
-                    self.page.td()
+        self.workflowStepReport.startImageList()
+        for xsDataSubWedge in self.xsDataResultCharacterisation.dataCollection.subWedge:
+            for xsDataImage in xsDataSubWedge.image:
+                strReferenceImageName = os.path.basename(xsDataImage.path.value)
+                listJpegImage = self.xsDataResultCharacterisation.jpegImage
+                for xsDataImageJpeg in listJpegImage:
+                    if xsDataImageJpeg.number.value == xsDataImage.number.value:
+                        strPathToJpegImage = xsDataImageJpeg.path.value
+                        strJpegFileName = os.path.basename(strPathToJpegImage)
+                        shutil.copyfile(strPathToJpegImage, os.path.join(self.getWorkingDirectory(), strJpegFileName))
+                for xsDataThumbnailImage in listThumbnailImage:
+                    if xsDataThumbnailImage.number.value == xsDataImage.number.value:
+                        strPathToThumbnailImage = xsDataThumbnailImage.path.value
+                        strThumbnailFileName = os.path.basename(strPathToThumbnailImage)
+                        shutil.copyfile(strPathToThumbnailImage, os.path.join(self.getWorkingDirectory(), strThumbnailFileName))
+                        break
+                self.workflowStepReport.addImage(strPathToJpegImage, imageTitle=strJpegFileName, pathToThumbnailImage=strPathToThumbnailImage)
+                self.page.td()
+                self.page.table(class_='image')
+                self.page.tr(align_="CENTER")
+                self.page.td()
+                strPageReferenceImage = os.path.splitext(strReferenceImageName)[0] + ".html"
+                pageReferenceImage = markupv1_10.page()
+                pageReferenceImage.init(title=strReferenceImageName,
+                       footer="Generated on %s" % time.asctime())
+                pageReferenceImage.h1(strReferenceImageName)
+                pageReferenceImage.a("Back to previous page", href_=self.strHtmlFileName)
+                pageReferenceImage.img(src=strJpegFileName, title=strJpegFileName)
+                pageReferenceImage.a("Back to previous page", href_=self.strHtmlFileName)
+                EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), strPageReferenceImage), str(pageReferenceImage))
+                self.page.a(href=strPageReferenceImage)
+                self.page.img(src=strThumbnailFileName, width=256, height=256, title=strReferenceImageName)
+                self.page.a.close()
+                self.page.td.close()
+                self.page.tr.close()
+                self.page.tr(align_="CENTER")
+                self.page.td(strReferenceImageName, class_="caption")
+                self.page.td.close()
+                self.page.tr.close()
+                self.page.table.close()
+                self.page.td.close()
+        self.workflowStepReport.endImageList()
+
+
+    def createPredictionRowOfImages(self):
+        listPaths = []
+        xsDataResultIndexing = self.xsDataResultCharacterisation.indexingResult
+        self.workflowStepReport.startImageList()
+        for xsDataSubWedge in self.xsDataResultCharacterisation.dataCollection.subWedge:
+            for xsDataImage in xsDataSubWedge.image:
+                xsDataResultPrediction = xsDataResultIndexing.predictionResult
+                listXSDataReferenceImage = xsDataResultIndexing.image
+                for xsDataImagePrediction in xsDataResultPrediction.predictionImage:
+                    if xsDataImagePrediction.number.value == xsDataImage.number.value:
+                        strPathToPredictionImage = xsDataImagePrediction.path.value
+                        strFileName = os.path.basename(strPathToPredictionImage)
+                        break
+                strReferenceFileName = None
+                if strReferenceFileName is None:
+                    strReferenceFileName = strFileName
+                strLocalPath = os.path.join(self.getWorkingDirectory(), strFileName)
+                self.page.td()
+                if os.path.exists(strPathToPredictionImage):
+                    shutil.copyfile(strPathToPredictionImage, strLocalPath)
+                    listPaths.append(strLocalPath)
                     self.page.table(class_='image')
                     self.page.tr(align_="CENTER")
                     self.page.td()
-                    strPageReferenceImage = os.path.splitext(strReferenceImageName)[0] + ".html"
+                    strPageReferenceImage = os.path.splitext(strFileName)[0] + ".html"
                     pageReferenceImage = markupv1_10.page()
-                    pageReferenceImage.init(title=strReferenceImageName,
+                    pageReferenceImage.init(title=strReferenceFileName,
                            footer="Generated on %s" % time.asctime())
-                    pageReferenceImage.h1(strReferenceImageName)
+                    pageReferenceImage.h1(strReferenceFileName)
                     pageReferenceImage.a("Back to previous page", href_=self.strHtmlFileName)
-                    pageReferenceImage.img(src=strJpegFileName, title=strJpegFileName)
+                    pageReferenceImage.img(src=strFileName, title=strReferenceFileName)
                     pageReferenceImage.a("Back to previous page", href_=self.strHtmlFileName)
                     EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), strPageReferenceImage), str(pageReferenceImage))
+                    outfile = os.path.join(self.getWorkingDirectory(),
+                                           os.path.splitext(os.path.basename(strPathToPredictionImage))[0] + ".thumbnail.jpg")
+                    size = [256, 256]
+                    im = Image.open(strPathToPredictionImage)
+                    im.thumbnail(size, Image.ANTIALIAS)
+                    im.save(outfile, "JPEG")
                     self.page.a(href=strPageReferenceImage)
-                    self.page.img(src=strThumbnailFileName, width=256, height=256, title=strReferenceImageName)
+                    self.page.img(src=outfile, width=256, height=256, title=strFileName)
                     self.page.a.close()
                     self.page.td.close()
                     self.page.tr.close()
                     self.page.tr(align_="CENTER")
-                    self.page.td(strReferenceImageName, class_="caption")
+                    self.page.td(strReferenceFileName, class_="caption")
                     self.page.td.close()
                     self.page.tr.close()
                     self.page.table.close()
                     self.page.td.close()
-        else:
-            self.workflowStepReport.startImageList()
-            for xsDataSubWedge in self.xsDataResultCharacterisation.dataCollection.subWedge:
-                for xsDataImage in xsDataSubWedge.image:
-                    xsDataResultPrediction = xsDataResultIndexing.predictionResult
-                    listXSDataReferenceImage = xsDataResultIndexing.image
-                    for xsDataImagePrediction in xsDataResultPrediction.predictionImage:
-                        if xsDataImagePrediction.number.value == xsDataImage.number.value:
-                            strPathToPredictionImage = xsDataImagePrediction.path.value
-                            strFileName = os.path.basename(strPathToPredictionImage)
-                            break
-                    strReferenceFileName = None
-                    for xsDataReferenceImage in listXSDataReferenceImage:
-                        if xsDataReferenceImage.number.value == xsDataImage.number.value:
-                            strReferenceFileName = os.path.basename(xsDataReferenceImage.path.value)
-                    for xsDataThumbnailImage in listThumbnailImage:
-                        if xsDataThumbnailImage.number.value == xsDataImage.number.value:
-                            strPathToThumbnailImage = xsDataThumbnailImage.path.value
-                            strThumbnailFileName = os.path.basename(strPathToThumbnailImage)
-                            shutil.copyfile(strPathToThumbnailImage, os.path.join(self.getWorkingDirectory(), strThumbnailFileName))
-                    if strReferenceFileName is None:
-                        strReferenceFileName = strFileName
-                    strLocalPath = os.path.join(self.getWorkingDirectory(), strFileName)
-                    self.page.td()
-                    if os.path.exists(strPathToPredictionImage):
-                        shutil.copyfile(strPathToPredictionImage, strLocalPath)
-                        listPaths.append(strLocalPath)
-                        self.page.table(class_='image')
-                        self.page.tr(align_="CENTER")
-                        self.page.td()
-                        strPageReferenceImage = os.path.splitext(strFileName)[0] + ".html"
-                        pageReferenceImage = markupv1_10.page()
-                        pageReferenceImage.init(title=strReferenceFileName,
-                               footer="Generated on %s" % time.asctime())
-                        pageReferenceImage.h1(strReferenceFileName)
-                        pageReferenceImage.a("Back to previous page", href_=self.strHtmlFileName)
-                        pageReferenceImage.img(src=strFileName, title=strReferenceFileName)
-                        pageReferenceImage.a("Back to previous page", href_=self.strHtmlFileName)
-                        EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), strPageReferenceImage), str(pageReferenceImage))
-                        self.page.a(href=strPageReferenceImage)
-                        self.page.img(src=strThumbnailFileName, width=256, height=256, title=strFileName)
-                        self.page.a.close()
-                        self.page.td.close()
-                        self.page.tr.close()
-                        self.page.tr(align_="CENTER")
-                        self.page.td(strReferenceFileName, class_="caption")
-                        self.page.td.close()
-                        self.page.tr.close()
-                        self.page.table.close()
-                        self.page.td.close()
-                        self.workflowStepReport.addImage(strPathToPredictionImage, strFileName, thumbnailHeight=256, thumbnailWidth=256)
-            self.workflowStepReport.endImageList()
-            self.page.table.close()
-            self.page.div.close()
+                    self.workflowStepReport.addImage(strLocalPath, strFileName,
+                                                     pathToThumbnailImage=outfile)
+        self.workflowStepReport.endImageList()
+        self.page.table.close()
+        self.page.div.close()
 
 
     def createTableWithIndexResults(self, _xsDataResultIndexing, _strForcedSpaceGroup):
