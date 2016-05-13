@@ -1002,4 +1002,4 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.workflowStepReport.addLogFile("Kappa re-orientation Log",
                                                    "Kappa re-orientation Log",
                                                    strPathToKappaLogFile)
-            self.addInfo("*) XOalign is a part of XDSme written by Pierre Legrand (https://code.google.com/p/xdsme)")
+            self.workflowStepReport.addInfo("*) XOalign is a part of XDSme written by Pierre Legrand (https://code.google.com/p/xdsme)")
