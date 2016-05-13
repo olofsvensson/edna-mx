@@ -5,6 +5,7 @@ Created on May 9, 2016
 '''
 
 import os
+import cgi
 import PIL.Image
 import json
 import time
@@ -90,6 +91,15 @@ class WorkflowStepReport(object):
         self.dictReport["items"].append(item)
 
 
+    def addLogFile(self, title, linkText, pathToLogFile):
+        item = {}
+        item["type"] = "logFile"
+        item["title"] = title
+        item["linkText"] = linkText
+        item["logText"] = unicode(open(pathToLogFile).read(), errors='ignore')
+        self.dictReport["items"].append(item)
+
+
     def renderJson(self, pathToJsonDir):
         pathToJsonFile = os.path.join(pathToJsonDir, "report.json")
         open(pathToJsonFile, "w").write(json.dumps(self.dictReport, indent=4))
@@ -146,6 +156,17 @@ class WorkflowStepReport(object):
                             page.th(cell)
                         page.tr.close()
                 page.table.close()
+            elif item["type"] == "logFile":
+                pathToLogHtml = tempfile.mkstemp(suffix=".html",
+                                                 prefix=item["title"].replace(" ", "_") + "_",
+                                                 dir=pathToHtmlDir)[1]
+                pageLogHtml = markupv1_10.page()
+                pageLogHtml.h1(item["title"])
+                pageLogHtml.pre(cgi.escape(item["logText"]))
+                open(pathToLogHtml, "w").write(str(pageLogHtml))
+                page.p()
+                page.a(item["linkText"], href_=os.path.basename(pathToLogHtml))
+                page.p.close()
         html = str(page)
         pagePath = os.path.join(pathToHtmlDir, nameOfIndexFile)
         filePage = open(pagePath, "w")

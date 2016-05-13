@@ -134,6 +134,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 EDUtilsFile.writeFile(self.strPageEDNALog, str(pageEDNALog))
                 self.page.a("EDNA log file", href_="edna_log.html")
                 self.page.strong(")")
+                self.workflowStepReport.addLogFile("EDNA Log", "EDNA log file", strPathToLogFile)
             self.page.h1.close()
             self.page.div.close()
             self.dataCollectionInfo()
@@ -221,6 +222,9 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     EDUtilsFile.writeFile(strPageIntegrationLog, str(pageIntegrationLog))
                     self.page.a("Integration log file %d" % iIntegration, href=strIntegrationHtmlPageName)
                     self.page.br()
+                    self.workflowStepReport.addLogFile("Integration Log No %d" % iIntegration,
+                                                       "Integration Log No %d" % iIntegration,
+                                                       strPathToIntegrationLogFile)
                     iIntegration += 1
 
 
@@ -242,7 +246,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.page.strong(" for more details")
                 self.page.h2.close()
                 self.page.font.close()
-                self.workflowStepReport.addWarning("Strategy calculation not performed due to indexing failure")
+                self.workflowStepReport.addWarning("Strategy calculation not performed due to indexing failure, see the EDNA log file for more details")
             elif xsDataResultIntegration is None:
                 self.page.font(_color="red", size="+2")
                 self.page.h2()
@@ -251,7 +255,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.page.strong(" for more details")
                 self.page.h2.close()
                 self.page.font.close()
-                self.workflowStepReport.addWarning("Strategy calculation not performed due to integration failure")
+                self.workflowStepReport.addWarning("Strategy calculation not performed due to integration failure, see the EDNA log file for more details")
             else:
                 self.page.font(_color="red", size="+2")
                 self.page.h2()
@@ -260,7 +264,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 self.page.strong(" for more details")
                 self.page.h2.close()
                 self.page.font.close()
-                self.workflowStepReport.addWarning("Strategy calculation failed")
+                self.workflowStepReport.addWarning("Strategy calculation failed, see the EDNA log file for more details")
         else:
             # Add link to BEST log file:
             if xsDataResultStrategy.getBestLogFile():
@@ -417,6 +421,11 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                         tableData.append(listRow)
                     self.page.table.close()
                     self.workflowStepReport.addTable(strResolutionReasoning, tableColumns, tableData)
+        # Add log files
+        if strPathToBestLogFile is not None:
+            self.workflowStepReport.addLogFile("BEST Log", "Best log file", strPathToBestLogFile)
+        if strPathToRaddoseLogFile is not None:
+            self.workflowStepReport.addLogFile("RADDOSE Log", "RADDOSE log file", strPathToRaddoseLogFile)
 
 
     def dataCollectionInfo(self):
@@ -760,6 +769,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             pageIndexingLog.a("Back to previous page", href_=self.strHtmlFileName)
             EDUtilsFile.writeFile(strPageIndexingLog, str(pageIndexingLog))
             self.page.a("Indexing log file", href="indexing_log.html")
+            self.workflowStepReport.addLogFile("Indexing Log", "Indexing log file", strPathToIndexingLogFile)
 
 
 
