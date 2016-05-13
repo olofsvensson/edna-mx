@@ -956,6 +956,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
     def kappaResults(self):
 
         if self.xsDataResultCharacterisation.kappaReorientation is not None and len(self.xsDataResultCharacterisation.kappaReorientation.solution) > 0:
+            strPathToKappaLogFile = None
             if self.xsDataResultCharacterisation.kappaReorientation.logFile:
                 strPathToKappaLogFile = self.xsDataResultCharacterisation.kappaReorientation.logFile.path.value
                 strPageKappaLog = os.path.join(self.getWorkingDirectory(), "kappa_log.html")
@@ -976,11 +977,16 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.page.th("Phi")
             self.page.th("Settings")
             self.page.tr.close()
+            tableColumns = ["Kappa", "Phi", "Settings"]
+            listRow = []
             for solution in self.xsDataResultCharacterisation.kappaReorientation.solution:
                 self.page.tr(align_="CENTER", bgcolor_=self.strTableColourRows)
                 self.page.th(" %.2f " % float(solution.kappa.value))
+                listRow.append(" %.2f " % float(solution.kappa.value))
                 self.page.th(" %.2f " % float(solution.phi.value))
+                listRow.append(" %.2f " % float(solution.phi.value))
                 self.page.th(" %s " % cgi.escape(solution.settings.value))
+                listRow.append(" %s " % cgi.escape(solution.settings.value))
                 self.page.tr.close()
             self.page.table.close()
             self.page.br()
@@ -988,3 +994,11 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.page.br()
             self.page.br()
             self.page.br()
+            tableData = []
+            tableData.append(listRow)
+            self.workflowStepReport.addTable("Suggested kappa goniostat reorientation",
+                                             tableColumns, tableData)
+            if strPathToKappaLogFile is not None:
+                self.workflowStepReport.addLogFile("Kappa re-orientation Log",
+                                                   "Kappa re-orientation Log",
+                                                   strPathToKappaLogFile)
