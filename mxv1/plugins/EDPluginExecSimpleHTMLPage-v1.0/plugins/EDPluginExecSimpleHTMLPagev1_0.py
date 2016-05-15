@@ -621,7 +621,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                         shutil.copyfile(strPathToThumbnailImage, os.path.join(self.getWorkingDirectory(), strThumbnailFileName))
                         os.chmod(strPathToThumbnailImage, 0o644)
                         break
-                self.workflowStepReport.addImage(strPathToJpegImage, imageTitle=strJpegFileName, pathToThumbnailImage=strPathToThumbnailImage)
+                self.workflowStepReport.addImage(strPathToJpegImage, imageTitle=os.path.splitext(strJpegFileName)[0], pathToThumbnailImage=strPathToThumbnailImage)
                 self.page.td()
                 self.page.table(class_='image')
                 self.page.tr(align_="CENTER")
@@ -700,7 +700,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     self.page.tr.close()
                     self.page.table.close()
                     self.page.td.close()
-                    self.workflowStepReport.addImage(strLocalPath, strFileName,
+                    self.workflowStepReport.addImage(strLocalPath, os.path.splitext(strFileName)[0],
                                                      pathToThumbnailImage=outfile)
         self.workflowStepReport.endImageList()
         self.page.table.close()
@@ -933,7 +933,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 im.save(outfile, "JPEG")
                 self.page.a(href=strPageGraphFileName)
                 self.page.img(src=os.path.basename(outfile), title=strFileName)
-                self.workflowStepReport.addImage(xsDataFile.path.value, strFileName, pathToThumbnailImage=outfile)
+                self.workflowStepReport.addImage(xsDataFile.path.value, os.path.splitext(strFileName)[0], pathToThumbnailImage=outfile)
                 self.page.a.close()
                 self.page.td.close()
                 iIndex += 1
