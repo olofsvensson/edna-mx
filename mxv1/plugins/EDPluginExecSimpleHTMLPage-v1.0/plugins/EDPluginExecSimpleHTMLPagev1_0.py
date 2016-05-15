@@ -700,7 +700,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     im.save(outfile, "JPEG")
                     os.chmod(outfile, 0o644)
                     self.page.a(href=strPageReferenceImage)
-                    self.page.img(src=outfile, width=256, height=256, title=strFileName)
+                    self.page.img(src=os.path.basename(outfile), width=256, height=256, title=strFileName)
                     self.page.a.close()
                     self.page.td.close()
                     self.page.tr.close()

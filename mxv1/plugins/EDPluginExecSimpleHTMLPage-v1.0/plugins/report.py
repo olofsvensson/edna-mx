@@ -164,6 +164,7 @@ class WorkflowStepReport(object):
                 pageLogHtml.h1(item["title"])
                 pageLogHtml.pre(cgi.escape(item["logText"]))
                 open(pathToLogHtml, "w").write(str(pageLogHtml))
+                os.chmod(pathToLogHtml, 0o644)
                 page.p()
                 page.a(item["linkText"], href_=os.path.basename(pathToLogHtml))
                 page.p.close()
