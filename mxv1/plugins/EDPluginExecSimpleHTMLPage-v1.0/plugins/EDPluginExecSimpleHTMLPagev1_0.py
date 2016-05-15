@@ -73,7 +73,6 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.fMinTransmission = 10  # %
         self.bIsHelical = False
         self.bIsMultiPositional = False
-        self.dictHtml = {}
         self.workflowStepReport = None
 
 
@@ -99,11 +98,6 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         if self.xsDataResultCharacterisation is not None:
             # WorkflowStepReport
             self.workflowStepReport = WorkflowStepReport("Characterisation")
-            # Create json dictionary at the same time for EXI
-            self.dictHtml = {}
-            self.dictHtml["version"] = "1.0"
-            self.dictHtml["type"] = "Characterisation"
-            self.dictHtml["items"] = []
             # Create the simple characterisation result page
             self.page = markupv1_10.page(mode='loose_html')
             self.page.init(title="Characterisation Results",
@@ -112,11 +106,9 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.page.h1()
             if self.xsDataResultCharacterisation is not None:
                 self.page.strong("Characterisation Results ")
-                self.dictHtml["title"] = "Characterisation Results"
                 self.workflowStepReport.setTitle("Characterisation Results")
             else:
                 self.page.strong("No Characterisation Results! ")
-                self.dictHtml["title"] = "No Characterisation Results!"
                 self.workflowStepReport.setTitle("No Characterisation Results!")
             # Link to the EDNA log file
             if self.dataInput.logFile is None:
@@ -444,8 +436,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     self.page.h2(strWarningMessage1 + "<br>" + strWarningMessage2)
                     self.page.i.close()
                     self.page.font.close()
-                    self.dictHtml["items"].append({"type": "info", "value": strWarningMessage1})
-                    self.dictHtml["items"].append({"type": "info", "value": strWarningMessage2})
+                    self.workflowStepReport.addWarning(strWarningMessage1)
+                    self.workflowStepReport.addWarning(strWarningMessage2)
             self.page.h2("Data collection info")
             firstImage = firstSubWedge.image[0]
             if firstImage.date is not None:
@@ -480,7 +472,6 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
             self.page.tr.close()
             self.page.table.close()
             dictTable["data"].append(listRow)
-            self.dictHtml["items"].append(dictTable)
             #
             self.workflowStepReport.addTable("Data collection info",
                                              dictTable["columns"],
@@ -518,19 +509,19 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                      "data": []}
         self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
         self.page.th("Forced<br>space group")
-        dictTable["columns"].append("Forced space group")
+        dictTable["columns"].append("Forced\nspace group")
         self.page.th("Anomalous<br>data")
-        dictTable["columns"].append("Anomalous data")
+        dictTable["columns"].append("Anomalous\ndata")
         self.page.th("Aimed<br>multiplicity")
-        dictTable["columns"].append("Aimed multiplicity")
+        dictTable["columns"].append("Aimed\nmultiplicity")
         self.page.th("Aimed<br>completeness")
-        dictTable["columns"].append("Aimed completeness")
+        dictTable["columns"].append("Aimed\ncompleteness")
         self.page.th("Aimed I/sigma<br>at highest res.")
-        dictTable["columns"].append("Aimed I/sigma at highest res.")
+        dictTable["columns"].append("Aimed I/sigma\nat highest res.")
         self.page.th("Aimed<br>resolution (&Aring;)")
-        dictTable["columns"].append("Aimed resolution (&Aring;)")
+        dictTable["columns"].append("Aimed\nresolution (&Aring;)")
         self.page.th("Min osc.<br>width")
-        dictTable["columns"].append("Min osc. width")
+        dictTable["columns"].append("Min osc.\nwidth")
         if strExtraColumnTitle is not None:
             self.page.th(strExtraColumnTitle)
             dictTable["columns"].append(strExtraColumnTitle)
@@ -593,7 +584,6 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         self.page.tr.close()
         self.page.table.close()
         dictTable["data"].append(listRow)
-        self.dictHtml["items"].append(dictTable)
         #
         self.workflowStepReport.addTable(strTitle,
                                          dictTable["columns"],

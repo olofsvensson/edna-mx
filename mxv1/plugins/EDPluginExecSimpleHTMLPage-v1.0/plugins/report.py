@@ -141,19 +141,19 @@ class WorkflowStepReport(object):
                 if "orientation" in item and item["orientation"] == "vertical":
                     for index1 in range(len(item["columns"])):
                         page.tr(align_="CENTER")
-                        page.th(item["columns"][index1], bgcolor_="#F0F0FF", align_="LEFT")
+                        page.th(item["columns"][index1].replace("\n", "<br>"), bgcolor_="#F0F0FF", align_="LEFT")
                         for index2 in range(len(item["data"])):
-                            page.th(item["data"][index2][index1], bgcolor_="#FFFFA0")
+                            page.th(str(item["data"][index2][index1]).replace("\n", "<br>"), bgcolor_="#FFFFA0")
                         page.tr.close()
                 else:
                     page.tr(align_="CENTER", bgcolor_="#F0F0FF")
                     for column in item["columns"]:
-                        page.th(column)
+                        page.th(column.replace("\n", "<br>"))
                     page.tr.close()
                     for listRow in item["data"]:
                         page.tr(align_="CENTER", bgcolor_="#FFFFA0")
                         for cell in listRow:
-                            page.th(cell)
+                            page.th(str(cell).replace("\n", "<br>"))
                         page.tr.close()
                 page.table.close()
             elif item["type"] == "logFile":
