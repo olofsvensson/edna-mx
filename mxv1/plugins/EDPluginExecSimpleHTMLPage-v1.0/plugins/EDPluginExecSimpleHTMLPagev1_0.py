@@ -623,11 +623,13 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                         strPathToJpegImage = xsDataImageJpeg.path.value
                         strJpegFileName = os.path.basename(strPathToJpegImage)
                         shutil.copyfile(strPathToJpegImage, os.path.join(self.getWorkingDirectory(), strJpegFileName))
+                        os.chmod(strPathToJpegImage, 0o644)
                 for xsDataThumbnailImage in listThumbnailImage:
                     if xsDataThumbnailImage.number.value == xsDataImage.number.value:
                         strPathToThumbnailImage = xsDataThumbnailImage.path.value
                         strThumbnailFileName = os.path.basename(strPathToThumbnailImage)
                         shutil.copyfile(strPathToThumbnailImage, os.path.join(self.getWorkingDirectory(), strThumbnailFileName))
+                        os.chmod(strPathToThumbnailImage, 0o644)
                         break
                 self.workflowStepReport.addImage(strPathToJpegImage, imageTitle=strJpegFileName, pathToThumbnailImage=strPathToThumbnailImage)
                 self.page.td()
@@ -696,6 +698,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     im = Image.open(strPathToPredictionImage)
                     im.thumbnail(size, Image.ANTIALIAS)
                     im.save(outfile, "JPEG")
+                    os.chmod(outfile, 0o644)
                     self.page.a(href=strPageReferenceImage)
                     self.page.img(src=outfile, width=256, height=256, title=strFileName)
                     self.page.a.close()
