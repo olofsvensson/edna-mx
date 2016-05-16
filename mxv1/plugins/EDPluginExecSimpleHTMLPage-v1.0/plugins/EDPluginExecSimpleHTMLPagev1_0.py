@@ -292,7 +292,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                     self.page.a(" (RADDOSE log file)", href="raddose_log.html")
                 self.page.h2.close()
                 self.page.font.close()
-                self.workflowStepReport.addWarning("Strategy calculation failed")
+                self.workflowStepReport.addWarning("Strategy calculation failed, see the BEST log file for more details")
             else:
                 iNoSubWedges = len(listXSDataCollectionPlan)
                 self.page.h2()
@@ -412,7 +412,8 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                         self.page.tr.close()
                         tableData.append(listRow)
                     self.page.table.close()
-                    self.workflowStepReport.addTable(strResolutionReasoning, tableColumns, tableData)
+                    strResolutionReasoningFirstLower = strResolutionReasoning[0].lower() + strResolutionReasoning[1:]
+                    self.workflowStepReport.addTable(tabTitle + ": " + strResolutionReasoningFirstLower, tableColumns, tableData)
         # Add log files
         if strPathToBestLogFile is not None:
             self.workflowStepReport.addLogFile("BEST Log", "Best log file", strPathToBestLogFile)
@@ -933,7 +934,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                 im.save(outfile, "JPEG")
                 self.page.a(href=strPageGraphFileName)
                 self.page.img(src=os.path.basename(outfile), title=strFileName)
-                self.workflowStepReport.addImage(xsDataFile.path.value, os.path.splitext(strFileName)[0], pathToThumbnailImage=outfile)
+                self.workflowStepReport.addImage(xsDataFile.path.value, "", pathToThumbnailImage=outfile)
                 self.page.a.close()
                 self.page.td.close()
                 iIndex += 1
