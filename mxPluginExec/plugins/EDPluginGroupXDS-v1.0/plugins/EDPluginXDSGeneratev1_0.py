@@ -150,15 +150,29 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginXDSGeneratev1_0.process")
 
-        EDVerbose.DEBUG('first run w/ anom')
+        self.xds_anom.execute()
+        self.screen('First run anom started')
 
-        self.xds_anom.executeSynchronous()
+        self.xds_noanom.execute()
+        self.screen('Second run noanom started')
+
+        self.xds_anom.synchronize()
         if self.xds_anom.isFailure():
-            strErrorMessage = "xds failed when generating w/ anom"
+            strErrorMessage = "xds failed when generating with anom"
             self.ERROR(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             self.setFailure()
             return
+        self.screen('First run anom done')
+
+        self.xds_noanom.synchronize()
+        if self.xds_noanom.isFailure():
+            strErrorMessage = "xds failed when generating without anom"
+            self.ERROR(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
+            self.setFailure()
+            return
+        self.screen('Second run noanom done')
 
         # Now backup the file
         mydir = os.path.abspath(self.getWorkingDirectory())
@@ -177,18 +191,6 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         integrate_hkl = os.path.join(xds_run_directory, 'INTEGRATE.HKL')
         integrate_hkl_anom = os.path.join(mydir, 'INTEGRATE_ANOM.HKL')
         copyfile(integrate_hkl, integrate_hkl_anom)
-
-        # now the second run, generate w/out anom
-        EDVerbose.DEBUG('second run w/out anom')
-
-        self.xds_noanom.executeSynchronous()
-
-        if self.xds_noanom.isFailure():
-            strErrorMessage = "xds failed when generating w/ anom"
-            self.ERROR(strErrorMessage)
-            self.addErrorMessage(strErrorMessage)
-            self.setFailure()
-            return
 
         # Now backup the file
         xds_run_directory = self.xds_noanom.getWorkingDirectory()
