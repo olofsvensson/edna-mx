@@ -288,7 +288,11 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if lowres is not None:
             self.low_resolution_limit = lowres.value
         else:
-            self.low_resolution_limit = 50
+            if EDUtilsPath.isEMBL():
+                self.low_resolution_limit = 999
+            else: 
+                self.low_resolution_limit = 50
+            
 
         res_override = data_in.res_override
         if res_override is not None:
@@ -1083,7 +1087,16 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         # the whole transformation is fragile!
         if EDUtilsPath.isEMBL():
-            pyarch_path = os.path.join(files_dir, 'a_copy')
+            tokens = [elem for elem in self.first_image.split(os.path.sep)
+                      if len(elem) > 0]
+            if 'p14' in tokens[0:2] or 'P14' in tokens[0:2]:
+                 strBeamline = 'p14'
+            elif 'p13' in tokens[0:2] or 'P13' in tokens[0:2]:
+                strBeamline = 'p13'
+            else:
+                 strBeamline = ''
+            pyarch_path = os.path.join('/data/ispyb', strBeamline, *tokens[3:-1])
+            pyarch_path = os.path.join(pyarch_path, "%s" % self.integration_id_anom)
         elif EDUtilsPath.isESRF():
             if files_dir.startswith('/data/gz'):
                 if files_dir.startswith('/data/gz/visitor'):
@@ -1144,8 +1157,6 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 attach_noanom = AutoProcProgramAttachment()
                 attach_noanom.fileType = "Result"
                 attach_noanom.fileName = filename
-                if EDUtilsPath.isEMBL():
-                    dirname = '/mnt/p14ppu01/' + dirname
                 attach_anom.filePath = dirname
                 attach_noanom.filePath = dirname
                 if "_anom" in filename:
@@ -1212,11 +1223,10 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0755)
 
         # Finally run dimple if executed at the ESRF
-        if EDUtilsPath.isESRF():
+        if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():
             xsDataInputControlDimple = XSDataInputControlDimple()
             xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
-            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value,
-                                                                                    "ep_{0}_noanom_aimless.mtz".format(self.image_prefix))))
+            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "ep_{0}_noanom_aimless.mtz".format(self.image_prefix))))
             xsDataInputControlDimple.imagePrefix = XSDataString(self.image_prefix)
             xsDataInputControlDimple.proposal = XSDataString(self.strProposal)
             xsDataInputControlDimple.sessionDate = XSDataString(self.strSessionDate)

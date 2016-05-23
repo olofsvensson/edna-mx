@@ -135,7 +135,7 @@ class EDPluginISPyBUpdateDataCollectionGroupCommentv1_4(EDPluginExec):
             self.setFailure()
             return
         dataCollectionGroupWS3VO = clientToolsForCollectionWebService.service.findDataCollectionGroup(dataCollectionGroupId)
-        if not newComment in dataCollectionGroupWS3VO.comments:
+        if not newComment in str(dataCollectionGroupWS3VO.comments):
             dataCollectionGroupWS3VO.comments = newComment
             self.iDataCollectionGroupId = clientToolsForCollectionWebService.service.storeOrUpdateDataCollectionGroup(dataCollectionGroupWS3VO)
             # Make sure the comments hasn't already been added by ISPyB:

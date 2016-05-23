@@ -614,7 +614,6 @@
 		                </XSParamItem> 
 		        </XSParamList>
 		</XSPluginItem>
-
 		<XSPluginItem>
 		        <name>EDPluginExecOutputHTMLv1_0</name>
 			    <XSParamList>
@@ -624,8 +623,86 @@
 			        </XSParamItem>
 			    </XSParamList>
 		</XSPluginItem>
-
-
-
+                <XSPluginItem>
+                        <name>EDPluginDozorv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>execProcessScriptShell</name>
+                                        <value>/bin/bash</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>execProcessScriptSetupCCP4</name>
+                                        <value>/mx-beta/dozor/dozor-env.sh</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                         <name>execProcessScriptExecutable</name>
+                                         <value>/mx-beta/dozor/dozor</value>
+                                 </XSParamItem>
+                                 <XSParamItem>
+                                          <name>timeOut</name>
+                                          <value>600</value>
+                                 </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                 <XSPluginItem>
+                        <name>EDPluginPhenixXtriagev1_1</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>execProcessScriptShell</name>
+                                        <value>/bin/bash</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>execProcessScriptExecutable</name>
+                                        <value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/phenix.xtriage</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>600</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginExecDimplev1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>execProcessScriptShell</name>
+                                        <value>/bin/bash</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>execProcessScriptExecutable</name>
+                                        <value>/mx-beta/bin-trs/ccp4-6.5/bin/dimple</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>600</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginHTML2PDFv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>execProcessScriptShell</name>
+                                        <value>/bin/bash</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>execProcessScriptExecutable</name>
+                                        <value>/home/karpics/wkhtmltopdf</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>30</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginControlEDNAprocv1_0</name>
+                        <XSParamList>
+                                 <XSParamItem>
+                                          <name>timeOut</name>
+                                          <value>6000</value>
+                                 </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
 	</XSPluginList>
 </XSConfiguration> 
