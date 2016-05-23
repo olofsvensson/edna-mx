@@ -679,8 +679,8 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
 
 
     def doSuccessSimpleHTML(self, _edPlugin=None):
-        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.doSuccessSimpleHTML...")
-        self.retrieveSuccessMessages(_edPlugin, "EDPluginControlInterfaceToMXCuBEv1_3.doSuccessSimpleHTML")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_4.doSuccessSimpleHTML...")
+        self.retrieveSuccessMessages(_edPlugin, "EDPluginControlInterfaceToMXCuBEv1_4.doSuccessSimpleHTML")
         # Copy files from working directory
         if self.dataInput.htmlDir is None:
             self.xsDataResultMXCuBE.setHtmlPage(_edPlugin.dataOutput.pathToHTMLFile)
