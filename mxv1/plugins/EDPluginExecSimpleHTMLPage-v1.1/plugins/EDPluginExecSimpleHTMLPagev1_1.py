@@ -620,7 +620,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         if self.xsDataResultCharacterisation.kappaReorientation is not None and len(self.xsDataResultCharacterisation.kappaReorientation.solution) > 0:
             strPathToKappaLogFile = None
             if self.xsDataResultCharacterisation.kappaReorientation.logFile:
-                EDUtilsFile.writeFile(strPageKappaLog, str(pageKappaLog))
+                strPathToKappaLogFile = self.xsDataResultCharacterisation.kappaReorientation.logFile.path.value
             tableColumns = ["Kappa", "Phi", "Settings"]
             listRow = []
             for solution in self.xsDataResultCharacterisation.kappaReorientation.solution:
