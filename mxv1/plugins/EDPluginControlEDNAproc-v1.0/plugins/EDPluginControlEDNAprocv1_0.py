@@ -252,6 +252,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             self.image_prefix = ''
 
         if EDUtilsPath.isEMBL():
+            #Add prefix if edna used
             self.image_prefix = self.image_prefix + '_edna'
 
         # The resultsdir used to be root_dir/results/fast_processing
