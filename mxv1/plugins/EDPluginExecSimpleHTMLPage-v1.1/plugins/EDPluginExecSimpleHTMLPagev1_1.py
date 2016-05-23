@@ -45,8 +45,8 @@ from report import WorkflowStepReport
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
 
-from XSDataSimpleHTMLPagev1_0 import XSDataInputSimpleHTMLPage
-from XSDataSimpleHTMLPagev1_0 import XSDataResultSimpleHTMLPage
+from XSDataSimpleHTMLPagev1_1 import XSDataInputSimpleHTMLPage
+from XSDataSimpleHTMLPagev1_1 import XSDataResultSimpleHTMLPage
 
 EDFactoryPluginStatic.loadModule("XSDataMXv1")
 from XSDataMXv1 import XSDataDiffractionPlan
