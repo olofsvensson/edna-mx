@@ -113,7 +113,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
 
     def configure(self, _edPlugin=None):
         EDPluginControl.configure(self)
-        self.DEBUG("EDPluginControlReadImageHeaderv10.configure")
+        self.DEBUG("EDPluginControlImageQualityIndicatorsv1_4.configure")
         self.fMXWaitFileTimeOut = float(self.config.get("MXWaitFileTimeOut", self.fMXWaitFileTimeOut))
         self.minImageSize = self.config.get("minImageSize")
         if self.minImageSize is None:
