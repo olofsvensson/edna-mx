@@ -42,11 +42,23 @@ class EDHandlerESRFPyarchv1_0:
         This method translates from an ESRF "visitor" path to a "pyarch" path:
         /data/visitor/mx415/id14eh1/20100209 -> /data/pyarch/id14eh1/mx415/20100209
         """
-        if EDUtilsPath.isEMBL():
-            return _strESRFPath	
-
         strPyarchDNAFilePath = None
         listOfDirectories = _strESRFPath.split(os.sep)
+
+        if EDUtilsPath.isEMBL():
+            if 'p14' in listOfDirectories[0:3] or 'P14' in listOfDirectories[0:3]:
+                 strBeamline = 'p14'
+            elif 'p13' in listOfDirectories[0:3] or 'P13' in listOfDirectories[0:3]:
+                 strBeamline = 'p13'
+            else:
+                 strBeamline = ''
+            strPyarchDNAFilePath = os.path.join(os.sep, "data")
+            strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, "ispyb")
+            strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, strBeamline)
+            strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, *listOfDirectories[4:])
+            return strPyarchDNAFilePath
+
+
         listBeamlines = ["bm14", "id14eh1", "id14eh2", "id14eh3", "id14eh4", "id23eh1", "id23eh2", 
                          "id29", "id30a1", "id30a2", "id30a3", "id30b", "simulator_mxcube"]
         # Check that we have at least four levels of directories:

@@ -4,7 +4,7 @@
   	<name>XSConfiguration_EMBL_P13_specific</name>
   </XSImportConfiguration>	
  <XSImportConfiguration>
-        <name>XSConfiguration_EMBL_Beamline</name>
+        <name>XSConfiguration_EMBL_Common</name>
   </XSImportConfiguration>
   <XSImportConfiguration>
   	<name>XSConfiguration_EMBL_ISPyB_Common</name>
