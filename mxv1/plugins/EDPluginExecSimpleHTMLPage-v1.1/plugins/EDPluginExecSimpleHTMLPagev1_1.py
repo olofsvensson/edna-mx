@@ -125,6 +125,8 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         EDPluginExec.finallyProcess(self, _edPlugin)
         self.DEBUG("EDPluginExecSimpleHTMLPagev1_1.finallyProcess...")
         xsDataResultSimpleHTMLPage = XSDataResultSimpleHTMLPage()
+        xsDataResultSimpleHTMLPage.setPathToHTMLFile(XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), self.strHtmlFileName))))
+        xsDataResultSimpleHTMLPage.setPathToHTMLDirectory(XSDataFile(XSDataString(self.getWorkingDirectory())))
         # Write workflowStepReport HTML page
         pathToIndexFile = self.workflowStepReport.renderHtml(self.getWorkingDirectory(), nameOfIndexFile=self.strHtmlFileName)
         pathToJsonFile = self.workflowStepReport.renderJson(self.getWorkingDirectory())
