@@ -60,8 +60,8 @@ from XSDataMXv1 import XSDataResultCharacterisation
 from XSDataMXCuBEv1_4 import XSDataInputMXCuBE
 from XSDataMXCuBEv1_4 import XSDataResultMXCuBE
 
-EDFactoryPluginStatic.loadModule("XSDataSimpleHTMLPagev1_0")
-from XSDataSimpleHTMLPagev1_0 import XSDataInputSimpleHTMLPage
+EDFactoryPluginStatic.loadModule("XSDataSimpleHTMLPagev1_1")
+from XSDataSimpleHTMLPagev1_1 import XSDataInputSimpleHTMLPage
 
 EDFactoryPluginStatic.loadModule("XSDataInterfacev1_2")
 from XSDataInterfacev1_2 import XSDataInputInterface
@@ -102,7 +102,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.xsDataIntegerDataCollectionId = None
         self.strPluginExecOutputHTMLName = "EDPluginExecOutputHTMLv1_0"
         self.edPluginExecOutputHTML = None
-        self.strPluginExecSimpleHTMLName = "EDPluginExecSimpleHTMLPagev1_0"
+        self.strPluginExecSimpleHTMLName = "EDPluginExecSimpleHTMLPagev1_1"
         self.edPluginExecSimpleHTML = None
         self.strPluginISPyBRetrieveDataCollection = "EDPluginISPyBRetrieveDataCollectionv1_4"
         self.edPluginISPyBRetrieveDataCollection = None
