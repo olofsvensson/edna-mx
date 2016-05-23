@@ -139,6 +139,9 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                 # For debugging purposes
                 strPyarchPath = EDUtilsPath.getEdnaUserTempFolder()
             EDHandlerESRFPyarchv1_0.copyHTMLDir(_strPathToHTMLDir=os.path.dirname(self.strPath), _strPathToPyarchDirectory=strPyarchPath)
+            xsDataResultSimpleHTMLPage.setPathToHTMLDirectory(XSDataFile(XSDataString(strPyarchPath)))
+            shutil.copy(pathToJsonFile, strPyarchPath)
+            pathToJsonFile = os.path.join(strPyarchPath, os.path.basename(pathToJsonFile))
         # Write json file
         xsDataResultSimpleHTMLPage.pathToJsonFile = XSDataFile(XSDataString(pathToJsonFile))
         self.setDataOutput(xsDataResultSimpleHTMLPage)
