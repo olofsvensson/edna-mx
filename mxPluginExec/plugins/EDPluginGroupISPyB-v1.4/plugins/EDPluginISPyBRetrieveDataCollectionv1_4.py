@@ -105,7 +105,7 @@ class EDPluginISPyBRetrieveDataCollectionv1_4(EDPluginExec):
         else:
             self.ERROR("Neither image nor data collection id given as input!")
         if collect_params is None:
-            self.ERROR("Couldn't find collect in ISPyB for path %s!" % inpath)
+            self.ERROR("Couldn't find collect for image %s in ISPyB!" % inpath)
             self.setFailure()
         else:
             # the result is a suds.sudsobject.Object, we need to convert it
