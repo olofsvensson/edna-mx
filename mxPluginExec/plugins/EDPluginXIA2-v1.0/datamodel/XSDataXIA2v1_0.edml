@@ -1,0 +1,23 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSData
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataBoolean
+import XSDataCommon.XSDataString
+import XSDataCommon.XSDataInteger
+
+
+complex type XSDataInputXIA2 extends XSDataInput {
+	image : XSDataFile []
+}
+
+complex type XSDataResultXIA2 extends XSDataResult {
+	logFile : XSDataFile
+	dataFiles : XSDataFile []
+	ispybXML : XSDataFile
+	summary : XSDataFile
+	logFiles : XSDataFile []
+}
