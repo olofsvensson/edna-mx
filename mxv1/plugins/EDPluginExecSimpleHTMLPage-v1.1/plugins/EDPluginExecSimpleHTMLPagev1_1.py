@@ -426,18 +426,13 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                 for xsDataImageJpeg in listJpegImage:
                     if xsDataImageJpeg.number.value == xsDataImage.number.value:
                         strPathToJpegImage = xsDataImageJpeg.path.value
-                        strJpegFileName = os.path.basename(strPathToJpegImage)
-                        shutil.copyfile(strPathToJpegImage, os.path.join(self.getWorkingDirectory(), strJpegFileName))
-                        os.chmod(strPathToJpegImage, 0o644)
                 for xsDataThumbnailImage in listThumbnailImage:
                     if xsDataThumbnailImage.number.value == xsDataImage.number.value:
                         strPathToThumbnailImage = xsDataThumbnailImage.path.value
-                        strThumbnailFileName = os.path.basename(strPathToThumbnailImage)
-                        shutil.copyfile(strPathToThumbnailImage, os.path.join(self.getWorkingDirectory(), strThumbnailFileName))
-                        os.chmod(strPathToThumbnailImage, 0o644)
                         break
-                self.workflowStepReport.addImage(strPathToJpegImage, imageTitle=os.path.splitext(strJpegFileName)[0], pathToThumbnailImage=strPathToThumbnailImage)
-                strPageReferenceImage = os.path.splitext(strReferenceImageName)[0] + ".html"
+                self.workflowStepReport.addImage(strPathToJpegImage,
+                                                 imageTitle=os.path.basename(os.path.splitext(strPathToJpegImage)[0]),
+                                                 pathToThumbnailImage=strPathToThumbnailImage)
         self.workflowStepReport.endImageList()
 
 
@@ -457,11 +452,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                 strReferenceFileName = None
                 if strReferenceFileName is None:
                     strReferenceFileName = strFileName
-                strLocalPath = os.path.join(self.getWorkingDirectory(), strFileName)
                 if os.path.exists(strPathToPredictionImage):
-                    shutil.copyfile(strPathToPredictionImage, strLocalPath)
-                    listPaths.append(strLocalPath)
-                    strPageReferenceImage = os.path.splitext(strFileName)[0] + ".html"
                     outfile = os.path.join(self.getWorkingDirectory(),
                                            os.path.splitext(os.path.basename(strPathToPredictionImage))[0] + ".thumbnail.jpg")
                     size = [256, 256]
@@ -469,8 +460,9 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                     im.thumbnail(size, Image.ANTIALIAS)
                     im.save(outfile, "JPEG")
                     os.chmod(outfile, 0o644)
-                    self.workflowStepReport.addImage(strLocalPath, os.path.splitext(strFileName)[0],
+                    self.workflowStepReport.addImage(strPathToPredictionImage, os.path.basename(os.path.splitext(strFileName)[0]),
                                                      pathToThumbnailImage=outfile)
+                    os.remove(outfile)
         self.workflowStepReport.endImageList()
 
 
@@ -605,13 +597,17 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             self.workflowStepReport.startImageList()
             for iIndexPlot in listPlotsToDisplay:
                 xsDataFile = listXSDataFile[iIndexPlot]
-                strFileName = os.path.basename(xsDataFile.path.value)
-                outfile = os.path.join(self.getWorkingDirectory(),
-                                       os.path.splitext(strFileName)[0] + ".thumbnail.jpg")
+                plotPath = xsDataFile.path.value
+                plotFileName = os.path.basename(plotPath)
+                plotTitle = os.path.splitext(plotFileName)[0]
+                tmpOutfile = os.path.join(self.getWorkingDirectory(),
+                                          plotTitle + ".thumbnail.jpg")
                 size = [300, 200]
-                im = Image.open(xsDataFile.path.value)
+                im = Image.open(plotPath)
                 im.thumbnail(size, Image.ANTIALIAS)
-                im.save(outfile, "JPEG")
+                im.save(tmpOutfile, "JPEG")
+                self.workflowStepReport.addImage(plotPath, plotTitle, tmpOutfile)
+                os.remove(tmpOutfile)
                 iIndex += 1
                 if iIndex > 4:
                     iIndex = 1
