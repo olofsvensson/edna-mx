@@ -708,7 +708,7 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem> 
-			<name>EDPluginExecXIA2v1_0</name>  
+			<name>EDPluginExecXia2DIALSv1_0</name>  
 			<XSParamList>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>

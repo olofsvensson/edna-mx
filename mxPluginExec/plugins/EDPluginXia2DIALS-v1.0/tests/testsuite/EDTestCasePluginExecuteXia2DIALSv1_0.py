@@ -35,12 +35,12 @@ from EDTestCasePluginExecute          import EDTestCasePluginExecute
 
 
 
-class EDTestCasePluginExecuteXIA2v1_0(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteXia2DIALSv1_0(EDTestCasePluginExecute):
 
     def __init__(self, _oalStringTestName=None):
-        EDTestCasePluginExecute.__init__(self, "EDPluginExecXIA2v1_0")
+        EDTestCasePluginExecute.__init__(self, "EDPluginExecXia2DIALSv1_0")
         self.setConfigurationFile(self.getRefConfigFile())
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputXIA2_reference.xml"))
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputXia2DIALS_reference.xml"))
 #        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultDozor_reference.xml"))
 
     def preProcess(self):

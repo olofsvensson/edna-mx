@@ -10,11 +10,11 @@ import XSDataCommon.XSDataString
 import XSDataCommon.XSDataInteger
 
 
-complex type XSDataInputXIA2 extends XSDataInput {
+complex type XSDataInputXia2DIALS extends XSDataInput {
 	image : XSDataFile []
 }
 
-complex type XSDataResultXIA2 extends XSDataResult {
+complex type XSDataResultXia2DIALS extends XSDataResult {
 	logFile : XSDataFile
 	dataFiles : XSDataFile []
 	ispybXML : XSDataFile

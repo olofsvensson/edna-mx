@@ -23,19 +23,34 @@
 #
 
 
-__authors__ = [ "Olof Svensson" ]
+__authors__ = ["Olof Svensson"]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
+import os
 
-from EDTestSuite                                  import EDTestSuite
+from EDAssert                         import EDAssert
+from EDTestCasePluginExecute          import EDTestCasePluginExecute
 
-class EDTestSuitePluginXIA2v1_0(EDTestSuite):
+
+
+class EDTestCasePluginExecuteControlXia2DIALSv1_0(EDTestCasePluginExecute):
+
+    def __init__(self, _oalStringTestName=None):
+        EDTestCasePluginExecute.__init__(self, "EDPluginControlXia2DIALSv1_0")
+        self.setConfigurationFile(self.getRefConfigFile())
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputControlXia2DIALS_reference.xml"))
+#        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultDozor_reference.xml"))
+
+    def preProcess(self):
+        EDTestCasePluginExecute.preProcess(self)
+#        self.loadTestImage([ "thermn_2_7_0001.cbf", "thermn_2_7_0002.cbf" ])
+
+    def testExecute(self):
+        self.run()
 
 
     def process(self):
-        self.addTestCaseFromName("EDTestCasePluginUnitXIA2v1_0")
-        self.addTestCaseFromName("EDTestCasePluginExecuteXIA2v1_0")
-
+        self.addTestMethod(self.testExecute)
 

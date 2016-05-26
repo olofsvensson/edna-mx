@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue May 24 02:24::33 2016 by EDGenerateDS.
+# Generated Thu May 26 08:54::34 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -113,7 +113,7 @@ class MixedContainer(object):
 
 
 
-class XSDataInputXIA2(XSDataInput):
+class XSDataInputXia2DIALS(XSDataInput):
     def __init__(self, configuration=None, image=None):
         XSDataInput.__init__(self, configuration)
         if image is None:
@@ -121,7 +121,7 @@ class XSDataInputXIA2(XSDataInput):
         elif image.__class__.__name__ == "list":
             self._image = image
         else:
-            strMessage = "ERROR! XSDataInputXIA2 constructor argument 'image' is not list but %s" % self._image.__class__.__name__
+            strMessage = "ERROR! XSDataInputXia2DIALS constructor argument 'image' is not list but %s" % self._image.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
@@ -131,38 +131,38 @@ class XSDataInputXIA2(XSDataInput):
         elif image.__class__.__name__ == "list":
             self._image = image
         else:
-            strMessage = "ERROR! XSDataInputXIA2.setImage argument is not list but %s" % image.__class__.__name__
+            strMessage = "ERROR! XSDataInputXia2DIALS.setImage argument is not list but %s" % image.__class__.__name__
             raise BaseException(strMessage)
     def delImage(self): self._image = None
     image = property(getImage, setImage, delImage, "Property for image")
     def addImage(self, value):
         if value is None:
-            strMessage = "ERROR! XSDataInputXIA2.addImage argument is None"
+            strMessage = "ERROR! XSDataInputXia2DIALS.addImage argument is None"
             raise BaseException(strMessage)            
         elif value.__class__.__name__ == "XSDataFile":
             self._image.append(value)
         else:
-            strMessage = "ERROR! XSDataInputXIA2.addImage argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataInputXia2DIALS.addImage argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
     def insertImage(self, index, value):
         if index is None:
-            strMessage = "ERROR! XSDataInputXIA2.insertImage argument 'index' is None"
+            strMessage = "ERROR! XSDataInputXia2DIALS.insertImage argument 'index' is None"
             raise BaseException(strMessage)            
         if value is None:
-            strMessage = "ERROR! XSDataInputXIA2.insertImage argument 'value' is None"
+            strMessage = "ERROR! XSDataInputXia2DIALS.insertImage argument 'value' is None"
             raise BaseException(strMessage)            
         elif value.__class__.__name__ == "XSDataFile":
             self._image[index] = value
         else:
-            strMessage = "ERROR! XSDataInputXIA2.addImage argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataInputXia2DIALS.addImage argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
-    def export(self, outfile, level, name_='XSDataInputXIA2'):
+    def export(self, outfile, level, name_='XSDataInputXia2DIALS'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
         self.exportChildren(outfile, level + 1, name_)
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataInputXIA2'):
+    def exportChildren(self, outfile, level, name_='XSDataInputXia2DIALS'):
         XSDataInput.exportChildren(self, outfile, level, name_)
         for image_ in self.getImage():
             image_.export(outfile, level, name_='image')
@@ -183,7 +183,7 @@ class XSDataInputXIA2(XSDataInput):
     def marshal( self ):
         oStreamString = StringIO()
         oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataInputXIA2" )
+        self.export( oStreamString, 0, name_="XSDataInputXia2DIALS" )
         oStringXML = oStreamString.getvalue()
         oStreamString.close()
         return oStringXML
@@ -191,24 +191,24 @@ class XSDataInputXIA2(XSDataInput):
     def exportToFile( self, _outfileName ):
         outfile = open( _outfileName, "w" )
         outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataInputXIA2' )
+        self.export( outfile, 0, name_='XSDataInputXia2DIALS' )
         outfile.close()
     #Deprecated method, replaced by exportToFile
     def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataInputXIA2 is deprecated, please use instead exportToFile!")
+        print("WARNING: Method outputFile in class XSDataInputXia2DIALS is deprecated, please use instead exportToFile!")
         self.exportToFile(_outfileName)
     #Method for making a copy in a new instance
     def copy( self ):
-        return XSDataInputXIA2.parseString(self.marshal())
+        return XSDataInputXia2DIALS.parseString(self.marshal())
     #Static method for parsing a string
     def parseString( _inString ):
         doc = minidom.parseString(_inString)
         rootNode = doc.documentElement
-        rootObj = XSDataInputXIA2()
+        rootObj = XSDataInputXia2DIALS()
         rootObj.build(rootNode)
         # Check that all minOccurs are obeyed by marshalling the created object
         oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataInputXIA2" )
+        rootObj.export( oStreamString, 0, name_="XSDataInputXia2DIALS" )
         oStreamString.close()
         return rootObj
     parseString = staticmethod( parseString )
@@ -216,14 +216,14 @@ class XSDataInputXIA2(XSDataInput):
     def parseFile( _inFilePath ):
         doc = minidom.parse(_inFilePath)
         rootNode = doc.documentElement
-        rootObj = XSDataInputXIA2()
+        rootObj = XSDataInputXia2DIALS()
         rootObj.build(rootNode)
         return rootObj
     parseFile = staticmethod( parseFile )
-# end class XSDataInputXIA2
+# end class XSDataInputXia2DIALS
 
 
-class XSDataResultXIA2(XSDataResult):
+class XSDataResultXia2DIALS(XSDataResult):
     def __init__(self, status=None, logFiles=None, summary=None, ispybXML=None, dataFiles=None, logFile=None):
         XSDataResult.__init__(self, status)
         if logFile is None:
@@ -231,35 +231,35 @@ class XSDataResultXIA2(XSDataResult):
         elif logFile.__class__.__name__ == "XSDataFile":
             self._logFile = logFile
         else:
-            strMessage = "ERROR! XSDataResultXIA2 constructor argument 'logFile' is not XSDataFile but %s" % self._logFile.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS constructor argument 'logFile' is not XSDataFile but %s" % self._logFile.__class__.__name__
             raise BaseException(strMessage)
         if dataFiles is None:
             self._dataFiles = []
         elif dataFiles.__class__.__name__ == "list":
             self._dataFiles = dataFiles
         else:
-            strMessage = "ERROR! XSDataResultXIA2 constructor argument 'dataFiles' is not list but %s" % self._dataFiles.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS constructor argument 'dataFiles' is not list but %s" % self._dataFiles.__class__.__name__
             raise BaseException(strMessage)
         if ispybXML is None:
             self._ispybXML = None
         elif ispybXML.__class__.__name__ == "XSDataFile":
             self._ispybXML = ispybXML
         else:
-            strMessage = "ERROR! XSDataResultXIA2 constructor argument 'ispybXML' is not XSDataFile but %s" % self._ispybXML.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS constructor argument 'ispybXML' is not XSDataFile but %s" % self._ispybXML.__class__.__name__
             raise BaseException(strMessage)
         if summary is None:
             self._summary = None
         elif summary.__class__.__name__ == "XSDataFile":
             self._summary = summary
         else:
-            strMessage = "ERROR! XSDataResultXIA2 constructor argument 'summary' is not XSDataFile but %s" % self._summary.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS constructor argument 'summary' is not XSDataFile but %s" % self._summary.__class__.__name__
             raise BaseException(strMessage)
         if logFiles is None:
             self._logFiles = []
         elif logFiles.__class__.__name__ == "list":
             self._logFiles = logFiles
         else:
-            strMessage = "ERROR! XSDataResultXIA2 constructor argument 'logFiles' is not list but %s" % self._logFiles.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS constructor argument 'logFiles' is not list but %s" % self._logFiles.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'logFile' attribute
     def getLogFile(self): return self._logFile
@@ -269,7 +269,7 @@ class XSDataResultXIA2(XSDataResult):
         elif logFile.__class__.__name__ == "XSDataFile":
             self._logFile = logFile
         else:
-            strMessage = "ERROR! XSDataResultXIA2.setLogFile argument is not XSDataFile but %s" % logFile.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS.setLogFile argument is not XSDataFile but %s" % logFile.__class__.__name__
             raise BaseException(strMessage)
     def delLogFile(self): self._logFile = None
     logFile = property(getLogFile, setLogFile, delLogFile, "Property for logFile")
@@ -281,30 +281,30 @@ class XSDataResultXIA2(XSDataResult):
         elif dataFiles.__class__.__name__ == "list":
             self._dataFiles = dataFiles
         else:
-            strMessage = "ERROR! XSDataResultXIA2.setDataFiles argument is not list but %s" % dataFiles.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS.setDataFiles argument is not list but %s" % dataFiles.__class__.__name__
             raise BaseException(strMessage)
     def delDataFiles(self): self._dataFiles = None
     dataFiles = property(getDataFiles, setDataFiles, delDataFiles, "Property for dataFiles")
     def addDataFiles(self, value):
         if value is None:
-            strMessage = "ERROR! XSDataResultXIA2.addDataFiles argument is None"
+            strMessage = "ERROR! XSDataResultXia2DIALS.addDataFiles argument is None"
             raise BaseException(strMessage)            
         elif value.__class__.__name__ == "XSDataFile":
             self._dataFiles.append(value)
         else:
-            strMessage = "ERROR! XSDataResultXIA2.addDataFiles argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS.addDataFiles argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
     def insertDataFiles(self, index, value):
         if index is None:
-            strMessage = "ERROR! XSDataResultXIA2.insertDataFiles argument 'index' is None"
+            strMessage = "ERROR! XSDataResultXia2DIALS.insertDataFiles argument 'index' is None"
             raise BaseException(strMessage)            
         if value is None:
-            strMessage = "ERROR! XSDataResultXIA2.insertDataFiles argument 'value' is None"
+            strMessage = "ERROR! XSDataResultXia2DIALS.insertDataFiles argument 'value' is None"
             raise BaseException(strMessage)            
         elif value.__class__.__name__ == "XSDataFile":
             self._dataFiles[index] = value
         else:
-            strMessage = "ERROR! XSDataResultXIA2.addDataFiles argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS.addDataFiles argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'ispybXML' attribute
     def getIspybXML(self): return self._ispybXML
@@ -314,7 +314,7 @@ class XSDataResultXIA2(XSDataResult):
         elif ispybXML.__class__.__name__ == "XSDataFile":
             self._ispybXML = ispybXML
         else:
-            strMessage = "ERROR! XSDataResultXIA2.setIspybXML argument is not XSDataFile but %s" % ispybXML.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS.setIspybXML argument is not XSDataFile but %s" % ispybXML.__class__.__name__
             raise BaseException(strMessage)
     def delIspybXML(self): self._ispybXML = None
     ispybXML = property(getIspybXML, setIspybXML, delIspybXML, "Property for ispybXML")
@@ -326,7 +326,7 @@ class XSDataResultXIA2(XSDataResult):
         elif summary.__class__.__name__ == "XSDataFile":
             self._summary = summary
         else:
-            strMessage = "ERROR! XSDataResultXIA2.setSummary argument is not XSDataFile but %s" % summary.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS.setSummary argument is not XSDataFile but %s" % summary.__class__.__name__
             raise BaseException(strMessage)
     def delSummary(self): self._summary = None
     summary = property(getSummary, setSummary, delSummary, "Property for summary")
@@ -338,38 +338,38 @@ class XSDataResultXIA2(XSDataResult):
         elif logFiles.__class__.__name__ == "list":
             self._logFiles = logFiles
         else:
-            strMessage = "ERROR! XSDataResultXIA2.setLogFiles argument is not list but %s" % logFiles.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS.setLogFiles argument is not list but %s" % logFiles.__class__.__name__
             raise BaseException(strMessage)
     def delLogFiles(self): self._logFiles = None
     logFiles = property(getLogFiles, setLogFiles, delLogFiles, "Property for logFiles")
     def addLogFiles(self, value):
         if value is None:
-            strMessage = "ERROR! XSDataResultXIA2.addLogFiles argument is None"
+            strMessage = "ERROR! XSDataResultXia2DIALS.addLogFiles argument is None"
             raise BaseException(strMessage)            
         elif value.__class__.__name__ == "XSDataFile":
             self._logFiles.append(value)
         else:
-            strMessage = "ERROR! XSDataResultXIA2.addLogFiles argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS.addLogFiles argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
     def insertLogFiles(self, index, value):
         if index is None:
-            strMessage = "ERROR! XSDataResultXIA2.insertLogFiles argument 'index' is None"
+            strMessage = "ERROR! XSDataResultXia2DIALS.insertLogFiles argument 'index' is None"
             raise BaseException(strMessage)            
         if value is None:
-            strMessage = "ERROR! XSDataResultXIA2.insertLogFiles argument 'value' is None"
+            strMessage = "ERROR! XSDataResultXia2DIALS.insertLogFiles argument 'value' is None"
             raise BaseException(strMessage)            
         elif value.__class__.__name__ == "XSDataFile":
             self._logFiles[index] = value
         else:
-            strMessage = "ERROR! XSDataResultXIA2.addLogFiles argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataResultXia2DIALS.addLogFiles argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
-    def export(self, outfile, level, name_='XSDataResultXIA2'):
+    def export(self, outfile, level, name_='XSDataResultXia2DIALS'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
         self.exportChildren(outfile, level + 1, name_)
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataResultXIA2'):
+    def exportChildren(self, outfile, level, name_='XSDataResultXia2DIALS'):
         XSDataResult.exportChildren(self, outfile, level, name_)
         if self._logFile is not None:
             self.logFile.export(outfile, level, name_='logFile')
@@ -426,7 +426,7 @@ class XSDataResultXIA2(XSDataResult):
     def marshal( self ):
         oStreamString = StringIO()
         oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataResultXIA2" )
+        self.export( oStreamString, 0, name_="XSDataResultXia2DIALS" )
         oStringXML = oStreamString.getvalue()
         oStreamString.close()
         return oStringXML
@@ -434,24 +434,24 @@ class XSDataResultXIA2(XSDataResult):
     def exportToFile( self, _outfileName ):
         outfile = open( _outfileName, "w" )
         outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataResultXIA2' )
+        self.export( outfile, 0, name_='XSDataResultXia2DIALS' )
         outfile.close()
     #Deprecated method, replaced by exportToFile
     def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataResultXIA2 is deprecated, please use instead exportToFile!")
+        print("WARNING: Method outputFile in class XSDataResultXia2DIALS is deprecated, please use instead exportToFile!")
         self.exportToFile(_outfileName)
     #Method for making a copy in a new instance
     def copy( self ):
-        return XSDataResultXIA2.parseString(self.marshal())
+        return XSDataResultXia2DIALS.parseString(self.marshal())
     #Static method for parsing a string
     def parseString( _inString ):
         doc = minidom.parseString(_inString)
         rootNode = doc.documentElement
-        rootObj = XSDataResultXIA2()
+        rootObj = XSDataResultXia2DIALS()
         rootObj.build(rootNode)
         # Check that all minOccurs are obeyed by marshalling the created object
         oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataResultXIA2" )
+        rootObj.export( oStreamString, 0, name_="XSDataResultXia2DIALS" )
         oStreamString.close()
         return rootObj
     parseString = staticmethod( parseString )
@@ -459,11 +459,11 @@ class XSDataResultXIA2(XSDataResult):
     def parseFile( _inFilePath ):
         doc = minidom.parse(_inFilePath)
         rootNode = doc.documentElement
-        rootObj = XSDataResultXIA2()
+        rootObj = XSDataResultXia2DIALS()
         rootObj.build(rootNode)
         return rootObj
     parseFile = staticmethod( parseFile )
-# end class XSDataResultXIA2
+# end class XSDataResultXia2DIALS
 
 
 

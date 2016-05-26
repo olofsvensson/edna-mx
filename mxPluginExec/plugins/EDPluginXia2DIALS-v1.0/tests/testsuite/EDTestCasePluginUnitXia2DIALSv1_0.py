@@ -35,29 +35,29 @@ from EDUtilsFile import EDUtilsFile
 from EDAssert                        import EDAssert
 from EDTestCasePluginUnit            import EDTestCasePluginUnit
 
-from XSDataXIA2v1_0 import XSDataInputXIA2
+from XSDataXia2DIALSv1_0 import XSDataInputXia2DIALS
 
-class EDTestCasePluginUnitXIA2v1_0(EDTestCasePluginUnit):
+class EDTestCasePluginUnitXia2DIALSv1_0(EDTestCasePluginUnit):
 
 
     def __init__(self, _strTestName=None):
-        EDTestCasePluginUnit.__init__(self, "EDPluginExecXIA2v1_0")
+        EDTestCasePluginUnit.__init__(self, "EDPluginExecXia2DIALSv1_0")
         self.strDataPath = self.getPluginTestsDataHome()
 
     def test_generateCommandLine(self):
         edPlugin = self.getPlugin()
-        strInputXML = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataInputXIA2_reference.xml"))
-        xsDataInput = XSDataInputXIA2.parseString(strInputXML)
+        strInputXML = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataInputXia2DIALS_reference.xml"))
+        xsDataInput = XSDataInputXia2DIALS.parseString(strInputXML)
         strCommandLine = edPlugin.generateCommandLine(xsDataInput)
 #        print(strCommandLine)
         EDAssert.equal("-dials -ispyb_xml_out ispyb.xml image=/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5/xtal5w1_1_0001.cbf", strCommandLine, "Reference data input")
 
     def test_parseOutputDirectory(self):
-        testXia2Dir = "/scisoft/pxsoft/data/AUTO_PROCESSING/xia2/XIA2v1_0-00000003"
+        testXia2Dir = "/scisoft/pxsoft/data/AUTO_PROCESSING/xia2/Xia2DIALSv1_0-00000003"
         edPlugin = self.getPlugin()
-        xsDataResultXIA2 = edPlugin.parseOutputDirectory(testXia2Dir)
-#        print(xsDataResultXIA2.marshal())
-        EDAssert.equal(os.path.exists(xsDataResultXIA2.logFile.path.value), True, "Xia2 log file")
+        xsDataResultXia2DIALS = edPlugin.parseOutputDirectory(testXia2Dir)
+#        print(xsDataResultXia2DIALS.marshal())
+        EDAssert.equal(os.path.exists(xsDataResultXia2DIALS.logFile.path.value), True, "Xia2 log file")
 
 
     def process(self):

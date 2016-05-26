@@ -43,12 +43,12 @@ from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataTime
 from XSDataCommon import XSDataDouble
 
-from XSDataControlXIA2v1_0 import XSDataInputControlXIA2
-from XSDataControlXIA2v1_0 import XSDataResultControlXIA2
+from XSDataControlXia2DIALSv1_0 import XSDataInputControlXia2DIALS
+from XSDataControlXia2DIALSv1_0 import XSDataResultControlXia2DIALS
 
-edFactoryPlugin.loadModule('XSDataXIA2v1_0')
+edFactoryPlugin.loadModule('XSDataXia2DIALSv1_0')
 
-from XSDataXIA2v1_0 import XSDataInputXIA2
+from XSDataXia2DIALSv1_0 import XSDataInputXia2DIALS
 
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 # plugin input/output
@@ -65,7 +65,7 @@ from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 edFactoryPlugin.loadModule("XSDataHTML2PDFv1_0")
 from XSDataHTML2PDFv1_0 import XSDataInputHTML2PDF
 
-class EDPluginControlXIA2v1_0(EDPluginControl):
+class EDPluginControlXia2DIALSv1_0(EDPluginControl):
     """
     Control plugin for xia2 -dials
     """
@@ -73,7 +73,7 @@ class EDPluginControlXIA2v1_0(EDPluginControl):
 
     def __init__(self):
         EDPluginControl.__init__(self)
-        self.setXSDataInputClass(XSDataInputControlXIA2)
+        self.setXSDataInputClass(XSDataInputControlXia2DIALS)
         self.dataOutput = XSDataResultStoreAutoProc()
 
     def configure(self):
@@ -83,15 +83,15 @@ class EDPluginControlXIA2v1_0(EDPluginControl):
         """
         Checks the mandatory parameters.
         """
-        self.DEBUG("EDPluginControlXIA2v1_0.checkParameters")
+        self.DEBUG("EDPluginControlXia2DIALSv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
         self.checkMandatoryParameters(self.dataInput.dataCollectionId, "No data collection id")
 
 
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
-        self.DEBUG("EDPluginControlXIA2v1_0.preProcess")
-        self.screen("XIA2 processing started")
+        self.DEBUG("EDPluginControlXia2DIALSv1_0.preProcess")
+        self.screen("Xia2DIALS processing started")
         self.strHost = socket.gethostname()
         self.screen("Running on {0}".format(self.strHost))
         try:
@@ -104,7 +104,7 @@ class EDPluginControlXIA2v1_0(EDPluginControl):
         self.edPluginWaitFileLast = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileLast")
 
         self.edPluginRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
-        self.edPluginExecXIA2 = self.loadPlugin("EDPluginExecXIA2v1_0")
+        self.edPluginExecXia2DIALS = self.loadPlugin("EDPluginExecXia2DIALSv1_0")
         self.edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4")
 
         self.edPluginHTML2Pdf = self.loadPlugin("EDPluginHTML2PDFv1_0")
@@ -112,7 +112,7 @@ class EDPluginControlXIA2v1_0(EDPluginControl):
 
     def process(self, _edObject=None):
         EDPluginControl.process(self)
-        self.DEBUG('EDPluginControlXIA2v1_0.process starting')
+        self.DEBUG('EDPluginControlXia2DIALSv1_0.process starting')
 
         directory = None
         template = None
@@ -244,14 +244,14 @@ class EDPluginControlXIA2v1_0(EDPluginControl):
 
 
         # Prepare input to autoPROC execution plugin
-        xsDataInputXIA2 = XSDataInputXIA2()
-        xsDataInputXIA2.addImage(XSDataFile(XSDataString(pathToStartImage)))
-        self.edPluginExecXIA2.dataInput = xsDataInputXIA2
-        self.edPluginExecXIA2.executeSynchronous()
+        xsDataInputXia2DIALS = XSDataInputXia2DIALS()
+        xsDataInputXia2DIALS.addImage(XSDataFile(XSDataString(pathToStartImage)))
+        self.edPluginExecXia2DIALS.dataInput = xsDataInputXia2DIALS
+        self.edPluginExecXia2DIALS.executeSynchronous()
 
         # Read the generated ISPyB xml file - if any
-        if self.edPluginExecXIA2.dataOutput.ispybXML is not None:
-            autoProcContainer = AutoProcContainer.parseFile(self.edPluginExecXIA2.dataOutput.ispybXML.path.value)
+        if self.edPluginExecXia2DIALS.dataOutput.ispybXML is not None:
+            autoProcContainer = AutoProcContainer.parseFile(self.edPluginExecXia2DIALS.dataOutput.ispybXML.path.value)
 
             # "Fix" certain entries in the ISPyB xml file
             autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
@@ -303,7 +303,7 @@ class EDPluginControlXIA2v1_0(EDPluginControl):
 #                    autoProcProgramAttachment.fileName = strPyarchFile
 #                    autoProcProgramAttachment.filePath = pyarchDirectory
 #            # Add XSCALE.LP file if present
-#            strProcessDirectory = self.edPluginExecXIA2.dataOutput.processDirectory[0].path.value
+#            strProcessDirectory = self.edPluginExecXia2DIALS.dataOutput.processDirectory[0].path.value
 #            strPathToXSCALELog = os.path.join(strProcessDirectory, "xscale_XSCALE.LP")
 #            if os.path.exists(strPathToXSCALELog):
 #                strPyarchXSCALELog = strPyarchPrefix + "_merged_anom_XSCALE.LP"
@@ -315,7 +315,7 @@ class EDPluginControlXIA2v1_0(EDPluginControl):
 #                autoProcProgramAttachment.fileType = "Result"
 #                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
 #            # Add log file
-#            strPathToLogFile = self.edPluginExecXIA2.dataOutput.logFile.path.value
+#            strPathToLogFile = self.edPluginExecXia2DIALS.dataOutput.logFile.path.value
 #            autoPROClog = open(strPathToLogFile).read()
 #            userString1 = "User      : {0} (".format(os.environ["USER"])
 #            userString2 = "User      : {0} (".format(proposal)

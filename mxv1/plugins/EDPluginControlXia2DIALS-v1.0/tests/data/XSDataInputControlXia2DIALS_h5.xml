@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<XSDataInputControlAutoPROC>
+<XSDataInputControlXia2DIALS>
   <processDirectory>
   	<path>
   	  <value>/data/visitor/mx415/id30a2/20160315/PROCESSED_DATA/test3/autoprocessing_mx415_run1_1/autoPROC</value>
@@ -8,4 +8,4 @@
   <dataCollectionId>
   	<value>1709044</value>
   </dataCollectionId>
-</XSDataInputControlAutoPROC>
+</XSDataInputControlXia2DIALS>

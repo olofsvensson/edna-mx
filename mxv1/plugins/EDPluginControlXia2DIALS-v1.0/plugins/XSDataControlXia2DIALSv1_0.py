@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue May 24 02:50::09 2016 by EDGenerateDS.
+# Generated Thu May 26 09:00::38 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -116,7 +116,7 @@ class MixedContainer(object):
 
 
 
-class XSDataInputControlXIA2(XSDataInput):
+class XSDataInputControlXia2DIALS(XSDataInput):
     def __init__(self, configuration=None, processDirectory=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
@@ -124,14 +124,14 @@ class XSDataInputControlXIA2(XSDataInput):
         elif dataCollectionId.__class__.__name__ == "XSDataInteger":
             self._dataCollectionId = dataCollectionId
         else:
-            strMessage = "ERROR! XSDataInputControlXIA2 constructor argument 'dataCollectionId' is not XSDataInteger but %s" % self._dataCollectionId.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'dataCollectionId' is not XSDataInteger but %s" % self._dataCollectionId.__class__.__name__
             raise BaseException(strMessage)
         if processDirectory is None:
             self._processDirectory = None
         elif processDirectory.__class__.__name__ == "XSDataFile":
             self._processDirectory = processDirectory
         else:
-            strMessage = "ERROR! XSDataInputControlXIA2 constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -141,7 +141,7 @@ class XSDataInputControlXIA2(XSDataInput):
         elif dataCollectionId.__class__.__name__ == "XSDataInteger":
             self._dataCollectionId = dataCollectionId
         else:
-            strMessage = "ERROR! XSDataInputControlXIA2.setDataCollectionId argument is not XSDataInteger but %s" % dataCollectionId.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.setDataCollectionId argument is not XSDataInteger but %s" % dataCollectionId.__class__.__name__
             raise BaseException(strMessage)
     def delDataCollectionId(self): self._dataCollectionId = None
     dataCollectionId = property(getDataCollectionId, setDataCollectionId, delDataCollectionId, "Property for dataCollectionId")
@@ -153,17 +153,17 @@ class XSDataInputControlXIA2(XSDataInput):
         elif processDirectory.__class__.__name__ == "XSDataFile":
             self._processDirectory = processDirectory
         else:
-            strMessage = "ERROR! XSDataInputControlXIA2.setProcessDirectory argument is not XSDataFile but %s" % processDirectory.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.setProcessDirectory argument is not XSDataFile but %s" % processDirectory.__class__.__name__
             raise BaseException(strMessage)
     def delProcessDirectory(self): self._processDirectory = None
     processDirectory = property(getProcessDirectory, setProcessDirectory, delProcessDirectory, "Property for processDirectory")
-    def export(self, outfile, level, name_='XSDataInputControlXIA2'):
+    def export(self, outfile, level, name_='XSDataInputControlXia2DIALS'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
         self.exportChildren(outfile, level + 1, name_)
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataInputControlXIA2'):
+    def exportChildren(self, outfile, level, name_='XSDataInputControlXia2DIALS'):
         XSDataInput.exportChildren(self, outfile, level, name_)
         if self._dataCollectionId is not None:
             self.dataCollectionId.export(outfile, level, name_='dataCollectionId')
@@ -189,7 +189,7 @@ class XSDataInputControlXIA2(XSDataInput):
     def marshal( self ):
         oStreamString = StringIO()
         oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataInputControlXIA2" )
+        self.export( oStreamString, 0, name_="XSDataInputControlXia2DIALS" )
         oStringXML = oStreamString.getvalue()
         oStreamString.close()
         return oStringXML
@@ -197,24 +197,24 @@ class XSDataInputControlXIA2(XSDataInput):
     def exportToFile( self, _outfileName ):
         outfile = open( _outfileName, "w" )
         outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataInputControlXIA2' )
+        self.export( outfile, 0, name_='XSDataInputControlXia2DIALS' )
         outfile.close()
     #Deprecated method, replaced by exportToFile
     def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataInputControlXIA2 is deprecated, please use instead exportToFile!")
+        print("WARNING: Method outputFile in class XSDataInputControlXia2DIALS is deprecated, please use instead exportToFile!")
         self.exportToFile(_outfileName)
     #Method for making a copy in a new instance
     def copy( self ):
-        return XSDataInputControlXIA2.parseString(self.marshal())
+        return XSDataInputControlXia2DIALS.parseString(self.marshal())
     #Static method for parsing a string
     def parseString( _inString ):
         doc = minidom.parseString(_inString)
         rootNode = doc.documentElement
-        rootObj = XSDataInputControlXIA2()
+        rootObj = XSDataInputControlXia2DIALS()
         rootObj.build(rootNode)
         # Check that all minOccurs are obeyed by marshalling the created object
         oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataInputControlXIA2" )
+        rootObj.export( oStreamString, 0, name_="XSDataInputControlXia2DIALS" )
         oStreamString.close()
         return rootObj
     parseString = staticmethod( parseString )
@@ -222,23 +222,23 @@ class XSDataInputControlXIA2(XSDataInput):
     def parseFile( _inFilePath ):
         doc = minidom.parse(_inFilePath)
         rootNode = doc.documentElement
-        rootObj = XSDataInputControlXIA2()
+        rootObj = XSDataInputControlXia2DIALS()
         rootObj.build(rootNode)
         return rootObj
     parseFile = staticmethod( parseFile )
-# end class XSDataInputControlXIA2
+# end class XSDataInputControlXia2DIALS
 
 
-class XSDataResultControlXIA2(XSDataResult):
+class XSDataResultControlXia2DIALS(XSDataResult):
     def __init__(self, status=None):
         XSDataResult.__init__(self, status)
-    def export(self, outfile, level, name_='XSDataResultControlXIA2'):
+    def export(self, outfile, level, name_='XSDataResultControlXia2DIALS'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
         self.exportChildren(outfile, level + 1, name_)
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataResultControlXIA2'):
+    def exportChildren(self, outfile, level, name_='XSDataResultControlXia2DIALS'):
         XSDataResult.exportChildren(self, outfile, level, name_)
     def build(self, node_):
         for child_ in node_.childNodes:
@@ -251,7 +251,7 @@ class XSDataResultControlXIA2(XSDataResult):
     def marshal( self ):
         oStreamString = StringIO()
         oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataResultControlXIA2" )
+        self.export( oStreamString, 0, name_="XSDataResultControlXia2DIALS" )
         oStringXML = oStreamString.getvalue()
         oStreamString.close()
         return oStringXML
@@ -259,24 +259,24 @@ class XSDataResultControlXIA2(XSDataResult):
     def exportToFile( self, _outfileName ):
         outfile = open( _outfileName, "w" )
         outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataResultControlXIA2' )
+        self.export( outfile, 0, name_='XSDataResultControlXia2DIALS' )
         outfile.close()
     #Deprecated method, replaced by exportToFile
     def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataResultControlXIA2 is deprecated, please use instead exportToFile!")
+        print("WARNING: Method outputFile in class XSDataResultControlXia2DIALS is deprecated, please use instead exportToFile!")
         self.exportToFile(_outfileName)
     #Method for making a copy in a new instance
     def copy( self ):
-        return XSDataResultControlXIA2.parseString(self.marshal())
+        return XSDataResultControlXia2DIALS.parseString(self.marshal())
     #Static method for parsing a string
     def parseString( _inString ):
         doc = minidom.parseString(_inString)
         rootNode = doc.documentElement
-        rootObj = XSDataResultControlXIA2()
+        rootObj = XSDataResultControlXia2DIALS()
         rootObj.build(rootNode)
         # Check that all minOccurs are obeyed by marshalling the created object
         oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataResultControlXIA2" )
+        rootObj.export( oStreamString, 0, name_="XSDataResultControlXia2DIALS" )
         oStreamString.close()
         return rootObj
     parseString = staticmethod( parseString )
@@ -284,11 +284,11 @@ class XSDataResultControlXIA2(XSDataResult):
     def parseFile( _inFilePath ):
         doc = minidom.parse(_inFilePath)
         rootNode = doc.documentElement
-        rootObj = XSDataResultControlXIA2()
+        rootObj = XSDataResultControlXia2DIALS()
         rootObj.build(rootNode)
         return rootObj
     parseFile = staticmethod( parseFile )
-# end class XSDataResultControlXIA2
+# end class XSDataResultControlXia2DIALS
 
 
 

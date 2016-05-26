@@ -33,76 +33,76 @@ from EDPluginExecProcessScript import EDPluginExecProcessScript
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataString
 
-from XSDataXIA2v1_0 import XSDataInputXIA2
-from XSDataXIA2v1_0 import XSDataResultXIA2
+from XSDataXia2DIALSv1_0 import XSDataInputXia2DIALS
+from XSDataXia2DIALSv1_0 import XSDataResultXia2DIALS
 
 
-class EDPluginExecXIA2v1_0(EDPluginExecProcessScript):
+class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
     """
-    This plugin runs the XIA2 program 'process' written by Global Phasing
+    This plugin runs the Xia2DIALS program 'process' written by Global Phasing
     """
 
 
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
-        self.setXSDataInputClass(XSDataInputXIA2)
-        self.setDataOutput(XSDataResultXIA2())
+        self.setXSDataInputClass(XSDataInputXia2DIALS)
+        self.setDataOutput(XSDataResultXia2DIALS())
 
     def checkParameters(self):
         """
         Checks the mandatory parameters.
         """
-        self.DEBUG("EDPluginExecXIA2v1_0.checkParameters")
+        self.DEBUG("EDPluginExecXia2DIALSv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
-        self.DEBUG("EDPluginExecXIA2v1_0.preProcess")
+        self.DEBUG("EDPluginExecXia2DIALSv1_0.preProcess")
         strCommandLine = self.generateCommandLine(self.dataInput)
         self.setScriptCommandline(strCommandLine)
 
 
     def postProcess(self, _edObject=None):
         EDPluginExecProcessScript.postProcess(self)
-        self.DEBUG("EDPluginExecXIA2v1_0.postProcess")
+        self.DEBUG("EDPluginExecXia2DIALSv1_0.postProcess")
         # Populate the results
-        xsDataResultXIA2 = self.parseOutputDirectory(self.getWorkingDirectory())
-        self.dataOutput = xsDataResultXIA2
+        xsDataResultXia2DIALS = self.parseOutputDirectory(self.getWorkingDirectory())
+        self.dataOutput = xsDataResultXia2DIALS
 
 
-    def generateCommandLine(self, _xsDataInputXIA2):
+    def generateCommandLine(self, _xsDataInputXia2DIALS):
         """
-        This method creates the input command line for XIA2
+        This method creates the input command line for Xia2DIALS
         """
-        self.DEBUG("EDPluginExecXIA2v1_0.generateCommands")
+        self.DEBUG("EDPluginExecXia2DIALSv1_0.generateCommands")
         strCommandText = "-dials -ispyb_xml_out ispyb.xml"
 
-        for image in _xsDataInputXIA2.image:
+        for image in _xsDataInputXia2DIALS.image:
             strCommandText += " image={0}".format(image.path.value)
 
         return strCommandText
 
     def parseOutputDirectory(self, _workingDirectory):
-        xsDataResultXIA2 = XSDataResultXIA2()
+        xsDataResultXia2DIALS = XSDataResultXia2DIALS()
         # Log file
         xia2txtPath = os.path.join(_workingDirectory, "xia2.txt")
         if os.path.exists(xia2txtPath):
-            xsDataResultXIA2.logFile = XSDataFile(XSDataString(xia2txtPath))
+            xsDataResultXia2DIALS.logFile = XSDataFile(XSDataString(xia2txtPath))
         # Summary file
         summaryPath = os.path.join(_workingDirectory, "xia2-summary.dat")
         if os.path.exists(summaryPath):
-            xsDataResultXIA2.summary = XSDataFile(XSDataString(summaryPath))
+            xsDataResultXia2DIALS.summary = XSDataFile(XSDataString(summaryPath))
         # ISPyB XML file
         ispybXmlPath = os.path.join(_workingDirectory, "ispyb.xml")
         if os.path.exists(ispybXmlPath):
-            xsDataResultXIA2.ispybXML = XSDataFile(XSDataString(ispybXmlPath))
+            xsDataResultXia2DIALS.ispybXML = XSDataFile(XSDataString(ispybXmlPath))
         # Datafiles
         dataFiles = glob.glob(os.path.join(_workingDirectory, "DataFiles", "*"))
         for dataFile in dataFiles:
-            xsDataResultXIA2.addDataFiles(XSDataFile(XSDataString(dataFile)))
+            xsDataResultXia2DIALS.addDataFiles(XSDataFile(XSDataString(dataFile)))
         # Log files
         logFiles = glob.glob(os.path.join(_workingDirectory, "LogFiles", "*"))
         for logFile in logFiles:
-            xsDataResultXIA2.addLogFiles(XSDataFile(XSDataString(logFile)))
-        return xsDataResultXIA2
+            xsDataResultXia2DIALS.addLogFiles(XSDataFile(XSDataString(logFile)))
+        return xsDataResultXia2DIALS
