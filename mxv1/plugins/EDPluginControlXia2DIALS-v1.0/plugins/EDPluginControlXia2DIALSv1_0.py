@@ -244,10 +244,16 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
 
         # Prepare input to autoPROC execution plugin
+        timeStart = time.localtime()
         xsDataInputXia2DIALS = XSDataInputXia2DIALS()
         xsDataInputXia2DIALS.addImage(XSDataFile(XSDataString(pathToStartImage)))
         self.edPluginExecXia2DIALS.dataInput = xsDataInputXia2DIALS
         self.edPluginExecXia2DIALS.executeSynchronous()
+        timeEnd = time.localtime()
+
+        # Copy dataFiles to results directory
+        for dataFile in self.edPluginExecXia2DIALS.dataOutput.dataFiles:
+            shutil.copy(dataFile.path.value, strResultsDirectory)
 
         # Read the generated ISPyB xml file - if any
         if self.edPluginExecXia2DIALS.dataOutput.ispybXML is not None:
@@ -262,8 +268,8 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             autoProcProgram = autoProcProgramContainer.AutoProcProgram
             autoProcProgram.processingPrograms = "xia2DIALS"
             autoProcProgram.processingStatus = True
-#            autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingStartTime, "%a %b %d %H:%M:%S %Z %Y"))
-#            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingEndTime, "%a %b %d %H:%M:%S %Z %Y"))
+            autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
+            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
             autoProcProgramContainer.AutoProcProgramAttachment = []
             # Upload the log file to ISPyB
             if self.edPluginExecXia2DIALS.dataOutput.logFile is not None:
@@ -303,73 +309,29 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                 autoProcProgramAttachment.filePath = pyarchDirectory
                 autoProcProgramAttachment.fileType = "Log"
                 autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-#            for autoProcProgramAttachment in autoProcProgramContainer.AutoProcProgramAttachment:
-#                if autoProcProgramAttachment.fileName == "summary.html":
-#                    summaryHtmlPath = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
-#                    # Replace opidXX with user name
-#                    htmlSummary = open(summaryHtmlPath).read()
-#                    userString1 = "User      : {0} (".format(os.environ["USER"])
-#                    userString2 = "User      : {0} (".format(proposal)
-#                    htmlSummary = htmlSummary.replace(userString1, userString2)
-#                    open(summaryHtmlPath, "w").write(htmlSummary)
-#                    # Convert the summary.html to summary.pdf
-#                    xsDataInputHTML2PDF = XSDataInputHTML2PDF()
-#                    xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(summaryHtmlPath)))
-#                    xsDataInputHTML2PDF.paperSize = XSDataString("A3")
-#                    xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
-#                    self.edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
-#                    self.edPluginHTML2Pdf.executeSynchronous()
-#                    pdfFile = self.edPluginHTML2Pdf.dataOutput.pdfFile.path.value
-#                    strPyarchPdfFile = strPyarchPrefix + "_" + os.path.basename(pdfFile)
-#                    # Copy file to results directory and pyarch
-#                    shutil.copy(pdfFile, os.path.join(strResultsDirectory, strPyarchPdfFile))
-#                    shutil.copy(pdfFile, os.path.join(pyarchDirectory, strPyarchPdfFile))
-#                    autoProcProgramAttachment.fileName = strPyarchPdfFile
-#                    autoProcProgramAttachment.filePath = pyarchDirectory
-#                elif autoProcProgramAttachment.fileName == "truncate-unique.mtz":
-#                    strPathtoFile = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
-#                    strPyarchFile = strPyarchPrefix + "_anom_truncate.mtz"
-#                    shutil.copy(strPathtoFile, os.path.join(strResultsDirectory, strPyarchFile))
-#                    shutil.copy(strPathtoFile, os.path.join(pyarchDirectory, strPyarchFile))
-#                    autoProcProgramAttachment.fileName = strPyarchFile
-#                    autoProcProgramAttachment.filePath = pyarchDirectory
-#                else:
-#                    strPathtoFile = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
-#                    strPyarchFile = strPyarchPrefix + "_" + autoProcProgramAttachment.fileName
-#                    shutil.copy(strPathtoFile, os.path.join(strResultsDirectory, strPyarchFile))
-#                    shutil.copy(strPathtoFile, os.path.join(pyarchDirectory, strPyarchFile))
-#                    autoProcProgramAttachment.fileName = strPyarchFile
-#                    autoProcProgramAttachment.filePath = pyarchDirectory
-#            # Add XSCALE.LP file if present
-#            strProcessDirectory = self.edPluginExecXia2DIALS.dataOutput.processDirectory[0].path.value
-#            strPathToXSCALELog = os.path.join(strProcessDirectory, "xscale_XSCALE.LP")
-#            if os.path.exists(strPathToXSCALELog):
-#                strPyarchXSCALELog = strPyarchPrefix + "_merged_anom_XSCALE.LP"
-#                shutil.copy(strPathToXSCALELog, os.path.join(strResultsDirectory, strPyarchXSCALELog))
-#                shutil.copy(strPathToXSCALELog, os.path.join(pyarchDirectory, strPyarchXSCALELog))
-#                autoProcProgramAttachment = AutoProcProgramAttachment()
-#                autoProcProgramAttachment.fileName = strPyarchXSCALELog
-#                autoProcProgramAttachment.filePath = pyarchDirectory
-#                autoProcProgramAttachment.fileType = "Result"
-#                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-#            # Add log file
-#            strPathToLogFile = self.edPluginExecXia2DIALS.dataOutput.logFile.path.value
-#            autoPROClog = open(strPathToLogFile).read()
-#            userString1 = "User      : {0} (".format(os.environ["USER"])
-#            userString2 = "User      : {0} (".format(proposal)
-#            autoPROClog = autoPROClog.replace(userString1, userString2)
-#            open(strPathToLogFile, "w").write(autoPROClog)
-#            strPyarchLogFile = strPyarchPrefix + "_autoPROC.log"
-#            shutil.copy(strPathToLogFile, os.path.join(strResultsDirectory, strPyarchLogFile))
-#            shutil.copy(strPathToLogFile, os.path.join(pyarchDirectory, strPyarchLogFile))
-#            autoProcProgramAttachment = AutoProcProgramAttachment()
-#            autoProcProgramAttachment.fileName = strPyarchLogFile
-#            autoProcProgramAttachment.filePath = pyarchDirectory
-#            autoProcProgramAttachment.fileType = "Log"
-#            autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-#
+            # Copy all log files
+            for logFile in self.edPluginExecXia2DIALS.dataOutput.logFiles:
+                pathToLogFile = logFile.path.value
+                if pathToLogFile.endswith(".log"):
+                    pyarchFileName = strPyarchPrefix + "_" + os.path.basename(pathToLogFile)
+                    shutil.copy(pathToLogFile, os.path.join(pyarchDirectory, pyarchFileName))
+                    autoProcProgramAttachment = AutoProcProgramAttachment()
+                    autoProcProgramAttachment.fileName = pyarchFileName
+                    autoProcProgramAttachment.filePath = pyarchDirectory
+                    autoProcProgramAttachment.fileType = "Log"
+                    autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
+            # Copy data files
+            for dataFile in self.edPluginExecXia2DIALS.dataOutput.dataFiles:
+                pathToDataFile = dataFile.path.value
+                if pathToDataFile.endswith(".mtz"):
+                    pyarchFileName = strPyarchPrefix + "_" + os.path.basename(pathToDataFile)
+                    shutil.copy(pathToDataFile, os.path.join(pyarchDirectory, pyarchFileName))
+                    autoProcProgramAttachment = AutoProcProgramAttachment()
+                    autoProcProgramAttachment.fileName = pyarchFileName
+                    autoProcProgramAttachment.filePath = pyarchDirectory
+                    autoProcProgramAttachment.fileType = "Result"
+                    autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
             # Upload the xml to ISPyB
-            print(autoProcContainer.marshal())
             xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
             xsDataInputStoreAutoProc.AutoProcContainer = autoProcContainer
             self.edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
