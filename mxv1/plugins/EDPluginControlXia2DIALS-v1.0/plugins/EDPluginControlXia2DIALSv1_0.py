@@ -246,7 +246,12 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         # Prepare input to autoPROC execution plugin
         timeStart = time.localtime()
         xsDataInputXia2DIALS = XSDataInputXia2DIALS()
-        xsDataInputXia2DIALS.addImage(XSDataFile(XSDataString(pathToStartImage)))
+        if isH5:
+            masterFilePath = os.path.join(directory,
+                                          self.eiger_template_to_master(template))
+            xsDataInputXia2DIALS.addImage(XSDataFile(XSDataString(masterFilePath)))
+        else:
+            xsDataInputXia2DIALS.addImage(XSDataFile(XSDataString(pathToStartImage)))
         self.edPluginExecXia2DIALS.dataInput = xsDataInputXia2DIALS
         self.edPluginExecXia2DIALS.executeSynchronous()
         timeEnd = time.localtime()
