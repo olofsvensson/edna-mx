@@ -243,8 +243,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
 
 
-        # Prepare input to autoPROC execution plugin
-        timeStart = time.localtime()
+        # Prepare input to execution plugin
         xsDataInputXia2DIALS = XSDataInputXia2DIALS()
         if isH5:
             masterFilePath = os.path.join(directory,
@@ -253,6 +252,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         else:
             xsDataInputXia2DIALS.addImage(XSDataFile(XSDataString(pathToStartImage)))
         self.edPluginExecXia2DIALS.dataInput = xsDataInputXia2DIALS
+        timeStart = time.localtime()
         self.edPluginExecXia2DIALS.executeSynchronous()
         timeEnd = time.localtime()
 

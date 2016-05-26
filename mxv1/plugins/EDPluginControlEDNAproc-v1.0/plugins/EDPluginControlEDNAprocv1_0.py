@@ -147,6 +147,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.strPrefix = None
         self.dataInputOrig = None
         self.bExecutedDimple = False
+        self.timeStart = None
+        self.timeEnd = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -252,7 +254,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             self.image_prefix = ''
 
         if EDUtilsPath.isEMBL():
-            #Add prefix if edna used
+            # Add prefix if edna used
             self.image_prefix = self.image_prefix + '_edna'
 
         # The resultsdir used to be root_dir/results/fast_processing
@@ -291,9 +293,9 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         else:
             if EDUtilsPath.isEMBL():
                 self.low_resolution_limit = 999
-            else: 
+            else:
                 self.low_resolution_limit = 50
-            
+
 
         res_override = data_in.res_override
         if res_override is not None:
@@ -448,6 +450,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         EDPluginControl.process(self)
         self.DEBUG('EDPluginControlEDNAprocv1_0.process starting')
 
+        self.timeStart = time.localtime()
         self.process_start = time.time()
 
 
@@ -922,6 +925,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
 
         self.process_end = time.time()
+        self.timeEnd = time.localtime()
 
 
 
@@ -1070,11 +1074,15 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         program_container_anom.AutoProcProgram = AutoProcProgram()
         program_container_anom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
         program_container_anom.AutoProcProgram.processingPrograms = 'EDNA_proc'
+        program_container_anom.AutoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
+        program_container_anom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
 
         program_container_noanom = AutoProcProgramContainer()
         program_container_noanom.AutoProcProgram = AutoProcProgram()
         program_container_noanom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
         program_container_noanom.AutoProcProgram.processingPrograms = 'EDNA_proc'
+        program_container_noanom.AutoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
+        program_container_noanom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
 
         # now for the generated files. There's some magic to do with
         # their paths to determine where to put them on pyarch

@@ -244,7 +244,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
 
 
 
-        # Prepare input to autoPROC execution plugin
+        # Prepare input to execution plugin
         xsDataInputAutoPROC = XSDataInputAutoPROC()
         xsDataAutoPROCIdentifier = XSDataAutoPROCIdentifier()
         xsDataAutoPROCIdentifier.idN = XSDataString(identifier)
@@ -258,7 +258,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                                           self.eiger_template_to_master(template))
             xsDataInputAutoPROC.masterH5 = XSDataFile(XSDataString(masterFilePath))
         self.edPluginExecAutoPROC.dataInput = xsDataInputAutoPROC
+        timeStart = time.localtime()
         self.edPluginExecAutoPROC.executeSynchronous()
+        timeEnd = time.localtime()
 
         # Read the generated ISPyB xml file - if any
         if self.edPluginExecAutoPROC.dataOutput.ispybXML is not None:
@@ -278,8 +280,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
             autoProcProgram = autoProcProgramContainer.AutoProcProgram
             autoProcProgram.processingPrograms = "autoPROC"
-            autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingStartTime, "%a %b %d %H:%M:%S %Z %Y"))
-            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingEndTime, "%a %b %d %H:%M:%S %Z %Y"))
+            autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
+            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
             for autoProcProgramAttachment in autoProcProgramContainer.AutoProcProgramAttachment:
                 if autoProcProgramAttachment.fileName == "summary.html":
                     summaryHtmlPath = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
