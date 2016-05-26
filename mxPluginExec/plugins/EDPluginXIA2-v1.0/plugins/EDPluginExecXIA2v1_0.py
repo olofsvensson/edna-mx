@@ -68,6 +68,7 @@ class EDPluginExecXIA2v1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginExecXIA2v1_0.postProcess")
         # Populate the results
         xsDataResultXIA2 = self.parseOutputDirectory(self.getWorkingDirectory())
+        self.dataOutput = xsDataResultXIA2
 
 
     def generateCommandLine(self, _xsDataInputXIA2):
