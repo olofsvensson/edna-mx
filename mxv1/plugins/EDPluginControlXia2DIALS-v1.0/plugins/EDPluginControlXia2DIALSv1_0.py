@@ -195,7 +195,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
         # Determine pyarch prefix
         listPrefix = template.split("_")
-        strPyarchPrefix = "ap_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
+        strPyarchPrefix = "xd_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
 
         isH5 = False
         if any(beamline in pathToStartImage for beamline in ["id23eh1", "id29"]):
@@ -265,6 +265,44 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 #            autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingStartTime, "%a %b %d %H:%M:%S %Z %Y"))
 #            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingEndTime, "%a %b %d %H:%M:%S %Z %Y"))
             autoProcProgramContainer.AutoProcProgramAttachment = []
+            # Upload the log file to ISPyB
+            if self.edPluginExecXia2DIALS.dataOutput.logFile is not None:
+                pathToLogFile = self.edPluginExecXia2DIALS.dataOutput.logFile.path.value
+                pyarchFileName = strPyarchPrefix + "_xia2.log"
+                shutil.copy(pathToLogFile, os.path.join(pyarchDirectory, pyarchFileName))
+                autoProcProgramAttachment = AutoProcProgramAttachment()
+                autoProcProgramAttachment.fileName = pyarchFileName
+                autoProcProgramAttachment.filePath = pyarchDirectory
+                autoProcProgramAttachment.fileType = "Log"
+                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
+            # Upload the summary file to ISPyB
+            if self.edPluginExecXia2DIALS.dataOutput.summary is not None:
+                pathToSummaryFile = self.edPluginExecXia2DIALS.dataOutput.summary.path.value
+                pyarchFileName = strPyarchPrefix + "_xia2-summary.log"
+                shutil.copy(pathToSummaryFile, os.path.join(pyarchDirectory, pyarchFileName))
+                autoProcProgramAttachment = AutoProcProgramAttachment()
+                autoProcProgramAttachment.fileName = pyarchFileName
+                autoProcProgramAttachment.filePath = pyarchDirectory
+                autoProcProgramAttachment.fileType = "Log"
+                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
+            # Create a pdf file of the html page
+            if self.edPluginExecXia2DIALS.dataOutput.htmlFile is not None:
+                pathToHtmlFile = self.edPluginExecXia2DIALS.dataOutput.htmlFile.path.value
+                pyarchFileName = strPyarchPrefix + "_xia2.pdf"
+                # Convert the xia2.html to xia2.pdf
+                xsDataInputHTML2PDF = XSDataInputHTML2PDF()
+                xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(pathToHtmlFile)))
+                xsDataInputHTML2PDF.paperSize = XSDataString("A4")
+                xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
+                self.edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
+                self.edPluginHTML2Pdf.executeSynchronous()
+                pdfFile = self.edPluginHTML2Pdf.dataOutput.pdfFile.path.value
+                shutil.copy(pdfFile, os.path.join(pyarchDirectory, pyarchFileName))
+                autoProcProgramAttachment = AutoProcProgramAttachment()
+                autoProcProgramAttachment.fileName = pyarchFileName
+                autoProcProgramAttachment.filePath = pyarchDirectory
+                autoProcProgramAttachment.fileType = "Log"
+                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
 #            for autoProcProgramAttachment in autoProcProgramContainer.AutoProcProgramAttachment:
 #                if autoProcProgramAttachment.fileName == "summary.html":
 #                    summaryHtmlPath = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)

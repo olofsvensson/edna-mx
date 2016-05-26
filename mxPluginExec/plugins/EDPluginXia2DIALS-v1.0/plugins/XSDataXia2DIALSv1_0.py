@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu May 26 08:54::34 2016 by EDGenerateDS.
+# Generated Thu May 26 10:07::35 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -224,7 +224,7 @@ class XSDataInputXia2DIALS(XSDataInput):
 
 
 class XSDataResultXia2DIALS(XSDataResult):
-    def __init__(self, status=None, logFiles=None, summary=None, ispybXML=None, dataFiles=None, logFile=None):
+    def __init__(self, status=None, logFiles=None, summary=None, ispybXML=None, dataFiles=None, htmlFile=None, logFile=None):
         XSDataResult.__init__(self, status)
         if logFile is None:
             self._logFile = None
@@ -232,6 +232,13 @@ class XSDataResultXia2DIALS(XSDataResult):
             self._logFile = logFile
         else:
             strMessage = "ERROR! XSDataResultXia2DIALS constructor argument 'logFile' is not XSDataFile but %s" % self._logFile.__class__.__name__
+            raise BaseException(strMessage)
+        if htmlFile is None:
+            self._htmlFile = None
+        elif htmlFile.__class__.__name__ == "XSDataFile":
+            self._htmlFile = htmlFile
+        else:
+            strMessage = "ERROR! XSDataResultXia2DIALS constructor argument 'htmlFile' is not XSDataFile but %s" % self._htmlFile.__class__.__name__
             raise BaseException(strMessage)
         if dataFiles is None:
             self._dataFiles = []
@@ -273,6 +280,18 @@ class XSDataResultXia2DIALS(XSDataResult):
             raise BaseException(strMessage)
     def delLogFile(self): self._logFile = None
     logFile = property(getLogFile, setLogFile, delLogFile, "Property for logFile")
+    # Methods and properties for the 'htmlFile' attribute
+    def getHtmlFile(self): return self._htmlFile
+    def setHtmlFile(self, htmlFile):
+        if htmlFile is None:
+            self._htmlFile = None
+        elif htmlFile.__class__.__name__ == "XSDataFile":
+            self._htmlFile = htmlFile
+        else:
+            strMessage = "ERROR! XSDataResultXia2DIALS.setHtmlFile argument is not XSDataFile but %s" % htmlFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delHtmlFile(self): self._htmlFile = None
+    htmlFile = property(getHtmlFile, setHtmlFile, delHtmlFile, "Property for htmlFile")
     # Methods and properties for the 'dataFiles' attribute
     def getDataFiles(self): return self._dataFiles
     def setDataFiles(self, dataFiles):
@@ -375,6 +394,10 @@ class XSDataResultXia2DIALS(XSDataResult):
             self.logFile.export(outfile, level, name_='logFile')
         else:
             warnEmptyAttribute("logFile", "XSDataFile")
+        if self._htmlFile is not None:
+            self.htmlFile.export(outfile, level, name_='htmlFile')
+        else:
+            warnEmptyAttribute("htmlFile", "XSDataFile")
         for dataFiles_ in self.getDataFiles():
             dataFiles_.export(outfile, level, name_='dataFiles')
         if self.getDataFiles() == []:
@@ -401,6 +424,11 @@ class XSDataResultXia2DIALS(XSDataResult):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setLogFile(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'htmlFile':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setHtmlFile(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'dataFiles':
             obj_ = XSDataFile()

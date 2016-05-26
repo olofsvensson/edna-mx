@@ -39,26 +39,38 @@ import logging
 import tempfile
 import subprocess
 
+from suds.client import Client
+from suds.client import HttpAuthenticated
+
 # XDS.INP creation is now asynchronous in mxcube, so it may not be here yet
 # when we're started
 WAIT_XDS_TIMEOUT = 300
 
-BES_HOSTS = ["mxhpc2-1705.esrf.fr", "mxhpc2-1704.esrf.fr"]
+BES_HOSTS = ["mxhpc2-1704.esrf.fr", "mxhpc2-1705.esrf.fr"]
 BES_PORT = 8080
+ispybUserName = ""
+ispybPassword = ""
 
 
 # setup the HTTP log handling
-log = logging.getLogger()
-log.setLevel(logging.DEBUG)
-
+logger = logging.getLogger("xia2DIALS_Launcher")
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+# create formatter and add it to the handlers
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+# add the handlers to the logger
+logger.addHandler(ch)
 
 # do the arg parsing by hand since neither getopt nor optparse support
 # single dash long options.
 
 args = sys.argv[1:]
+logger.debug("Input arguments: {0}".format(args))
 
 if (len(args) % 2) != 0:
-    logging.error("the argument list is not well formed (odd number of args/options)")
+    logger.error("The argument list is not well formed (odd number of args/options)")
     sys.exit()
 
 options = dict()
@@ -66,11 +78,56 @@ for x in range(0, len(args), 2):
     options[args[x]] = args[x + 1]
 
 autoprocessingPath = options["-path"]
+dataCollectionId = options["-datacollectionID"]
+
+directories = autoprocessingPath.split(os.path.sep)
+try:
+    if directories[2] == "visitor":
+        beamline = directories[4]
+        proposal = directories[3]
+    else:
+        beamline = directories[2]
+        proposal = directories[4]
+except:
+    beamline = "unknown"
+    proposal = "unknown"
+
+
+
+logger.debug("Beamline: {0}".format(beamline))
+logger.debug("Proposal: {0}".format(proposal))
+
+# Check if we have less than 8 images
+transport = HttpAuthenticated(username=ispybUserName, password=ispybPassword)
+if beamline == "id30a2":
+    wdslRoot = "http://ispyvalid.esrf.fr:8080/ispyb/ispyb-ws/ispybWS"
+else:
+    wdslRoot = "http://ispyb.esrf.fr:8080/ispyb/ispyb-ws/ispybWS"
+collectionWdsl = os.path.join(wdslRoot, "ToolsForCollectionWebService?wsdl")
+collectionWSClient = Client(collectionWdsl, transport=transport)
+collect_params = collectionWSClient.service.findDataCollection(dataCollectionId)
+if collect_params.numberOfImages < 8:
+    logger.warning("Fewer than eight images, not launching autoPROC")
+    sys.exit(0)
+
 xia2DIALSPath = os.path.join(autoprocessingPath, "xia2DIALS")
 if not os.path.exists(xia2DIALSPath):
     os.makedirs(xia2DIALSPath, 0755)
-dataCollectionId = options["-datacollectionID"]
+xdsInputFile = os.path.join(autoprocessingPath, "XDS.INP")
 
+# Wait for XDS input file
+xdsAppeared = False
+waitXdsStart = time.time()
+logger.info("xia2DIALS launcher: waiting for XDS.INP file")
+while not xdsAppeared and (time.time() - waitXdsStart < WAIT_XDS_TIMEOUT):
+    time.sleep(1)
+    if os.path.exists(xdsInputFile) and os.stat(xdsInputFile).st_size > 0:
+        time.sleep(1)
+        xdsAppeared = True
+        logger.info("xia2DIALS launcher: XDS.INP file is there, size={0}".format(os.stat(xdsInputFile).st_size))
+if not xdsAppeared:
+    logger.error("XDS.INP file ({0}) failed to appear after {1} seconds".format(xdsInputFile, WAIT_XDS_TIMEOUT))
+    sys.exit(1)
 
 inputTemplate = """<?xml version="1.0"?>
 <XSDataInputControlXia2DIALS>
@@ -126,9 +183,9 @@ xia2DIALSDirectory = "$xia2DIALSDirectory"
 inputFile = "$inputFile"
 
 pluginName = "EDPluginControlXia2DIALSv1_0"
-os.environ["EDNA_SITE"] = "ESRF_ISPyBTest"
-os.environ["ISPyB_user"]=""
-os.environ["ISPyB_pass"]=""
+os.environ["EDNA_SITE"] = "ESRF_ISPyB"
+os.environ["ISPyB_user"]="$ispybUserName"
+os.environ["ISPyB_pass"]="$ispybPassword"
 
 EDVerbose.screen("Executing EDNA plugin %s" % pluginName)
 EDVerbose.screen("EDNA_SITE %s" % os.environ["EDNA_SITE"])
@@ -138,12 +195,19 @@ dateString  = time.strftime("%Y%m%d", time.localtime(time.time()))
 timeString = time.strftime("%H%M%S", time.localtime(time.time()))
 strPluginBaseDir = os.path.join("/tmp", beamline, dateString)
 if not os.path.exists(strPluginBaseDir):
-    os.makedirs(strPluginBaseDir, 0755)
+    try:
+        os.makedirs(strPluginBaseDir, 0755)
+    except:
+        pass
 
 baseName = "{0}_xia2DIALS".format(timeString)
 baseDir = os.path.join(strPluginBaseDir, baseName)
 if not os.path.exists(baseDir):
-    os.makedirs(baseDir, 0755)
+    try:
+        os.makedirs(baseDir, 0755)
+    except:
+        pass
+        
 EDVerbose.screen("EDNA plugin working directory: %s" % baseDir)
 
 linkName = "{hostname}_{date}-{time}".format(hostname=hostname,
@@ -167,22 +231,6 @@ edPlugin.executeSynchronous()
  
 """
 
-directories = autoprocessingPath.split(os.path.sep)
-try:
-    if directories[2] == "visitor":
-        beamline = directories[4]
-        proposal = directories[3]
-    else:
-        beamline = directories[2]
-        proposal = directories[4]
-except:
-    beamline = "unknown"
-    proposal = "unknown"
-
-# For the time being we launch xia2DIALS only for opidXX, mxihrX and mx415
-if not proposal.startswith("opid") or proposal.startswith("mxihr") or proposal != "mx415":
-    # Proposal is not opidXX, mxihrX or mx415, not running xia2DIALS.
-    sys.exit(0)
 
 
 template = string.Template(scriptTemplate)
@@ -190,7 +238,9 @@ script = template.substitute(beamline=beamline,
                              proposal=proposal,
                              xia2DIALSDirectory=xia2DIALSPath,
                              dataCollectionId=options["-datacollectionID"],
-                             inputFile=ednaInputFilePath)
+                             inputFile=ednaInputFilePath,
+                             ispybUserName=ispybUserName,
+                             ispybPassword=ispybPassword)
 
 # we also need some kind of script to run edna-plugin-launcher
 ednaScriptFileName = "xia2DIALS_launcher.sh"
@@ -215,7 +265,7 @@ remainingBesHosts = BES_HOSTS
 while not submitSuccess and len(remainingBesHosts) > 0:
     besHost = remainingBesHosts.pop()
     besPort = BES_PORT
-    log.info("xia2DIALS launcher: trying to submit job on {host}:{port}".format(host=besHost, port=besPort))
+    logger.info("Trying to submit job on {host}:{port}".format(host=besHost, port=besPort))
     try:
         conn = httplib.HTTPConnection(besHost, besPort)
         params = urllib.urlencode({"ednaDpLaunchPath":os.path.join(xia2DIALSPath, ednaScriptFilePath),
@@ -229,10 +279,10 @@ while not submitSuccess and len(remainingBesHosts) > 0:
                      headers={"Accept":"text/plain"})
         response = conn.getresponse()
         if response.status != 200:
-            log.error("RUN response status = {0}".format(response.status))
+            logger.error("RUN response status = {0}".format(response.status))
         else:
             submitSuccess = True
-            log.info("xia2DIALS launcher: job successfully submitted on {host}:{port}".format(host=besHost, port=besPort))
+            logger.info("Job successfully submitted on {host}:{port}".format(host=besHost, port=besPort))
     except:
-        log.error("xia2DIALS launcher: cannot connect to BES server on {host}:{port}!".format(host=besHost, port=besPort))
+        logger.error("Cannot connect to BES server on {host}:{port}!".format(host=besHost, port=besPort))
 

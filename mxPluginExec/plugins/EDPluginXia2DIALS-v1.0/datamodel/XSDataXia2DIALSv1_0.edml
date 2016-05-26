@@ -16,6 +16,7 @@ complex type XSDataInputXia2DIALS extends XSDataInput {
 
 complex type XSDataResultXia2DIALS extends XSDataResult {
 	logFile : XSDataFile
+	htmlFile : XSDataFile
 	dataFiles : XSDataFile []
 	ispybXML : XSDataFile
 	summary : XSDataFile

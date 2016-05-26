@@ -89,6 +89,10 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         xia2txtPath = os.path.join(_workingDirectory, "xia2.txt")
         if os.path.exists(xia2txtPath):
             xsDataResultXia2DIALS.logFile = XSDataFile(XSDataString(xia2txtPath))
+        # Html file
+        xia2htmlPath = os.path.join(_workingDirectory, "xia2.html")
+        if os.path.exists(xia2htmlPath):
+            xsDataResultXia2DIALS.htmlFile = XSDataFile(XSDataString(xia2htmlPath))
         # Summary file
         summaryPath = os.path.join(_workingDirectory, "xia2-summary.dat")
         if os.path.exists(summaryPath):
