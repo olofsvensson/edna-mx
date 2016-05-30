@@ -195,7 +195,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
         # Determine pyarch prefix
         listPrefix = template.split("_")
-        strPyarchPrefix = "xd_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
+        strPyarchPrefix = "di_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
 
         isH5 = False
         if any(beamline in pathToStartImage for beamline in ["id23eh1", "id29"]):
