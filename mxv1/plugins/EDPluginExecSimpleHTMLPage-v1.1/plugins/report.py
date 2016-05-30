@@ -191,8 +191,8 @@ class WorkflowStepReport(object):
 
     def __renderImage(self, page, item, pathToHtmlDir):
         imageName = item["title"].replace(" ", "_")
-        pathToImage = "{0}.{1}".format(imageName, item["suffix"])
-        if os.path.exists(os.path.join(pathToHtmlDir, pathToImage)):
+        pathToImage = os.path.join(pathToHtmlDir, "{0}.{1}".format(imageName, item["suffix"]))
+        if os.path.exists(pathToImage):
             pathToImage = tempfile.mkstemp(suffix="." + item["suffix"],
                                            prefix=imageName + "_",
                                            dir=pathToHtmlDir)[1]
@@ -200,8 +200,8 @@ class WorkflowStepReport(object):
         os.chmod(pathToImage, 0o644)
         if "thumbnailValue" in item:
             thumbnailImageName = imageName + "_thumbnail"
-            pathToThumbnailImage = "{0}.{1}".format(thumbnailImageName, item["suffix"])
-            if os.path.exists(os.path.join(pathToHtmlDir, pathToThumbnailImage)):
+            pathToThumbnailImage = os.path.join(pathToHtmlDir, "{0}.{1}".format(thumbnailImageName, item["suffix"]))
+            if os.path.exists(pathToThumbnailImage):
                 pathToThumbnailImage = tempfile.mkstemp(suffix="." + item["suffix"],
                                                         prefix=thumbnailImageName + "_",
                                                         dir=pathToHtmlDir)[1]
