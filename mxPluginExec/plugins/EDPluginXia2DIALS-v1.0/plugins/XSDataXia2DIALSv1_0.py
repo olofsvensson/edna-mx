@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu May 26 10:07::35 2016 by EDGenerateDS.
+# Generated Tue May 31 01:47::14 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -15,9 +15,11 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataResult
@@ -31,6 +33,7 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataResult
@@ -114,7 +117,7 @@ class MixedContainer(object):
 
 
 class XSDataInputXia2DIALS(XSDataInput):
-    def __init__(self, configuration=None, image=None):
+    def __init__(self, configuration=None, anomalous=None, image=None):
         XSDataInput.__init__(self, configuration)
         if image is None:
             self._image = []
@@ -122,6 +125,13 @@ class XSDataInputXia2DIALS(XSDataInput):
             self._image = image
         else:
             strMessage = "ERROR! XSDataInputXia2DIALS constructor argument 'image' is not list but %s" % self._image.__class__.__name__
+            raise BaseException(strMessage)
+        if anomalous is None:
+            self._anomalous = None
+        elif anomalous.__class__.__name__ == "XSDataBoolean":
+            self._anomalous = anomalous
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS constructor argument 'anomalous' is not XSDataBoolean but %s" % self._anomalous.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
@@ -156,6 +166,18 @@ class XSDataInputXia2DIALS(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputXia2DIALS.addImage argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
+    # Methods and properties for the 'anomalous' attribute
+    def getAnomalous(self): return self._anomalous
+    def setAnomalous(self, anomalous):
+        if anomalous is None:
+            self._anomalous = None
+        elif anomalous.__class__.__name__ == "XSDataBoolean":
+            self._anomalous = anomalous
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS.setAnomalous argument is not XSDataBoolean but %s" % anomalous.__class__.__name__
+            raise BaseException(strMessage)
+    def delAnomalous(self): self._anomalous = None
+    anomalous = property(getAnomalous, setAnomalous, delAnomalous, "Property for anomalous")
     def export(self, outfile, level, name_='XSDataInputXia2DIALS'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -168,6 +190,8 @@ class XSDataInputXia2DIALS(XSDataInput):
             image_.export(outfile, level, name_='image')
         if self.getImage() == []:
             warnEmptyAttribute("image", "XSDataFile")
+        if self._anomalous is not None:
+            self.anomalous.export(outfile, level, name_='anomalous')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -178,6 +202,11 @@ class XSDataInputXia2DIALS(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.image.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'anomalous':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setAnomalous(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

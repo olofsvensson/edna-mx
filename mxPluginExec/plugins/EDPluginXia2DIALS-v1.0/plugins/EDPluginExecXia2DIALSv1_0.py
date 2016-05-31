@@ -78,6 +78,14 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginExecXia2DIALSv1_0.generateCommands")
         strCommandText = "-dials -ispyb_xml_out ispyb.xml"
 
+        anomalous = True
+        if _xsDataInputXia2DIALS.anomalous is not None:
+            if not _xsDataInputXia2DIALS.anomalous.value:
+                anomalous = False
+
+        if anomalous:
+            strCommandText += " -atom X"
+
         for image in _xsDataInputXia2DIALS.image:
             strCommandText += " image={0}".format(image.path.value)
 

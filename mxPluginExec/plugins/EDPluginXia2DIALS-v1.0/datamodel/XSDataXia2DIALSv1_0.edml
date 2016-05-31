@@ -12,6 +12,7 @@ import XSDataCommon.XSDataInteger
 
 complex type XSDataInputXia2DIALS extends XSDataInput {
 	image : XSDataFile []
+	anomalous : XSDataBoolean optional
 }
 
 complex type XSDataResultXia2DIALS extends XSDataResult {

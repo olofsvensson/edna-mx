@@ -251,6 +251,8 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             xsDataInputXia2DIALS.addImage(XSDataFile(XSDataString(masterFilePath)))
         else:
             xsDataInputXia2DIALS.addImage(XSDataFile(XSDataString(pathToStartImage)))
+        # Force anomalous
+        xsDataInputXia2DIALS.anomalous = XSDataBoolean(True)
         self.edPluginExecXia2DIALS.dataInput = xsDataInputXia2DIALS
         timeStart = time.localtime()
         self.edPluginExecXia2DIALS.executeSynchronous()
@@ -266,7 +268,11 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
             # "Fix" certain entries in the ISPyB xml file
             autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
+            for autoProcScalingStatistics in autoProcScalingContainer.AutoProcScalingStatistics:
+                autoProcScalingStatistics.anomalous = True
             autoProcIntegrationContainer = autoProcScalingContainer.AutoProcIntegrationContainer
+            autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
+            autoProcIntegration.anomalous = True
             image = autoProcIntegrationContainer.Image
             image.dataCollectionId = self.dataInput.dataCollectionId.value
             autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
