@@ -1421,7 +1421,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             'Completeness': 'completeness',
             'Multiplicity': 'multiplicity',
             'Total number of observations': 'nTotalObservations',
-            'Rmerge  (within I+/I-)': 'rMerge'
+            'Rmerge  (within I+/I-)': 'rMerge',
+            'Mn(I) half-set correlation CC(1/2)': 'ccHalf',
         }
 
         UNIT_CELL_PREFIX = 'Average unit cell:'  # special case, 6 values
