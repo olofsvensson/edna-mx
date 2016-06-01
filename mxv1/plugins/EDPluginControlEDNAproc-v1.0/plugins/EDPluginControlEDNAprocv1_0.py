@@ -984,16 +984,19 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         inner_stats = AutoProcScalingStatistics()
         for k, v in inner.iteritems():
             setattr(inner_stats, k, v)
+        inner_stats.anomalous = False
         scaling_container_noanom.AutoProcScalingStatistics.append(inner_stats)
 
         outer_stats = AutoProcScalingStatistics()
         for k, v in outer.iteritems():
             setattr(outer_stats, k, v)
+        outer_stats.anomalous = False
         scaling_container_noanom.AutoProcScalingStatistics.append(outer_stats)
 
         overall_stats = AutoProcScalingStatistics()
         for k, v in overall.iteritems():
             setattr(overall_stats, k, v)
+        overall_stats.anomalous = False
         scaling_container_noanom.AutoProcScalingStatistics.append(overall_stats)
 
         integration_container_noanom = AutoProcIntegrationContainer()
@@ -1023,16 +1026,19 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         inner_stats = AutoProcScalingStatistics()
         for k, v in inner.iteritems():
             setattr(inner_stats, k, v)
+        inner_stats.anomalous = True
         scaling_container_anom.AutoProcScalingStatistics.append(inner_stats)
 
         outer_stats = AutoProcScalingStatistics()
         for k, v in outer.iteritems():
             setattr(outer_stats, k, v)
+        outer_stats.anomalous = True
         scaling_container_anom.AutoProcScalingStatistics.append(outer_stats)
 
         overall_stats = AutoProcScalingStatistics()
         for k, v in overall.iteritems():
             setattr(overall_stats, k, v)
+        overall_stats.anomalous = True
         scaling_container_anom.AutoProcScalingStatistics.append(overall_stats)
 
 
@@ -1421,7 +1427,15 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             'Completeness': 'completeness',
             'Multiplicity': 'multiplicity',
             'Total number of observations': 'nTotalObservations',
-            'Rmerge  (within I+/I-)': 'rMerge'
+            'Total number unique': 'ntotalUniqueObservations',
+            'Rmerge  (within I+/I-)': 'rMerge',
+            'Rmeas (within I+/I-)': 'rmeasWithinIplusIminus',
+            'Rmeas (all I+ & I-)': 'rmeasAllIplusIminus',
+            'Rpim (within I+/I-)': 'rpimWithinIplusIminus',
+            'Rpim (all I+ & I-)': 'rpimAllIplusIminus',
+            'Anomalous completeness': 'anomalousCompleteness',
+            'Anomalous multiplicity': 'anomalousMultiplicity',
+            'Mn(I) half-set correlation CC(1/2)': 'ccHalf',
         }
 
         UNIT_CELL_PREFIX = 'Average unit cell:'  # special case, 6 values

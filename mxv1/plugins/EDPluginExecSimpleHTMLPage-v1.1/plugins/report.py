@@ -191,17 +191,21 @@ class WorkflowStepReport(object):
 
     def __renderImage(self, page, item, pathToHtmlDir):
         imageName = item["title"].replace(" ", "_")
-        pathToImage = tempfile.mkstemp(suffix="." + item["suffix"],
-                                       prefix=imageName + "_",
-                                       dir=pathToHtmlDir)[1]
+        pathToImage = os.path.join(pathToHtmlDir, "{0}.{1}".format(imageName, item["suffix"]))
+        if os.path.exists(pathToImage):
+            pathToImage = tempfile.mkstemp(suffix="." + item["suffix"],
+                                           prefix=imageName + "_",
+                                           dir=pathToHtmlDir)[1]
         open(pathToImage, "w").write(base64.b64decode(item["value"]))
         os.chmod(pathToImage, 0o644)
         if "thumbnailValue" in item:
             thumbnailImageName = imageName + "_thumbnail"
-            pathToThumbnailImage = tempfile.mkstemp(suffix="." + item["suffix"],
-                                                    prefix=thumbnailImageName + "_",
-                                                    dir=pathToHtmlDir)[1]
-            open(pathToThumbnailImage, "w").write(base64.b64decode(item["thumbnailValue"]))
+            pathToThumbnailImage = os.path.join(pathToHtmlDir, "{0}.{1}".format(thumbnailImageName, item["suffix"]))
+            if os.path.exists(pathToThumbnailImage):
+                pathToThumbnailImage = tempfile.mkstemp(suffix="." + item["suffix"],
+                                                        prefix=thumbnailImageName + "_",
+                                                        dir=pathToHtmlDir)[1]
+            open(pathToThumbnailImage, "w").write(base64.b64decode(item["value"]))
             os.chmod(pathToThumbnailImage, 0o644)
             pageReferenceImage = markupv1_10.page(mode='loose_html')
             pageReferenceImage.init(title=imageName, footer="Generated on %s" % time.asctime())
