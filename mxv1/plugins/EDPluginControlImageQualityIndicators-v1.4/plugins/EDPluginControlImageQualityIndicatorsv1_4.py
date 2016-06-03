@@ -67,8 +67,8 @@ from XSDataISPyBv1_4 import XSDataInputStoreListOfImageQualityIndicators
 EDFactoryPluginStatic.loadModule("XSDataControlDozorv1_0")
 from XSDataControlDozorv1_0 import XSDataInputControlDozor
 
-EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_0")
-from XSDataControlH5ToCBFv1_0 import XSDataInputControlH5ToCBF
+EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_1")
+from XSDataControlH5ToCBFv1_1 import XSDataInputControlH5ToCBF
 
 class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
     """
@@ -87,7 +87,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         self.strPluginReadImageHeaderName = "EDPluginControlReadImageHeaderv10"
         self.edPluginReadImageHeader = None
         self.edPluginControlDozor = None
-        self.strPluginControlH5ToCBF = "EDPluginControlH5ToCBFv1_0"
+        self.strPluginControlH5ToCBF = "EDPluginControlH5ToCBFv1_1"
         self.setXSDataInputClass(XSDataInputControlImageQualityIndicators)
         self.listPluginExecImageQualityIndicator = []
         self.listPluginControlDozor = []
