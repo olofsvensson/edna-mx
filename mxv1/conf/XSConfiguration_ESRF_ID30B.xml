@@ -51,6 +51,10 @@
 					<value>1800</value>
 				</XSParamItem>
 				<XSParamItem>
+					<name>MXWaitFileTimeOut</name>
+					<value>120</value>
+				</XSParamItem>
+				<XSParamItem>
 					<name>minImageSize</name>
 					<value>6000000</value>
 				</XSParamItem>
