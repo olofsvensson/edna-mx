@@ -228,7 +228,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
 #                print xsDataImageDozor.marshal()
                 xsDataResultDozor.addImageDozor(xsDataImageDozor)
             elif strLine.startswith("h"):
-                xsDataResultDozor.halfDoseTime = XSDataDouble(strLine.split("=")[1])
+                xsDataResultDozor.halfDoseTime = XSDataDouble(strLine.split("=")[1].split()[0])
         return xsDataResultDozor
 
     def parseDouble(self, _strValue):
