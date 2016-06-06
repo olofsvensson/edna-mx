@@ -17,4 +17,5 @@ complex type XSDataInputMXWaitFile extends XSDataInput {
 
 complex type XSDataResultMXWaitFile extends XSDataResult {
 	timedOut : XSDataBoolean
+	finalSize : XSDataInteger
 }
