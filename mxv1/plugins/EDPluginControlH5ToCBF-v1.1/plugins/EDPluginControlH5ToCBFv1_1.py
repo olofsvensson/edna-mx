@@ -39,7 +39,6 @@ from XSDataCommon import XSDataImage
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 EDFactoryPluginStatic.loadModule("XSDataH5ToCBFv1_1")
 
-from XSDataH5ToCBFv1_1 import XSDataISPyBDataCollection
 from XSDataH5ToCBFv1_1 import XSDataInputH5ToCBF
 
 from XSDataControlH5ToCBFv1_1 import XSDataInputControlH5ToCBF
