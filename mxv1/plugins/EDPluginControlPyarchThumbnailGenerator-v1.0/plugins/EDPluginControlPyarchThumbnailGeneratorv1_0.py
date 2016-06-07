@@ -53,8 +53,8 @@ EDFactoryPluginStatic.loadModule("EDPluginMXWaitFilev1_1")
 from EDPluginMXWaitFilev1_1 import EDPluginMXWaitFilev1_1
 from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
-EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_0")
-from XSDataControlH5ToCBFv1_0 import XSDataInputControlH5ToCBF
+EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_1")
+from XSDataControlH5ToCBFv1_1 import XSDataInputControlH5ToCBF
 
 class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
     """
@@ -82,7 +82,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         self.h5MasterFilePath = None
         self.h5DataFilePath = None
         self.h5FileNumber = None
-        self.strPluginControlH5ToCBF = "EDPluginControlH5ToCBFv1_0"
+        self.strPluginControlH5ToCBF = "EDPluginControlH5ToCBFv1_1"
 
 
 
