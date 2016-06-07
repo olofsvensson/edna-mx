@@ -28,6 +28,8 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os
 import time
+import numpy
+import base64
 
 from EDVerbose import EDVerbose
 from EDUtilsParallel import EDUtilsParallel
@@ -279,6 +281,10 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                     if xsDataImageQualityIndicators.image.path.value == imageDozor.image.path.value:
                         xsDataImageQualityIndicators.dozor_score = imageDozor.score
                         xsDataImageQualityIndicators.dozorSpotFile = imageDozor.spotFile
+                        numpyArray = numpy.loadtxt(imageDozor.spotFile.path.value, skiprows=3)
+                        xsDataImageQualityIndicators.dozorSpotList = XSDataString(base64.b64encode(numpyArray.tostring()))
+                        xsDataImageQualityIndicators.addDozorSpotListShape(XSDataInteger(numpyArray.shape[0]))
+                        xsDataImageQualityIndicators.addDozorSpotListShape(XSDataInteger(numpyArray.shape[1]))
                         xsDataImageQualityIndicators.dozorSpotsIntAver = imageDozor.spots_int_aver
                         xsDataImageQualityIndicators.dozorSpotsResolution = imageDozor.spots_resolution
                         if self.xsDataResultControlImageQualityIndicators.inputDozor is None:
