@@ -46,6 +46,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.__init__(self)
         self.setXSDataInputClass(XSDataInputAutoPROC)
         self.setDataOutput(XSDataResultAutoPROC())
+        self.maxNoProcessors = 12
 
     def checkParameters(self):
         """
@@ -54,6 +55,11 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginExecAutoPROCv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
+
+    def configure(self):
+        EDPluginExecProcessScript.configure(self)
+        self.DEBUG("EDPluginExecAutoPROCv1_0.configure")
+        self.maxNoProcessors = self.config.get("maxNoProcessors", self.maxNoProcessors)
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
@@ -89,7 +95,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         This method creates the input command line for autoPROC
         """
         self.DEBUG("EDPluginExecAutoPROCv1_0.generateCommands")
-        strCommandText = "-B -xml -nthreads 10 autoPROC_ScaleWithXscale='yes'"
+        strCommandText = "-B -xml -nthreads {0} autoPROC_ScaleWithXscale='yes'".format(self.maxNoProcessors)
 
         # Master H5 file
         masterH5 = _xsDataInputAutoPROC.masterH5

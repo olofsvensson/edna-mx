@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue Mar 1 03:11::56 2016 by EDGenerateDS.
+# Generated Thu May 5 08:17::55 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -308,7 +308,7 @@ class XSDataInputSimpleHTMLPage(XSDataInput):
 
 
 class XSDataResultSimpleHTMLPage(XSDataResult):
-    def __init__(self, status=None, pathToHTMLDirectory=None, pathToHTMLFile=None):
+    def __init__(self, status=None, pathToJsonFile=None, pathToHTMLDirectory=None, pathToHTMLFile=None):
         XSDataResult.__init__(self, status)
         if pathToHTMLFile is None:
             self._pathToHTMLFile = None
@@ -323,6 +323,13 @@ class XSDataResultSimpleHTMLPage(XSDataResult):
             self._pathToHTMLDirectory = pathToHTMLDirectory
         else:
             strMessage = "ERROR! XSDataResultSimpleHTMLPage constructor argument 'pathToHTMLDirectory' is not XSDataFile but %s" % self._pathToHTMLDirectory.__class__.__name__
+            raise BaseException(strMessage)
+        if pathToJsonFile is None:
+            self._pathToJsonFile = None
+        elif pathToJsonFile.__class__.__name__ == "XSDataFile":
+            self._pathToJsonFile = pathToJsonFile
+        else:
+            strMessage = "ERROR! XSDataResultSimpleHTMLPage constructor argument 'pathToJsonFile' is not XSDataFile but %s" % self._pathToJsonFile.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'pathToHTMLFile' attribute
     def getPathToHTMLFile(self): return self._pathToHTMLFile
@@ -348,6 +355,18 @@ class XSDataResultSimpleHTMLPage(XSDataResult):
             raise BaseException(strMessage)
     def delPathToHTMLDirectory(self): self._pathToHTMLDirectory = None
     pathToHTMLDirectory = property(getPathToHTMLDirectory, setPathToHTMLDirectory, delPathToHTMLDirectory, "Property for pathToHTMLDirectory")
+    # Methods and properties for the 'pathToJsonFile' attribute
+    def getPathToJsonFile(self): return self._pathToJsonFile
+    def setPathToJsonFile(self, pathToJsonFile):
+        if pathToJsonFile is None:
+            self._pathToJsonFile = None
+        elif pathToJsonFile.__class__.__name__ == "XSDataFile":
+            self._pathToJsonFile = pathToJsonFile
+        else:
+            strMessage = "ERROR! XSDataResultSimpleHTMLPage.setPathToJsonFile argument is not XSDataFile but %s" % pathToJsonFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delPathToJsonFile(self): self._pathToJsonFile = None
+    pathToJsonFile = property(getPathToJsonFile, setPathToJsonFile, delPathToJsonFile, "Property for pathToJsonFile")
     def export(self, outfile, level, name_='XSDataResultSimpleHTMLPage'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -364,6 +383,10 @@ class XSDataResultSimpleHTMLPage(XSDataResult):
             self.pathToHTMLDirectory.export(outfile, level, name_='pathToHTMLDirectory')
         else:
             warnEmptyAttribute("pathToHTMLDirectory", "XSDataFile")
+        if self._pathToJsonFile is not None:
+            self.pathToJsonFile.export(outfile, level, name_='pathToJsonFile')
+        else:
+            warnEmptyAttribute("pathToJsonFile", "XSDataFile")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -379,6 +402,11 @@ class XSDataResultSimpleHTMLPage(XSDataResult):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setPathToHTMLDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pathToJsonFile':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setPathToJsonFile(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

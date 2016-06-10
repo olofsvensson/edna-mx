@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
 #
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -29,7 +29,7 @@ __authors__ = [ "Olof Svensson", "Marie-Francoise Incardona", "Karl Levik" ]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20120712"
+__date__ = "20160501"
 __status__ = "production"
 
 import os
@@ -44,14 +44,12 @@ class EDTestCasePluginExecuteLabelitIndexingv1_1(EDTestCasePluginExecute):
 
     def __init__(self, _edStringTestName=None):
         EDTestCasePluginExecute.__init__(self, "EDPluginLabelitIndexingv1_1")
-        self.setConfigurationFile(self.getRefConfigFile())
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataImage_1_reference.xml"), "referenceImage")
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataImage_2_reference.xml"), "referenceImage")
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputLabelitIndexing_reference.xml"))
 
 
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "ref-testscale_1_001.img", "ref-testscale_1_002.img" ])
+        self.loadTestImage([ "thau_1_0001.cbf", "thau_1_0003.cbf" ])
 
 
     def testExecute(self):
@@ -62,8 +60,3 @@ class EDTestCasePluginExecuteLabelitIndexingv1_1(EDTestCasePluginExecute):
         self.addTestMethod(self.testExecute)
 
 
-
-if __name__ == '__main__':
-
-    edTestCasePluginExecuteLabelitIndexingv1_1 = EDTestCasePluginExecuteLabelitIndexingv1_1("EDTestCasePluginExecuteLabelitIndexingv1_1")
-    edTestCasePluginExecuteLabelitIndexingv1_1.execute()

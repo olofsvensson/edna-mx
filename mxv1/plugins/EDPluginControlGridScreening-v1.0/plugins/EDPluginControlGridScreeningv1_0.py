@@ -375,7 +375,7 @@ class EDPluginControlGridScreeningv1_0(EDPluginControl):
     def doFailureStrategy(self, _edPlugin=None):
         self.DEBUG("EDPluginControlGridScreeningv1_0.doFailureStrategy")
         self.retrieveFailureMessages(self.edPluginControlStrategy, "EDPluginControlGridScreeningv1_0.doFailureStrategy")
-        strErrorMessage = "Execution of strategy plugin failed."
+        strErrorMessage = "Strategy calculation FAILURE."
         self.ERROR(strErrorMessage)
         self.addErrorMessage(strErrorMessage)
 

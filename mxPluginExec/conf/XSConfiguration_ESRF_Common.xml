@@ -60,6 +60,27 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem> 
+			<name>EDPluginLabelitIndexingv1_2</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>pathToLabelitSetpathScript</name>
+					<value>/opt/pxsoft/phenix/v1.10-2155/linux-x86_64/phenix-1.10-2155/phenix_env.sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/labelit.screen</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>60</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem> 
 			<name>EDPluginDistlSignalStrengthv1_1</name>  
 			<XSParamList>
 				<XSParamItem>
@@ -683,6 +704,31 @@
 				<XSParamItem>
 					<name>timeOut</name>
 					<value>3600</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>maxNoProcessors</name>
+					<value>8</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem> 
+			<name>EDPluginExecXia2DIALSv1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/xia2</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>3600</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>maxNoProcessors</name>
+					<value>8</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>

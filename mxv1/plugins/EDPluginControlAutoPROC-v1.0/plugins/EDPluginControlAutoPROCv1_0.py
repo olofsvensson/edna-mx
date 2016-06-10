@@ -32,6 +32,7 @@ import socket
 
 from EDPluginControl import EDPluginControl
 from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
+from EDUtilsPath import EDUtilsPath
 
 from EDFactoryPlugin import edFactoryPlugin
 
@@ -120,6 +121,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         imageNoEnd = None
         pathToStartImage = None
         pathToEndImage = None
+        userName = os.environ["USER"]
+        beamline = "unknown"
+        proposal = "unknown"
 
         # If we have a data collection id, use it
         if self.dataInput.dataCollectionId is not None:
@@ -150,6 +154,22 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             pathToStartImage = os.path.join(directory, fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
 
+        # Try to get proposal from path
+        if EDUtilsPath.isESRF():
+            listDirectory = directory.split(os.sep)
+            try:
+                if listDirectory[1] == "data":
+                    if listDirectory[2] == "visitor":
+                        beamline = listDirectory[4]
+                        proposal = listDirectory[3]
+                    else:
+                        beamline = listDirectory[2]
+                        proposal = listDirectory[4]
+            except:
+                beamline = "unknown"
+                proposal = userName
+
+
         if imageNoEnd - imageNoStart < 8:
             error_message = "There are fewer than 8 images, aborting"
             self.addErrorMessage(error_message)
@@ -170,6 +190,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
 
         # Create path to pyarch
         pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(strResultsDirectory)
+        pyarchDirectory = pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
         if pyarchDirectory is not None and not os.path.exists(pyarchDirectory):
             os.makedirs(pyarchDirectory, 0755)
 
@@ -223,7 +244,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
 
 
 
-        # Prepare input to autoPROC execution plugin
+        # Prepare input to execution plugin
         xsDataInputAutoPROC = XSDataInputAutoPROC()
         xsDataAutoPROCIdentifier = XSDataAutoPROCIdentifier()
         xsDataAutoPROCIdentifier.idN = XSDataString(identifier)
@@ -237,7 +258,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                                           self.eiger_template_to_master(template))
             xsDataInputAutoPROC.masterH5 = XSDataFile(XSDataString(masterFilePath))
         self.edPluginExecAutoPROC.dataInput = xsDataInputAutoPROC
+        timeStart = time.localtime()
         self.edPluginExecAutoPROC.executeSynchronous()
+        timeEnd = time.localtime()
 
         # Read the generated ISPyB xml file - if any
         if self.edPluginExecAutoPROC.dataOutput.ispybXML is not None:
@@ -257,12 +280,18 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
             autoProcProgram = autoProcProgramContainer.AutoProcProgram
             autoProcProgram.processingPrograms = "autoPROC"
-            autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingStartTime, "%a %b %d %H:%M:%S %Z %Y"))
-            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", time.strptime(autoProcProgram.processingEndTime, "%a %b %d %H:%M:%S %Z %Y"))
+            autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
+            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
             for autoProcProgramAttachment in autoProcProgramContainer.AutoProcProgramAttachment:
                 if autoProcProgramAttachment.fileName == "summary.html":
-                    # Convert the summary.html to summary.pdf
                     summaryHtmlPath = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
+                    # Replace opidXX with user name
+                    htmlSummary = open(summaryHtmlPath).read()
+                    userString1 = "User      : {0} (".format(os.environ["USER"])
+                    userString2 = "User      : {0} (".format(proposal)
+                    htmlSummary = htmlSummary.replace(userString1, userString2)
+                    open(summaryHtmlPath, "w").write(htmlSummary)
+                    # Convert the summary.html to summary.pdf
                     xsDataInputHTML2PDF = XSDataInputHTML2PDF()
                     xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(summaryHtmlPath)))
                     xsDataInputHTML2PDF.paperSize = XSDataString("A3")
@@ -304,6 +333,11 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
             # Add log file
             strPathToLogFile = self.edPluginExecAutoPROC.dataOutput.logFile.path.value
+            autoPROClog = open(strPathToLogFile).read()
+            userString1 = "User      : {0} (".format(os.environ["USER"])
+            userString2 = "User      : {0} (".format(proposal)
+            autoPROClog = autoPROClog.replace(userString1, userString2)
+            open(strPathToLogFile, "w").write(autoPROClog)
             strPyarchLogFile = strPyarchPrefix + "_autoPROC.log"
             shutil.copy(strPathToLogFile, os.path.join(strResultsDirectory, strPyarchLogFile))
             shutil.copy(strPathToLogFile, os.path.join(pyarchDirectory, strPyarchLogFile))

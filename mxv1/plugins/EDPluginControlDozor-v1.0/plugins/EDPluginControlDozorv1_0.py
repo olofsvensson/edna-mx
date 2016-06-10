@@ -29,6 +29,7 @@ import os
 
 from EDPluginControl import EDPluginControl
 from EDUtilsImage import EDUtilsImage
+from EDUtilsPath import EDUtilsPath
 
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataDouble
@@ -121,7 +122,10 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             strFileName = subWedge.image[0].path.value
             strPrefix = EDUtilsImage.getPrefix(strFileName)
             strSuffix = EDUtilsImage.getSuffix(strFileName)
-            strXDSTemplate = "%s_????.%s" % (strPrefix, strSuffix)
+            if EDUtilsPath.isEMBL():
+                strXDSTemplate = "%s_?????.%s" % (strPrefix, strSuffix)
+            else:
+                strXDSTemplate = "%s_????.%s" % (strPrefix, strSuffix)
             xsDataInputDozor.nameTemplateImage = XSDataString(os.path.join(os.path.dirname(strFileName), strXDSTemplate))
             xsDataInputDozor.wedgeNumber = self.dataInput.wedgeNumber
             xsDataInputDozor.radiationDamage = self.dataInput.radiationDamage

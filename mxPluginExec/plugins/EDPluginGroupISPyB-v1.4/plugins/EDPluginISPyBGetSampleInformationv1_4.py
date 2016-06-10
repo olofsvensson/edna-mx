@@ -206,6 +206,8 @@ class EDPluginISPyBGetSampleInformationv1_4(EDPluginExec):
                     xsDataISPyBDiffractionPlan.preferredBeamSizeX = XSDataDouble(sampleInfo.diffractionPlan.preferredBeamSizeX)
                 if "preferredBeamSizeY" in sampleInfo.diffractionPlan:
                     xsDataISPyBDiffractionPlan.preferredBeamSizeY = XSDataDouble(sampleInfo.diffractionPlan.preferredBeamSizeY)
+                if "preferredBeamDiameter" in sampleInfo.diffractionPlan:
+                    xsDataISPyBDiffractionPlan.preferredBeamDiameter = XSDataDouble(sampleInfo.diffractionPlan.preferredBeamDiameter)
                 if "radiationSensitivity" in sampleInfo.diffractionPlan:
                     xsDataISPyBDiffractionPlan.radiationSensitivity = XSDataDouble(sampleInfo.diffractionPlan.radiationSensitivity)
                 if "radiationSensitivityBeta" in sampleInfo.diffractionPlan:

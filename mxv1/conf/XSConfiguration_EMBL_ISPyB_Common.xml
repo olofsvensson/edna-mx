@@ -14,7 +14,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -31,15 +31,15 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForBLSampleWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForBLSampleWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForBLSampleWebService?wsdl</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForScreeningEDNAWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForScreeningEDNAWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForScreeningEDNAWebService?wsdl</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -56,10 +56,27 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForAutoprocessingWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginISPyBStoreAutoProcProgramAttachmentv1_4</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>userName</name>
+                                        <value>${ISPyB_user}</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>passWord</name>
+                                        <value>${ISPyB_pass}</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>toolsForAutoprocessingWebServiceWsdl</name>
+                                        <value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
 		<XSPluginItem>
 			<name>EDPluginISPyBStoreAutoProcStatusv1_4</name>
 			<XSParamList>
@@ -73,7 +90,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForAutoprocessingWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -90,11 +107,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForAutoprocessingWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>autoProcProgramId</name>
@@ -115,11 +132,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForAutoprocessingWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>autoProcProgramId</name>
@@ -140,7 +157,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>	
@@ -157,7 +174,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>	
@@ -174,7 +191,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>	
@@ -191,7 +208,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -208,7 +225,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -225,7 +242,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -242,7 +259,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>	
@@ -259,7 +276,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>	
@@ -276,7 +293,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>	
@@ -293,7 +310,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>	
@@ -310,7 +327,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>	
@@ -327,9 +344,60 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForBLSampleWebServiceWsdl</name>
-					<value>http://riga:8080/ispyb-ejb3/ispybWS/ToolsForBLSampleWebService?wsdl</value>
+					<value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForBLSampleWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginISPyBGetPdbFilePathv1_4</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>userName</name>
+                                        <value>${ISPyB_user}</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>passWord</name>
+                                        <value>${ISPyB_pass}</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>toolsForCollectionWebServiceWsdl</name>
+                                        <value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginISPyBUpdateSnapshotsv1_4</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>userName</name>
+                                        <value>${ISPyB_user}</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>passWord</name>
+                                        <value>${ISPyB_pass}</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>toolsForCollectionWebServiceWsdl</name>
+                                        <value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginISPyBUpdateDataCollectionGroupCommentv1_4</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>userName</name>
+                                        <value>${ISPyB_user}</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>passWord</name>
+                                        <value>${ISPyB_pass}</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>toolsForCollectionWebServiceWsdl</name>
+                                        <value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
 	</XSPluginList>
 </XSConfiguration> 

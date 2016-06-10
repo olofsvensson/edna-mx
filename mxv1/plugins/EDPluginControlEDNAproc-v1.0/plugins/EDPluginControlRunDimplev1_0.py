@@ -31,6 +31,7 @@ from EDPluginControl import EDPluginControl
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDVerbose import EDVerbose
 from EDUtilsFile import EDUtilsFile
+from EDUtilsPath import EDUtilsPath
 
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataString
@@ -149,7 +150,11 @@ class EDPluginControlRunDimplev1_0(EDPluginControl):
                     autoProcProgramAttachment = AutoProcProgramAttachment()
                     autoProcProgramAttachment.fileType = "Result"
                     autoProcProgramAttachment.fileName = os.path.basename(targetPath)
-                    autoProcProgramAttachment.filePath = os.path.dirname(strPyarchRootPath)
+                    if EDUtilsPath.isEMBL():
+                        #IK a temporary fix for dimple files
+                        autoProcProgramAttachment.filePath = strPyarchRootPath
+                    else:
+                        autoProcProgramAttachment.filePath = os.path.dirname(strPyarchRootPath)
                     autoProcProgramAttachment.autoProcProgramId = self.dataInput.autoProcProgramId.value
                     xsDataInputStoreAutoProcProgramAttachment.addAutoProcProgramAttachment(autoProcProgramAttachment)
                 edPluginStoreAutoProcProgramAttachment = self.loadPlugin("EDPluginISPyBStoreAutoProcProgramAttachmentv1_4")

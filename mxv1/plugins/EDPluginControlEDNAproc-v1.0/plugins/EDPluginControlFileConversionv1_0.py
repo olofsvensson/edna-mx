@@ -39,6 +39,7 @@ import subprocess
 # for the chmod constants
 from stat import *
 
+from EDUtilsPath import EDUtilsPath
 from EDPluginControl import EDPluginControl
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
@@ -205,6 +206,13 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         uniqueify_in.output_file = XSDataString(uniqueify_out)
 
         self.uniqueify.dataInput = uniqueify_in
+
+        if EDUtilsPath.isEMBL():
+           #GB: skipping misteriously failing uniqueify run - 
+           #    which is useless anyway.
+           #    copying temp truncate output to results directly
+           shutil.copyfile(uniqueify_in.input_file.value, uniqueify_out)
+           return 
 
         self.screen("Uniqueify run " + self.strAnomSuffix)
         self.uniqueify.executeSynchronous()

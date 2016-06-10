@@ -28,6 +28,8 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os
 import time
+import numpy
+import base64
 
 from EDVerbose import EDVerbose
 from EDUtilsParallel import EDUtilsParallel
@@ -67,8 +69,8 @@ from XSDataISPyBv1_4 import XSDataInputStoreListOfImageQualityIndicators
 EDFactoryPluginStatic.loadModule("XSDataControlDozorv1_0")
 from XSDataControlDozorv1_0 import XSDataInputControlDozor
 
-EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_0")
-from XSDataControlH5ToCBFv1_0 import XSDataInputControlH5ToCBF
+EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_1")
+from XSDataControlH5ToCBFv1_1 import XSDataInputControlH5ToCBF
 
 class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
     """
@@ -87,7 +89,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         self.strPluginReadImageHeaderName = "EDPluginControlReadImageHeaderv10"
         self.edPluginReadImageHeader = None
         self.edPluginControlDozor = None
-        self.strPluginControlH5ToCBF = "EDPluginControlH5ToCBFv1_0"
+        self.strPluginControlH5ToCBF = "EDPluginControlH5ToCBFv1_1"
         self.setXSDataInputClass(XSDataInputControlImageQualityIndicators)
         self.listPluginExecImageQualityIndicator = []
         self.listPluginControlDozor = []
@@ -113,7 +115,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
 
     def configure(self, _edPlugin=None):
         EDPluginControl.configure(self)
-        self.DEBUG("EDPluginControlReadImageHeaderv10.configure")
+        self.DEBUG("EDPluginControlImageQualityIndicatorsv1_4.configure")
         self.fMXWaitFileTimeOut = float(self.config.get("MXWaitFileTimeOut", self.fMXWaitFileTimeOut))
         self.minImageSize = self.config.get("minImageSize")
         if self.minImageSize is None:
@@ -279,6 +281,13 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                     if xsDataImageQualityIndicators.image.path.value == imageDozor.image.path.value:
                         xsDataImageQualityIndicators.dozor_score = imageDozor.score
                         xsDataImageQualityIndicators.dozorSpotFile = imageDozor.spotFile
+                        if imageDozor.spotFile is not None:
+                            if os.path.exists(imageDozor.spotFile.path.value):
+                                numpyArray = numpy.loadtxt(imageDozor.spotFile.path.value, skiprows=3)
+                                xsDataImageQualityIndicators.dozorSpotList = XSDataString(base64.b64encode(numpyArray.tostring()))
+                                xsDataImageQualityIndicators.addDozorSpotListShape(XSDataInteger(numpyArray.shape[0]))
+                                if len(numpyArray.shape) > 1:
+                                    xsDataImageQualityIndicators.addDozorSpotListShape(XSDataInteger(numpyArray.shape[1]))
                         xsDataImageQualityIndicators.dozorSpotsIntAver = imageDozor.spots_int_aver
                         xsDataImageQualityIndicators.dozorSpotsResolution = imageDozor.spots_resolution
                         if self.xsDataResultControlImageQualityIndicators.inputDozor is None:

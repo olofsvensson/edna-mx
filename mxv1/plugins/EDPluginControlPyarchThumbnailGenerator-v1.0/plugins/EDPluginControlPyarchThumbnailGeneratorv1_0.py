@@ -53,8 +53,8 @@ EDFactoryPluginStatic.loadModule("EDPluginMXWaitFilev1_1")
 from EDPluginMXWaitFilev1_1 import EDPluginMXWaitFilev1_1
 from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
-EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_0")
-from XSDataControlH5ToCBFv1_0 import XSDataInputControlH5ToCBF
+EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_1")
+from XSDataControlH5ToCBFv1_1 import XSDataInputControlH5ToCBF
 
 class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
     """
@@ -79,9 +79,10 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         self.strSuffix = "jpeg"
         self.strImageFormat = "JPEG"
         self.isH5 = False
-        self.h5FilePath = None
+        self.h5MasterFilePath = None
+        self.h5DataFilePath = None
         self.h5FileNumber = None
-        self.strPluginControlH5ToCBF = "EDPluginControlH5ToCBFv1_0"
+        self.strPluginControlH5ToCBF = "EDPluginControlH5ToCBFv1_1"
 
 
 
@@ -120,8 +121,8 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
                     # Pilatus3 2M
                     self.minImageSize = 2000000
                 elif strImageFileNameExtension == ".h5":
-                    self.h5FilePath, self.h5FileNumber = self.getH5FilePath(pathToImageFile)
-                    pathToImageFile = self.h5FilePath
+                    self.h5MasterFilePath, self.h5DataFilePath, self.h5FileNumber = self.getH5FilePath(pathToImageFile)
+                    pathToImageFile = self.h5DataFilePath
                     self.isH5 = True
             elif EDUtilsPath.isEMBL():
                     self.minImageSize = 10000
@@ -265,8 +266,11 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
         imageNumber = EDUtilsImage.getImageNumber(filePath)
         prefix = EDUtilsImage.getPrefix(filePath)
         h5FileNumber = int((imageNumber - 1) / batchSize) * batchSize + 1
-        h5FileName = "{prefix}_{h5FileNumber}_master.h5".format(prefix=prefix,
-                                                                h5FileNumber=h5FileNumber)
-        h5FilePath = os.path.join(os.path.dirname(filePath), h5FileName)
-        return h5FilePath, h5FileNumber
+        h5MasterFileName = "{prefix}_{h5FileNumber}_master.h5".format(prefix=prefix,
+                                                                      h5FileNumber=h5FileNumber)
+        h5MasterFilePath = os.path.join(os.path.dirname(filePath), h5MasterFileName)
+        h5DataFileName = "{prefix}_{h5FileNumber}_data_000001.h5".format(prefix=prefix,
+                                                                      h5FileNumber=h5FileNumber)
+        h5DataFilePath = os.path.join(os.path.dirname(filePath), h5DataFileName)
+        return h5MasterFilePath, h5DataFilePath, h5FileNumber
 

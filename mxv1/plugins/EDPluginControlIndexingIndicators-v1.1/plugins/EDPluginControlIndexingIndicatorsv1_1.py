@@ -118,16 +118,8 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
             self.xsDataExperimentalCondition = self.getDataInput("dataCollection")[0].getSubWedge()[0].getExperimentalCondition()
         xsDataIndexingInput.setExperimentalCondition(self.xsDataExperimentalCondition)
         from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
-        listXSDataImageReference = EDHandlerXSDataPhenixv1_1.generateListXSDataImageReference(xsDataIndexingInput)
-        for xsDataImage in listXSDataImageReference:
-            self.edPluginIndexingLabelit.setDataInput(xsDataImage, "referenceImage")
-        xsDataCrystal = xsDataIndexingInput.getCrystal()
-        if xsDataCrystal is not None:
-            xsDataSpaceGroup = xsDataCrystal.getSpaceGroup()
-            if xsDataSpaceGroup is not None:
-                xsDataStringName = xsDataSpaceGroup.getName()
-                if xsDataStringName is not None:
-                    self.edPluginIndexingLabelit.setDataInput(xsDataStringName.marshal(), "forcedSpaceGroup")
+        xsDataInputLabelitIndexing = EDHandlerXSDataPhenixv1_1.generateXSDataInputLabelitIndexing(xsDataIndexingInput)
+        self.edPluginIndexingLabelit.setDataInput(xsDataInputLabelitIndexing)
         #
         if (self.getControlledPluginName("indicatorsPlugin") is not None):
             self.strControlledIndicatorsPluginName = self.getControlledPluginName("indicatorsPlugin")
@@ -169,11 +161,9 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
     def doSuccessLabelitIndexing(self, _edPlugin=None):
         self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.doSuccessLabelitIndexing")
         self.synchronizeOn()
-        xsDataLabelitScreenOutput = _edPlugin.getDataOutput("labelitScreenOutput")[0]
-        xsDataLabelitMosflmScriptsOutput = _edPlugin.getDataOutput("mosflmScriptsOutput")[0]
+        xsDataResultLabelitIndexing = _edPlugin.getDataOutput()
         from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
-        xsDataIndexingResult = EDHandlerXSDataPhenixv1_1.generateXSDataIndexingResult(xsDataLabelitScreenOutput,
-                                                                                       xsDataLabelitMosflmScriptsOutput,
+        xsDataIndexingResult = EDHandlerXSDataPhenixv1_1.generateXSDataIndexingResult(xsDataResultLabelitIndexing,
                                                                                        self.xsDataExperimentalCondition,
                                                                                        self.strSymopLib)
         xsDataCollection = self.getDataInput("dataCollection")[0]
@@ -195,7 +185,7 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         self.synchronizeOn()
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlIndexingIndicatorsv1_1.doFailureLabelitIndexing")
         self.addErrorWarningMessagesToExecutiveSummary("Labelit indexing failure! Error messages: ")
-        #self.generateExecutiveSummaryLabelit(_edPlugin)
+        # self.generateExecutiveSummaryLabelit(_edPlugin)
         self.synchronizeOff()
 
     def doSuccessControlIndicators(self, _edPlugin=None):

@@ -5,7 +5,7 @@
 #    Copyright (C) 2011-2013 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -35,6 +35,7 @@ from EDPlugin import EDPlugin
 from EDPluginExec import EDPluginExec
 
 from XSDataCommon import XSDataBoolean
+from XSDataCommon import XSDataInteger
 
 from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 from XSDataMXWaitFilev1_1 import XSDataResultMXWaitFile
@@ -50,10 +51,10 @@ class EDPluginMXWaitFilev1_1(EDPluginExec):
         self.setXSDataInputClass(XSDataInputMXWaitFile)
         self.setDataOutput(XSDataResultMXWaitFile())
         self.expectedSize = None
-        self.timeOut = 120 #s Default timeout
+        self.timeOut = 120  # s Default timeout
         self.strFilePath = None
 
-    
+
     def configure(self, _edPlugin=None):
         EDPluginExec.configure(self)
         xsDataInputMXWaitFile = self.dataInput
@@ -78,25 +79,28 @@ class EDPluginMXWaitFilev1_1(EDPluginExec):
                 self.DEBUG("Using timeout = %.1f s from input" % self.timeOut)
             # Set plugin timout to 60 s more in order to avoid EDPlugin timeout
             self.setTimeOut(self.timeOut + 60.0)
-            
+
 
     def process(self, _edPlugin=None):
         EDPluginExec.process(self)
         # Wait for file if it's not already on disk'
+        finalSize = None
         hasTimedOut = False
         shouldContinue = True
         fileDir = os.path.dirname(self.strFilePath)
         if os.path.exists(self.strFilePath):
+            fileSize = os.path.getsize(self.strFilePath)
             if self.expectedSize is not None:
                 # Check size
-                if os.path.getsize(self.strFilePath) > self.expectedSize:            
+                if fileSize > self.expectedSize:
                     shouldContinue = False
+            finalSize = fileSize
         if shouldContinue:
             self.screen("Waiting for file %s" % self.strFilePath)
             #
             timeStart = time.time()
             while shouldContinue and not hasTimedOut:
-                # Sleep 1 s 
+                # Sleep 1 s
                 time.sleep(1)
                 # Try to execute a "ls" on the file directory - this sometimes speed up NFS
                 if os.path.exists(fileDir):
@@ -111,12 +115,15 @@ class EDPluginMXWaitFilev1_1(EDPluginExec):
                 else:
                     # Check if file is there
                     if os.path.exists(self.strFilePath):
+                        fileSize = os.path.getsize(self.strFilePath)
                         if self.expectedSize is not None:
                             # Check that it has right size
-                            if os.path.getsize(self.strFilePath) > self.expectedSize:
+                            if fileSize > self.expectedSize:
                                 shouldContinue = False
                         else:
                             shouldContinue = False
+                        finalSize = fileSize
         self.dataOutput.timedOut = XSDataBoolean(hasTimedOut)
-                
-                
+        if finalSize is not None:
+            self.dataOutput.finalSize = XSDataInteger(finalSize)
+

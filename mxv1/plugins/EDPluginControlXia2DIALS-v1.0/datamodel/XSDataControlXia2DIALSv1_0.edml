@@ -1,0 +1,17 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSData
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataString
+
+
+complex type XSDataInputControlXia2DIALS extends XSDataInput {
+	dataCollectionId : XSDataInteger optional
+	processDirectory : XSDataFile optional
+}
+
+complex type XSDataResultControlXia2DIALS extends XSDataResult {
+}

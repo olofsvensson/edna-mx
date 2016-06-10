@@ -5,7 +5,7 @@
 #    Copyright (C) 2011-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -51,14 +51,14 @@ class EDTestSuitePluginExecuteISPyBv1_4(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteISPyBUpdateDataCollectionGroupWorkflowIdv1_4")
         self.addTestCaseFromName("EDTestCasePluginExecuteISPyBGroupDataCollectionsv1_4")
         self.addTestCaseFromName("EDTestCasePluginExecuteISPyBUpdateWorkflowStatusv1_4")
-        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBSetDataCollectionPositionv1_4")
-        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBSetDataCollectionPositionv1_4_onePosition")
-        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBSetDataCollectionsPositionsv1_4")
-        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBSetDataCollectionsPositionsv1_4_onePosition")
-        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBSetImagesPositionsv1_4")
-        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreGridInfov1_4")
-        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreWorkflowMeshv1_4")
-        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreMotorPositionv1_4")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBSetDataCollectionPositionv1_4")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBSetDataCollectionPositionv1_4_onePosition")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBSetDataCollectionsPositionsv1_4")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBSetDataCollectionsPositionsv1_4_onePosition")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBSetImagesPositionsv1_4")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreGridInfov1_4")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreWorkflowMeshv1_4")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreMotorPositionv1_4")
         self.addTestCaseFromName("EDTestCasePluginExecuteISPyBSetBestWilsonPlotPathv1_4")
         self.addTestCaseFromName("EDTestCasePluginExecuteISPyBGetSampleInformationv1_4")
         self.addTestCaseFromName("EDTestCasePluginExecuteISPyBGetPdbFilePathv1_4")

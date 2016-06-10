@@ -147,6 +147,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.strPrefix = None
         self.dataInputOrig = None
         self.bExecutedDimple = False
+        self.timeStart = None
+        self.timeEnd = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -252,6 +254,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             self.image_prefix = ''
 
         if EDUtilsPath.isEMBL():
+            # Add prefix if edna used
             self.image_prefix = self.image_prefix + '_edna'
 
         # The resultsdir used to be root_dir/results/fast_processing
@@ -288,7 +291,11 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if lowres is not None:
             self.low_resolution_limit = lowres.value
         else:
-            self.low_resolution_limit = 50
+            if EDUtilsPath.isEMBL():
+                self.low_resolution_limit = 999
+            else:
+                self.low_resolution_limit = 50
+
 
         res_override = data_in.res_override
         if res_override is not None:
@@ -443,6 +450,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         EDPluginControl.process(self)
         self.DEBUG('EDPluginControlEDNAprocv1_0.process starting')
 
+        self.timeStart = time.localtime()
         self.process_start = time.time()
 
 
@@ -917,6 +925,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
 
         self.process_end = time.time()
+        self.timeEnd = time.localtime()
 
 
 
@@ -975,16 +984,19 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         inner_stats = AutoProcScalingStatistics()
         for k, v in inner.iteritems():
             setattr(inner_stats, k, v)
+        inner_stats.anomalous = False
         scaling_container_noanom.AutoProcScalingStatistics.append(inner_stats)
 
         outer_stats = AutoProcScalingStatistics()
         for k, v in outer.iteritems():
             setattr(outer_stats, k, v)
+        outer_stats.anomalous = False
         scaling_container_noanom.AutoProcScalingStatistics.append(outer_stats)
 
         overall_stats = AutoProcScalingStatistics()
         for k, v in overall.iteritems():
             setattr(overall_stats, k, v)
+        overall_stats.anomalous = False
         scaling_container_noanom.AutoProcScalingStatistics.append(overall_stats)
 
         integration_container_noanom = AutoProcIntegrationContainer()
@@ -1014,16 +1026,19 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         inner_stats = AutoProcScalingStatistics()
         for k, v in inner.iteritems():
             setattr(inner_stats, k, v)
+        inner_stats.anomalous = True
         scaling_container_anom.AutoProcScalingStatistics.append(inner_stats)
 
         outer_stats = AutoProcScalingStatistics()
         for k, v in outer.iteritems():
             setattr(outer_stats, k, v)
+        outer_stats.anomalous = True
         scaling_container_anom.AutoProcScalingStatistics.append(outer_stats)
 
         overall_stats = AutoProcScalingStatistics()
         for k, v in overall.iteritems():
             setattr(overall_stats, k, v)
+        overall_stats.anomalous = True
         scaling_container_anom.AutoProcScalingStatistics.append(overall_stats)
 
 
@@ -1065,11 +1080,15 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         program_container_anom.AutoProcProgram = AutoProcProgram()
         program_container_anom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
         program_container_anom.AutoProcProgram.processingPrograms = 'EDNA_proc'
+        program_container_anom.AutoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
+        program_container_anom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
 
         program_container_noanom = AutoProcProgramContainer()
         program_container_noanom.AutoProcProgram = AutoProcProgram()
         program_container_noanom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
         program_container_noanom.AutoProcProgram.processingPrograms = 'EDNA_proc'
+        program_container_noanom.AutoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
+        program_container_noanom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
 
         # now for the generated files. There's some magic to do with
         # their paths to determine where to put them on pyarch
@@ -1083,7 +1102,16 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         # the whole transformation is fragile!
         if EDUtilsPath.isEMBL():
-            pyarch_path = os.path.join(files_dir, 'a_copy')
+            tokens = [elem for elem in self.first_image.split(os.path.sep)
+                      if len(elem) > 0]
+            if 'p14' in tokens[0:2] or 'P14' in tokens[0:2]:
+                 strBeamline = 'p14'
+            elif 'p13' in tokens[0:2] or 'P13' in tokens[0:2]:
+                strBeamline = 'p13'
+            else:
+                 strBeamline = ''
+            pyarch_path = os.path.join('/data/ispyb', strBeamline, *tokens[3:-1])
+            pyarch_path = os.path.join(pyarch_path, "%s" % self.integration_id_anom)
         elif EDUtilsPath.isESRF():
             if files_dir.startswith('/data/gz'):
                 if files_dir.startswith('/data/gz/visitor'):
@@ -1144,8 +1172,6 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 attach_noanom = AutoProcProgramAttachment()
                 attach_noanom.fileType = "Result"
                 attach_noanom.fileName = filename
-                if EDUtilsPath.isEMBL():
-                    dirname = '/mnt/p14ppu01/' + dirname
                 attach_anom.filePath = dirname
                 attach_noanom.filePath = dirname
                 if "_anom" in filename:
@@ -1212,11 +1238,10 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0755)
 
         # Finally run dimple if executed at the ESRF
-        if EDUtilsPath.isESRF():
+        if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():
             xsDataInputControlDimple = XSDataInputControlDimple()
             xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
-            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value,
-                                                                                    "ep_{0}_noanom_aimless.mtz".format(self.image_prefix))))
+            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "ep_{0}_noanom_aimless.mtz".format(self.image_prefix))))
             xsDataInputControlDimple.imagePrefix = XSDataString(self.image_prefix)
             xsDataInputControlDimple.proposal = XSDataString(self.strProposal)
             xsDataInputControlDimple.sessionDate = XSDataString(self.strSessionDate)
@@ -1402,7 +1427,15 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             'Completeness': 'completeness',
             'Multiplicity': 'multiplicity',
             'Total number of observations': 'nTotalObservations',
-            'Rmerge  (within I+/I-)': 'rMerge'
+            'Total number unique': 'ntotalUniqueObservations',
+            'Rmerge  (within I+/I-)': 'rMerge',
+            'Rmeas (within I+/I-)': 'rmeasWithinIplusIminus',
+            'Rmeas (all I+ & I-)': 'rmeasAllIplusIminus',
+            'Rpim (within I+/I-)': 'rpimWithinIplusIminus',
+            'Rpim (all I+ & I-)': 'rpimAllIplusIminus',
+            'Anomalous completeness': 'anomalousCompleteness',
+            'Anomalous multiplicity': 'anomalousMultiplicity',
+            'Mn(I) half-set correlation CC(1/2)': 'ccHalf',
         }
 
         UNIT_CELL_PREFIX = 'Average unit cell:'  # special case, 6 values

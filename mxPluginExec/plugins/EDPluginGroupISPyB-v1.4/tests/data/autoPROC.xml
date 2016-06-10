@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<AutoProcContainer>
+  <AutoProcProgramContainer>
+    <AutoProcProgram>
+      <processingCommandLine>/mntdirect/_sware/exp/pxsoft/autoPROC/vsnapshot_20160304/linux-x86_64/autoPROC/bin/linux64/process -I ../../../../RAW_DATA/test1 -B -xml</processingCommandLine>
+      <processingPrograms>autoPROC 1.1.6 (see: http://www.globalphasing.com/autoproc/)</processingPrograms>
+      <processingStatus>1</processingStatus>
+      <processingMessage></processingMessage>
+      <processingStartTime>Wed Mar 09 15:12:34 2016</processingStartTime>
+      <processingEndTime>Wed Mar 09 15:20:03 2016</processingEndTime>
+      <processingEnvironment>
+  Host      : mxhpc2-1606
+  OS        : PRETTY_NAME="Debian GNU/Linux 7 (wheezy)"|x86_64|3.2.0-4-amd64
+  User      : svensson (group = soft)
+  Directory : /data/visitor/mx415/id30a2/20160307/PROCESSED_DATA/test1/autoprocessing_mx415_run1_1/autoPROC
+  Date      : Wed Mar  9 15:12:34 CET 2016
+  autoPROC  : /opt/pxsoft/autoPROC/vsnapshot_20160304/linux-x86_64
+      </processingEnvironment>
+    </AutoProcProgram>
+    <AutoProcProgramAttachment>
+      <fileType>Log</fileType>
+      <fileName>summary.html</fileName>
+      <filePath>/data/visitor/mx415/id30a2/20160307/PROCESSED_DATA/test1/autoprocessing_mx415_run1_1/autoPROC</filePath>
+    </AutoProcProgramAttachment>
+    <AutoProcProgramAttachment>
+      <fileType>Result</fileType>
+      <fileName>truncate-unique.mtz</fileName>
+      <filePath>/data/visitor/mx415/id30a2/20160307/PROCESSED_DATA/test1/autoprocessing_mx415_run1_1/autoPROC/./mx415_1</filePath>
+    </AutoProcProgramAttachment>
+  </AutoProcProgramContainer>
+  <AutoProc>
+    <spaceGroup>P 61 2 2</spaceGroup>
+    <wavelength>.96500</wavelength>
+    <refinedCell_a>92.524</refinedCell_a>
+    <refinedCell_b>92.524</refinedCell_b>
+    <refinedCell_c>128.102</refinedCell_c>
+    <refinedCell_alpha>90.000</refinedCell_alpha>
+    <refinedCell_beta>90.000</refinedCell_beta>
+    <refinedCell_gamma>120.000</refinedCell_gamma>
+  </AutoProc>
+  <AutoProcScalingContainer>
+    <AutoProcScaling>
+      <recordTimeStamp>2016-03-09 15:19:45</recordTimeStamp>
+    </AutoProcScaling>
+    <AutoProcScalingStatistics>
+      <scalingStatisticsType>overall</scalingStatisticsType>
+      <resolutionLimitLow>67.933</resolutionLimitLow>
+      <resolutionLimitHigh>1.922</resolutionLimitHigh>
+      <rMerge>.122</rMerge>
+      <rMeasWithinIPlusIMinus>.135</rMeasWithinIPlusIMinus>
+      <rMeasAllIPlusIMinus>.131</rMeasAllIPlusIMinus>
+      <rPimWithinIPlusIMinus>.065</rPimWithinIPlusIMinus>
+      <rPimAllIPlusIMinus>.047</rPimAllIPlusIMinus>
+      <nTotalObservations>169591</nTotalObservations>
+      <nTotalUniqueObservations>22575</nTotalUniqueObservations>
+      <meanIOverSigI>11.0</meanIOverSigI>
+      <completeness>89.2</completeness>
+      <multiplicity>7.5</multiplicity>
+      <ccHalf>.997</ccHalf>
+      <anomalousCompleteness>87.6</anomalousCompleteness>
+      <anomalousMultiplicity>4.1</anomalousMultiplicity>
+      <ccAnomalous>.049</ccAnomalous>
+      <DanoOverSigDano>.802</DanoOverSigDano>
+    </AutoProcScalingStatistics>
+    <AutoProcScalingStatistics>
+      <scalingStatisticsType>innerShell</scalingStatisticsType>
+      <resolutionLimitLow>67.933</resolutionLimitLow>
+      <resolutionLimitHigh>5.218</resolutionLimitHigh>
+      <rMerge>.067</rMerge>
+      <rMeasWithinIPlusIMinus>.072</rMeasWithinIPlusIMinus>
+      <rMeasAllIPlusIMinus>.072</rMeasAllIPlusIMinus>
+      <rPimWithinIPlusIMinus>.035</rPimWithinIPlusIMinus>
+      <rPimAllIPlusIMinus>.027</rPimAllIPlusIMinus>
+      <nTotalObservations>9372</nTotalObservations>
+      <nTotalUniqueObservations>1430</nTotalUniqueObservations>
+      <meanIOverSigI>24.0</meanIOverSigI>
+      <completeness>99.9</completeness>
+      <multiplicity>6.6</multiplicity>
+      <ccHalf>.997</ccHalf>
+      <anomalousCompleteness>98.0</anomalousCompleteness>
+      <anomalousMultiplicity>4.1</anomalousMultiplicity>
+      <ccAnomalous>.064</ccAnomalous>
+      <DanoOverSigDano>1.035</DanoOverSigDano>
+    </AutoProcScalingStatistics>
+    <AutoProcScalingStatistics>
+      <scalingStatisticsType>outerShell</scalingStatisticsType>
+      <resolutionLimitLow>1.956</resolutionLimitLow>
+      <resolutionLimitHigh>1.922</resolutionLimitHigh>
+      <rMerge>.865</rMerge>
+      <rMeasWithinIPlusIMinus>.935</rMeasWithinIPlusIMinus>
+      <rMeasAllIPlusIMinus>.950</rMeasAllIPlusIMinus>
+      <rPimWithinIPlusIMinus>.487</rPimWithinIPlusIMinus>
+      <rPimAllIPlusIMinus>.377</rPimAllIPlusIMinus>
+      <nTotalObservations>3094</nTotalObservations>
+      <nTotalUniqueObservations>552</nTotalUniqueObservations>
+      <meanIOverSigI>1.8</meanIOverSigI>
+      <completeness>44.5</completeness>
+      <multiplicity>5.6</multiplicity>
+      <ccHalf>.573</ccHalf>
+      <anomalousCompleteness>41.7</anomalousCompleteness>
+      <anomalousMultiplicity>3.1</anomalousMultiplicity>
+      <ccAnomalous>.014</ccAnomalous>
+      <DanoOverSigDano>.755</DanoOverSigDano>
+    </AutoProcScalingStatistics>
+    <AutoProcIntegrationContainer>
+			<Image>
+				<dataCollectionId>1640675</dataCollectionId>
+			</Image>
+      <AutoProcIntegration>
+        <cell_a>92.5242</cell_a>
+        <cell_b>92.5242</cell_b>
+        <cell_c>128.1019</cell_c>
+        <cell_alpha>90.000</cell_alpha>
+        <cell_beta>90.000</cell_beta>
+        <cell_gamma>120.000</cell_gamma>
+        <startImageNumber>1</startImageNumber>
+        <endImageNumber>740</endImageNumber>
+        <refinedDetectorDistance>226.592392</refinedDetectorDistance>
+        <refinedXBeam>748.53</refinedXBeam>
+        <refinedYBeam>852.36</refinedYBeam>
+        <rotationAxisX>0.999986</rotationAxisX>
+        <rotationAxisY>-0.004681</rotationAxisY>
+        <rotationAxisZ>-0.002509</rotationAxisZ>
+        <beamVectorX>0.003213</beamVectorX>
+        <beamVectorY>-0.000481</beamVectorY>
+        <beamVectorZ>1.036264</beamVectorZ>
+      </AutoProcIntegration>
+    </AutoProcIntegrationContainer>
+  </AutoProcScalingContainer>
+</AutoProcContainer>
