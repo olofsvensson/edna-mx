@@ -277,7 +277,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             image.dataCollectionId = self.dataInput.dataCollectionId.value
             autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
             autoProcProgram = autoProcProgramContainer.AutoProcProgram
-            autoProcProgram.processingPrograms = "xia2DIALS"
+            autoProcProgram.processingPrograms = "XIA2_DIALS"
             autoProcProgram.processingStatus = True
             autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
             autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
