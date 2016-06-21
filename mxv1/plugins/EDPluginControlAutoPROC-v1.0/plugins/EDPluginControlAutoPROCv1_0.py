@@ -153,8 +153,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
 
 #            # DEBUG we set the end image to 20 in order to speed up things
-            self.warning("End image set to 20 (was {0})".format(imageNoEnd))
-            imageNoEnd = 20
+#            self.warning("End image set to 20 (was {0})".format(imageNoEnd))
+#            imageNoEnd = 20
             pathToStartImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoEnd)
         else:
