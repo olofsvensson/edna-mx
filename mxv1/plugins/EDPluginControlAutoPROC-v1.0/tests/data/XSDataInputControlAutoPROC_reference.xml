@@ -2,10 +2,10 @@
 <XSDataInputControlAutoPROC>
   <processDirectory>
   	<path>
-  	  <value>/data/visitor/mx415/id30a2/20160315/PROCESSED_DATA/test3/autoprocessing_mx415_run1_1/autoPROC</value>
+  	  <value>/data/visitor/mx415/id30a2/20160621/PROCESSED_DATA/t5/autoprocessing_t5_run1_1</value>
   	</path>
   </processDirectory>
   <dataCollectionId>
-  	<value>1702213</value>
+  	<value>1774173</value>
   </dataCollectionId>
 </XSDataInputControlAutoPROC>
