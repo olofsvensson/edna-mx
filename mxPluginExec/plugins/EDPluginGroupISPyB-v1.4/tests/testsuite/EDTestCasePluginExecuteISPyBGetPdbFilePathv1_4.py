@@ -5,7 +5,7 @@
 #    Copyright (C) 2011-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -53,11 +53,11 @@ class EDTestCasePluginExecuteISPyBGetPdbFilePathv1_4(EDTestCasePluginExecute):
         Runs the plugin and then compares expected output with obtained output to verify that it executed correctly. 
         """
         self.run()
-        
+
         # Check that the id extists in the results
         edPlugin = self.getPlugin()
         xsDataResult = edPlugin.getDataOutput()
-        EDAssert.equal("/data/pyapdb/opid291/GalNac_xtal2_model.pdb", xsDataResult.pdbFilePath.value, "pdbFilePath")
+        EDAssert.equal("/data/pyarch/pdb/opid291/GalNac_xtal2_model.pdb", xsDataResult.pdbFilePath.value, "pdbFilePath")
 
 
     def process(self):
