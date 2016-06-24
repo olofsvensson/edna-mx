@@ -43,5 +43,18 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginControlStrategyv1_2</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>symopHome</name>
+					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/lib/data</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>roundUpToEven100</name>
+					<value>true</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
   	</XSPluginList>
 </XSConfiguration> 
