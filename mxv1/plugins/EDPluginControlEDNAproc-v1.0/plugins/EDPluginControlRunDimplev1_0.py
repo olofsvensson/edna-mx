@@ -150,11 +150,7 @@ class EDPluginControlRunDimplev1_0(EDPluginControl):
                     autoProcProgramAttachment = AutoProcProgramAttachment()
                     autoProcProgramAttachment.fileType = "Result"
                     autoProcProgramAttachment.fileName = os.path.basename(targetPath)
-                    if EDUtilsPath.isEMBL():
-                        #IK a temporary fix for dimple files
-                        autoProcProgramAttachment.filePath = strPyarchRootPath
-                    else:
-                        autoProcProgramAttachment.filePath = os.path.dirname(strPyarchRootPath)
+                    autoProcProgramAttachment.filePath = strPyarchRootPath
                     autoProcProgramAttachment.autoProcProgramId = self.dataInput.autoProcProgramId.value
                     xsDataInputStoreAutoProcProgramAttachment.addAutoProcProgramAttachment(autoProcProgramAttachment)
                 edPluginStoreAutoProcProgramAttachment = self.loadPlugin("EDPluginISPyBStoreAutoProcProgramAttachmentv1_4")
