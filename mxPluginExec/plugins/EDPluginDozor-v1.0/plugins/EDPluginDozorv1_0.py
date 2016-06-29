@@ -161,10 +161,11 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "fraction_polarization %.3f\n" % fractionPolarization
             strCommandText += "pixel_min 0\n"
             strCommandText += "pixel_max 64000\n"
-            strCommandText += "ix_min %d\n" % self.ixMin
-            strCommandText += "ix_max %d\n" % self.ixMax
-            strCommandText += "iy_min %d\n" % self.iyMin
-            strCommandText += "iy_max %d\n" % self.iyMax
+            if self.ixMin is not None:
+                strCommandText += "ix_min %d\n" % self.ixMin
+                strCommandText += "ix_max %d\n" % self.ixMax
+                strCommandText += "iy_min %d\n" % self.iyMin
+                strCommandText += "iy_max %d\n" % self.iyMax
             if self.strBad_zona is not None:
                 strCommandText += "bad_zona %s\n" % self.strBad_zona
             strCommandText += "orgx %.1f\n" % _xsDataInputDozor.orgx.value

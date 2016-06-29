@@ -213,8 +213,10 @@ plot 'gnuplot.dat' using 0:2 title "Dozor score" axes x1y1 with points, 'gnuplot
             data_file = open(pathGnuplotScript, "w")
             data_file.write(gnuplotScript)
             data_file.close()
+            oldCwd = os.getcwd()
             os.chdir(self.getWorkingDirectory())
             os.system("gnuplot %s" % pathGnuplotScript)
+            os.chdir(oldCwd)
 
 
 
