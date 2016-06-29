@@ -30,6 +30,9 @@
 	<imageStep>
 		<value>0.2</value>
 	</imageStep>
+	<wedgeNumber>
+		<value>10</value>
+	</wedgeNumber>
 	<startingAngle>
 		<value>92.1515</value>
 	</startingAngle>
@@ -42,4 +45,7 @@
 	<nameTemplateImage>
 		<value>/scisoft/pxsoft/data/DOZOR/id23eh1/20160229/x_1_????.cbf</value>
 	</nameTemplateImage>
+	<radiationDamage>
+		<value>True</value>
+	</radiationDamage>
 </XSDataInputDozor>

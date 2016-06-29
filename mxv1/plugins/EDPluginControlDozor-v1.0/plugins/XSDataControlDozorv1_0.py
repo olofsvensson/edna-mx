@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue Mar 15 03:56::19 2016 by EDGenerateDS.
+# Generated Wed Jun 29 12:34::28 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -126,7 +126,7 @@ class MixedContainer(object):
 
 
 class XSDataControlImageDozor(object):
-    def __init__(self, spotFile=None, score=None, powder_wilson_rfactor=None, powder_wilson_correlation=None, powder_wilson_resolution=None, powder_wilson_bfactor=None, powder_wilson_scale=None, spots_resolution=None, spots_int_aver=None, spots_num_of=None, image=None, number=None):
+    def __init__(self, spotFile=None, visibleResolution=None, spotScore=None, mainScore=None, powderWilsonRfactor=None, powderWilsonCorrelation=None, powderWilsonResolution=None, powderWilsonBfactor=None, powderWilsonScale=None, spotsResolution=None, spotsIntAver=None, spotsNumOf=None, image=None, number=None):
         if number is None:
             self._number = None
         elif number.__class__.__name__ == "XSDataInteger":
@@ -141,68 +141,82 @@ class XSDataControlImageDozor(object):
         else:
             strMessage = "ERROR! XSDataControlImageDozor constructor argument 'image' is not XSDataFile but %s" % self._image.__class__.__name__
             raise BaseException(strMessage)
-        if spots_num_of is None:
-            self._spots_num_of = None
-        elif spots_num_of.__class__.__name__ == "XSDataInteger":
-            self._spots_num_of = spots_num_of
+        if spotsNumOf is None:
+            self._spotsNumOf = None
+        elif spotsNumOf.__class__.__name__ == "XSDataInteger":
+            self._spotsNumOf = spotsNumOf
         else:
-            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'spots_num_of' is not XSDataInteger but %s" % self._spots_num_of.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'spotsNumOf' is not XSDataInteger but %s" % self._spotsNumOf.__class__.__name__
             raise BaseException(strMessage)
-        if spots_int_aver is None:
-            self._spots_int_aver = None
-        elif spots_int_aver.__class__.__name__ == "XSDataDouble":
-            self._spots_int_aver = spots_int_aver
+        if spotsIntAver is None:
+            self._spotsIntAver = None
+        elif spotsIntAver.__class__.__name__ == "XSDataDouble":
+            self._spotsIntAver = spotsIntAver
         else:
-            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'spots_int_aver' is not XSDataDouble but %s" % self._spots_int_aver.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'spotsIntAver' is not XSDataDouble but %s" % self._spotsIntAver.__class__.__name__
             raise BaseException(strMessage)
-        if spots_resolution is None:
-            self._spots_resolution = None
-        elif spots_resolution.__class__.__name__ == "XSDataDouble":
-            self._spots_resolution = spots_resolution
+        if spotsResolution is None:
+            self._spotsResolution = None
+        elif spotsResolution.__class__.__name__ == "XSDataDouble":
+            self._spotsResolution = spotsResolution
         else:
-            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'spots_resolution' is not XSDataDouble but %s" % self._spots_resolution.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'spotsResolution' is not XSDataDouble but %s" % self._spotsResolution.__class__.__name__
             raise BaseException(strMessage)
-        if powder_wilson_scale is None:
-            self._powder_wilson_scale = None
-        elif powder_wilson_scale.__class__.__name__ == "XSDataDouble":
-            self._powder_wilson_scale = powder_wilson_scale
+        if powderWilsonScale is None:
+            self._powderWilsonScale = None
+        elif powderWilsonScale.__class__.__name__ == "XSDataDouble":
+            self._powderWilsonScale = powderWilsonScale
         else:
-            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'powder_wilson_scale' is not XSDataDouble but %s" % self._powder_wilson_scale.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'powderWilsonScale' is not XSDataDouble but %s" % self._powderWilsonScale.__class__.__name__
             raise BaseException(strMessage)
-        if powder_wilson_bfactor is None:
-            self._powder_wilson_bfactor = None
-        elif powder_wilson_bfactor.__class__.__name__ == "XSDataDouble":
-            self._powder_wilson_bfactor = powder_wilson_bfactor
+        if powderWilsonBfactor is None:
+            self._powderWilsonBfactor = None
+        elif powderWilsonBfactor.__class__.__name__ == "XSDataDouble":
+            self._powderWilsonBfactor = powderWilsonBfactor
         else:
-            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'powder_wilson_bfactor' is not XSDataDouble but %s" % self._powder_wilson_bfactor.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'powderWilsonBfactor' is not XSDataDouble but %s" % self._powderWilsonBfactor.__class__.__name__
             raise BaseException(strMessage)
-        if powder_wilson_resolution is None:
-            self._powder_wilson_resolution = None
-        elif powder_wilson_resolution.__class__.__name__ == "XSDataDouble":
-            self._powder_wilson_resolution = powder_wilson_resolution
+        if powderWilsonResolution is None:
+            self._powderWilsonResolution = None
+        elif powderWilsonResolution.__class__.__name__ == "XSDataDouble":
+            self._powderWilsonResolution = powderWilsonResolution
         else:
-            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'powder_wilson_resolution' is not XSDataDouble but %s" % self._powder_wilson_resolution.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'powderWilsonResolution' is not XSDataDouble but %s" % self._powderWilsonResolution.__class__.__name__
             raise BaseException(strMessage)
-        if powder_wilson_correlation is None:
-            self._powder_wilson_correlation = None
-        elif powder_wilson_correlation.__class__.__name__ == "XSDataDouble":
-            self._powder_wilson_correlation = powder_wilson_correlation
+        if powderWilsonCorrelation is None:
+            self._powderWilsonCorrelation = None
+        elif powderWilsonCorrelation.__class__.__name__ == "XSDataDouble":
+            self._powderWilsonCorrelation = powderWilsonCorrelation
         else:
-            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'powder_wilson_correlation' is not XSDataDouble but %s" % self._powder_wilson_correlation.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'powderWilsonCorrelation' is not XSDataDouble but %s" % self._powderWilsonCorrelation.__class__.__name__
             raise BaseException(strMessage)
-        if powder_wilson_rfactor is None:
-            self._powder_wilson_rfactor = None
-        elif powder_wilson_rfactor.__class__.__name__ == "XSDataDouble":
-            self._powder_wilson_rfactor = powder_wilson_rfactor
+        if powderWilsonRfactor is None:
+            self._powderWilsonRfactor = None
+        elif powderWilsonRfactor.__class__.__name__ == "XSDataDouble":
+            self._powderWilsonRfactor = powderWilsonRfactor
         else:
-            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'powder_wilson_rfactor' is not XSDataDouble but %s" % self._powder_wilson_rfactor.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'powderWilsonRfactor' is not XSDataDouble but %s" % self._powderWilsonRfactor.__class__.__name__
             raise BaseException(strMessage)
-        if score is None:
-            self._score = None
-        elif score.__class__.__name__ == "XSDataDouble":
-            self._score = score
+        if mainScore is None:
+            self._mainScore = None
+        elif mainScore.__class__.__name__ == "XSDataDouble":
+            self._mainScore = mainScore
         else:
-            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'score' is not XSDataDouble but %s" % self._score.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'mainScore' is not XSDataDouble but %s" % self._mainScore.__class__.__name__
+            raise BaseException(strMessage)
+        if spotScore is None:
+            self._spotScore = None
+        elif spotScore.__class__.__name__ == "XSDataDouble":
+            self._spotScore = spotScore
+        else:
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'spotScore' is not XSDataDouble but %s" % self._spotScore.__class__.__name__
+            raise BaseException(strMessage)
+        if visibleResolution is None:
+            self._visibleResolution = None
+        elif visibleResolution.__class__.__name__ == "XSDataDouble":
+            self._visibleResolution = visibleResolution
+        else:
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'visibleResolution' is not XSDataDouble but %s" % self._visibleResolution.__class__.__name__
             raise BaseException(strMessage)
         if spotFile is None:
             self._spotFile = None
@@ -235,114 +249,138 @@ class XSDataControlImageDozor(object):
             raise BaseException(strMessage)
     def delImage(self): self._image = None
     image = property(getImage, setImage, delImage, "Property for image")
-    # Methods and properties for the 'spots_num_of' attribute
-    def getSpots_num_of(self): return self._spots_num_of
-    def setSpots_num_of(self, spots_num_of):
-        if spots_num_of is None:
-            self._spots_num_of = None
-        elif spots_num_of.__class__.__name__ == "XSDataInteger":
-            self._spots_num_of = spots_num_of
+    # Methods and properties for the 'spotsNumOf' attribute
+    def getSpotsNumOf(self): return self._spotsNumOf
+    def setSpotsNumOf(self, spotsNumOf):
+        if spotsNumOf is None:
+            self._spotsNumOf = None
+        elif spotsNumOf.__class__.__name__ == "XSDataInteger":
+            self._spotsNumOf = spotsNumOf
         else:
-            strMessage = "ERROR! XSDataControlImageDozor.setSpots_num_of argument is not XSDataInteger but %s" % spots_num_of.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor.setSpotsNumOf argument is not XSDataInteger but %s" % spotsNumOf.__class__.__name__
             raise BaseException(strMessage)
-    def delSpots_num_of(self): self._spots_num_of = None
-    spots_num_of = property(getSpots_num_of, setSpots_num_of, delSpots_num_of, "Property for spots_num_of")
-    # Methods and properties for the 'spots_int_aver' attribute
-    def getSpots_int_aver(self): return self._spots_int_aver
-    def setSpots_int_aver(self, spots_int_aver):
-        if spots_int_aver is None:
-            self._spots_int_aver = None
-        elif spots_int_aver.__class__.__name__ == "XSDataDouble":
-            self._spots_int_aver = spots_int_aver
+    def delSpotsNumOf(self): self._spotsNumOf = None
+    spotsNumOf = property(getSpotsNumOf, setSpotsNumOf, delSpotsNumOf, "Property for spotsNumOf")
+    # Methods and properties for the 'spotsIntAver' attribute
+    def getSpotsIntAver(self): return self._spotsIntAver
+    def setSpotsIntAver(self, spotsIntAver):
+        if spotsIntAver is None:
+            self._spotsIntAver = None
+        elif spotsIntAver.__class__.__name__ == "XSDataDouble":
+            self._spotsIntAver = spotsIntAver
         else:
-            strMessage = "ERROR! XSDataControlImageDozor.setSpots_int_aver argument is not XSDataDouble but %s" % spots_int_aver.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor.setSpotsIntAver argument is not XSDataDouble but %s" % spotsIntAver.__class__.__name__
             raise BaseException(strMessage)
-    def delSpots_int_aver(self): self._spots_int_aver = None
-    spots_int_aver = property(getSpots_int_aver, setSpots_int_aver, delSpots_int_aver, "Property for spots_int_aver")
-    # Methods and properties for the 'spots_resolution' attribute
-    def getSpots_resolution(self): return self._spots_resolution
-    def setSpots_resolution(self, spots_resolution):
-        if spots_resolution is None:
-            self._spots_resolution = None
-        elif spots_resolution.__class__.__name__ == "XSDataDouble":
-            self._spots_resolution = spots_resolution
+    def delSpotsIntAver(self): self._spotsIntAver = None
+    spotsIntAver = property(getSpotsIntAver, setSpotsIntAver, delSpotsIntAver, "Property for spotsIntAver")
+    # Methods and properties for the 'spotsResolution' attribute
+    def getSpotsResolution(self): return self._spotsResolution
+    def setSpotsResolution(self, spotsResolution):
+        if spotsResolution is None:
+            self._spotsResolution = None
+        elif spotsResolution.__class__.__name__ == "XSDataDouble":
+            self._spotsResolution = spotsResolution
         else:
-            strMessage = "ERROR! XSDataControlImageDozor.setSpots_resolution argument is not XSDataDouble but %s" % spots_resolution.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor.setSpotsResolution argument is not XSDataDouble but %s" % spotsResolution.__class__.__name__
             raise BaseException(strMessage)
-    def delSpots_resolution(self): self._spots_resolution = None
-    spots_resolution = property(getSpots_resolution, setSpots_resolution, delSpots_resolution, "Property for spots_resolution")
-    # Methods and properties for the 'powder_wilson_scale' attribute
-    def getPowder_wilson_scale(self): return self._powder_wilson_scale
-    def setPowder_wilson_scale(self, powder_wilson_scale):
-        if powder_wilson_scale is None:
-            self._powder_wilson_scale = None
-        elif powder_wilson_scale.__class__.__name__ == "XSDataDouble":
-            self._powder_wilson_scale = powder_wilson_scale
+    def delSpotsResolution(self): self._spotsResolution = None
+    spotsResolution = property(getSpotsResolution, setSpotsResolution, delSpotsResolution, "Property for spotsResolution")
+    # Methods and properties for the 'powderWilsonScale' attribute
+    def getPowderWilsonScale(self): return self._powderWilsonScale
+    def setPowderWilsonScale(self, powderWilsonScale):
+        if powderWilsonScale is None:
+            self._powderWilsonScale = None
+        elif powderWilsonScale.__class__.__name__ == "XSDataDouble":
+            self._powderWilsonScale = powderWilsonScale
         else:
-            strMessage = "ERROR! XSDataControlImageDozor.setPowder_wilson_scale argument is not XSDataDouble but %s" % powder_wilson_scale.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor.setPowderWilsonScale argument is not XSDataDouble but %s" % powderWilsonScale.__class__.__name__
             raise BaseException(strMessage)
-    def delPowder_wilson_scale(self): self._powder_wilson_scale = None
-    powder_wilson_scale = property(getPowder_wilson_scale, setPowder_wilson_scale, delPowder_wilson_scale, "Property for powder_wilson_scale")
-    # Methods and properties for the 'powder_wilson_bfactor' attribute
-    def getPowder_wilson_bfactor(self): return self._powder_wilson_bfactor
-    def setPowder_wilson_bfactor(self, powder_wilson_bfactor):
-        if powder_wilson_bfactor is None:
-            self._powder_wilson_bfactor = None
-        elif powder_wilson_bfactor.__class__.__name__ == "XSDataDouble":
-            self._powder_wilson_bfactor = powder_wilson_bfactor
+    def delPowderWilsonScale(self): self._powderWilsonScale = None
+    powderWilsonScale = property(getPowderWilsonScale, setPowderWilsonScale, delPowderWilsonScale, "Property for powderWilsonScale")
+    # Methods and properties for the 'powderWilsonBfactor' attribute
+    def getPowderWilsonBfactor(self): return self._powderWilsonBfactor
+    def setPowderWilsonBfactor(self, powderWilsonBfactor):
+        if powderWilsonBfactor is None:
+            self._powderWilsonBfactor = None
+        elif powderWilsonBfactor.__class__.__name__ == "XSDataDouble":
+            self._powderWilsonBfactor = powderWilsonBfactor
         else:
-            strMessage = "ERROR! XSDataControlImageDozor.setPowder_wilson_bfactor argument is not XSDataDouble but %s" % powder_wilson_bfactor.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor.setPowderWilsonBfactor argument is not XSDataDouble but %s" % powderWilsonBfactor.__class__.__name__
             raise BaseException(strMessage)
-    def delPowder_wilson_bfactor(self): self._powder_wilson_bfactor = None
-    powder_wilson_bfactor = property(getPowder_wilson_bfactor, setPowder_wilson_bfactor, delPowder_wilson_bfactor, "Property for powder_wilson_bfactor")
-    # Methods and properties for the 'powder_wilson_resolution' attribute
-    def getPowder_wilson_resolution(self): return self._powder_wilson_resolution
-    def setPowder_wilson_resolution(self, powder_wilson_resolution):
-        if powder_wilson_resolution is None:
-            self._powder_wilson_resolution = None
-        elif powder_wilson_resolution.__class__.__name__ == "XSDataDouble":
-            self._powder_wilson_resolution = powder_wilson_resolution
+    def delPowderWilsonBfactor(self): self._powderWilsonBfactor = None
+    powderWilsonBfactor = property(getPowderWilsonBfactor, setPowderWilsonBfactor, delPowderWilsonBfactor, "Property for powderWilsonBfactor")
+    # Methods and properties for the 'powderWilsonResolution' attribute
+    def getPowderWilsonResolution(self): return self._powderWilsonResolution
+    def setPowderWilsonResolution(self, powderWilsonResolution):
+        if powderWilsonResolution is None:
+            self._powderWilsonResolution = None
+        elif powderWilsonResolution.__class__.__name__ == "XSDataDouble":
+            self._powderWilsonResolution = powderWilsonResolution
         else:
-            strMessage = "ERROR! XSDataControlImageDozor.setPowder_wilson_resolution argument is not XSDataDouble but %s" % powder_wilson_resolution.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor.setPowderWilsonResolution argument is not XSDataDouble but %s" % powderWilsonResolution.__class__.__name__
             raise BaseException(strMessage)
-    def delPowder_wilson_resolution(self): self._powder_wilson_resolution = None
-    powder_wilson_resolution = property(getPowder_wilson_resolution, setPowder_wilson_resolution, delPowder_wilson_resolution, "Property for powder_wilson_resolution")
-    # Methods and properties for the 'powder_wilson_correlation' attribute
-    def getPowder_wilson_correlation(self): return self._powder_wilson_correlation
-    def setPowder_wilson_correlation(self, powder_wilson_correlation):
-        if powder_wilson_correlation is None:
-            self._powder_wilson_correlation = None
-        elif powder_wilson_correlation.__class__.__name__ == "XSDataDouble":
-            self._powder_wilson_correlation = powder_wilson_correlation
+    def delPowderWilsonResolution(self): self._powderWilsonResolution = None
+    powderWilsonResolution = property(getPowderWilsonResolution, setPowderWilsonResolution, delPowderWilsonResolution, "Property for powderWilsonResolution")
+    # Methods and properties for the 'powderWilsonCorrelation' attribute
+    def getPowderWilsonCorrelation(self): return self._powderWilsonCorrelation
+    def setPowderWilsonCorrelation(self, powderWilsonCorrelation):
+        if powderWilsonCorrelation is None:
+            self._powderWilsonCorrelation = None
+        elif powderWilsonCorrelation.__class__.__name__ == "XSDataDouble":
+            self._powderWilsonCorrelation = powderWilsonCorrelation
         else:
-            strMessage = "ERROR! XSDataControlImageDozor.setPowder_wilson_correlation argument is not XSDataDouble but %s" % powder_wilson_correlation.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor.setPowderWilsonCorrelation argument is not XSDataDouble but %s" % powderWilsonCorrelation.__class__.__name__
             raise BaseException(strMessage)
-    def delPowder_wilson_correlation(self): self._powder_wilson_correlation = None
-    powder_wilson_correlation = property(getPowder_wilson_correlation, setPowder_wilson_correlation, delPowder_wilson_correlation, "Property for powder_wilson_correlation")
-    # Methods and properties for the 'powder_wilson_rfactor' attribute
-    def getPowder_wilson_rfactor(self): return self._powder_wilson_rfactor
-    def setPowder_wilson_rfactor(self, powder_wilson_rfactor):
-        if powder_wilson_rfactor is None:
-            self._powder_wilson_rfactor = None
-        elif powder_wilson_rfactor.__class__.__name__ == "XSDataDouble":
-            self._powder_wilson_rfactor = powder_wilson_rfactor
+    def delPowderWilsonCorrelation(self): self._powderWilsonCorrelation = None
+    powderWilsonCorrelation = property(getPowderWilsonCorrelation, setPowderWilsonCorrelation, delPowderWilsonCorrelation, "Property for powderWilsonCorrelation")
+    # Methods and properties for the 'powderWilsonRfactor' attribute
+    def getPowderWilsonRfactor(self): return self._powderWilsonRfactor
+    def setPowderWilsonRfactor(self, powderWilsonRfactor):
+        if powderWilsonRfactor is None:
+            self._powderWilsonRfactor = None
+        elif powderWilsonRfactor.__class__.__name__ == "XSDataDouble":
+            self._powderWilsonRfactor = powderWilsonRfactor
         else:
-            strMessage = "ERROR! XSDataControlImageDozor.setPowder_wilson_rfactor argument is not XSDataDouble but %s" % powder_wilson_rfactor.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor.setPowderWilsonRfactor argument is not XSDataDouble but %s" % powderWilsonRfactor.__class__.__name__
             raise BaseException(strMessage)
-    def delPowder_wilson_rfactor(self): self._powder_wilson_rfactor = None
-    powder_wilson_rfactor = property(getPowder_wilson_rfactor, setPowder_wilson_rfactor, delPowder_wilson_rfactor, "Property for powder_wilson_rfactor")
-    # Methods and properties for the 'score' attribute
-    def getScore(self): return self._score
-    def setScore(self, score):
-        if score is None:
-            self._score = None
-        elif score.__class__.__name__ == "XSDataDouble":
-            self._score = score
+    def delPowderWilsonRfactor(self): self._powderWilsonRfactor = None
+    powderWilsonRfactor = property(getPowderWilsonRfactor, setPowderWilsonRfactor, delPowderWilsonRfactor, "Property for powderWilsonRfactor")
+    # Methods and properties for the 'mainScore' attribute
+    def getMainScore(self): return self._mainScore
+    def setMainScore(self, mainScore):
+        if mainScore is None:
+            self._mainScore = None
+        elif mainScore.__class__.__name__ == "XSDataDouble":
+            self._mainScore = mainScore
         else:
-            strMessage = "ERROR! XSDataControlImageDozor.setScore argument is not XSDataDouble but %s" % score.__class__.__name__
+            strMessage = "ERROR! XSDataControlImageDozor.setMainScore argument is not XSDataDouble but %s" % mainScore.__class__.__name__
             raise BaseException(strMessage)
-    def delScore(self): self._score = None
-    score = property(getScore, setScore, delScore, "Property for score")
+    def delMainScore(self): self._mainScore = None
+    mainScore = property(getMainScore, setMainScore, delMainScore, "Property for mainScore")
+    # Methods and properties for the 'spotScore' attribute
+    def getSpotScore(self): return self._spotScore
+    def setSpotScore(self, spotScore):
+        if spotScore is None:
+            self._spotScore = None
+        elif spotScore.__class__.__name__ == "XSDataDouble":
+            self._spotScore = spotScore
+        else:
+            strMessage = "ERROR! XSDataControlImageDozor.setSpotScore argument is not XSDataDouble but %s" % spotScore.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpotScore(self): self._spotScore = None
+    spotScore = property(getSpotScore, setSpotScore, delSpotScore, "Property for spotScore")
+    # Methods and properties for the 'visibleResolution' attribute
+    def getVisibleResolution(self): return self._visibleResolution
+    def setVisibleResolution(self, visibleResolution):
+        if visibleResolution is None:
+            self._visibleResolution = None
+        elif visibleResolution.__class__.__name__ == "XSDataDouble":
+            self._visibleResolution = visibleResolution
+        else:
+            strMessage = "ERROR! XSDataControlImageDozor.setVisibleResolution argument is not XSDataDouble but %s" % visibleResolution.__class__.__name__
+            raise BaseException(strMessage)
+    def delVisibleResolution(self): self._visibleResolution = None
+    visibleResolution = property(getVisibleResolution, setVisibleResolution, delVisibleResolution, "Property for visibleResolution")
     # Methods and properties for the 'spotFile' attribute
     def getSpotFile(self): return self._spotFile
     def setSpotFile(self, spotFile):
@@ -371,28 +409,32 @@ class XSDataControlImageDozor(object):
             self.image.export(outfile, level, name_='image')
         else:
             warnEmptyAttribute("image", "XSDataFile")
-        if self._spots_num_of is not None:
-            self.spots_num_of.export(outfile, level, name_='spots_num_of')
+        if self._spotsNumOf is not None:
+            self.spotsNumOf.export(outfile, level, name_='spotsNumOf')
         else:
-            warnEmptyAttribute("spots_num_of", "XSDataInteger")
-        if self._spots_int_aver is not None:
-            self.spots_int_aver.export(outfile, level, name_='spots_int_aver')
+            warnEmptyAttribute("spotsNumOf", "XSDataInteger")
+        if self._spotsIntAver is not None:
+            self.spotsIntAver.export(outfile, level, name_='spotsIntAver')
         else:
-            warnEmptyAttribute("spots_int_aver", "XSDataDouble")
-        if self._spots_resolution is not None:
-            self.spots_resolution.export(outfile, level, name_='spots_resolution')
-        if self._powder_wilson_scale is not None:
-            self.powder_wilson_scale.export(outfile, level, name_='powder_wilson_scale')
-        if self._powder_wilson_bfactor is not None:
-            self.powder_wilson_bfactor.export(outfile, level, name_='powder_wilson_bfactor')
-        if self._powder_wilson_resolution is not None:
-            self.powder_wilson_resolution.export(outfile, level, name_='powder_wilson_resolution')
-        if self._powder_wilson_correlation is not None:
-            self.powder_wilson_correlation.export(outfile, level, name_='powder_wilson_correlation')
-        if self._powder_wilson_rfactor is not None:
-            self.powder_wilson_rfactor.export(outfile, level, name_='powder_wilson_rfactor')
-        if self._score is not None:
-            self.score.export(outfile, level, name_='score')
+            warnEmptyAttribute("spotsIntAver", "XSDataDouble")
+        if self._spotsResolution is not None:
+            self.spotsResolution.export(outfile, level, name_='spotsResolution')
+        if self._powderWilsonScale is not None:
+            self.powderWilsonScale.export(outfile, level, name_='powderWilsonScale')
+        if self._powderWilsonBfactor is not None:
+            self.powderWilsonBfactor.export(outfile, level, name_='powderWilsonBfactor')
+        if self._powderWilsonResolution is not None:
+            self.powderWilsonResolution.export(outfile, level, name_='powderWilsonResolution')
+        if self._powderWilsonCorrelation is not None:
+            self.powderWilsonCorrelation.export(outfile, level, name_='powderWilsonCorrelation')
+        if self._powderWilsonRfactor is not None:
+            self.powderWilsonRfactor.export(outfile, level, name_='powderWilsonRfactor')
+        if self._mainScore is not None:
+            self.mainScore.export(outfile, level, name_='mainScore')
+        if self._spotScore is not None:
+            self.spotScore.export(outfile, level, name_='spotScore')
+        if self._visibleResolution is not None:
+            self.visibleResolution.export(outfile, level, name_='visibleResolution')
         if self._spotFile is not None:
             self.spotFile.export(outfile, level, name_='spotFile')
     def build(self, node_):
@@ -411,50 +453,60 @@ class XSDataControlImageDozor(object):
             obj_.build(child_)
             self.setImage(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'spots_num_of':
+            nodeName_ == 'spotsNumOf':
             obj_ = XSDataInteger()
             obj_.build(child_)
-            self.setSpots_num_of(obj_)
+            self.setSpotsNumOf(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'spots_int_aver':
+            nodeName_ == 'spotsIntAver':
             obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setSpots_int_aver(obj_)
+            self.setSpotsIntAver(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'spots_resolution':
+            nodeName_ == 'spotsResolution':
             obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setSpots_resolution(obj_)
+            self.setSpotsResolution(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'powder_wilson_scale':
+            nodeName_ == 'powderWilsonScale':
             obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setPowder_wilson_scale(obj_)
+            self.setPowderWilsonScale(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'powder_wilson_bfactor':
+            nodeName_ == 'powderWilsonBfactor':
             obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setPowder_wilson_bfactor(obj_)
+            self.setPowderWilsonBfactor(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'powder_wilson_resolution':
+            nodeName_ == 'powderWilsonResolution':
             obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setPowder_wilson_resolution(obj_)
+            self.setPowderWilsonResolution(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'powder_wilson_correlation':
+            nodeName_ == 'powderWilsonCorrelation':
             obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setPowder_wilson_correlation(obj_)
+            self.setPowderWilsonCorrelation(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'powder_wilson_rfactor':
+            nodeName_ == 'powderWilsonRfactor':
             obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setPowder_wilson_rfactor(obj_)
+            self.setPowderWilsonRfactor(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'score':
+            nodeName_ == 'mainScore':
             obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setScore(obj_)
+            self.setMainScore(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spotScore':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setSpotScore(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'visibleResolution':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setVisibleResolution(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'spotFile':
             obj_ = XSDataFile()
@@ -952,8 +1004,15 @@ class XSDataDozorInput(XSDataInput):
 
 
 class XSDataInputControlDozor(XSDataInput):
-    def __init__(self, configuration=None, radiationDamage=None, wedgeNumber=None, batchSize=None, endNo=None, startNo=None, template=None, directory=None, image=None):
+    def __init__(self, configuration=None, radiationDamage=None, wedgeNumber=None, batchSize=None, endNo=None, startNo=None, template=None, directory=None, image=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
+        if dataCollectionId is None:
+            self._dataCollectionId = None
+        elif dataCollectionId.__class__.__name__ == "XSDataInteger":
+            self._dataCollectionId = dataCollectionId
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor constructor argument 'dataCollectionId' is not XSDataInteger but %s" % self._dataCollectionId.__class__.__name__
+            raise BaseException(strMessage)
         if image is None:
             self._image = []
         elif image.__class__.__name__ == "list":
@@ -1010,6 +1069,18 @@ class XSDataInputControlDozor(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputControlDozor constructor argument 'radiationDamage' is not XSDataBoolean but %s" % self._radiationDamage.__class__.__name__
             raise BaseException(strMessage)
+    # Methods and properties for the 'dataCollectionId' attribute
+    def getDataCollectionId(self): return self._dataCollectionId
+    def setDataCollectionId(self, dataCollectionId):
+        if dataCollectionId is None:
+            self._dataCollectionId = None
+        elif dataCollectionId.__class__.__name__ == "XSDataInteger":
+            self._dataCollectionId = dataCollectionId
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor.setDataCollectionId argument is not XSDataInteger but %s" % dataCollectionId.__class__.__name__
+            raise BaseException(strMessage)
+    def delDataCollectionId(self): self._dataCollectionId = None
+    dataCollectionId = property(getDataCollectionId, setDataCollectionId, delDataCollectionId, "Property for dataCollectionId")
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
     def setImage(self, image):
@@ -1135,6 +1206,8 @@ class XSDataInputControlDozor(XSDataInput):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataInputControlDozor'):
         XSDataInput.exportChildren(self, outfile, level, name_)
+        if self._dataCollectionId is not None:
+            self.dataCollectionId.export(outfile, level, name_='dataCollectionId')
         for image_ in self.getImage():
             image_.export(outfile, level, name_='image')
         if self._directory is not None:
@@ -1157,6 +1230,11 @@ class XSDataInputControlDozor(XSDataInput):
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'dataCollectionId':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setDataCollectionId(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'image':
             obj_ = XSDataFile()
             obj_.build(child_)

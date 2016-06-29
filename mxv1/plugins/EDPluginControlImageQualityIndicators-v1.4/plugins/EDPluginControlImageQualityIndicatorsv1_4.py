@@ -279,7 +279,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
             for imageDozor in edPluginControlDozor.dataOutput.imageDozor:
                 for xsDataImageQualityIndicators in self.xsDataResultControlImageQualityIndicators.imageQualityIndicators:
                     if xsDataImageQualityIndicators.image.path.value == imageDozor.image.path.value:
-                        xsDataImageQualityIndicators.dozor_score = imageDozor.score
+                        xsDataImageQualityIndicators.dozor_score = imageDozor.mainScore
                         xsDataImageQualityIndicators.dozorSpotFile = imageDozor.spotFile
                         if imageDozor.spotFile is not None:
                             if os.path.exists(imageDozor.spotFile.path.value):
@@ -288,8 +288,8 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                                 xsDataImageQualityIndicators.addDozorSpotListShape(XSDataInteger(numpyArray.shape[0]))
                                 if len(numpyArray.shape) > 1:
                                     xsDataImageQualityIndicators.addDozorSpotListShape(XSDataInteger(numpyArray.shape[1]))
-                        xsDataImageQualityIndicators.dozorSpotsIntAver = imageDozor.spots_int_aver
-                        xsDataImageQualityIndicators.dozorSpotsResolution = imageDozor.spots_resolution
+                        xsDataImageQualityIndicators.dozorSpotsIntAver = imageDozor.spotsIntAver
+                        xsDataImageQualityIndicators.dozorSpotsResolution = imageDozor.spotsResolution
                         if self.xsDataResultControlImageQualityIndicators.inputDozor is None:
                             if edPluginControlDozor.dataOutput.inputDozor is not None:
                                 self.xsDataResultControlImageQualityIndicators.inputDozor = XSDataDozorInput().parseString(

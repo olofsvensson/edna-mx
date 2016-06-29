@@ -40,5 +40,6 @@ class EDTestSuitePluginDozorv1_0(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginUnitDozorv1_0")
         self.addTestCaseFromName("EDTestCasePluginExecuteDozorv1_0")
         self.addTestCaseFromName("EDTestCasePluginExecuteDozorv1_0_wedgeNumber")
+        self.addTestCaseFromName("EDTestCasePluginExecuteDozorv1_0_radiationDamage")
 
 

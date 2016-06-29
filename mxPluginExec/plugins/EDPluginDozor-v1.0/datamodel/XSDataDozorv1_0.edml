@@ -11,15 +11,17 @@ import XSDataCommon.XSDataBoolean
 
 complex type XSDataImageDozor {
 	number : XSDataInteger
-	spots_num_of : XSDataInteger
-	spots_int_aver : XSDataDouble 
-	spots_resolution : XSDataDouble optional
-	powder_wilson_scale : XSDataDouble optional
-	powder_wilson_bfactor : XSDataDouble optional
-	powder_wilson_resolution : XSDataDouble optional
-	powder_wilson_correlation : XSDataDouble optional
-	powder_wilson_rfactor : XSDataDouble optional
-	score : XSDataDouble optional
+	spotsNumOf : XSDataInteger
+	spotsIntAver : XSDataDouble 
+	spotsResolution : XSDataDouble optional
+	powderWilsonScale : XSDataDouble optional
+	powderWilsonBfactor : XSDataDouble optional
+	powderWilsonResolution : XSDataDouble optional
+	powderWilsonCorrelation : XSDataDouble optional
+	powderWilsonRfactor : XSDataDouble optional
+	mainScore : XSDataDouble optional
+	spotScore : XSDataDouble optional
+	visibleResolution : XSDataDouble optional
 	spotFile : XSDataFile optional
 }
 

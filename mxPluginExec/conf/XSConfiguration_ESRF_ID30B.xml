@@ -64,19 +64,19 @@
 					<value>600</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>ix_min</name>
+					<name>ixMin</name>
 					<value>1194</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>ix_max</name>
+					<name>ixMax</name>
 					<value>1250</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>iy_min</name>
+					<name>iyMin</name>
 					<value>1224</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>iy_max</name>
+					<name>iyMax</name>
 					<value>2524</value>
 				</XSParamItem>
 			</XSParamList>

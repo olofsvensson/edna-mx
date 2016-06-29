@@ -63,25 +63,25 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.defaultFractionPolarization = 0.99
         self.defaultImageStep = 1
         self.startingAngle = 0.0
-        self.ix_min = None
-        self.iy_min = None
-        self.ix_max = None
-        self.iy_max = None
+        self.ixMin = None
+        self.iyMin = None
+        self.ixMax = None
+        self.iyMax = None
         # Default values for ESRF Pilatus6M
-        self.ix_min_pilatus6m = 1
-        self.ix_max_pilatus6m = 1270
-        self.iy_min_pilatus6m = 1190
-        self.iy_max_pilatus6m = 1310
+        self.ixMinPilatus6m = 1
+        self.ixMaxPilatus6m = 1270
+        self.iyMinPilatus6m = 1190
+        self.iyMaxPilatus6m = 1310
         # Default values for ESRF Pilatus2M
-        self.ix_min_pilatus2m = 1
-        self.ix_max_pilatus2m = 840
-        self.iy_min_pilatus2m = 776
-        self.iy_max_pilatus2m = 852
+        self.ixMinPilatus2m = 1
+        self.ixMaxPilatus2m = 840
+        self.iyMinPilatus2m = 776
+        self.iyMaxPilatus2m = 852
         # Default values for ESRF Eiger4M
-        self.ix_min_eiger4m = 1
-        self.ix_max_eiger4m = 840
-        self.iy_min_eiger4m = 776
-        self.iy_max_eiger4m = 852
+        self.ixMinEiger4m = 1
+        self.ixMaxEiger4m = 840
+        self.iyMinEiger4m = 776
+        self.iyMaxEiger4m = 852
         # Bad zones
         self.strBad_zona = None
 
@@ -98,10 +98,10 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginDozorv1_0.preProcess")
         xsDataInputDozor = self.getDataInput()
         # Retrieve config (if any)
-        self.ix_min = self.config.get("ix_min")
-        self.ix_max = self.config.get("ix_max")
-        self.iy_min = self.config.get("iy_min")
-        self.iy_max = self.config.get("iy_max")
+        self.ixMin = self.config.get("ixMin")
+        self.ixMax = self.config.get("ixMax")
+        self.iyMin = self.config.get("iyMin")
+        self.iyMax = self.config.get("iyMax")
         # Eventual bad zones
         self.strBad_zona = self.config.get("bad_zona")
         if xsDataInputDozor.radiationDamage is not None and xsDataInputDozor.radiationDamage.value:
@@ -126,23 +126,23 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginDozorv1_0.generateCommands")
         strCommandText = None
-        if self.ix_min is None or self.ix_max is None or self.iy_min is None or self.iy_max is None:
+        if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
             # One configuration value is missing - use default values
             if _xsDataInputDozor.detectorType.value == "pilatus2m":
-                self.ix_min = self.ix_min_pilatus2m
-                self.ix_max = self.ix_max_pilatus2m
-                self.iy_min = self.iy_min_pilatus2m
-                self.iy_max = self.iy_max_pilatus2m
+                self.ixMin = self.ixMinPilatus2m
+                self.ixMax = self.ixMaxPilatus2m
+                self.iyMin = self.iyMinPilatus2m
+                self.iyMax = self.iyMaxPilatus2m
             elif _xsDataInputDozor.detectorType.value == "pilatus6m":
-                self.ix_min = self.ix_min_pilatus6m
-                self.ix_max = self.ix_max_pilatus6m
-                self.iy_min = self.iy_min_pilatus6m
-                self.iy_max = self.iy_max_pilatus6m
+                self.ixMin = self.ixMinPilatus6m
+                self.ixMax = self.ixMaxPilatus6m
+                self.iyMin = self.iyMinPilatus6m
+                self.iyMax = self.iyMaxPilatus6m
             elif _xsDataInputDozor.detectorType.value == "eiger4m":
-                self.ix_min = self.ix_min_eiger4m
-                self.ix_max = self.ix_max_eiger4m
-                self.iy_min = self.iy_min_eiger4m
-                self.iy_max = self.iy_max_eiger4m
+                self.ixMin = self.ixMinEiger4m
+                self.ixMax = self.ixMaxEiger4m
+                self.iyMin = self.iyMinEiger4m
+                self.iyMax = self.iyMaxEiger4m
         if _xsDataInputDozor is not None:
             self.setProcessInfo("name template: %s, first image no: %d, no images: %d" % (
                 _xsDataInputDozor.nameTemplateImage.value,
@@ -161,10 +161,10 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "fraction_polarization %.3f\n" % fractionPolarization
             strCommandText += "pixel_min 0\n"
             strCommandText += "pixel_max 64000\n"
-            strCommandText += "ix_min %d\n" % self.ix_min
-            strCommandText += "ix_max %d\n" % self.ix_max
-            strCommandText += "iy_min %d\n" % self.iy_min
-            strCommandText += "iy_max %d\n" % self.iy_max
+            strCommandText += "ix_min %d\n" % self.ixMin
+            strCommandText += "ix_max %d\n" % self.ixMax
+            strCommandText += "iy_min %d\n" % self.iyMin
+            strCommandText += "iy_max %d\n" % self.iyMax
             if self.strBad_zona is not None:
                 strCommandText += "bad_zona %s\n" % self.strBad_zona
             strCommandText += "orgx %.1f\n" % _xsDataInputDozor.orgx.value
@@ -205,20 +205,24 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 xsDataImageDozor = XSDataImageDozor()
                 xsDataImageDozor.number = XSDataInteger(listLine[0])
                 if listLine[4].startswith("-"):
-                    xsDataImageDozor.spots_num_of = XSDataInteger(listLine[1])
-                    xsDataImageDozor.spots_int_aver = self.parseDouble(listLine[2])
-                    xsDataImageDozor.spots_resolution = self.parseDouble(listLine[3])
-                    xsDataImageDozor.score = self.parseDouble(listLine[7])
+                    xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
+                    xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
+                    xsDataImageDozor.spotsResolution = self.parseDouble(listLine[3])
+                    xsDataImageDozor.mainScore = self.parseDouble(listLine[7])
+                    xsDataImageDozor.spotScore = self.parseDouble(listLine[8])
+                    xsDataImageDozor.visibleResolution = self.parseDouble(listLine[9])
                 else:
-                    xsDataImageDozor.spots_num_of = XSDataInteger(listLine[1])
-                    xsDataImageDozor.spots_int_aver = self.parseDouble(listLine[2])
-                    xsDataImageDozor.spots_resolution = self.parseDouble(listLine[3])
-                    xsDataImageDozor.powder_wilson_scale = self.parseDouble(listLine[4])
-                    xsDataImageDozor.powder_wilson_bfactor = self.parseDouble(listLine[5])
-                    xsDataImageDozor.powder_wilson_resolution = self.parseDouble(listLine[6])
-                    xsDataImageDozor.powder_wilson_correlation = self.parseDouble(listLine[7])
-                    xsDataImageDozor.powder_wilson_rfactor = self.parseDouble(listLine[8])
-                    xsDataImageDozor.score = self.parseDouble(listLine[9])
+                    xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
+                    xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
+                    xsDataImageDozor.spotsResolution = self.parseDouble(listLine[3])
+                    xsDataImageDozor.powderWilsonScale = self.parseDouble(listLine[4])
+                    xsDataImageDozor.powderWilsonBfactor = self.parseDouble(listLine[5])
+                    xsDataImageDozor.powderWilsonResolution = self.parseDouble(listLine[6])
+                    xsDataImageDozor.powderWilsonCorrelation = self.parseDouble(listLine[7])
+                    xsDataImageDozor.powderWilsonRfactor = self.parseDouble(listLine[8])
+                    xsDataImageDozor.mainScore = self.parseDouble(listLine[9])
+                    xsDataImageDozor.spotScore = self.parseDouble(listLine[10])
+                    xsDataImageDozor.visibleResolution = self.parseDouble(listLine[11])
                 # Dozor spot file
                 strWorkingDir = self.getWorkingDirectory()
                 if strWorkingDir is not None:
