@@ -205,6 +205,8 @@ set grid x y2
 set xlabel "Image number"
 set y2label "Resolution (A)"
 set ylabel "Dozor score"
+set ytics nomirror
+set y2tics
 set autoscale  x
 set autoscale  y
 set autoscale y2
