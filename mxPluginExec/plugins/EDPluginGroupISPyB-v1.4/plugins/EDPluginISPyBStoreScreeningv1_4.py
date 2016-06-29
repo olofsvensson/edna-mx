@@ -318,14 +318,15 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
         strShortComments = self.getXSValue(_xsDataISPyBScreening.shortComments, _iMaxStringLength=20)
         strXmlSampleInformation = self.getXSValue(_xsDataISPyBScreening.xmlSampleInformation)
         iScreeningId = _clientToolsForScreeningEDNAWebServiceWsdl.service.storeOrUpdateScreening(
-            iScreeningId, \
-            iDataCollectionId, \
-            iDiffractionPlanId, \
-            strTimeStamp, \
-            strProgramVersion, \
-            strComments, \
-            strShortComments, \
-            strXmlSampleInformation, \
+            arg0=iScreeningId, \
+            dataCollectionGroupId=None, \
+            dataCollectionId=iDataCollectionId, \
+            diffractionPlanId=iDiffractionPlanId, \
+            recordTimeStamp=strTimeStamp, \
+            programVersion=strProgramVersion, \
+            comments=strComments, \
+            shortComments=strShortComments, \
+            xmlSampleInformation=strXmlSampleInformation, \
             )
         self.DEBUG("ScreeningId: %d" % iScreeningId)
         return iScreeningId

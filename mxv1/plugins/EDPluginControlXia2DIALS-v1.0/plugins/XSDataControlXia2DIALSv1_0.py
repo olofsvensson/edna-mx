@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu May 26 09:00::38 2016 by EDGenerateDS.
+# Generated Tue Jun 21 04:32::06 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -16,9 +16,11 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataInteger
@@ -33,6 +35,7 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
@@ -117,7 +120,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlXia2DIALS(XSDataInput):
-    def __init__(self, configuration=None, processDirectory=None, dataCollectionId=None):
+    def __init__(self, configuration=None, doAnomAndNonanom=None, processDirectory=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -132,6 +135,13 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             self._processDirectory = processDirectory
         else:
             strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
+            raise BaseException(strMessage)
+        if doAnomAndNonanom is None:
+            self._doAnomAndNonanom = None
+        elif doAnomAndNonanom.__class__.__name__ == "XSDataBoolean":
+            self._doAnomAndNonanom = doAnomAndNonanom
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'doAnomAndNonanom' is not XSDataBoolean but %s" % self._doAnomAndNonanom.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -157,6 +167,18 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             raise BaseException(strMessage)
     def delProcessDirectory(self): self._processDirectory = None
     processDirectory = property(getProcessDirectory, setProcessDirectory, delProcessDirectory, "Property for processDirectory")
+    # Methods and properties for the 'doAnomAndNonanom' attribute
+    def getDoAnomAndNonanom(self): return self._doAnomAndNonanom
+    def setDoAnomAndNonanom(self, doAnomAndNonanom):
+        if doAnomAndNonanom is None:
+            self._doAnomAndNonanom = None
+        elif doAnomAndNonanom.__class__.__name__ == "XSDataBoolean":
+            self._doAnomAndNonanom = doAnomAndNonanom
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.setDoAnomAndNonanom argument is not XSDataBoolean but %s" % doAnomAndNonanom.__class__.__name__
+            raise BaseException(strMessage)
+    def delDoAnomAndNonanom(self): self._doAnomAndNonanom = None
+    doAnomAndNonanom = property(getDoAnomAndNonanom, setDoAnomAndNonanom, delDoAnomAndNonanom, "Property for doAnomAndNonanom")
     def export(self, outfile, level, name_='XSDataInputControlXia2DIALS'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -169,6 +191,8 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             self.dataCollectionId.export(outfile, level, name_='dataCollectionId')
         if self._processDirectory is not None:
             self.processDirectory.export(outfile, level, name_='processDirectory')
+        if self._doAnomAndNonanom is not None:
+            self.doAnomAndNonanom.export(outfile, level, name_='doAnomAndNonanom')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -184,6 +208,11 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setProcessDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'doAnomAndNonanom':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setDoAnomAndNonanom(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
