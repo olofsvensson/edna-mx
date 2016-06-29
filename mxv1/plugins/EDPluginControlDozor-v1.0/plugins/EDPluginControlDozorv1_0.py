@@ -167,9 +167,9 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 xsDataControlImageDozor.powderWilsonCorrelation = xsDataResultDozor.powderWilsonCorrelation
                 xsDataControlImageDozor.powderWilsonRfactor = xsDataResultDozor.powderWilsonRfactor
                 xsDataControlImageDozor.mainScore = xsDataResultDozor.mainScore
-                xsDataControlImageDozor.mainScore = xsDataResultDozor.mainScore
                 xsDataControlImageDozor.spotScore = xsDataResultDozor.spotScore
                 xsDataControlImageDozor.visibleResolution = xsDataResultDozor.visibleResolution
+                xsDataControlImageDozor.spotFile = xsDataResultDozor.spotFile
                 xsDataResultControlDozor.addImageDozor(xsDataControlImageDozor)
                 if xsDataResultControlDozor.inputDozor is None:
                     xsDataResultControlDozor.inputDozor = XSDataDozorInput().parseString(xsDataInputDozor.marshal())
