@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Jun 29 12:34::28 2016 by EDGenerateDS.
+# Generated Wed Jun 29 01:56::27 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -1004,7 +1004,7 @@ class XSDataDozorInput(XSDataInput):
 
 
 class XSDataInputControlDozor(XSDataInput):
-    def __init__(self, configuration=None, radiationDamage=None, wedgeNumber=None, batchSize=None, endNo=None, startNo=None, template=None, directory=None, image=None, dataCollectionId=None):
+    def __init__(self, configuration=None, radiationDamage=None, wedgeNumber=None, batchSize=None, endNo=None, startNo=None, template=None, directory=None, image=None, processDirectory=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -1012,6 +1012,13 @@ class XSDataInputControlDozor(XSDataInput):
             self._dataCollectionId = dataCollectionId
         else:
             strMessage = "ERROR! XSDataInputControlDozor constructor argument 'dataCollectionId' is not XSDataInteger but %s" % self._dataCollectionId.__class__.__name__
+            raise BaseException(strMessage)
+        if processDirectory is None:
+            self._processDirectory = None
+        elif processDirectory.__class__.__name__ == "XSDataFile":
+            self._processDirectory = processDirectory
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
             raise BaseException(strMessage)
         if image is None:
             self._image = []
@@ -1081,6 +1088,18 @@ class XSDataInputControlDozor(XSDataInput):
             raise BaseException(strMessage)
     def delDataCollectionId(self): self._dataCollectionId = None
     dataCollectionId = property(getDataCollectionId, setDataCollectionId, delDataCollectionId, "Property for dataCollectionId")
+    # Methods and properties for the 'processDirectory' attribute
+    def getProcessDirectory(self): return self._processDirectory
+    def setProcessDirectory(self, processDirectory):
+        if processDirectory is None:
+            self._processDirectory = None
+        elif processDirectory.__class__.__name__ == "XSDataFile":
+            self._processDirectory = processDirectory
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor.setProcessDirectory argument is not XSDataFile but %s" % processDirectory.__class__.__name__
+            raise BaseException(strMessage)
+    def delProcessDirectory(self): self._processDirectory = None
+    processDirectory = property(getProcessDirectory, setProcessDirectory, delProcessDirectory, "Property for processDirectory")
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
     def setImage(self, image):
@@ -1208,6 +1227,8 @@ class XSDataInputControlDozor(XSDataInput):
         XSDataInput.exportChildren(self, outfile, level, name_)
         if self._dataCollectionId is not None:
             self.dataCollectionId.export(outfile, level, name_='dataCollectionId')
+        if self._processDirectory is not None:
+            self.processDirectory.export(outfile, level, name_='processDirectory')
         for image_ in self.getImage():
             image_.export(outfile, level, name_='image')
         if self._directory is not None:
@@ -1234,6 +1255,11 @@ class XSDataInputControlDozor(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setDataCollectionId(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'processDirectory':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setProcessDirectory(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'image':
             obj_ = XSDataFile()

@@ -26,6 +26,7 @@ __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
 import os
+import shutil
 
 from EDPluginControl import EDPluginControl
 from EDUtilsImage import EDUtilsImage
@@ -217,6 +218,13 @@ plot 'gnuplot.dat' using 0:2 title "Dozor score" axes x1y1 with points, 'gnuplot
             os.chdir(self.getWorkingDirectory())
             os.system("gnuplot %s" % pathGnuplotScript)
             os.chdir(oldCwd)
+            if self.dataInput.processDirectory is not None:
+                processDirectory = self.dataInput.processDirectory.path.value
+                resultsDirectory = os.path.join(processDirectory, "results")
+                if not os.path.exists(resultsDirectory):
+                    os.makedirs(resultsDirectory, 0755)
+                shutil.copy(os.path.join(self.getWorkingDirectory(), "dozor.png"), resultsDirectory)
+                shutil.copy(os.path.join(self.getWorkingDirectory(), "gnuplot.dat"), resultsDirectory)
 
 
 

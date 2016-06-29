@@ -3,4 +3,11 @@
 	<dataCollectionId>
 		<value>1748699</value>
 	</dataCollectionId>
+	<!-- 
+	<processDirectory>
+		<path>
+			<value>/tmp/dozor</value>
+		</path>
+	</processDirectory>
+	 -->
 </XSDataInputControlDozor>

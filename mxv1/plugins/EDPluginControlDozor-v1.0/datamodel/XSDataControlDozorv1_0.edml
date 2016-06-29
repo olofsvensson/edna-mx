@@ -46,6 +46,7 @@ complex type XSDataDozorInput extends XSDataInput {
 
 complex type XSDataInputControlDozor extends XSDataInput {
 	dataCollectionId : XSDataInteger optional
+	processDirectory : XSDataFile optional
 	image : XSDataFile [] optional
 	directory : XSDataFile optional
 	template : XSDataString optional
