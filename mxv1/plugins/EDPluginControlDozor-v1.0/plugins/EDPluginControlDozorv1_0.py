@@ -180,39 +180,41 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         EDPluginControl.postProcess(self)
         self.DEBUG("EDPluginControlDozorv1_0.postProcess")
         # Write a file to be used with ISPyB or GNUPLOT
-        with open(os.path.join(self.getWorkingDirectory(), "gnuplot.dat"), "w") as gnuplotFile:
-            gnuplotFile.write("# Data directory: {0}\n".format(self.directory))
-            gnuplotFile.write("# File template: {0}\n".format(self.template))
-            gnuplotFile.write("# {0:>8s}{1:>15s}{2:>15s}{3:>15s}\n".format("'Image no'",
-                                                                           "'Main score'",
-                                                                           "'Spot score'",
-                                                                           "'Visible res.'",
-                                                           ))
-            for imageDozor in self.dataOutput.imageDozor:
-                gnuplotFile.write("{0:10d}{1:15.3f}{2:15.3f}{3:15.3f}\n".format(imageDozor.number.value,
-                                                                                imageDozor.mainScore.value,
-                                                                                imageDozor.spotScore.value,
-                                                                                imageDozor.visibleResolution.value,
-                                                                                ))
-        gnuplotFile.close()
-        gnuplotScript = """#
-    set terminal png
-    set output "dozor.png"
-    set grid x y2
-    set xlabel "Image number"
-    set y2label "Resolution (A)"
-    set ylabel "Dozor score"
-    set autoscale  x
-    set autoscale  y
-    set autoscale y2
-    plot 'gnuplot.dat' using 0:2 title "Dozor score" axes x1y1 with points, 'gnuplot.dat' using 0:4 title "Visible resolution" axes x1y2 with lines
-    """
-        pathGnuplotScript = os.path.join(self.getWorkingDirectory(), "gnuplot.sh")
-        data_file = open(pathGnuplotScript, "w")
-        data_file.write(gnuplotScript)
-        data_file.close()
-        os.chdir(self.getWorkingDirectory())
-        os.system("gnuplot %s" % pathGnuplotScript)
+        if len(self.dataOutput.imageDozor) > 1:
+            with open(os.path.join(self.getWorkingDirectory(), "gnuplot.dat"), "w") as gnuplotFile:
+                gnuplotFile.write("# Data directory: {0}\n".format(self.directory))
+                gnuplotFile.write("# File template: {0}\n".format(self.template))
+                gnuplotFile.write("# {0:>8s}{1:>15s}{2:>15s}{3:>15s}\n".format("'Image no'",
+                                                                               "'Main score'",
+                                                                               "'Spot score'",
+                                                                               "'Visible res.'",
+                                                               ))
+                for imageDozor in self.dataOutput.imageDozor:
+                    gnuplotFile.write("{0:10d}{1:15.3f}{2:15.3f}{3:15.3f}\n".format(imageDozor.number.value,
+                                                                                    imageDozor.mainScore.value,
+                                                                                    imageDozor.spotScore.value,
+                                                                                    imageDozor.visibleResolution.value,
+                                                                                    ))
+            gnuplotFile.close()
+            gnuplotScript = \
+"""#
+set terminal png
+set output "dozor.png"
+set grid x y2
+set xlabel "Image number"
+set y2label "Resolution (A)"
+set ylabel "Dozor score"
+set autoscale  x
+set autoscale  y
+set autoscale y2
+plot 'gnuplot.dat' using 0:2 title "Dozor score" axes x1y1 with points, 'gnuplot.dat' using 0:4 title "Visible resolution" axes x1y2 with lines
+"""
+            pathGnuplotScript = os.path.join(self.getWorkingDirectory(), "gnuplot.sh")
+            data_file = open(pathGnuplotScript, "w")
+            data_file.write(gnuplotScript)
+            data_file.close()
+            os.chdir(self.getWorkingDirectory())
+            os.system("gnuplot %s" % pathGnuplotScript)
 
 
 
