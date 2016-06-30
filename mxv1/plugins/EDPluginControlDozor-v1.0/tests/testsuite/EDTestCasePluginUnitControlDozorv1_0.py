@@ -49,7 +49,7 @@ class EDTestCasePluginUnitControlDozorv1_0(EDTestCasePluginUnit):
                                             "XSDataInputControlDozor_reference.xml")
         xsDataInputControlDozor = XSDataInputControlDozor.parseFile(pathToReferenceInput)
         edPluginControlDozor = self.createPlugin()
-        dictImage = edPluginControlDozor.createImageDict(xsDataInputControlDozor.image)
+        dictImage = edPluginControlDozor.createImageDict(xsDataInputControlDozor)
         EDAssert.equal(True, type(dictImage) == dict)
 
     def testCreateListOfBatches(self):
