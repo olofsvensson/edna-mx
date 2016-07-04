@@ -97,7 +97,8 @@ class EDPluginControlRunDimplev1_0(EDPluginControl):
         edPluginGetPdbFile.dataInput = xsDataInputGetPdbFilePath
         edPluginGetPdbFile.executeSynchronous()
         xsDataFilePdb = edPluginGetPdbFile.dataOutput.pdbFilePath
-        if xsDataFilePdb is None:
+        if xsDataFilePdb is None or \
+           not os.path.exists(xsDataFilePdb.value):
             xsDataFilePdbDirectory = self.dataInput.pdbDirectory
             if xsDataFilePdbDirectory is None:
                 self.screen('No pdb file in ispyb')

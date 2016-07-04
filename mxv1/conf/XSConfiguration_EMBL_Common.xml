@@ -561,11 +561,10 @@
 					<value>600</value>
 				</XSParamItem>
 			</XSParamList>
-		</XSPluginItem> 
-
-                <XSPluginItem>
+		</XSPluginItem>
+		<XSPluginItem>
                         <name>EDPluginControlInterfacev1_2</name>
-                        <XSParamList>
+			<XSParamList>
                                 <XSParamItem>
                                         <name>controlledPlugins</name>
                                         <value>characterisationPlugin,ispybPlugin</value>
@@ -588,7 +587,6 @@
                                 </XSParamItem>
                         </XSParamList>
                 </XSPluginItem>
-
 		<XSPluginItem>
 		        <name>EDPluginControlInterfacev1_3</name>
 		        <XSParamList>
@@ -702,6 +700,32 @@
                                           <name>timeOut</name>
                                           <value>6000</value>
                                  </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginExecXia2DIALSv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>execProcessScriptShell</name>
+                                        <value>/bin/bash</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>execProcessScriptExecutable</name>
+                                        <value>/mx-beta/dials/dials-dev20160518/build/bin/xia2</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>7200</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginControlXia2DIALSv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>7200</value>
+                                </XSParamItem>
                         </XSParamList>
                 </XSPluginItem>
 	</XSPluginList>
