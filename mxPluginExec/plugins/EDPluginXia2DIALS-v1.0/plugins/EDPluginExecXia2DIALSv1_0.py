@@ -47,6 +47,7 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.__init__(self)
         self.setXSDataInputClass(XSDataInputXia2DIALS)
         self.setDataOutput(XSDataResultXia2DIALS())
+        self.maxNoProcessors = None
 
     def checkParameters(self):
         """
@@ -55,6 +56,11 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginExecXia2DIALSv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
+
+    def configure(self):
+        EDPluginExecProcessScript.configure(self)
+        self.DEBUG("EDPluginExecXia2DIALSv1_0.configure")
+        self.maxNoProcessors = self.config.get("maxNoProcessors", self.maxNoProcessors)
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
@@ -88,6 +94,10 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
 
         for image in _xsDataInputXia2DIALS.image:
             strCommandText += " image={0}".format(image.path.value)
+
+        if self.maxNoProcessors is not None:
+            strCommandText += " multiprocessing.nproc={0}".format(self.maxNoProcessors)
+
 
         return strCommandText
 

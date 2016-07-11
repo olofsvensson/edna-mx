@@ -32,14 +32,14 @@ import os
 from EDTestCasePluginExecute import EDTestCasePluginExecute
 from EDAssert import EDAssert
 
-class EDTestCasePluginExecuteControlDozorv1_0_wedgeNumber(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteControlDozorv1_0_radiationDamage(EDTestCasePluginExecute):
 
 
     def __init__(self, _edStringTestName=None):
         EDTestCasePluginExecute.__init__(self, "EDPluginControlDozorv1_0")
         self.setRequiredPluginConfiguration("EDPluginDozorv1_0")
         self.setConfigurationFile(self.getRefConfigFile())
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputControlDozor_wedgeNumber.xml"))
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputControlDozor_radiationDamage.xml"))
 
 
 
@@ -50,6 +50,9 @@ class EDTestCasePluginExecuteControlDozorv1_0_wedgeNumber(EDTestCasePluginExecut
 
     def testExecute(self):
         self.run()
+        # Check that we have the halfDoseTime
+        edPlugin = self.getPlugin()
+        EDAssert.equal(True, edPlugin.dataOutput.halfDoseTime is not None, "Half dose time")
 
 
     def process(self):

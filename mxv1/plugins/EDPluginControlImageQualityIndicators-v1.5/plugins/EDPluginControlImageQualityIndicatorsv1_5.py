@@ -225,10 +225,10 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
             for imageDozor in edPluginControlDozor.dataOutput.imageDozor:
                 for xsDataImageQualityIndicators in self.xsDataResultControlImageQualityIndicators.imageQualityIndicators:
                     if xsDataImageQualityIndicators.image.path.value == imageDozor.image.path.value:
-                        xsDataImageQualityIndicators.dozor_score = imageDozor.score
+                        xsDataImageQualityIndicators.dozor_score = imageDozor.mainScore
                         xsDataImageQualityIndicators.dozorSpotFile = imageDozor.spotFile
-                        xsDataImageQualityIndicators.dozorSpotsIntAver = imageDozor.spots_int_aver
-                        xsDataImageQualityIndicators.dozorSpotsResolution = imageDozor.spots_resolution
+                        xsDataImageQualityIndicators.dozorSpotsIntAver = imageDozor.spotsIntAver
+                        xsDataImageQualityIndicators.dozorSpotsResolution = imageDozor.spotsResolution
                         if self.xsDataResultControlImageQualityIndicators.inputDozor is None:
                             if edPluginControlDozor.dataOutput.inputDozor is not None:
                                 self.xsDataResultControlImageQualityIndicators.inputDozor = XSDataDozorInput().parseString(

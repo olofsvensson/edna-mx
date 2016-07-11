@@ -26,14 +26,18 @@ __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
 import os
+import shutil
 
 from EDPluginControl import EDPluginControl
 from EDUtilsImage import EDUtilsImage
 from EDUtilsPath import EDUtilsPath
 
+from EDFactoryPlugin import edFactoryPlugin
+
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
+from XSDataCommon import XSDataFile
 
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 EDFactoryPluginStatic.loadModule("XSDataDozorv1_0")
@@ -45,6 +49,9 @@ from XSDataControlDozorv1_0 import XSDataInputControlDozor
 from XSDataControlDozorv1_0 import XSDataResultControlDozor
 from XSDataControlDozorv1_0 import XSDataControlImageDozor
 from XSDataControlDozorv1_0 import XSDataDozorInput
+
+edFactoryPlugin.loadModule('XSDataISPyBv1_4')
+from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 
 
 class EDPluginControlDozorv1_0(EDPluginControl):
@@ -62,6 +69,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.strEDPluginDozorName = "EDPluginDozorv1_0"
         self.edPluginDozor = None
         self.xsDataControlDozorInput = None
+        self.directory = None
+        self.template = None
 
 
     def checkParameters(self):
@@ -80,15 +89,28 @@ class EDPluginControlDozorv1_0(EDPluginControl):
 
 
 
+
     def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlDozorv1_0.process")
         xsDataResultControlDozor = XSDataResultControlDozor()
-        if self.dataInput.batchSize is None:
-            batchSize = 1
+        # Check if connection to ISPyB needed
+        if self.dataInput.dataCollectionId is not None:
+            edPluginRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
+            xsDataInputRetrieveDataCollection = XSDataInputRetrieveDataCollection()
+            xsDataInputRetrieveDataCollection.dataCollectionId = self.dataInput.dataCollectionId
+            edPluginRetrieveDataCollection.dataInput = xsDataInputRetrieveDataCollection
+            edPluginRetrieveDataCollection.executeSynchronous()
+            ispybDataCollection = edPluginRetrieveDataCollection.dataOutput.dataCollection
+            batchSize = ispybDataCollection.numberOfImages
+            dictImage = self.createImageDictFromISPyB(ispybDataCollection)
         else:
-            batchSize = self.dataInput.batchSize.value
-        dictImage = self.createImageDict(self.dataInput.image)
+            # No connection to ISPyB, take parameters from input
+            if self.dataInput.batchSize is None:
+                batchSize = 1
+            else:
+                batchSize = self.dataInput.batchSize.value
+            dictImage = self.createImageDict(self.dataInput)
         listAllBatches = self.createListOfBatches(dictImage.keys(), batchSize)
         for listBatch in listAllBatches:
             # Read the header from the first image in the batch
@@ -127,22 +149,26 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 strXDSTemplate = "%s_????.%s" % (strPrefix, strSuffix)
             xsDataInputDozor.nameTemplateImage = XSDataString(os.path.join(os.path.dirname(strFileName), strXDSTemplate))
             xsDataInputDozor.wedgeNumber = self.dataInput.wedgeNumber
+            xsDataInputDozor.radiationDamage = self.dataInput.radiationDamage
             edPluginDozor = self.loadPlugin(self.strEDPluginDozorName, "Dozor_%05d" % subWedge.image[0].number.value)
             edPluginDozor.dataInput = xsDataInputDozor
             edPluginDozor.executeSynchronous()
             indexImage = 0
             for xsDataResultDozor in edPluginDozor.dataOutput.imageDozor:
                 xsDataControlImageDozor = XSDataControlImageDozor()
+                xsDataControlImageDozor.number = xsDataResultDozor.number
                 xsDataControlImageDozor.image = dictImage[listBatch[indexImage]]
-                xsDataControlImageDozor.spots_num_of = xsDataResultDozor.spots_num_of
-                xsDataControlImageDozor.spots_int_aver = xsDataResultDozor.spots_int_aver
-                xsDataControlImageDozor.spots_resolution = xsDataResultDozor.spots_resolution
-                xsDataControlImageDozor.powder_wilson_scale = xsDataResultDozor.powder_wilson_scale
-                xsDataControlImageDozor.powder_wilson_bfactor = xsDataResultDozor.powder_wilson_bfactor
-                xsDataControlImageDozor.powder_wilson_resolution = xsDataResultDozor.powder_wilson_resolution
-                xsDataControlImageDozor.powder_wilson_correlation = xsDataResultDozor.powder_wilson_correlation
-                xsDataControlImageDozor.powder_wilson_rfactor = xsDataResultDozor.powder_wilson_rfactor
-                xsDataControlImageDozor.score = xsDataResultDozor.score
+                xsDataControlImageDozor.spotsNumOf = xsDataResultDozor.spotsNumOf
+                xsDataControlImageDozor.spotsIntAver = xsDataResultDozor.spotsIntAver
+                xsDataControlImageDozor.spotsResolution = xsDataResultDozor.spotsResolution
+                xsDataControlImageDozor.powderWilsonScale = xsDataResultDozor.powderWilsonScale
+                xsDataControlImageDozor.powderWilsonBfactor = xsDataResultDozor.powderWilsonBfactor
+                xsDataControlImageDozor.powderWilsonResolution = xsDataResultDozor.powderWilsonResolution
+                xsDataControlImageDozor.powderWilsonCorrelation = xsDataResultDozor.powderWilsonCorrelation
+                xsDataControlImageDozor.powderWilsonRfactor = xsDataResultDozor.powderWilsonRfactor
+                xsDataControlImageDozor.mainScore = xsDataResultDozor.mainScore
+                xsDataControlImageDozor.spotScore = xsDataResultDozor.spotScore
+                xsDataControlImageDozor.visibleResolution = xsDataResultDozor.visibleResolution
                 xsDataControlImageDozor.spotFile = xsDataResultDozor.spotFile
                 xsDataResultControlDozor.addImageDozor(xsDataControlImageDozor)
                 if xsDataResultControlDozor.inputDozor is None:
@@ -151,16 +177,100 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             xsDataResultControlDozor.halfDoseTime = edPluginDozor.dataOutput.halfDoseTime
         self.dataOutput = xsDataResultControlDozor
 
+    def postProcess(self, _edObject=None):
+        EDPluginControl.postProcess(self)
+        self.DEBUG("EDPluginControlDozorv1_0.postProcess")
+        # Write a file to be used with ISPyB or GNUPLOT
+        if len(self.dataOutput.imageDozor) > 1:
+            with open(os.path.join(self.getWorkingDirectory(), "gnuplot.dat"), "w") as gnuplotFile:
+                gnuplotFile.write("# Data directory: {0}\n".format(self.directory))
+                gnuplotFile.write("# File template: {0}\n".format(self.template))
+                gnuplotFile.write("# {0:>8s}{1:>15s}{2:>15s}{3:>15s}\n".format("'Image no'",
+                                                                               "'Main score'",
+                                                                               "'Spot score'",
+                                                                               "'Visible res.'",
+                                                               ))
+                for imageDozor in self.dataOutput.imageDozor:
+                    gnuplotFile.write("{0:10d}{1:15.3f}{2:15.3f}{3:15.3f}\n".format(imageDozor.number.value,
+                                                                                    imageDozor.mainScore.value,
+                                                                                    imageDozor.spotScore.value,
+                                                                                    imageDozor.visibleResolution.value,
+                                                                                    ))
+            gnuplotFile.close()
+            gnuplotScript = \
+"""#
+set terminal png
+set output "dozor.png"
+set grid x y2
+set xlabel "Image number"
+set y2label "Resolution (A)"
+set ylabel "Dozor score"
+set ytics nomirror
+set y2tics
+set autoscale  x
+set autoscale  y
+set autoscale y2
+plot 'gnuplot.dat' using 0:2 title "Dozor score" axes x1y1 with points, 'gnuplot.dat' using 0:4 title "Visible resolution" axes x1y2 with lines
+"""
+            pathGnuplotScript = os.path.join(self.getWorkingDirectory(), "gnuplot.sh")
+            data_file = open(pathGnuplotScript, "w")
+            data_file.write(gnuplotScript)
+            data_file.close()
+            oldCwd = os.getcwd()
+            os.chdir(self.getWorkingDirectory())
+            os.system("gnuplot %s" % pathGnuplotScript)
+            os.chdir(oldCwd)
+            if self.dataInput.processDirectory is not None:
+                processDirectory = self.dataInput.processDirectory.path.value
+                resultsDirectory = os.path.join(processDirectory, "results")
+                if not os.path.exists(resultsDirectory):
+                    os.makedirs(resultsDirectory, 0755)
+                shutil.copy(os.path.join(self.getWorkingDirectory(), "dozor.png"), resultsDirectory)
+                shutil.copy(os.path.join(self.getWorkingDirectory(), "gnuplot.dat"), resultsDirectory)
 
-    def createImageDict(self, listImage):
+
+
+
+    def createImageDict(self, _xsDataControlDozorInput):
         # Create dictionary of all images with the image number as key
         dictImage = {}
+        if len(_xsDataControlDozorInput.image) > 0:
+            listImage = _xsDataControlDozorInput.image
+        else:
+            # Create list of images
+            listImage = []
+            self.directory = _xsDataControlDozorInput.directory.path.value
+            self.template = _xsDataControlDozorInput.template.value
+            startNo = _xsDataControlDozorInput.startNo.value
+            endNo = _xsDataControlDozorInput.endNo.value
+            for imageIndex in range(startNo, endNo + 1):
+                imageName = self.template % imageIndex
+                imagePath = os.path.join(self.directory, imageName)
+                listImage.append(XSDataFile(XSDataString(imagePath)))
         for image in listImage:
             imagePath = image.path.value
             imageNo = EDUtilsImage.getImageNumber(imagePath)
             dictImage[imageNo] = image
         return dictImage
 
+    def createImageDictFromISPyB(self, _ispybDataCollection):
+        # Create dictionary of all images with the image number as key
+        dictImage = {}
+        # Create list of images
+        listImage = []
+        self.directory = _ispybDataCollection.imageDirectory
+        self.template = _ispybDataCollection.fileTemplate
+        startNo = _ispybDataCollection.startImageNumber
+        endNo = _ispybDataCollection.startImageNumber + _ispybDataCollection.numberOfImages - 1
+        for imageIndex in range(startNo, endNo + 1):
+            imageName = self.template % imageIndex
+            imagePath = os.path.join(self.directory, imageName)
+            listImage.append(XSDataFile(XSDataString(imagePath)))
+        for image in listImage:
+            imagePath = image.path.value
+            imageNo = EDUtilsImage.getImageNumber(imagePath)
+            dictImage[imageNo] = image
+        return dictImage
 
 
     def createListOfBatches(self, listImage, batchSize):

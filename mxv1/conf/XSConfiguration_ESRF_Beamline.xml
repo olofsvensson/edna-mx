@@ -131,6 +131,23 @@
 				<value>True</value>
 			</XSParamItem>
 		</XSParamList>
+		<XSPluginItem>
+			<name>EDPluginControlImageQualityIndicatorsv1_4</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>1800</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>MXWaitFileTimeOut</name>
+					<value>120</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>minImageSize</name>
+					<value>6000000</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
 	</XSPluginItem>
 		<XSPluginItem>
             <name>EDPluginExecOutputHTMLv1_0</name>

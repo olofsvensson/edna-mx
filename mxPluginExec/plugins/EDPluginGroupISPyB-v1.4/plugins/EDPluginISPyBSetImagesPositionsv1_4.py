@@ -5,7 +5,7 @@
 #    Copyright (C) 2011-2013 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -64,8 +64,8 @@ class EDPluginISPyBSetImagesPositionsv1_4(EDPluginExec):
         self.strPassWord = None
         self.strToolsForCollectionWebServiceWsdl = None
         self.listImageCreation = []
-        
-    
+
+
     def configure(self):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
@@ -83,7 +83,7 @@ class EDPluginISPyBSetImagesPositionsv1_4(EDPluginExec):
         if self.strToolsForCollectionWebServiceWsdl is None:
             self.ERROR("EDPluginISPyBSetImagesPositionsv1_4.configure: No toolsForCollectionWebServiceWsdl found in configuration!")
             self.setFailure()
-                
+
 
     def process(self, _edObject=None):
         """
@@ -103,14 +103,13 @@ class EDPluginISPyBSetImagesPositionsv1_4(EDPluginExec):
             if xsDataImagePosition.jpegFileFullPath is not None:
                 imagePosition.jpegFileFullPath = xsDataImagePosition.jpegFileFullPath.path.value
             if xsDataImagePosition.jpegThumbnailFileFullPath is not None:
-                imagePosition.jpegThumbnailFileFullPath = xsDataImagePosition.jpegThumbnailFileFullPath.path.value            
-            imagePosition.motorPosition = self.createMotorPosition3VO(clientToolsForCollectionWebService, xsDataImagePosition.position)
+                imagePosition.jpegThumbnailFileFullPath = xsDataImagePosition.jpegThumbnailFileFullPath.path.value
             listImagePosition.append(imagePosition)
         self.listImageCreation = clientToolsForCollectionWebService.service.setImagesPositions(
                                     listImagePosition=listImagePosition)
         self.DEBUG("EDPluginISPyBSetImagesPositionsv1_4.process: listImageCreation=%r" % self.listImageCreation)
-            
-             
+
+
 
 
 
@@ -125,23 +124,10 @@ class EDPluginISPyBSetImagesPositionsv1_4(EDPluginExec):
             try:
                 xsDataISPyBImageCreation.imageId = XSDataInteger(imageCreation.imageId)
             except AttributeError:
-                self.WARNING("Image %s/%s does not have any image id" % 
+                self.WARNING("Image %s/%s does not have any image id" %
                              (imageCreation.fileLocation, imageCreation.fileName))
             xsDataISPyBImageCreation.isCreated = XSDataBoolean(imageCreation.isCreated)
             xsDataResultISPyBSetImagesPositions.addImageCreation(xsDataISPyBImageCreation)
         self.setDataOutput(xsDataResultISPyBSetImagesPositions)
 
 
-    def createMotorPosition3VO(self, _clientToolsForCollectionWebService, _xsDataPosition):
-        position3VO = _clientToolsForCollectionWebService.factory.create('motorPosition3VO')
-        position3VO.gridIndexY = _xsDataPosition.gridIndexY.value
-        position3VO.gridIndexZ = _xsDataPosition.gridIndexZ.value
-        position3VO.kappa = _xsDataPosition.kappa.value
-        position3VO.omega = _xsDataPosition.omega.value
-        position3VO.phi = _xsDataPosition.phi.value
-        position3VO.phiX = _xsDataPosition.phiX.value
-        position3VO.phiY = _xsDataPosition.phiY.value
-        position3VO.phiZ = _xsDataPosition.phiZ.value
-        position3VO.sampX = _xsDataPosition.sampX.value
-        position3VO.sampY = _xsDataPosition.sampY.value
-        return position3VO

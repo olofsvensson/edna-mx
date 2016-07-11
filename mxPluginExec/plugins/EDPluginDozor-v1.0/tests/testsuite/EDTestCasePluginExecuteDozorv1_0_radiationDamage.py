@@ -37,12 +37,12 @@ from EDTestCasePluginExecute          import EDTestCasePluginExecute
 
 
 
-class EDTestCasePluginExecuteDozorv1_0_wedgeNumber(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteDozorv1_0_radiationDamage(EDTestCasePluginExecute):
 
     def __init__(self, _oalStringTestName=None):
         EDTestCasePluginExecute.__init__(self, "EDPluginDozorv1_0")
         self.setConfigurationFile(self.getRefConfigFile())
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputDozor_wedgeNumber.xml"))
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputDozor_radiationDamage.xml"))
 #        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultDozor_reference.xml"))
 
     def preProcess(self):
@@ -53,6 +53,7 @@ class EDTestCasePluginExecuteDozorv1_0_wedgeNumber(EDTestCasePluginExecute):
         self.run()
         # Check that we have the halfDoseTime
         edPlugin = self.getPlugin()
+        EDAssert.equal(True, edPlugin.dataOutput.halfDoseTime is not None, "Half dose time")
 
 
     def process(self):

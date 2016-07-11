@@ -97,6 +97,9 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
         self.xsDataFileRaddoseLog = None
 
 
+        self.roundUpToEven100 = False
+
+
     def setSymopHome(self, _strSymopHome):
         self._strSymopHome = _strSymopHome
 
@@ -275,6 +278,9 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
             self.addWarningMessage(strWarningMessage)
         else:
             self.setSymopHome(strSymopHome)
+        # Even 100 images?
+        self.roundUpToEven100 = self.config.get("roundUpToEven100", False)
+
 
 
     def process(self, _edObject=None):
@@ -321,9 +327,15 @@ class EDPluginControlStrategyv1_2(EDPluginControl):
         xsDataResultBest = self._edPluginBest.getDataOutput()
         if(xsDataResultBest is not None and self.getDataInput().getDiffractionPlan().getStrategyOption() is not None):
             if (self.getDataInput().getDiffractionPlan().getStrategyOption().getValue() != "-Bonly"):
-                xsDataResultStrategy = self._edHandlerXSDataBest.getXSDataResultStrategy(xsDataResultBest, self.getDataInput().getExperimentalCondition(), self._xsDataSampleCopy)
+                xsDataResultStrategy = self._edHandlerXSDataBest.getXSDataResultStrategy(xsDataResultBest,
+                                                                                         self.getDataInput().getExperimentalCondition(),
+                                                                                         self._xsDataSampleCopy,
+                                                                                         roundUpToEven100=self.roundUpToEven100)
         else:
-            xsDataResultStrategy = self._edHandlerXSDataBest.getXSDataResultStrategy(xsDataResultBest, self.getDataInput().getExperimentalCondition(), self._xsDataSampleCopy)
+            xsDataResultStrategy = self._edHandlerXSDataBest.getXSDataResultStrategy(xsDataResultBest,
+                                                                                     self.getDataInput().getExperimentalCondition(),
+                                                                                     self._xsDataSampleCopy,
+                                                                                     roundUpToEven100=self.roundUpToEven100)
 
         if self.xsDataFileRaddoseLog is not None:
             xsDataResultStrategy.setRaddoseLogFile(self.xsDataFileRaddoseLog)

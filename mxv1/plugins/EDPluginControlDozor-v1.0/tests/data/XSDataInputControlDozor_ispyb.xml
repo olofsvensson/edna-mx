@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<XSDataInputControlDozor>
+	<dataCollectionId>
+		<value>1748699</value>
+	</dataCollectionId>
+	<!-- 
+	<processDirectory>
+		<path>
+			<value>/tmp/dozor</value>
+		</path>
+	</processDirectory>
+	 -->
+</XSDataInputControlDozor>

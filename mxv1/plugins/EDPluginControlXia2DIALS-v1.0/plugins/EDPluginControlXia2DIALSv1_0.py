@@ -75,6 +75,10 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataInputControlXia2DIALS)
         self.dataOutput = XSDataResultStoreAutoProc()
+        self.doAnomAndNonanom = True
+        self.pyarchPrefix = None
+        self.resultsDirectory = None
+        self.pyarchDirectory = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -92,6 +96,13 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlXia2DIALSv1_0.preProcess")
         self.screen("Xia2DIALS processing started")
+
+        if self.dataInput.doAnomAndNonanom is not None:
+            if self.dataInput.doAnomAndNonanom.value:
+                self.doAnomAndNonanom = True
+            else:
+                self.doAnomAndNonanom = False
+
         self.strHost = socket.gethostname()
         self.screen("Running on {0}".format(self.strHost))
         try:
@@ -104,10 +115,9 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         self.edPluginWaitFileLast = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileLast")
 
         self.edPluginRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
-        self.edPluginExecXia2DIALS = self.loadPlugin("EDPluginExecXia2DIALSv1_0")
-        self.edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4")
-
-        self.edPluginHTML2Pdf = self.loadPlugin("EDPluginHTML2PDFv1_0")
+        self.edPluginExecXia2DIALSAnom = self.loadPlugin("EDPluginExecXia2DIALSv1_0", "EDPluginExecXia2DIALSv1_0_anom")
+        if self.doAnomAndNonanom:
+            self.edPluginExecXia2DIALSNoanom = self.loadPlugin("EDPluginExecXia2DIALSv1_0", "EDPluginExecXia2DIALSv1_0_noanom")
 
 
     def process(self, _edObject=None):
@@ -178,24 +188,24 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
         # Process directory
         if self.dataInput.processDirectory is not None:
-            strProcessDirectory = self.dataInput.processDirectory.path.value
+            processDirectory = self.dataInput.processDirectory.path.value
         else:
-            strProcessDirectory = directory.replace("RAW_DATA", "PROCESSED_DATA")
+            processDirectory = directory.replace("RAW_DATA", "PROCESSED_DATA")
 
         # Make results directory
-        strResultsDirectory = os.path.join(strProcessDirectory, "results")
-        if not os.path.exists(strResultsDirectory):
-            os.makedirs(strResultsDirectory, 0755)
+        self.resultsDirectory = os.path.join(processDirectory, "results")
+        if not os.path.exists(self.resultsDirectory):
+            os.makedirs(self.resultsDirectory, 0755)
 
         # Create path to pyarch
-        pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(strResultsDirectory)
-        pyarchDirectory = pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
-        if pyarchDirectory is not None and not os.path.exists(pyarchDirectory):
-            os.makedirs(pyarchDirectory, 0755)
+        self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
+        self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
+        if self.pyarchDirectory is not None and not os.path.exists(self.pyarchDirectory):
+            os.makedirs(self.pyarchDirectory, 0755)
 
         # Determine pyarch prefix
         listPrefix = template.split("_")
-        strPyarchPrefix = "di_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
+        self.pyarchPrefix = "di_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
 
         isH5 = False
         if any(beamline in pathToStartImage for beamline in ["id23eh1", "id29"]):
@@ -244,109 +254,143 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
 
         # Prepare input to execution plugin
-        xsDataInputXia2DIALS = XSDataInputXia2DIALS()
+        xsDataInputXia2DIALSAnom = XSDataInputXia2DIALS()
+        xsDataInputXia2DIALSAnom.anomalous = XSDataBoolean(True)
+        if self.doAnomAndNonanom:
+            xsDataInputXia2DIALSNoanom = XSDataInputXia2DIALS()
+            xsDataInputXia2DIALSNoanom.anomalous = XSDataBoolean(False)
         if isH5:
             masterFilePath = os.path.join(directory,
                                           self.eiger_template_to_master(template))
-            xsDataInputXia2DIALS.addImage(XSDataFile(XSDataString(masterFilePath)))
+            xsDataInputXia2DIALSAnom.addImage(XSDataFile(XSDataString(masterFilePath)))
+            if self.doAnomAndNonanom:
+                xsDataInputXia2DIALSNoanom.addImage(XSDataFile(XSDataString(masterFilePath)))
         else:
-            xsDataInputXia2DIALS.addImage(XSDataFile(XSDataString(pathToStartImage)))
-        # Force anomalous
-        xsDataInputXia2DIALS.anomalous = XSDataBoolean(True)
-        self.edPluginExecXia2DIALS.dataInput = xsDataInputXia2DIALS
+            xsDataInputXia2DIALSAnom.addImage(XSDataFile(XSDataString(pathToStartImage)))
+            if self.doAnomAndNonanom:
+                xsDataInputXia2DIALSNoanom.addImage(XSDataFile(XSDataString(pathToStartImage)))
         timeStart = time.localtime()
-        self.edPluginExecXia2DIALS.executeSynchronous()
+        self.edPluginExecXia2DIALSAnom.dataInput = xsDataInputXia2DIALSAnom
+        self.edPluginExecXia2DIALSAnom.execute()
+        if self.doAnomAndNonanom:
+            self.edPluginExecXia2DIALSNoanom.dataInput = xsDataInputXia2DIALSNoanom
+            self.edPluginExecXia2DIALSNoanom.execute()
+        self.edPluginExecXia2DIALSAnom.synchronize()
+        if self.doAnomAndNonanom:
+            self.edPluginExecXia2DIALSNoanom.synchronize()
         timeEnd = time.localtime()
 
+        # Upload to ISPyB
+        self.uploadToISPyB(self.edPluginExecXia2DIALSAnom, True, proposal, timeStart, timeEnd)
+        if self.doAnomAndNonanom:
+            self.uploadToISPyB(self.edPluginExecXia2DIALSNoanom, False, proposal, timeStart, timeEnd)
+
+
+    def uploadToISPyB(self, edPluginExecXia2DIALS, isAnom, proposal, timeStart, timeEnd):
+        if isAnom:
+            anomString = "anom"
+        else:
+            anomString = "noanom"
+
         # Copy dataFiles to results directory
-        for dataFile in self.edPluginExecXia2DIALS.dataOutput.dataFiles:
-            shutil.copy(dataFile.path.value, strResultsDirectory)
+        for dataFile in edPluginExecXia2DIALS.dataOutput.dataFiles:
+            trunc, suffix = os.path.splitext(dataFile.path.value)
+            newFileName = trunc + "_" + anomString + suffix
+            shutil.copy(dataFile.path.value, os.path.join(self.resultsDirectory, newFileName))
 
         # Read the generated ISPyB xml file - if any
-        if self.edPluginExecXia2DIALS.dataOutput.ispybXML is not None:
-            autoProcContainer = AutoProcContainer.parseFile(self.edPluginExecXia2DIALS.dataOutput.ispybXML.path.value)
+        if edPluginExecXia2DIALS.dataOutput.ispybXML is not None:
+            autoProcContainer = AutoProcContainer.parseFile(edPluginExecXia2DIALS.dataOutput.ispybXML.path.value)
 
             # "Fix" certain entries in the ISPyB xml file
             autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
             for autoProcScalingStatistics in autoProcScalingContainer.AutoProcScalingStatistics:
-                autoProcScalingStatistics.anomalous = True
+                if isAnom:
+                    autoProcScalingStatistics.anomalous = True
+                else:
+                    autoProcScalingStatistics.anomalous = False
             autoProcIntegrationContainer = autoProcScalingContainer.AutoProcIntegrationContainer
             autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
-            autoProcIntegration.anomalous = True
+            if isAnom:
+                autoProcIntegration.anomalous = True
+            else:
+                autoProcIntegration.anomalous = False
             image = autoProcIntegrationContainer.Image
             image.dataCollectionId = self.dataInput.dataCollectionId.value
             autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
             autoProcProgram = autoProcProgramContainer.AutoProcProgram
-            autoProcProgram.processingPrograms = "xia2DIALS"
+            autoProcProgram.processingPrograms = "XIA2_DIALS"
             autoProcProgram.processingStatus = True
             autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
             autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
             autoProcProgramContainer.AutoProcProgramAttachment = []
             # Upload the log file to ISPyB
-            if self.edPluginExecXia2DIALS.dataOutput.logFile is not None:
-                pathToLogFile = self.edPluginExecXia2DIALS.dataOutput.logFile.path.value
-                pyarchFileName = strPyarchPrefix + "_xia2.log"
-                shutil.copy(pathToLogFile, os.path.join(pyarchDirectory, pyarchFileName))
+            if edPluginExecXia2DIALS.dataOutput.logFile is not None:
+                pathToLogFile = edPluginExecXia2DIALS.dataOutput.logFile.path.value
+                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.log"
+                shutil.copy(pathToLogFile, os.path.join(self.pyarchDirectory, pyarchFileName))
                 autoProcProgramAttachment = AutoProcProgramAttachment()
                 autoProcProgramAttachment.fileName = pyarchFileName
-                autoProcProgramAttachment.filePath = pyarchDirectory
+                autoProcProgramAttachment.filePath = self.pyarchDirectory
                 autoProcProgramAttachment.fileType = "Log"
                 autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
             # Upload the summary file to ISPyB
-            if self.edPluginExecXia2DIALS.dataOutput.summary is not None:
-                pathToSummaryFile = self.edPluginExecXia2DIALS.dataOutput.summary.path.value
-                pyarchFileName = strPyarchPrefix + "_xia2-summary.log"
-                shutil.copy(pathToSummaryFile, os.path.join(pyarchDirectory, pyarchFileName))
+            if edPluginExecXia2DIALS.dataOutput.summary is not None:
+                pathToSummaryFile = edPluginExecXia2DIALS.dataOutput.summary.path.value
+                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2-summary.log"
+                shutil.copy(pathToSummaryFile, os.path.join(self.pyarchDirectory, pyarchFileName))
                 autoProcProgramAttachment = AutoProcProgramAttachment()
                 autoProcProgramAttachment.fileName = pyarchFileName
-                autoProcProgramAttachment.filePath = pyarchDirectory
+                autoProcProgramAttachment.filePath = self.pyarchDirectory
                 autoProcProgramAttachment.fileType = "Log"
                 autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
             # Create a pdf file of the html page
-            if self.edPluginExecXia2DIALS.dataOutput.htmlFile is not None:
-                pathToHtmlFile = self.edPluginExecXia2DIALS.dataOutput.htmlFile.path.value
-                pyarchFileName = strPyarchPrefix + "_xia2.pdf"
+            if edPluginExecXia2DIALS.dataOutput.htmlFile is not None:
+                pathToHtmlFile = edPluginExecXia2DIALS.dataOutput.htmlFile.path.value
+                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.pdf"
                 # Convert the xia2.html to xia2.pdf
                 xsDataInputHTML2PDF = XSDataInputHTML2PDF()
                 xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(pathToHtmlFile)))
                 xsDataInputHTML2PDF.paperSize = XSDataString("A4")
                 xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
-                self.edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
-                self.edPluginHTML2Pdf.executeSynchronous()
-                pdfFile = self.edPluginHTML2Pdf.dataOutput.pdfFile.path.value
-                shutil.copy(pdfFile, os.path.join(pyarchDirectory, pyarchFileName))
+                edPluginHTML2Pdf = self.loadPlugin("EDPluginHTML2PDFv1_0", "EDPluginHTML2PDFv1_0_{0}".format(anomString))
+                edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
+                edPluginHTML2Pdf.executeSynchronous()
+                pdfFile = edPluginHTML2Pdf.dataOutput.pdfFile.path.value
+                shutil.copy(pdfFile, os.path.join(self.pyarchDirectory, pyarchFileName))
                 autoProcProgramAttachment = AutoProcProgramAttachment()
                 autoProcProgramAttachment.fileName = pyarchFileName
-                autoProcProgramAttachment.filePath = pyarchDirectory
+                autoProcProgramAttachment.filePath = self.pyarchDirectory
                 autoProcProgramAttachment.fileType = "Log"
                 autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
             # Copy all log files
-            for logFile in self.edPluginExecXia2DIALS.dataOutput.logFiles:
+            for logFile in edPluginExecXia2DIALS.dataOutput.logFiles:
                 pathToLogFile = logFile.path.value
                 if pathToLogFile.endswith(".log"):
-                    pyarchFileName = strPyarchPrefix + "_" + os.path.basename(pathToLogFile)
-                    shutil.copy(pathToLogFile, os.path.join(pyarchDirectory, pyarchFileName))
+                    pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToLogFile)
+                    shutil.copy(pathToLogFile, os.path.join(self.pyarchDirectory, pyarchFileName))
                     autoProcProgramAttachment = AutoProcProgramAttachment()
                     autoProcProgramAttachment.fileName = pyarchFileName
-                    autoProcProgramAttachment.filePath = pyarchDirectory
+                    autoProcProgramAttachment.filePath = self.pyarchDirectory
                     autoProcProgramAttachment.fileType = "Log"
                     autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
             # Copy data files
-            for dataFile in self.edPluginExecXia2DIALS.dataOutput.dataFiles:
+            for dataFile in edPluginExecXia2DIALS.dataOutput.dataFiles:
                 pathToDataFile = dataFile.path.value
                 if pathToDataFile.endswith(".mtz"):
-                    pyarchFileName = strPyarchPrefix + "_" + os.path.basename(pathToDataFile)
-                    shutil.copy(pathToDataFile, os.path.join(pyarchDirectory, pyarchFileName))
+                    pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToDataFile)
+                    shutil.copy(pathToDataFile, os.path.join(self.pyarchDirectory, pyarchFileName))
                     autoProcProgramAttachment = AutoProcProgramAttachment()
                     autoProcProgramAttachment.fileName = pyarchFileName
-                    autoProcProgramAttachment.filePath = pyarchDirectory
+                    autoProcProgramAttachment.filePath = self.pyarchDirectory
                     autoProcProgramAttachment.fileType = "Result"
                     autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
             # Upload the xml to ISPyB
             xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
             xsDataInputStoreAutoProc.AutoProcContainer = autoProcContainer
-            self.edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
-            self.edPluginStoreAutoproc.executeSynchronous()
+            edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}".format(anomString))
+            edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
+            edPluginStoreAutoproc.executeSynchronous()
 
     def eiger_template_to_image(self, fmt, num):
         fileNumber = int(num / 100)

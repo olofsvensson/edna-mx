@@ -8,7 +8,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ class EDHandlerXSDataBestv1_2(EDObject):
         listXSDataStringBestFileContentHKL = _xsDataInputStrategy.getBestFileContentHKL()
         xsDataInputBest = XSDataInputBest()
 
-        # Sample      
+        # Sample
         xsDataAbsorbedDose = None
         xsDataSusceptibility = None
 
@@ -155,7 +155,7 @@ class EDHandlerXSDataBestv1_2(EDObject):
             xsDataInputBest.setDetectorDistanceMin(xsDataDiffractionPlan.getDetectorDistanceMin())
             xsDataInputBest.setDetectorDistanceMax(xsDataDiffractionPlan.getDetectorDistanceMax())
             xsDataInputBest.setUserDefinedRotationStart(xsDataDiffractionPlan.getUserDefinedRotationStart())
-            xsDataInputBest.setUserDefinedRotationRange(xsDataDiffractionPlan.getUserDefinedRotationRange())            
+            xsDataInputBest.setUserDefinedRotationRange(xsDataDiffractionPlan.getUserDefinedRotationRange())
             xsDataInputBest.doseLimit = xsDataDiffractionPlan.doseLimit
             xsDataInputBest.rFriedel = xsDataDiffractionPlan.rFriedel
 
@@ -169,7 +169,7 @@ class EDHandlerXSDataBestv1_2(EDObject):
         return xsDataInputBest
 
 
-    def getXSDataResultStrategy(self, _xsDataResultBest, _xsDataExperimentalCondition, _xsDataSample):
+    def getXSDataResultStrategy(self, _xsDataResultBest, _xsDataExperimentalCondition, _xsDataSample, roundUpToEven100=False):
         xsDataResultStrategy = XSDataResultStrategy()
 
         listXSDataBestCollectionPlan = _xsDataResultBest.getCollectionPlan()
@@ -195,7 +195,10 @@ class EDHandlerXSDataBestv1_2(EDObject):
                 xsDataExperimentalCondition.getDetector().setDistance(xsDataBestStrategySummary.getDistance())
                 xsDataExperimentalCondition.getGoniostat().setRotationAxisStart(xsDataBestCollectionRun.getPhiStart())
                 xsDataExperimentalCondition.getGoniostat().setOscillationWidth(xsDataBestCollectionRun.getPhiWidth())
-                fRotationAxisEnd = xsDataBestCollectionRun.getPhiStart().getValue() + xsDataBestCollectionRun.getNumberOfImages().getValue() * xsDataBestCollectionRun.getPhiWidth().getValue()
+                iNumberOfImages = xsDataBestCollectionRun.getNumberOfImages().getValue()
+                if roundUpToEven100:
+                    iNumberOfImages = int((iNumberOfImages + 99) / 100) * 100
+                fRotationAxisEnd = xsDataBestCollectionRun.getPhiStart().getValue() + iNumberOfImages * xsDataBestCollectionRun.getPhiWidth().getValue()
                 xsDataExperimentalCondition.getGoniostat().setRotationAxisEnd(XSDataAngle(fRotationAxisEnd))
                 xsDataSubWedge.setExperimentalCondition(xsDataExperimentalCondition)
                 xsDataSubWedge.setSubWedgeNumber(xsDataBestCollectionRun.getCollectionRunNumber())

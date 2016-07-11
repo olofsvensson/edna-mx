@@ -274,12 +274,13 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                     strResolutionReasoningFirstLower = strResolutionReasoning[0].lower() + strResolutionReasoning[1:]
                     self.workflowStepReport.addTable(tabTitle + ": " + strResolutionReasoningFirstLower, tableColumns, tableData)
         # Add log files
-        if xsDataResultStrategy.bestLogFile:
-            strPathToBestLogFile = xsDataResultStrategy.bestLogFile.path.value
-            self.workflowStepReport.addLogFile("BEST Log", "Best log file", strPathToBestLogFile)
-        if xsDataResultStrategy.raddoseLogFile:
-            strPathToRaddoseLogFile = xsDataResultStrategy.raddoseLogFile.path.value
-            self.workflowStepReport.addLogFile("RADDOSE Log", "RADDOSE log file", strPathToRaddoseLogFile)
+        if xsDataResultStrategy is not None:
+            if xsDataResultStrategy.bestLogFile:
+                strPathToBestLogFile = xsDataResultStrategy.bestLogFile.path.value
+                self.workflowStepReport.addLogFile("BEST Log", "Best log file", strPathToBestLogFile)
+            if xsDataResultStrategy.raddoseLogFile:
+                strPathToRaddoseLogFile = xsDataResultStrategy.raddoseLogFile.path.value
+                self.workflowStepReport.addLogFile("RADDOSE Log", "RADDOSE log file", strPathToRaddoseLogFile)
 
 
     def dataCollectionInfo(self):

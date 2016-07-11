@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Jun 23 11:03::42 2014 by EDGenerateDS.
+# Generated Mon Jun 6 04:25::24 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -266,7 +266,7 @@ class XSDataInputMXWaitFile(XSDataInput):
 
 
 class XSDataResultMXWaitFile(XSDataResult):
-    def __init__(self, status=None, timedOut=None):
+    def __init__(self, status=None, finalSize=None, timedOut=None):
         XSDataResult.__init__(self, status)
         if timedOut is None:
             self._timedOut = None
@@ -274,6 +274,13 @@ class XSDataResultMXWaitFile(XSDataResult):
             self._timedOut = timedOut
         else:
             strMessage = "ERROR! XSDataResultMXWaitFile constructor argument 'timedOut' is not XSDataBoolean but %s" % self._timedOut.__class__.__name__
+            raise BaseException(strMessage)
+        if finalSize is None:
+            self._finalSize = None
+        elif finalSize.__class__.__name__ == "XSDataInteger":
+            self._finalSize = finalSize
+        else:
+            strMessage = "ERROR! XSDataResultMXWaitFile constructor argument 'finalSize' is not XSDataInteger but %s" % self._finalSize.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'timedOut' attribute
     def getTimedOut(self): return self._timedOut
@@ -287,6 +294,18 @@ class XSDataResultMXWaitFile(XSDataResult):
             raise BaseException(strMessage)
     def delTimedOut(self): self._timedOut = None
     timedOut = property(getTimedOut, setTimedOut, delTimedOut, "Property for timedOut")
+    # Methods and properties for the 'finalSize' attribute
+    def getFinalSize(self): return self._finalSize
+    def setFinalSize(self, finalSize):
+        if finalSize is None:
+            self._finalSize = None
+        elif finalSize.__class__.__name__ == "XSDataInteger":
+            self._finalSize = finalSize
+        else:
+            strMessage = "ERROR! XSDataResultMXWaitFile.setFinalSize argument is not XSDataInteger but %s" % finalSize.__class__.__name__
+            raise BaseException(strMessage)
+    def delFinalSize(self): self._finalSize = None
+    finalSize = property(getFinalSize, setFinalSize, delFinalSize, "Property for finalSize")
     def export(self, outfile, level, name_='XSDataResultMXWaitFile'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -299,6 +318,10 @@ class XSDataResultMXWaitFile(XSDataResult):
             self.timedOut.export(outfile, level, name_='timedOut')
         else:
             warnEmptyAttribute("timedOut", "XSDataBoolean")
+        if self._finalSize is not None:
+            self.finalSize.export(outfile, level, name_='finalSize')
+        else:
+            warnEmptyAttribute("finalSize", "XSDataInteger")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -309,6 +332,11 @@ class XSDataResultMXWaitFile(XSDataResult):
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setTimedOut(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'finalSize':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setFinalSize(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
