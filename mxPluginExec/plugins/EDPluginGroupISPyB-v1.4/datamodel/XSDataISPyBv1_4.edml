@@ -444,6 +444,7 @@ complex type XSDataISPyBScreeningStrategyWedge extends XSData {
 	numberOfImages : XSDataInteger
 	phi : XSDataDouble optional
 	kappa : XSDataDouble optional
+	chi : XSDataDouble optional
 	comments : XSDataString optional
 	wavelength : XSDataDouble optional
 }

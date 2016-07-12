@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Mar 30 11:31::35 2016 by EDGenerateDS.
+# Generated Tue Jul 12 03:01::01 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -1117,6 +1117,878 @@ class AutoProcIntegration(object):
 # end class AutoProcIntegration
 
 
+class AutoProcScalingStatistics(object):
+    def __init__(self, ccHalf=None, anomalous=None, recordTimeStamp=None, anomalousMultiplicity=None, anomalousCompleteness=None, multiplicity=None, completeness=None, meanIOverSigI=None, ntotalUniqueObservations=None, nTotalObservations=None, fractionalPartialBias=None, rpimAllIplusIminus=None, rpimWithinIplusIminus=None, rmeasAllIplusIminus=None, rmeasWithinIplusIminus=None, rMerge=None, resolutionLimitHigh=None, resolutionLimitLow=None, comments=None, scalingStatisticsType=None, autoProcScalingStatisticsId=None):
+        if autoProcScalingStatisticsId is None:
+            self._autoProcScalingStatisticsId = None
+        else:
+            self._autoProcScalingStatisticsId = int(autoProcScalingStatisticsId)
+        self._scalingStatisticsType = str(scalingStatisticsType)
+        self._comments = str(comments)
+        if resolutionLimitLow is None:
+            self._resolutionLimitLow = None
+        else:
+            self._resolutionLimitLow = float(resolutionLimitLow)
+        if resolutionLimitHigh is None:
+            self._resolutionLimitHigh = None
+        else:
+            self._resolutionLimitHigh = float(resolutionLimitHigh)
+        if rMerge is None:
+            self._rMerge = None
+        else:
+            self._rMerge = float(rMerge)
+        if rmeasWithinIplusIminus is None:
+            self._rmeasWithinIplusIminus = None
+        else:
+            self._rmeasWithinIplusIminus = float(rmeasWithinIplusIminus)
+        if rmeasAllIplusIminus is None:
+            self._rmeasAllIplusIminus = None
+        else:
+            self._rmeasAllIplusIminus = float(rmeasAllIplusIminus)
+        if rpimWithinIplusIminus is None:
+            self._rpimWithinIplusIminus = None
+        else:
+            self._rpimWithinIplusIminus = float(rpimWithinIplusIminus)
+        if rpimAllIplusIminus is None:
+            self._rpimAllIplusIminus = None
+        else:
+            self._rpimAllIplusIminus = float(rpimAllIplusIminus)
+        if fractionalPartialBias is None:
+            self._fractionalPartialBias = None
+        else:
+            self._fractionalPartialBias = float(fractionalPartialBias)
+        if nTotalObservations is None:
+            self._nTotalObservations = None
+        else:
+            self._nTotalObservations = int(nTotalObservations)
+        if ntotalUniqueObservations is None:
+            self._ntotalUniqueObservations = None
+        else:
+            self._ntotalUniqueObservations = int(ntotalUniqueObservations)
+        if meanIOverSigI is None:
+            self._meanIOverSigI = None
+        else:
+            self._meanIOverSigI = float(meanIOverSigI)
+        if completeness is None:
+            self._completeness = None
+        else:
+            self._completeness = float(completeness)
+        if multiplicity is None:
+            self._multiplicity = None
+        else:
+            self._multiplicity = float(multiplicity)
+        if anomalousCompleteness is None:
+            self._anomalousCompleteness = None
+        else:
+            self._anomalousCompleteness = float(anomalousCompleteness)
+        if anomalousMultiplicity is None:
+            self._anomalousMultiplicity = None
+        else:
+            self._anomalousMultiplicity = float(anomalousMultiplicity)
+        self._recordTimeStamp = str(recordTimeStamp)
+        self._anomalous = bool(anomalous)
+        if ccHalf is None:
+            self._ccHalf = None
+        else:
+            self._ccHalf = float(ccHalf)
+    # Methods and properties for the 'autoProcScalingStatisticsId' attribute
+    def getAutoProcScalingStatisticsId(self): return self._autoProcScalingStatisticsId
+    def setAutoProcScalingStatisticsId(self, autoProcScalingStatisticsId):
+        if autoProcScalingStatisticsId is None:
+            self._autoProcScalingStatisticsId = None
+        else:
+            self._autoProcScalingStatisticsId = int(autoProcScalingStatisticsId)
+    def delAutoProcScalingStatisticsId(self): self._autoProcScalingStatisticsId = None
+    autoProcScalingStatisticsId = property(getAutoProcScalingStatisticsId, setAutoProcScalingStatisticsId, delAutoProcScalingStatisticsId, "Property for autoProcScalingStatisticsId")
+    # Methods and properties for the 'scalingStatisticsType' attribute
+    def getScalingStatisticsType(self): return self._scalingStatisticsType
+    def setScalingStatisticsType(self, scalingStatisticsType):
+        self._scalingStatisticsType = str(scalingStatisticsType)
+    def delScalingStatisticsType(self): self._scalingStatisticsType = None
+    scalingStatisticsType = property(getScalingStatisticsType, setScalingStatisticsType, delScalingStatisticsType, "Property for scalingStatisticsType")
+    # Methods and properties for the 'comments' attribute
+    def getComments(self): return self._comments
+    def setComments(self, comments):
+        self._comments = str(comments)
+    def delComments(self): self._comments = None
+    comments = property(getComments, setComments, delComments, "Property for comments")
+    # Methods and properties for the 'resolutionLimitLow' attribute
+    def getResolutionLimitLow(self): return self._resolutionLimitLow
+    def setResolutionLimitLow(self, resolutionLimitLow):
+        if resolutionLimitLow is None:
+            self._resolutionLimitLow = None
+        else:
+            self._resolutionLimitLow = float(resolutionLimitLow)
+    def delResolutionLimitLow(self): self._resolutionLimitLow = None
+    resolutionLimitLow = property(getResolutionLimitLow, setResolutionLimitLow, delResolutionLimitLow, "Property for resolutionLimitLow")
+    # Methods and properties for the 'resolutionLimitHigh' attribute
+    def getResolutionLimitHigh(self): return self._resolutionLimitHigh
+    def setResolutionLimitHigh(self, resolutionLimitHigh):
+        if resolutionLimitHigh is None:
+            self._resolutionLimitHigh = None
+        else:
+            self._resolutionLimitHigh = float(resolutionLimitHigh)
+    def delResolutionLimitHigh(self): self._resolutionLimitHigh = None
+    resolutionLimitHigh = property(getResolutionLimitHigh, setResolutionLimitHigh, delResolutionLimitHigh, "Property for resolutionLimitHigh")
+    # Methods and properties for the 'rMerge' attribute
+    def getRMerge(self): return self._rMerge
+    def setRMerge(self, rMerge):
+        if rMerge is None:
+            self._rMerge = None
+        else:
+            self._rMerge = float(rMerge)
+    def delRMerge(self): self._rMerge = None
+    rMerge = property(getRMerge, setRMerge, delRMerge, "Property for rMerge")
+    # Methods and properties for the 'rmeasWithinIplusIminus' attribute
+    def getRmeasWithinIplusIminus(self): return self._rmeasWithinIplusIminus
+    def setRmeasWithinIplusIminus(self, rmeasWithinIplusIminus):
+        if rmeasWithinIplusIminus is None:
+            self._rmeasWithinIplusIminus = None
+        else:
+            self._rmeasWithinIplusIminus = float(rmeasWithinIplusIminus)
+    def delRmeasWithinIplusIminus(self): self._rmeasWithinIplusIminus = None
+    rmeasWithinIplusIminus = property(getRmeasWithinIplusIminus, setRmeasWithinIplusIminus, delRmeasWithinIplusIminus, "Property for rmeasWithinIplusIminus")
+    # Methods and properties for the 'rmeasAllIplusIminus' attribute
+    def getRmeasAllIplusIminus(self): return self._rmeasAllIplusIminus
+    def setRmeasAllIplusIminus(self, rmeasAllIplusIminus):
+        if rmeasAllIplusIminus is None:
+            self._rmeasAllIplusIminus = None
+        else:
+            self._rmeasAllIplusIminus = float(rmeasAllIplusIminus)
+    def delRmeasAllIplusIminus(self): self._rmeasAllIplusIminus = None
+    rmeasAllIplusIminus = property(getRmeasAllIplusIminus, setRmeasAllIplusIminus, delRmeasAllIplusIminus, "Property for rmeasAllIplusIminus")
+    # Methods and properties for the 'rpimWithinIplusIminus' attribute
+    def getRpimWithinIplusIminus(self): return self._rpimWithinIplusIminus
+    def setRpimWithinIplusIminus(self, rpimWithinIplusIminus):
+        if rpimWithinIplusIminus is None:
+            self._rpimWithinIplusIminus = None
+        else:
+            self._rpimWithinIplusIminus = float(rpimWithinIplusIminus)
+    def delRpimWithinIplusIminus(self): self._rpimWithinIplusIminus = None
+    rpimWithinIplusIminus = property(getRpimWithinIplusIminus, setRpimWithinIplusIminus, delRpimWithinIplusIminus, "Property for rpimWithinIplusIminus")
+    # Methods and properties for the 'rpimAllIplusIminus' attribute
+    def getRpimAllIplusIminus(self): return self._rpimAllIplusIminus
+    def setRpimAllIplusIminus(self, rpimAllIplusIminus):
+        if rpimAllIplusIminus is None:
+            self._rpimAllIplusIminus = None
+        else:
+            self._rpimAllIplusIminus = float(rpimAllIplusIminus)
+    def delRpimAllIplusIminus(self): self._rpimAllIplusIminus = None
+    rpimAllIplusIminus = property(getRpimAllIplusIminus, setRpimAllIplusIminus, delRpimAllIplusIminus, "Property for rpimAllIplusIminus")
+    # Methods and properties for the 'fractionalPartialBias' attribute
+    def getFractionalPartialBias(self): return self._fractionalPartialBias
+    def setFractionalPartialBias(self, fractionalPartialBias):
+        if fractionalPartialBias is None:
+            self._fractionalPartialBias = None
+        else:
+            self._fractionalPartialBias = float(fractionalPartialBias)
+    def delFractionalPartialBias(self): self._fractionalPartialBias = None
+    fractionalPartialBias = property(getFractionalPartialBias, setFractionalPartialBias, delFractionalPartialBias, "Property for fractionalPartialBias")
+    # Methods and properties for the 'nTotalObservations' attribute
+    def getNTotalObservations(self): return self._nTotalObservations
+    def setNTotalObservations(self, nTotalObservations):
+        if nTotalObservations is None:
+            self._nTotalObservations = None
+        else:
+            self._nTotalObservations = int(nTotalObservations)
+    def delNTotalObservations(self): self._nTotalObservations = None
+    nTotalObservations = property(getNTotalObservations, setNTotalObservations, delNTotalObservations, "Property for nTotalObservations")
+    # Methods and properties for the 'ntotalUniqueObservations' attribute
+    def getNtotalUniqueObservations(self): return self._ntotalUniqueObservations
+    def setNtotalUniqueObservations(self, ntotalUniqueObservations):
+        if ntotalUniqueObservations is None:
+            self._ntotalUniqueObservations = None
+        else:
+            self._ntotalUniqueObservations = int(ntotalUniqueObservations)
+    def delNtotalUniqueObservations(self): self._ntotalUniqueObservations = None
+    ntotalUniqueObservations = property(getNtotalUniqueObservations, setNtotalUniqueObservations, delNtotalUniqueObservations, "Property for ntotalUniqueObservations")
+    # Methods and properties for the 'meanIOverSigI' attribute
+    def getMeanIOverSigI(self): return self._meanIOverSigI
+    def setMeanIOverSigI(self, meanIOverSigI):
+        if meanIOverSigI is None:
+            self._meanIOverSigI = None
+        else:
+            self._meanIOverSigI = float(meanIOverSigI)
+    def delMeanIOverSigI(self): self._meanIOverSigI = None
+    meanIOverSigI = property(getMeanIOverSigI, setMeanIOverSigI, delMeanIOverSigI, "Property for meanIOverSigI")
+    # Methods and properties for the 'completeness' attribute
+    def getCompleteness(self): return self._completeness
+    def setCompleteness(self, completeness):
+        if completeness is None:
+            self._completeness = None
+        else:
+            self._completeness = float(completeness)
+    def delCompleteness(self): self._completeness = None
+    completeness = property(getCompleteness, setCompleteness, delCompleteness, "Property for completeness")
+    # Methods and properties for the 'multiplicity' attribute
+    def getMultiplicity(self): return self._multiplicity
+    def setMultiplicity(self, multiplicity):
+        if multiplicity is None:
+            self._multiplicity = None
+        else:
+            self._multiplicity = float(multiplicity)
+    def delMultiplicity(self): self._multiplicity = None
+    multiplicity = property(getMultiplicity, setMultiplicity, delMultiplicity, "Property for multiplicity")
+    # Methods and properties for the 'anomalousCompleteness' attribute
+    def getAnomalousCompleteness(self): return self._anomalousCompleteness
+    def setAnomalousCompleteness(self, anomalousCompleteness):
+        if anomalousCompleteness is None:
+            self._anomalousCompleteness = None
+        else:
+            self._anomalousCompleteness = float(anomalousCompleteness)
+    def delAnomalousCompleteness(self): self._anomalousCompleteness = None
+    anomalousCompleteness = property(getAnomalousCompleteness, setAnomalousCompleteness, delAnomalousCompleteness, "Property for anomalousCompleteness")
+    # Methods and properties for the 'anomalousMultiplicity' attribute
+    def getAnomalousMultiplicity(self): return self._anomalousMultiplicity
+    def setAnomalousMultiplicity(self, anomalousMultiplicity):
+        if anomalousMultiplicity is None:
+            self._anomalousMultiplicity = None
+        else:
+            self._anomalousMultiplicity = float(anomalousMultiplicity)
+    def delAnomalousMultiplicity(self): self._anomalousMultiplicity = None
+    anomalousMultiplicity = property(getAnomalousMultiplicity, setAnomalousMultiplicity, delAnomalousMultiplicity, "Property for anomalousMultiplicity")
+    # Methods and properties for the 'recordTimeStamp' attribute
+    def getRecordTimeStamp(self): return self._recordTimeStamp
+    def setRecordTimeStamp(self, recordTimeStamp):
+        self._recordTimeStamp = str(recordTimeStamp)
+    def delRecordTimeStamp(self): self._recordTimeStamp = None
+    recordTimeStamp = property(getRecordTimeStamp, setRecordTimeStamp, delRecordTimeStamp, "Property for recordTimeStamp")
+    # Methods and properties for the 'anomalous' attribute
+    def getAnomalous(self): return self._anomalous
+    def setAnomalous(self, anomalous):
+        self._anomalous = bool(anomalous)
+    def delAnomalous(self): self._anomalous = None
+    anomalous = property(getAnomalous, setAnomalous, delAnomalous, "Property for anomalous")
+    # Methods and properties for the 'ccHalf' attribute
+    def getCcHalf(self): return self._ccHalf
+    def setCcHalf(self, ccHalf):
+        if ccHalf is None:
+            self._ccHalf = None
+        else:
+            self._ccHalf = float(ccHalf)
+    def delCcHalf(self): self._ccHalf = None
+    ccHalf = property(getCcHalf, setCcHalf, delCcHalf, "Property for ccHalf")
+    def export(self, outfile, level, name_='AutoProcScalingStatistics'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='AutoProcScalingStatistics'):
+        pass
+        if self._autoProcScalingStatisticsId is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<autoProcScalingStatisticsId>%d</autoProcScalingStatisticsId>\n' % self._autoProcScalingStatisticsId))
+        if self._scalingStatisticsType is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<scalingStatisticsType>%s</scalingStatisticsType>\n' % self._scalingStatisticsType))
+        else:
+            warnEmptyAttribute("scalingStatisticsType", "string")
+        if self._comments is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<comments>%s</comments>\n' % self._comments))
+        else:
+            warnEmptyAttribute("comments", "string")
+        if self._resolutionLimitLow is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<resolutionLimitLow>%e</resolutionLimitLow>\n' % self._resolutionLimitLow))
+        else:
+            warnEmptyAttribute("resolutionLimitLow", "float")
+        if self._resolutionLimitHigh is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<resolutionLimitHigh>%e</resolutionLimitHigh>\n' % self._resolutionLimitHigh))
+        else:
+            warnEmptyAttribute("resolutionLimitHigh", "float")
+        if self._rMerge is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<rMerge>%e</rMerge>\n' % self._rMerge))
+        else:
+            warnEmptyAttribute("rMerge", "float")
+        if self._rmeasWithinIplusIminus is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<rmeasWithinIplusIminus>%e</rmeasWithinIplusIminus>\n' % self._rmeasWithinIplusIminus))
+        else:
+            warnEmptyAttribute("rmeasWithinIplusIminus", "float")
+        if self._rmeasAllIplusIminus is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<rmeasAllIplusIminus>%e</rmeasAllIplusIminus>\n' % self._rmeasAllIplusIminus))
+        else:
+            warnEmptyAttribute("rmeasAllIplusIminus", "float")
+        if self._rpimWithinIplusIminus is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<rpimWithinIplusIminus>%e</rpimWithinIplusIminus>\n' % self._rpimWithinIplusIminus))
+        else:
+            warnEmptyAttribute("rpimWithinIplusIminus", "float")
+        if self._rpimAllIplusIminus is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<rpimAllIplusIminus>%e</rpimAllIplusIminus>\n' % self._rpimAllIplusIminus))
+        else:
+            warnEmptyAttribute("rpimAllIplusIminus", "float")
+        if self._fractionalPartialBias is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<fractionalPartialBias>%e</fractionalPartialBias>\n' % self._fractionalPartialBias))
+        else:
+            warnEmptyAttribute("fractionalPartialBias", "float")
+        if self._nTotalObservations is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<nTotalObservations>%d</nTotalObservations>\n' % self._nTotalObservations))
+        else:
+            warnEmptyAttribute("nTotalObservations", "integer")
+        if self._ntotalUniqueObservations is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<ntotalUniqueObservations>%d</ntotalUniqueObservations>\n' % self._ntotalUniqueObservations))
+        else:
+            warnEmptyAttribute("ntotalUniqueObservations", "integer")
+        if self._meanIOverSigI is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<meanIOverSigI>%e</meanIOverSigI>\n' % self._meanIOverSigI))
+        else:
+            warnEmptyAttribute("meanIOverSigI", "float")
+        if self._completeness is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<completeness>%e</completeness>\n' % self._completeness))
+        else:
+            warnEmptyAttribute("completeness", "float")
+        if self._multiplicity is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<multiplicity>%e</multiplicity>\n' % self._multiplicity))
+        else:
+            warnEmptyAttribute("multiplicity", "float")
+        if self._anomalousCompleteness is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<anomalousCompleteness>%e</anomalousCompleteness>\n' % self._anomalousCompleteness))
+        else:
+            warnEmptyAttribute("anomalousCompleteness", "float")
+        if self._anomalousMultiplicity is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<anomalousMultiplicity>%e</anomalousMultiplicity>\n' % self._anomalousMultiplicity))
+        else:
+            warnEmptyAttribute("anomalousMultiplicity", "float")
+        if self._recordTimeStamp is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<recordTimeStamp>%s</recordTimeStamp>\n' % self._recordTimeStamp))
+        else:
+            warnEmptyAttribute("recordTimeStamp", "string")
+        if self._anomalous is not None:
+            showIndent(outfile, level)
+            if self._anomalous:
+                outfile.write(unicode('<anomalous>true</anomalous>\n'))
+            else:
+                outfile.write(unicode('<anomalous>false</anomalous>\n'))
+        else:
+            warnEmptyAttribute("anomalous", "boolean")
+        if self._ccHalf is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<ccHalf>%e</ccHalf>\n' % self._ccHalf))
+        else:
+            warnEmptyAttribute("ccHalf", "float")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'autoProcScalingStatisticsId':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    ival_ = int(sval_)
+                except ValueError:
+                    raise ValueError('requires integer -- %s' % child_.toxml())
+                self._autoProcScalingStatisticsId = ival_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'scalingStatisticsType':
+            value_ = ''
+            for text__content_ in child_.childNodes:
+                if text__content_.nodeValue is not None:
+                    value_ += text__content_.nodeValue
+            self._scalingStatisticsType = value_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'comments':
+            value_ = ''
+            for text__content_ in child_.childNodes:
+                if text__content_.nodeValue is not None:
+                    value_ += text__content_.nodeValue
+            self._comments = value_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'resolutionLimitLow':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._resolutionLimitLow = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'resolutionLimitHigh':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._resolutionLimitHigh = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rMerge':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._rMerge = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rmeasWithinIplusIminus':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._rmeasWithinIplusIminus = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rmeasAllIplusIminus':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._rmeasAllIplusIminus = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rpimWithinIplusIminus':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._rpimWithinIplusIminus = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rpimAllIplusIminus':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._rpimAllIplusIminus = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'fractionalPartialBias':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._fractionalPartialBias = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'nTotalObservations':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    ival_ = int(sval_)
+                except ValueError:
+                    raise ValueError('requires integer -- %s' % child_.toxml())
+                self._nTotalObservations = ival_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'ntotalUniqueObservations':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    ival_ = int(sval_)
+                except ValueError:
+                    raise ValueError('requires integer -- %s' % child_.toxml())
+                self._ntotalUniqueObservations = ival_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'meanIOverSigI':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._meanIOverSigI = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'completeness':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._completeness = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'multiplicity':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._multiplicity = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'anomalousCompleteness':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._anomalousCompleteness = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'anomalousMultiplicity':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._anomalousMultiplicity = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'recordTimeStamp':
+            value_ = ''
+            for text__content_ in child_.childNodes:
+                if text__content_.nodeValue is not None:
+                    value_ += text__content_.nodeValue
+            self._recordTimeStamp = value_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'anomalous':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                if sval_ in ('True', 'true', '1'):
+                    ival_ = True
+                elif sval_ in ('False', 'false', '0'):
+                    ival_ = False
+                else:
+                    raise ValueError('requires boolean -- %s' % child_.toxml())
+                self._anomalous = ival_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'ccHalf':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._ccHalf = fval_
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="AutoProcScalingStatistics" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='AutoProcScalingStatistics' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class AutoProcScalingStatistics is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return AutoProcScalingStatistics.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = AutoProcScalingStatistics()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="AutoProcScalingStatistics" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = AutoProcScalingStatistics()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class AutoProcScalingStatistics
+
+
+class AutoProcStatus(object):
+    def __init__(self, bltimeStamp=None, comments=None, status=None, step=None, autoProcIntegrationId=None, autoProcStatusId=None):
+        if autoProcStatusId is None:
+            self._autoProcStatusId = None
+        else:
+            self._autoProcStatusId = int(autoProcStatusId)
+        if autoProcIntegrationId is None:
+            self._autoProcIntegrationId = None
+        else:
+            self._autoProcIntegrationId = int(autoProcIntegrationId)
+        self._step = str(step)
+        self._status = str(status)
+        self._comments = str(comments)
+        self._bltimeStamp = str(bltimeStamp)
+    # Methods and properties for the 'autoProcStatusId' attribute
+    def getAutoProcStatusId(self): return self._autoProcStatusId
+    def setAutoProcStatusId(self, autoProcStatusId):
+        if autoProcStatusId is None:
+            self._autoProcStatusId = None
+        else:
+            self._autoProcStatusId = int(autoProcStatusId)
+    def delAutoProcStatusId(self): self._autoProcStatusId = None
+    autoProcStatusId = property(getAutoProcStatusId, setAutoProcStatusId, delAutoProcStatusId, "Property for autoProcStatusId")
+    # Methods and properties for the 'autoProcIntegrationId' attribute
+    def getAutoProcIntegrationId(self): return self._autoProcIntegrationId
+    def setAutoProcIntegrationId(self, autoProcIntegrationId):
+        if autoProcIntegrationId is None:
+            self._autoProcIntegrationId = None
+        else:
+            self._autoProcIntegrationId = int(autoProcIntegrationId)
+    def delAutoProcIntegrationId(self): self._autoProcIntegrationId = None
+    autoProcIntegrationId = property(getAutoProcIntegrationId, setAutoProcIntegrationId, delAutoProcIntegrationId, "Property for autoProcIntegrationId")
+    # Methods and properties for the 'step' attribute
+    def getStep(self): return self._step
+    def setStep(self, step):
+        self._step = str(step)
+    def delStep(self): self._step = None
+    step = property(getStep, setStep, delStep, "Property for step")
+    # Methods and properties for the 'status' attribute
+    def getStatus(self): return self._status
+    def setStatus(self, status):
+        self._status = str(status)
+    def delStatus(self): self._status = None
+    status = property(getStatus, setStatus, delStatus, "Property for status")
+    # Methods and properties for the 'comments' attribute
+    def getComments(self): return self._comments
+    def setComments(self, comments):
+        self._comments = str(comments)
+    def delComments(self): self._comments = None
+    comments = property(getComments, setComments, delComments, "Property for comments")
+    # Methods and properties for the 'bltimeStamp' attribute
+    def getBltimeStamp(self): return self._bltimeStamp
+    def setBltimeStamp(self, bltimeStamp):
+        self._bltimeStamp = str(bltimeStamp)
+    def delBltimeStamp(self): self._bltimeStamp = None
+    bltimeStamp = property(getBltimeStamp, setBltimeStamp, delBltimeStamp, "Property for bltimeStamp")
+    def export(self, outfile, level, name_='AutoProcStatus'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='AutoProcStatus'):
+        pass
+        if self._autoProcStatusId is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<autoProcStatusId>%d</autoProcStatusId>\n' % self._autoProcStatusId))
+        if self._autoProcIntegrationId is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<autoProcIntegrationId>%d</autoProcIntegrationId>\n' % self._autoProcIntegrationId))
+        else:
+            warnEmptyAttribute("autoProcIntegrationId", "integer")
+        if self._step is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<step>%s</step>\n' % self._step))
+        else:
+            warnEmptyAttribute("step", "string")
+        if self._status is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<status>%s</status>\n' % self._status))
+        else:
+            warnEmptyAttribute("status", "string")
+        if self._comments is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<comments>%s</comments>\n' % self._comments))
+        else:
+            warnEmptyAttribute("comments", "string")
+        if self._bltimeStamp is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<bltimeStamp>%s</bltimeStamp>\n' % self._bltimeStamp))
+        else:
+            warnEmptyAttribute("bltimeStamp", "string")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'autoProcStatusId':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    ival_ = int(sval_)
+                except ValueError:
+                    raise ValueError('requires integer -- %s' % child_.toxml())
+                self._autoProcStatusId = ival_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'autoProcIntegrationId':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    ival_ = int(sval_)
+                except ValueError:
+                    raise ValueError('requires integer -- %s' % child_.toxml())
+                self._autoProcIntegrationId = ival_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'step':
+            value_ = ''
+            for text__content_ in child_.childNodes:
+                if text__content_.nodeValue is not None:
+                    value_ += text__content_.nodeValue
+            self._step = value_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'status':
+            value_ = ''
+            for text__content_ in child_.childNodes:
+                if text__content_.nodeValue is not None:
+                    value_ += text__content_.nodeValue
+            self._status = value_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'comments':
+            value_ = ''
+            for text__content_ in child_.childNodes:
+                if text__content_.nodeValue is not None:
+                    value_ += text__content_.nodeValue
+            self._comments = value_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'bltimeStamp':
+            value_ = ''
+            for text__content_ in child_.childNodes:
+                if text__content_.nodeValue is not None:
+                    value_ += text__content_.nodeValue
+            self._bltimeStamp = value_
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="AutoProcStatus" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='AutoProcStatus' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class AutoProcStatus is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return AutoProcStatus.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = AutoProcStatus()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="AutoProcStatus" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = AutoProcStatus()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class AutoProcStatus
+
+
+class Image(object):
+    def __init__(self, dataCollectionId=None):
+        if dataCollectionId is None:
+            self._dataCollectionId = None
+        else:
+            self._dataCollectionId = int(dataCollectionId)
+    # Methods and properties for the 'dataCollectionId' attribute
+    def getDataCollectionId(self): return self._dataCollectionId
+    def setDataCollectionId(self, dataCollectionId):
+        if dataCollectionId is None:
+            self._dataCollectionId = None
+        else:
+            self._dataCollectionId = int(dataCollectionId)
+    def delDataCollectionId(self): self._dataCollectionId = None
+    dataCollectionId = property(getDataCollectionId, setDataCollectionId, delDataCollectionId, "Property for dataCollectionId")
+    def export(self, outfile, level, name_='Image'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='Image'):
+        pass
+        if self._dataCollectionId is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<dataCollectionId>%d</dataCollectionId>\n' % self._dataCollectionId))
+        else:
+            warnEmptyAttribute("dataCollectionId", "integer")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'dataCollectionId':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    ival_ = int(sval_)
+                except ValueError:
+                    raise ValueError('requires integer -- %s' % child_.toxml())
+                self._dataCollectionId = ival_
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="Image" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='Image' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class Image is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return Image.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = Image()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="Image" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = Image()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class Image
+
+
 class AutoProcIntegrationContainer(object):
     def __init__(self, AutoProcIntegration=None, Image=None):
         if Image is None:
@@ -1880,605 +2752,6 @@ class AutoProcScaling(object):
 # end class AutoProcScaling
 
 
-class AutoProcScalingStatistics(object):
-    def __init__(self, ccHalf=None, anomalous=None, recordTimeStamp=None, anomalousMultiplicity=None, anomalousCompleteness=None, multiplicity=None, completeness=None, meanIOverSigI=None, ntotalUniqueObservations=None, nTotalObservations=None, fractionalPartialBias=None, rpimAllIplusIminus=None, rpimWithinIplusIminus=None, rmeasAllIplusIminus=None, rmeasWithinIplusIminus=None, rMerge=None, resolutionLimitHigh=None, resolutionLimitLow=None, comments=None, scalingStatisticsType=None, autoProcScalingStatisticsId=None):
-        if autoProcScalingStatisticsId is None:
-            self._autoProcScalingStatisticsId = None
-        else:
-            self._autoProcScalingStatisticsId = int(autoProcScalingStatisticsId)
-        self._scalingStatisticsType = str(scalingStatisticsType)
-        self._comments = str(comments)
-        if resolutionLimitLow is None:
-            self._resolutionLimitLow = None
-        else:
-            self._resolutionLimitLow = float(resolutionLimitLow)
-        if resolutionLimitHigh is None:
-            self._resolutionLimitHigh = None
-        else:
-            self._resolutionLimitHigh = float(resolutionLimitHigh)
-        if rMerge is None:
-            self._rMerge = None
-        else:
-            self._rMerge = float(rMerge)
-        if rmeasWithinIplusIminus is None:
-            self._rmeasWithinIplusIminus = None
-        else:
-            self._rmeasWithinIplusIminus = float(rmeasWithinIplusIminus)
-        if rmeasAllIplusIminus is None:
-            self._rmeasAllIplusIminus = None
-        else:
-            self._rmeasAllIplusIminus = float(rmeasAllIplusIminus)
-        if rpimWithinIplusIminus is None:
-            self._rpimWithinIplusIminus = None
-        else:
-            self._rpimWithinIplusIminus = float(rpimWithinIplusIminus)
-        if rpimAllIplusIminus is None:
-            self._rpimAllIplusIminus = None
-        else:
-            self._rpimAllIplusIminus = float(rpimAllIplusIminus)
-        if fractionalPartialBias is None:
-            self._fractionalPartialBias = None
-        else:
-            self._fractionalPartialBias = float(fractionalPartialBias)
-        if nTotalObservations is None:
-            self._nTotalObservations = None
-        else:
-            self._nTotalObservations = int(nTotalObservations)
-        if ntotalUniqueObservations is None:
-            self._ntotalUniqueObservations = None
-        else:
-            self._ntotalUniqueObservations = int(ntotalUniqueObservations)
-        if meanIOverSigI is None:
-            self._meanIOverSigI = None
-        else:
-            self._meanIOverSigI = float(meanIOverSigI)
-        if completeness is None:
-            self._completeness = None
-        else:
-            self._completeness = float(completeness)
-        if multiplicity is None:
-            self._multiplicity = None
-        else:
-            self._multiplicity = float(multiplicity)
-        if anomalousCompleteness is None:
-            self._anomalousCompleteness = None
-        else:
-            self._anomalousCompleteness = float(anomalousCompleteness)
-        if anomalousMultiplicity is None:
-            self._anomalousMultiplicity = None
-        else:
-            self._anomalousMultiplicity = float(anomalousMultiplicity)
-        self._recordTimeStamp = str(recordTimeStamp)
-        self._anomalous = bool(anomalous)
-        if ccHalf is None:
-            self._ccHalf = None
-        else:
-            self._ccHalf = float(ccHalf)
-    # Methods and properties for the 'autoProcScalingStatisticsId' attribute
-    def getAutoProcScalingStatisticsId(self): return self._autoProcScalingStatisticsId
-    def setAutoProcScalingStatisticsId(self, autoProcScalingStatisticsId):
-        if autoProcScalingStatisticsId is None:
-            self._autoProcScalingStatisticsId = None
-        else:
-            self._autoProcScalingStatisticsId = int(autoProcScalingStatisticsId)
-    def delAutoProcScalingStatisticsId(self): self._autoProcScalingStatisticsId = None
-    autoProcScalingStatisticsId = property(getAutoProcScalingStatisticsId, setAutoProcScalingStatisticsId, delAutoProcScalingStatisticsId, "Property for autoProcScalingStatisticsId")
-    # Methods and properties for the 'scalingStatisticsType' attribute
-    def getScalingStatisticsType(self): return self._scalingStatisticsType
-    def setScalingStatisticsType(self, scalingStatisticsType):
-        self._scalingStatisticsType = str(scalingStatisticsType)
-    def delScalingStatisticsType(self): self._scalingStatisticsType = None
-    scalingStatisticsType = property(getScalingStatisticsType, setScalingStatisticsType, delScalingStatisticsType, "Property for scalingStatisticsType")
-    # Methods and properties for the 'comments' attribute
-    def getComments(self): return self._comments
-    def setComments(self, comments):
-        self._comments = str(comments)
-    def delComments(self): self._comments = None
-    comments = property(getComments, setComments, delComments, "Property for comments")
-    # Methods and properties for the 'resolutionLimitLow' attribute
-    def getResolutionLimitLow(self): return self._resolutionLimitLow
-    def setResolutionLimitLow(self, resolutionLimitLow):
-        if resolutionLimitLow is None:
-            self._resolutionLimitLow = None
-        else:
-            self._resolutionLimitLow = float(resolutionLimitLow)
-    def delResolutionLimitLow(self): self._resolutionLimitLow = None
-    resolutionLimitLow = property(getResolutionLimitLow, setResolutionLimitLow, delResolutionLimitLow, "Property for resolutionLimitLow")
-    # Methods and properties for the 'resolutionLimitHigh' attribute
-    def getResolutionLimitHigh(self): return self._resolutionLimitHigh
-    def setResolutionLimitHigh(self, resolutionLimitHigh):
-        if resolutionLimitHigh is None:
-            self._resolutionLimitHigh = None
-        else:
-            self._resolutionLimitHigh = float(resolutionLimitHigh)
-    def delResolutionLimitHigh(self): self._resolutionLimitHigh = None
-    resolutionLimitHigh = property(getResolutionLimitHigh, setResolutionLimitHigh, delResolutionLimitHigh, "Property for resolutionLimitHigh")
-    # Methods and properties for the 'rMerge' attribute
-    def getRMerge(self): return self._rMerge
-    def setRMerge(self, rMerge):
-        if rMerge is None:
-            self._rMerge = None
-        else:
-            self._rMerge = float(rMerge)
-    def delRMerge(self): self._rMerge = None
-    rMerge = property(getRMerge, setRMerge, delRMerge, "Property for rMerge")
-    # Methods and properties for the 'rmeasWithinIplusIminus' attribute
-    def getRmeasWithinIplusIminus(self): return self._rmeasWithinIplusIminus
-    def setRmeasWithinIplusIminus(self, rmeasWithinIplusIminus):
-        if rmeasWithinIplusIminus is None:
-            self._rmeasWithinIplusIminus = None
-        else:
-            self._rmeasWithinIplusIminus = float(rmeasWithinIplusIminus)
-    def delRmeasWithinIplusIminus(self): self._rmeasWithinIplusIminus = None
-    rmeasWithinIplusIminus = property(getRmeasWithinIplusIminus, setRmeasWithinIplusIminus, delRmeasWithinIplusIminus, "Property for rmeasWithinIplusIminus")
-    # Methods and properties for the 'rmeasAllIplusIminus' attribute
-    def getRmeasAllIplusIminus(self): return self._rmeasAllIplusIminus
-    def setRmeasAllIplusIminus(self, rmeasAllIplusIminus):
-        if rmeasAllIplusIminus is None:
-            self._rmeasAllIplusIminus = None
-        else:
-            self._rmeasAllIplusIminus = float(rmeasAllIplusIminus)
-    def delRmeasAllIplusIminus(self): self._rmeasAllIplusIminus = None
-    rmeasAllIplusIminus = property(getRmeasAllIplusIminus, setRmeasAllIplusIminus, delRmeasAllIplusIminus, "Property for rmeasAllIplusIminus")
-    # Methods and properties for the 'rpimWithinIplusIminus' attribute
-    def getRpimWithinIplusIminus(self): return self._rpimWithinIplusIminus
-    def setRpimWithinIplusIminus(self, rpimWithinIplusIminus):
-        if rpimWithinIplusIminus is None:
-            self._rpimWithinIplusIminus = None
-        else:
-            self._rpimWithinIplusIminus = float(rpimWithinIplusIminus)
-    def delRpimWithinIplusIminus(self): self._rpimWithinIplusIminus = None
-    rpimWithinIplusIminus = property(getRpimWithinIplusIminus, setRpimWithinIplusIminus, delRpimWithinIplusIminus, "Property for rpimWithinIplusIminus")
-    # Methods and properties for the 'rpimAllIplusIminus' attribute
-    def getRpimAllIplusIminus(self): return self._rpimAllIplusIminus
-    def setRpimAllIplusIminus(self, rpimAllIplusIminus):
-        if rpimAllIplusIminus is None:
-            self._rpimAllIplusIminus = None
-        else:
-            self._rpimAllIplusIminus = float(rpimAllIplusIminus)
-    def delRpimAllIplusIminus(self): self._rpimAllIplusIminus = None
-    rpimAllIplusIminus = property(getRpimAllIplusIminus, setRpimAllIplusIminus, delRpimAllIplusIminus, "Property for rpimAllIplusIminus")
-    # Methods and properties for the 'fractionalPartialBias' attribute
-    def getFractionalPartialBias(self): return self._fractionalPartialBias
-    def setFractionalPartialBias(self, fractionalPartialBias):
-        if fractionalPartialBias is None:
-            self._fractionalPartialBias = None
-        else:
-            self._fractionalPartialBias = float(fractionalPartialBias)
-    def delFractionalPartialBias(self): self._fractionalPartialBias = None
-    fractionalPartialBias = property(getFractionalPartialBias, setFractionalPartialBias, delFractionalPartialBias, "Property for fractionalPartialBias")
-    # Methods and properties for the 'nTotalObservations' attribute
-    def getNTotalObservations(self): return self._nTotalObservations
-    def setNTotalObservations(self, nTotalObservations):
-        if nTotalObservations is None:
-            self._nTotalObservations = None
-        else:
-            self._nTotalObservations = int(nTotalObservations)
-    def delNTotalObservations(self): self._nTotalObservations = None
-    nTotalObservations = property(getNTotalObservations, setNTotalObservations, delNTotalObservations, "Property for nTotalObservations")
-    # Methods and properties for the 'ntotalUniqueObservations' attribute
-    def getNtotalUniqueObservations(self): return self._ntotalUniqueObservations
-    def setNtotalUniqueObservations(self, ntotalUniqueObservations):
-        if ntotalUniqueObservations is None:
-            self._ntotalUniqueObservations = None
-        else:
-            self._ntotalUniqueObservations = int(ntotalUniqueObservations)
-    def delNtotalUniqueObservations(self): self._ntotalUniqueObservations = None
-    ntotalUniqueObservations = property(getNtotalUniqueObservations, setNtotalUniqueObservations, delNtotalUniqueObservations, "Property for ntotalUniqueObservations")
-    # Methods and properties for the 'meanIOverSigI' attribute
-    def getMeanIOverSigI(self): return self._meanIOverSigI
-    def setMeanIOverSigI(self, meanIOverSigI):
-        if meanIOverSigI is None:
-            self._meanIOverSigI = None
-        else:
-            self._meanIOverSigI = float(meanIOverSigI)
-    def delMeanIOverSigI(self): self._meanIOverSigI = None
-    meanIOverSigI = property(getMeanIOverSigI, setMeanIOverSigI, delMeanIOverSigI, "Property for meanIOverSigI")
-    # Methods and properties for the 'completeness' attribute
-    def getCompleteness(self): return self._completeness
-    def setCompleteness(self, completeness):
-        if completeness is None:
-            self._completeness = None
-        else:
-            self._completeness = float(completeness)
-    def delCompleteness(self): self._completeness = None
-    completeness = property(getCompleteness, setCompleteness, delCompleteness, "Property for completeness")
-    # Methods and properties for the 'multiplicity' attribute
-    def getMultiplicity(self): return self._multiplicity
-    def setMultiplicity(self, multiplicity):
-        if multiplicity is None:
-            self._multiplicity = None
-        else:
-            self._multiplicity = float(multiplicity)
-    def delMultiplicity(self): self._multiplicity = None
-    multiplicity = property(getMultiplicity, setMultiplicity, delMultiplicity, "Property for multiplicity")
-    # Methods and properties for the 'anomalousCompleteness' attribute
-    def getAnomalousCompleteness(self): return self._anomalousCompleteness
-    def setAnomalousCompleteness(self, anomalousCompleteness):
-        if anomalousCompleteness is None:
-            self._anomalousCompleteness = None
-        else:
-            self._anomalousCompleteness = float(anomalousCompleteness)
-    def delAnomalousCompleteness(self): self._anomalousCompleteness = None
-    anomalousCompleteness = property(getAnomalousCompleteness, setAnomalousCompleteness, delAnomalousCompleteness, "Property for anomalousCompleteness")
-    # Methods and properties for the 'anomalousMultiplicity' attribute
-    def getAnomalousMultiplicity(self): return self._anomalousMultiplicity
-    def setAnomalousMultiplicity(self, anomalousMultiplicity):
-        if anomalousMultiplicity is None:
-            self._anomalousMultiplicity = None
-        else:
-            self._anomalousMultiplicity = float(anomalousMultiplicity)
-    def delAnomalousMultiplicity(self): self._anomalousMultiplicity = None
-    anomalousMultiplicity = property(getAnomalousMultiplicity, setAnomalousMultiplicity, delAnomalousMultiplicity, "Property for anomalousMultiplicity")
-    # Methods and properties for the 'recordTimeStamp' attribute
-    def getRecordTimeStamp(self): return self._recordTimeStamp
-    def setRecordTimeStamp(self, recordTimeStamp):
-        self._recordTimeStamp = str(recordTimeStamp)
-    def delRecordTimeStamp(self): self._recordTimeStamp = None
-    recordTimeStamp = property(getRecordTimeStamp, setRecordTimeStamp, delRecordTimeStamp, "Property for recordTimeStamp")
-    # Methods and properties for the 'anomalous' attribute
-    def getAnomalous(self): return self._anomalous
-    def setAnomalous(self, anomalous):
-        self._anomalous = bool(anomalous)
-    def delAnomalous(self): self._anomalous = None
-    anomalous = property(getAnomalous, setAnomalous, delAnomalous, "Property for anomalous")
-    # Methods and properties for the 'ccHalf' attribute
-    def getCcHalf(self): return self._ccHalf
-    def setCcHalf(self, ccHalf):
-        if ccHalf is None:
-            self._ccHalf = None
-        else:
-            self._ccHalf = float(ccHalf)
-    def delCcHalf(self): self._ccHalf = None
-    ccHalf = property(getCcHalf, setCcHalf, delCcHalf, "Property for ccHalf")
-    def export(self, outfile, level, name_='AutoProcScalingStatistics'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='AutoProcScalingStatistics'):
-        pass
-        if self._autoProcScalingStatisticsId is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<autoProcScalingStatisticsId>%d</autoProcScalingStatisticsId>\n' % self._autoProcScalingStatisticsId))
-        if self._scalingStatisticsType is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<scalingStatisticsType>%s</scalingStatisticsType>\n' % self._scalingStatisticsType))
-        else:
-            warnEmptyAttribute("scalingStatisticsType", "string")
-        if self._comments is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<comments>%s</comments>\n' % self._comments))
-        else:
-            warnEmptyAttribute("comments", "string")
-        if self._resolutionLimitLow is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<resolutionLimitLow>%e</resolutionLimitLow>\n' % self._resolutionLimitLow))
-        else:
-            warnEmptyAttribute("resolutionLimitLow", "float")
-        if self._resolutionLimitHigh is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<resolutionLimitHigh>%e</resolutionLimitHigh>\n' % self._resolutionLimitHigh))
-        else:
-            warnEmptyAttribute("resolutionLimitHigh", "float")
-        if self._rMerge is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<rMerge>%e</rMerge>\n' % self._rMerge))
-        else:
-            warnEmptyAttribute("rMerge", "float")
-        if self._rmeasWithinIplusIminus is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<rmeasWithinIplusIminus>%e</rmeasWithinIplusIminus>\n' % self._rmeasWithinIplusIminus))
-        else:
-            warnEmptyAttribute("rmeasWithinIplusIminus", "float")
-        if self._rmeasAllIplusIminus is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<rmeasAllIplusIminus>%e</rmeasAllIplusIminus>\n' % self._rmeasAllIplusIminus))
-        else:
-            warnEmptyAttribute("rmeasAllIplusIminus", "float")
-        if self._rpimWithinIplusIminus is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<rpimWithinIplusIminus>%e</rpimWithinIplusIminus>\n' % self._rpimWithinIplusIminus))
-        else:
-            warnEmptyAttribute("rpimWithinIplusIminus", "float")
-        if self._rpimAllIplusIminus is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<rpimAllIplusIminus>%e</rpimAllIplusIminus>\n' % self._rpimAllIplusIminus))
-        else:
-            warnEmptyAttribute("rpimAllIplusIminus", "float")
-        if self._fractionalPartialBias is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<fractionalPartialBias>%e</fractionalPartialBias>\n' % self._fractionalPartialBias))
-        else:
-            warnEmptyAttribute("fractionalPartialBias", "float")
-        if self._nTotalObservations is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<nTotalObservations>%d</nTotalObservations>\n' % self._nTotalObservations))
-        else:
-            warnEmptyAttribute("nTotalObservations", "integer")
-        if self._ntotalUniqueObservations is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<ntotalUniqueObservations>%d</ntotalUniqueObservations>\n' % self._ntotalUniqueObservations))
-        else:
-            warnEmptyAttribute("ntotalUniqueObservations", "integer")
-        if self._meanIOverSigI is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<meanIOverSigI>%e</meanIOverSigI>\n' % self._meanIOverSigI))
-        else:
-            warnEmptyAttribute("meanIOverSigI", "float")
-        if self._completeness is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<completeness>%e</completeness>\n' % self._completeness))
-        else:
-            warnEmptyAttribute("completeness", "float")
-        if self._multiplicity is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<multiplicity>%e</multiplicity>\n' % self._multiplicity))
-        else:
-            warnEmptyAttribute("multiplicity", "float")
-        if self._anomalousCompleteness is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<anomalousCompleteness>%e</anomalousCompleteness>\n' % self._anomalousCompleteness))
-        else:
-            warnEmptyAttribute("anomalousCompleteness", "float")
-        if self._anomalousMultiplicity is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<anomalousMultiplicity>%e</anomalousMultiplicity>\n' % self._anomalousMultiplicity))
-        else:
-            warnEmptyAttribute("anomalousMultiplicity", "float")
-        if self._recordTimeStamp is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<recordTimeStamp>%s</recordTimeStamp>\n' % self._recordTimeStamp))
-        else:
-            warnEmptyAttribute("recordTimeStamp", "string")
-        if self._anomalous is not None:
-            showIndent(outfile, level)
-            if self._anomalous:
-                outfile.write(unicode('<anomalous>true</anomalous>\n'))
-            else:
-                outfile.write(unicode('<anomalous>false</anomalous>\n'))
-        else:
-            warnEmptyAttribute("anomalous", "boolean")
-        if self._ccHalf is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<ccHalf>%e</ccHalf>\n' % self._ccHalf))
-        else:
-            warnEmptyAttribute("ccHalf", "float")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'autoProcScalingStatisticsId':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._autoProcScalingStatisticsId = ival_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'scalingStatisticsType':
-            value_ = ''
-            for text__content_ in child_.childNodes:
-                if text__content_.nodeValue is not None:
-                    value_ += text__content_.nodeValue
-            self._scalingStatisticsType = value_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'comments':
-            value_ = ''
-            for text__content_ in child_.childNodes:
-                if text__content_.nodeValue is not None:
-                    value_ += text__content_.nodeValue
-            self._comments = value_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'resolutionLimitLow':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._resolutionLimitLow = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'resolutionLimitHigh':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._resolutionLimitHigh = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rMerge':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._rMerge = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rmeasWithinIplusIminus':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._rmeasWithinIplusIminus = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rmeasAllIplusIminus':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._rmeasAllIplusIminus = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rpimWithinIplusIminus':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._rpimWithinIplusIminus = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rpimAllIplusIminus':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._rpimAllIplusIminus = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'fractionalPartialBias':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._fractionalPartialBias = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'nTotalObservations':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._nTotalObservations = ival_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'ntotalUniqueObservations':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._ntotalUniqueObservations = ival_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'meanIOverSigI':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._meanIOverSigI = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'completeness':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._completeness = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'multiplicity':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._multiplicity = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'anomalousCompleteness':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._anomalousCompleteness = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'anomalousMultiplicity':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._anomalousMultiplicity = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'recordTimeStamp':
-            value_ = ''
-            for text__content_ in child_.childNodes:
-                if text__content_.nodeValue is not None:
-                    value_ += text__content_.nodeValue
-            self._recordTimeStamp = value_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'anomalous':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                if sval_ in ('True', 'true', '1'):
-                    ival_ = True
-                elif sval_ in ('False', 'false', '0'):
-                    ival_ = False
-                else:
-                    raise ValueError('requires boolean -- %s' % child_.toxml())
-                self._anomalous = ival_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'ccHalf':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._ccHalf = fval_
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="AutoProcScalingStatistics" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='AutoProcScalingStatistics' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class AutoProcScalingStatistics is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return AutoProcScalingStatistics.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = AutoProcScalingStatistics()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="AutoProcScalingStatistics" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = AutoProcScalingStatistics()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class AutoProcScalingStatistics
-
-
 class AutoProcScalingContainer(object):
     def __init__(self, AutoProcIntegrationContainer=None, AutoProcScalingStatistics=None, AutoProcScaling=None):
         if AutoProcScaling is None:
@@ -2641,279 +2914,6 @@ class AutoProcScalingContainer(object):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class AutoProcScalingContainer
-
-
-class AutoProcStatus(object):
-    def __init__(self, bltimeStamp=None, comments=None, status=None, step=None, autoProcIntegrationId=None, autoProcStatusId=None):
-        if autoProcStatusId is None:
-            self._autoProcStatusId = None
-        else:
-            self._autoProcStatusId = int(autoProcStatusId)
-        if autoProcIntegrationId is None:
-            self._autoProcIntegrationId = None
-        else:
-            self._autoProcIntegrationId = int(autoProcIntegrationId)
-        self._step = str(step)
-        self._status = str(status)
-        self._comments = str(comments)
-        self._bltimeStamp = str(bltimeStamp)
-    # Methods and properties for the 'autoProcStatusId' attribute
-    def getAutoProcStatusId(self): return self._autoProcStatusId
-    def setAutoProcStatusId(self, autoProcStatusId):
-        if autoProcStatusId is None:
-            self._autoProcStatusId = None
-        else:
-            self._autoProcStatusId = int(autoProcStatusId)
-    def delAutoProcStatusId(self): self._autoProcStatusId = None
-    autoProcStatusId = property(getAutoProcStatusId, setAutoProcStatusId, delAutoProcStatusId, "Property for autoProcStatusId")
-    # Methods and properties for the 'autoProcIntegrationId' attribute
-    def getAutoProcIntegrationId(self): return self._autoProcIntegrationId
-    def setAutoProcIntegrationId(self, autoProcIntegrationId):
-        if autoProcIntegrationId is None:
-            self._autoProcIntegrationId = None
-        else:
-            self._autoProcIntegrationId = int(autoProcIntegrationId)
-    def delAutoProcIntegrationId(self): self._autoProcIntegrationId = None
-    autoProcIntegrationId = property(getAutoProcIntegrationId, setAutoProcIntegrationId, delAutoProcIntegrationId, "Property for autoProcIntegrationId")
-    # Methods and properties for the 'step' attribute
-    def getStep(self): return self._step
-    def setStep(self, step):
-        self._step = str(step)
-    def delStep(self): self._step = None
-    step = property(getStep, setStep, delStep, "Property for step")
-    # Methods and properties for the 'status' attribute
-    def getStatus(self): return self._status
-    def setStatus(self, status):
-        self._status = str(status)
-    def delStatus(self): self._status = None
-    status = property(getStatus, setStatus, delStatus, "Property for status")
-    # Methods and properties for the 'comments' attribute
-    def getComments(self): return self._comments
-    def setComments(self, comments):
-        self._comments = str(comments)
-    def delComments(self): self._comments = None
-    comments = property(getComments, setComments, delComments, "Property for comments")
-    # Methods and properties for the 'bltimeStamp' attribute
-    def getBltimeStamp(self): return self._bltimeStamp
-    def setBltimeStamp(self, bltimeStamp):
-        self._bltimeStamp = str(bltimeStamp)
-    def delBltimeStamp(self): self._bltimeStamp = None
-    bltimeStamp = property(getBltimeStamp, setBltimeStamp, delBltimeStamp, "Property for bltimeStamp")
-    def export(self, outfile, level, name_='AutoProcStatus'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='AutoProcStatus'):
-        pass
-        if self._autoProcStatusId is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<autoProcStatusId>%d</autoProcStatusId>\n' % self._autoProcStatusId))
-        if self._autoProcIntegrationId is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<autoProcIntegrationId>%d</autoProcIntegrationId>\n' % self._autoProcIntegrationId))
-        else:
-            warnEmptyAttribute("autoProcIntegrationId", "integer")
-        if self._step is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<step>%s</step>\n' % self._step))
-        else:
-            warnEmptyAttribute("step", "string")
-        if self._status is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<status>%s</status>\n' % self._status))
-        else:
-            warnEmptyAttribute("status", "string")
-        if self._comments is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<comments>%s</comments>\n' % self._comments))
-        else:
-            warnEmptyAttribute("comments", "string")
-        if self._bltimeStamp is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<bltimeStamp>%s</bltimeStamp>\n' % self._bltimeStamp))
-        else:
-            warnEmptyAttribute("bltimeStamp", "string")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'autoProcStatusId':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._autoProcStatusId = ival_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'autoProcIntegrationId':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._autoProcIntegrationId = ival_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'step':
-            value_ = ''
-            for text__content_ in child_.childNodes:
-                if text__content_.nodeValue is not None:
-                    value_ += text__content_.nodeValue
-            self._step = value_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'status':
-            value_ = ''
-            for text__content_ in child_.childNodes:
-                if text__content_.nodeValue is not None:
-                    value_ += text__content_.nodeValue
-            self._status = value_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'comments':
-            value_ = ''
-            for text__content_ in child_.childNodes:
-                if text__content_.nodeValue is not None:
-                    value_ += text__content_.nodeValue
-            self._comments = value_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'bltimeStamp':
-            value_ = ''
-            for text__content_ in child_.childNodes:
-                if text__content_.nodeValue is not None:
-                    value_ += text__content_.nodeValue
-            self._bltimeStamp = value_
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="AutoProcStatus" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='AutoProcStatus' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class AutoProcStatus is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return AutoProcStatus.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = AutoProcStatus()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="AutoProcStatus" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = AutoProcStatus()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class AutoProcStatus
-
-
-class Image(object):
-    def __init__(self, dataCollectionId=None):
-        if dataCollectionId is None:
-            self._dataCollectionId = None
-        else:
-            self._dataCollectionId = int(dataCollectionId)
-    # Methods and properties for the 'dataCollectionId' attribute
-    def getDataCollectionId(self): return self._dataCollectionId
-    def setDataCollectionId(self, dataCollectionId):
-        if dataCollectionId is None:
-            self._dataCollectionId = None
-        else:
-            self._dataCollectionId = int(dataCollectionId)
-    def delDataCollectionId(self): self._dataCollectionId = None
-    dataCollectionId = property(getDataCollectionId, setDataCollectionId, delDataCollectionId, "Property for dataCollectionId")
-    def export(self, outfile, level, name_='Image'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='Image'):
-        pass
-        if self._dataCollectionId is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<dataCollectionId>%d</dataCollectionId>\n' % self._dataCollectionId))
-        else:
-            warnEmptyAttribute("dataCollectionId", "integer")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'dataCollectionId':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._dataCollectionId = ival_
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="Image" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='Image' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class Image is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return Image.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = Image()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="Image" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = Image()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class Image
 
 
 class XSDataISPyBDataCollection(object):
@@ -8763,325 +8763,6 @@ class XSDataISPyBScreeningOutputLattice(XSData):
 # end class XSDataISPyBScreeningOutputLattice
 
 
-class XSDataISPyBScreeningStrategyContainer(XSData):
-    def __init__(self, screeningStrategyWedgeContainer=None, screeningStrategy=None):
-        XSData.__init__(self, )
-        if screeningStrategy is None:
-            self._screeningStrategy = None
-        elif screeningStrategy.__class__.__name__ == "XSDataISPyBScreeningStrategy":
-            self._screeningStrategy = screeningStrategy
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer constructor argument 'screeningStrategy' is not XSDataISPyBScreeningStrategy but %s" % self._screeningStrategy.__class__.__name__
-            raise BaseException(strMessage)
-        if screeningStrategyWedgeContainer is None:
-            self._screeningStrategyWedgeContainer = []
-        elif screeningStrategyWedgeContainer.__class__.__name__ == "list":
-            self._screeningStrategyWedgeContainer = screeningStrategyWedgeContainer
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer constructor argument 'screeningStrategyWedgeContainer' is not list but %s" % self._screeningStrategyWedgeContainer.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'screeningStrategy' attribute
-    def getScreeningStrategy(self): return self._screeningStrategy
-    def setScreeningStrategy(self, screeningStrategy):
-        if screeningStrategy is None:
-            self._screeningStrategy = None
-        elif screeningStrategy.__class__.__name__ == "XSDataISPyBScreeningStrategy":
-            self._screeningStrategy = screeningStrategy
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.setScreeningStrategy argument is not XSDataISPyBScreeningStrategy but %s" % screeningStrategy.__class__.__name__
-            raise BaseException(strMessage)
-    def delScreeningStrategy(self): self._screeningStrategy = None
-    screeningStrategy = property(getScreeningStrategy, setScreeningStrategy, delScreeningStrategy, "Property for screeningStrategy")
-    # Methods and properties for the 'screeningStrategyWedgeContainer' attribute
-    def getScreeningStrategyWedgeContainer(self): return self._screeningStrategyWedgeContainer
-    def setScreeningStrategyWedgeContainer(self, screeningStrategyWedgeContainer):
-        if screeningStrategyWedgeContainer is None:
-            self._screeningStrategyWedgeContainer = []
-        elif screeningStrategyWedgeContainer.__class__.__name__ == "list":
-            self._screeningStrategyWedgeContainer = screeningStrategyWedgeContainer
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.setScreeningStrategyWedgeContainer argument is not list but %s" % screeningStrategyWedgeContainer.__class__.__name__
-            raise BaseException(strMessage)
-    def delScreeningStrategyWedgeContainer(self): self._screeningStrategyWedgeContainer = None
-    screeningStrategyWedgeContainer = property(getScreeningStrategyWedgeContainer, setScreeningStrategyWedgeContainer, delScreeningStrategyWedgeContainer, "Property for screeningStrategyWedgeContainer")
-    def addScreeningStrategyWedgeContainer(self, value):
-        if value is None:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataISPyBScreeningStrategyWedgeContainer":
-            self._screeningStrategyWedgeContainer.append(value)
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer argument is not XSDataISPyBScreeningStrategyWedgeContainer but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertScreeningStrategyWedgeContainer(self, index, value):
-        if index is None:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.insertScreeningStrategyWedgeContainer argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.insertScreeningStrategyWedgeContainer argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataISPyBScreeningStrategyWedgeContainer":
-            self._screeningStrategyWedgeContainer[index] = value
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer argument is not XSDataISPyBScreeningStrategyWedgeContainer but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def export(self, outfile, level, name_='XSDataISPyBScreeningStrategyContainer'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataISPyBScreeningStrategyContainer'):
-        XSData.exportChildren(self, outfile, level, name_)
-        if self._screeningStrategy is not None:
-            self.screeningStrategy.export(outfile, level, name_='screeningStrategy')
-        else:
-            warnEmptyAttribute("screeningStrategy", "XSDataISPyBScreeningStrategy")
-        for screeningStrategyWedgeContainer_ in self.getScreeningStrategyWedgeContainer():
-            screeningStrategyWedgeContainer_.export(outfile, level, name_='screeningStrategyWedgeContainer')
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'screeningStrategy':
-            obj_ = XSDataISPyBScreeningStrategy()
-            obj_.build(child_)
-            self.setScreeningStrategy(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'screeningStrategyWedgeContainer':
-            obj_ = XSDataISPyBScreeningStrategyWedgeContainer()
-            obj_.build(child_)
-            self.screeningStrategyWedgeContainer.append(obj_)
-        XSData.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataISPyBScreeningStrategyContainer" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataISPyBScreeningStrategyContainer' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataISPyBScreeningStrategyContainer is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataISPyBScreeningStrategyContainer.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataISPyBScreeningStrategyContainer()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataISPyBScreeningStrategyContainer" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataISPyBScreeningStrategyContainer()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataISPyBScreeningStrategyContainer
-
-
-class XSDataISPyBScreeningOutputContainer(XSData):
-    def __init__(self, screeningStrategyContainer=None, screeningOutputLattice=None, screeningOutput=None):
-        XSData.__init__(self, )
-        if screeningOutput is None:
-            self._screeningOutput = None
-        elif screeningOutput.__class__.__name__ == "XSDataISPyBScreeningOutput":
-            self._screeningOutput = screeningOutput
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer constructor argument 'screeningOutput' is not XSDataISPyBScreeningOutput but %s" % self._screeningOutput.__class__.__name__
-            raise BaseException(strMessage)
-        if screeningOutputLattice is None:
-            self._screeningOutputLattice = []
-        elif screeningOutputLattice.__class__.__name__ == "list":
-            self._screeningOutputLattice = screeningOutputLattice
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer constructor argument 'screeningOutputLattice' is not list but %s" % self._screeningOutputLattice.__class__.__name__
-            raise BaseException(strMessage)
-        if screeningStrategyContainer is None:
-            self._screeningStrategyContainer = []
-        elif screeningStrategyContainer.__class__.__name__ == "list":
-            self._screeningStrategyContainer = screeningStrategyContainer
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer constructor argument 'screeningStrategyContainer' is not list but %s" % self._screeningStrategyContainer.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'screeningOutput' attribute
-    def getScreeningOutput(self): return self._screeningOutput
-    def setScreeningOutput(self, screeningOutput):
-        if screeningOutput is None:
-            self._screeningOutput = None
-        elif screeningOutput.__class__.__name__ == "XSDataISPyBScreeningOutput":
-            self._screeningOutput = screeningOutput
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.setScreeningOutput argument is not XSDataISPyBScreeningOutput but %s" % screeningOutput.__class__.__name__
-            raise BaseException(strMessage)
-    def delScreeningOutput(self): self._screeningOutput = None
-    screeningOutput = property(getScreeningOutput, setScreeningOutput, delScreeningOutput, "Property for screeningOutput")
-    # Methods and properties for the 'screeningOutputLattice' attribute
-    def getScreeningOutputLattice(self): return self._screeningOutputLattice
-    def setScreeningOutputLattice(self, screeningOutputLattice):
-        if screeningOutputLattice is None:
-            self._screeningOutputLattice = []
-        elif screeningOutputLattice.__class__.__name__ == "list":
-            self._screeningOutputLattice = screeningOutputLattice
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.setScreeningOutputLattice argument is not list but %s" % screeningOutputLattice.__class__.__name__
-            raise BaseException(strMessage)
-    def delScreeningOutputLattice(self): self._screeningOutputLattice = None
-    screeningOutputLattice = property(getScreeningOutputLattice, setScreeningOutputLattice, delScreeningOutputLattice, "Property for screeningOutputLattice")
-    def addScreeningOutputLattice(self, value):
-        if value is None:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.addScreeningOutputLattice argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataISPyBScreeningOutputLattice":
-            self._screeningOutputLattice.append(value)
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.addScreeningOutputLattice argument is not XSDataISPyBScreeningOutputLattice but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertScreeningOutputLattice(self, index, value):
-        if index is None:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.insertScreeningOutputLattice argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.insertScreeningOutputLattice argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataISPyBScreeningOutputLattice":
-            self._screeningOutputLattice[index] = value
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.addScreeningOutputLattice argument is not XSDataISPyBScreeningOutputLattice but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'screeningStrategyContainer' attribute
-    def getScreeningStrategyContainer(self): return self._screeningStrategyContainer
-    def setScreeningStrategyContainer(self, screeningStrategyContainer):
-        if screeningStrategyContainer is None:
-            self._screeningStrategyContainer = []
-        elif screeningStrategyContainer.__class__.__name__ == "list":
-            self._screeningStrategyContainer = screeningStrategyContainer
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.setScreeningStrategyContainer argument is not list but %s" % screeningStrategyContainer.__class__.__name__
-            raise BaseException(strMessage)
-    def delScreeningStrategyContainer(self): self._screeningStrategyContainer = None
-    screeningStrategyContainer = property(getScreeningStrategyContainer, setScreeningStrategyContainer, delScreeningStrategyContainer, "Property for screeningStrategyContainer")
-    def addScreeningStrategyContainer(self, value):
-        if value is None:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.addScreeningStrategyContainer argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataISPyBScreeningStrategyContainer":
-            self._screeningStrategyContainer.append(value)
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.addScreeningStrategyContainer argument is not XSDataISPyBScreeningStrategyContainer but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertScreeningStrategyContainer(self, index, value):
-        if index is None:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.insertScreeningStrategyContainer argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.insertScreeningStrategyContainer argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataISPyBScreeningStrategyContainer":
-            self._screeningStrategyContainer[index] = value
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.addScreeningStrategyContainer argument is not XSDataISPyBScreeningStrategyContainer but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def export(self, outfile, level, name_='XSDataISPyBScreeningOutputContainer'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataISPyBScreeningOutputContainer'):
-        XSData.exportChildren(self, outfile, level, name_)
-        if self._screeningOutput is not None:
-            self.screeningOutput.export(outfile, level, name_='screeningOutput')
-        else:
-            warnEmptyAttribute("screeningOutput", "XSDataISPyBScreeningOutput")
-        for screeningOutputLattice_ in self.getScreeningOutputLattice():
-            screeningOutputLattice_.export(outfile, level, name_='screeningOutputLattice')
-        for screeningStrategyContainer_ in self.getScreeningStrategyContainer():
-            screeningStrategyContainer_.export(outfile, level, name_='screeningStrategyContainer')
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'screeningOutput':
-            obj_ = XSDataISPyBScreeningOutput()
-            obj_.build(child_)
-            self.setScreeningOutput(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'screeningOutputLattice':
-            obj_ = XSDataISPyBScreeningOutputLattice()
-            obj_.build(child_)
-            self.screeningOutputLattice.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'screeningStrategyContainer':
-            obj_ = XSDataISPyBScreeningStrategyContainer()
-            obj_.build(child_)
-            self.screeningStrategyContainer.append(obj_)
-        XSData.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataISPyBScreeningOutputContainer" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataISPyBScreeningOutputContainer' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataISPyBScreeningOutputContainer is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataISPyBScreeningOutputContainer.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataISPyBScreeningOutputContainer()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataISPyBScreeningOutputContainer" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataISPyBScreeningOutputContainer()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataISPyBScreeningOutputContainer
-
-
 class XSDataISPyBScreeningRank(XSData):
     def __init__(self, rankInformation=None, rankValue=None, screeningId=None, screeningRankSetId=None, screeningRankId=None):
         XSData.__init__(self, )
@@ -9277,179 +8958,6 @@ class XSDataISPyBScreeningRank(XSData):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataISPyBScreeningRank
-
-
-class XSDataISPyBScreeningRankSet(XSData):
-    def __init__(self, rankingSummaryFileName=None, rankingProjectFileName=None, rankEngine=None, screeningRankSetId=None):
-        XSData.__init__(self, )
-        if screeningRankSetId is None:
-            self._screeningRankSetId = None
-        elif screeningRankSetId.__class__.__name__ == "XSDataInteger":
-            self._screeningRankSetId = screeningRankSetId
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningRankSet constructor argument 'screeningRankSetId' is not XSDataInteger but %s" % self._screeningRankSetId.__class__.__name__
-            raise BaseException(strMessage)
-        if rankEngine is None:
-            self._rankEngine = None
-        elif rankEngine.__class__.__name__ == "XSDataString":
-            self._rankEngine = rankEngine
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningRankSet constructor argument 'rankEngine' is not XSDataString but %s" % self._rankEngine.__class__.__name__
-            raise BaseException(strMessage)
-        if rankingProjectFileName is None:
-            self._rankingProjectFileName = None
-        elif rankingProjectFileName.__class__.__name__ == "XSDataString":
-            self._rankingProjectFileName = rankingProjectFileName
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningRankSet constructor argument 'rankingProjectFileName' is not XSDataString but %s" % self._rankingProjectFileName.__class__.__name__
-            raise BaseException(strMessage)
-        if rankingSummaryFileName is None:
-            self._rankingSummaryFileName = None
-        elif rankingSummaryFileName.__class__.__name__ == "XSDataString":
-            self._rankingSummaryFileName = rankingSummaryFileName
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningRankSet constructor argument 'rankingSummaryFileName' is not XSDataString but %s" % self._rankingSummaryFileName.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'screeningRankSetId' attribute
-    def getScreeningRankSetId(self): return self._screeningRankSetId
-    def setScreeningRankSetId(self, screeningRankSetId):
-        if screeningRankSetId is None:
-            self._screeningRankSetId = None
-        elif screeningRankSetId.__class__.__name__ == "XSDataInteger":
-            self._screeningRankSetId = screeningRankSetId
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningRankSet.setScreeningRankSetId argument is not XSDataInteger but %s" % screeningRankSetId.__class__.__name__
-            raise BaseException(strMessage)
-    def delScreeningRankSetId(self): self._screeningRankSetId = None
-    screeningRankSetId = property(getScreeningRankSetId, setScreeningRankSetId, delScreeningRankSetId, "Property for screeningRankSetId")
-    # Methods and properties for the 'rankEngine' attribute
-    def getRankEngine(self): return self._rankEngine
-    def setRankEngine(self, rankEngine):
-        if rankEngine is None:
-            self._rankEngine = None
-        elif rankEngine.__class__.__name__ == "XSDataString":
-            self._rankEngine = rankEngine
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningRankSet.setRankEngine argument is not XSDataString but %s" % rankEngine.__class__.__name__
-            raise BaseException(strMessage)
-    def delRankEngine(self): self._rankEngine = None
-    rankEngine = property(getRankEngine, setRankEngine, delRankEngine, "Property for rankEngine")
-    # Methods and properties for the 'rankingProjectFileName' attribute
-    def getRankingProjectFileName(self): return self._rankingProjectFileName
-    def setRankingProjectFileName(self, rankingProjectFileName):
-        if rankingProjectFileName is None:
-            self._rankingProjectFileName = None
-        elif rankingProjectFileName.__class__.__name__ == "XSDataString":
-            self._rankingProjectFileName = rankingProjectFileName
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningRankSet.setRankingProjectFileName argument is not XSDataString but %s" % rankingProjectFileName.__class__.__name__
-            raise BaseException(strMessage)
-    def delRankingProjectFileName(self): self._rankingProjectFileName = None
-    rankingProjectFileName = property(getRankingProjectFileName, setRankingProjectFileName, delRankingProjectFileName, "Property for rankingProjectFileName")
-    # Methods and properties for the 'rankingSummaryFileName' attribute
-    def getRankingSummaryFileName(self): return self._rankingSummaryFileName
-    def setRankingSummaryFileName(self, rankingSummaryFileName):
-        if rankingSummaryFileName is None:
-            self._rankingSummaryFileName = None
-        elif rankingSummaryFileName.__class__.__name__ == "XSDataString":
-            self._rankingSummaryFileName = rankingSummaryFileName
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningRankSet.setRankingSummaryFileName argument is not XSDataString but %s" % rankingSummaryFileName.__class__.__name__
-            raise BaseException(strMessage)
-    def delRankingSummaryFileName(self): self._rankingSummaryFileName = None
-    rankingSummaryFileName = property(getRankingSummaryFileName, setRankingSummaryFileName, delRankingSummaryFileName, "Property for rankingSummaryFileName")
-    def export(self, outfile, level, name_='XSDataISPyBScreeningRankSet'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataISPyBScreeningRankSet'):
-        XSData.exportChildren(self, outfile, level, name_)
-        if self._screeningRankSetId is not None:
-            self.screeningRankSetId.export(outfile, level, name_='screeningRankSetId')
-        else:
-            warnEmptyAttribute("screeningRankSetId", "XSDataInteger")
-        if self._rankEngine is not None:
-            self.rankEngine.export(outfile, level, name_='rankEngine')
-        else:
-            warnEmptyAttribute("rankEngine", "XSDataString")
-        if self._rankingProjectFileName is not None:
-            self.rankingProjectFileName.export(outfile, level, name_='rankingProjectFileName')
-        else:
-            warnEmptyAttribute("rankingProjectFileName", "XSDataString")
-        if self._rankingSummaryFileName is not None:
-            self.rankingSummaryFileName.export(outfile, level, name_='rankingSummaryFileName')
-        else:
-            warnEmptyAttribute("rankingSummaryFileName", "XSDataString")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'screeningRankSetId':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setScreeningRankSetId(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rankEngine':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setRankEngine(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rankingProjectFileName':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setRankingProjectFileName(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rankingSummaryFileName':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setRankingSummaryFileName(obj_)
-        XSData.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataISPyBScreeningRankSet" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataISPyBScreeningRankSet' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataISPyBScreeningRankSet is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataISPyBScreeningRankSet.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataISPyBScreeningRankSet()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataISPyBScreeningRankSet" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataISPyBScreeningRankSet()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataISPyBScreeningRankSet
 
 
 class XSDataISPyBScreeningStrategy(XSData):
@@ -9851,6 +9359,498 @@ class XSDataISPyBScreeningStrategy(XSData):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataISPyBScreeningStrategy
+
+
+class XSDataISPyBScreeningStrategyContainer(XSData):
+    def __init__(self, screeningStrategyWedgeContainer=None, screeningStrategy=None):
+        XSData.__init__(self, )
+        if screeningStrategy is None:
+            self._screeningStrategy = None
+        elif screeningStrategy.__class__.__name__ == "XSDataISPyBScreeningStrategy":
+            self._screeningStrategy = screeningStrategy
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer constructor argument 'screeningStrategy' is not XSDataISPyBScreeningStrategy but %s" % self._screeningStrategy.__class__.__name__
+            raise BaseException(strMessage)
+        if screeningStrategyWedgeContainer is None:
+            self._screeningStrategyWedgeContainer = []
+        elif screeningStrategyWedgeContainer.__class__.__name__ == "list":
+            self._screeningStrategyWedgeContainer = screeningStrategyWedgeContainer
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer constructor argument 'screeningStrategyWedgeContainer' is not list but %s" % self._screeningStrategyWedgeContainer.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'screeningStrategy' attribute
+    def getScreeningStrategy(self): return self._screeningStrategy
+    def setScreeningStrategy(self, screeningStrategy):
+        if screeningStrategy is None:
+            self._screeningStrategy = None
+        elif screeningStrategy.__class__.__name__ == "XSDataISPyBScreeningStrategy":
+            self._screeningStrategy = screeningStrategy
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.setScreeningStrategy argument is not XSDataISPyBScreeningStrategy but %s" % screeningStrategy.__class__.__name__
+            raise BaseException(strMessage)
+    def delScreeningStrategy(self): self._screeningStrategy = None
+    screeningStrategy = property(getScreeningStrategy, setScreeningStrategy, delScreeningStrategy, "Property for screeningStrategy")
+    # Methods and properties for the 'screeningStrategyWedgeContainer' attribute
+    def getScreeningStrategyWedgeContainer(self): return self._screeningStrategyWedgeContainer
+    def setScreeningStrategyWedgeContainer(self, screeningStrategyWedgeContainer):
+        if screeningStrategyWedgeContainer is None:
+            self._screeningStrategyWedgeContainer = []
+        elif screeningStrategyWedgeContainer.__class__.__name__ == "list":
+            self._screeningStrategyWedgeContainer = screeningStrategyWedgeContainer
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.setScreeningStrategyWedgeContainer argument is not list but %s" % screeningStrategyWedgeContainer.__class__.__name__
+            raise BaseException(strMessage)
+    def delScreeningStrategyWedgeContainer(self): self._screeningStrategyWedgeContainer = None
+    screeningStrategyWedgeContainer = property(getScreeningStrategyWedgeContainer, setScreeningStrategyWedgeContainer, delScreeningStrategyWedgeContainer, "Property for screeningStrategyWedgeContainer")
+    def addScreeningStrategyWedgeContainer(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataISPyBScreeningStrategyWedgeContainer":
+            self._screeningStrategyWedgeContainer.append(value)
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer argument is not XSDataISPyBScreeningStrategyWedgeContainer but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertScreeningStrategyWedgeContainer(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.insertScreeningStrategyWedgeContainer argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.insertScreeningStrategyWedgeContainer argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataISPyBScreeningStrategyWedgeContainer":
+            self._screeningStrategyWedgeContainer[index] = value
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer argument is not XSDataISPyBScreeningStrategyWedgeContainer but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def export(self, outfile, level, name_='XSDataISPyBScreeningStrategyContainer'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataISPyBScreeningStrategyContainer'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._screeningStrategy is not None:
+            self.screeningStrategy.export(outfile, level, name_='screeningStrategy')
+        else:
+            warnEmptyAttribute("screeningStrategy", "XSDataISPyBScreeningStrategy")
+        for screeningStrategyWedgeContainer_ in self.getScreeningStrategyWedgeContainer():
+            screeningStrategyWedgeContainer_.export(outfile, level, name_='screeningStrategyWedgeContainer')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'screeningStrategy':
+            obj_ = XSDataISPyBScreeningStrategy()
+            obj_.build(child_)
+            self.setScreeningStrategy(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'screeningStrategyWedgeContainer':
+            obj_ = XSDataISPyBScreeningStrategyWedgeContainer()
+            obj_.build(child_)
+            self.screeningStrategyWedgeContainer.append(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataISPyBScreeningStrategyContainer" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataISPyBScreeningStrategyContainer' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataISPyBScreeningStrategyContainer is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataISPyBScreeningStrategyContainer.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataISPyBScreeningStrategyContainer()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataISPyBScreeningStrategyContainer" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataISPyBScreeningStrategyContainer()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataISPyBScreeningStrategyContainer
+
+
+class XSDataISPyBScreeningOutputContainer(XSData):
+    def __init__(self, screeningStrategyContainer=None, screeningOutputLattice=None, screeningOutput=None):
+        XSData.__init__(self, )
+        if screeningOutput is None:
+            self._screeningOutput = None
+        elif screeningOutput.__class__.__name__ == "XSDataISPyBScreeningOutput":
+            self._screeningOutput = screeningOutput
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer constructor argument 'screeningOutput' is not XSDataISPyBScreeningOutput but %s" % self._screeningOutput.__class__.__name__
+            raise BaseException(strMessage)
+        if screeningOutputLattice is None:
+            self._screeningOutputLattice = []
+        elif screeningOutputLattice.__class__.__name__ == "list":
+            self._screeningOutputLattice = screeningOutputLattice
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer constructor argument 'screeningOutputLattice' is not list but %s" % self._screeningOutputLattice.__class__.__name__
+            raise BaseException(strMessage)
+        if screeningStrategyContainer is None:
+            self._screeningStrategyContainer = []
+        elif screeningStrategyContainer.__class__.__name__ == "list":
+            self._screeningStrategyContainer = screeningStrategyContainer
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer constructor argument 'screeningStrategyContainer' is not list but %s" % self._screeningStrategyContainer.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'screeningOutput' attribute
+    def getScreeningOutput(self): return self._screeningOutput
+    def setScreeningOutput(self, screeningOutput):
+        if screeningOutput is None:
+            self._screeningOutput = None
+        elif screeningOutput.__class__.__name__ == "XSDataISPyBScreeningOutput":
+            self._screeningOutput = screeningOutput
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.setScreeningOutput argument is not XSDataISPyBScreeningOutput but %s" % screeningOutput.__class__.__name__
+            raise BaseException(strMessage)
+    def delScreeningOutput(self): self._screeningOutput = None
+    screeningOutput = property(getScreeningOutput, setScreeningOutput, delScreeningOutput, "Property for screeningOutput")
+    # Methods and properties for the 'screeningOutputLattice' attribute
+    def getScreeningOutputLattice(self): return self._screeningOutputLattice
+    def setScreeningOutputLattice(self, screeningOutputLattice):
+        if screeningOutputLattice is None:
+            self._screeningOutputLattice = []
+        elif screeningOutputLattice.__class__.__name__ == "list":
+            self._screeningOutputLattice = screeningOutputLattice
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.setScreeningOutputLattice argument is not list but %s" % screeningOutputLattice.__class__.__name__
+            raise BaseException(strMessage)
+    def delScreeningOutputLattice(self): self._screeningOutputLattice = None
+    screeningOutputLattice = property(getScreeningOutputLattice, setScreeningOutputLattice, delScreeningOutputLattice, "Property for screeningOutputLattice")
+    def addScreeningOutputLattice(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.addScreeningOutputLattice argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataISPyBScreeningOutputLattice":
+            self._screeningOutputLattice.append(value)
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.addScreeningOutputLattice argument is not XSDataISPyBScreeningOutputLattice but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertScreeningOutputLattice(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.insertScreeningOutputLattice argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.insertScreeningOutputLattice argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataISPyBScreeningOutputLattice":
+            self._screeningOutputLattice[index] = value
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.addScreeningOutputLattice argument is not XSDataISPyBScreeningOutputLattice but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'screeningStrategyContainer' attribute
+    def getScreeningStrategyContainer(self): return self._screeningStrategyContainer
+    def setScreeningStrategyContainer(self, screeningStrategyContainer):
+        if screeningStrategyContainer is None:
+            self._screeningStrategyContainer = []
+        elif screeningStrategyContainer.__class__.__name__ == "list":
+            self._screeningStrategyContainer = screeningStrategyContainer
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.setScreeningStrategyContainer argument is not list but %s" % screeningStrategyContainer.__class__.__name__
+            raise BaseException(strMessage)
+    def delScreeningStrategyContainer(self): self._screeningStrategyContainer = None
+    screeningStrategyContainer = property(getScreeningStrategyContainer, setScreeningStrategyContainer, delScreeningStrategyContainer, "Property for screeningStrategyContainer")
+    def addScreeningStrategyContainer(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.addScreeningStrategyContainer argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataISPyBScreeningStrategyContainer":
+            self._screeningStrategyContainer.append(value)
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.addScreeningStrategyContainer argument is not XSDataISPyBScreeningStrategyContainer but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertScreeningStrategyContainer(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.insertScreeningStrategyContainer argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.insertScreeningStrategyContainer argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataISPyBScreeningStrategyContainer":
+            self._screeningStrategyContainer[index] = value
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningOutputContainer.addScreeningStrategyContainer argument is not XSDataISPyBScreeningStrategyContainer but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def export(self, outfile, level, name_='XSDataISPyBScreeningOutputContainer'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataISPyBScreeningOutputContainer'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._screeningOutput is not None:
+            self.screeningOutput.export(outfile, level, name_='screeningOutput')
+        else:
+            warnEmptyAttribute("screeningOutput", "XSDataISPyBScreeningOutput")
+        for screeningOutputLattice_ in self.getScreeningOutputLattice():
+            screeningOutputLattice_.export(outfile, level, name_='screeningOutputLattice')
+        for screeningStrategyContainer_ in self.getScreeningStrategyContainer():
+            screeningStrategyContainer_.export(outfile, level, name_='screeningStrategyContainer')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'screeningOutput':
+            obj_ = XSDataISPyBScreeningOutput()
+            obj_.build(child_)
+            self.setScreeningOutput(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'screeningOutputLattice':
+            obj_ = XSDataISPyBScreeningOutputLattice()
+            obj_.build(child_)
+            self.screeningOutputLattice.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'screeningStrategyContainer':
+            obj_ = XSDataISPyBScreeningStrategyContainer()
+            obj_.build(child_)
+            self.screeningStrategyContainer.append(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataISPyBScreeningOutputContainer" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataISPyBScreeningOutputContainer' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataISPyBScreeningOutputContainer is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataISPyBScreeningOutputContainer.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataISPyBScreeningOutputContainer()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataISPyBScreeningOutputContainer" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataISPyBScreeningOutputContainer()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataISPyBScreeningOutputContainer
+
+
+class XSDataISPyBScreeningRankSet(XSData):
+    def __init__(self, rankingSummaryFileName=None, rankingProjectFileName=None, rankEngine=None, screeningRankSetId=None):
+        XSData.__init__(self, )
+        if screeningRankSetId is None:
+            self._screeningRankSetId = None
+        elif screeningRankSetId.__class__.__name__ == "XSDataInteger":
+            self._screeningRankSetId = screeningRankSetId
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningRankSet constructor argument 'screeningRankSetId' is not XSDataInteger but %s" % self._screeningRankSetId.__class__.__name__
+            raise BaseException(strMessage)
+        if rankEngine is None:
+            self._rankEngine = None
+        elif rankEngine.__class__.__name__ == "XSDataString":
+            self._rankEngine = rankEngine
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningRankSet constructor argument 'rankEngine' is not XSDataString but %s" % self._rankEngine.__class__.__name__
+            raise BaseException(strMessage)
+        if rankingProjectFileName is None:
+            self._rankingProjectFileName = None
+        elif rankingProjectFileName.__class__.__name__ == "XSDataString":
+            self._rankingProjectFileName = rankingProjectFileName
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningRankSet constructor argument 'rankingProjectFileName' is not XSDataString but %s" % self._rankingProjectFileName.__class__.__name__
+            raise BaseException(strMessage)
+        if rankingSummaryFileName is None:
+            self._rankingSummaryFileName = None
+        elif rankingSummaryFileName.__class__.__name__ == "XSDataString":
+            self._rankingSummaryFileName = rankingSummaryFileName
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningRankSet constructor argument 'rankingSummaryFileName' is not XSDataString but %s" % self._rankingSummaryFileName.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'screeningRankSetId' attribute
+    def getScreeningRankSetId(self): return self._screeningRankSetId
+    def setScreeningRankSetId(self, screeningRankSetId):
+        if screeningRankSetId is None:
+            self._screeningRankSetId = None
+        elif screeningRankSetId.__class__.__name__ == "XSDataInteger":
+            self._screeningRankSetId = screeningRankSetId
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningRankSet.setScreeningRankSetId argument is not XSDataInteger but %s" % screeningRankSetId.__class__.__name__
+            raise BaseException(strMessage)
+    def delScreeningRankSetId(self): self._screeningRankSetId = None
+    screeningRankSetId = property(getScreeningRankSetId, setScreeningRankSetId, delScreeningRankSetId, "Property for screeningRankSetId")
+    # Methods and properties for the 'rankEngine' attribute
+    def getRankEngine(self): return self._rankEngine
+    def setRankEngine(self, rankEngine):
+        if rankEngine is None:
+            self._rankEngine = None
+        elif rankEngine.__class__.__name__ == "XSDataString":
+            self._rankEngine = rankEngine
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningRankSet.setRankEngine argument is not XSDataString but %s" % rankEngine.__class__.__name__
+            raise BaseException(strMessage)
+    def delRankEngine(self): self._rankEngine = None
+    rankEngine = property(getRankEngine, setRankEngine, delRankEngine, "Property for rankEngine")
+    # Methods and properties for the 'rankingProjectFileName' attribute
+    def getRankingProjectFileName(self): return self._rankingProjectFileName
+    def setRankingProjectFileName(self, rankingProjectFileName):
+        if rankingProjectFileName is None:
+            self._rankingProjectFileName = None
+        elif rankingProjectFileName.__class__.__name__ == "XSDataString":
+            self._rankingProjectFileName = rankingProjectFileName
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningRankSet.setRankingProjectFileName argument is not XSDataString but %s" % rankingProjectFileName.__class__.__name__
+            raise BaseException(strMessage)
+    def delRankingProjectFileName(self): self._rankingProjectFileName = None
+    rankingProjectFileName = property(getRankingProjectFileName, setRankingProjectFileName, delRankingProjectFileName, "Property for rankingProjectFileName")
+    # Methods and properties for the 'rankingSummaryFileName' attribute
+    def getRankingSummaryFileName(self): return self._rankingSummaryFileName
+    def setRankingSummaryFileName(self, rankingSummaryFileName):
+        if rankingSummaryFileName is None:
+            self._rankingSummaryFileName = None
+        elif rankingSummaryFileName.__class__.__name__ == "XSDataString":
+            self._rankingSummaryFileName = rankingSummaryFileName
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningRankSet.setRankingSummaryFileName argument is not XSDataString but %s" % rankingSummaryFileName.__class__.__name__
+            raise BaseException(strMessage)
+    def delRankingSummaryFileName(self): self._rankingSummaryFileName = None
+    rankingSummaryFileName = property(getRankingSummaryFileName, setRankingSummaryFileName, delRankingSummaryFileName, "Property for rankingSummaryFileName")
+    def export(self, outfile, level, name_='XSDataISPyBScreeningRankSet'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataISPyBScreeningRankSet'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._screeningRankSetId is not None:
+            self.screeningRankSetId.export(outfile, level, name_='screeningRankSetId')
+        else:
+            warnEmptyAttribute("screeningRankSetId", "XSDataInteger")
+        if self._rankEngine is not None:
+            self.rankEngine.export(outfile, level, name_='rankEngine')
+        else:
+            warnEmptyAttribute("rankEngine", "XSDataString")
+        if self._rankingProjectFileName is not None:
+            self.rankingProjectFileName.export(outfile, level, name_='rankingProjectFileName')
+        else:
+            warnEmptyAttribute("rankingProjectFileName", "XSDataString")
+        if self._rankingSummaryFileName is not None:
+            self.rankingSummaryFileName.export(outfile, level, name_='rankingSummaryFileName')
+        else:
+            warnEmptyAttribute("rankingSummaryFileName", "XSDataString")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'screeningRankSetId':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setScreeningRankSetId(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rankEngine':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setRankEngine(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rankingProjectFileName':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setRankingProjectFileName(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rankingSummaryFileName':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setRankingSummaryFileName(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataISPyBScreeningRankSet" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataISPyBScreeningRankSet' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataISPyBScreeningRankSet is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataISPyBScreeningRankSet.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataISPyBScreeningRankSet()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataISPyBScreeningRankSet" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataISPyBScreeningRankSet()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataISPyBScreeningRankSet
 
 
 class XSDataISPyBScreeningStrategySubWedge(XSData):
@@ -10293,7 +10293,7 @@ class XSDataISPyBScreeningStrategySubWedge(XSData):
 
 
 class XSDataISPyBScreeningStrategyWedge(XSData):
-    def __init__(self, wavelength=None, comments=None, kappa=None, phi=None, numberOfImages=None, doseTotal=None, multiplicity=None, completeness=None, resolution=None, wedgeNumber=None, screeningStrategyOutputId=None, screeningStrategyId=None, screeningStrategyWedgeId=None):
+    def __init__(self, wavelength=None, comments=None, chi=None, kappa=None, phi=None, numberOfImages=None, doseTotal=None, multiplicity=None, completeness=None, resolution=None, wedgeNumber=None, screeningStrategyOutputId=None, screeningStrategyId=None, screeningStrategyWedgeId=None):
         XSData.__init__(self, )
         if screeningStrategyWedgeId is None:
             self._screeningStrategyWedgeId = None
@@ -10371,6 +10371,13 @@ class XSDataISPyBScreeningStrategyWedge(XSData):
             self._kappa = kappa
         else:
             strMessage = "ERROR! XSDataISPyBScreeningStrategyWedge constructor argument 'kappa' is not XSDataDouble but %s" % self._kappa.__class__.__name__
+            raise BaseException(strMessage)
+        if chi is None:
+            self._chi = None
+        elif chi.__class__.__name__ == "XSDataDouble":
+            self._chi = chi
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyWedge constructor argument 'chi' is not XSDataDouble but %s" % self._chi.__class__.__name__
             raise BaseException(strMessage)
         if comments is None:
             self._comments = None
@@ -10518,6 +10525,18 @@ class XSDataISPyBScreeningStrategyWedge(XSData):
             raise BaseException(strMessage)
     def delKappa(self): self._kappa = None
     kappa = property(getKappa, setKappa, delKappa, "Property for kappa")
+    # Methods and properties for the 'chi' attribute
+    def getChi(self): return self._chi
+    def setChi(self, chi):
+        if chi is None:
+            self._chi = None
+        elif chi.__class__.__name__ == "XSDataDouble":
+            self._chi = chi
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyWedge.setChi argument is not XSDataDouble but %s" % chi.__class__.__name__
+            raise BaseException(strMessage)
+    def delChi(self): self._chi = None
+    chi = property(getChi, setChi, delChi, "Property for chi")
     # Methods and properties for the 'comments' attribute
     def getComments(self): return self._comments
     def setComments(self, comments):
@@ -10586,6 +10605,8 @@ class XSDataISPyBScreeningStrategyWedge(XSData):
             self.phi.export(outfile, level, name_='phi')
         if self._kappa is not None:
             self.kappa.export(outfile, level, name_='kappa')
+        if self._chi is not None:
+            self.chi.export(outfile, level, name_='chi')
         if self._comments is not None:
             self.comments.export(outfile, level, name_='comments')
         if self._wavelength is not None:
@@ -10650,6 +10671,11 @@ class XSDataISPyBScreeningStrategyWedge(XSData):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setKappa(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'chi':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setChi(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'comments':
             obj_ = XSDataString()

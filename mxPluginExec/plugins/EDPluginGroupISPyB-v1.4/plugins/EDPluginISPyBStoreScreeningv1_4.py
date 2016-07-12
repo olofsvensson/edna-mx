@@ -490,21 +490,23 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
         iNumberOfImages = self.getXSValue(_xsDataISPyBScreeningStrategyWedge.numberOfImages)
         fPhi = self.getXSValue(_xsDataISPyBScreeningStrategyWedge.phi)
         fKappa = self.getXSValue(_xsDataISPyBScreeningStrategyWedge.kappa)
+        fChi = self.getXSValue(_xsDataISPyBScreeningStrategyWedge.chi)
         strComments = self.getXSValue(_xsDataISPyBScreeningStrategyWedge.comments, _iMaxStringLength=255)
         fWavelength = self.getXSValue(_xsDataISPyBScreeningStrategyWedge.wavelength)
         iScreeningStrategyWedgeId = _clientToolsForScreeningEDNAWebServiceWsdl.service.storeOrUpdateScreeningStrategyWedge(
-            iScreeningStrategyWedgeId, \
-            iScreeningStrategyId, \
-            iWedgeNumber, \
-            fResolution, \
-            fCompleteness, \
-            fMultiplicity, \
-            fDoseTotal, \
-            iNumberOfImages, \
-            fPhi, \
-            fKappa, \
-            strComments, \
-            fWavelength, \
+            arg0=iScreeningStrategyWedgeId, \
+            screeningStrategyId=iScreeningStrategyId, \
+            wedgeNumber=iWedgeNumber, \
+            resolution=fResolution, \
+            completeness=fCompleteness, \
+            multiplicity=fMultiplicity, \
+            doseTotal=fDoseTotal, \
+            numberOfImages=iNumberOfImages, \
+            phi=fPhi, \
+            kappa=fKappa, \
+            chi=fChi, \
+            comments=strComments, \
+            wavelength=fWavelength, \
             )
         self.DEBUG("ScreeningStrategyWedgeId: %d" % iScreeningStrategyWedgeId)
         return iScreeningStrategyWedgeId
