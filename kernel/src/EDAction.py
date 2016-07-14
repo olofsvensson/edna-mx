@@ -194,7 +194,7 @@ class EDAction(EDLogging, Thread):
                 fTimeForFailureCalculation = dictTimeStamps["slotSUCCESS"]
             if "slotFAILURE" in dictTimeStamps:
                 lstTimings.append("\t slotFAILURE \t\t time duration = %.3f s" % (dictTimeStamps["slotFAILURE"] - fTimeForFailureCalculation))
-            if dictTimeStamps.has_key("finallyProcess"):
+            if "finallyProcess" in dictTimeStamps:
                 lstTimings.append("\t finallyProcess \t time duration = %.3f s" % (dictTimeStamps["finallyProcess"] - fTimeForFinallyCalculation))
             self.log(os.linesep.join(lstTimings))
 
