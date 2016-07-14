@@ -78,7 +78,7 @@ class EDAction(EDLogging, Thread):
         self.__bIsFailure = False
         self.__bIsTimeOut = False
         self.__fTimeOutInSeconds = None
-        self.__fDefaultTimeOutInSeconds = 600.0
+        self.__fDefaultTimeOutInSeconds = 3600.0
         self.__bIsAbort = False
         # Reference to the object which calls execute or executeSynchronous
         self.__edObject = None
@@ -194,7 +194,7 @@ class EDAction(EDLogging, Thread):
                 fTimeForFailureCalculation = dictTimeStamps["slotSUCCESS"]
             if "slotFAILURE" in dictTimeStamps:
                 lstTimings.append("\t slotFAILURE \t\t time duration = %.3f s" % (dictTimeStamps["slotFAILURE"] - fTimeForFailureCalculation))
-            if "finallyProcess" in dictTimeStamps:
+            if dictTimeStamps.has_key("finallyProcess"):
                 lstTimings.append("\t finallyProcess \t time duration = %.3f s" % (dictTimeStamps["finallyProcess"] - fTimeForFinallyCalculation))
             self.log(os.linesep.join(lstTimings))
 

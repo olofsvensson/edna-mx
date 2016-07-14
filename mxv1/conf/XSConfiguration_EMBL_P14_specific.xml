@@ -2,6 +2,139 @@
 <XSConfiguration> 
 	<XSPluginList>
 		<XSPluginItem> 
+			<name>EDPluginLabelitv10</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>pathToLabelitSetpathScript</name>
+					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/phenix_env.sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/labelit.screen</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptSetupCCP4</name>
+					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptVersionString</name>
+					<value></value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>100</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem> 
+			<name>EDPluginLabelitIndexingv1_1</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>pathToLabelitSetpathScript</name>
+					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/phenix_env.sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/labelit.screen</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptSetupCCP4</name>
+					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptVersionString</name>
+					<value></value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>200</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem> 
+			<name>EDPluginDistlSignalStrengthv1_1</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/distl.signal_strength</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>100</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem> 
+			<name>EDPluginDistlSignalStrengthThinClientv1_1</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/distl.thin_client</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>100</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>distlServerHost</name>
+					<value>DefineCorrect!!!</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>distlServerPort</name>
+					<value>8125</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>pathToDistlServer</name>
+					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/distl.mp_spotfinder_server_read_file</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem> 
+			<name>EDPluginLabelitDistlv1_1</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>pathToLabelitSetpathScript</name>
+					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/phenix_env.sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/labelit.distl</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptSetupCCP4</name>
+					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptVersionString</name>
+					<value></value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>100</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem> 
 			<name>EDPluginMOSFLMIndexingv10</name>  
 			<XSParamList>
 				<XSParamItem>
@@ -230,6 +363,26 @@
 		<!-- The autoproc control plugin itself. We use a loooong timeout value 
 			just in case -->
 
+		<XSPluginItem>
+			<name>EDPluginControlAutoproc</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>1800</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+
+                <XSPluginItem>
+                       <name>EDPluginControlAutoprocv1_0</name>
+                       <XSParamList>
+                               <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>4500</value>
+                               </XSParamItem>
+                       </XSParamList>      
+                </XSPluginItem>
+
 		<!-- the plugins for the file conversion -->
 		<XSPluginItem>
 			<name>EDPluginExecPointlessv1_0</name>
@@ -297,7 +450,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/usr/local/bin/xds_par</value>
+					<value>/mx-beta/bin/xds_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -314,7 +467,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/usr/local/bin/xscale_par</value>
+					<value>/mx-beta/bin/xscale_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -340,7 +493,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/usr/local/bin/xds</value>
+					<value>/mx-beta/bin/xds</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessWorkingDirectory</name>
@@ -352,6 +505,27 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem> 
+   	 	<XSPluginItem>
+	                <name>EDPluginDozorv1_0</name>
+		        <XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+		                        <value>/bin/bash</value>
+		                </XSParamItem>
+                                <XSParamItem>
+                                        <name>execProcessScriptSetupCCP4</name>
+                                        <value>/mx-beta/dozor/dozor-env.sh</value>
+                                </XSParamItem>
+		                <XSParamItem>
+		                         <name>execProcessScriptExecutable</name>
+		                         <value>/mx-beta/dozor/dozor</value>
+		                 </XSParamItem>
+		                 <XSParamItem>
+		                          <name>timeOut</name>
+		                          <value>600</value>
+		                 </XSParamItem>
+		        </XSParamList>
+                </XSPluginItem>
                 <!--XSPluginItem>
                         <name>EDPluginControlCharacterisationv1_4</name>
                         <XSParamList>

@@ -60,23 +60,6 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
-                <XSPluginItem>
-                        <name>EDPluginISPyBStoreAutoProcProgramAttachmentv1_4</name>
-                        <XSParamList>
-                                <XSParamItem>
-                                        <name>userName</name>
-                                        <value>${ISPyB_user}</value>
-                                </XSParamItem>
-                                <XSParamItem>
-                                        <name>passWord</name>
-                                        <value>${ISPyB_pass}</value>
-                                </XSParamItem>
-                                <XSParamItem>
-                                        <name>toolsForAutoprocessingWebServiceWsdl</name>
-                                        <value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
-                                </XSParamItem>
-                        </XSParamList>
-                </XSPluginItem>
 		<XSPluginItem>
 			<name>EDPluginISPyBStoreAutoProcStatusv1_4</name>
 			<XSParamList>
@@ -348,56 +331,5 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
-                <XSPluginItem>
-                        <name>EDPluginISPyBGetPdbFilePathv1_4</name>
-                        <XSParamList>
-                                <XSParamItem>
-                                        <name>userName</name>
-                                        <value>${ISPyB_user}</value>
-                                </XSParamItem>
-                                <XSParamItem>
-                                        <name>passWord</name>
-                                        <value>${ISPyB_pass}</value>
-                                </XSParamItem>
-                                <XSParamItem>
-                                        <name>toolsForCollectionWebServiceWsdl</name>
-                                        <value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
-                                </XSParamItem>
-                        </XSParamList>
-                </XSPluginItem>
-                <XSPluginItem>
-                        <name>EDPluginISPyBUpdateSnapshotsv1_4</name>
-                        <XSParamList>
-                                <XSParamItem>
-                                        <name>userName</name>
-                                        <value>${ISPyB_user}</value>
-                                </XSParamItem>
-                                <XSParamItem>
-                                        <name>passWord</name>
-                                        <value>${ISPyB_pass}</value>
-                                </XSParamItem>
-                                <XSParamItem>
-                                        <name>toolsForCollectionWebServiceWsdl</name>
-                                        <value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
-                                </XSParamItem>
-                        </XSParamList>
-                </XSPluginItem>
-                <XSPluginItem>
-                        <name>EDPluginISPyBUpdateDataCollectionGroupCommentv1_4</name>
-                        <XSParamList>
-                                <XSParamItem>
-                                        <name>userName</name>
-                                        <value>${ISPyB_user}</value>
-                                </XSParamItem>
-                                <XSParamItem>
-                                        <name>passWord</name>
-                                        <value>${ISPyB_pass}</value>
-                                </XSParamItem>
-                                <XSParamItem>
-                                        <name>toolsForCollectionWebServiceWsdl</name>
-                                        <value>http://ispyb:8080/ispyb/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
-                                </XSParamItem>
-                        </XSParamList>
-                </XSPluginItem>
 	</XSPluginList>
 </XSConfiguration> 
