@@ -296,6 +296,9 @@
                     <kappa>
                     	<value>20.0</value>
                     </kappa>
+                    <chi>
+                    	<value>90.0</value>
+                    </chi>
                     <comments>
                     	<value>A wedge comment.</value>
                     </comments>
