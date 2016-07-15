@@ -47,6 +47,7 @@ from threading   import Thread
 from EDSlot      import EDSlot
 from EDVerbose   import EDVerbose
 from EDLogging   import EDLogging
+from EDUtilsPath import EDUtilsPath
 
 
 class EDAction(EDLogging, Thread):
@@ -78,7 +79,10 @@ class EDAction(EDLogging, Thread):
         self.__bIsFailure = False
         self.__bIsTimeOut = False
         self.__fTimeOutInSeconds = None
-        self.__fDefaultTimeOutInSeconds = 600.0
+        if EDUtilsPath.isEMBL():
+            self.__fDefaultTimeOutInSeconds = 3600.0
+        else:
+            self.__fDefaultTimeOutInSeconds = 600.0
         self.__bIsAbort = False
         # Reference to the object which calls execute or executeSynchronous
         self.__edObject = None
