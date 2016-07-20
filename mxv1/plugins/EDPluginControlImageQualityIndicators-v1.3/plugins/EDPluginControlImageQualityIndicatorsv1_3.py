@@ -5,7 +5,7 @@
 #    Copyright (C) 2008-2011 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -86,13 +86,13 @@ class EDPluginControlImageQualityIndicatorsv1_3(EDPluginControl):
         self.edPluginMXWaitFile = None
         # Default time out for wait file
         self.fMXWaitFileTimeOut = 30  # s
-        # Flag for using the thin client
+        # Flag for using the thin client - disabled as of 2016/07/20
         self.bUseThinClient = True
         self.edPluginISPyB = None
         self.listPluginMOSFLM = []
         self.defaultMinImageSize = 1000000
         self.minImageSize = None
-        
+
 
     def checkParameters(self):
         """
@@ -110,7 +110,7 @@ class EDPluginControlImageQualityIndicatorsv1_3(EDPluginControl):
         if self.minImageSize is None:
             self.minImageSize = self.defaultMinImageSize
 
-    
+
 
     def process(self, _edPlugin=None):
         """
@@ -237,8 +237,8 @@ class EDPluginControlImageQualityIndicatorsv1_3(EDPluginControl):
 #                xsDataResultISPyB = edPluginISPyB.dataOutput
 #                if xsDataResultISPyB is not None:
                 # print xsDataResultISPyB.marshal()
-            
-        
+
+
 
     def finallyProcess(self, _edPlugin=None):
         EDPluginControl.finallyProcess(self, _edPlugin)
@@ -249,7 +249,7 @@ class EDPluginControlImageQualityIndicatorsv1_3(EDPluginControl):
             listId = []
             for xsDataInteger in self.edPluginISPyB.dataOutput.imageQualityIndicatorsId:
                 listId.append(xsDataInteger.value)
-            self.DEBUG("ISPyB imageQualityIndicatorIds = %r" % listId) 
+            self.DEBUG("ISPyB imageQualityIndicatorIds = %r" % listId)
         self.setDataOutput(self.xsDataResultControlImageQualityIndicators)
 
 

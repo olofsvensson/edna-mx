@@ -94,7 +94,8 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
         if EDUtilsPath.isEMBL():
             self.bUseThinClient = False
         else:
-            self.bUseThinClient = True
+            # Also disabled at the ESRF as of 2016/07/20
+            self.bUseThinClient = False
         self.edPluginISPyB = None
         self.listPluginLabelit = []
         self.defaultMinImageSize = 1000000
