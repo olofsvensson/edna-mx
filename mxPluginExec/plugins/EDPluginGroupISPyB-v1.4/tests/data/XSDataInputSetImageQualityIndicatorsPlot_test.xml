@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<XSDataInputISPyBSetBestWilsonPlotPath>
+	<dataCollectionId>
+		<value>123456</value>
+	</dataCollectionId>
+	<imageQualityIndicatorsPlotPath>
+		<value>/tmp/path/to/image/quality/indicators/plot.png</value>
+	</imageQualityIndicatorsPlotPath>
+	<imageQualityIndicatorsCSVPath>
+		<value>/tmp/path/to/image/quality/indicators/plot.csv</value>
+	</imageQualityIndicatorsCSVPath>
+</XSDataInputISPyBSetBestWilsonPlotPath>

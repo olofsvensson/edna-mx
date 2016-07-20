@@ -676,6 +676,15 @@ complex type XSDataResultISPyBSetBestWilsonPlotPath extends XSDataResult {
 	dataCollectionId : XSDataInteger
 }
 
+complex type XSDataInputISPyBSetImageQualityIndicatorsPlot extends XSDataInput {
+	dataCollectionId: XSDataInteger
+	imageQualityIndicatorsPlotPath: XSDataString
+	imageQualityIndicatorsCSVPath: XSDataString
+}
+
+complex type XSDataResultISPyBSetImageQualityIndicatorsPlot extends XSDataResult {
+	dataCollectionId : XSDataInteger
+}
 
 complex type XSDataInputGetSampleInformation extends XSDataInput {
 	sampleId: XSDataInteger
