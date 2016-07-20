@@ -1,13 +1,11 @@
 <?xml version="1.0" ?>
 <XSDataInputControlDozor>
 	<dataCollectionId>
-		<value>1748699</value>
+		<value>1774454</value>
 	</dataCollectionId>
-	<!-- 
 	<processDirectory>
 		<path>
-			<value>/tmp/dozor</value>
+			<value>/data/visitor/mx415/id30a2/20160719/PROCESSED_DATA/t2/dozor</value>
 		</path>
 	</processDirectory>
-	 -->
 </XSDataInputControlDozor>

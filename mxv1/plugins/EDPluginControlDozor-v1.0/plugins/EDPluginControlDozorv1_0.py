@@ -32,6 +32,7 @@ from EDPluginControl import EDPluginControl
 from EDUtilsImage import EDUtilsImage
 from EDUtilsPath import EDUtilsPath
 
+from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
 from EDFactoryPlugin import edFactoryPlugin
 
 from XSDataCommon import XSDataInteger
@@ -52,6 +53,7 @@ from XSDataControlDozorv1_0 import XSDataDozorInput
 
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
+from XSDataISPyBv1_4 import XSDataInputISPyBSetImageQualityIndicatorsPlot
 
 
 class EDPluginControlDozorv1_0(EDPluginControl):
@@ -180,9 +182,9 @@ class EDPluginControlDozorv1_0(EDPluginControl):
     def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self)
         self.DEBUG("EDPluginControlDozorv1_0.postProcess")
-        # Write a file to be used with ISPyB or GNUPLOT
-        if len(self.dataOutput.imageDozor) > 1:
-            with open(os.path.join(self.getWorkingDirectory(), "gnuplot.dat"), "w") as gnuplotFile:
+        # Write a file to be used with ISPyB or GNUPLOT only if data collection id in input
+        if self.dataInput.dataCollectionId is not None and len(self.dataOutput.imageDozor) > 1:
+            with open(os.path.join(self.getWorkingDirectory(), "dozor.csv"), "w") as gnuplotFile:
                 gnuplotFile.write("# Data directory: {0}\n".format(self.directory))
                 gnuplotFile.write("# File template: {0}\n".format(self.template.replace("%04d", "####")))
                 gnuplotFile.write("# {0:>9s}{1:>16s}{2:>16s}{3:>16s}{4:>16s}\n".format("'Image no'",
@@ -214,10 +216,10 @@ set y2tics
 set autoscale  x
 set autoscale  y
 set autoscale y2
-set key box opaque
-plot 'gnuplot.dat' using 0:2 title "Number of spots" axes x1y1 with points linetype 2 pointtype 7 pointsize 1.0, \
-     'gnuplot.dat' using 0:3 title "Dozor score" axes x1y1 with points linetype 3 pointtype 7 pointsize 1.0, \
-     'gnuplot.dat' using 0:5 title "Visible resolution" axes x1y2 with points linetype 1 pointtype 7 pointsize 1.0
+set key below
+plot 'dozor.csv' using 0:2 title "Number of spots" axes x1y1 with points linetype 2 pointtype 7 pointsize 1.0, \
+     'dozor.csv' using 0:3 title "Dozor score" axes x1y1 with points linetype 3 pointtype 7 pointsize 1.0, \
+     'dozor.csv' using 0:5 title "Visible resolution" axes x1y2 with points linetype 1 pointtype 7 pointsize 1.0
 """.format(self.template.replace("%04d", "####"))
             pathGnuplotScript = os.path.join(self.getWorkingDirectory(), "gnuplot.sh")
             data_file = open(pathGnuplotScript, "w")
@@ -232,9 +234,28 @@ plot 'gnuplot.dat' using 0:2 title "Number of spots" axes x1y1 with points linet
                 resultsDirectory = os.path.join(processDirectory, "results")
                 if not os.path.exists(resultsDirectory):
                     os.makedirs(resultsDirectory, 0755)
-                shutil.copy(os.path.join(self.getWorkingDirectory(), "dozor.png"), resultsDirectory)
-                shutil.copy(os.path.join(self.getWorkingDirectory(), "gnuplot.dat"), resultsDirectory)
-
+                dozorPlotResultPath = os.path.join(resultsDirectory, "dozor.png")
+                dozorCsvResultPath = os.path.join(resultsDirectory, "dozor.csv")
+                shutil.copy(os.path.join(self.getWorkingDirectory(), "dozor.png"), dozorPlotResultPath)
+                shutil.copy(os.path.join(self.getWorkingDirectory(), "dozor.csv"), dozorCsvResultPath)
+                # Create paths on pyarch
+                dozorPlotPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorPlotResultPath)
+                dozorCsvPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorCsvResultPath)
+                try:
+                    if not os.path.exists(os.path.dirname(dozorPlotPyarchPath)):
+                        os.makedirs(os.path.dirname(dozorPlotPyarchPath), 0755)
+                    shutil.copy(dozorPlotResultPath, dozorPlotPyarchPath)
+                    shutil.copy(dozorCsvResultPath, dozorCsvPyarchPath)
+                    # Upload to data collection
+                    xsDataInputISPyBSetImageQualityIndicatorsPlot = XSDataInputISPyBSetImageQualityIndicatorsPlot()
+                    xsDataInputISPyBSetImageQualityIndicatorsPlot.dataCollectionId = self.dataInput.dataCollectionId
+                    xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsPlotPath = XSDataString(dozorPlotPyarchPath)
+                    xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsCSVPath = XSDataString(dozorCsvPyarchPath)
+                    EDPluginISPyBSetImageQualityIndicatorsPlot = self.loadPlugin("EDPluginISPyBSetImageQualityIndicatorsPlotv1_4")
+                    EDPluginISPyBSetImageQualityIndicatorsPlot.dataInput = xsDataInputISPyBSetImageQualityIndicatorsPlot
+                    EDPluginISPyBSetImageQualityIndicatorsPlot.executeSynchronous()
+                except:
+                    self.warning("Couldn't copy files to pyarch")
 
 
 
