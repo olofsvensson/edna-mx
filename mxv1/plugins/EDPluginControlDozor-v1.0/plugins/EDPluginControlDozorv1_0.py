@@ -184,23 +184,27 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         if len(self.dataOutput.imageDozor) > 1:
             with open(os.path.join(self.getWorkingDirectory(), "gnuplot.dat"), "w") as gnuplotFile:
                 gnuplotFile.write("# Data directory: {0}\n".format(self.directory))
-                gnuplotFile.write("# File template: {0}\n".format(self.template))
-                gnuplotFile.write("# {0:>8s}{1:>15s}{2:>15s}{3:>15s}\n".format("'Image no'",
+                gnuplotFile.write("# File template: {0}\n".format(self.template.replace("%04d", "####")))
+                gnuplotFile.write("# {0:>9s}{1:>16s}{2:>16s}{3:>16s}{4:>16s}\n".format("'Image no'",
+                                                                               "'No of spots'",
                                                                                "'Main score'",
                                                                                "'Spot score'",
                                                                                "'Visible res.'",
                                                                ))
                 for imageDozor in self.dataOutput.imageDozor:
-                    gnuplotFile.write("{0:10d}{1:15.3f}{2:15.3f}{3:15.3f}\n".format(imageDozor.number.value,
-                                                                                    imageDozor.mainScore.value,
-                                                                                    imageDozor.spotScore.value,
-                                                                                    imageDozor.visibleResolution.value,
-                                                                                    ))
+                    if imageDozor.visibleResolution.value < 10:
+                        gnuplotFile.write("{0:10d},{1:15d},{2:15.3f},{3:15.3f},{4:15.3f}\n".format(imageDozor.number.value,
+                                                                                                     imageDozor.spotsNumOf.value,
+                                                                                                     imageDozor.mainScore.value,
+                                                                                                     imageDozor.spotScore.value,
+                                                                                                     imageDozor.visibleResolution.value,
+                                                                                        ))
             gnuplotFile.close()
             gnuplotScript = \
 """#
 set terminal png
 set output "dozor.png"
+set title "{0}"
 set grid x y2
 set xlabel "Image number"
 set y2label "Resolution (A)"
@@ -210,8 +214,11 @@ set y2tics
 set autoscale  x
 set autoscale  y
 set autoscale y2
-plot 'gnuplot.dat' using 0:2 title "Dozor score" axes x1y1 with points, 'gnuplot.dat' using 0:4 title "Visible resolution" axes x1y2 with lines
-"""
+set key box opaque
+plot 'gnuplot.dat' using 0:2 title "Number of spots" axes x1y1 with points linetype 2 pointtype 7 pointsize 1.0, \
+     'gnuplot.dat' using 0:3 title "Dozor score" axes x1y1 with points linetype 3 pointtype 7 pointsize 1.0, \
+     'gnuplot.dat' using 0:5 title "Visible resolution" axes x1y2 with points linetype 1 pointtype 7 pointsize 1.0
+""".format(self.template.replace("%04d", "####"))
             pathGnuplotScript = os.path.join(self.getWorkingDirectory(), "gnuplot.sh")
             data_file = open(pathGnuplotScript, "w")
             data_file.write(gnuplotScript)
