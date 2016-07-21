@@ -87,7 +87,7 @@ class EDPluginControlImageQualityIndicatorsv1_3(EDPluginControl):
         # Default time out for wait file
         self.fMXWaitFileTimeOut = 30  # s
         # Flag for using the thin client - disabled as of 2016/07/20
-        self.bUseThinClient = True
+        self.bUseThinClient = False
         self.edPluginISPyB = None
         self.listPluginMOSFLM = []
         self.defaultMinImageSize = 1000000
