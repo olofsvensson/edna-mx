@@ -348,12 +348,19 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if data_range is not None:
             start_image = data_range[0]
             end_image = data_range[1]
-            if end_image - start_image < 8:
-                error_message = "There are fewer than 8 images, aborting"
-                self.addErrorMessage(error_message)
-                self.ERROR(error_message)
-                self.setFailure()
-                return
+
+        if self.dataInput.start_image is not None:
+            start_image = self.dataInput.start_image.value
+            self.data_range[0] = start_image
+        if self.dataInput.end_image is not None:
+            end_image = self.dataInput.end_image.value
+            self.data_range[1] = end_image
+        if end_image - start_image < 8:
+            error_message = "There are fewer than 8 images, aborting"
+            self.addErrorMessage(error_message)
+            self.ERROR(error_message)
+            self.setFailure()
+            return
 
         template = conf['NAME_TEMPLATE_OF_DATA_FRAMES='][0]
         self.DEBUG('template for images is {0}'.format(template))
@@ -1075,18 +1082,21 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
 
         # ------ NO ANOM / ANOM end
+        processingPrograms = 'EDNA_proc'
+        if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
+            processingPrograms = 'EDNA_proc reprocess'
 
         program_container_anom = AutoProcProgramContainer()
         program_container_anom.AutoProcProgram = AutoProcProgram()
         program_container_anom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container_anom.AutoProcProgram.processingPrograms = 'EDNA_proc'
+        program_container_anom.AutoProcProgram.processingPrograms = processingPrograms
         program_container_anom.AutoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
         program_container_anom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
 
         program_container_noanom = AutoProcProgramContainer()
         program_container_noanom.AutoProcProgram = AutoProcProgram()
         program_container_noanom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container_noanom.AutoProcProgram.processingPrograms = 'EDNA_proc'
+        program_container_noanom.AutoProcProgram.processingPrograms = processingPrograms
         program_container_noanom.AutoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
         program_container_noanom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
 

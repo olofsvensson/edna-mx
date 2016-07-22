@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<XSDataAutoprocInput>
+<XSDataEDNAprocInput>
   <input_file>
     <path>
       <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/id29_20130301/XDS.INP</value>
@@ -20,4 +20,10 @@
   <unit_cell>
     <value>0,0,0,0,0,02</value>
   </unit_cell>
-</XSDataAutoprocInput>
+  <start_image>
+    <value>50</value>
+  </start_image>
+  <end_image>
+    <value>100</value>
+  </end_image>
+</XSDataEDNAprocInput>

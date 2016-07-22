@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Mar 10 10:15::42 2016 by EDGenerateDS.
+# Generated Fri Jul 22 10:42::15 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -734,7 +734,7 @@ class XSDataEDNAprocImportOut(XSDataResult):
 
 
 class XSDataEDNAprocInput(XSDataInput):
-    def __init__(self, configuration=None, output_file=None, unit_cell=None, spacegroup=None, nres=None, low_resolution_limit=None, detector_max_res=None, data_collection_id=None, cc_half_cutoff=None, r_value_cutoff=None, isig_cutoff=None, completeness_cutoff=None, res_override=None, input_file=None):
+    def __init__(self, configuration=None, reprocess=None, end_image=None, start_image=None, output_file=None, unit_cell=None, spacegroup=None, nres=None, low_resolution_limit=None, detector_max_res=None, data_collection_id=None, cc_half_cutoff=None, r_value_cutoff=None, isig_cutoff=None, completeness_cutoff=None, res_override=None, input_file=None):
         XSDataInput.__init__(self, configuration)
         if input_file is None:
             self._input_file = None
@@ -826,6 +826,27 @@ class XSDataEDNAprocInput(XSDataInput):
             self._output_file = output_file
         else:
             strMessage = "ERROR! XSDataEDNAprocInput constructor argument 'output_file' is not XSDataFile but %s" % self._output_file.__class__.__name__
+            raise BaseException(strMessage)
+        if start_image is None:
+            self._start_image = None
+        elif start_image.__class__.__name__ == "XSDataInteger":
+            self._start_image = start_image
+        else:
+            strMessage = "ERROR! XSDataEDNAprocInput constructor argument 'start_image' is not XSDataInteger but %s" % self._start_image.__class__.__name__
+            raise BaseException(strMessage)
+        if end_image is None:
+            self._end_image = None
+        elif end_image.__class__.__name__ == "XSDataInteger":
+            self._end_image = end_image
+        else:
+            strMessage = "ERROR! XSDataEDNAprocInput constructor argument 'end_image' is not XSDataInteger but %s" % self._end_image.__class__.__name__
+            raise BaseException(strMessage)
+        if reprocess is None:
+            self._reprocess = None
+        elif reprocess.__class__.__name__ == "XSDataBoolean":
+            self._reprocess = reprocess
+        else:
+            strMessage = "ERROR! XSDataEDNAprocInput constructor argument 'reprocess' is not XSDataBoolean but %s" % self._reprocess.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'input_file' attribute
     def getInput_file(self): return self._input_file
@@ -983,6 +1004,42 @@ class XSDataEDNAprocInput(XSDataInput):
             raise BaseException(strMessage)
     def delOutput_file(self): self._output_file = None
     output_file = property(getOutput_file, setOutput_file, delOutput_file, "Property for output_file")
+    # Methods and properties for the 'start_image' attribute
+    def getStart_image(self): return self._start_image
+    def setStart_image(self, start_image):
+        if start_image is None:
+            self._start_image = None
+        elif start_image.__class__.__name__ == "XSDataInteger":
+            self._start_image = start_image
+        else:
+            strMessage = "ERROR! XSDataEDNAprocInput.setStart_image argument is not XSDataInteger but %s" % start_image.__class__.__name__
+            raise BaseException(strMessage)
+    def delStart_image(self): self._start_image = None
+    start_image = property(getStart_image, setStart_image, delStart_image, "Property for start_image")
+    # Methods and properties for the 'end_image' attribute
+    def getEnd_image(self): return self._end_image
+    def setEnd_image(self, end_image):
+        if end_image is None:
+            self._end_image = None
+        elif end_image.__class__.__name__ == "XSDataInteger":
+            self._end_image = end_image
+        else:
+            strMessage = "ERROR! XSDataEDNAprocInput.setEnd_image argument is not XSDataInteger but %s" % end_image.__class__.__name__
+            raise BaseException(strMessage)
+    def delEnd_image(self): self._end_image = None
+    end_image = property(getEnd_image, setEnd_image, delEnd_image, "Property for end_image")
+    # Methods and properties for the 'reprocess' attribute
+    def getReprocess(self): return self._reprocess
+    def setReprocess(self, reprocess):
+        if reprocess is None:
+            self._reprocess = None
+        elif reprocess.__class__.__name__ == "XSDataBoolean":
+            self._reprocess = reprocess
+        else:
+            strMessage = "ERROR! XSDataEDNAprocInput.setReprocess argument is not XSDataBoolean but %s" % reprocess.__class__.__name__
+            raise BaseException(strMessage)
+    def delReprocess(self): self._reprocess = None
+    reprocess = property(getReprocess, setReprocess, delReprocess, "Property for reprocess")
     def export(self, outfile, level, name_='XSDataEDNAprocInput'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1021,6 +1078,12 @@ class XSDataEDNAprocInput(XSDataInput):
             self.output_file.export(outfile, level, name_='output_file')
         else:
             warnEmptyAttribute("output_file", "XSDataFile")
+        if self._start_image is not None:
+            self.start_image.export(outfile, level, name_='start_image')
+        if self._end_image is not None:
+            self.end_image.export(outfile, level, name_='end_image')
+        if self._reprocess is not None:
+            self.reprocess.export(outfile, level, name_='reprocess')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1091,6 +1154,21 @@ class XSDataEDNAprocInput(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setOutput_file(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'start_image':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setStart_image(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'end_image':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setEnd_image(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'reprocess':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setReprocess(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
