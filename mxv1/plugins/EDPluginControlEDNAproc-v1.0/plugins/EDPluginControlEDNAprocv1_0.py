@@ -38,6 +38,7 @@ import shutil
 import socket
 import smtplib
 import shutil
+import subprocess
 import tempfile
 from stat import *
 
@@ -164,29 +165,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         """
         self.DEBUG("EDPluginControlEDNAprocv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
-        self.checkMandatoryParameters(self.dataInput.input_file, "No XDS input file")
 
-        # save the root path (where the initial xds.inp is) for later use
-        self.root_dir = os.path.abspath(os.path.dirname(self.dataInput.input_file.path.value))
-        self.dataInputOrig = self.dataInput.copy()
 
-        # at least check for the xds input file existence before
-        # trying to start anything even if the first xds run does it
-        # anyway
-        if not os.path.isfile(self.dataInput.input_file.path.value):
-            strErrorMessage = "The specified input file does not exist: {0}".format(self.dataInput.input_file.path.value)
-            self.ERROR(strErrorMessage)
-            self.addErrorMessage(strErrorMessage)
-            self.setFailure()
-            # setFailure does not prevent preProcess/process/etc from running
-            raise Exception('EDNA FAILURE')
-        else:
-            # copy it to our dir and modify our input
-            newpath = os.path.join(self.getWorkingDirectory(),
-                                   os.path.basename(self.dataInput.input_file.path.value))
-            shutil.copyfile(self.dataInput.input_file.path.value,
-                            newpath)
-            self.dataInput.input_file.path = XSDataString(newpath)
 
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
@@ -201,6 +181,43 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             pass
 
         data_in = self.dataInput
+
+        if data_in.input_file is None:
+            # Input data file not provided, try to create one
+            if EDUtilsPath.isESRF() and data_in.data_collection_id is not None:
+                data_collection_id = data_in.data_collection_id.value
+                newpath = self.createInputFile(data_collection_id, self.getWorkingDirectory())
+                data_in.input_file = XSDataFile(XSDataString(newpath))
+            else:
+                strErrorMessage = "No input file provided!"
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
+                self.setFailure()
+                # setFailure does not prevent preProcess/process/etc from running
+                raise Exception('EDNA FAILURE')
+        else:
+            # at least check for the xds input file existence before
+            # trying to start anything even if the first xds run does it
+            # anyway
+            if not os.path.exists(data_in.input_file.path.value):
+                strErrorMessage = "The specified input file does not exist: {0}".format(data_in.input_file.path.value)
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
+                self.setFailure()
+                # setFailure does not prevent preProcess/process/etc from running
+                raise Exception('EDNA FAILURE')
+            else:
+                # copy it to our dir and modify our input
+                newpath = os.path.join(self.getWorkingDirectory(),
+                                       os.path.basename(data_in.input_file.path.value))
+                shutil.copyfile(data_in.input_file.path.value, newpath)
+                data_in.input_file.path = XSDataString(newpath)
+
+
+        # save the root path (where the initial xds.inp is) for later use
+        self.root_dir = os.path.abspath(os.path.dirname(self.dataInput.input_file.path.value))
+        self.dataInputOrig = self.dataInput.copy()
+
 
         if EDUtilsPath.isESRF():
             (self.strBeamline, self.strProposal, self.strSessionDate, self.strPrefix) = self.getBeamlinePrefixFromPath(self.dataInputOrig.input_file.path.value)
@@ -1497,6 +1514,18 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             fileNumber = 1
         fmt_string = fmt.replace("??????", "data_%06d" % fileNumber)
         return fmt_string.format(num)
+
+    def createInputFile(self, data_collection_id, directory):
+        inputFilePath = os.path.join(directory, "XDS.INP")
+        if "Test" in EDUtilsPath.getEdnaSite():
+            pipe1 = subprocess.Popen("/opt/pxsoft/bin/xdsinp2 -t {0}".format(data_collection_id), shell=True, stdout=subprocess.PIPE, close_fds=True)
+        else:
+            pipe1 = subprocess.Popen("/opt/pxsoft/bin/xdsinp2 {0}".format(data_collection_id), shell=True, stdout=subprocess.PIPE, close_fds=True)
+        xdsInp = pipe1.communicate()[0]
+        with open(inputFilePath, "w") as f:
+            f.write(xdsInp)
+        return inputFilePath
+
 
 def _create_scaling_stats(xscale_stats, stats_type, lowres, anom):
     stats = AutoProcScalingStatistics()
