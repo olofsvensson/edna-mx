@@ -1136,6 +1136,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                     pyarch_base = os.path.join("/data/pyarch/id30a2/reprocess/EDNA_proc", str(self.dataInput.data_collection_id.value), strDate)
                 else:
                     pyarch_base = os.path.join("/data/pyarch/id30a2/reprocess/EDNA_proc", strDate)
+                os.makedirs(pyarch_base)
                 pyarch_path = tempfile.mkdtemp(prefix=strTime + "_", dir=pyarch_base)
             elif files_dir.startswith('/data/gz'):
                 if files_dir.startswith('/data/gz/visitor'):
