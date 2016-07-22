@@ -1130,8 +1130,13 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             pyarch_path = os.path.join(pyarch_path, "%s" % self.integration_id_anom)
         elif EDUtilsPath.isESRF():
             if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
-                pyarch_base = os.path.join("/data/pyarch/id30a2/reprocess", str(self.dataInput.data_collection_id))
-                pyarch_path = tempfile.mkdtemp(prefix="ËDNA_proc_", dir=pyarch_base)
+                strDate = time.strftime("%Y%m%d", time.localtime(time.time()))
+                strTime = time.strftime("%H%M%S", time.localtime(time.time()))
+                if self.dataInput.data_collection_id is not None:
+                    pyarch_base = os.path.join("/data/pyarch/id30a2/reprocess/EDNA_proc", str(self.dataInput.data_collection_id.value), strDate)
+                else:
+                    pyarch_base = os.path.join("/data/pyarch/id30a2/reprocess/EDNA_proc", strDate)
+                pyarch_path = tempfile.mkdtemp(prefix=strTime + "_", dir=pyarch_base)
             elif files_dir.startswith('/data/gz'):
                 if files_dir.startswith('/data/gz/visitor'):
                     tokens = [elem for elem in files_dir.split(os.path.sep)
