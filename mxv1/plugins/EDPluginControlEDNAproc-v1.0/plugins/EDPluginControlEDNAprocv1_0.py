@@ -38,6 +38,7 @@ import shutil
 import socket
 import smtplib
 import shutil
+import tempfile
 from stat import *
 
 from EDPluginControl import EDPluginControl
@@ -231,8 +232,11 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         xds_in = XSDataMinimalXdsIn()
         xds_in.input_file = data_in.input_file.path
+        xds_in.start_image = data_in.start_image
+        xds_in.end_image = data_in.end_image
         if sgnumber is not None:
             xds_in.spacegroup = XSDataInteger(sgnumber)
+
 
         # Workaround for mxCuBE unit cell comma separation and trailing "2"
         unit_cell = data_in.unit_cell
@@ -352,9 +356,11 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if self.dataInput.start_image is not None:
             start_image = self.dataInput.start_image.value
             self.data_range[0] = start_image
+
         if self.dataInput.end_image is not None:
             end_image = self.dataInput.end_image.value
             self.data_range[1] = end_image
+
         if end_image - start_image < 8:
             error_message = "There are fewer than 8 images, aborting"
             self.addErrorMessage(error_message)
@@ -1123,7 +1129,10 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             pyarch_path = os.path.join('/data/ispyb', strBeamline, *tokens[3:-1])
             pyarch_path = os.path.join(pyarch_path, "%s" % self.integration_id_anom)
         elif EDUtilsPath.isESRF():
-            if files_dir.startswith('/data/gz'):
+            if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
+                pyarch_base = os.path.join("/data/pyarch/id30a2/reprocess", str(self.dataInput.data_collection_id))
+                pyarch_path = tempfile.mkdtemp(prefix="ËDNA_proc_", dir=pyarch_base)
+            elif files_dir.startswith('/data/gz'):
                 if files_dir.startswith('/data/gz/visitor'):
                     tokens = [elem for elem in files_dir.split(os.path.sep)
                               if len(elem) > 0]
