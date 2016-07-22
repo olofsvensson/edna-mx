@@ -139,13 +139,37 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
                 parsed_config["FRIEDEL'S_LAW="] = "TRUE"
             else:
                 parsed_config["FRIEDEL'S_LAW="] = "FALSE"
+        if self.dataInput.start_image is not None:
+            start_image = self.dataInput.start_image.value
+            parsed_config['DATA_RANGE='][0] = start_image
+        else:
+            start_image = parsed_config['DATA_RANGE='][0]
+        if self.dataInput.end_image is not None:
+            end_image = self.dataInput.end_image.value
+            parsed_config['DATA_RANGE='][1] = end_image
+        else:
+            end_image = parsed_config['DATA_RANGE='][1]
+        spot_range_list = list()
         if spot_range is not None and len(spot_range) > 0:
-            spot_range_list = list()
+            spot_range_list = []
             for srange in spot_range:
-                if srange.begin > 0:
-                    spot_range_list.append('{0} {1}'.format(srange.begin, srange.end))
-            self.DEBUG('setting the spot range to {0} as requested'.format(spot_range_list))
-            parsed_config['SPOT_RANGE='] = spot_range_list
+                spot_range_list.append([srange.begin, srange.end])
+            spot_range_list = self.checkSpotRanges(spot_range_list, start_image, end_image)
+        elif 'SPOT_RANGE=' in parsed_config:
+            spot_range_list = self.checkSpotRanges(parsed_config['SPOT_RANGE='], start_image, end_image)
+        else:
+            spot_range_list = [[start_image, end_image]]
+        self.DEBUG('setting the spot range to {0}'.format(spot_range_list))
+        parsed_config['SPOT_RANGE='] = spot_range_list
+        # Check background range
+        if 'BACKGROUND_RANGE=' in parsed_config:
+            background_range = parsed_config['BACKGROUND_RANGE=']
+            if background_range[0] < start_image:
+                background_range[0] = start_image
+                background_range[1] += start_image - 1
+            if background_range[1] > end_image:
+                background_range[1] = end_image
+            parsed_config['BACKGROUND_RANGE='] = background_range
         # unit cell might be an empty string or some other crazy stuff
         # we need 6 floats/ints
         if unit_cell is not None:
@@ -231,6 +255,19 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
                     self.ERROR(strLogLine)
                     self.addErrorMessage(strLogLine)
 
+    def checkSpotRanges(self, _listSpotRange, start_image, end_image):
+        # Check existing spot range
+        newListSpotRange = []
+        for spotRange in _listSpotRange:
+            if spotRange[0] >= start_image and spotRange[1] <= end_image:
+                newListSpotRange.append('{0} {1}'.format(spotRange[0], spotRange[1]))
+            elif spotRange[0] < start_image and spotRange[1] >= start_image and spotRange[1] <= end_image:
+                newListSpotRange.append('{0} {1}'.format(start_image, spotRange[1]))
+            elif spotRange[0] >= start_image and spotRange[0] <= end_image and spotRange[1] > end_image:
+                newListSpotRange.append('{0} {1}'.format(spotRange[0], end_image))
+        if len(newListSpotRange) == 0:
+            newListSpotRange = ['{0} {1}'.format(start_image, end_image)]
+        return newListSpotRange
 
 
 

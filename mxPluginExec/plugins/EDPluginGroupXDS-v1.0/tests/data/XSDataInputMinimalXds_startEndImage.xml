@@ -9,4 +9,10 @@
   <maxjobs>
     <value>1</value>
   </maxjobs>
+  <start_image>
+  	<value>50</value>
+  </start_image>
+  <end_image>
+  	<value>500</value>
+  </end_image>
 </XSDataInput>
