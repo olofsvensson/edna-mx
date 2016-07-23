@@ -188,6 +188,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 data_collection_id = data_in.data_collection_id.value
                 newpath = self.createInputFile(data_collection_id, self.getWorkingDirectory())
                 data_in.input_file = XSDataFile(XSDataString(newpath))
+                # Copy original input file
+                shutil.copy(newpath, os.path.join(self.getWorkingDirectory(), "XSD.INP_GENERATED"))
             else:
                 strErrorMessage = "No input file provided!"
                 self.ERROR(strErrorMessage)
@@ -1153,7 +1155,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                     pyarch_base = os.path.join("/data/pyarch/id30a2/reprocess/EDNA_proc", str(self.dataInput.data_collection_id.value), strDate)
                 else:
                     pyarch_base = os.path.join("/data/pyarch/id30a2/reprocess/EDNA_proc", strDate)
-                os.makedirs(pyarch_base)
+                if not os.path.exists(pyarch_base):
+                    os.makedirs(pyarch_base)
                 pyarch_path = tempfile.mkdtemp(prefix=strTime + "_", dir=pyarch_base)
             elif files_dir.startswith('/data/gz'):
                 if files_dir.startswith('/data/gz/visitor'):
