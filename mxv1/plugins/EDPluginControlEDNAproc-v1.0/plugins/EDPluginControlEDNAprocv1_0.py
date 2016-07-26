@@ -182,6 +182,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         data_in = self.dataInput
 
+        self.dataInputOrig = self.dataInput.copy()
+
         if data_in.input_file is None:
             # Input data file not provided, try to create one
             if EDUtilsPath.isESRF() and data_in.data_collection_id is not None:
@@ -190,6 +192,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 data_in.input_file = XSDataFile(XSDataString(newpath))
                 # Copy original input file
                 shutil.copy(newpath, os.path.join(self.getWorkingDirectory(), "XSD.INP_GENERATED"))
+                self.root_dir = self.getWorkingDirectory()
             else:
                 strErrorMessage = "No input file provided!"
                 self.ERROR(strErrorMessage)
@@ -198,6 +201,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 # setFailure does not prevent preProcess/process/etc from running
                 raise Exception('EDNA FAILURE')
         else:
+            # save the root path (where the initial xds.inp is) for later use
+            self.root_dir = os.path.abspath(os.path.dirname(self.dataInput.input_file.path.value))
             # at least check for the xds input file existence before
             # trying to start anything even if the first xds run does it
             # anyway
@@ -216,9 +221,6 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 data_in.input_file.path = XSDataString(newpath)
 
 
-        # save the root path (where the initial xds.inp is) for later use
-        self.root_dir = os.path.abspath(os.path.dirname(self.dataInput.input_file.path.value))
-        self.dataInputOrig = self.dataInput.copy()
 
 
         if EDUtilsPath.isESRF():
