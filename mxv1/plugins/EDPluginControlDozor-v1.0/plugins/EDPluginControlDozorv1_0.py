@@ -194,13 +194,12 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                                                                                "'Visible res.'",
                                                                ))
                 for imageDozor in self.dataOutput.imageDozor:
-                    if imageDozor.visibleResolution.value < 10:
-                        gnuplotFile.write("{0:10d},{1:15d},{2:15.3f},{3:15.3f},{4:15.3f}\n".format(imageDozor.number.value,
-                                                                                                     imageDozor.spotsNumOf.value,
-                                                                                                     imageDozor.mainScore.value,
-                                                                                                     imageDozor.spotScore.value,
-                                                                                                     imageDozor.visibleResolution.value,
-                                                                                        ))
+                    gnuplotFile.write("{0:10d},{1:15d},{2:15.3f},{3:15.3f},{4:15.3f}\n".format(imageDozor.number.value,
+                                                                                               imageDozor.spotsNumOf.value,
+                                                                                               imageDozor.mainScore.value,
+                                                                                               imageDozor.spotScore.value,
+                                                                                               imageDozor.visibleResolution.value,
+                                                                                               ))
             gnuplotFile.close()
             gnuplotScript = \
 """#
@@ -210,14 +209,14 @@ set title "{0}"
 set grid x y2
 set xlabel "Image number"
 set y2label "Resolution (A)"
-set ylabel "Dozor score"
+set ylabel "No spots / Dozor score"
 set ytics nomirror
 set y2tics
 set autoscale  x
 set autoscale  y
-set autoscale y2
+set y2range [4.5: 0.8]
 set key below
-plot 'dozor.csv' using 0:2 title "Number of spots" axes x1y1 with points linetype 2 pointtype 7 pointsize 1.0, \
+plot 'dozor.csv' using 0:2 title "Number of spots" axes x1y1 with points linetype rgb "goldenrod" pointtype 7 pointsize 1.0, \
      'dozor.csv' using 0:3 title "Dozor score" axes x1y1 with points linetype 3 pointtype 7 pointsize 1.0, \
      'dozor.csv' using 0:5 title "Visible resolution" axes x1y2 with points linetype 1 pointtype 7 pointsize 1.0
 """.format(self.template.replace("%04d", "####"))
