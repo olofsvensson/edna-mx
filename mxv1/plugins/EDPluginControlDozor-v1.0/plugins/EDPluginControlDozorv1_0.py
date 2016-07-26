@@ -183,7 +183,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         EDPluginControl.postProcess(self)
         self.DEBUG("EDPluginControlDozorv1_0.postProcess")
         # Write a file to be used with ISPyB or GNUPLOT only if data collection id in input
-        if self.dataInput.dataCollectionId is not None and len(self.dataOutput.imageDozor) > 1:
+        if self.dataInput.dataCollectionId is not None:
             with open(os.path.join(self.getWorkingDirectory(), "dozor.csv"), "w") as gnuplotFile:
                 gnuplotFile.write("# Data directory: {0}\n".format(self.directory))
                 gnuplotFile.write("# File template: {0}\n".format(self.template.replace("%04d", "####")))
@@ -216,9 +216,9 @@ set autoscale  x
 set autoscale  y
 set y2range [4.5: 0.8]
 set key below
-plot 'dozor.csv' using 0:2 title "Number of spots" axes x1y1 with points linetype rgb "goldenrod" pointtype 7 pointsize 1.0, \
-     'dozor.csv' using 0:3 title "Dozor score" axes x1y1 with points linetype 3 pointtype 7 pointsize 1.0, \
-     'dozor.csv' using 0:5 title "Visible resolution" axes x1y2 with points linetype 1 pointtype 7 pointsize 1.0
+plot 'dozor.csv' using 1:2 title "Number of spots" axes x1y1 with points linetype rgb "goldenrod" pointtype 7 pointsize 1.5, \
+     'dozor.csv' using 1:3 title "Dozor score" axes x1y1 with points linetype 3 pointtype 7 pointsize 1.5, \
+     'dozor.csv' using 1:5 title "Visible resolution" axes x1y2 with points linetype 1 pointtype 7 pointsize 1.5
 """.format(self.template.replace("%04d", "####"))
             pathGnuplotScript = os.path.join(self.getWorkingDirectory(), "gnuplot.sh")
             data_file = open(pathGnuplotScript, "w")
