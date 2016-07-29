@@ -81,9 +81,9 @@
         </numberOfPositions>
     </diffractionPlan>
     <screening>
-        <dataCollectionId>
+        <dataCollectionGroupId>
             <value>123456</value>
-        </dataCollectionId>
+        </dataCollectionGroupId>
         <timeStamp>
             <value>2012-02-27 09:02:11</value>
         </timeStamp>

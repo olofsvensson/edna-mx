@@ -74,7 +74,7 @@ package XSDataMXv1 {
 
 		complex type XSDataInputControlISPyB extends XSDataInput {
 			characterisationResult : XSDataResultCharacterisation
-			dataCollectionId : XSDataInteger optional
+			dataCollectionGroupId : XSDataInteger optional
 			kappa : XSDataAngle optional
 			phi : XSDataAngle optional
 		}

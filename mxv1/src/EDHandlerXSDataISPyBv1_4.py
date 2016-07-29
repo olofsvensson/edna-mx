@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Karl Levik (karl.levik@diamond.ac.uk)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ class EDHandlerXSDataISPyBv1_4(object):
         xsDataInputISPyBStoreScreening = XSDataInputISPyBStoreScreening()
 
         xsDataResultCharacterisation = _xsDataInputControlISPyB.getCharacterisationResult()
-        xsDataIntegerDataCollectionId = _xsDataInputControlISPyB.getDataCollectionId()
+        xsDataIntegerDataCollectionGroupId = _xsDataInputControlISPyB.getDataCollectionGroupId()
 
         # ISPyB image
         xsDataISPyBImage = EDHandlerXSDataISPyBv1_4.generateXSDataISPyBImage(xsDataResultCharacterisation)
@@ -96,7 +96,7 @@ class EDHandlerXSDataISPyBv1_4(object):
                                                                                                                    _strStatusMessage, fKappa, fPhi)
 
         # Assemble the input
-        xsDataISPyBScreening.dataCollectionId = xsDataIntegerDataCollectionId
+        xsDataISPyBScreening.dataCollectionGroupId = xsDataIntegerDataCollectionGroupId
         xsDataInputISPyBStoreScreening.image = xsDataISPyBImage
         xsDataInputISPyBStoreScreening.diffractionPlan = xsDataISPyBDiffractionPlan
         xsDataInputISPyBStoreScreening.screening = xsDataISPyBScreening
@@ -119,7 +119,7 @@ class EDHandlerXSDataISPyBv1_4(object):
                     xsDataImageFirst = lXSDataImage[ 0 ]
                     strPathToFirstImage = xsDataImageFirst.getPath().getValue()
 
-            # Add an image path if the dataCollectionId is not present...
+            # Add an image path if the dataCollectionGroupId is not present...
             if (strPathToFirstImage is not None):
                 xsDataISPyBImage = XSDataISPyBImage()
                 strImageBaseName = os.path.basename(strPathToFirstImage)
@@ -164,9 +164,9 @@ class EDHandlerXSDataISPyBv1_4(object):
                 xsDataISPyBDiffractionPlan.requiredCompleteness = xsDataDiffractionPlan.requiredCompleteness
                 xsDataISPyBDiffractionPlan.requiredMultiplicity = xsDataDiffractionPlan.requiredMultiplicity
                 xsDataISPyBDiffractionPlan.requiredResolution = xsDataDiffractionPlan.requiredResolution
-                xsDataISPyBDiffractionPlan.strategyOption = xsDataDiffractionPlan.strategyOption            
+                xsDataISPyBDiffractionPlan.strategyOption = xsDataDiffractionPlan.strategyOption
         return xsDataISPyBDiffractionPlan
-    
+
     @staticmethod
     def generateXSDataISPyBScreening(_xsDataSample=None, _strShortComments=None, _strComments=None):
         xsDataISPyBScreening = XSDataISPyBScreening()
@@ -178,8 +178,8 @@ class EDHandlerXSDataISPyBv1_4(object):
         if _strComments:
             xsDataISPyBScreening.comments = XSDataString(_strComments)
         return xsDataISPyBScreening
-    
-        
+
+
     @staticmethod
     def generateXSDataISPyBScreeningOutputContainer(_xsDataResultCharacterisation, _strStatusMessage, _fKappa, _fPhi):
         xsDataISPyBScreeningOutput = XSDataISPyBScreeningOutput()
@@ -234,7 +234,7 @@ class EDHandlerXSDataISPyBv1_4(object):
                 xsDataISPyBScreeningOutput.setStatusDescription(XSDataString(_strStatusMessage))
             else:
                 xsDataISPyBScreeningOutput.setStatusDescription(XSDataString("Indexing failed"))
-            
+
 
         # Strategy information
         xsDataResultStrategy = _xsDataResultCharacterisation.strategyResult
@@ -263,7 +263,7 @@ class EDHandlerXSDataISPyBv1_4(object):
                     if _fKappa is not None:
                         xsDataISPyBScreeningStrategyWedge.kappa = XSDataDouble(_fKappa)
                     if _fPhi is not None:
-                        xsDataISPyBScreeningStrategyWedge.phi = XSDataDouble(_fPhi)                
+                        xsDataISPyBScreeningStrategyWedge.phi = XSDataDouble(_fPhi)
                     if (xsDataCollectionPlan.getComment() is not None):
                         strCollectionPlanComment = xsDataCollectionPlan.getComment().getValue()
                         xsDataISPyBScreeningStrategyWedge.comments = strCollectionPlanComment
@@ -290,7 +290,7 @@ class EDHandlerXSDataISPyBv1_4(object):
                                 (xsDataSubWedge.experimentalCondition.goniostat.oscillationWidth is not None):
                                 numberOfImagesSubWedge = int((xsDataSubWedge.experimentalCondition.goniostat.rotationAxisEnd.value - \
                                                  xsDataSubWedge.experimentalCondition.goniostat.rotationAxisStart.value) / \
-                                                 xsDataSubWedge.experimentalCondition.goniostat.oscillationWidth.value + 0.5) 
+                                                 xsDataSubWedge.experimentalCondition.goniostat.oscillationWidth.value + 0.5)
                                 xsDataISPyBScreeningStrategySubWedge.numberOfImages = XSDataInteger(numberOfImagesSubWedge)
                                 if numberOfImagesWedge is None:
                                     numberOfImagesWedge = numberOfImagesSubWedge
@@ -305,7 +305,7 @@ class EDHandlerXSDataISPyBv1_4(object):
                         iTotalNumberOfImages += numberOfImagesWedge
                     xsDataISPyBScreeningStrategyWedgeContainer.screeningStrategyWedge = xsDataISPyBScreeningStrategyWedge
                     xsDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer(xsDataISPyBScreeningStrategyWedgeContainer)
-                xsDataISPyBScreeningOutput.totalExposureTime = XSDataDouble(fTotalExposureTime)   
+                xsDataISPyBScreeningOutput.totalExposureTime = XSDataDouble(fTotalExposureTime)
                 xsDataISPyBScreeningOutput.totalNumberOfImages = XSDataInteger(iTotalNumberOfImages)
                 xsDataISPyBScreeningOutput.totalRotationRange = XSDataDouble(fTotalRotationRange)
                 xsDataISPyBScreeningStrategyContainer.screeningStrategy = xsDataISPyBScreeningStrategy
@@ -316,7 +316,7 @@ class EDHandlerXSDataISPyBv1_4(object):
             xsDataISPyBScreeningOutputContainer.addScreeningOutputLattice(xsDataISPyBScreeningOutputLattice)
         if xsDataISPyBScreeningStrategyContainer is not None:
             xsDataISPyBScreeningOutputContainer.addScreeningStrategyContainer(xsDataISPyBScreeningStrategyContainer)
-        
+
         return xsDataISPyBScreeningOutputContainer
 
 
@@ -418,4 +418,4 @@ class EDHandlerXSDataISPyBv1_4(object):
                     if strPath.endswith("B.jpg"):
                         strBestWilsonPlotPath = strPath
         return strBestWilsonPlotPath
-                        
+

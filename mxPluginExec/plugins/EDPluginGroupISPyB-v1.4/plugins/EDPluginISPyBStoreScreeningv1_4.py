@@ -63,7 +63,7 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
         self.strToolsForBLSampleWebServiceWsdl = None
         self.strToolsForScreeningEDNAWebServiceWsdl = None
         self.iScreeningId = None
-        self.iDataCollectionId = None
+        self.iDataCollectionGroupId = None
 
 
     def configure(self):
@@ -106,19 +106,19 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
         clientToolsForScreeningEDNAWebServiceWsdl = Client(self.strToolsForScreeningEDNAWebServiceWsdl, transport=httpAuthenticatedToolsForAutoprocessingWebService2)
         self.bContinue = True
         # Data collection Id
-        if xsDataInputISPyBStoreScreening.screening.dataCollectionId is None:
+        if xsDataInputISPyBStoreScreening.screening.dataCollectionGroupId is None:
             xsDataISPyBImage = xsDataInputISPyBStoreScreening.image
             if xsDataISPyBImage is not None:
                 httpAuthenticatedToolsForAutoprocessingWebService3 = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
                 clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForAutoprocessingWebService3)
-                self.iDataCollectionId = self.findDataCollectionFromFileLocationAndFileName(clientToolsForCollectionWebService, xsDataISPyBImage.fileLocation.value, xsDataISPyBImage.fileName.value)
-                if self.iDataCollectionId is None:
+                self.iDataCollectionGroupId = self.findDataCollectionFromFileLocationAndFileName(clientToolsForCollectionWebService, xsDataISPyBImage.fileLocation.value, xsDataISPyBImage.fileName.value)
+                if self.iDataCollectionGroupId is None:
                     self.ERROR("Couldn't obtain data collection id!")
                     self.setFailure()
                 else:
-                    xsDataInputISPyBStoreScreening.screening.dataCollectionId = XSDataInteger(self.iDataCollectionId)
+                    xsDataInputISPyBStoreScreening.screening.dataCollectionGroupId = XSDataInteger(self.iDataCollectionGroupId)
         else:
-            self.iDataCollectionId = xsDataInputISPyBStoreScreening.screening.dataCollectionId.value
+            self.iDataCollectionGroupId = xsDataInputISPyBStoreScreening.screening.dataCollectionGroupId.value
         if not self.isFailure():
             # DiffractionPlan
             xsDataISPyBDiffractionPlan = xsDataInputISPyBStoreScreening.diffractionPlan
@@ -180,8 +180,8 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
         xsDataResultISPyBStoreScreening = XSDataResultISPyBStoreScreening()
         if self.iScreeningId is not None:
             xsDataResultISPyBStoreScreening.screeningId = XSDataInteger(self.iScreeningId)
-        if self.iDataCollectionId is not None:
-            xsDataResultISPyBStoreScreening.dataCollectionId = XSDataInteger(self.iDataCollectionId)
+        if self.iDataCollectionGroupId is not None:
+            xsDataResultISPyBStoreScreening.dataCollectionGroupId = XSDataInteger(self.iDataCollectionGroupId)
         self.setDataOutput(xsDataResultISPyBStoreScreening)
 
 
@@ -227,12 +227,12 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
                 _strFileName, \
                 )
         if dataCollectionWS3VO is None:
-            iDataCollectionId = None
+            iDataCollectionGroupId = None
             self.WARNING("Cannot find data collection id for dir %s name %s" % (strDirName, _strFileName))
         else:
-            iDataCollectionId = dataCollectionWS3VO.dataCollectionId
-            self.DEBUG("Data collection id for dir %s name %s is %d" % (strDirName, _strFileName, iDataCollectionId))
-        return iDataCollectionId
+            iDataCollectionGroupId = dataCollectionWS3VO.dataCollectionGroupId
+            self.DEBUG("Data collection id for dir %s name %s is %d" % (strDirName, _strFileName, iDataCollectionGroupId))
+        return iDataCollectionGroupId
 
 
 
@@ -310,7 +310,7 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
         """Creates an entry in ISPyB for the Screening table"""
         self.DEBUG("EDPluginISPyBStoreScreeningv1_4.storeScreening")
         iScreeningId = self.getXSValue(_xsDataISPyBScreening.screeningId)
-        iDataCollectionId = self.getXSValue(_xsDataISPyBScreening.dataCollectionId)
+        iDataCollectionGroupId = self.getXSValue(_xsDataISPyBScreening.dataCollectionGroupId)
         iDiffractionPlanId = _iDiffractionPlanId
         strTimeStamp = DateTime(datetime.datetime.now())
         strProgramVersion = self.getXSValue(_xsDataISPyBScreening.programVersion, _iMaxStringLength=45)
@@ -319,8 +319,7 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
         strXmlSampleInformation = self.getXSValue(_xsDataISPyBScreening.xmlSampleInformation)
         iScreeningId = _clientToolsForScreeningEDNAWebServiceWsdl.service.storeOrUpdateScreening(
             arg0=iScreeningId, \
-            dataCollectionGroupId=None, \
-            dataCollectionId=iDataCollectionId, \
+            dataCollectionGroupId=iDataCollectionGroupId, \
             diffractionPlanId=iDiffractionPlanId, \
             recordTimeStamp=strTimeStamp, \
             programVersion=strProgramVersion, \

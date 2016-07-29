@@ -327,7 +327,7 @@ complex type XSDataISPyBDiffractionPlan extends XSData {
 
 complex type XSDataISPyBScreening extends XSData {
 	screeningId : XSDataInteger optional
-	dataCollectionId : XSDataInteger
+	dataCollectionGroupId : XSDataInteger
 	diffractionplanId : XSDataInteger
 	timeStamp : XSDataString
 	programVersion : XSDataString optional
