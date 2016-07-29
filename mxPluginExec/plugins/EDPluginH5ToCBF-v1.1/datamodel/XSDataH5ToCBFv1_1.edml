@@ -7,12 +7,15 @@ import XSDataCommon.XSDataResult
 
 
 complex type XSDataInputH5ToCBF extends XSDataInput {
-	imageNumber : XSDataInteger 
+	imageNumber : XSDataInteger optional
 	hdf5ImageNumber : XSDataInteger optional
 	hdf5File : XSDataFile
 	forcedOutputDirectory : XSDataFile optional
+	startImageNumber : XSDataInteger optional
+	endImageNumber : XSDataInteger optional
 }
 
 complex type XSDataResultH5ToCBF extends XSDataResult {
-	outputCBFFile : XSDataFile
+	outputCBFFile : XSDataFile optional
+	outputCBFFileTemplate : XSDataFile optional
 }

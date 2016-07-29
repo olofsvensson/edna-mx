@@ -37,16 +37,16 @@ from EDTestCasePluginExecute          import EDTestCasePluginExecute
 
 
 
-class EDTestCasePluginExecuteH5ToCBFv1_0_withoutDataCollection(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteH5ToCBFv1_1_withImageRange(EDTestCasePluginExecute):
 
     def __init__(self, _oalStringTestName=None):
-        EDTestCasePluginExecute.__init__(self, "EDPluginH5ToCBFv1_0")
+        EDTestCasePluginExecute.__init__(self, "EDPluginH5ToCBFv1_1")
         self.setConfigurationFile(self.getRefConfigFile())
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputH5ToCBF_withoutDataCollection.xml"))
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputH5ToCBF_withImageRange.xml"))
 
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "ref-test_3_1_master.h5", "ref-test_3_1_data_000001.h5" ])
+        self.loadTestImage([ "Trx6_19_1_1_master.h5", "Trx6_19_1_1_data_000001.h5" ])
 
     def testExecute(self):
         self.run()

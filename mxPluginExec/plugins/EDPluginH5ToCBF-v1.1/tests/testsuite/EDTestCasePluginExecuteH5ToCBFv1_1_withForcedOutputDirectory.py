@@ -37,10 +37,10 @@ from EDTestCasePluginExecute          import EDTestCasePluginExecute
 
 
 
-class EDTestCasePluginExecuteH5ToCBFv1_0_withForcedOutputDirectory(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteH5ToCBFv1_1_withForcedOutputDirectory(EDTestCasePluginExecute):
 
     def __init__(self, _oalStringTestName=None):
-        EDTestCasePluginExecute.__init__(self, "EDPluginH5ToCBFv1_0")
+        EDTestCasePluginExecute.__init__(self, "EDPluginH5ToCBFv1_1")
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputH5ToCBF_withForcedOutputDirectory.xml"))
 

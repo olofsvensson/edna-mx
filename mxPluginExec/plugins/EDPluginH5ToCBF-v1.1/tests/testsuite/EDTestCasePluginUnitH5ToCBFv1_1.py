@@ -46,6 +46,7 @@ class EDTestCasePluginUnitH5ToCBFv1_1(EDTestCasePluginUnit):
         EDTestCasePluginUnit.__init__(self, "EDPluginH5ToCBFv1_1")
         self.strDataPath = self.getPluginTestsDataHome()
         self.strReferenceInputFile = os.path.join(self.strDataPath, "XSDataInputH5ToCBF_reference.xml")
+        self.strReferenceInputFileWithRange = os.path.join(self.strDataPath, "XSDataInputH5ToCBF_withImageRange.xml")
 
 
     def testGenerateCommands(self):
@@ -55,6 +56,12 @@ class EDTestCasePluginUnitH5ToCBFv1_1(EDTestCasePluginUnit):
         xsDataInputH5ToCBF = XSDataInputH5ToCBF.parseFile(self.strReferenceInputFile)
         strCommandLine = edPluginH5ToCBF.generateCommands(xsDataInputH5ToCBF)
         print(strCommandLine)
+        xsDataInputH5ToCBFWithRange = XSDataInputH5ToCBF.parseFile(self.strReferenceInputFileWithRange)
+        strCommandLineWithRange = edPluginH5ToCBF.generateCommands(xsDataInputH5ToCBFWithRange)
+        print(strCommandLineWithRange)
+
+
+
 
     def process(self):
         self.addTestMethod(self.testGenerateCommands)

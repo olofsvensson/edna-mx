@@ -46,7 +46,7 @@ class EDTestCasePluginExecuteH5ToCBFv1_1(EDTestCasePluginExecute):
 
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "ref-test_3_1_master.h5", "ref-test_3_1_data_000001.h5" ])
+        self.loadTestImage([ "Trx6_19_1_1_master.h5", "Trx6_19_1_1_data_000001.h5" ])
 
     def testExecute(self):
         self.run()
