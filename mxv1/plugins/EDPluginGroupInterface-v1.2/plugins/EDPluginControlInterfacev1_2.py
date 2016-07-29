@@ -9,7 +9,7 @@
 #
 #    Principal author:       Marie-Francoise Incardona (incardon@esrf.fr)
 #
-#    Contributing author:    Olof Svensson (svensson@esrf.fr) 
+#    Contributing author:    Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -64,6 +64,7 @@ from XSDataInterfacev1_2 import XSDataResultInterface
 from EDFactoryPlugin import edFactoryPlugin
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 # add comments to data collection and data collection group
+from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 from XSDataISPyBv1_4 import XSDataInputISPyBUpdateDataCollectionGroupComment
 
 
@@ -116,7 +117,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
 
         self.listImagePaths = []
         self.fFlux = None
-        self.fMaxExposureTimePerDataCollection = 10000 # s, default prototype value
+        self.fMaxExposureTimePerDataCollection = 10000  # s, default prototype value
         self.fMinExposureTimePerImage = None
         self.fBeamSizeX = None
         self.fBeamSizeY = None
@@ -431,7 +432,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
 
         if (self.strEDPluginControlISPyBName is not None):
             self.edPluginControlISPyB = self.loadPlugin(self.strEDPluginControlISPyBName, "ISPyB")
-            
+
 
 
     def process(self, _edPlugin=None):
@@ -502,7 +503,8 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
             xsDataInputControlISPyB = XSDataInputControlISPyB()
             xsDataInputControlISPyB.setCharacterisationResult(self.edPluginControlCharacterisation.getDataOutput())
             if (not self.iDataCollectionId is None):
-                xsDataInputControlISPyB.setDataCollectionId(XSDataInteger(self.iDataCollectionId))
+                dataCollectionGroupId = self.getDataCollectionGroupId(self.iDataCollectionId)
+                xsDataInputControlISPyB.setDataCollectionGroupId(XSDataInteger(dataCollectionGroupId))
             if (not self.strShortComments is None):
                 self.edPluginControlISPyB.setDataInput(XSDataString(self.strShortComments), "shortComments")
             if (not self.strComments is None):
@@ -667,7 +669,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
                 if len(listImageNoWithNoDiffraction) == 1:
                     subComment = "image {0}".format(listImageNoWithNoDiffraction[0])
                 elif len(listImageNoWithNoDiffraction) == 2:
-                    subComment = "images {0} and {1}".format(listImageNoWithNoDiffraction[0], listImageNoWithNoDiffraction[1])                    
+                    subComment = "images {0} and {1}".format(listImageNoWithNoDiffraction[0], listImageNoWithNoDiffraction[1])
                 elif len(listImageNoWithNoDiffraction) > 2:
                     subComment = "images {0}".format(listImageNoWithNoDiffraction[0])
                     for imageNo in listImageNoWithNoDiffraction[1:-1]:
@@ -675,7 +677,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
                     subComment += " and {0}".format(listImageNoWithNoDiffraction[-1])
                 if subComment is not None:
                     newComment = "No diffraction detected in {0} - hint: sample might not be accurately centred.".format(subComment)
-            
+
             if newComment is not None and self.iDataCollectionId is not None:
                 xsDataInput = XSDataInputISPyBUpdateDataCollectionGroupComment()
                 xsDataInput.newComment = XSDataString(newComment)
@@ -683,4 +685,20 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
                 edPluginISPyBUpdateDataCollectionGroupComment = self.loadPlugin("EDPluginISPyBUpdateDataCollectionGroupCommentv1_4")
                 edPluginISPyBUpdateDataCollectionGroupComment.dataInput = xsDataInput
                 self.executePluginSynchronous(edPluginISPyBUpdateDataCollectionGroupComment)
-                    
+
+    def getDataCollectionGroupId(self, _dataCollectionId):
+        self.DEBUG("EDPluginControlInterfacev1_2.getDataCollectionGroupId")
+        self.DEBUG("dataCollectionId = {0}".format(_dataCollectionId))
+        dataCollectionGroupId = None
+        xsDataInputRetrieveDataCollection = XSDataInputRetrieveDataCollection()
+        xsDataInputRetrieveDataCollection.dataCollectionId = XSDataInteger(_dataCollectionId)
+        edPluginISPyBRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
+        edPluginISPyBRetrieveDataCollection.dataInput = xsDataInputRetrieveDataCollection
+        edPluginISPyBRetrieveDataCollection.executeSynchronous()
+        xsDataResultRetrieveDataCollection = edPluginISPyBRetrieveDataCollection.dataOutput
+        if xsDataResultRetrieveDataCollection is not None:
+            dataCollection = xsDataResultRetrieveDataCollection.dataCollection
+            if dataCollection is not None:
+                dataCollectionGroupId = dataCollection.dataCollectionGroupId
+        self.DEBUG("dataCollectionGroupId = {0}".format(dataCollectionGroupId))
+        return dataCollectionGroupId

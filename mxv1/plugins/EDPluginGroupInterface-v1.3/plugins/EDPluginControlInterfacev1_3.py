@@ -64,6 +64,7 @@ from XSDataInterfacev1_3 import XSDataResultInterface
 from EDFactoryPlugin import edFactoryPlugin
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 # add comments to data collection and data collection group
+from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 from XSDataISPyBv1_4 import XSDataInputISPyBUpdateDataCollectionGroupComment
 
 
@@ -516,7 +517,8 @@ class EDPluginControlInterfacev1_3(EDPluginControl):
             xsDataInputControlISPyB = XSDataInputControlISPyB()
             xsDataInputControlISPyB.setCharacterisationResult(self.edPluginControlCharacterisation.getDataOutput())
             if (not self.iDataCollectionId is None):
-                xsDataInputControlISPyB.setDataCollectionId(XSDataInteger(self.iDataCollectionId))
+                dataCollectionGroupId = self.getDataCollectionGroupId(self.iDataCollectionId)
+                xsDataInputControlISPyB.setDataCollectionGroupId(XSDataInteger(dataCollectionGroupId))
             if (not self.strShortComments is None):
                 self.edPluginControlISPyB.setDataInput(XSDataString(self.strShortComments), "shortComments")
             if (not self.strComments is None):
@@ -699,4 +701,20 @@ class EDPluginControlInterfacev1_3(EDPluginControl):
                 edPluginISPyBUpdateDataCollectionGroupComment = self.loadPlugin("EDPluginISPyBUpdateDataCollectionGroupCommentv1_4")
                 edPluginISPyBUpdateDataCollectionGroupComment.dataInput = xsDataInput
                 self.executePluginSynchronous(edPluginISPyBUpdateDataCollectionGroupComment)
-                    
+
+    def getDataCollectionGroupId(self, _dataCollectionId):
+        self.DEBUG("EDPluginControlInterfacev1_2.getDataCollectionGroupId")
+        self.DEBUG("dataCollectionId = {0}".format(_dataCollectionId))
+        dataCollectionGroupId = None
+        xsDataInputRetrieveDataCollection = XSDataInputRetrieveDataCollection()
+        xsDataInputRetrieveDataCollection.dataCollectionId = XSDataInteger(_dataCollectionId)
+        edPluginISPyBRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
+        edPluginISPyBRetrieveDataCollection.dataInput = xsDataInputRetrieveDataCollection
+        edPluginISPyBRetrieveDataCollection.executeSynchronous()
+        xsDataResultRetrieveDataCollection = edPluginISPyBRetrieveDataCollection.dataOutput
+        if xsDataResultRetrieveDataCollection is not None:
+            dataCollection = xsDataResultRetrieveDataCollection.dataCollection
+            if dataCollection is not None:
+                dataCollectionGroupId = dataCollection.dataCollectionGroupId
+        self.DEBUG("dataCollectionGroupId = {0}".format(dataCollectionGroupId))
+        return dataCollectionGroupId
