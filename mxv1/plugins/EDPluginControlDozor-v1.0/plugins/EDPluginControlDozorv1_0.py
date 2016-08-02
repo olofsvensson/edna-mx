@@ -205,16 +205,18 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         # Write a file to be used with ISPyB or GNUPLOT only if data collection id in input
         dataCollectionId = None
         if self.dataInput.dataCollectionId is None and len(self.dataInput.image) > 0:
-            xsDataInputRetrieveDataCollection = XSDataInputRetrieveDataCollection()
-            xsDataInputRetrieveDataCollection.image = XSDataImage(self.dataInput.image[0].path)
-            edPluginISPyBRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
-            edPluginISPyBRetrieveDataCollection.dataInput = xsDataInputRetrieveDataCollection
-            edPluginISPyBRetrieveDataCollection.executeSynchronous()
-            xsDataResultRetrieveDataCollection = edPluginISPyBRetrieveDataCollection.dataOutput
-            if xsDataResultRetrieveDataCollection is not None:
-                dataCollection = xsDataResultRetrieveDataCollection.dataCollection
-                if dataCollection is not None:
-                    dataCollectionId = dataCollection.dataCollectionId
+            # Only try to obtain data collection id if at the ESRF and path starts with "/data"
+            if EDUtilsPath.isESRF() and self.dataInput.image[0].path.value.startswith("/data"):
+                xsDataInputRetrieveDataCollection = XSDataInputRetrieveDataCollection()
+                xsDataInputRetrieveDataCollection.image = XSDataImage(self.dataInput.image[0].path)
+                edPluginISPyBRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
+                edPluginISPyBRetrieveDataCollection.dataInput = xsDataInputRetrieveDataCollection
+                edPluginISPyBRetrieveDataCollection.executeSynchronous()
+                xsDataResultRetrieveDataCollection = edPluginISPyBRetrieveDataCollection.dataOutput
+                if xsDataResultRetrieveDataCollection is not None:
+                    dataCollection = xsDataResultRetrieveDataCollection.dataCollection
+                    if dataCollection is not None:
+                        dataCollectionId = dataCollection.dataCollectionId
         else:
             dataCollectionId = self.dataInput.dataCollectionId.value
 
