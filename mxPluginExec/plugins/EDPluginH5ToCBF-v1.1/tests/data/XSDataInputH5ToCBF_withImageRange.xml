@@ -1,16 +1,14 @@
 <?xml version="1.0" ?>
 <XSDataInputH5ToCBF>
-  <imageNumber>
+  <startImageNumber>
   	<value>1</value>
-  </imageNumber>
+  </startImageNumber>
+  <endImageNumber>
+  	<value>100</value>
+  </endImageNumber>
   <hdf5File>
   	<path>
       <value>${EDNA_TESTIMAGES}/Trx6_19_1_0001.h5</value>  	
   	</path>
   </hdf5File>
-  <forcedOutputDirectory>
-    <path>
-      <value>/tmp</value>
-    </path>
-  </forcedOutputDirectory>
 </XSDataInputH5ToCBF>
