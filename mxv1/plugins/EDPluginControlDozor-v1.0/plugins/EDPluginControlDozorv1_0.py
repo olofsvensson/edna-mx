@@ -39,6 +39,7 @@ from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
+from XSDataCommon import XSDataImage
 
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 EDFactoryPluginStatic.loadModule("XSDataDozorv1_0")
@@ -54,6 +55,7 @@ from XSDataControlDozorv1_0 import XSDataDozorInput
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 from XSDataISPyBv1_4 import XSDataInputISPyBSetImageQualityIndicatorsPlot
+from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 
 
 class EDPluginControlDozorv1_0(EDPluginControl):
@@ -73,6 +75,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.xsDataControlDozorInput = None
         self.directory = None
         self.template = None
+        self.maxBatchSize = 5000
 
 
     def checkParameters(self):
@@ -105,6 +108,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             edPluginRetrieveDataCollection.executeSynchronous()
             ispybDataCollection = edPluginRetrieveDataCollection.dataOutput.dataCollection
             batchSize = ispybDataCollection.numberOfImages
+            if batchSize > self.maxBatchSize:
+                batchSize = self.maxBatchSize
             dictImage = self.createImageDictFromISPyB(ispybDataCollection)
         else:
             # No connection to ISPyB, take parameters from input
@@ -183,8 +188,25 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         EDPluginControl.postProcess(self)
         self.DEBUG("EDPluginControlDozorv1_0.postProcess")
         # Write a file to be used with ISPyB or GNUPLOT only if data collection id in input
-        if self.dataInput.dataCollectionId is not None:
-            with open(os.path.join(self.getWorkingDirectory(), "dozor.csv"), "w") as gnuplotFile:
+        dataCollectionId = None
+        if self.dataInput.dataCollectionId is None and len(self.dataInput.image) > 0:
+            xsDataInputRetrieveDataCollection = XSDataInputRetrieveDataCollection()
+            xsDataInputRetrieveDataCollection.image = XSDataImage(self.dataInput.image[0].path)
+            edPluginISPyBRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
+            edPluginISPyBRetrieveDataCollection.dataInput = xsDataInputRetrieveDataCollection
+            edPluginISPyBRetrieveDataCollection.executeSynchronous()
+            xsDataResultRetrieveDataCollection = edPluginISPyBRetrieveDataCollection.dataOutput
+            if xsDataResultRetrieveDataCollection is not None:
+                dataCollection = xsDataResultRetrieveDataCollection.dataCollection
+                if dataCollection is not None:
+                    dataCollectionId = dataCollection.dataCollectionId
+        else:
+            dataCollectionId = self.dataInput.dataCollectionId.value
+
+        if dataCollectionId is not None:
+            dozorPlotFileName = "dozor_{0}.png".format(dataCollectionId)
+            dozorCsvFileName = "dozor_{0}.csv".format(dataCollectionId)
+            with open(os.path.join(self.getWorkingDirectory(), dozorCsvFileName), "w") as gnuplotFile:
                 gnuplotFile.write("# Data directory: {0}\n".format(self.directory))
                 gnuplotFile.write("# File template: {0}\n".format(self.template.replace("%04d", "####")))
                 gnuplotFile.write("# {0:>9s}{1:>16s}{2:>16s}{3:>16s}{4:>16s}\n".format("'Image no'",
@@ -202,24 +224,26 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                                                                                                ))
             gnuplotFile.close()
             gnuplotScript = \
-"""#
-set terminal png
-set output "dozor.png"
-set title "{0}"
-set grid x y2
-set xlabel "Image number"
-set y2label "Resolution (A)"
-set ylabel "No spots / Dozor score"
-set ytics nomirror
-set y2tics
-set autoscale  x
-set autoscale  y
-set y2range [4.5: 0.8]
-set key below
-plot 'dozor.csv' using 1:2 title "Number of spots" axes x1y1 with points linetype rgb "goldenrod" pointtype 7 pointsize 1.5, \
-     'dozor.csv' using 1:3 title "Dozor score" axes x1y1 with points linetype 3 pointtype 7 pointsize 1.5, \
-     'dozor.csv' using 1:5 title "Visible resolution" axes x1y2 with points linetype 1 pointtype 7 pointsize 1.5
-""".format(self.template.replace("%04d", "####"))
+    """#
+    set terminal png
+    set output '{dozorPlotFileName}'
+    set title '{title}'
+    set grid x y2
+    set xlabel 'Image number'
+    set y2label 'Resolution (A)'
+    set ylabel 'Number of spots / Dozor score'
+    set ytics nomirror
+    set y2tics
+    set autoscale  x
+    set autoscale  y
+    set y2range [4.5: 0.8]
+    set key below
+    plot '{dozorCsvFileName}' using 1:2 title 'Number of spots' axes x1y1 with points linetype rgb 'goldenrod' pointtype 7 pointsize 1.5, \
+     '{dozorCsvFileName}' using 1:3 title 'Dozor score' axes x1y1 with points linetype 3 pointtype 7 pointsize 1.5, \
+     '{dozorCsvFileName}' using 1:5 title 'Visible resolution' axes x1y2 with points linetype 1 pointtype 7 pointsize 1.5
+    """.format(title=self.template.replace("%04d", "####"),
+               dozorPlotFileName=dozorPlotFileName,
+               dozorCsvFileName=dozorCsvFileName)
             pathGnuplotScript = os.path.join(self.getWorkingDirectory(), "gnuplot.sh")
             data_file = open(pathGnuplotScript, "w")
             data_file.write(gnuplotScript)
@@ -230,31 +254,33 @@ plot 'dozor.csv' using 1:2 title "Number of spots" axes x1y1 with points linetyp
             os.chdir(oldCwd)
             if self.dataInput.processDirectory is not None:
                 processDirectory = self.dataInput.processDirectory.path.value
-                resultsDirectory = os.path.join(processDirectory, "results")
-                if not os.path.exists(resultsDirectory):
-                    os.makedirs(resultsDirectory, 0755)
-                dozorPlotResultPath = os.path.join(resultsDirectory, "dozor.png")
-                dozorCsvResultPath = os.path.join(resultsDirectory, "dozor.csv")
-                shutil.copy(os.path.join(self.getWorkingDirectory(), "dozor.png"), dozorPlotResultPath)
-                shutil.copy(os.path.join(self.getWorkingDirectory(), "dozor.csv"), dozorCsvResultPath)
-                # Create paths on pyarch
-                dozorPlotPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorPlotResultPath)
-                dozorCsvPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorCsvResultPath)
-                try:
-                    if not os.path.exists(os.path.dirname(dozorPlotPyarchPath)):
-                        os.makedirs(os.path.dirname(dozorPlotPyarchPath), 0755)
-                    shutil.copy(dozorPlotResultPath, dozorPlotPyarchPath)
-                    shutil.copy(dozorCsvResultPath, dozorCsvPyarchPath)
-                    # Upload to data collection
-                    xsDataInputISPyBSetImageQualityIndicatorsPlot = XSDataInputISPyBSetImageQualityIndicatorsPlot()
-                    xsDataInputISPyBSetImageQualityIndicatorsPlot.dataCollectionId = self.dataInput.dataCollectionId
-                    xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsPlotPath = XSDataString(dozorPlotPyarchPath)
-                    xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsCSVPath = XSDataString(dozorCsvPyarchPath)
-                    EDPluginISPyBSetImageQualityIndicatorsPlot = self.loadPlugin("EDPluginISPyBSetImageQualityIndicatorsPlotv1_4")
-                    EDPluginISPyBSetImageQualityIndicatorsPlot.dataInput = xsDataInputISPyBSetImageQualityIndicatorsPlot
-                    EDPluginISPyBSetImageQualityIndicatorsPlot.executeSynchronous()
-                except:
-                    self.warning("Couldn't copy files to pyarch")
+            else:
+                processDirectory = os.path.join(self.directory.replace("RAW_DATA", "PROCESSED_DATA"), "DozorPlot")
+            resultsDirectory = os.path.join(processDirectory, "results")
+            if not os.path.exists(resultsDirectory):
+                os.makedirs(resultsDirectory, 0755)
+            dozorPlotResultPath = os.path.join(resultsDirectory, dozorPlotFileName)
+            dozorCsvResultPath = os.path.join(resultsDirectory, dozorCsvFileName)
+            shutil.copy(os.path.join(self.getWorkingDirectory(), dozorPlotFileName), dozorPlotResultPath)
+            shutil.copy(os.path.join(self.getWorkingDirectory(), dozorCsvFileName), dozorCsvResultPath)
+            # Create paths on pyarch
+            dozorPlotPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorPlotResultPath)
+            dozorCsvPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorCsvResultPath)
+            try:
+                if not os.path.exists(os.path.dirname(dozorPlotPyarchPath)):
+                    os.makedirs(os.path.dirname(dozorPlotPyarchPath), 0755)
+                shutil.copy(dozorPlotResultPath, dozorPlotPyarchPath)
+                shutil.copy(dozorCsvResultPath, dozorCsvPyarchPath)
+                # Upload to data collection
+                xsDataInputISPyBSetImageQualityIndicatorsPlot = XSDataInputISPyBSetImageQualityIndicatorsPlot()
+                xsDataInputISPyBSetImageQualityIndicatorsPlot.dataCollectionId = XSDataInteger(dataCollectionId)
+                xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsPlotPath = XSDataString(dozorPlotPyarchPath)
+                xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsCSVPath = XSDataString(dozorCsvPyarchPath)
+                EDPluginISPyBSetImageQualityIndicatorsPlot = self.loadPlugin("EDPluginISPyBSetImageQualityIndicatorsPlotv1_4")
+                EDPluginISPyBSetImageQualityIndicatorsPlot.dataInput = xsDataInputISPyBSetImageQualityIndicatorsPlot
+                EDPluginISPyBSetImageQualityIndicatorsPlot.executeSynchronous()
+            except:
+                self.warning("Couldn't copy files to pyarch")
 
 
 
@@ -263,6 +289,9 @@ plot 'dozor.csv' using 1:2 title "Number of spots" axes x1y1 with points linetyp
         dictImage = {}
         if len(_xsDataControlDozorInput.image) > 0:
             listImage = _xsDataControlDozorInput.image
+            pathToFirstImage = listImage[0].path.value
+            self.directory = os.path.dirname(pathToFirstImage)
+            self.template = os.path.basename(pathToFirstImage).replace("0001", "####")
         else:
             # Create list of images
             listImage = []
