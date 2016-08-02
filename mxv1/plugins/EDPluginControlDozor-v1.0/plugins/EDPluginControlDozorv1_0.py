@@ -27,6 +27,7 @@ __copyright__ = "ESRF"
 
 import os
 import shutil
+import tempfile
 
 from EDPluginControl import EDPluginControl
 from EDUtilsImage import EDUtilsImage
@@ -57,6 +58,9 @@ from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 from XSDataISPyBv1_4 import XSDataInputISPyBSetImageQualityIndicatorsPlot
 from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 
+edFactoryPlugin.loadModule('XSDataH5ToCBFv1_1')
+from XSDataH5ToCBFv1_1 import XSDataInputH5ToCBF
+
 
 class EDPluginControlDozorv1_0(EDPluginControl):
     """
@@ -76,6 +80,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.directory = None
         self.template = None
         self.maxBatchSize = 5000
+        self.isHDF5 = False
 
 
     def checkParameters(self):
@@ -119,6 +124,10 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 batchSize = self.dataInput.batchSize.value
             dictImage = self.createImageDict(self.dataInput)
         listAllBatches = self.createListOfBatches(dictImage.keys(), batchSize)
+        if dictImage[listAllBatches[0][0]].path.value.endswith("h5"):
+            # Convert HDF5 images to CBF
+            self.isHDF5 = True
+            dictImage = self.convertToCBF(dictImage)
         for listBatch in listAllBatches:
             # Read the header from the first image in the batch
             xsDataFile = dictImage[listBatch[0]]
@@ -152,6 +161,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             strSuffix = EDUtilsImage.getSuffix(strFileName)
             if EDUtilsPath.isEMBL():
                 strXDSTemplate = "%s_?????.%s" % (strPrefix, strSuffix)
+            elif self.isHDF5:
+                strXDSTemplate = "%s_??????.%s" % (strPrefix, strSuffix)
             else:
                 strXDSTemplate = "%s_????.%s" % (strPrefix, strSuffix)
             xsDataInputDozor.nameTemplateImage = XSDataString(os.path.join(os.path.dirname(strFileName), strXDSTemplate))
@@ -360,3 +371,31 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         if listImagesInBatch != []:
             listAllBatches.append(listImagesInBatch)
         return listAllBatches
+
+    def convertToCBF(self, dictImage):
+        # Find start and end image number
+        startImage = None
+        endImage = None
+        for image in dictImage:
+            if startImage is None or startImage > image:
+                startImage = image
+            if endImage is None or endImage < image:
+                endImage = image
+        forcedOutputDirectory = tempfile.mkdtemp(prefix="H5ToCBF_")
+        print(startImage, endImage, forcedOutputDirectory)
+        xsDataInputH5ToCBF = XSDataInputH5ToCBF()
+        xsDataInputH5ToCBF.hdf5File = dictImage[startImage]
+        xsDataInputH5ToCBF.startImageNumber = XSDataInteger(startImage)
+        xsDataInputH5ToCBF.endImageNumber = XSDataInteger(endImage)
+        xsDataInputH5ToCBF.forcedOutputDirectory = XSDataFile(XSDataString(forcedOutputDirectory))
+        edPluginH5ToCBF = self.loadPlugin("EDPluginH5ToCBFv1_1")
+        edPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
+        edPluginH5ToCBF.executeSynchronous()
+        newDict = {}
+        if edPluginH5ToCBF.dataOutput is not None and edPluginH5ToCBF.dataOutput.outputCBFFileTemplate is not None:
+            outputCBFFileTemplate = edPluginH5ToCBF.dataOutput.outputCBFFileTemplate.path.value
+            outputCBFFileTemplate = outputCBFFileTemplate.replace("######", "{0:06d}")
+            for image in dictImage:
+                newDict[image] = XSDataFile(XSDataString(outputCBFFileTemplate.format(image)))
+        return newDict
+

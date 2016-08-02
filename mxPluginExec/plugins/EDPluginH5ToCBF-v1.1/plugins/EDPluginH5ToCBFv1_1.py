@@ -149,7 +149,7 @@ class EDPluginH5ToCBFv1_1(EDPluginExecProcessScript):
                 forcedOutputDirectory = self.dataInput.forcedOutputDirectory.path.value
                 if not os.path.exists(forcedOutputDirectory):
                     os.makedirs(forcedOutputDirectory, 0755)
-                CBFFilePath = os.path.join(directory, CBFFileNamePrefix)
+                CBFFilePath = os.path.join(forcedOutputDirectory, CBFFileNamePrefix)
 
             scriptCommandLine = "{0} {1}:{2} {3}".format(masterFile, startImageNumber, endImageNumber, CBFFilePath)
 
