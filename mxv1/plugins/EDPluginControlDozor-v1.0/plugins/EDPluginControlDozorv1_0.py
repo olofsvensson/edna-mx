@@ -81,6 +81,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.template = None
         self.maxBatchSize = 5000
         self.isHDF5 = False
+        self.cbfTempDir = None
 
 
     def checkParameters(self):
@@ -127,6 +128,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         if dictImage[listAllBatches[0][0]].path.value.endswith("h5"):
             # Convert HDF5 images to CBF
             self.isHDF5 = True
+            self.cbfTempDir = tempfile.mkdtemp(prefix="CbfTemp_")
             dictImage = self.convertToCBF(dictImage)
         for listBatch in listAllBatches:
             # Read the header from the first image in the batch
@@ -194,6 +196,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 indexImage += 1
             xsDataResultControlDozor.halfDoseTime = edPluginDozor.dataOutput.halfDoseTime
         self.dataOutput = xsDataResultControlDozor
+        if self.isHDF5:
+            shutil.rmtree(self.cbfTempDir)
 
     def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self)
@@ -381,13 +385,11 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 startImage = image
             if endImage is None or endImage < image:
                 endImage = image
-        forcedOutputDirectory = tempfile.mkdtemp(prefix="H5ToCBF_")
-        print(startImage, endImage, forcedOutputDirectory)
         xsDataInputH5ToCBF = XSDataInputH5ToCBF()
         xsDataInputH5ToCBF.hdf5File = dictImage[startImage]
         xsDataInputH5ToCBF.startImageNumber = XSDataInteger(startImage)
         xsDataInputH5ToCBF.endImageNumber = XSDataInteger(endImage)
-        xsDataInputH5ToCBF.forcedOutputDirectory = XSDataFile(XSDataString(forcedOutputDirectory))
+        xsDataInputH5ToCBF.forcedOutputDirectory = XSDataFile(XSDataString(self.cbfTempDir))
         edPluginH5ToCBF = self.loadPlugin("EDPluginH5ToCBFv1_1")
         edPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
         edPluginH5ToCBF.executeSynchronous()
