@@ -217,7 +217,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                     dataCollection = xsDataResultRetrieveDataCollection.dataCollection
                     if dataCollection is not None:
                         dataCollectionId = dataCollection.dataCollectionId
-        else:
+        elif self.dataInput.dataCollectionId is not None:
             dataCollectionId = self.dataInput.dataCollectionId.value
 
         if dataCollectionId is not None:
