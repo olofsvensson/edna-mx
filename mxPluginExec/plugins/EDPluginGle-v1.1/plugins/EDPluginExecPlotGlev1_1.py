@@ -32,6 +32,7 @@ import os, tempfile, numpy, threading, shlex, shutil, subprocess, json
 from EDPluginExec import EDPluginExec
 from EDUtilsFile import EDUtilsFile
 from EDUtilsPlatform import EDUtilsPlatform
+from EDUtilsPath import EDUtilsPath
 
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
@@ -46,7 +47,7 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
     """
     [To be replaced with a description of EDPluginExecTemplatev10]
     """
-    
+
 
     def __init__(self):
         """
@@ -63,7 +64,7 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
         self.DEBUG("EDPluginExecPlotGlev1_1.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
-    
+
     def preProcess(self, _edObject=None):
         EDPluginExec.preProcess(self)
         self.DEBUG("EDPluginExecPlotGlev1_1.preProcess")
@@ -112,7 +113,7 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
                 dictPlot["data"] = listDataFiles
                 self.listPlot.append(dictPlot)
                 iIndex += 1
-        
+
     def process(self, _edObject=None):
         EDPluginExec.process(self)
         self.DEBUG("EDPluginExecPlotGlev1_1.process")
@@ -124,7 +125,11 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
                 strDataFile = os.path.basename(strDataFileFullPath)
                 if not os.path.exists(os.path.join(self.getWorkingDirectory(), strDataFile)):
                     shutil.copy(strDataFileFullPath, self.getWorkingDirectory())
-            strCommand = "gle -verbosity 0 -r 150 -d jpg %s" % os.path.basename(dictPlot["script"])
+            if EDUtilsPath.isESRF():
+                # Force PXSOFT version of gle
+                strCommand = "/opt/pxsoft/bin/gle -verbosity 0 -r 150 -d jpg %s" % os.path.basename(dictPlot["script"])
+            else:
+                strCommand = "gle -verbosity 0 -r 150 -d jpg %s" % os.path.basename(dictPlot["script"])
             # Copied from EDPluginExecProcess
             self.DEBUG(self.getBaseName() + ": Processing")
             timer = threading.Timer(float(self.getTimeOut()), self.kill)
@@ -139,7 +144,7 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
                 self.error(strErrorMessage)
                 self.setFailure()
             finally:
-                timer.cancel()            
+                timer.cancel()
 
     def kill(self):
         self.WARNING("I will kill subprocess %s pid= %s" % (self.__subprocess, self.__iPID))
@@ -150,7 +155,7 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
         self.addErrorMessage(errorMessage)
         raise RuntimeError(errorMessage)
 
-        
+
     def postProcess(self, _edObject=None):
         EDPluginExec.postProcess(self)
         self.DEBUG("EDPluginExecPlotGlev1_1.postProcess")
@@ -161,7 +166,7 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
             if os.path.exists(strPathJpg):
                 xsDataResult.addFileGraph(XSDataFile(XSDataString(strPathJpg)))
         self.setDataOutput(xsDataResult)
-    
+
 
 
     def prepareGleGraph(self, _xsDataPlot):
@@ -240,19 +245,19 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
                 xsDataPlot.subTitle = strSubTitle
             elif strLine.find("xmin") != -1:
                 strXMin = strLine.split("=")[1]
-                xsDataPlot.xmin = float(strXMin) 
+                xsDataPlot.xmin = float(strXMin)
             elif strLine.find("ymin") != -1:
                 strYMin = strLine.split("=")[1]
-                xsDataPlot.ymin = float(strYMin) 
+                xsDataPlot.ymin = float(strYMin)
             elif strLine.find("xmax") != -1:
                 strXMax = strLine.split("=")[1]
-                xsDataPlot.xmax = float(strXMax) 
+                xsDataPlot.xmax = float(strXMax)
             elif strLine.find("ymax") != -1:
                 strYMax = strLine.split("=")[1]
-                xsDataPlot.ymax = float(strYMax) 
+                xsDataPlot.ymax = float(strYMax)
             elif strLine.find("xlabel") != -1:
                 strXLabel = strLine.split("'")[1]
-                xsDataPlot.xtitle = strXLabel 
+                xsDataPlot.xtitle = strXLabel
             elif strLine.find("ylabel") != -1:
                 if strLine.find("'") != -1:
                     strYLabel = strLine.split("'")[1]
@@ -267,22 +272,22 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
                 listData = []
             elif strLine.find("linetype") != -1:
                 strLineType = strLine.split("=")[1]
-                xsDataGraph.lineStyle = self.lineTypePlotMtv(int(strLineType)) 
+                xsDataGraph.lineStyle = self.lineTypePlotMtv(int(strLineType))
             elif strLine.find("linewidth") != -1:
                 strLineWidth = strLine.split("=")[1]
-                xsDataGraph.lineWidth = float(strLineWidth) * 0.02 
+                xsDataGraph.lineWidth = float(strLineWidth) * 0.02
             elif strLine.find("linecolor") != -1:
                 iLineColorCode = int(strLine.split("=")[1])
                 xsDataGraph.lineColor = self.colorPlotMtv(iLineColorCode)
             elif strLine.find("linelabel") != -1:
                 strLineLabel = strLine.split("'")[1]
-                xsDataGraph.label = strLineLabel 
+                xsDataGraph.label = strLineLabel
             elif strLine.find("markertype") != -1:
                 strMarkerType = strLine.split("=")[1]
-                xsDataGraph.markerType = self.markerTypePlotMtv(int(strMarkerType)) 
+                xsDataGraph.markerType = self.markerTypePlotMtv(int(strMarkerType))
             elif strLine.find("markercolor") != -1:
                 iMarkerColor = int(strLine.split("=")[1])
-                xsDataGraph.markerColor = self.colorPlotMtv(iMarkerColor) 
+                xsDataGraph.markerColor = self.colorPlotMtv(iMarkerColor)
             else:
                 # Try to convert data points
                 try:
@@ -301,7 +306,7 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
     def colorPlotMtv(self, _iColor):
         iColor = _iColor
         if iColor > 10:
-           iColor -= 10 
+           iColor -= 10
         strLineColor = None
         if iColor == 1:
             strLineColor = "yellow"
@@ -324,7 +329,7 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
         elif iColor == 10:
             strLineColor = "brown"
         return strLineColor
-    
+
     def lineTypePlotMtv(self, _iLineType):
         # 0=None
         # 1=Solid
@@ -341,7 +346,7 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
         if iLineTypeGle > 9:
             iLineTypeGle = 1
         return iLineTypeGle
-    
+
     def markerTypePlotMtv(self, _iMarkerType):
         # 0=None
         # 1=Dot
