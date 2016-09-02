@@ -35,7 +35,7 @@ import os, datetime
 from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-EDFactoryPluginStatic.loadModule("EDInstallSudsv0_4")
+EDFactoryPluginStatic.loadModule("EDInstallJurkoSuds94664ddd46a6")
 from suds.client import Client
 from suds.transport.http import HttpAuthenticated
 from suds.sax.date import DateTime
