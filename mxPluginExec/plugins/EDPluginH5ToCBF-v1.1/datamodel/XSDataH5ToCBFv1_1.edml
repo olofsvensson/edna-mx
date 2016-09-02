@@ -11,6 +11,7 @@ complex type XSDataInputH5ToCBF extends XSDataInput {
 	hdf5ImageNumber : XSDataInteger optional
 	hdf5File : XSDataFile
 	forcedOutputDirectory : XSDataFile optional
+	forcedOutputImageNumber : XSDataInteger optional
 	startImageNumber : XSDataInteger optional
 	endImageNumber : XSDataInteger optional
 }

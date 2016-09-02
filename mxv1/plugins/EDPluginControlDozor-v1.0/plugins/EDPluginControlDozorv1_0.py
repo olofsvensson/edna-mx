@@ -82,6 +82,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.maxBatchSize = 5000
         self.isHDF5 = False
         self.cbfTempDir = None
+        self.hasOverlap = False
 
 
     def checkParameters(self):
@@ -116,6 +117,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             batchSize = ispybDataCollection.numberOfImages
             if batchSize > self.maxBatchSize:
                 batchSize = self.maxBatchSize
+            if abs(ispybDataCollection.overlap) > 1:
+                self.hasOverlap = True
             dictImage = self.createImageDictFromISPyB(ispybDataCollection)
         else:
             # No connection to ISPyB, take parameters from input
@@ -163,7 +166,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             strSuffix = EDUtilsImage.getSuffix(strFileName)
             if EDUtilsPath.isEMBL():
                 strXDSTemplate = "%s_?????.%s" % (strPrefix, strSuffix)
-            elif self.isHDF5:
+            elif self.isHDF5 and not self.hasOverlap:
                 strXDSTemplate = "%s_??????.%s" % (strPrefix, strSuffix)
             else:
                 strXDSTemplate = "%s_????.%s" % (strPrefix, strSuffix)
@@ -387,19 +390,33 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 startImage = image
             if endImage is None or endImage < image:
                 endImage = image
-        xsDataInputH5ToCBF = XSDataInputH5ToCBF()
-        xsDataInputH5ToCBF.hdf5File = dictImage[startImage]
-        xsDataInputH5ToCBF.startImageNumber = XSDataInteger(startImage)
-        xsDataInputH5ToCBF.endImageNumber = XSDataInteger(endImage)
-        xsDataInputH5ToCBF.forcedOutputDirectory = XSDataFile(XSDataString(self.cbfTempDir))
-        edPluginH5ToCBF = self.loadPlugin("EDPluginH5ToCBFv1_1")
-        edPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
-        edPluginH5ToCBF.executeSynchronous()
+        # Check if we are dealing with characterisation images
         newDict = {}
-        if edPluginH5ToCBF.dataOutput is not None and edPluginH5ToCBF.dataOutput.outputCBFFileTemplate is not None:
-            outputCBFFileTemplate = edPluginH5ToCBF.dataOutput.outputCBFFileTemplate.path.value
-            outputCBFFileTemplate = outputCBFFileTemplate.replace("######", "{0:06d}")
+        if self.hasOverlap:
             for image in dictImage:
-                newDict[image] = XSDataFile(XSDataString(outputCBFFileTemplate.format(image)))
+                xsDataInputH5ToCBF = XSDataInputH5ToCBF()
+                xsDataInputH5ToCBF.hdf5File = dictImage[startImage]
+                xsDataInputH5ToCBF.hdf5ImageNumber = XSDataInteger(image)
+                xsDataInputH5ToCBF.imageNumber = XSDataInteger(startImage)
+                xsDataInputH5ToCBF.forcedOutputDirectory = XSDataFile(XSDataString(self.cbfTempDir))
+                xsDataInputH5ToCBF.forcedOutputImageNumber = XSDataInteger(image)
+                edPluginH5ToCBF = self.loadPlugin("EDPluginH5ToCBFv1_1")
+                edPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
+                edPluginH5ToCBF.executeSynchronous()
+                newDict[image] = edPluginH5ToCBF.dataOutput.outputCBFFile
+        else:
+            xsDataInputH5ToCBF = XSDataInputH5ToCBF()
+            xsDataInputH5ToCBF.hdf5File = dictImage[startImage]
+            xsDataInputH5ToCBF.startImageNumber = XSDataInteger(startImage)
+            xsDataInputH5ToCBF.endImageNumber = XSDataInteger(endImage)
+            xsDataInputH5ToCBF.forcedOutputDirectory = XSDataFile(XSDataString(self.cbfTempDir))
+            edPluginH5ToCBF = self.loadPlugin("EDPluginH5ToCBFv1_1")
+            edPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
+            edPluginH5ToCBF.executeSynchronous()
+            if edPluginH5ToCBF.dataOutput is not None and edPluginH5ToCBF.dataOutput.outputCBFFileTemplate is not None:
+                outputCBFFileTemplate = edPluginH5ToCBF.dataOutput.outputCBFFileTemplate.path.value
+                outputCBFFileTemplate = outputCBFFileTemplate.replace("######", "{0:06d}")
+                for image in dictImage:
+                    newDict[image] = XSDataFile(XSDataString(outputCBFFileTemplate.format(image)))
         return newDict
 
