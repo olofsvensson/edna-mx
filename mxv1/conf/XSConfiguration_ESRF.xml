@@ -86,7 +86,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>minImageSize</name>
-					<value>2000000</value>
+					<value>100000</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
