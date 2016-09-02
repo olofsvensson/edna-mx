@@ -322,7 +322,6 @@ complex type XSDataISPyBDiffractionPlan extends XSData {
 	screeningResolution : XSDataDouble optional
 	anomalousScatterer : XSDataString optional
 	strategyOption : XSDataString optional
-	xmlDocumentId : XSDataInteger optional
 }
 
 complex type XSDataISPyBScreening extends XSData {

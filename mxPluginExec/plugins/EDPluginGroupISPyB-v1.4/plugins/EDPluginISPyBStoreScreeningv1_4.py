@@ -241,7 +241,6 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
         """Creates an entry in ISPyB for the DiffractionPlan table"""
         self.DEBUG("EDPluginISPyBStoreScreeningv1_4.storeDiffractionPlan")
         iDiffractionPlanId = self.getXSValue(_xsDataISPyBDiffractionPlan.diffractionPlanId)
-        iXmlDocumentId = self.getXSValue(_xsDataISPyBDiffractionPlan.xmlDocumentId)
         strExperimentKind = self.getXSValue(_xsDataISPyBDiffractionPlan.experimentKind)
         fObservedResolution = self.getXSValue(_xsDataISPyBDiffractionPlan.observedResolution)
         fMinimalResolution = self.getXSValue(_xsDataISPyBDiffractionPlan.minimalResolution)
@@ -272,7 +271,6 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginExec):
         fMinOscWidth = self.getXSValue(_xsDataISPyBDiffractionPlan.minOscWidth)
         iDiffractionPlanId = _clientToolsForBLSampleWebServiceWsdl.service.storeOrUpdateDiffractionPlan(
             arg0=iDiffractionPlanId, \
-            xmlDocumentId=iXmlDocumentId, \
             experimentKind=strExperimentKind, \
             observedResolution=fObservedResolution, \
             minimalResolution=fMinimalResolution, \
