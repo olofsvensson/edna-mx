@@ -38,6 +38,7 @@ import markupv1_10
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
+from XSDataCommon import XSDataAngle
 
 from XSDataDnaTables import dna_tables
 
@@ -63,6 +64,9 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.defaultFractionPolarization = 0.99
         self.defaultImageStep = 1
         self.startingAngle = 0.0
+        self.firstImageNumber = None
+        self.oscillationRange = None
+        self.overlap = 0.0
         self.ixMin = None
         self.iyMin = None
         self.ixMax = None
@@ -97,6 +101,11 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginDozorv1_0.preProcess")
         xsDataInputDozor = self.getDataInput()
+        # First image number and osc range for output angle calculations
+        self.firstImageNumber = xsDataInputDozor.firstImageNumber.value
+        self.oscillationRange = xsDataInputDozor.oscillationRange.value
+        if xsDataInputDozor.overlap is not None:
+            self.overlap = xsDataInputDozor.overlap.value
         # Retrieve config (if any)
         self.ixMin = self.config.get("ixMin")
         self.ixMax = self.config.get("ixMax")
@@ -177,10 +186,10 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 imageStep = _xsDataInputDozor.imageStep.value
             strCommandText += "image_step %.3f\n" % imageStep
             if _xsDataInputDozor.startingAngle is None:
-                startingAngle = self.defaultStartingAngle
+                self.startingAngle = self.defaultStartingAngle
             else:
-                startingAngle = _xsDataInputDozor.startingAngle.value
-            strCommandText += "starting_angle %.3f\n" % startingAngle
+                self.startingAngle = _xsDataInputDozor.startingAngle.value
+            strCommandText += "starting_angle %.3f\n" % self.startingAngle
             strCommandText += "first_image_number %d\n" % _xsDataInputDozor.firstImageNumber.value
             strCommandText += "number_images %d\n" % _xsDataInputDozor.numberImages.value
             if _xsDataInputDozor.wedgeNumber is not None:
@@ -198,13 +207,17 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         strOutput = EDUtilsFile.readFile(_strFileName)
         # Skip the four first lines
         listOutput = strOutput.split("\n")[6:]
+
         for strLine in listOutput:
             # Remove "|"
             listLine = shlex.split(strLine.replace("|", " "))
 #            print listLine
             if listLine != [] and not strLine.startswith("-") and not strLine.startswith("h"):
                 xsDataImageDozor = XSDataImageDozor()
-                xsDataImageDozor.number = XSDataInteger(listLine[0])
+                imageNumber = int(listLine[0])
+                angle = self.startingAngle + (imageNumber - self.firstImageNumber) * (self.oscillationRange - self.overlap) + self.oscillationRange / 2.0
+                xsDataImageDozor.number = XSDataInteger(imageNumber)
+                xsDataImageDozor.angle = XSDataAngle(angle)
                 if listLine[4].startswith("-"):
                     xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
                     xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])

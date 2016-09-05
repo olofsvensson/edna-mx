@@ -7,6 +7,7 @@ import XSDataCommon.XSDataInput
 import XSDataCommon.XSDataFile
 import XSDataCommon.XSDataResult
 import XSDataCommon.XSDataBoolean
+import XSDataCommon.XSDataAngle
 
 
 complex type XSDataImageDozor {
@@ -23,6 +24,7 @@ complex type XSDataImageDozor {
 	spotScore : XSDataDouble optional
 	visibleResolution : XSDataDouble optional
 	spotFile : XSDataFile optional
+	angle : XSDataAngle optional
 }
 
 complex type XSDataInputDozor extends XSDataInput {
@@ -42,6 +44,7 @@ complex type XSDataInputDozor extends XSDataInput {
 	nameTemplateImage : XSDataString
 	wedgeNumber : XSDataInteger optional
 	radiationDamage : XSDataBoolean optional
+	overlap : XSDataAngle optional
 }
 
 complex type XSDataResultDozor extends XSDataResult {

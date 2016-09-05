@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Jun 29 01:56::27 2016 by EDGenerateDS.
+# Generated Mon Sep 5 03:50::56 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -19,6 +19,7 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
@@ -29,6 +30,7 @@ try:
     from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataResult
     from XSDataCommon import XSDataString
+    from XSDataCommon import XSDataAngle
 except ImportError as error:
     if strEdnaHome is not None:
         for strXsdName in dictLocation:
@@ -46,6 +48,7 @@ from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataResult
 from XSDataCommon import XSDataString
+from XSDataCommon import XSDataAngle
 
 
 
@@ -126,7 +129,7 @@ class MixedContainer(object):
 
 
 class XSDataControlImageDozor(object):
-    def __init__(self, spotFile=None, visibleResolution=None, spotScore=None, mainScore=None, powderWilsonRfactor=None, powderWilsonCorrelation=None, powderWilsonResolution=None, powderWilsonBfactor=None, powderWilsonScale=None, spotsResolution=None, spotsIntAver=None, spotsNumOf=None, image=None, number=None):
+    def __init__(self, angle=None, spotFile=None, visibleResolution=None, spotScore=None, mainScore=None, powderWilsonRfactor=None, powderWilsonCorrelation=None, powderWilsonResolution=None, powderWilsonBfactor=None, powderWilsonScale=None, spotsResolution=None, spotsIntAver=None, spotsNumOf=None, image=None, number=None):
         if number is None:
             self._number = None
         elif number.__class__.__name__ == "XSDataInteger":
@@ -224,6 +227,13 @@ class XSDataControlImageDozor(object):
             self._spotFile = spotFile
         else:
             strMessage = "ERROR! XSDataControlImageDozor constructor argument 'spotFile' is not XSDataFile but %s" % self._spotFile.__class__.__name__
+            raise BaseException(strMessage)
+        if angle is None:
+            self._angle = None
+        elif angle.__class__.__name__ == "XSDataAngle":
+            self._angle = angle
+        else:
+            strMessage = "ERROR! XSDataControlImageDozor constructor argument 'angle' is not XSDataAngle but %s" % self._angle.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'number' attribute
     def getNumber(self): return self._number
@@ -393,6 +403,18 @@ class XSDataControlImageDozor(object):
             raise BaseException(strMessage)
     def delSpotFile(self): self._spotFile = None
     spotFile = property(getSpotFile, setSpotFile, delSpotFile, "Property for spotFile")
+    # Methods and properties for the 'angle' attribute
+    def getAngle(self): return self._angle
+    def setAngle(self, angle):
+        if angle is None:
+            self._angle = None
+        elif angle.__class__.__name__ == "XSDataAngle":
+            self._angle = angle
+        else:
+            strMessage = "ERROR! XSDataControlImageDozor.setAngle argument is not XSDataAngle but %s" % angle.__class__.__name__
+            raise BaseException(strMessage)
+    def delAngle(self): self._angle = None
+    angle = property(getAngle, setAngle, delAngle, "Property for angle")
     def export(self, outfile, level, name_='XSDataControlImageDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -437,6 +459,8 @@ class XSDataControlImageDozor(object):
             self.visibleResolution.export(outfile, level, name_='visibleResolution')
         if self._spotFile is not None:
             self.spotFile.export(outfile, level, name_='spotFile')
+        if self._angle is not None:
+            self.angle.export(outfile, level, name_='angle')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -512,6 +536,11 @@ class XSDataControlImageDozor(object):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setSpotFile(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'angle':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setAngle(obj_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()

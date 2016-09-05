@@ -41,6 +41,7 @@ from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataImage
+from XSDataCommon import XSDataAngle
 
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 EDFactoryPluginStatic.loadModule("XSDataDozorv1_0")
@@ -83,6 +84,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.isHDF5 = False
         self.cbfTempDir = None
         self.hasOverlap = False
+        self.overlap = 0.0
 
 
     def checkParameters(self):
@@ -119,6 +121,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 batchSize = self.maxBatchSize
             if abs(ispybDataCollection.overlap) > 1:
                 self.hasOverlap = True
+                self.overlap = ispybDataCollection.overlap
             dictImage = self.createImageDictFromISPyB(ispybDataCollection)
         else:
             # No connection to ISPyB, take parameters from input
@@ -161,6 +164,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             xsDataInputDozor.startingAngle = XSDataDouble(goniostat.rotationAxisStart.value)
             xsDataInputDozor.firstImageNumber = subWedge.image[0].number
             xsDataInputDozor.numberImages = XSDataInteger(len(listBatch))
+            if self.hasOverlap:
+                xsDataInputDozor.overlap = XSDataAngle(self.overlap)
             strFileName = subWedge.image[0].path.value
             strPrefix = EDUtilsImage.getPrefix(strFileName)
             strSuffix = EDUtilsImage.getSuffix(strFileName)
@@ -193,6 +198,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 xsDataControlImageDozor.spotScore = xsDataResultDozor.spotScore
                 xsDataControlImageDozor.visibleResolution = xsDataResultDozor.visibleResolution
                 xsDataControlImageDozor.spotFile = xsDataResultDozor.spotFile
+                xsDataControlImageDozor.angle = xsDataResultDozor.angle
                 xsDataResultControlDozor.addImageDozor(xsDataControlImageDozor)
                 if xsDataResultControlDozor.inputDozor is None:
                     xsDataResultControlDozor.inputDozor = XSDataDozorInput().parseString(xsDataInputDozor.marshal())
@@ -224,46 +230,73 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             dataCollectionId = self.dataInput.dataCollectionId.value
 
         if dataCollectionId is not None:
+            minImageNumber = None
+            maxImageNumber = None
+            minAngle = None
+            maxAngle = None
             dozorPlotFileName = "dozor_{0}.png".format(dataCollectionId)
             dozorCsvFileName = "dozor_{0}.csv".format(dataCollectionId)
             with open(os.path.join(self.getWorkingDirectory(), dozorCsvFileName), "w") as gnuplotFile:
                 gnuplotFile.write("# Data directory: {0}\n".format(self.directory))
                 gnuplotFile.write("# File template: {0}\n".format(self.template.replace("%04d", "####")))
-                gnuplotFile.write("# {0:>9s}{1:>16s}{2:>16s}{3:>16s}{4:>16s}\n".format("'Image no'",
+                gnuplotFile.write("# {0:>9s}{1:>16s}{2:>16s}{3:>16s}{4:>16s}{5:>16s}\n".format("'Image no'",
+                                                                               "'Angle'",
                                                                                "'No of spots'",
                                                                                "'Main score'",
                                                                                "'Spot score'",
                                                                                "'Visible res.'",
                                                                ))
                 for imageDozor in self.dataOutput.imageDozor:
-                    gnuplotFile.write("{0:10d},{1:15d},{2:15.3f},{3:15.3f},{4:15.3f}\n".format(imageDozor.number.value,
-                                                                                               imageDozor.spotsNumOf.value,
-                                                                                               imageDozor.mainScore.value,
-                                                                                               imageDozor.spotScore.value,
-                                                                                               imageDozor.visibleResolution.value,
-                                                                                               ))
+                    gnuplotFile.write("{0:10d},{1:15.3f},{2:15d},{3:15.3f},{4:15.3f},{5:15.3f}\n".format(imageDozor.number.value,
+                                                                                                       imageDozor.angle.value,
+                                                                                                       imageDozor.spotsNumOf.value,
+                                                                                                       imageDozor.mainScore.value,
+                                                                                                       imageDozor.spotScore.value,
+                                                                                                       imageDozor.visibleResolution.value,
+                                                                                                       ))
+                    if minImageNumber is None or minImageNumber > imageDozor.number.value:
+                        minImageNumber = imageDozor.number.value
+                        minAngle = imageDozor.angle.value
+                    if maxImageNumber is None or maxImageNumber < imageDozor.number.value:
+                        maxImageNumber = imageDozor.number.value
+                        maxAngle = imageDozor.angle.value
+
+            if minImageNumber == maxImageNumber:
+                minImageNumber -= 0.1
+                maxImageNumber += 0.1
+                minAngle -= 1.0
+                maxAngle += 1.0
             gnuplotFile.close()
             gnuplotScript = \
     """#
     set terminal png
     set output '{dozorPlotFileName}'
     set title '{title}'
-    set grid x y2
+    set grid x2 y2
     set xlabel 'Image number'
+    set x2label 'Angle (degrees)'
     set y2label 'Resolution (A)'
     set ylabel 'Number of spots / Dozor score'
+    set xtics nomirror
+    set x2tics 
     set ytics nomirror
     set y2tics
-    set autoscale  x
+    set xrange [{minImageNumber}:{maxImageNumber}]
+    set x2range [{minAngle}:{maxAngle}]
     set autoscale  y
     set y2range [4.5: 0.8]
     set key below
-    plot '{dozorCsvFileName}' using 1:2 title 'Number of spots' axes x1y1 with points linetype rgb 'goldenrod' pointtype 7 pointsize 1.5, \
-     '{dozorCsvFileName}' using 1:3 title 'Dozor score' axes x1y1 with points linetype 3 pointtype 7 pointsize 1.5, \
-     '{dozorCsvFileName}' using 1:5 title 'Visible resolution' axes x1y2 with points linetype 1 pointtype 7 pointsize 1.5
+    plot '{dozorCsvFileName}' using 1:3 title 'Number of spots' axes x1y1 with points linetype rgb 'goldenrod' pointtype 7 pointsize 1.5, \
+         '{dozorCsvFileName}' using 1:4 title 'Dozor score' axes x1y1 with points linetype 3 pointtype 7 pointsize 1.5, \
+         '{dozorCsvFileName}' using 1:6 title 'Visible resolution' axes x1y2 with points linetype 1 pointtype 7 pointsize 1.5
     """.format(title=self.template.replace("%04d", "####"),
                dozorPlotFileName=dozorPlotFileName,
-               dozorCsvFileName=dozorCsvFileName)
+               dozorCsvFileName=dozorCsvFileName,
+               minImageNumber=minImageNumber,
+               maxImageNumber=maxImageNumber,
+               minAngle=minAngle,
+               maxAngle=maxAngle,
+               )
             pathGnuplotScript = os.path.join(self.getWorkingDirectory(), "gnuplot.sh")
             data_file = open(pathGnuplotScript, "w")
             data_file.write(gnuplotScript)
