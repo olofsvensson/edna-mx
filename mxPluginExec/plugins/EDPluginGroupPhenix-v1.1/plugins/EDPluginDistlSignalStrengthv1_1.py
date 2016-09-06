@@ -5,7 +5,7 @@
 #    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -61,6 +61,9 @@ class EDPluginDistlSignalStrengthv1_1(EDPluginExecProcessScript):
         strCommandLine = self.xsDataImage.getPath().getValue()
         self.setScriptCommandline(strCommandLine)
         self.addListCommandPreExecution("export PYTHONPATH=\"\" ")
+        # Environmnt variables for disabling warning messages
+        self.addListCommandPreExecution("export BOOST_ADAPTBX_FPE_DEFAULT=1")
+        self.addListCommandPreExecution("export BOOST_ADAPTBX_SIGNALS_DEFAULT=1")
 
 
     def postProcess(self, _edObject=None):
