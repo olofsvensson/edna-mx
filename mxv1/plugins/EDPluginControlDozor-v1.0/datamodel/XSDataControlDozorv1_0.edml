@@ -7,6 +7,7 @@ import XSDataCommon.XSDataInput
 import XSDataCommon.XSDataResult
 import XSDataCommon.XSDataFile
 import XSDataCommon.XSDataBoolean
+import XSDataCommon.XSDataAngle
 
 
 complex type XSDataControlImageDozor {
@@ -24,6 +25,7 @@ complex type XSDataControlImageDozor {
 	spotScore : XSDataDouble optional
 	visibleResolution : XSDataDouble optional
 	spotFile : XSDataFile optional
+	angle : XSDataAngle optional
 }	
 
 complex type XSDataDozorInput extends XSDataInput {

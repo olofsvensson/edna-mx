@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Jul 29 05:13::09 2016 by EDGenerateDS.
+# Generated Thu Sep 1 04:30::04 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -117,7 +117,7 @@ class MixedContainer(object):
 
 
 class XSDataInputH5ToCBF(XSDataInput):
-    def __init__(self, configuration=None, endImageNumber=None, startImageNumber=None, forcedOutputDirectory=None, hdf5File=None, hdf5ImageNumber=None, imageNumber=None):
+    def __init__(self, configuration=None, endImageNumber=None, startImageNumber=None, forcedOutputImageNumber=None, forcedOutputDirectory=None, hdf5File=None, hdf5ImageNumber=None, imageNumber=None):
         XSDataInput.__init__(self, configuration)
         if imageNumber is None:
             self._imageNumber = None
@@ -146,6 +146,13 @@ class XSDataInputH5ToCBF(XSDataInput):
             self._forcedOutputDirectory = forcedOutputDirectory
         else:
             strMessage = "ERROR! XSDataInputH5ToCBF constructor argument 'forcedOutputDirectory' is not XSDataFile but %s" % self._forcedOutputDirectory.__class__.__name__
+            raise BaseException(strMessage)
+        if forcedOutputImageNumber is None:
+            self._forcedOutputImageNumber = None
+        elif forcedOutputImageNumber.__class__.__name__ == "XSDataInteger":
+            self._forcedOutputImageNumber = forcedOutputImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputH5ToCBF constructor argument 'forcedOutputImageNumber' is not XSDataInteger but %s" % self._forcedOutputImageNumber.__class__.__name__
             raise BaseException(strMessage)
         if startImageNumber is None:
             self._startImageNumber = None
@@ -209,6 +216,18 @@ class XSDataInputH5ToCBF(XSDataInput):
             raise BaseException(strMessage)
     def delForcedOutputDirectory(self): self._forcedOutputDirectory = None
     forcedOutputDirectory = property(getForcedOutputDirectory, setForcedOutputDirectory, delForcedOutputDirectory, "Property for forcedOutputDirectory")
+    # Methods and properties for the 'forcedOutputImageNumber' attribute
+    def getForcedOutputImageNumber(self): return self._forcedOutputImageNumber
+    def setForcedOutputImageNumber(self, forcedOutputImageNumber):
+        if forcedOutputImageNumber is None:
+            self._forcedOutputImageNumber = None
+        elif forcedOutputImageNumber.__class__.__name__ == "XSDataInteger":
+            self._forcedOutputImageNumber = forcedOutputImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputH5ToCBF.setForcedOutputImageNumber argument is not XSDataInteger but %s" % forcedOutputImageNumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delForcedOutputImageNumber(self): self._forcedOutputImageNumber = None
+    forcedOutputImageNumber = property(getForcedOutputImageNumber, setForcedOutputImageNumber, delForcedOutputImageNumber, "Property for forcedOutputImageNumber")
     # Methods and properties for the 'startImageNumber' attribute
     def getStartImageNumber(self): return self._startImageNumber
     def setStartImageNumber(self, startImageNumber):
@@ -251,6 +270,8 @@ class XSDataInputH5ToCBF(XSDataInput):
             warnEmptyAttribute("hdf5File", "XSDataFile")
         if self._forcedOutputDirectory is not None:
             self.forcedOutputDirectory.export(outfile, level, name_='forcedOutputDirectory')
+        if self._forcedOutputImageNumber is not None:
+            self.forcedOutputImageNumber.export(outfile, level, name_='forcedOutputImageNumber')
         if self._startImageNumber is not None:
             self.startImageNumber.export(outfile, level, name_='startImageNumber')
         if self._endImageNumber is not None:
@@ -280,6 +301,11 @@ class XSDataInputH5ToCBF(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setForcedOutputDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'forcedOutputImageNumber':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setForcedOutputImageNumber(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'startImageNumber':
             obj_ = XSDataInteger()

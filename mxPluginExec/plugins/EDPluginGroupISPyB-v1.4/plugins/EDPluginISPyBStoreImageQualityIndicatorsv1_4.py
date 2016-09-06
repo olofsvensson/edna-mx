@@ -5,7 +5,7 @@
 #    Copyright (C) 2011-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -35,7 +35,8 @@ import os, datetime
 from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-EDFactoryPluginStatic.loadModule("EDInstallSudsv0_4")
+EDFactoryPluginStatic.loadModule("EDInstallJurkoSuds94664ddd46a6")
+
 from suds.client import Client
 from suds.transport.http import HttpAuthenticated
 from suds.sax.date import DateTime
@@ -63,8 +64,8 @@ class EDPluginISPyBStoreImageQualityIndicatorsv1_4(EDPluginExec):
         self.strToolsForCollectionWebServiceWsdl = None
         self.iImageQualityIndicatorsId = None
         self.iAutoProcProgramId = None
-        
-    
+
+
     def configure(self):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
@@ -92,7 +93,7 @@ class EDPluginISPyBStoreImageQualityIndicatorsv1_4(EDPluginExec):
             self.setFailure()
         else:
             self.iAutoProcProgramId = int(strAutoProcProgramId)
-                
+
     def getXSValue(self, _xsData, _oDefaultValue=None, _iMaxStringLength=255):
         if _xsData is None:
             oReturnValue = _oDefaultValue
@@ -111,7 +112,7 @@ class EDPluginISPyBStoreImageQualityIndicatorsv1_4(EDPluginExec):
                 self.warning("Truncated string: %s" % oReturnValue)
         return oReturnValue
 
-    
+
     def getDateValue(self, _strValue, _strFormat, _oDefaultValue):
         if _strValue is None or _strValue == "None":
             oReturnValue = _oDefaultValue
@@ -167,8 +168,8 @@ class EDPluginISPyBStoreImageQualityIndicatorsv1_4(EDPluginExec):
                 totalIntegratedSignal=fTotalIntegratedSignal, \
                 dozor_score=fDozor_score)
         self.DEBUG("EDPluginISPyBStoreImageQualityIndicatorsv1_4.process: imageQualityIndicatorsId=%r" % self.iImageQualityIndicatorsId)
-            
-             
+
+
 
 
 

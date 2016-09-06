@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Jun 29 10:24::59 2016 by EDGenerateDS.
+# Generated Mon Sep 5 03:57::42 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -19,6 +19,7 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
@@ -29,6 +30,7 @@ try:
     from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataResult
     from XSDataCommon import XSDataString
+    from XSDataCommon import XSDataAngle
 except ImportError as error:
     if strEdnaHome is not None:
         for strXsdName in dictLocation:
@@ -46,6 +48,7 @@ from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataResult
 from XSDataCommon import XSDataString
+from XSDataCommon import XSDataAngle
 
 
 
@@ -126,7 +129,7 @@ class MixedContainer(object):
 
 
 class XSDataImageDozor(object):
-    def __init__(self, spotFile=None, visibleResolution=None, spotScore=None, mainScore=None, powderWilsonRfactor=None, powderWilsonCorrelation=None, powderWilsonResolution=None, powderWilsonBfactor=None, powderWilsonScale=None, spotsResolution=None, spotsIntAver=None, spotsNumOf=None, number=None):
+    def __init__(self, angle=None, spotFile=None, visibleResolution=None, spotScore=None, mainScore=None, powderWilsonRfactor=None, powderWilsonCorrelation=None, powderWilsonResolution=None, powderWilsonBfactor=None, powderWilsonScale=None, spotsResolution=None, spotsIntAver=None, spotsNumOf=None, number=None):
         if number is None:
             self._number = None
         elif number.__class__.__name__ == "XSDataInteger":
@@ -217,6 +220,13 @@ class XSDataImageDozor(object):
             self._spotFile = spotFile
         else:
             strMessage = "ERROR! XSDataImageDozor constructor argument 'spotFile' is not XSDataFile but %s" % self._spotFile.__class__.__name__
+            raise BaseException(strMessage)
+        if angle is None:
+            self._angle = None
+        elif angle.__class__.__name__ == "XSDataAngle":
+            self._angle = angle
+        else:
+            strMessage = "ERROR! XSDataImageDozor constructor argument 'angle' is not XSDataAngle but %s" % self._angle.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'number' attribute
     def getNumber(self): return self._number
@@ -374,6 +384,18 @@ class XSDataImageDozor(object):
             raise BaseException(strMessage)
     def delSpotFile(self): self._spotFile = None
     spotFile = property(getSpotFile, setSpotFile, delSpotFile, "Property for spotFile")
+    # Methods and properties for the 'angle' attribute
+    def getAngle(self): return self._angle
+    def setAngle(self, angle):
+        if angle is None:
+            self._angle = None
+        elif angle.__class__.__name__ == "XSDataAngle":
+            self._angle = angle
+        else:
+            strMessage = "ERROR! XSDataImageDozor.setAngle argument is not XSDataAngle but %s" % angle.__class__.__name__
+            raise BaseException(strMessage)
+    def delAngle(self): self._angle = None
+    angle = property(getAngle, setAngle, delAngle, "Property for angle")
     def export(self, outfile, level, name_='XSDataImageDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -414,6 +436,8 @@ class XSDataImageDozor(object):
             self.visibleResolution.export(outfile, level, name_='visibleResolution')
         if self._spotFile is not None:
             self.spotFile.export(outfile, level, name_='spotFile')
+        if self._angle is not None:
+            self.angle.export(outfile, level, name_='angle')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -484,6 +508,11 @@ class XSDataImageDozor(object):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setSpotFile(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'angle':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setAngle(obj_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()
@@ -529,7 +558,7 @@ class XSDataImageDozor(object):
 
 
 class XSDataInputDozor(XSDataInput):
-    def __init__(self, configuration=None, radiationDamage=None, wedgeNumber=None, nameTemplateImage=None, numberImages=None, firstImageNumber=None, startingAngle=None, imageStep=None, oscillationRange=None, orgy=None, orgx=None, fractionPolarization=None, wavelength=None, detectorDistance=None, spotSize=None, exposureTime=None, detectorType=None):
+    def __init__(self, configuration=None, overlap=None, radiationDamage=None, wedgeNumber=None, nameTemplateImage=None, numberImages=None, firstImageNumber=None, startingAngle=None, imageStep=None, oscillationRange=None, orgy=None, orgx=None, fractionPolarization=None, wavelength=None, detectorDistance=None, spotSize=None, exposureTime=None, detectorType=None):
         XSDataInput.__init__(self, configuration)
         if detectorType is None:
             self._detectorType = None
@@ -642,6 +671,13 @@ class XSDataInputDozor(XSDataInput):
             self._radiationDamage = radiationDamage
         else:
             strMessage = "ERROR! XSDataInputDozor constructor argument 'radiationDamage' is not XSDataBoolean but %s" % self._radiationDamage.__class__.__name__
+            raise BaseException(strMessage)
+        if overlap is None:
+            self._overlap = None
+        elif overlap.__class__.__name__ == "XSDataAngle":
+            self._overlap = overlap
+        else:
+            strMessage = "ERROR! XSDataInputDozor constructor argument 'overlap' is not XSDataAngle but %s" % self._overlap.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'detectorType' attribute
     def getDetectorType(self): return self._detectorType
@@ -835,6 +871,18 @@ class XSDataInputDozor(XSDataInput):
             raise BaseException(strMessage)
     def delRadiationDamage(self): self._radiationDamage = None
     radiationDamage = property(getRadiationDamage, setRadiationDamage, delRadiationDamage, "Property for radiationDamage")
+    # Methods and properties for the 'overlap' attribute
+    def getOverlap(self): return self._overlap
+    def setOverlap(self, overlap):
+        if overlap is None:
+            self._overlap = None
+        elif overlap.__class__.__name__ == "XSDataAngle":
+            self._overlap = overlap
+        else:
+            strMessage = "ERROR! XSDataInputDozor.setOverlap argument is not XSDataAngle but %s" % overlap.__class__.__name__
+            raise BaseException(strMessage)
+    def delOverlap(self): self._overlap = None
+    overlap = property(getOverlap, setOverlap, delOverlap, "Property for overlap")
     def export(self, outfile, level, name_='XSDataInputDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -897,6 +945,8 @@ class XSDataInputDozor(XSDataInput):
             self.wedgeNumber.export(outfile, level, name_='wedgeNumber')
         if self._radiationDamage is not None:
             self.radiationDamage.export(outfile, level, name_='radiationDamage')
+        if self._overlap is not None:
+            self.overlap.export(outfile, level, name_='overlap')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -982,6 +1032,11 @@ class XSDataInputDozor(XSDataInput):
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setRadiationDamage(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'overlap':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setOverlap(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
