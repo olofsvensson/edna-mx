@@ -81,7 +81,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.directory = None
         self.template = None
         self.maxBatchSize = 5000
-        self.isHDF5 = False
+        self.hasHdf5Prefix = False
         self.cbfTempDir = None
         self.hasOverlap = False
         self.overlap = 0.0
@@ -133,9 +133,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         listAllBatches = self.createListOfBatches(dictImage.keys(), batchSize)
         if dictImage[listAllBatches[0][0]].path.value.endswith("h5"):
             # Convert HDF5 images to CBF
-            self.isHDF5 = True
             self.cbfTempDir = tempfile.mkdtemp(prefix="CbfTemp_")
-            dictImage = self.convertToCBF(dictImage)
+            dictImage, self.hasHdf5Prefix = self.convertToCBF(dictImage)
         for listBatch in listAllBatches:
             # Read the header from the first image in the batch
             xsDataFile = dictImage[listBatch[0]]
@@ -171,7 +170,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             strSuffix = EDUtilsImage.getSuffix(strFileName)
             if EDUtilsPath.isEMBL():
                 strXDSTemplate = "%s_?????.%s" % (strPrefix, strSuffix)
-            elif self.isHDF5 and not self.hasOverlap:
+            elif self.hasHdf5Prefix and not self.hasOverlap:
                 strXDSTemplate = "%s_??????.%s" % (strPrefix, strSuffix)
             else:
                 strXDSTemplate = "%s_????.%s" % (strPrefix, strSuffix)
@@ -205,7 +204,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 indexImage += 1
             xsDataResultControlDozor.halfDoseTime = edPluginDozor.dataOutput.halfDoseTime
         self.dataOutput = xsDataResultControlDozor
-        if self.isHDF5:
+        if self.cbfTempDir is not None:
             shutil.rmtree(self.cbfTempDir)
 
     def postProcess(self, _edObject=None):
@@ -310,16 +309,19 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             else:
                 processDirectory = os.path.join(self.directory.replace("RAW_DATA", "PROCESSED_DATA"), "DozorPlot")
             resultsDirectory = os.path.join(processDirectory, "results")
-            if not os.path.exists(resultsDirectory):
-                os.makedirs(resultsDirectory, 0755)
             dozorPlotResultPath = os.path.join(resultsDirectory, dozorPlotFileName)
             dozorCsvResultPath = os.path.join(resultsDirectory, dozorCsvFileName)
-            shutil.copy(os.path.join(self.getWorkingDirectory(), dozorPlotFileName), dozorPlotResultPath)
-            shutil.copy(os.path.join(self.getWorkingDirectory(), dozorCsvFileName), dozorCsvResultPath)
-            # Create paths on pyarch
-            dozorPlotPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorPlotResultPath)
-            dozorCsvPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorCsvResultPath)
             try:
+                if not os.path.exists(resultsDirectory):
+                    os.makedirs(resultsDirectory, 0755)
+                shutil.copy(os.path.join(self.getWorkingDirectory(), dozorPlotFileName), dozorPlotResultPath)
+                shutil.copy(os.path.join(self.getWorkingDirectory(), dozorCsvFileName), dozorCsvResultPath)
+            except:
+                self.warning("Couldn't copy files to results directory: {0}".format(resultsDirectory))
+            try:
+                # Create paths on pyarch
+                dozorPlotPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorPlotResultPath)
+                dozorCsvPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorCsvResultPath)
                 if not os.path.exists(os.path.dirname(dozorPlotPyarchPath)):
                     os.makedirs(os.path.dirname(dozorPlotPyarchPath), 0755)
                 shutil.copy(dozorPlotResultPath, dozorPlotPyarchPath)
@@ -333,7 +335,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 EDPluginISPyBSetImageQualityIndicatorsPlot.dataInput = xsDataInputISPyBSetImageQualityIndicatorsPlot
                 EDPluginISPyBSetImageQualityIndicatorsPlot.executeSynchronous()
             except:
-                self.warning("Couldn't copy files to pyarch")
+                self.warning("Couldn't copy files to pyarch: {0}".format(dozorPlotPyarchPath))
 
 
 
@@ -425,7 +427,9 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 endImage = image
         # Check if we are dealing with characterisation images
         newDict = {}
-        if self.hasOverlap:
+        hasHdf5Prefix = True
+        if self.hasOverlap or startImage == endImage:
+            hasHdf5Prefix = False
             for image in dictImage:
                 xsDataInputH5ToCBF = XSDataInputH5ToCBF()
                 xsDataInputH5ToCBF.hdf5File = dictImage[startImage]
@@ -451,5 +455,5 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 outputCBFFileTemplate = outputCBFFileTemplate.replace("######", "{0:06d}")
                 for image in dictImage:
                     newDict[image] = XSDataFile(XSDataString(outputCBFFileTemplate.format(image)))
-        return newDict
+        return newDict, hasHdf5Prefix
 
