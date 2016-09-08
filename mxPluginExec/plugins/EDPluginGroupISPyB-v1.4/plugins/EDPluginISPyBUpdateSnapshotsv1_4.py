@@ -17,7 +17,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -94,11 +94,11 @@ class EDPluginISPyBUpdateSnapshotsv1_4(EDPluginExec):
         self.collectParameters = None
 
         xsDataInput = self.getDataInput()
-        
+
         strImagePath = xsDataInput.image.path.value
         fileLocation = os.path.dirname(strImagePath)
         fileName = os.path.basename(strImagePath)
-        
+
         dataCollection = clientToolsForCollectionWebService.service.findDataCollectionFromFileLocationAndFileName(
                          fileLocation=fileLocation,
                          fileName=fileName)
@@ -106,14 +106,14 @@ class EDPluginISPyBUpdateSnapshotsv1_4(EDPluginExec):
         if dataCollection is not None:
 
             if xsDataInput.xtalSnapshotFullPath1 is not None:
-                dataCollection.xtalSnapshotFullPath1 = xsDataInput.xtalSnapshotFullPath1.path.value      
+                dataCollection.xtalSnapshotFullPath1 = xsDataInput.xtalSnapshotFullPath1.path.value
             if xsDataInput.xtalSnapshotFullPath2 is not None:
-                dataCollection.xtalSnapshotFullPath2 = xsDataInput.xtalSnapshotFullPath2.path.value        
+                dataCollection.xtalSnapshotFullPath2 = xsDataInput.xtalSnapshotFullPath2.path.value
             if xsDataInput.xtalSnapshotFullPath3 is not None:
                 dataCollection.xtalSnapshotFullPath3 = xsDataInput.xtalSnapshotFullPath3.path.value
             if xsDataInput.xtalSnapshotFullPath4 is not None:
-                dataCollection.xtalSnapshotFullPath4 = xsDataInput.xtalSnapshotFullPath4.path.value       
-            
+                dataCollection.xtalSnapshotFullPath4 = xsDataInput.xtalSnapshotFullPath4.path.value
+
             self.dataCollectionId = clientToolsForCollectionWebService.service.storeOrUpdateDataCollection(
                              dataCollection=dataCollection)
 
@@ -121,10 +121,10 @@ class EDPluginISPyBUpdateSnapshotsv1_4(EDPluginExec):
 
 
     def finallyProcess(self, _edObject=None):
-        EDPluginExec.postProcess(self)
+        EDPluginExec.finallyProcess(self)
         self.DEBUG("EDPluginISPyBUpdateSnapshotsv1_4.finallyProcess")
         if self.dataCollectionId is not None:
-            self.dataOutput.dataCollectionId = XSDataInteger(self.dataCollectionId)            
+            self.dataOutput.dataCollectionId = XSDataInteger(self.dataCollectionId)
 
 
     def getValue(self, _oValue, _oDefaultValue=None):

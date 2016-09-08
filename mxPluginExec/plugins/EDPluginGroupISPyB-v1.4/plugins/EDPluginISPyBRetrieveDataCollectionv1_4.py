@@ -122,7 +122,7 @@ class EDPluginISPyBRetrieveDataCollectionv1_4(EDPluginExec):
 
 
     def finallyProcess(self, _edObject=None):
-        EDPluginExec.postProcess(self)
+        EDPluginExec.finallyProcess(self)
         self.DEBUG("EDPluginISPyBRetrieveDataCollectionv1_4.finallyProcess")
         if self.collectParameters is None:
             self.collectParameters = XSDataResultRetrieveDataCollection()
