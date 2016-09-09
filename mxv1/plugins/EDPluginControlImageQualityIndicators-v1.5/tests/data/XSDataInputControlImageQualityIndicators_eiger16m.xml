@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<XSDataInputControlImageQualityIndicators>
+    <image>
+        <path>
+            <value>/mntdirect/_scisoft/users/svensson/git/edna-mx/tests/data/images/eiger16m_1_1000.cbf</value>
+        </path>
+        <number>
+            <value>1000</value>
+        </number>
+    </image>
+    <image>
+        <path>
+            <value>/mntdirect/_scisoft/users/svensson/git/edna-mx/tests/data/images/eiger16m_1_2000.cbf</value>
+        </path>
+        <number>
+            <value>2000</value>
+        </number>
+    </image>
+    <doDistlSignalStrength>
+    	<value>false</value>
+    </doDistlSignalStrength>
+</XSDataInputControlImageQualityIndicators>

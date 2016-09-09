@@ -467,7 +467,7 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
         retrieve the potential warning messages
         retrieve the potential error messages
         """
-        self.DEBUG("EDPluginControlInterfacev1_3.doFailureActionCharacterisation")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_3.doFailureActionCharacterisation")
         self.setFailure()
         # Send failure email message (MXSUP-183):
         strSubject = "%s : FAILURE!" % EDUtilsPath.getEdnaSite()

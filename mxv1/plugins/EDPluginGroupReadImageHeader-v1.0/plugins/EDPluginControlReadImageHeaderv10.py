@@ -7,7 +7,7 @@
 #
 #    Principal authors:      Michael Hellmig (michael.hellmig@bessy.de)
 #                            Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -67,12 +67,14 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.strSuffixPilatus2M = "cbf"
         self.strSuffixPilatus6M = "cbf"
         self.strSuffixEiger4M = "cbf"
+        self.strSuffixEiger16M = "cbf"
         # Recognised types of detectors
         self.strADSC = "ADSC"
         self.strMARCCD = "MARCCD"
         self.strPilatus2M = "Pilatus2M"
         self.strPilatus6M = "Pilatus6M"
         self.strEiger4M = "Eiger4M"
+        self.strEiger16M = "Eiger16M"
         #
         self.strPluginExecMXWaitFile = "EDPluginMXWaitFilev1_1"
         self.strPluginExecReadImageHeaderADSC = "EDPluginExecReadImageHeaderADSCv10"
@@ -80,6 +82,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.strPluginExecReadImageHeaderPilatus2M = "EDPluginExecReadImageHeaderPilatus2Mv10"
         self.strPluginExecReadImageHeaderPilatus6M = "EDPluginExecReadImageHeaderPilatus6Mv10"
         self.strPluginExecReadImageHeaderEiger4M = "EDPluginExecReadImageHeaderEiger4Mv10"
+        self.strPluginExecReadImageHeaderEiger16M = "EDPluginExecReadImageHeaderEiger16Mv10"
         # Table mapping image suffix with detector type
         self.dictSuffixToImageType = {
               self.strSuffixADSC    : self.strADSC,
@@ -88,6 +91,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
               self.strSuffixPilatus2M : self.strPilatus2M,
               self.strSuffixPilatus6M : self.strPilatus6M,
               self.strSuffixEiger4M : self.strEiger4M,
+              self.strSuffixEiger16M : self.strEiger16M,
                                                     }
 		# Table mapping image type with exec read image header plugin
         self.dictImageTypeToPluginName = {
@@ -96,6 +100,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
               self.strPilatus2M : self.strPluginExecReadImageHeaderPilatus2M,
               self.strPilatus6M : self.strPluginExecReadImageHeaderPilatus6M,
               self.strEiger4M : self.strPluginExecReadImageHeaderEiger4M,
+              self.strEiger16M : self.strPluginExecReadImageHeaderEiger16M,
                 									 }
 
     def checkParameters(self):
@@ -110,8 +115,8 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlReadImageHeaderv10.configure")
         self.fMXWaitFileTimeOut = float(self.config.get("MXWaitFileTimeOut", self.fMXWaitFileTimeOut))
-        
-        
+
+
 
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
@@ -143,7 +148,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.DEBUG("EDPluginControlReadImageHeaderv10.finallyProcess")
         if self.xsDataResultReadImageHeader is None:
             # Create empty xsDataResult
-            self.xsDataResultReadImageHeader = XSDataResultReadImageHeader() 
+            self.xsDataResultReadImageHeader = XSDataResultReadImageHeader()
         self.setDataOutput(self.xsDataResultReadImageHeader)
 
 
@@ -168,7 +173,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         else:
             self.doFailureMXWaitFile(_edPlugin)
 
-    
+
     def doFailureMXWaitFile(self, _edPlugin):
         """
         The file has not appeared on the disk 
@@ -180,7 +185,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.addErrorMessage(strErrorMessage)
         self.setFailure()
 
-    
+
     def doSuccessActionReadImageHeader(self, _edPlugin):
         """
         Retrieve the potential warning messages
@@ -208,7 +213,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         bIsAdscFormat = False
         try:
             if sys.version.startswith('3'):
-                pyFile = open(_strImageFileName, "r", encoding = "ISO-8859-1")
+                pyFile = open(_strImageFileName, "r", encoding="ISO-8859-1")
             else:
                 pyFile = open(_strImageFileName, "r")
         except:
@@ -286,7 +291,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         bIsPilatus2MFormat = False
         try:
             if sys.version.startswith('3'):
-                pyFile = open(_strImageFileName, "r", encoding = "ISO-8859-1")
+                pyFile = open(_strImageFileName, "r", encoding="ISO-8859-1")
             else:
                 pyFile = open(_strImageFileName, "r")
         except:
@@ -313,7 +318,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         bIsPilatus6MFormat = False
         try:
             if sys.version.startswith('3'):
-                pyFile = open(_strImageFileName, "r", encoding = "ISO-8859-1")
+                pyFile = open(_strImageFileName, "r", encoding="ISO-8859-1")
             else:
                 pyFile = open(_strImageFileName, "r")
         except:
@@ -353,6 +358,29 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         return bIsEiger4MFormat
 
 
+    def isEiger16MImageFormat(self, _strImageFileName):
+        """
+        Detects Eiger 16M CBF image format and returns True after successful identification.
+        """
+        strKeyword = None
+        pyFile = None
+        bIsEiger16MFormat = False
+        try:
+            pyFile = open(_strImageFileName, "r")
+        except:
+            self.warning("EDPluginControlReadImageHeaderv10.isEiger16MImageFormat: couldn't open file: " + _strImageFileName)
+
+        if pyFile != None:
+            self.DEBUG("EDPluginControlReadImageHeaderv10.isEiger16MImageFormat: detecting image format from file " + _strImageFileName)
+            pyFile.seek(0, 0)
+            for iIndex in range(20):
+                strLine = pyFile.readline()
+                if strLine.find("Detector: Dectris Eiger 16M") != -1:
+                    bIsEiger16MFormat = True
+            pyFile.close()
+        return bIsEiger16MFormat
+
+
     def determineImageType(self, _strImagePath):
         """
         This method determines the type of an image, i.e. ADSC, MAR CCD etc.
@@ -374,6 +402,8 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
                 strImageType = self.strPilatus6M
             elif self.isEiger4MImageFormat(_strImagePath):
                 strImageType = self.strEiger4M
+            elif self.isEiger16MImageFormat(_strImagePath):
+                strImageType = self.strEiger16M
             else:
                 bUnknownImageType = True
         else:
