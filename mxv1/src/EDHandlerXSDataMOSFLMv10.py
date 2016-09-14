@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -35,11 +35,11 @@ import os
 
 from EDVerbose import EDVerbose
 
-#from EDMessage    import EDMessage
+# from EDMessage    import EDMessage
 from EDUtilsImage import EDUtilsImage
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-#from XSDataCommon import XSDataMatrix
+# from XSDataCommon import XSDataMatrix
 from XSDataCommon import XSDataLength
 from XSDataCommon import XSDataAngle
 from XSDataCommon import XSDataInteger
@@ -47,7 +47,7 @@ from XSDataCommon import XSDataFloat
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataWavelength
-#from XSDataCommon import XSDataImage
+# from XSDataCommon import XSDataImage
 
 from XSDataMXv1 import XSDataCrystal
 from XSDataMXv1 import XSDataStatisticsIntegrationAverageAndNumberOfReflections
@@ -127,7 +127,7 @@ class EDHandlerXSDataMOSFLMv10:
                 if (xsDataStringName is not None):
                     xsDataMOSFLMInputIndexing.setSymmetry(XSDataString(xsDataStringName.getValue()))
 
-        # Loop through the list of sub wedges 
+        # Loop through the list of sub wedges
 
         for xsDataSubWedge in xsDataSubWedgeList:
 
@@ -250,7 +250,7 @@ class EDHandlerXSDataMOSFLMv10:
         xsDataIndexingSolutionSelected.setExperimentalConditionRefined(xsDataExperimentalConditionRefined)
 
         xsDataIndexingResult.setSelectedSolution(xsDataIndexingSolutionSelected)
-        
+
         xsDataIndexingResult.setIndexingLogFile(_xsDataMOSFLMIndexingOutput.getPathToLogFile())
 
         return xsDataIndexingResult
@@ -341,7 +341,7 @@ class EDHandlerXSDataMOSFLMv10:
         xsDataMOSFLMInputIntegration.setImageEnd(XSDataInteger(iImageEnd))
         xsDataMOSFLMInputIntegration.setRotationAxisStart(xsDataGoniostat.getRotationAxisStart())
 
-        #print xsDataMOSFLMInputIntegration.marshal()
+        # print xsDataMOSFLMInputIntegration.marshal()
 
         return xsDataMOSFLMInputIntegration
     generateXSDataMOSFLMInputIntegration = staticmethod(generateXSDataMOSFLMInputIntegration)
@@ -409,7 +409,7 @@ class EDHandlerXSDataMOSFLMv10:
         strMOSFLMTemplate = EDUtilsImage.getTemplate(strFilenameFirst, "#")
         xsDataMOSFLMInputGeneratePrediction.setTemplate(XSDataString(strMOSFLMTemplate))
 
-        # The MOSFLM plugin can only handle one image 
+        # The MOSFLM plugin can only handle one image
 
         xsDataImage = xsDataSubWedge.getImage()[0]
         xsDataGoniostat = xsDataSubWedge.getExperimentalCondition().getGoniostat()
@@ -571,19 +571,19 @@ class EDHandlerXSDataMOSFLMv10:
             strDetectorType = xsDataDetector.getType().getValue()
 
             if  (EDHandlerXSDataMOSFLMv10.isDifferent(fWavelengthFirst, fWavelength)):
-                #print "Error : different wavelengths!"
+                # print "Error : different wavelengths!"
                 returnValue = False
             elif (EDHandlerXSDataMOSFLMv10.isDifferent(fDistanceFirst, fDistance)):
-                #print "Error : different distances!"
+                # print "Error : different distances!"
                 returnValue = False
             elif (EDHandlerXSDataMOSFLMv10.isDifferent(fBeamPositionXFirst, fBeamPositionX)):
-                #print "Error : different beam position X!"
+                # print "Error : different beam position X!"
                 returnValue = False
             elif (EDHandlerXSDataMOSFLMv10.isDifferent(fBeamPositionYFirst, fBeamPositionY)):
-                #print "Error : different beam position Y!"
+                # print "Error : different beam position Y!"
                 returnValue = False
             elif (EDHandlerXSDataMOSFLMv10.isDifferent(strDetectorTypeFirst, strDetectorType)):
-                #print "Error : different detectors!"
+                # print "Error : different detectors!"
                 returnValue = False
 
         return returnValue
@@ -632,7 +632,7 @@ class EDHandlerXSDataMOSFLMv10:
             xsDataMOSFLMDetector.setType(XSDataString("MARCCD"))
         elif (strDetectorType == "pilatus6m" or strDetectorType == "pilatus2m"):
             xsDataMOSFLMDetector.setType(XSDataString("PILATUS"))
-        elif (strDetectorType == "eiger4m"):
+        elif (strDetectorType == "eiger4m") or (strDetectorType == "eiger16m"):
             xsDataMOSFLMDetector.setType(XSDataString("EIGER"))
         elif (strDetectorType == "raxis4"):
             xsDataMOSFLMDetector.setType(XSDataString("RAXISIV"))
