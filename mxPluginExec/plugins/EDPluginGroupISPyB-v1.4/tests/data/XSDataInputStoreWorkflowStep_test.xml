@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<XSDataInputStoreWorkflow>
+	<workflowId>
+		<value>10000</value>
+	</workflowId>
+	<workflowStepType>
+		<value>TestWorkflowStep</value>
+	</workflowStepType>
+	<status>
+		<value>Success</value>
+	</status>
+	<imageResultFilePath>
+		<value>/image/result/file/path</value>
+	</imageResultFilePath>
+	<htmlResultFilePath>
+		<value>/html/result/file/path</value>
+	</htmlResultFilePath>
+	<resultFilePath>
+		<value>/result/file/path</value>
+	</resultFilePath>
+	<comments>
+		<value>Comments</value>
+	</comments>
+	<crystalSizeX>
+		<value>1</value>
+	</crystalSizeX>
+	<crystalSizeY>
+		<value>2</value>
+	</crystalSizeY>
+	<crystalSizeZ>
+		<value>3</value>
+	</crystalSizeZ>
+	<maxDozorScore>
+		<value>4</value>
+	</maxDozorScore>
+</XSDataInputStoreWorkflow>

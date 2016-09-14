@@ -536,6 +536,26 @@ complex type XSDataResultISPyBStoreWorkflow extends XSDataResult {
 	workflowId: XSDataInteger
 }
 
+complex type XSDataInputISPyBStoreWorkflowStep extends XSDataInput {
+	workflowId: XSDataInteger
+	workflowStepType : XSDataString
+	status: XSDataString 
+	folderPath: XSDataString optional
+	imageResultFilePath: XSDataString optional
+	htmlResultFilePath: XSDataString optional
+	resultFilePath: XSDataString optional
+	comments: XSDataString optional
+	crystalSizeX: XSDataString optional
+	crystalSizeY: XSDataString optional
+	crystalSizeZ: XSDataString optional
+	maxDozorScore: XSDataString optional
+	recordTimeStamp: XSDataString optional
+}
+
+complex type XSDataResultISPyBStoreWorkflowStep extends XSDataResult {
+	workflowStepId: XSDataInteger
+}
+
 complex type XSDataInputISPyBUpdateDataCollectionGroupWorkflowId extends XSDataInput {
 	fileLocation: XSDataString
 	fileName: XSDataString
