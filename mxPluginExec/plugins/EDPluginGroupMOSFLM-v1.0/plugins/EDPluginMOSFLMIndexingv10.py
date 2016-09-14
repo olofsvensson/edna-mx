@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
 #
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -113,7 +113,7 @@ class EDPluginMOSFLMIndexingv10(EDPluginMOSFLMv10):
 #            strGenFileName = strPrefix + ".gen"
 #            strSptFileName = strPrefix + ".spt"
         # Force name of log file
-        self.setScriptLogFileName(self.compactPluginName(self.getClassName())+".log")
+        self.setScriptLogFileName(self.compactPluginName(self.getClassName()) + ".log")
 
         self.DEBUG("Finished EDPluginMOSFLMIndexingv10.generateMOSFLMIndexingCommands")
 
@@ -238,7 +238,7 @@ class EDPluginMOSFLMIndexingv10(EDPluginMOSFLMv10):
         self.addExecutiveSummaryLine("Image template          : %s" % xsDataMOSFLMInputIndexing.getTemplate().getValue())
         strImagesUsed = "Images used in indexing : "
         for xsDataMOSFLMImage in xsDataMOSFLMInputIndexing.getImage():
-            strImagesUsed += "%3d" % xsDataMOSFLMImage.getNumber().getValue()
+            strImagesUsed += "%5d" % xsDataMOSFLMImage.getNumber().getValue()
         self.addExecutiveSummaryLine(strImagesUsed)
         if (xsDataMOSFLMInputIndexing.getSymmetry() is not None):
             self.addExecutiveSummaryLine("Target symmetry     : %s" % xsDataMOSFLMInputIndexing.getSymmetry().getValue())
