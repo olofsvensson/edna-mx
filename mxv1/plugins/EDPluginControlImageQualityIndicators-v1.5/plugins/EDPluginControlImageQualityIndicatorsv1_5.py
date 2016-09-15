@@ -228,6 +228,8 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
             else:
                 # Check if we should run distl.signalStrength
                 xsDataImageNew = XSDataImage(XSDataString(strPathToImage))
+                xsDataImageNew.number = xsDataImage.number
+                xsDataImageNew.date = xsDataImage.date
                 edPluginPluginExecImageQualityIndicator = None
                 if bDoDistlSignalStrength:
                     if self.bUseThinClient:
