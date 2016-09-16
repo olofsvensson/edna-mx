@@ -224,6 +224,10 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                 self.addErrorMessage(strError)
                 self.setFailure()
             else:
+                # Ugly workaround for ESRF ID30B
+                if "id30b" in strPathToImage:
+                    self.screen("ID30b: waiting for images, sleeping 10 s")
+                    time.sleep(10)
                 # Check if we should run distl.signalStrength
                 xsDataImageNew = XSDataImage(XSDataString(strPathToImage))
                 edPluginPluginExecImageQualityIndicator = None
