@@ -69,6 +69,10 @@ from XSDataInterfacev1_2 import XSDataInputInterface
 EDFactoryPluginStatic.loadModule("XSDataISPyBv1_4")
 from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 from XSDataISPyBv1_4 import XSDataInputISPyBSetBestWilsonPlotPath
+from XSDataISPyBv1_4 import XSDataISPyBWorkflow
+from XSDataISPyBv1_4 import XSDataInputISPyBStoreWorkflow
+from XSDataISPyBv1_4 import XSDataInputISPyBStoreWorkflowStep
+from XSDataISPyBv1_4 import XSDataInputISPyBUpdateDataCollectionGroupWorkflowId
 
 EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_1")
 from XSDataControlH5ToCBFv1_1 import XSDataInputControlH5ToCBF
@@ -108,12 +112,19 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.edPluginISPyBRetrieveDataCollection = None
         self.strPluginControlH5ToCBF = "EDPluginControlH5ToCBFv1_1"
         self.edPluginControlH5ToCBF = None
+        self.strPluginStoreWorkflow = "EDPluginISPyBStoreWorkflowv1_4"
+        self.edPluginStoreWorkflow = None
+        self.strPluginStoreWorkflowStep = "EDPluginISPyBStoreWorkflowStepv1_4"
+        self.edPluginStoreWorkflowStep = None
+        self.strUpdateDataCollectionGroupWorkflowId = "EDPluginISPyBUpdateDataCollectionGroupWorkflowIdv1_4"
+        self.edPluginUpdateDataCollectionGroupWorkflowId = None
         self.strEDNAContactEmail = None
         self.strEDNAEmailSender = "edna-support@esrf.fr"
         self.tStart = None
         self.tStop = None
         self.fFluxThreshold = 1e3
         self.bIsEigerDetector = False
+        self.xsDataFirstImage = None
 
 
     def checkParameters(self):
@@ -159,12 +170,12 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         xsDataInputMXCuBE = self.getDataInput()
         xsDataInputInterface = XSDataInputInterface()
         self.edPluginControlInterface = self.loadPlugin(self.strPluginControlInterface)
-        xsDataFirstImage = None
+        self.xsDataFirstImage = None
         for xsDataSetMXCuBE in xsDataInputMXCuBE.getDataSet():
             for xsDataFile in xsDataSetMXCuBE.getImageFile():
                 if xsDataFile.path.value.endswith(".h5"):
                     self.bIsEigerDetector = True
-                    xsDataFirstImage = xsDataFile
+                    self.xsDataFirstImage = xsDataFile
                     xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
                     xsDataInputControlH5ToCBF.hdf5File = XSDataFile(xsDataFile.path)
                     xsDataInputControlH5ToCBF.imageNumber = XSDataInteger(EDUtilsImage.getImageNumber(xsDataFile.path.value))
@@ -175,10 +186,10 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataInputInterface.addImagePath(cbfFile)
                 else:
                     xsDataInputInterface.addImagePath(xsDataFile)
-                if xsDataFirstImage is None:
-                    xsDataFirstImage = xsDataFile
+                if self.xsDataFirstImage is None:
+                    self.xsDataFirstImage = xsDataFile
 
-        xsDataExperimentalCondition = self.getFluxAndBeamSizeFromISPyB(xsDataFirstImage, \
+        xsDataExperimentalCondition = self.getFluxAndBeamSizeFromISPyB(self.xsDataFirstImage, \
                                                             xsDataInputMXCuBE.getExperimentalCondition())
 
         xsDataInputInterface.setExperimentalCondition(xsDataExperimentalCondition)
@@ -291,6 +302,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             self.executeSimpleHTML(xsDataResultCharacterisation)
             # Upload the best wilson plot path to ISPyB
             strBestWilsonPlotPath = EDHandlerXSDataISPyBv1_4.getBestWilsonPlotPath(xsDataResultCharacterisation)
+            strBestWilsonPlotPyarchPath = None
             if strBestWilsonPlotPath is not None and strPyArchPathToDNAFileDirectory is not None:
                 # Copy wilson path to Pyarch
                 strBestWilsonPlotPyarchPath = os.path.join(strPyArchPathToDNAFileDirectory, os.path.basename(strBestWilsonPlotPath))
@@ -306,8 +318,41 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     edPluginSetBestWilsonPlotPath = self.loadPlugin("EDPluginISPyBSetBestWilsonPlotPathv1_4", "ISPyBSetBestWilsonPlotPath")
                     edPluginSetBestWilsonPlotPath.dataInput = xsDataInputISPyBSetBestWilsonPlotPath
                     edPluginSetBestWilsonPlotPath.executeSynchronous()
-
-
+            # Only for tests at the ESRF:
+            if EDUtilsPath.getEdnaSite() == "ESRF_ISPyBTest":
+                # For EXI: create workflow entry with one workflow step
+                self.edPluginStoreWorkflow = self.loadPlugin(self.strPluginStoreWorkflow)
+                self.edPluginStoreWorkflowStep = self.loadPlugin(self.strPluginStoreWorkflowStep)
+                self.edPluginUpdateDataCollectionGroupWorkflowId = self.loadPlugin(self.strUpdateDataCollectionGroupWorkflowId)
+                xsDataISPyBWorkflow = XSDataISPyBWorkflow()
+                xsDataISPyBWorkflow.workflowType = XSDataString("Characterisation")
+                xsDataISPyBWorkflow.workflowTitle = XSDataString("Characterisation")
+                xsDataInputISPyBStoreWorkflow = XSDataInputISPyBStoreWorkflow()
+                xsDataInputISPyBStoreWorkflow.workflow = xsDataISPyBWorkflow
+                self.edPluginStoreWorkflow.dataInput = xsDataInputISPyBStoreWorkflow
+                self.edPluginStoreWorkflow.executeSynchronous()
+                if self.edPluginStoreWorkflow.dataOutput is not None and self.edPluginStoreWorkflow.dataOutput.workflowId is not None:
+                    workflowId = self.edPluginStoreWorkflow.dataOutput.workflowId.value
+                    # Update data collection group
+                    xsDataInputISPyBUpdateDataCollectionGroupWorkflowId = XSDataInputISPyBUpdateDataCollectionGroupWorkflowId()
+                    xsDataInputISPyBUpdateDataCollectionGroupWorkflowId.workflowId = XSDataInteger(workflowId)
+                    xsDataInputISPyBUpdateDataCollectionGroupWorkflowId.fileLocation = XSDataString(os.path.dirname(self.xsDataFirstImage.path.value))
+                    xsDataInputISPyBUpdateDataCollectionGroupWorkflowId.fileName = XSDataString(os.path.basename(self.xsDataFirstImage.path.value))
+                    self.edPluginUpdateDataCollectionGroupWorkflowId.dataInput = xsDataInputISPyBUpdateDataCollectionGroupWorkflowId
+                    self.edPluginUpdateDataCollectionGroupWorkflowId.executeSynchronous()
+                    xsDataInputISPyBStoreWorkflowStep = XSDataInputISPyBStoreWorkflowStep()
+                    xsDataInputISPyBStoreWorkflowStep.workflowId = XSDataInteger(workflowId)
+                    xsDataInputISPyBStoreWorkflowStep.workflowStepType = XSDataString("Characterisation")
+                    xsDataInputISPyBStoreWorkflowStep.status = XSDataString("Success")
+                    if strBestWilsonPlotPyarchPath is not None:
+                        xsDataInputISPyBStoreWorkflowStep.imageResultFilePath = XSDataString(strBestWilsonPlotPyarchPath)
+                    xsDataInputISPyBStoreWorkflowStep.htmlResultFilePath = XSDataString(strPyArchPathToDNAFileDirectory)
+                    if self.edPluginExecSimpleHTML.dataOutput is not None:
+                         strResultFilePath = self.edPluginExecSimpleHTML.dataOutput.pathToJsonFile.path.value
+                         # strPyarchResultFilePath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(strResultFilePath)
+                         xsDataInputISPyBStoreWorkflowStep.resultFilePath = XSDataString(strResultFilePath)
+                    self.edPluginStoreWorkflowStep.dataInput = xsDataInputISPyBStoreWorkflowStep
+                    self.edPluginStoreWorkflowStep.executeSynchronous()
 
 
 
