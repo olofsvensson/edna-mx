@@ -319,7 +319,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     edPluginSetBestWilsonPlotPath.dataInput = xsDataInputISPyBSetBestWilsonPlotPath
                     edPluginSetBestWilsonPlotPath.executeSynchronous()
             # Only for tests at the ESRF:
-            if EDUtilsPath.getEdnaSite() == "ESRF_ISPyBTest":
+            if EDUtilsPath.getEdnaSite() in ["ESRF_ISPyBTest", "ESRF_ID30A2"]:
                 # For EXI: create workflow entry with one workflow step
                 self.edPluginStoreWorkflow = self.loadPlugin(self.strPluginStoreWorkflow)
                 self.edPluginStoreWorkflowStep = self.loadPlugin(self.strPluginStoreWorkflowStep)
