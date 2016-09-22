@@ -311,8 +311,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                     autoProcScalingStatistics.anomalous = True
                 else:
                     autoProcScalingStatistics.anomalous = False
-                if autoProcScalingStatistics.rMerge < 1.0:
-                    autoProcScalingStatistics.rMerge *= 100.0
+                # Convert from fraction to %
+                autoProcScalingStatistics.rMerge *= 100.0
             autoProcIntegrationContainer = autoProcScalingContainer.AutoProcIntegrationContainer
             image = autoProcIntegrationContainer.Image
             image.dataCollectionId = self.dataInput.dataCollectionId.value
