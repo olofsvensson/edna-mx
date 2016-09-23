@@ -243,8 +243,8 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                 if len(listBatch) == batchSize:
                     # Ugly workaround for ESRF ID30B
                     if "id30b" in strPathToImage:
-                        self.screen("ID30b: waiting for images, sleeping 10 s")
-                    time.sleep(10)
+                        self.screen("ID30b: waiting for images, sleeping 30 s")
+                        time.sleep(30)
                     edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor)
                     xsDataInputControlDozor = XSDataInputControlDozor()
                     for image in listBatch:
