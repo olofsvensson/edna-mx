@@ -26,6 +26,7 @@ __license__ = "GPLv2+"
 __copyright__ = "ESRF"
 
 import os
+import gzip
 import time
 import shutil
 import socket
@@ -373,6 +374,21 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 shutil.copy(pathToXSCALELog, os.path.join(self.pyarchDirectory, pyarchXSCALELog))
                 autoProcProgramAttachment = AutoProcProgramAttachment()
                 autoProcProgramAttachment.fileName = pyarchXSCALELog
+                autoProcProgramAttachment.filePath = self.pyarchDirectory
+                autoProcProgramAttachment.fileType = "Result"
+                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
+            # Add XDS_ASCII.HKL if present and gzip it
+            pathToXdsAsciiHkl = os.path.join(processDirectory, "XDS_ASCII.HKL")
+            if os.path.exists(pathToXdsAsciiHkl):
+                pyarchXdsAsciiHkl = self.pyarchPrefix + "_merged_{0}_XDS_ASCII.HKL.gz".format(anonString)
+                f_in = open(pathToXdsAsciiHkl)
+                f_out = gzip.open(os.path.join(self.pyarchDirectory, pyarchXdsAsciiHkl), "wb")
+                f_out.writelines(f_in)
+                f_out.close()
+                f_in.close()
+                shutil.copy(os.path.join(self.pyarchDirectory, pyarchXdsAsciiHkl), os.path.join(self.resultsDirectory, pyarchXdsAsciiHkl))
+                autoProcProgramAttachment = AutoProcProgramAttachment()
+                autoProcProgramAttachment.fileName = pyarchXdsAsciiHkl
                 autoProcProgramAttachment.filePath = self.pyarchDirectory
                 autoProcProgramAttachment.fileType = "Result"
                 autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
