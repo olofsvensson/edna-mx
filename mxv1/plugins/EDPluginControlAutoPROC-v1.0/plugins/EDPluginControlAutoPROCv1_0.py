@@ -380,7 +380,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             # Add XDS_ASCII.HKL if present and gzip it
             pathToXdsAsciiHkl = os.path.join(processDirectory, "XDS_ASCII.HKL")
             if os.path.exists(pathToXdsAsciiHkl):
-                pyarchXdsAsciiHkl = self.pyarchPrefix + "_merged_{0}_XDS_ASCII.HKL.gz".format(anomString)
+                pyarchXdsAsciiHkl = self.pyarchPrefix + "_{0}_XDS_ASCII.HKL.gz".format(anomString)
                 f_in = open(pathToXdsAsciiHkl)
                 f_out = gzip.open(os.path.join(self.pyarchDirectory, pyarchXdsAsciiHkl), "wb")
                 f_out.writelines(f_in)
