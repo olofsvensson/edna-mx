@@ -134,7 +134,7 @@ class EDPluginISPyBStoreWorkflowStepv1_4(EDPluginExec):
          }
         strDictWorkflowStep = json.dumps(dictWorkflowStep)
         self.iWorkflowStepId = clientToolsForCollectionWebService.service.storeWorkflowStep(strDictWorkflowStep)
-        self.debug("EDPluginISPyBStoreWorkflowStepv1_4.process: WorkflowStepId = {0}".format(self.iWorkflowStepId))
+        self.DEBUG("EDPluginISPyBStoreWorkflowStepv1_4.process: WorkflowStepId = {0}".format(self.iWorkflowStepId))
 
 
 
