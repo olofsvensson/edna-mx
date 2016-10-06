@@ -53,7 +53,7 @@ try:
     import suds
 except ImportError:
     EDVerbose.warning('Suds not installed system wide, will try the EDNA bundled one')
-    edFactoryPlugin.loadModule("EDInstallSudsv0_4")
+    edFactoryPlugin.loadModule("EDInstallJurkoSuds94664ddd46a6")
 
 import suds
 
