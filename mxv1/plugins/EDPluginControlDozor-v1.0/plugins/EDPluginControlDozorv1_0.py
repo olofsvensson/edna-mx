@@ -233,6 +233,10 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             maxImageNumber = None
             minAngle = None
             maxAngle = None
+            minDozorValue = None
+            maxDozorValue = None
+            minResolution = None
+            maxResolution = None
             dozorPlotFileName = "dozor_{0}.png".format(dataCollectionId)
             dozorCsvFileName = "dozor_{0}.csv".format(dataCollectionId)
             with open(os.path.join(self.getWorkingDirectory(), dozorCsvFileName), "w") as gnuplotFile:
@@ -241,7 +245,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 gnuplotFile.write("# {0:>9s}{1:>16s}{2:>16s}{3:>16s}{4:>16s}{5:>16s}\n".format("'Image no'",
                                                                                "'Angle'",
                                                                                "'No of spots'",
-                                                                               "'Main score'",
+                                                                               "'Main score (*10)'",
                                                                                "'Spot score'",
                                                                                "'Visible res.'",
                                                                ))
@@ -249,7 +253,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                     gnuplotFile.write("{0:10d},{1:15.3f},{2:15d},{3:15.3f},{4:15.3f},{5:15.3f}\n".format(imageDozor.number.value,
                                                                                                        imageDozor.angle.value,
                                                                                                        imageDozor.spotsNumOf.value,
-                                                                                                       imageDozor.mainScore.value,
+                                                                                                       10 * imageDozor.mainScore.value,
                                                                                                        imageDozor.spotScore.value,
                                                                                                        imageDozor.visibleResolution.value,
                                                                                                        ))
@@ -259,12 +263,33 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                     if maxImageNumber is None or maxImageNumber < imageDozor.number.value:
                         maxImageNumber = imageDozor.number.value
                         maxAngle = imageDozor.angle.value
+                    if minDozorValue is None or minDozorValue > imageDozor.mainScore.value:
+                        minDozorValue = imageDozor.spotScore.value
+                    if maxDozorValue is None or maxDozorValue < imageDozor.mainScore.value:
+                        maxDozorValue = imageDozor.spotScore.value
+
+                    # Min resolution: the higher the value the lower the resolution
+                    if minResolution is None or minResolution < imageDozor.visibleResolution.value:
+                        # Disregard resolution worse than 10.0
+                        if imageDozor.visibleResolution.value < 10.0:
+                            minResolution = imageDozor.visibleResolution.value
+
+                    # Max resolution: the lower the number the better the resolution
+                    if maxResolution is None or maxResolution > imageDozor.visibleResolution.value:
+                        maxResolution = imageDozor.visibleResolution.value
 
             if minImageNumber == maxImageNumber:
                 minImageNumber -= 0.1
                 maxImageNumber += 0.1
                 minAngle -= 1.0
                 maxAngle += 1.0
+
+            if maxResolution < 1.0:
+                maxResolution = int(maxResolution * 10.0) / 10.0
+
+            if minResolution > 4.5:
+                minResolution = int(minResolution * 10.0) / 10.0 + 1
+
             gnuplotFile.close()
             gnuplotScript = \
     """#
@@ -275,7 +300,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
     set xlabel 'Image number'
     set x2label 'Angle (degrees)'
     set y2label 'Resolution (A)'
-    set ylabel 'Number of spots / Dozor score'
+    set ylabel 'Number of spots / Dozor score (*10)'
     set xtics nomirror
     set x2tics 
     set ytics nomirror
@@ -283,7 +308,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
     set xrange [{minImageNumber}:{maxImageNumber}]
     set x2range [{minAngle}:{maxAngle}]
     set autoscale  y
-    set y2range [4.5: 0.8]
+    set y2range [{minResolution}:{maxResolution}]
     set key below
     plot '{dozorCsvFileName}' using 1:3 title 'Number of spots' axes x1y1 with points linetype rgb 'goldenrod' pointtype 7 pointsize 1.5, \
          '{dozorCsvFileName}' using 1:4 title 'Dozor score' axes x1y1 with points linetype 3 pointtype 7 pointsize 1.5, \
@@ -295,6 +320,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                maxImageNumber=maxImageNumber,
                minAngle=minAngle,
                maxAngle=maxAngle,
+               minResolution=minResolution,
+               maxResolution=maxResolution,
                )
             pathGnuplotScript = os.path.join(self.getWorkingDirectory(), "gnuplot.sh")
             data_file = open(pathGnuplotScript, "w")
@@ -304,6 +331,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             os.chdir(self.getWorkingDirectory())
             os.system("gnuplot %s" % pathGnuplotScript)
             os.chdir(oldCwd)
+
             if self.dataInput.processDirectory is not None:
                 processDirectory = self.dataInput.processDirectory.path.value
             else:
@@ -318,6 +346,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 shutil.copy(os.path.join(self.getWorkingDirectory(), dozorCsvFileName), dozorCsvResultPath)
             except:
                 self.warning("Couldn't copy files to results directory: {0}".format(resultsDirectory))
+
             try:
                 # Create paths on pyarch
                 dozorPlotPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorPlotResultPath)
