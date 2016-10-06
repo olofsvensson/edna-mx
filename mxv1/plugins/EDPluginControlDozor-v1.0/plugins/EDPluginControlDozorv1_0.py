@@ -284,8 +284,10 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 minAngle -= 1.0
                 maxAngle += 1.0
 
-            if maxResolution < 1.0:
+            if maxResolution < 0.8:
                 maxResolution = int(maxResolution * 10.0) / 10.0
+            else:
+                maxResolution = 0.8
 
             if minResolution > 4.5:
                 minResolution = int(minResolution * 10.0) / 10.0 + 1
