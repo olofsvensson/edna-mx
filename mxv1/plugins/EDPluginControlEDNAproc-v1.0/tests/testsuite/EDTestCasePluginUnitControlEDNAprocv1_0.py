@@ -26,6 +26,7 @@ __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
 import os
+import tempfile
 
 from EDTestCasePluginUnit import EDTestCasePluginUnit
 from EDAssert import EDAssert
@@ -69,9 +70,18 @@ class EDTestCasePluginUnitControlEDNAprocv1_0(EDTestCasePluginUnit):
         print(edPlugin.eiger_template_to_image("eigertest_1_1_??????.h5", 1000))
 
 
+    def test_createInputFile(self):
+        edPlugin = self.getPlugin()
+        testDir = tempfile.mkdtemp(prefix="EDTestCasePluginUnitControlEDNAprocv1_0_")
+        dataCollectionId = 1756293
+        filePath = edPlugin.createInputFile(dataCollectionId, testDir)
+        print(filePath)
+
+
     def process(self):
-        self.addTestMethod(self.test_getBeamlinePrefixFromPath)
-        self.addTestMethod(self.test_eiger_template_to_image)
+#        self.addTestMethod(self.test_getBeamlinePrefixFromPath)
+#        self.addTestMethod(self.test_eiger_template_to_image)
+        self.addTestMethod(self.test_createInputFile)
 
 
 
