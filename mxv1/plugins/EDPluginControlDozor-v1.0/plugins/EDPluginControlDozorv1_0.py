@@ -278,18 +278,23 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                     if maxResolution is None or maxResolution > imageDozor.visibleResolution.value:
                         maxResolution = imageDozor.visibleResolution.value
 
+            xtics = ""
             if minImageNumber == maxImageNumber:
-                minImageNumber -= 0.1
-                maxImageNumber += 0.1
                 minAngle -= 1.0
                 maxAngle += 1.0
+            if (maxImageNumber - minImageNumber) < 4:
+                minImageNumber -= 0.1
+                maxImageNumber += 0.1
+                xtics = "1"
 
-            if maxResolution < 0.8:
-                maxResolution = int(maxResolution * 10.0) / 10.0
-            else:
+            if maxResolution is None or maxResolution > 0.8:
                 maxResolution = 0.8
+            else:
+                maxResolution = int(maxResolution * 10.0) / 10.0
 
-            if minResolution > 4.5:
+            if minResolution is None or minResolution < 4.5:
+                minResolution = 4.5
+            else:
                 minResolution = int(minResolution * 10.0) / 10.0 + 1
 
             gnuplotFile.close()
@@ -303,7 +308,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
     set x2label 'Angle (degrees)'
     set y2label 'Resolution (A)'
     set ylabel 'Number of spots / Dozor score (*10)'
-    set xtics nomirror
+    set xtics {xtics} nomirror
     set x2tics 
     set ytics nomirror
     set y2tics
@@ -324,6 +329,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                maxAngle=maxAngle,
                minResolution=minResolution,
                maxResolution=maxResolution,
+               xtics=xtics,
                )
             pathGnuplotScript = os.path.join(self.getWorkingDirectory(), "gnuplot.sh")
             data_file = open(pathGnuplotScript, "w")
