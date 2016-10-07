@@ -282,9 +282,13 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             if minImageNumber == maxImageNumber:
                 minAngle -= 1.0
                 maxAngle += 1.0
-            if (maxImageNumber - minImageNumber) < 4:
+            noImages = maxImageNumber - minImageNumber
+            if noImages < 4:
                 minImageNumber -= 0.1
                 maxImageNumber += 0.1
+                deltaAngle = maxAngle - minAngle
+                minAngle -= deltaAngle * 0.1 / noImages
+                maxAngle += deltaAngle * 0.1 / noImages
                 xtics = "1"
 
             if maxResolution is None or maxResolution > 0.8:
