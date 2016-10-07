@@ -283,7 +283,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 minAngle -= 1.0
                 maxAngle += 1.0
             noImages = maxImageNumber - minImageNumber + 1
-            if noImages < 4:
+            if noImages <= 4:
                 minImageNumber -= 0.1
                 maxImageNumber += 0.1
                 deltaAngle = maxAngle - minAngle
