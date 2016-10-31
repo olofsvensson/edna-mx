@@ -35,6 +35,8 @@ from XSDataCommon import XSDataString
 from XSDataAutoPROCv1_0 import XSDataInputAutoPROC
 from XSDataAutoPROCv1_0 import XSDataResultAutoPROC
 
+from EDUtilsPath import EDUtilsPath
+
 
 class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
     """
@@ -102,6 +104,10 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         if masterH5 is None:
             # Identifier(s)
             for identifier in _xsDataInputAutoPROC.identifier:
+
+                if EDUtilsPath.isEMBL():                
+                    identifier.templateN.value = identifier.templateN.value.replace(\
+                                    '%' + '05' + 'd', 5 * '#' )
                 strCommandText += " -Id {idN},{dirN},{templateN},{fromN},{toN}".format(
                                     idN=identifier.idN.value,
                                     dirN=identifier.dirN.path.value,
@@ -110,6 +116,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
                                     toN=identifier.toN.value)
         else:
             strCommandText += " -h5 {0}".format(masterH5.path.value)
+
         # Resolution
         lowResolutionLimit = _xsDataInputAutoPROC.lowResolutionLimit
         highResolutionLimit = _xsDataInputAutoPROC.highResolutionLimit
@@ -126,4 +133,5 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         refMTZ = _xsDataInputAutoPROC.refMTZ
         if refMTZ is not None:
             strCommandText += " -ref {0}".format(refMTZ.path.value)
+
         return strCommandText

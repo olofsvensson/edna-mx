@@ -49,7 +49,6 @@ class EDTestCasePluginControlRunDimplev1_0(EDTestCasePluginExecute):
 
     def testExecute(self):
         pyarchPath = tempfile.mkdtemp(prefix="EDTestCasePluginControlRunDimplev1_0_")
-        print pyarchPath
         xsDataPyarchPath = XSDataFile(XSDataString(pyarchPath))
         self._edPlugin.dataInput.pyarchPath = xsDataPyarchPath
         self.run()
