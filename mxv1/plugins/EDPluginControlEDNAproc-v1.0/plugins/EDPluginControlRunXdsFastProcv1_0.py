@@ -34,6 +34,7 @@ import shutil
 from EDPluginControl import EDPluginControl
 from EDVerbose import EDVerbose
 from EDFactoryPlugin import edFactoryPlugin
+from EDUtilsPath import EDUtilsPath
 
 from XSDataCommon import XSDataFile, XSDataString
 
