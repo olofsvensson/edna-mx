@@ -17,7 +17,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -26,15 +26,15 @@ __author__ = "Thomas Boeglin"
 __contact__ = "thomas.boeglin@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20120712"
+__date__ = "20161109"
 __status__ = "production"
 
-import os, datetime
+import os
 
-from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-EDFactoryPluginStatic.loadModule("EDInstallJurkoSuds94664ddd46a6")
+from EDPluginISPyBv1_4 import EDPluginISPyBv1_4
+
 from suds.client import Client
 from suds.transport.http import HttpAuthenticated
 from suds.sax.date import DateTime
@@ -44,7 +44,7 @@ from XSDataCommon import XSDataInteger
 from XSDataISPyBv1_4 import XSDataInputStoreDataCollection
 from XSDataISPyBv1_4 import XSDataResultStoreDataCollection
 
-class EDPluginISPyBStoreDataCollectionv1_4(EDPluginExec):
+class EDPluginISPyBStoreDataCollectionv1_4(EDPluginISPyBv1_4):
     """
     Plugin to store results in an ISPyB database using web services
     """
@@ -53,37 +53,22 @@ class EDPluginISPyBStoreDataCollectionv1_4(EDPluginExec):
         """
         Sets default values for dbserver parameters 
         """
-        EDPluginExec.__init__(self)
+        EDPluginISPyBv1_4.__init__(self)
         self.setXSDataInputClass(XSDataInputStoreDataCollection)
-        self.strUserName = None
-        self.strPassWord = None
-        self.strToolsForCollectionWebServiceWsdl = None
         self.bContinue = True
 
     def configure(self):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
         """
-        EDPluginExec.configure(self)
-        self.strUserName = str(self.config.get("userName"))
-        if self.strUserName is None:
-            self.ERROR("EDPluginISPyBStoreDataCollectionv1_4.configure: No user name found in configuration!")
-            self.setFailure()
-        self.strPassWord = str(self.config.get("passWord"))
-        if self.strPassWord is None:
-            self.ERROR("EDPluginISPyBStoreDataCollectionv1_4.configure: No pass word found in configuration!")
-            self.setFailure()
-        self.strToolsForCollectionWebServiceWsdl = self.config.get("toolsForCollectionWebServiceWsdl")
-        if self.strToolsForCollectionWebServiceWsdl is None:
-            self.ERROR("EDPluginISPyBStoreDataCollectionv1_4.configure: No toolsForCollectionWebServiceWsdl found in configuration!")
-            self.setFailure()
+        EDPluginISPyBv1_4.configure(self, _bRequireToolsForCollectionWebServiceWsdl=True)
 
 
     def process(self, _edObject=None):
         """
         Stores the contents of the DataCollectionContainer in ISPyB.
         """
-        EDPluginExec.process(self)
+        EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBStoreDataCollectionv1_4.process")
         xsDataInputStoreDataCollection = self.getDataInput()
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
@@ -100,7 +85,7 @@ class EDPluginISPyBStoreDataCollectionv1_4(EDPluginExec):
     def finallyProcess(self, _edObject=None):
         """
         """
-        EDPluginExec.finallyProcess(self)
+        EDPluginISPyBv1_4.finallyProcess(self)
         self.DEBUG("EDPluginISPyBStoreDataCollectionv1_4.finallyProcess")
         xsDataResultStoreDataCollection = XSDataResultStoreDataCollection()
         if self.iDataCollectionId is not None:
@@ -116,87 +101,69 @@ class EDPluginISPyBStoreDataCollectionv1_4(EDPluginExec):
         return oReturnValue
 
 
-    def getDateValue(self, _strValue, _strFormat, _oDefaultValue):
-        if _strValue is None:
-            oReturnValue = _oDefaultValue
-        else:
-            try:
-                oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
-            except:
-                oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
-        return oReturnValue
-
-    def getDateValue(self, _strValue, _strFormat, _oDefaultValue):
-        if _strValue is None or _strValue == "None":
-            oReturnValue = _oDefaultValue
-        else:
-            oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
-        return oReturnValue
-    
-
     def storeDataCollectionProgram(self, _clientToolsForCollectionWebService, _xsDataInputStoreDataCollection):
         """Creates an entry in the ISPyB DataCollectionProgram table"""
         self.DEBUG("EDPluginISPyBStoreDataCollectionv1_4.storeDataCollectionProgram")
 
         dataCollection = _xsDataInputStoreDataCollection.getDataCollection()
-        dataCollectionWS3VO =_clientToolsForCollectionWebService.factory.create('dataCollectionWS3VO')
+        dataCollectionWS3VO = _clientToolsForCollectionWebService.factory.create('dataCollectionWS3VO')
 
-        dataCollectionWS3VO.dataCollectionId = self.getValue(dataCollection.getDataCollectionId(), 0) # integer
-        dataCollectionWS3VO.dataCollectionGroupId = 1312843 # integer
+        dataCollectionWS3VO.dataCollectionId = self.getValue(dataCollection.getDataCollectionId(), 0)  # integer
+        dataCollectionWS3VO.dataCollectionGroupId = 1312843  # integer
 #        dataCollectionWS3VO.blSampleId = self.getValue(dataCollection.getBlSampleId(), -1) # integer
 #        dataCollectionWS3VO.sessionId = self.getValue(dataCollection.getSessionId(), 38123) # integer
 #        dataCollectionWS3VO.experimentType = self.getValue(dataCollection.getExperimentType()) # string
-        dataCollectionWS3VO.dataCollectionNumber = self.getValue(dataCollection.getDataCollectionNumber()) # integer
-        dataCollectionWS3VO.startTime = self.getDateValue(dataCollection.getStartTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now())) # string
-        dataCollectionWS3VO.endTime = self.getDateValue(dataCollection.getEndTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now())) # string
-        dataCollectionWS3VO.runStatus = self.getValue(dataCollection.getRunStatus()) # string
-        dataCollectionWS3VO.rotationAxis = self.getValue(dataCollection.getRotationAxis()) # string
-        dataCollectionWS3VO.phiStart = self.getValue(dataCollection.getPhiStart()) # float
-        dataCollectionWS3VO.kappaStart = self.getValue(dataCollection.getKappaStart()) # float
-        dataCollectionWS3VO.omegaStart = self.getValue(dataCollection.getOmegaStart()) # float
-        dataCollectionWS3VO.axisStart = self.getValue(dataCollection.getAxisStart()) # float
-        dataCollectionWS3VO.axisEnd = self.getValue(dataCollection.getAxisEnd()) # float
-        dataCollectionWS3VO.axisRange = self.getValue(dataCollection.getAxisRange()) # float
-        dataCollectionWS3VO.overlap = self.getValue(dataCollection.getOverlap()) # float
-        dataCollectionWS3VO.numberOfImages = self.getValue(dataCollection.getNumberOfImages()) # integer
-        dataCollectionWS3VO.startImageNumber = self.getValue(dataCollection.getStartImageNumber()) # integer
-        dataCollectionWS3VO.numberOfPasses = self.getValue(dataCollection.getNumberOfPasses()) # integer
-        dataCollectionWS3VO.exposureTime = self.getValue(dataCollection.getExposureTime()) # float
-        dataCollectionWS3VO.imageDirectory = self.getValue(dataCollection.getImageDirectory()) # string
-        dataCollectionWS3VO.imagePrefix = self.getValue(dataCollection.getImagePrefix()) # string
-        dataCollectionWS3VO.imageSuffix = self.getValue(dataCollection.getImageSuffix()) # string
-        dataCollectionWS3VO.fileTemplate = self.getValue(dataCollection.getFileTemplate()) # string
-        dataCollectionWS3VO.wavelength = self.getValue(dataCollection.getWavelength()) # float
-        dataCollectionWS3VO.resolution = self.getValue(dataCollection.getResolution()) # float
-        dataCollectionWS3VO.resolutionAtCorner = self.getValue(dataCollection.getResolutionAtCorner()) # float
-        dataCollectionWS3VO.detectorDistance = self.getValue(dataCollection.getDetectorDistance()) # float
-        dataCollectionWS3VO.detector2theta = self.getValue(dataCollection.getDetector2theta()) # float
+        dataCollectionWS3VO.dataCollectionNumber = self.getValue(dataCollection.getDataCollectionNumber())  # integer
+        dataCollectionWS3VO.startTime = self.getDateValue(dataCollection.getStartTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))  # string
+        dataCollectionWS3VO.endTime = self.getDateValue(dataCollection.getEndTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))  # string
+        dataCollectionWS3VO.runStatus = self.getValue(dataCollection.getRunStatus())  # string
+        dataCollectionWS3VO.rotationAxis = self.getValue(dataCollection.getRotationAxis())  # string
+        dataCollectionWS3VO.phiStart = self.getValue(dataCollection.getPhiStart())  # float
+        dataCollectionWS3VO.kappaStart = self.getValue(dataCollection.getKappaStart())  # float
+        dataCollectionWS3VO.omegaStart = self.getValue(dataCollection.getOmegaStart())  # float
+        dataCollectionWS3VO.axisStart = self.getValue(dataCollection.getAxisStart())  # float
+        dataCollectionWS3VO.axisEnd = self.getValue(dataCollection.getAxisEnd())  # float
+        dataCollectionWS3VO.axisRange = self.getValue(dataCollection.getAxisRange())  # float
+        dataCollectionWS3VO.overlap = self.getValue(dataCollection.getOverlap())  # float
+        dataCollectionWS3VO.numberOfImages = self.getValue(dataCollection.getNumberOfImages())  # integer
+        dataCollectionWS3VO.startImageNumber = self.getValue(dataCollection.getStartImageNumber())  # integer
+        dataCollectionWS3VO.numberOfPasses = self.getValue(dataCollection.getNumberOfPasses())  # integer
+        dataCollectionWS3VO.exposureTime = self.getValue(dataCollection.getExposureTime())  # float
+        dataCollectionWS3VO.imageDirectory = self.getValue(dataCollection.getImageDirectory())  # string
+        dataCollectionWS3VO.imagePrefix = self.getValue(dataCollection.getImagePrefix())  # string
+        dataCollectionWS3VO.imageSuffix = self.getValue(dataCollection.getImageSuffix())  # string
+        dataCollectionWS3VO.fileTemplate = self.getValue(dataCollection.getFileTemplate())  # string
+        dataCollectionWS3VO.wavelength = self.getValue(dataCollection.getWavelength())  # float
+        dataCollectionWS3VO.resolution = self.getValue(dataCollection.getResolution())  # float
+        dataCollectionWS3VO.resolutionAtCorner = self.getValue(dataCollection.getResolutionAtCorner())  # float
+        dataCollectionWS3VO.detectorDistance = self.getValue(dataCollection.getDetectorDistance())  # float
+        dataCollectionWS3VO.detector2theta = self.getValue(dataCollection.getDetector2theta())  # float
 #        dataCollectionWS3VO.detectorMode = self.getValue(dataCollection.getDetectorMode()) # string
-        dataCollectionWS3VO.undulatorGap1 = self.getValue(dataCollection.getUndulatorGap1()) # float
-        dataCollectionWS3VO.undulatorGap2 = self.getValue(dataCollection.getUndulatorGap2()) # float
-        dataCollectionWS3VO.undulatorGap3 = self.getValue(dataCollection.getUndulatorGap3()) # float
-        dataCollectionWS3VO.xbeam = self.getValue(dataCollection.getXbeam()) # float
-        dataCollectionWS3VO.ybeam = self.getValue(dataCollection.getYbeam()) # float
+        dataCollectionWS3VO.undulatorGap1 = self.getValue(dataCollection.getUndulatorGap1())  # float
+        dataCollectionWS3VO.undulatorGap2 = self.getValue(dataCollection.getUndulatorGap2())  # float
+        dataCollectionWS3VO.undulatorGap3 = self.getValue(dataCollection.getUndulatorGap3())  # float
+        dataCollectionWS3VO.xbeam = self.getValue(dataCollection.getXbeam())  # float
+        dataCollectionWS3VO.ybeam = self.getValue(dataCollection.getYbeam())  # float
 #        dataCollectionWS3VO.crystalClass = self.getValue(dataCollection.getCrystalClass()) # string
-        dataCollectionWS3VO.slitGapVertical = self.getValue(dataCollection.getSlitGapVertical()) # float
-        dataCollectionWS3VO.slitGapHorizontal = self.getValue(dataCollection.getSlitGapHorizontal()) # float
-        dataCollectionWS3VO.beamSizeAtSampleX = self.getValue(dataCollection.getBeamSizeAtSampleX()) # float
-        dataCollectionWS3VO.beamSizeAtSampleY = self.getValue(dataCollection.getBeamSizeAtSampleY()) # float
-        dataCollectionWS3VO.transmission = self.getValue(dataCollection.getTransmission()) # float
-        dataCollectionWS3VO.synchrotronMode = self.getValue(dataCollection.getSynchrotronMode()) # string
-        dataCollectionWS3VO.centeringMethod = self.getValue(dataCollection.getCenteringMethod()) # string
-        dataCollectionWS3VO.averageTemperature = self.getValue(dataCollection.getAverageTemperature()) # float
-        dataCollectionWS3VO.comments = self.getValue(dataCollection.getComments()) # string
-        #printableForReport = str(self.getValue(dataCollection.getPrintableForReport())).lower() # boolean
+        dataCollectionWS3VO.slitGapVertical = self.getValue(dataCollection.getSlitGapVertical())  # float
+        dataCollectionWS3VO.slitGapHorizontal = self.getValue(dataCollection.getSlitGapHorizontal())  # float
+        dataCollectionWS3VO.beamSizeAtSampleX = self.getValue(dataCollection.getBeamSizeAtSampleX())  # float
+        dataCollectionWS3VO.beamSizeAtSampleY = self.getValue(dataCollection.getBeamSizeAtSampleY())  # float
+        dataCollectionWS3VO.transmission = self.getValue(dataCollection.getTransmission())  # float
+        dataCollectionWS3VO.synchrotronMode = self.getValue(dataCollection.getSynchrotronMode())  # string
+        dataCollectionWS3VO.centeringMethod = self.getValue(dataCollection.getCenteringMethod())  # string
+        dataCollectionWS3VO.averageTemperature = self.getValue(dataCollection.getAverageTemperature())  # float
+        dataCollectionWS3VO.comments = self.getValue(dataCollection.getComments())  # string
+        # printableForReport = str(self.getValue(dataCollection.getPrintableForReport())).lower() # boolean
         if self.getValue(dataCollection.getPrintableForReport()):
             dataCollectionWS3VO.printableForReport = 1
         else:
             dataCollectionWS3VO.printableForReport = 0
-        dataCollectionWS3VO.xtalSnapshotFullPath1 = self.getValue(dataCollection.getXtalSnapshotFullPath1()) # string
-        dataCollectionWS3VO.xtalSnapshotFullPath2 = self.getValue(dataCollection.getXtalSnapshotFullPath2()) # string
-        dataCollectionWS3VO.xtalSnapshotFullPath3 = self.getValue(dataCollection.getXtalSnapshotFullPath3()) # string
-        dataCollectionWS3VO.xtalSnapshotFullPath4 = self.getValue(dataCollection.getXtalSnapshotFullPath4()) # string
-        dataCollectionWS3VO.beamShape = self.getValue(dataCollection.getBeamShape()) # string
+        dataCollectionWS3VO.xtalSnapshotFullPath1 = self.getValue(dataCollection.getXtalSnapshotFullPath1())  # string
+        dataCollectionWS3VO.xtalSnapshotFullPath2 = self.getValue(dataCollection.getXtalSnapshotFullPath2())  # string
+        dataCollectionWS3VO.xtalSnapshotFullPath3 = self.getValue(dataCollection.getXtalSnapshotFullPath3())  # string
+        dataCollectionWS3VO.xtalSnapshotFullPath4 = self.getValue(dataCollection.getXtalSnapshotFullPath4())  # string
+        dataCollectionWS3VO.beamShape = self.getValue(dataCollection.getBeamShape())  # string
         self.screen(dataCollectionWS3VO)
         iDataCollectionId = _clientToolsForCollectionWebService.service.storeOrUpdateDataCollection(dataCollection=dataCollectionWS3VO)
 

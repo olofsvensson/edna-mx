@@ -26,15 +26,15 @@ __author__ = "Thomas Boeglin"
 __contact__ = "thomas.boeglin@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20120712"
+__date__ = "20161109"
 __status__ = "production"
 
-import os, datetime
+import os
 
-from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-EDFactoryPluginStatic.loadModule("EDInstallJurkoSuds94664ddd46a6")
+from EDPluginISPyBv1_4 import EDPluginISPyBv1_4
+
 from suds.client import Client
 from suds.transport.http import HttpAuthenticated
 from suds.sax.date import DateTime
@@ -46,7 +46,7 @@ from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 from XSDataISPyBv1_4 import XSDataResultRetrieveDataCollection
 from XSDataISPyBv1_4 import XSDataISPyBDataCollection
 
-class EDPluginISPyBRetrieveDataCollectionv1_4(EDPluginExec):
+class EDPluginISPyBRetrieveDataCollectionv1_4(EDPluginISPyBv1_4):
     """
     Plugin to retrieve results in an ISPyB database using web services
     """
@@ -55,37 +55,22 @@ class EDPluginISPyBRetrieveDataCollectionv1_4(EDPluginExec):
         """
         Sets default values for dbserver parameters 
         """
-        EDPluginExec.__init__(self)
+        EDPluginISPyBv1_4.__init__(self)
         self.setXSDataInputClass(XSDataInputRetrieveDataCollection)
-        self.strUserName = None
-        self.strPassWord = None
-        self.strToolsForCollectionWebServiceWsdl = None
         self.collectParameters = None
 
     def configure(self):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
         """
-        EDPluginExec.configure(self)
-        self.strUserName = str(self.config.get("userName"))
-        if self.strUserName is None:
-            self.ERROR("EDPluginISPyBRetrieveDataCollectionv1_4.configure: No user name found in configuration!")
-            self.setFailure()
-        self.strPassWord = str(self.config.get("passWord"))
-        if self.strPassWord is None:
-            self.ERROR("EDPluginISPyBRetrieveDataCollectionv1_4.configure: No pass word found in configuration!")
-            self.setFailure()
-        self.strToolsForCollectionWebServiceWsdl = self.config.get("toolsForCollectionWebServiceWsdl")
-        if self.strToolsForCollectionWebServiceWsdl is None:
-            self.ERROR("EDPluginISPyBRetrieveDataCollectionv1_4.configure: No toolsForCollectionWebService found in configuration!")
-            self.setFailure()
+        EDPluginISPyBv1_4.configure(self, _bRequireToolsForCollectionWebServiceWsdl=True)
 
 
     def process(self, _edObject=None):
         """
         Retrieves the contents of the DataCollectionContainer in ISPyB
         """
-        EDPluginExec.process(self)
+        EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBRetrieveDataCollectionv1_4.process")
         infile = self.getDataInput()
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
@@ -122,7 +107,7 @@ class EDPluginISPyBRetrieveDataCollectionv1_4(EDPluginExec):
 
 
     def finallyProcess(self, _edObject=None):
-        EDPluginExec.finallyProcess(self)
+        EDPluginISPyBv1_4.finallyProcess(self)
         self.DEBUG("EDPluginISPyBRetrieveDataCollectionv1_4.finallyProcess")
         if self.collectParameters is None:
             self.collectParameters = XSDataResultRetrieveDataCollection()

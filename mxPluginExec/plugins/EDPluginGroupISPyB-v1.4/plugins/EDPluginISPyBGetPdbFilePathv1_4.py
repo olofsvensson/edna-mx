@@ -27,15 +27,15 @@ __author__ = "Olof Svensson"
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20140704"
+__date__ = "20161109"
 __status__ = "production"
 
-import os, datetime
+import os
 
-from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-EDFactoryPluginStatic.loadModule("EDInstallJurkoSuds94664ddd46a6")
+from EDPluginISPyBv1_4 import EDPluginISPyBv1_4
+
 from suds.client import Client
 from suds.transport.http import HttpAuthenticated
 from suds.sax.date import DateTime
@@ -46,17 +46,14 @@ from XSDataISPyBv1_4 import XSDataInputISPyBGetPdbFilePath
 from XSDataISPyBv1_4 import XSDataResultISPyBGetPdbFilePath
 
 
-class EDPluginISPyBGetPdbFilePathv1_4(EDPluginExec):
+class EDPluginISPyBGetPdbFilePathv1_4(EDPluginISPyBv1_4):
     """
     Plugin for rertrieving path to pdb file
     """
 
     def __init__(self):
-        EDPluginExec.__init__(self)
+        EDPluginISPyBv1_4.__init__(self)
         self.setXSDataInputClass(XSDataInputISPyBGetPdbFilePath)
-        self.strUserName = None
-        self.strPassWord = None
-        self.strToolsForCollectionWebServiceWsdl = None
         self.dataCollectionId = None
         self.strPathToPdbFile = None
 
@@ -65,37 +62,8 @@ class EDPluginISPyBGetPdbFilePathv1_4(EDPluginExec):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
         """
-        EDPluginExec.configure(self)
-        self.strUserName = str(self.config.get("userName"))
-        if self.strUserName is None:
-            self.ERROR("EDPluginISPyBGetPdbFilePathv1_4.configure: No user name found in configuration!")
-            self.setFailure()
-        self.strPassWord = str(self.config.get("passWord"))
-        if self.strPassWord is None:
-            self.ERROR("EDPluginISPyBGetPdbFilePathv1_4.configure: No pass word found in configuration!")
-            self.setFailure()
-        self.strToolsForCollectionWebServiceWsdl = self.config.get("toolsForCollectionWebServiceWsdl")
-        if self.strToolsForCollectionWebServiceWsdl is None:
-            self.ERROR("EDPluginISPyBGetPdbFilePathv1_4.configure: No toolsForCollectionWebServiceWsdl found in configuration!")
-            self.setFailure()
+        EDPluginISPyBv1_4.configure(self, _bRequireToolsForCollectionWebServiceWsdl=True)
 
-    def getXSValue(self, _xsData, _oDefaultValue=None, _iMaxStringLength=255):
-        if _xsData is None:
-            oReturnValue = _oDefaultValue
-        else:
-            oReturnValue = _xsData.value
-        if type(oReturnValue) == bool:
-            if oReturnValue:
-                oReturnValue = "1"
-            else:
-                oReturnValue = "0"
-        elif (type(oReturnValue) == str) or (type(oReturnValue) == unicode):
-            if len(oReturnValue) > _iMaxStringLength:
-                strOldString = oReturnValue
-                oReturnValue = oReturnValue[0:_iMaxStringLength - 3] + "..."
-                self.warning("String truncated to %d characters for ISPyB! Original string: %s" % (_iMaxStringLength, strOldString))
-                self.warning("Truncated string: %s" % oReturnValue)
-        return oReturnValue
 
 
 
@@ -103,7 +71,7 @@ class EDPluginISPyBGetPdbFilePathv1_4(EDPluginExec):
         """
         Uses ToolsForCollectionWebService 
         """
-        EDPluginExec.process(self)
+        EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBGetPdbFilePathv1_4.process")
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
         clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
@@ -120,7 +88,7 @@ class EDPluginISPyBGetPdbFilePathv1_4(EDPluginExec):
 
 
     def finallyProcess(self, _edObject=None):
-        EDPluginExec.finallyProcess(self)
+        EDPluginISPyBv1_4.finallyProcess(self)
         self.DEBUG("EDPluginISPyBGetPdbFilePathv1_4.finallyProcess")
         xsDataResultISPyBGetPdbFilePath = XSDataResultISPyBGetPdbFilePath()
         if self.strPathToPdbFile is not None:
