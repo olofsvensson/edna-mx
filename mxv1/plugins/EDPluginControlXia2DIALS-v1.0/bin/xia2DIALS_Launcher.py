@@ -112,7 +112,7 @@ if collect_params.numberOfImages < 8:
 
 xia2DIALSPath = os.path.join(autoprocessingPath, "xia2DIALS")
 if not os.path.exists(xia2DIALSPath):
-    os.makedirs(xia2DIALSPath, 0755)
+    os.makedirs(xia2DIALSPath, 0o755)
 xdsInputFile = os.path.join(autoprocessingPath, "XDS.INP")
 
 # Wait for XDS input file
@@ -160,7 +160,7 @@ if os.path.exists(ednaInputFilePath):
     ednaInputFile.close()
 else:
     open(ednaInputFilePath, "w").write(inputXml)
-os.chmod(ednaInputFilePath, 0755)
+os.chmod(ednaInputFilePath, 0o755)
 
 
 scriptTemplate = """#!/usr/bin/env python
@@ -196,7 +196,7 @@ timeString = time.strftime("%H%M%S", time.localtime(time.time()))
 strPluginBaseDir = os.path.join("/tmp", beamline, dateString)
 if not os.path.exists(strPluginBaseDir):
     try:
-        os.makedirs(strPluginBaseDir, 0755)
+        os.makedirs(strPluginBaseDir, 0o755)
     except:
         pass
 
@@ -204,7 +204,7 @@ baseName = "{0}_xia2DIALS".format(timeString)
 baseDir = os.path.join(strPluginBaseDir, baseName)
 if not os.path.exists(baseDir):
     try:
-        os.makedirs(baseDir, 0755)
+        os.makedirs(baseDir, 0o755)
     except:
         pass
         
@@ -256,7 +256,7 @@ if os.path.exists(ednaScriptFilePath):
     ednaScriptFile.close()
 else:
     open(ednaScriptFilePath, "w").write(script)
-os.chmod(ednaScriptFilePath, 0755)
+os.chmod(ednaScriptFilePath, 0o755)
 
 
 submitSuccess = False

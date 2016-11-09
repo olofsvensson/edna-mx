@@ -68,7 +68,7 @@ for x in range(0, len(args), 2):
 autoprocessingPath = options["-path"]
 ednaProcPath = os.path.join(autoprocessingPath, "EDNA_proc")
 if not os.path.exists(ednaProcPath):
-    os.makedirs(ednaProcPath, 0755)
+    os.makedirs(ednaProcPath, 0o755)
 xdsInputFile = os.path.join(autoprocessingPath, "XDS.INP")
 nres = None
 try:
@@ -105,7 +105,7 @@ if os.path.exists(ednaOutputFilePath):
     ednaOutputFile.close()
 else:
     open(ednaOutputFilePath, "w").write("")
-os.chmod(ednaOutputFilePath, 0755)
+os.chmod(ednaOutputFilePath, 0o755)
 
 inputTemplate = """<?xml version="1.0"?>
 <XSDataEDNAprocInput>
@@ -172,7 +172,7 @@ if os.path.exists(ednaInputFilePath):
     ednaInputFile.close()
 else:
     open(ednaInputFilePath, "w").write(inputXml)
-os.chmod(ednaInputFilePath, 0755)
+os.chmod(ednaInputFilePath, 0o755)
 
 
 scriptTemplate = """#!/usr/bin/env python
@@ -207,12 +207,12 @@ dateString  = time.strftime("%Y%m%d", time.localtime(time.time()))
 timeString = time.strftime("%H%M%S", time.localtime(time.time()))
 strPluginBaseDir = os.path.join("/tmp", beamline, dateString)
 if not os.path.exists(strPluginBaseDir):
-    os.makedirs(strPluginBaseDir, 0755)
+    os.makedirs(strPluginBaseDir, 0o755)
 
 baseName = "{0}_EDNA_proc".format(timeString)
 baseDir = os.path.join(strPluginBaseDir, baseName)
 if not os.path.exists(baseDir):
-    os.makedirs(baseDir, 0755)
+    os.makedirs(baseDir, 0o755)
 EDVerbose.screen("EDNA plugin working directory: %s" % baseDir)
 
 linkName = "{hostname}_{date}-{time}".format(hostname=hostname,
@@ -269,7 +269,7 @@ if os.path.exists(ednaScriptFilePath):
     ednaScriptFile.close()
 else:
     open(ednaScriptFilePath, "w").write(script)
-os.chmod(ednaScriptFilePath, 0755)
+os.chmod(ednaScriptFilePath, 0o755)
 
 
 submitSuccess = False

@@ -25,7 +25,10 @@ __author__ = "Olof Svensson"
 __license__ = "GPLv3+"
 __copyright__ = "Copyrigth (c) 2010 ESRF"
 
-import os, tempfile, Image, time
+import os
+import time
+import tempfile
+from PIL import Image
 
 from EDVerbose import EDVerbose
 from EDPluginControl import EDPluginControl
@@ -168,9 +171,9 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
                     self.warning("Cannot write to pyarch directory: %s" % strOutputDirname)
                     strTmpUser = os.path.join("/tmp", os.environ["USER"])
                     if not os.path.exists(strTmpUser):
-                        os.mkdir(strTmpUser, 0755)
+                        os.mkdir(strTmpUser, 0o755)
                     strOutputDirname = tempfile.mkdtemp(prefix="EDPluginPyarchThumbnailv10_", dir=strTmpUser)
-                    os.chmod(strOutputDirname, 0755)
+                    os.chmod(strOutputDirname, 0o755)
                     self.warning("Writing thumbnail images to: %s" % strOutputDirname)
                 self.strOutputPathWithoutExtension = os.path.join(strOutputDirname, strImageNameWithoutExt)
             if self.dataInput.format is not None:

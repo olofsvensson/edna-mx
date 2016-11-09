@@ -820,7 +820,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                              str(self.file_conversion.dataOutput.pointless_cell[4].value),
                              str(self.file_conversion.dataOutput.pointless_cell[5].value)])
         try:
-            os.mknod(os.path.join(self.results_dir, filename), 0755)
+            os.mknod(os.path.join(self.results_dir, filename), 0o755)
         except OSError:  # file exists
             pass
 
@@ -973,7 +973,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         # Create a file in the results directory to indicate all files have been
         # populated in it already so Max's code can be aware of that
         try:
-            os.mknod(os.path.join(self.results_dir, '.finished'), 0755)
+            os.mknod(os.path.join(self.results_dir, '.finished'), 0o755)
         except OSError:  # file exists
             pass
 
@@ -1257,7 +1257,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         else:
             # store the EDNAproc ID as a filename in the
             # fastproc_integration_ids directory
-            os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_anom)), 0755)
+            os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_anom)), 0o755)
         # then noanom stats
 
         output.AutoProcProgramContainer = program_container_noanom
@@ -1282,7 +1282,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             self.ERROR('could not send results to ispyb')
         else:
             # store the EDNAproc id
-            os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0755)
+            os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0o755)
 
         # Finally run dimple if executed at the ESRF
         if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():

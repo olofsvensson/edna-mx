@@ -144,7 +144,7 @@ class EDPluginH5ToCBFv1_0(EDPluginExecProcessScript):
         else:
             forcedOutputDirectory = self.dataInput.forcedOutputDirectory.path.value
             if not os.path.exists(forcedOutputDirectory):
-                os.makedirs(forcedOutputDirectory, 0755)
+                os.makedirs(forcedOutputDirectory, 0o755)
             self.CBFFile = os.path.join(forcedOutputDirectory, CBFFileName)
 
         self.tmpCBFFile = os.path.join(self.getWorkingDirectory(), tmpCBFFileName)

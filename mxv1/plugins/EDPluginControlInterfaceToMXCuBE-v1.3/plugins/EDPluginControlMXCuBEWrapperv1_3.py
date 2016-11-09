@@ -78,7 +78,7 @@ class EDPluginControlMXCuBEWrapperv1_3( EDPluginControl ):
                 strNewLogFileName = os.path.join(strProcessedDataDir, strEDAppliDir + ".log")
                 strWorkingDir = os.path.join(strProcessedDataDir, strEDAppliDir, self.getBaseName())
                 if not os.path.exists(strWorkingDir):
-                    os.makedirs(strWorkingDir, 0755)
+                    os.makedirs(strWorkingDir, 0o755)
         # Write out input XML file
         strPathToInputFile = os.path.join(strProcessedDataDir, "EDNA_Input_%s.xml" % strTimeString)
         strPathToOutputFile = os.path.join(strProcessedDataDir, "EDNA_Output_%s.xml" % strTimeString)
