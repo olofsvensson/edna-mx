@@ -1,5 +1,4 @@
 from __future__ import with_statement
-from types import ListType, TupleType
 import logging
 from xdscfgformat import CONFIGURATION_PARSERS
 from xdscfgformat import REPEATABLE_PARAMS
@@ -25,30 +24,30 @@ def _load_xds_file(path):
         for t in partial_tokens:
             idx = t.find('=')
             # not a kw or already isolated kw
-            if idx == -1 or idx == len(t)-1:
+            if idx == -1 or idx == len(t) - 1:
                 tokens.append(t)
-            #kw=firstarg case, split them
+            # kw=firstarg case, split them
             else:
                 # keep the = sign a the end of the kw
-                tokens.append(t[:idx+1])
-                tokens.append(t[idx+1:])
+                tokens.append(t[:idx + 1])
+                tokens.append(t[idx + 1:])
 
         # look for keywords
-        for token, idx in zip(tokens, range(len(tokens)+1)):
+        for token, idx in zip(tokens, range(len(tokens) + 1)):
             if token.endswith('='):
                 kwds.append(idx)
         if len(kwds) == 0:
-            #no kw on line, next
+            # no kw on line, next
             continue
-        #we now have the positions for the kw in the line
-        #args start right after keywords
-        argsstart = [i+1 for i in kwds]
+        # we now have the positions for the kw in the line
+        # args start right after keywords
+        argsstart = [i + 1 for i in kwds]
         # and end right before the next one of at the end
         argsend = kwds[1:]
         argsend.append(len(tokens))
 
         for kw, start, end in zip(kwds, argsstart, argsend):
-            parsedlst.append( (tokens[kw], tokens[start:end]) )
+            parsedlst.append((tokens[kw], tokens[start:end]))
     return parsedlst
 
 def parse_xds_file(path):
@@ -57,7 +56,7 @@ def parse_xds_file(path):
 
     # Workaround for problem in ESRF XDS.INP generation during burn strategy workflow execution
     if EDUtilsPath.isESRF():
-        has_added_spot_range = False 
+        has_added_spot_range = False
         tmp_loaded = []
         for kw, args in loaded:
             if kw == "DATA_RANGE=":
@@ -80,7 +79,7 @@ def parse_xds_file(path):
             continue
         parser = CONFIGURATION_PARSERS[kw]
 
-        #print 'parsing', args, 'with', parser, 'for kw', kw
+        # print 'parsing', args, 'with', parser, 'for kw', kw
 
         # XXX maybe catch exc and log them
         parsedargs = parser(args)
@@ -88,7 +87,7 @@ def parse_xds_file(path):
         # special case, for repeatable params, we add them as a list
         # or append them if they already exist
         if kw in REPEATABLE_PARAMS:
-            #print 'keyword', kw, 'is repeatable'
+            # print 'keyword', kw, 'is repeatable'
             if kw in parsed:
                 parsed[kw].append(parsedargs)
             else:
@@ -133,10 +132,10 @@ def _format_param(key, value):
 key= value value value
 taking into account whether value is a list of things or a single
 value"""
-    if type(value) in [ListType, TupleType]:
+    if type(value) in [list, tuple]:
         valstring = ' '.join(map(str, value))
         res = '{0} {1}\n'.format(key, valstring)
-    else: #single val
+    else:  # single val
         if type(value) == bool:
             value = 'TRUE' if value else 'FALSE'
         res = '{0} {1}\n'.format(key, value)
