@@ -308,9 +308,6 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
                         self.fMaxOscillationSpeed = self.xsDataExperimentalCodition.getGoniostat().getMaxOscillationSpeed().getValue()
 
 
-            if self.hasDataInput("sample"):
-                self.xsDataSample = self.getDataInput("sample")[0]
-
             if (self.hasDataInput("diffractionPlan")):
                 if self.xsDataDiffractionPlan is None:
                     self.xsDataDiffractionPlan = XSDataDiffractionPlan()
