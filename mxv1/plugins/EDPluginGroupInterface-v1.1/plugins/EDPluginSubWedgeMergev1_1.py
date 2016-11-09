@@ -258,11 +258,11 @@ class EDPluginSubWedgeMergev1_1(EDPluginExec):
                 listOfRemainingObjects = listOfRemainingObjects[1:]
                 listOfSortedObjects = []
                 listOfSortedObjects.append(oCurrentObject)
-                #print "Before loop: ", oCurrentObject, listOfRemainingObjects, iNumberOfRemainingObjects
+                # print "Before loop: ", oCurrentObject, listOfRemainingObjects, iNumberOfRemainingObjects
                 while (iIndex < len(listOfRemainingObjects)):
                     oCompareObject = listOfRemainingObjects[ iIndex ]
                     bAreEqualObjects = _methodForComparison(oCurrentObject, oCompareObject)
-                    #print "   In the loop:", iIndex, oCompareObject, bAreEqualObjects, listOfSortedObjects, listOfRemainingObjects
+                    # print "   In the loop:", iIndex, oCompareObject, bAreEqualObjects, listOfSortedObjects, listOfRemainingObjects
                     if (bAreEqualObjects):
                         listOfSortedObjects.append(oCompareObject)
                         listOfRemainingObjectsTmp = listOfRemainingObjects[ 0:iIndex ]
@@ -301,7 +301,7 @@ class EDPluginSubWedgeMergev1_1(EDPluginExec):
             # Check if sub wedges are adjascent:
             dRoationAxisEnd1 = _subWedge1.getExperimentalCondition().getGoniostat().getRotationAxisEnd().getValue()
             dRoationAxisStart2 = _subWedge2.getExperimentalCondition().getGoniostat().getRotationAxisStart().getValue()
-            #print dRoationAxisEnd1, dRoationAxisStart2
+            # print dRoationAxisEnd1, dRoationAxisStart2
             if (self.compareTwoValues(dRoationAxisEnd1, dRoationAxisStart2, 0.001)):
                 # Same sub wedge! Let's merge them
                 xsDataSubWedgeMerged = XSDataSubWedge.parseString(_subWedge1.marshal())
@@ -329,8 +329,7 @@ class EDPluginSubWedgeMergev1_1(EDPluginExec):
             listOfMergedSubWedges = listOfSubWedgesWithIdenticalExperimentalConditions
         else:
             # First sort the list as function of rotation axis start
-            listOfSubWedgesWithIdenticalExperimentalConditions.sort(lambda x, y: cmp(x.getExperimentalCondition().getGoniostat().getRotationAxisStart().getValue(), \
-                                                                                        y.getExperimentalCondition().getGoniostat().getRotationAxisStart().getValue()))
+            listOfSubWedgesWithIdenticalExperimentalConditions.sort(key=lambda x: x.experimentalCondition.goniostat.rotationAxisStart.value)
             # Then loop through the subwedges and merge them if possible
             listRemainingSubWedges = listOfSubWedgesWithIdenticalExperimentalConditions
             oCurrentSubWedge = listRemainingSubWedges[0]
