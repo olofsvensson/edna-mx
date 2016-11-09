@@ -84,7 +84,6 @@ class EDTestCasePluginUnitControlRunDimplev1_0(EDTestCasePluginUnit):
         strBeamline = "id29"
         listPath = edPlugin.copyResults(strPrefix, strPyarchRootDir, xsDataResultDimple, strPdfPath)
         listPathHtml = edPlugin.createHtmlPage(strPrefix, xsDataResultDimple, strPyarchRootDir, strProposal, strSessionDate, strBeamline)
-        print listPathHtml
         for pathHtml in listPathHtml:
             EDAssert.equal(True, os.path.exists(pathHtml), "HTML page generated")
         shutil.rmtree(strPyarchRootDir)
