@@ -171,9 +171,11 @@ class WorkflowStepReport(object):
                         page.tr.close()
                 page.table.close()
             elif item["type"] == "logFile":
-                pathToLogHtml = tempfile.mkstemp(suffix=".html",
-                                                 prefix=item["title"].replace(" ", "_") + "_",
-                                                 dir=pathToHtmlDir)[1]
+                pathToLogHtml = os.path.join(pathToHtmlDir, item["title"] + ".html")
+                if os.path.exists(pathToLogHtml):
+                    pathToLogHtml = tempfile.mkstemp(suffix=".html",
+                                                     prefix=item["title"].replace(" ", "_") + "_",
+                                                     dir=pathToHtmlDir)[1]
                 pageLogHtml = markupv1_10.page()
                 pageLogHtml.h1(item["title"])
                 pageLogHtml.pre(cgi.escape(item["logText"]))
