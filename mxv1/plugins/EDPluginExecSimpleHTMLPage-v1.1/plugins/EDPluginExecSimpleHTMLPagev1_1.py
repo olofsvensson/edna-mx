@@ -107,7 +107,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             else:
                 strPathToLogFile = self.dataInput.logFile.path.value
             if strPathToLogFile is not None:
-                self.workflowStepReport.addLogFile("EDNA Log", "EDNA log file", strPathToLogFile)
+                self.workflowStepReport.addLogFile("edna_log", "EDNA log file", strPathToLogFile)
             self.dataCollectionInfo()
             self.diffractionPlan()
             self.strategyResults()
@@ -174,7 +174,10 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             for xsDataIntegrationSubWedgeResult in xsDataResultIntegration.getIntegrationSubWedgeResult():
                 if xsDataIntegrationSubWedgeResult.getIntegrationLogFile() is not None:
                     strPathToIntegrationLogFile = xsDataIntegrationSubWedgeResult.getIntegrationLogFile().getPath().getValue()
-                    self.workflowStepReport.addLogFile("Integration Log No %d" % iIntegration,
+#                    self.workflowStepReport.addLogFile("Integration Log No %d" % iIntegration,
+#                                                       "Integration Log No %d" % iIntegration,
+#                                                       strPathToIntegrationLogFile)
+                    self.workflowStepReport.addLogFile("integration_%d_log" % iIntegration,
                                                        "Integration Log No %d" % iIntegration,
                                                        strPathToIntegrationLogFile)
                     iIntegration += 1
@@ -277,10 +280,12 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         if xsDataResultStrategy is not None:
             if xsDataResultStrategy.bestLogFile:
                 strPathToBestLogFile = xsDataResultStrategy.bestLogFile.path.value
-                self.workflowStepReport.addLogFile("BEST Log", "Best log file", strPathToBestLogFile)
+#                self.workflowStepReport.addLogFile("BEST Log", "Best log file", strPathToBestLogFile)
+                self.workflowStepReport.addLogFile("bes_log", "Best log file", strPathToBestLogFile)
             if xsDataResultStrategy.raddoseLogFile:
                 strPathToRaddoseLogFile = xsDataResultStrategy.raddoseLogFile.path.value
-                self.workflowStepReport.addLogFile("RADDOSE Log", "RADDOSE log file", strPathToRaddoseLogFile)
+#                self.workflowStepReport.addLogFile("RADDOSE Log", "RADDOSE log file", strPathToRaddoseLogFile)
+                self.workflowStepReport.addLogFile("raddose_log", "RADDOSE log file", strPathToRaddoseLogFile)
 
 
     def dataCollectionInfo(self):
@@ -492,7 +497,8 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         self.workflowStepReport.addTable(tableTitle, tableColumns, tableData)
         if _xsDataResultIndexing.getIndexingLogFile():
             strPathToIndexingLogFile = _xsDataResultIndexing.getIndexingLogFile().getPath().getValue()
-            self.workflowStepReport.addLogFile("Indexing Log", "Indexing log file", strPathToIndexingLogFile)
+#            self.workflowStepReport.addLogFile("Indexing Log", "Indexing log file", strPathToIndexingLogFile)
+            self.workflowStepReport.addLogFile("indexing_log", "Indexing log file", strPathToIndexingLogFile)
 
 
 
@@ -632,7 +638,10 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             self.workflowStepReport.addTable("Suggested kappa goniostat reorientation (XOAlign*)",
                                              tableColumns, tableData)
             if strPathToKappaLogFile is not None:
-                self.workflowStepReport.addLogFile("Kappa re-orientation Log",
+#                self.workflowStepReport.addLogFile("Kappa re-orientation Log",
+#                                                   "Kappa re-orientation Log",
+#                                                   strPathToKappaLogFile)
+                self.workflowStepReport.addLogFile("kappa_log",
                                                    "Kappa re-orientation Log",
                                                    strPathToKappaLogFile)
             self.workflowStepReport.addInfo("*) XOalign is a part of XDSme written by Pierre Legrand (https://code.google.com/p/xdsme)")
