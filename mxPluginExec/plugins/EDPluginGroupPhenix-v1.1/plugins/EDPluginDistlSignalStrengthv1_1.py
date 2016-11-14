@@ -49,6 +49,7 @@ class EDPluginDistlSignalStrengthv1_1(EDPluginExecProcessScript):
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
         self.setXSDataInputClass(XSDataInputDistlSignalStrength)
+        self.setDataOutput(XSDataResultDistlSignalStrength())
 
 
     def preProcess(self, _edObject=None):
