@@ -273,9 +273,10 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
             xsDataImageQualityIndicators.image = xsDataImage.copy()
             if edPluginPluginExecImageQualityIndicator is not None:
                 edPluginPluginExecImageQualityIndicator.synchronize()
-                if edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators is not None:
-                    xsDataImageQualityIndicators = XSDataImageQualityIndicators.parseString(\
-                            edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators.marshal())
+                if edPluginPluginExecImageQualityIndicator.dataOutput is not None:
+                    if edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators is not None:
+                        xsDataImageQualityIndicators = XSDataImageQualityIndicators.parseString(\
+                                edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators.marshal())
             self.xsDataResultControlImageQualityIndicators.addImageQualityIndicators(xsDataImageQualityIndicators)
 
         for (edPluginControlDozor, listBatch) in listPluginDozor:
