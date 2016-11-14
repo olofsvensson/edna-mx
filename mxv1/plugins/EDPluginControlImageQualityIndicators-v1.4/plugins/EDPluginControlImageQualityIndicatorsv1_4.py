@@ -241,10 +241,6 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                 listPluginDistl.append((xsDataImageNew.copy(), edPluginPluginExecImageQualityIndicator))
                 listBatch.append(xsDataImageNew.copy())
                 if len(listBatch) == batchSize:
-                    # Ugly workaround for ESRF ID30B
-                    if "id30b" in strPathToImage:
-                        self.screen("ID30b: waiting for images, sleeping 20 s")
-                        time.sleep(20)
                     edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor)
                     xsDataInputControlDozor = XSDataInputControlDozor()
                     for image in listBatch:
