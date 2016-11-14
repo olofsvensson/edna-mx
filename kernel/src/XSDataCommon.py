@@ -95,7 +95,7 @@ class XSData(object):
 
     def exportToDict(self):
         dictOut = {"__XSDataName" : str(self.__class__).split("'")[1]}
-        for key, val in self.__dict__.iteritems():
+        for key, val in self.__dict__.items():
             if callable(val):
                 pass
             elif str(val.__class__).split("'")[1].startswith("XSData"):
@@ -123,7 +123,7 @@ class XSData(object):
         else:
             print("Error, Dictionary does not represent an XSData object. no __XSDataName")
         if xsd is not None:
-            for key, val in inDict.iteritems():
+            for key, val in inDict.items():
                 if isinstance(val, list):
                     xsd.__dict__[key] = [ XSData.importFromDict(i) for i in val]
                 elif isinstance(val, dict):

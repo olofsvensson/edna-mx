@@ -492,7 +492,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         try:
             self.integration_id_noanom = self.create_integration_id(self.dataInput.data_collection_id.value,
                                                                     "Creating non-anomalous integration ID")
-        except Exception, e:
+        except Exception as e:
             strErrorMessage = "Could not get non-anom integration ID: \n{0}".format(traceback.format_exc(e))
             self.addErrorMessage(strErrorMessage)
             self.ERROR(strErrorMessage)
@@ -501,7 +501,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         try:
             self.integration_id_anom = self.create_integration_id(self.dataInput.data_collection_id.value,
                                                                   "Creating anomalous integration ID")
-        except Exception, e:
+        except Exception as e:
             strErrorMessage = "Could not get anom integration ID: \n{0}".format(traceback.format_exc(e))
             self.addErrorMessage(strErrorMessage)
             self.ERROR(strErrorMessage)
@@ -1016,19 +1016,19 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         autoproc.refinedCell_gamma = str(unit_cell[5])
 
         inner_stats = AutoProcScalingStatistics()
-        for k, v in inner.iteritems():
+        for k, v in inner.items():
             setattr(inner_stats, k, v)
         inner_stats.anomalous = False
         scaling_container_noanom.AutoProcScalingStatistics.append(inner_stats)
 
         outer_stats = AutoProcScalingStatistics()
-        for k, v in outer.iteritems():
+        for k, v in outer.items():
             setattr(outer_stats, k, v)
         outer_stats.anomalous = False
         scaling_container_noanom.AutoProcScalingStatistics.append(outer_stats)
 
         overall_stats = AutoProcScalingStatistics()
-        for k, v in overall.iteritems():
+        for k, v in overall.items():
             setattr(overall_stats, k, v)
         overall_stats.anomalous = False
         scaling_container_noanom.AutoProcScalingStatistics.append(overall_stats)
@@ -1058,19 +1058,19 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_anom.value)
         inner_stats = AutoProcScalingStatistics()
-        for k, v in inner.iteritems():
+        for k, v in inner.items():
             setattr(inner_stats, k, v)
         inner_stats.anomalous = True
         scaling_container_anom.AutoProcScalingStatistics.append(inner_stats)
 
         outer_stats = AutoProcScalingStatistics()
-        for k, v in outer.iteritems():
+        for k, v in outer.items():
             setattr(outer_stats, k, v)
         outer_stats.anomalous = True
         scaling_container_anom.AutoProcScalingStatistics.append(outer_stats)
 
         overall_stats = AutoProcScalingStatistics()
-        for k, v in overall.iteritems():
+        for k, v in overall.items():
             setattr(overall_stats, k, v)
         overall_stats.anomalous = True
         scaling_container_anom.AutoProcScalingStatistics.append(overall_stats)
@@ -1499,7 +1499,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             if line.startswith('<!--SUMMARY_BEGIN--> $TEXT:Result: $$ $$'):
                 started = True
             if started:
-                for prefix, prop_name in INTERESTING_LINES.iteritems():
+                for prefix, prop_name in INTERESTING_LINES.items():
                     if line.startswith(prefix):
                         # We need to multiply the values for rMerge by 100
                         factor = 100 if prop_name == 'rMerge' else 1
@@ -1509,7 +1509,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                         inner_stats[prop_name] = inner
                         outer_stats[prop_name] = outer
                 if line.startswith(UNIT_CELL_PREFIX):
-                    unit_cell = map(float, line.split()[-6:])
+                    unit_cell = list(map(float, line.split()[-6:]))
         return inner_stats, outer_stats, overall_stats, unit_cell
 
 
@@ -1528,7 +1528,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             pipe1 = subprocess.Popen("/opt/pxsoft/bin/xdsinp2 {0}".format(data_collection_id), shell=True, stdout=subprocess.PIPE, close_fds=True)
         xdsInp = pipe1.communicate()[0]
         with open(inputFilePath, "w") as f:
-            f.write(xdsInp)
+            f.write(str(xdsInp))
         return inputFilePath
 
 
