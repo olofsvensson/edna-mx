@@ -241,7 +241,9 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                 listPluginDistl.append((xsDataImageNew.copy(), edPluginPluginExecImageQualityIndicator))
                 listBatch.append(xsDataImageNew.copy())
                 if len(listBatch) == batchSize:
-                    edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor)
+                    firstImage = os.path.basename(listBatch[0].path.value)
+                    edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor,
+                                                           "ControlDozor_{0}".format(os.path.splitext(firstImage)[0]))
                     xsDataInputControlDozor = XSDataInputControlDozor()
                     for image in listBatch:
                         xsDataInputControlDozor.addImage(XSDataFile(image.path))
@@ -277,6 +279,20 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
 
         for (edPluginControlDozor, listBatch) in listPluginDozor:
             edPluginControlDozor.synchronize()
+            # Check that we got at least one result
+            if len(edPluginControlDozor.dataOutput.imageDozor) == 0:
+                # Run the dozor plugin again, this time synchronously
+                firstImage = os.path.basename(listBatch[0].path.value)
+                lastImage = os.path.basename(listBatch[-1].path.value)
+                self.screen("No dozor results! Re-executing Dozor for images {0} to {1}".format(firstImage, lastImage))
+                time.sleep(5)
+                edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor, "ControlDozor_reexecution_{0}".format(os.path.splitext(firstImage)[0]))
+                xsDataInputControlDozor = XSDataInputControlDozor()
+                for image in listBatch:
+                    xsDataInputControlDozor.addImage(XSDataFile(image.path))
+                xsDataInputControlDozor.batchSize = XSDataInteger(batchSize)
+                edPluginControlDozor.dataInput = xsDataInputControlDozor
+                edPluginControlDozor.executeSynchronous()
             for imageDozor in edPluginControlDozor.dataOutput.imageDozor:
                 for xsDataImageQualityIndicators in self.xsDataResultControlImageQualityIndicators.imageQualityIndicators:
                     if xsDataImageQualityIndicators.image.path.value == imageDozor.image.path.value:
