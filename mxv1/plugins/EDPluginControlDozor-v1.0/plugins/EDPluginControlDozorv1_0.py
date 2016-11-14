@@ -279,7 +279,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                         maxResolution = imageDozor.visibleResolution.value
 
             xtics = ""
-            if minImageNumber == maxImageNumber:
+            if minImageNumber is not None and minImageNumber == maxImageNumber:
                 minAngle -= 1.0
                 maxAngle += 1.0
             noImages = maxImageNumber - minImageNumber + 1
