@@ -8,7 +8,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -87,7 +87,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         import XSDataMXv1
         self.setXSDataInputClass(XSDataMXv1.XSDataIndexingResult, "mxv1IndexingResult")
 
-        #disable kappa by default
+        # disable kappa by default
         self.KappaStrategy = 0
 
         self.strCONF_SYMOP_HOME = "symopHome"
@@ -156,11 +156,11 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
                     self.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: Forced Space Group Found: " + strSpaceGroup)
                     try:
                         strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup, strFileSymop)
-                    except Exception, detail:
+                    except Exception as detail:
                         strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', "Problem to calculate Number of symmetry operators", detail)
                         self.error(strErrorMessage)
                         self.addErrorMessage(strErrorMessage)
-                        raise RuntimeError, strErrorMessage
+                        raise RuntimeError(strErrorMessage)
                 # Space Group has NOT been forced
                 else:
                     xsDataStringSpaceGroup = self.xsDataSampleCopy.getCrystal().getSpaceGroup().getName()
@@ -170,22 +170,22 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
                         self.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: Space Group IT Name found by indexing: " + strSpaceGroup)
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup, strFileSymop)
-                        except Exception, detail:
+                        except Exception as detail:
                             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', "Problem to calculate Number of symmetry operators", detail)
                             self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
-                            raise RuntimeError, strErrorMessage
+                            raise RuntimeError(strErrorMessage)
                     else:
                         # Prepare chemical composition calculation with the Space Group calculated by indexing (Space Group IT number)
                         dSpaceGroupITNumber = self.xsDataSampleCopy.getCrystal().getSpaceGroup().getITNumber().getValue()
                         self.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: Space Group IT Number Found by indexing: %d" % dSpaceGroupITNumber)
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupITNumber(str(dSpaceGroupITNumber), strFileSymop)
-                        except Exception, detail:
+                        except Exception as detail:
                             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', "Problem to calculate Number of symmetry operators", detail)
                             self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
-                            raise RuntimeError, strErrorMessage
+                            raise RuntimeError(strErrorMessage)
 
                 if(strNumOperators is not None):
                     iNumOperators = int(strNumOperators)
@@ -193,7 +193,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
                     strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', "No symmetry operators found for Space Group: ", strSpaceGroup)
                     self.error(strErrorMessage)
                     self.addErrorMessage(strErrorMessage)
-                    raise RuntimeError, strErrorMessage
+                    raise RuntimeError(strErrorMessage)
 
                 xsDataChemicalComposition = self.xsDataSampleCopy.getChemicalComposition()
 
@@ -217,7 +217,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
                 try:
                     xsDataRaddoseInput = self.edHandlerXSDataRaddose.getXSDataRaddoseInput(xsDataBeam, self.xsDataSampleCopy, iNumOperators, iNumberOfImages)
 
-                except Exception, detail:
+                except Exception as detail:
                     strWarningMessage = EDMessage.WARNING_CANNOT_USE_PLUGIN_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', self.strPluginRaddoseName, "EDHandlerXSDataRaddose : " + detail)
                     self.warning(strWarningMessage)
                     self.addWarningMessage(strWarningMessage)
@@ -232,7 +232,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
 #                        self.edPluginRaddose.setDataInput( xsDataRaddoseInput )
 #                        self.edPluginRaddose.setBaseDirectory( self.getWorkingDirectory() )
 #                        self.edPluginRaddose.setBaseName( self.strPluginRaddoseName )
-#                        
+#
 #                    except Exception, detail:
 #                        strWarningMessage = EDMessage.WARNING_CANNOT_USE_PLUGIN_03 % ('EDPluginControlStrategyv1_1.preProcess', self.strPluginRaddoseName,  detail ) )
 #                        self.warning( strWarningMessage )
@@ -242,38 +242,38 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
                 strErrorMessage = EDMessage.ERROR_PLUGIN_NOT_LOADED_02 % ('EDPluginControlKappaStrategyv2_0.preProcess', self.strPluginRaddoseName)
                 self.error(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
-                raise RuntimeError, strErrorMessage
+                raise RuntimeError(strErrorMessage)
 
         self.edPluginBest = self.loadPlugin(self.strPluginBestName)
         if (self.edPluginBest is None):
             strErrorMessage = EDMessage.ERROR_PLUGIN_NOT_LOADED_02 % ('EDPluginControlKappaStrategyv2_0.preProcess', self.strPluginBestName)
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
-            raise RuntimeError, strErrorMessage
+            raise RuntimeError(strErrorMessage)
         else:
             self.edPluginBest.setBaseDirectory(self.getWorkingDirectory())
             self.edPluginBest.setBaseName(self.strPluginBestName)
 
         if (self.KappaStrategy):
-            #Alignment
+            # Alignment
             self.edPluginAlignment = self.loadPlugin(self.strPluginAlignmentName)
             if (self.edPluginAlignment is None):
                 errorMessage = EDMessage.ERROR_PLUGIN_NOT_LOADED_02 % ('EDPluginControlKappaStrategyv2_0.preProcess', self.strPluginAlignmentName)
                 self.error(errorMessage)
                 self.addErrorMessage(errorMessage)
-                #do not kill the application just because this feature is not available
-                #raise RuntimeError, errorMessage
+                # do not kill the application just because this feature is not available
+                # raise RuntimeError, errorMessage
             else:
                 self.edPluginAlignment.setBaseDirectory(self.getWorkingDirectory())
                 self.edPluginAlignment.setBaseName(self.strPluginAlignmentName)
 
-            #KappaStaregy
+            # KappaStaregy
             self.edPluginKappaStrategy = self.loadPlugin(self.strPluginKappaStrategyName)
             if (self.edPluginKappaStrategy is None):
                 errorMessage = EDMessage.ERROR_PLUGIN_NOT_LOADED_02 % ('EDPluginControlKappaStrategyv2_0.preProcess', self.strPluginKappaStrategyName)
                 self.error(errorMessage)
                 self.addErrorMessage(errorMessage)
-                #raise RuntimeError, errorMessage
+                # raise RuntimeError, errorMessage
             else:
                 self.edPluginKappaStrategy.setBaseDirectory(self.getWorkingDirectory())
                 self.edPluginKappaStrategy.setBaseName(self.strPluginKappaStrategyName)
@@ -293,8 +293,8 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
 
         bKappaOn = self.config.get("KAPPA")
         if bKappaOn:
-            #self.strPluginStrategyName = "EDPluginControlStrategyv10"
-            #self.strPluginStrategyName = "EDPluginControlStrategyv2_0"
+            # self.strPluginStrategyName = "EDPluginControlStrategyv10"
+            # self.strPluginStrategyName = "EDPluginControlStrategyv2_0"
             self.KappaStrategy = 1
         else:
             self.KappaStrategy = 0
@@ -353,7 +353,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
 
         self.setDataOutput(xsDataResultStrategy)
 
-        #possibleAlignments
+        # possibleAlignments
         try:
             self.setDataOutput(self.edPluginAlignment.getDataOutput(), "possibleOrientations")
         except:
@@ -385,7 +385,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         """
         """
         self.DEBUG("EDPluginControlKappaStrategyv2_0.doBestToAlignmentTransition")
-        #self.retrieveSuccessMessages( _edPlugin, "EDPluginControlStrategyv01.doRaddoseToBestTransition" )
+        # self.retrieveSuccessMessages( _edPlugin, "EDPluginControlStrategyv01.doRaddoseToBestTransition" )
 
 
         xsDataInputStrategyCopy = XSDataInputStrategy.parseString(self.getDataInput("mxv1InputStrategy")[0].marshal())
@@ -404,15 +404,15 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         """
         """
         self.DEBUG("EDPluginControlKappaStrategyv2_0.doAlignmentToStrategy")
-        #self.retrieveSuccessMessages( _edPlugin, "EDPluginControlStrategyv01.doRaddoseToBestTransition" )
+        # self.retrieveSuccessMessages( _edPlugin, "EDPluginControlStrategyv01.doRaddoseToBestTransition" )
 
         # Call the Best Translator layer
-        #from XSDataSTACv01 import kappa_alignment_response
-        #from XSDataSTACv01 import kappa_strategy_request
-        #from XSDataSTACv01 import strategy_request
+        # from XSDataSTACv01 import kappa_alignment_response
+        # from XSDataSTACv01 import kappa_strategy_request
+        # from XSDataSTACv01 import strategy_request
 
         self.xsKappaStrategyRequest = kappa_strategy_request()
-        #self.xsKappaStrategyRequest.build(???)      
+        # self.xsKappaStrategyRequest.build(???)
 
         KappaAlignmentResponse = self.edPluginAlignment.getDataOutput()
         xsDataKappaAlignmentList = KappaAlignmentResponse.getPossible_orientation()
@@ -425,7 +425,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         self.edPluginKappaStrategy.setDataInput(self.getDataInput("mxv2DataCollection")[0], "dataCollection")
         self.edPluginKappaStrategy.setDataInput(self.getDataInput("mxv1InputStrategy")[0], "inputBest")
 
-        #self.edPluginKappaStrategy.m_xsDataBestFileContentPar=self.getDataInput()[0].getBestFileContentPar()
+        # self.edPluginKappaStrategy.m_xsDataBestFileContentPar=self.getDataInput()[0].getBestFileContentPar()
         self.edPluginKappaStrategy.executeSynchronous()
 
 
@@ -616,12 +616,12 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
                 self.addExecutiveSummaryLine("")
 
         if (self.edPluginAlignment is not None):
-            #if ( self.edPluginAlignment.getDataOutput() is not None ):
+            # if ( self.edPluginAlignment.getDataOutput() is not None ):
             self.appendExecutiveSummary(self.edPluginAlignment, "STAC - Alignment : ")
             self.addExecutiveSummaryLine("")
 
         if (self.edPluginKappaStrategy is not None):
-            #if ( self.edPluginAlignment.getDataOutput() is not None ):
+            # if ( self.edPluginAlignment.getDataOutput() is not None ):
             self.appendExecutiveSummary(self.edPluginKappaStrategy, "STAC - Strategy : ")
             self.addExecutiveSummaryLine("")
 
