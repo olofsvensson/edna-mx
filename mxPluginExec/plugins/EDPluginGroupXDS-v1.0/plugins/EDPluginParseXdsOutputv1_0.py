@@ -31,9 +31,6 @@ __author__ = "Thomas Boeglin"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
-
-
-
 import os.path
 import shutil
 
@@ -272,7 +269,7 @@ def _extract_infos(lines, output):
         output.cell_a, output.cell_b, output.cell_c, \
         output.cell_alpha, output.cell_beta, output.cell_gamma = unit_cells
 
-    except KeyError, ke:
+    except KeyError as ke:
         EDVerbose.ERROR('Some parameters could not be found!')
         EDVerbose.DEBUG('Those found were: %s' % parsed)
         raise ValueError('Some parameters missing')
@@ -309,7 +306,7 @@ def _extract_completeness_entries(lines, output):
             completeness_entry.res = XSDataDouble(float(line[res_start:res_end]))
 
         # Extract values and store them in the data model
-        for (name, (start, end)) in offsets.iteritems():
+        for (name, (start, end)) in offsets.items():
             value = float(line[start:end])
             setattr(completeness_entry, name, XSDataDouble(value))
 

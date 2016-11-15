@@ -5,7 +5,7 @@
 #    Copyright (C) 2011-2013 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -27,15 +27,15 @@ __author__ = "Olof Svensson"
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20130322"
+__date__ = "20161109"
 __status__ = "production"
 
-import os, datetime
+import os
 
-from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-EDFactoryPluginStatic.loadModule("EDInstallJurkoSuds94664ddd46a6")
+from EDPluginISPyBv1_4 import EDPluginISPyBv1_4
+
 from suds.client import Client
 from suds.transport.http import HttpAuthenticated
 from suds.sax.date import DateTime
@@ -46,7 +46,7 @@ from XSDataISPyBv1_4 import XSDataInputISPyBSetDataCollectionPosition
 from XSDataISPyBv1_4 import XSDataResultISPyBSetDataCollectionPosition
 
 
-class EDPluginISPyBSetDataCollectionPositionv1_4(EDPluginExec):
+class EDPluginISPyBSetDataCollectionPositionv1_4(EDPluginISPyBv1_4):
     """
     Plugin to store sample position (for grid scans)
     """
@@ -55,63 +55,48 @@ class EDPluginISPyBSetDataCollectionPositionv1_4(EDPluginExec):
         """
         Sets default values for dbserver parameters 
         """
-        EDPluginExec.__init__(self)
+        EDPluginISPyBv1_4.__init__(self)
         self.setXSDataInputClass(XSDataInputISPyBSetDataCollectionPosition)
-        self.strUserName = None
-        self.strPassWord = None
-        self.strToolsForCollectionWebServiceWsdl = None
-        self.iDataCollectionId  = None
-        
-    
+        self.iDataCollectionId = None
+
+
     def configure(self):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
         """
-        EDPluginExec.configure(self)
-        self.strUserName = str(self.config.get("userName"))
-        if self.strUserName is None:
-            self.ERROR("EDPluginISPyBSetDataCollectionPositionv1_4.configure: No user name found in configuration!")
-            self.setFailure()
-        self.strPassWord = str(self.config.get("passWord"))
-        if self.strPassWord is None:
-            self.ERROR("EDPluginISPyBSetDataCollectionPositionv1_4.configure: No pass word found in configuration!")
-            self.setFailure()
-        self.strToolsForCollectionWebServiceWsdl = self.config.get("toolsForCollectionWebServiceWsdl")
-        if self.strToolsForCollectionWebServiceWsdl is None:
-            self.ERROR("EDPluginISPyBSetDataCollectionPositionv1_4.configure: No toolsForCollectionWebServiceWsdl found in configuration!")
-            self.setFailure()
-                
+        EDPluginISPyBv1_4.configure(self, _bRequireToolsForCollectionWebServiceWsdl=True)
+
 
     def process(self, _edObject=None):
         """
         Uses ToolsForCollectionWebService for storing the workflow status
         """
-        EDPluginExec.process(self)
+        EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBSetDataCollectionPositionv1_4.process")
         # Get the workflow ID and status
-        strImagePath        = self.dataInput.fileName.path.value
+        strImagePath = self.dataInput.fileName.path.value
         xsDataStartPosition = self.dataInput.startPosition
-        xsDataEndPosition   = self.dataInput.endPosition
+        xsDataEndPosition = self.dataInput.endPosition
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
         clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
         startMotorPosition3VO = self.createMotorPosition3VO(clientToolsForCollectionWebService, xsDataStartPosition)
         if xsDataEndPosition is not None:
-            endMotorPosition3VO   = self.createMotorPosition3VO(clientToolsForCollectionWebService, xsDataEndPosition)
+            endMotorPosition3VO = self.createMotorPosition3VO(clientToolsForCollectionWebService, xsDataEndPosition)
         else:
             endMotorPosition3VO = None
         self.iDataCollectionId = clientToolsForCollectionWebService.service.setDataCollectionPosition(
-                                    fileLocation = os.path.dirname(strImagePath), \
-                                    fileName = os.path.basename(strImagePath), \
-                                    startPosition = startMotorPosition3VO, \
-                                    endPosition = endMotorPosition3VO)
+                                    fileLocation=os.path.dirname(strImagePath), \
+                                    fileName=os.path.basename(strImagePath), \
+                                    startPosition=startMotorPosition3VO, \
+                                    endPosition=endMotorPosition3VO)
         self.DEBUG("EDPluginISPyBSetDataCollectionPositionv1_4.process: DataCollectionId=%r" % self.iDataCollectionId)
-            
-             
+
+
 
 
 
     def finallyProcess(self, _edObject=None):
-        EDPluginExec.finallyProcess(self)
+        EDPluginISPyBv1_4.finallyProcess(self)
         self.DEBUG("EDPluginISPyBSetDataCollectionPositionv1_4.finallyProcess")
         xsDataResultISPyBSetDataCollectionPosition = XSDataResultISPyBSetDataCollectionPosition()
         if self.iDataCollectionId is not None:
@@ -123,12 +108,12 @@ class EDPluginISPyBSetDataCollectionPositionv1_4(EDPluginExec):
         position3VO = _clientToolsForCollectionWebService.factory.create('motorPosition3VO')
         position3VO.gridIndexY = _xsDataPosition.gridIndexY.value
         position3VO.gridIndexZ = _xsDataPosition.gridIndexZ.value
-        position3VO.kappa      = _xsDataPosition.kappa.value
-        position3VO.omega      = _xsDataPosition.omega.value
-        position3VO.phi        = _xsDataPosition.phi.value
-        position3VO.phiX       = _xsDataPosition.phiX.value
-        position3VO.phiY       = _xsDataPosition.phiY.value
-        position3VO.phiZ       = _xsDataPosition.phiZ.value
-        position3VO.sampX      = _xsDataPosition.sampX.value
-        position3VO.sampY      = _xsDataPosition.sampY.value
+        position3VO.kappa = _xsDataPosition.kappa.value
+        position3VO.omega = _xsDataPosition.omega.value
+        position3VO.phi = _xsDataPosition.phi.value
+        position3VO.phiX = _xsDataPosition.phiX.value
+        position3VO.phiY = _xsDataPosition.phiY.value
+        position3VO.phiZ = _xsDataPosition.phiZ.value
+        position3VO.sampX = _xsDataPosition.sampX.value
+        position3VO.sampY = _xsDataPosition.sampY.value
         return position3VO

@@ -26,15 +26,15 @@ __author__ = "Olof Svensson"
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20141006"
+__date__ = "20161109"
 __status__ = "production"
 
-import os, datetime
+import os
 
-from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-EDFactoryPluginStatic.loadModule("EDInstallJurkoSuds94664ddd46a6")
+from EDPluginISPyBv1_4 import EDPluginISPyBv1_4
+
 from suds.client import Client
 from suds.transport.http import HttpAuthenticated
 from suds.sax.date import DateTime
@@ -46,7 +46,7 @@ from XSDataISPyBv1_4 import XSDataInputUpdateSnapshots
 from XSDataISPyBv1_4 import XSDataResultUpdateSnapshots
 from XSDataISPyBv1_4 import XSDataISPyBDataCollection
 
-class EDPluginISPyBUpdateSnapshotsv1_4(EDPluginExec):
+class EDPluginISPyBUpdateSnapshotsv1_4(EDPluginISPyBv1_4):
     """
     Plugin to update a data collection entry in the ISPyB data base
     """
@@ -55,38 +55,23 @@ class EDPluginISPyBUpdateSnapshotsv1_4(EDPluginExec):
         """
         Sets default values for dbserver parameters 
         """
-        EDPluginExec.__init__(self)
+        EDPluginISPyBv1_4.__init__(self)
         self.setXSDataInputClass(XSDataInputUpdateSnapshots)
         self.setDataOutput(XSDataResultUpdateSnapshots())
-        self.strUserName = None
-        self.strPassWord = None
-        self.strToolsForCollectionWebServiceWsdl = None
         self.dataCollectionId = None
 
     def configure(self):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
         """
-        EDPluginExec.configure(self)
-        self.strUserName = str(self.config.get("userName"))
-        if self.strUserName is None:
-            self.ERROR("EDPluginISPyBRetrieveDataCollectionv1_4.configure: No user name found in configuration!")
-            self.setFailure()
-        self.strPassWord = str(self.config.get("passWord"))
-        if self.strPassWord is None:
-            self.ERROR("EDPluginISPyBRetrieveDataCollectionv1_4.configure: No pass word found in configuration!")
-            self.setFailure()
-        self.strToolsForCollectionWebServiceWsdl = self.config.get("toolsForCollectionWebServiceWsdl")
-        if self.strToolsForCollectionWebServiceWsdl is None:
-            self.ERROR("EDPluginISPyBRetrieveDataCollectionv1_4.configure: No toolsForCollectionWebService found in configuration!")
-            self.setFailure()
+        EDPluginISPyBv1_4.configure(self, _bRequireToolsForCollectionWebServiceWsdl=True)
 
 
     def process(self, _edObject=None):
         """
         Upload the new content of data collection into ISPyB
         """
-        EDPluginExec.process(self)
+        EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBUpdateSnapshotsv1_4.process")
 
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
@@ -121,28 +106,11 @@ class EDPluginISPyBUpdateSnapshotsv1_4(EDPluginExec):
 
 
     def finallyProcess(self, _edObject=None):
-        EDPluginExec.finallyProcess(self)
+        EDPluginISPyBv1_4.finallyProcess(self)
         self.DEBUG("EDPluginISPyBUpdateSnapshotsv1_4.finallyProcess")
         if self.dataCollectionId is not None:
             self.dataOutput.dataCollectionId = XSDataInteger(self.dataCollectionId)
 
 
-    def getValue(self, _oValue, _oDefaultValue=None):
-        if _oValue is None:
-            oReturnValue = _oDefaultValue
-        else:
-            oReturnValue = _oValue
-        return oReturnValue
-
-
-    def getDateValue(self, _strValue, _strFormat, _oDefaultValue):
-        if _strValue is None:
-            oReturnValue = _oDefaultValue
-        else:
-            try:
-                oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
-            except:
-                oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
-        return oReturnValue
 
 

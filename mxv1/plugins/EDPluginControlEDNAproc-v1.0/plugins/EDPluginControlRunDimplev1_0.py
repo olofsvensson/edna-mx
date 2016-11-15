@@ -204,7 +204,7 @@ class EDPluginControlRunDimplev1_0(EDPluginControl):
     def createHtmlPage(self, strImagePrefix, xsDataResultDimple, strHtmlPath, strProposal, strSessionDate, strBeamline):
         """Create an HTML page with the results"""
         if not os.path.exists(strHtmlPath):
-            os.makedirs(strHtmlPath, 0755)
+            os.makedirs(strHtmlPath, 0o755)
         strSample = "_".join(strImagePrefix.split("_")[0:-1])
         strHtmlFileName = "ep_%s_index.html" % strImagePrefix
         strPath = os.path.join(strHtmlPath, strHtmlFileName)

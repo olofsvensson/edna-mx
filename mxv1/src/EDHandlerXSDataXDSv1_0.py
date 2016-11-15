@@ -429,7 +429,7 @@ class EDHandlerXSDataXDSv1_0:
             # This is a temporary solution for the exception problem pointed out in bug #43.
             # Instead of raising an exception with a known type we send the error message as a string.
             pyStrErrorMessage = "EDHandlerXSDataXDSv1_0.getXSDataXDSDetector: Unknown detector type : " + strDetectorType
-            raise Exception, pyStrErrorMessage
+            raise BaseException(pyStrErrorMessage)
 
         xsDataXDSDetector.setNx(_xsDataDetector.getNumberPixelX())
         xsDataXDSDetector.setNy(_xsDataDetector.getNumberPixelY())

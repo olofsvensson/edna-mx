@@ -27,15 +27,15 @@ __author__ = "Olof Svensson"
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20140324"
+__date__ = "20161109"
 __status__ = "production"
 
 import pprint
 
-from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-EDFactoryPluginStatic.loadModule("EDInstallJurkoSuds94664ddd46a6")
+from EDPluginISPyBv1_4 import EDPluginISPyBv1_4
+
 from suds.client import Client
 from suds.transport.http import HttpAuthenticated
 from suds.sax.date import DateTime
@@ -50,7 +50,7 @@ from XSDataISPyBv1_4 import XSDataInputGetSampleInformation
 from XSDataISPyBv1_4 import XSDataResultGetSampleInformation
 
 
-class EDPluginISPyBGetSampleInformationv1_4(EDPluginExec):
+class EDPluginISPyBGetSampleInformationv1_4(EDPluginISPyBv1_4):
     """
     Plugin to store workflow status in an ISPyB database using web services
     """
@@ -59,11 +59,8 @@ class EDPluginISPyBGetSampleInformationv1_4(EDPluginExec):
         """
         Init plugin
         """
-        EDPluginExec.__init__(self)
+        EDPluginISPyBv1_4.__init__(self)
         self.setXSDataInputClass(XSDataInputGetSampleInformation)
-        self.strUserName = None
-        self.strPassWord = None
-        self.strToolsForBLSampleWebServiceWsdl = None
         self.xsDataResultISPyBGetSampleInformation = XSDataResultGetSampleInformation()
         self.setDataOutput(self.xsDataResultISPyBGetSampleInformation)
 
@@ -72,51 +69,14 @@ class EDPluginISPyBGetSampleInformationv1_4(EDPluginExec):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
         """
-        EDPluginExec.configure(self)
-        self.strUserName = str(self.config.get("userName"))
-        if self.strUserName is None:
-            self.ERROR("EDPluginISPyBGetSampleInformationv1_4.configure: No user name found in configuration!")
-            self.setFailure()
-        self.strPassWord = str(self.config.get("passWord"))
-        if self.strPassWord is None:
-            self.ERROR("EDPluginISPyBGetSampleInformationv1_4.configure: No pass word found in configuration!")
-            self.setFailure()
-        self.strToolsForBLSampleWebServiceWsdl = self.config.get("toolsForBLSampleWebServiceWsdl")
-        if self.strToolsForBLSampleWebServiceWsdl is None:
-            self.ERROR("EDPluginISPyBGetSampleInformationv1_4.configure: No toolsForBLSampleWebServiceWsdl found in configuration!")
-            self.setFailure()
+        EDPluginISPyBv1_4.configure(self, _bRequireToolsForBLSampleWebServiceWsdl=True)
 
-    def getXSValue(self, _xsData, _oDefaultValue=None, _iMaxStringLength=255):
-        if _xsData is None:
-            oReturnValue = _oDefaultValue
-        else:
-            oReturnValue = _xsData.value
-        if type(oReturnValue) == bool:
-            if oReturnValue:
-                oReturnValue = "1"
-            else:
-                oReturnValue = "0"
-        elif (type(oReturnValue) == str) or (type(oReturnValue) == unicode):
-            if len(oReturnValue) > _iMaxStringLength:
-                strOldString = oReturnValue
-                oReturnValue = oReturnValue[0:_iMaxStringLength - 3] + "..."
-                self.warning("String truncated to %d characters for ISPyB! Original string: %s" % (_iMaxStringLength, strOldString))
-                self.warning("Truncated string: %s" % oReturnValue)
-        return oReturnValue
-
-
-    def getDateValue(self, _strValue, _strFormat, _oDefaultValue):
-        if _strValue is None or _strValue == "None":
-            oReturnValue = _oDefaultValue
-        else:
-            oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
-        return oReturnValue
 
     def process(self, _edObject=None):
         """
         Uses ToolsForCollectionWebService for storing the workflow status
         """
-        EDPluginExec.process(self)
+        EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBGetSampleInformationv1_4.process")
         # First get the image ID
         xsDataInputGetSampleInformation = self.getDataInput()
@@ -234,6 +194,6 @@ class EDPluginISPyBGetSampleInformationv1_4(EDPluginExec):
 
 
     def finallyProcess(self, _edObject=None):
-        EDPluginExec.finallyProcess(self)
+        EDPluginISPyBv1_4.finallyProcess(self)
         self.DEBUG("EDPluginISPyBGetSampleInformationv1_4.finallyProcess")
         self.setDataOutput(self.xsDataResultISPyBGetSampleInformation)

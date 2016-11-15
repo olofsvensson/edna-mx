@@ -27,15 +27,16 @@ __author__ = "Olof Svensson"
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20120712"
+__date__ = "20161109"
 __status__ = "production"
 
-import os, datetime
+import os
+import datetime
 
-from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-EDFactoryPluginStatic.loadModule("EDInstallJurkoSuds94664ddd46a6")
+from EDPluginISPyBv1_4 import EDPluginISPyBv1_4
+
 from suds.client import Client
 from suds.transport.http import HttpAuthenticated
 from suds.sax.date import DateTime
@@ -46,7 +47,7 @@ from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
 from XSDataISPyBv1_4 import XSDataResultStoreAutoProc
 
 
-class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
+class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
     """
     Plugin to store results in an ISPyB database using web services
     """
@@ -55,7 +56,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
         """
         Sets default values for dbserver parameters 
         """
-        EDPluginExec.__init__(self)
+        EDPluginISPyBv1_4.__init__(self)
         self.setXSDataInputClass(XSDataInputStoreAutoProc)
         self.strUserName = None
         self.strPassWord = None
@@ -71,26 +72,15 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
         """
-        EDPluginExec.configure(self)
-        self.strUserName = str(self.config.get("userName"))
-        if self.strUserName is None:
-            self.ERROR("EDPluginISPyBStoreAutoProcv1_4.configure: No user name found in configuration!")
-            self.setFailure()
-        self.strPassWord = str(self.config.get("passWord"))
-        if self.strPassWord is None:
-            self.ERROR("EDPluginISPyBStoreAutoProcv1_4.configure: No pass word found in configuration!")
-            self.setFailure()
-        self.strToolsForAutoprocessingWebServiceWsdl = self.config.get("toolsForAutoprocessingWebServiceWsdl")
-        if self.strToolsForAutoprocessingWebServiceWsdl is None:
-            self.ERROR("EDPluginISPyBStoreAutoProcv1_4.configure: No toolsForAutoprocessingWebServiceWsdl found in configuration!")
-            self.setFailure()
+        EDPluginISPyBv1_4.configure(self,
+                                    _bRequireToolsForAutoprocessingWebServiceWsdl=True)
 
 
     def process(self, _edObject=None):
         """
         Stores the contents of the AutoProcContainer in ISPyB.
         """
-        EDPluginExec.process(self)
+        EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBStoreAutoProcv1_4.process")
         xsDataInputStoreAutoProc = self.getDataInput()
         xsDataAutoProcContainer = xsDataInputStoreAutoProc.getAutoProcContainer()
@@ -151,7 +141,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
 
 
     def finallyProcess(self, _edObject=None):
-        EDPluginExec.finallyProcess(self)
+        EDPluginISPyBv1_4.finallyProcess(self)
         self.DEBUG("EDPluginISPyBStoreAutoProcv1_4.finallyProcess")
         xsDataResultStoreAutoProc = XSDataResultStoreAutoProc()
         if self.iAutoProcId is not None:
@@ -162,32 +152,6 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
             xsDataResultStoreAutoProc.setAutoProcProgramId(XSDataInteger(self.iAutoProcProgramId))
         self.setDataOutput(xsDataResultStoreAutoProc)
 
-
-    def getXSValue(self, _xsData, _oDefaultValue=None, _iMaxStringLength=255):
-        if _xsData is None:
-            oReturnValue = _oDefaultValue
-        else:
-            oReturnValue = _xsData
-        if type(oReturnValue) == bool:
-            if oReturnValue:
-                oReturnValue = "1"
-            else:
-                oReturnValue = "0"
-        elif (type(oReturnValue) == str) or (type(oReturnValue) == unicode):
-            if len(oReturnValue) > _iMaxStringLength:
-                strOldString = oReturnValue
-                oReturnValue = oReturnValue[0:_iMaxStringLength - 3] + "..."
-                self.warning("String truncated to %d characters for ISPyB! Original string (%d characters): %s" % (_iMaxStringLength, len(strOldString), strOldString))
-                self.warning("Truncated string: %s" % oReturnValue)
-        return oReturnValue
-
-
-    def getDateValue(self, _strValue, _strFormat, _oDefaultValue):
-        if _strValue is None or _strValue == "None":
-            oReturnValue = _oDefaultValue
-        else:
-            oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
-        return oReturnValue
 
 
     def storeOrUpdateAutoProcProgram(self, _clientToolsForAutoprocessingWebService, _xsDataAutoProcProgram):

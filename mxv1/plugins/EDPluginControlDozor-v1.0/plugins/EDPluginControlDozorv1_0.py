@@ -353,7 +353,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             dozorCsvResultPath = os.path.join(resultsDirectory, dozorCsvFileName)
             try:
                 if not os.path.exists(resultsDirectory):
-                    os.makedirs(resultsDirectory, 0755)
+                    os.makedirs(resultsDirectory, 0o755)
                 shutil.copy(os.path.join(self.getWorkingDirectory(), dozorPlotFileName), dozorPlotResultPath)
                 shutil.copy(os.path.join(self.getWorkingDirectory(), dozorCsvFileName), dozorCsvResultPath)
             except:
@@ -364,7 +364,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 dozorPlotPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorPlotResultPath)
                 dozorCsvPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorCsvResultPath)
                 if not os.path.exists(os.path.dirname(dozorPlotPyarchPath)):
-                    os.makedirs(os.path.dirname(dozorPlotPyarchPath), 0755)
+                    os.makedirs(os.path.dirname(dozorPlotPyarchPath), 0o755)
                 shutil.copy(dozorPlotResultPath, dozorPlotPyarchPath)
                 shutil.copy(dozorCsvResultPath, dozorCsvPyarchPath)
                 # Upload to data collection

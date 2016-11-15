@@ -84,9 +84,9 @@ if __name__ == '__main__':
     else:
         strTmpUser = os.path.join("/tmp", os.environ["USER"])
         if not os.path.exists(strTmpUser):
-            os.mkdir(strTmpUser, 0755)
+            os.mkdir(strTmpUser, 0o755)
         strPathToTempDir = tempfile.mkdtemp(prefix="thumbnail-{0}-".format(strPrefix), dir=strTmpUser)
-    os.chmod(strPathToTempDir, 0755)
+    os.chmod(strPathToTempDir, 0o755)
     os.chdir(strPathToTempDir)
     EDVerbose.setLogFileName(os.path.join(strPathToTempDir, "id29_create_thumbnail.log"))
     strImageDirectory = sys.argv[1]

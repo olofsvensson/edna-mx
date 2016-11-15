@@ -195,13 +195,13 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         # Make results directory
         self.resultsDirectory = os.path.join(processDirectory, "results")
         if not os.path.exists(self.resultsDirectory):
-            os.makedirs(self.resultsDirectory, 0755)
+            os.makedirs(self.resultsDirectory, 0o755)
 
         # Create path to pyarch
         self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
         self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
         if self.pyarchDirectory is not None and not os.path.exists(self.pyarchDirectory):
-            os.makedirs(self.pyarchDirectory, 0755)
+            os.makedirs(self.pyarchDirectory, 0o755)
 
         # Determine pyarch prefix
         listPrefix = template.split("_")

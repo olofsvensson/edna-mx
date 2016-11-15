@@ -41,7 +41,7 @@ class EDTestCasePluginExecuteControlImageQualityIndicatorsv1_5_waitFile(EDTestCa
     def __init__(self, _edStringTestName=None):
         EDTestCasePluginExecute.__init__(self, "EDPluginControlImageQualityIndicatorsv1_5")
         self.strTmpDir = tempfile.mkdtemp(prefix="EDPluginControlImageQualityIndicatorsv1_5_", dir=EDUtilsPath.getEdnaTestDataImagesPath())
-        os.chmod(self.strTmpDir, 0755)
+        os.chmod(self.strTmpDir, 0o755)
         if "EDNA_TMP_DIR" in os.environ.keys():
             self.strTmpDirOrig = os.environ["EDNA_TMP_DIR"]
         else:

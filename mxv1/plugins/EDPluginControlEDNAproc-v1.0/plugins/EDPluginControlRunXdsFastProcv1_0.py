@@ -34,6 +34,7 @@ import shutil
 from EDPluginControl import EDPluginControl
 from EDVerbose import EDVerbose
 from EDFactoryPlugin import edFactoryPlugin
+from EDUtilsPath import EDUtilsPath
 
 from XSDataCommon import XSDataFile, XSDataString
 
@@ -99,7 +100,7 @@ class EDPluginControlRunXdsFastProcv1_0(EDPluginControl):
         # spot_range so it does not get past the last image number, so
         # we use a default value that cannot be a constraint in case
         # we cannot find it in the xds input file
-        self.end_image_no = sys.maxint
+        self.end_image_no = sys.maxsize
 
         data_range = cfg.get('DATA_RANGE=')
         if data_range is not None:

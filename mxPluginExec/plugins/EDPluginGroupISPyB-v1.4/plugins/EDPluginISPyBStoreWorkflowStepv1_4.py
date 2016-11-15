@@ -27,17 +27,17 @@ __author__ = "Olof Svensson"
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__date__ = "20160909"
+__date__ = "20161109"
 __status__ = "production"
 
 import os
 import json
 import datetime
 
-from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
-EDFactoryPluginStatic.loadModule("EDInstallJurkoSuds94664ddd46a6")
+from EDPluginISPyBv1_4 import EDPluginISPyBv1_4
+
 from suds.client import Client
 from suds.transport.http import HttpAuthenticated
 from suds.sax.date import DateTime
@@ -48,7 +48,7 @@ from XSDataISPyBv1_4 import XSDataInputISPyBStoreWorkflowStep
 from XSDataISPyBv1_4 import XSDataResultISPyBStoreWorkflowStep
 
 
-class EDPluginISPyBStoreWorkflowStepv1_4(EDPluginExec):
+class EDPluginISPyBStoreWorkflowStepv1_4(EDPluginISPyBv1_4):
     """
     Plugin to store workflow step in an ISPyB database using web services
     """
@@ -57,11 +57,8 @@ class EDPluginISPyBStoreWorkflowStepv1_4(EDPluginExec):
         """
         Sets default values for dbserver parameters 
         """
-        EDPluginExec.__init__(self)
+        EDPluginISPyBv1_4.__init__(self)
         self.setXSDataInputClass(XSDataInputISPyBStoreWorkflowStep)
-        self.strUserName = None
-        self.strPassWord = None
-        self.strToolsForCollectionWebServiceWsdl = None
         self.iWorkflowStepId = None
 
 
@@ -69,51 +66,15 @@ class EDPluginISPyBStoreWorkflowStepv1_4(EDPluginExec):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
         """
-        EDPluginExec.configure(self)
-        self.strUserName = str(self.config.get("userName"))
-        if self.strUserName is None:
-            self.ERROR("EDPluginISPyBStoreWorkflowStepv1_4.configure: No user name found in configuration!")
-            self.setFailure()
-        self.strPassWord = str(self.config.get("passWord"))
-        if self.strPassWord is None:
-            self.ERROR("EDPluginISPyBStoreWorkflowStepv1_4.configure: No pass word found in configuration!")
-            self.setFailure()
-        self.strToolsForCollectionWebServiceWsdl = self.config.get("toolsForCollectionWebServiceWsdl")
-        if self.strToolsForCollectionWebServiceWsdl is None:
-            self.ERROR("EDPluginISPyBStoreWorkflowStepv1_4.configure: No toolsForCollectionWebServiceWsdl found in configuration!")
-            self.setFailure()
-
-    def getXSValue(self, _xsData, _oDefaultValue=None, _iMaxStringLength=255):
-        if _xsData is None:
-            oReturnValue = _oDefaultValue
-        else:
-            oReturnValue = _xsData.value
-        if type(oReturnValue) == bool:
-            if oReturnValue:
-                oReturnValue = "1"
-            else:
-                oReturnValue = "0"
-        elif (type(oReturnValue) == str) or (type(oReturnValue) == unicode):
-            if len(oReturnValue) > _iMaxStringLength:
-                strOldString = oReturnValue
-                oReturnValue = oReturnValue[0:_iMaxStringLength - 3] + "..."
-                self.warning("String truncated to %d characters for ISPyB! Original string: %s" % (_iMaxStringLength, strOldString))
-                self.warning("Truncated string: %s" % oReturnValue)
-        return oReturnValue
+        EDPluginISPyBv1_4.configure(self, _bRequireToolsForCollectionWebServiceWsdl=True)
 
 
-    def getDateValue(self, _strValue, _strFormat, _oDefaultValue):
-        if _strValue is None or _strValue == "None":
-            oReturnValue = _oDefaultValue
-        else:
-            oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
-        return oReturnValue
 
     def process(self, _edObject=None):
         """
         Uses ToolsForCollectionWebService for storing the workflow status
         """
-        EDPluginExec.process(self)
+        EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBStoreWorkflowStepv1_4.process")
         # First get the image ID
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
@@ -141,7 +102,7 @@ class EDPluginISPyBStoreWorkflowStepv1_4(EDPluginExec):
 
 
     def finallyProcess(self, _edObject=None):
-        EDPluginExec.finallyProcess(self)
+        EDPluginISPyBv1_4.finallyProcess(self)
         self.DEBUG("EDPluginISPyBStoreWorkflowStepv1_4.finallyProcess")
         xsDataResultISPyBStoreWorkflowStep = XSDataResultISPyBStoreWorkflowStep()
         if self.iWorkflowStepId is not None:
