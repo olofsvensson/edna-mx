@@ -59,9 +59,9 @@ class EDTestCasePluginUnitControlDozorv1_0(EDTestCasePluginUnit):
         EDAssert.equal([[1, 2, 3], [4, 5]], edPluginControlDozor.createListOfBatches(range(1, 6), 3))
         EDAssert.equal([[1, 2, 3, 4], [5]], edPluginControlDozor.createListOfBatches(range(1, 6), 4))
         EDAssert.equal([[1, 2, 3, 4, 5]], edPluginControlDozor.createListOfBatches(range(1, 6), 5))
-        EDAssert.equal([[1], [2], [4], [5], [6]], edPluginControlDozor.createListOfBatches(range(4, 7) + range(1, 3), 1))
-        EDAssert.equal([[1, 2], [4, 5], [6]], edPluginControlDozor.createListOfBatches(range(4, 7) + range(1, 3), 2))
-        EDAssert.equal([[1, 2], [4, 5, 6]], edPluginControlDozor.createListOfBatches(range(4, 7) + range(1, 3), 3))
+        EDAssert.equal([[1], [2], [4], [5], [6]], edPluginControlDozor.createListOfBatches(list(range(4, 7)) + list(range(1, 3)), 1))
+        EDAssert.equal([[1, 2], [4, 5], [6]], edPluginControlDozor.createListOfBatches(list(range(4, 7)) + list(range(1, 3)), 2))
+        EDAssert.equal([[1, 2], [4, 5, 6]], edPluginControlDozor.createListOfBatches(list(range(4, 7)) + list(range(1, 3)), 3))
 
 
     def process(self):
