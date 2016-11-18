@@ -52,7 +52,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>MXWaitFileTimeOut</name>
-					<value>120</value>
+					<value>1200</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>minImageSize</name>
