@@ -53,7 +53,7 @@ class EDPluginBackground3Dv1_0(EDPluginExecProcessScript):
     """
     This plugin runs the Background3D program written by Sasha Popov
     """
-    
+
 
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
@@ -71,7 +71,7 @@ class EDPluginBackground3Dv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginBackground3Dv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
-    
+
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginBackground3Dv1_0.preProcess")
@@ -89,7 +89,7 @@ class EDPluginBackground3Dv1_0(EDPluginExecProcessScript):
                                                         self.getScriptLogFileName()))
 
 
-    
+
     def generateCommands(self, _xsDataInputBackground3D):
         """
         This method creates the input file for background3D
@@ -132,7 +132,7 @@ class EDPluginBackground3Dv1_0(EDPluginExecProcessScript):
                                                                         os.path.basename(_xsDataInputBackground3D.nameTemplateImage.value))
             strCommandText += "end\n"
         return strCommandText
-    
+
 
     def createImageLinks(self, _xsDataInputBackground3D):
         self.addListCommandPreExecution("rm -rf %s" % (self.strImageLinkSubDirectory))
@@ -148,10 +148,10 @@ class EDPluginBackground3Dv1_0(EDPluginExecProcessScript):
                                        strImageName)
             self.addListCommandPreExecution("ln -s %s %s" % (strSourcePath, strTargetPath))
 
-        
-        
-  
-        
+
+
+
+
     def parseOutput(self, _strFileName):
         """
         This method parses the output of background3D
@@ -163,7 +163,7 @@ class EDPluginBackground3Dv1_0(EDPluginExecProcessScript):
         for strLine in listOutput:
             xsDataImageBackground3D = XSDataImageBackground3D()
             # Remove empty strings ""
-            listLine = filter(None, strLine.split(" "))
+            listLine = list(filter(None, strLine.split(" ")))
             if listLine != []:
                 xsDataImageBackground3D.number = XSDataInteger(listLine[0])
                 if listLine[1].startswith("-"):
@@ -181,7 +181,7 @@ class EDPluginBackground3Dv1_0(EDPluginExecProcessScript):
                     xsDataImageBackground3D.estimate = self.parseDouble(listLine[8])
                 xsDataResultBackground3D.addImageBackground(xsDataImageBackground3D)
         return xsDataResultBackground3D
-        
+
     def parseDouble(self, _strValue):
         returnValue = None
         try:
