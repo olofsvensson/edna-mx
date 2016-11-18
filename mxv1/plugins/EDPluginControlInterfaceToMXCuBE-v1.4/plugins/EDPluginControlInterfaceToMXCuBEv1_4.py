@@ -313,11 +313,14 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                 self.DEBUG("Best wilson pyarch path: %s " % strBestWilsonPlotPyarchPath)
                 if self.edPluginControlInterface.dataOutput.resultControlISPyB is not None:
                     xsDataInputISPyBSetBestWilsonPlotPath = XSDataInputISPyBSetBestWilsonPlotPath()
-                    xsDataInputISPyBSetBestWilsonPlotPath.dataCollectionId = self.edPluginControlInterface.dataOutput.resultControlISPyB.dataCollectionId
-                    xsDataInputISPyBSetBestWilsonPlotPath.bestWilsonPlotPath = XSDataString(strBestWilsonPlotPyarchPath)
-                    edPluginSetBestWilsonPlotPath = self.loadPlugin("EDPluginISPyBSetBestWilsonPlotPathv1_4", "ISPyBSetBestWilsonPlotPath")
-                    edPluginSetBestWilsonPlotPath.dataInput = xsDataInputISPyBSetBestWilsonPlotPath
-                    edPluginSetBestWilsonPlotPath.executeSynchronous()
+                    if self.edPluginISPyBRetrieveDataCollection is not None:
+                        if self.edPluginISPyBRetrieveDataCollection.dataOutput is not None:
+                            dataCollectionId = self.edPluginISPyBRetrieveDataCollection.dataOutput.dataCollection.dataCollectionId
+                            xsDataInputISPyBSetBestWilsonPlotPath.dataCollectionId = XSDataInteger(dataCollectionId)
+                            xsDataInputISPyBSetBestWilsonPlotPath.bestWilsonPlotPath = XSDataString(strBestWilsonPlotPyarchPath)
+                            edPluginSetBestWilsonPlotPath = self.loadPlugin("EDPluginISPyBSetBestWilsonPlotPathv1_4", "ISPyBSetBestWilsonPlotPath")
+                            edPluginSetBestWilsonPlotPath.dataInput = xsDataInputISPyBSetBestWilsonPlotPath
+                            edPluginSetBestWilsonPlotPath.executeSynchronous()
             # Only for the ESRF:
             if EDUtilsPath.isESRF():
                 # For EXI: create workflow entry with one workflow step
@@ -327,6 +330,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                 xsDataISPyBWorkflow = XSDataISPyBWorkflow()
                 xsDataISPyBWorkflow.workflowType = XSDataString("Characterisation")
                 xsDataISPyBWorkflow.workflowTitle = XSDataString("Characterisation")
+                xsDataISPyBWorkflow.status = XSDataString("Success")
                 xsDataInputISPyBStoreWorkflow = XSDataInputISPyBStoreWorkflow()
                 xsDataInputISPyBStoreWorkflow.workflow = xsDataISPyBWorkflow
                 self.edPluginStoreWorkflow.dataInput = xsDataInputISPyBStoreWorkflow
