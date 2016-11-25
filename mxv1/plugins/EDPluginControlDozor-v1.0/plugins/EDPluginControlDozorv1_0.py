@@ -35,6 +35,7 @@ from EDUtilsPath import EDUtilsPath
 
 from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
 from EDFactoryPlugin import edFactoryPlugin
+from EDUtilsParallel import EDUtilsParallel
 
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataDouble
@@ -61,6 +62,7 @@ from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 
 edFactoryPlugin.loadModule('XSDataH5ToCBFv1_1')
 from XSDataH5ToCBFv1_1 import XSDataInputH5ToCBF
+
 
 
 class EDPluginControlDozorv1_0(EDPluginControl):
@@ -107,6 +109,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
     def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlDozorv1_0.process")
+        EDUtilsParallel.initializeNbThread()
         xsDataResultControlDozor = XSDataResultControlDozor()
         # Check if connection to ISPyB needed
         if self.dataInput.dataCollectionId is not None:
@@ -134,7 +137,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         if dictImage[listAllBatches[0][0]].path.value.endswith("h5"):
             # Convert HDF5 images to CBF
             self.cbfTempDir = tempfile.mkdtemp(prefix="CbfTemp_")
-            dictImage, self.hasHdf5Prefix = self.convertToCBF(dictImage)
+            dictImage, self.hasHdf5Prefix = self.convertToCBF(dictImage, listAllBatches)
+        listPluginDozor = []
         for listBatch in listAllBatches:
             # Read the header from the first image in the batch
             xsDataFile = dictImage[listBatch[0]]
@@ -179,7 +183,10 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             xsDataInputDozor.radiationDamage = self.dataInput.radiationDamage
             edPluginDozor = self.loadPlugin(self.strEDPluginDozorName, "Dozor_%05d" % subWedge.image[0].number.value)
             edPluginDozor.dataInput = xsDataInputDozor
-            edPluginDozor.executeSynchronous()
+            edPluginDozor.execute()
+            listPluginDozor.append(edPluginDozor)
+        for edPluginDozor in listPluginDozor:
+            edPluginDozor.synchronize()
             indexImage = 0
             for xsDataResultDozor in edPluginDozor.dataOutput.imageDozor:
                 xsDataControlImageDozor = XSDataControlImageDozor()
@@ -457,7 +464,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             listAllBatches.append(listImagesInBatch)
         return listAllBatches
 
-    def convertToCBF(self, dictImage):
+    def convertToCBF(self, dictImage, listAllBatches):
         # Find start and end image number
         startImage = None
         endImage = None
@@ -483,18 +490,24 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 edPluginH5ToCBF.executeSynchronous()
                 newDict[image] = edPluginH5ToCBF.dataOutput.outputCBFFile
         else:
-            xsDataInputH5ToCBF = XSDataInputH5ToCBF()
-            xsDataInputH5ToCBF.hdf5File = dictImage[startImage]
-            xsDataInputH5ToCBF.startImageNumber = XSDataInteger(startImage)
-            xsDataInputH5ToCBF.endImageNumber = XSDataInteger(endImage)
-            xsDataInputH5ToCBF.forcedOutputDirectory = XSDataFile(XSDataString(self.cbfTempDir))
-            edPluginH5ToCBF = self.loadPlugin("EDPluginH5ToCBFv1_1")
-            edPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
-            edPluginH5ToCBF.executeSynchronous()
-            if edPluginH5ToCBF.dataOutput is not None and edPluginH5ToCBF.dataOutput.outputCBFFileTemplate is not None:
-                outputCBFFileTemplate = edPluginH5ToCBF.dataOutput.outputCBFFileTemplate.path.value
-                outputCBFFileTemplate = outputCBFFileTemplate.replace("######", "{0:06d}")
-                for image in dictImage:
-                    newDict[image] = XSDataFile(XSDataString(outputCBFFileTemplate.format(image)))
+            listPluginH5ToCBF = []
+            for batch in listAllBatches:
+                xsDataInputH5ToCBF = XSDataInputH5ToCBF()
+                xsDataInputH5ToCBF.hdf5File = dictImage[startImage]
+                xsDataInputH5ToCBF.hdf5ImageNumber = XSDataInteger(1)
+                xsDataInputH5ToCBF.startImageNumber = XSDataInteger(batch[0])
+                xsDataInputH5ToCBF.endImageNumber = XSDataInteger(batch[-1])
+                xsDataInputH5ToCBF.forcedOutputDirectory = XSDataFile(XSDataString(self.cbfTempDir))
+                edPluginH5ToCBF = self.loadPlugin("EDPluginH5ToCBFv1_1")
+                edPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
+                edPluginH5ToCBF.execute()
+                listPluginH5ToCBF.append(edPluginH5ToCBF)
+            for edPluginH5ToCBF in listPluginH5ToCBF:
+                edPluginH5ToCBF.synchronize()
+                if edPluginH5ToCBF.dataOutput is not None and edPluginH5ToCBF.dataOutput.outputCBFFileTemplate is not None:
+                    outputCBFFileTemplate = edPluginH5ToCBF.dataOutput.outputCBFFileTemplate.path.value
+                    outputCBFFileTemplate = outputCBFFileTemplate.replace("######", "{0:06d}")
+                    for image in dictImage:
+                        newDict[image] = XSDataFile(XSDataString(outputCBFFileTemplate.format(image)))
         return newDict, hasHdf5Prefix
 

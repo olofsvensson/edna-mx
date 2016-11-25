@@ -352,7 +352,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/minicbf</value>
+					<value>/opt/pxsoft/bin/eiger2cbf</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
