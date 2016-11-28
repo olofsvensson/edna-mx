@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<XSDataInputControlDozor>
+	<batchSize>
+		<value>100</value>
+	</batchSize>
+	<wedgeNumber>
+		<value>1</value>
+	</wedgeNumber>	
+	<directory>
+	  <path>
+	    <value>/scisoft/pxsoft/data/DOZOR/id30a3/20160615/lysozyme_5_Gd/</value>
+	  </path>
+	</directory>
+	<template>
+		<value>lysozyme_Gd_4_%04d.h5</value>
+	</template>
+	<startNo>
+		<value>1</value>
+	</startNo>
+	<endNo>
+		<value>10000</value>
+	</endNo>
+</XSDataInputControlDozor>

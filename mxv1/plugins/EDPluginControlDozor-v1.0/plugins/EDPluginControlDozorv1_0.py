@@ -119,7 +119,10 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             edPluginRetrieveDataCollection.dataInput = xsDataInputRetrieveDataCollection
             edPluginRetrieveDataCollection.executeSynchronous()
             ispybDataCollection = edPluginRetrieveDataCollection.dataOutput.dataCollection
-            batchSize = ispybDataCollection.numberOfImages
+            if self.dataInput.batchSize is None:
+                batchSize = ispybDataCollection.numberOfImages
+            else:
+                batchSize = self.dataInput.batchSize.value
             if batchSize > self.maxBatchSize:
                 batchSize = self.maxBatchSize
             if abs(ispybDataCollection.overlap) > 1:
