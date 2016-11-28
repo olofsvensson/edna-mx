@@ -185,5 +185,14 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginControlDozorv1_0</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>hdf5BatchSize</name>
+					<value>100</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
 	</XSPluginList> 
 </XSConfiguration> 
