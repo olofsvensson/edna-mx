@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <XSDataInputControlDozor>
-	<batchSize>
+	<hdf5BatchSize>
 		<value>100</value>
-	</batchSize>
+	</hdf5BatchSize>
 	<wedgeNumber>
 		<value>1</value>
 	</wedgeNumber>	
@@ -18,6 +18,6 @@
 		<value>1</value>
 	</startNo>
 	<endNo>
-		<value>10000</value>
+		<value>100000</value>
 	</endNo>
 </XSDataInputControlDozor>

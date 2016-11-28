@@ -185,14 +185,5 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
-		<XSPluginItem>
-			<name>EDPluginControlDozorv1_0</name>
-			<XSParamList>
-				<XSParamItem>
-					<name>batchSize</name>
-					<value>100</value>
-				</XSParamItem>
-			</XSParamList>
-		</XSPluginItem>
 	</XSPluginList> 
 </XSConfiguration> 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Sep 5 03:50::56 2016 by EDGenerateDS.
+# Generated Mon Nov 28 10:47::24 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -1033,7 +1033,7 @@ class XSDataDozorInput(XSDataInput):
 
 
 class XSDataInputControlDozor(XSDataInput):
-    def __init__(self, configuration=None, radiationDamage=None, wedgeNumber=None, batchSize=None, endNo=None, startNo=None, template=None, directory=None, image=None, processDirectory=None, dataCollectionId=None):
+    def __init__(self, configuration=None, radiationDamage=None, wedgeNumber=None, hdf5BatchSize=None, batchSize=None, endNo=None, startNo=None, template=None, directory=None, image=None, processDirectory=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -1090,6 +1090,13 @@ class XSDataInputControlDozor(XSDataInput):
             self._batchSize = batchSize
         else:
             strMessage = "ERROR! XSDataInputControlDozor constructor argument 'batchSize' is not XSDataInteger but %s" % self._batchSize.__class__.__name__
+            raise BaseException(strMessage)
+        if hdf5BatchSize is None:
+            self._hdf5BatchSize = None
+        elif hdf5BatchSize.__class__.__name__ == "XSDataInteger":
+            self._hdf5BatchSize = hdf5BatchSize
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor constructor argument 'hdf5BatchSize' is not XSDataInteger but %s" % self._hdf5BatchSize.__class__.__name__
             raise BaseException(strMessage)
         if wedgeNumber is None:
             self._wedgeNumber = None
@@ -1222,6 +1229,18 @@ class XSDataInputControlDozor(XSDataInput):
             raise BaseException(strMessage)
     def delBatchSize(self): self._batchSize = None
     batchSize = property(getBatchSize, setBatchSize, delBatchSize, "Property for batchSize")
+    # Methods and properties for the 'hdf5BatchSize' attribute
+    def getHdf5BatchSize(self): return self._hdf5BatchSize
+    def setHdf5BatchSize(self, hdf5BatchSize):
+        if hdf5BatchSize is None:
+            self._hdf5BatchSize = None
+        elif hdf5BatchSize.__class__.__name__ == "XSDataInteger":
+            self._hdf5BatchSize = hdf5BatchSize
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor.setHdf5BatchSize argument is not XSDataInteger but %s" % hdf5BatchSize.__class__.__name__
+            raise BaseException(strMessage)
+    def delHdf5BatchSize(self): self._hdf5BatchSize = None
+    hdf5BatchSize = property(getHdf5BatchSize, setHdf5BatchSize, delHdf5BatchSize, "Property for hdf5BatchSize")
     # Methods and properties for the 'wedgeNumber' attribute
     def getWedgeNumber(self): return self._wedgeNumber
     def setWedgeNumber(self, wedgeNumber):
@@ -1270,6 +1289,8 @@ class XSDataInputControlDozor(XSDataInput):
             self.endNo.export(outfile, level, name_='endNo')
         if self._batchSize is not None:
             self.batchSize.export(outfile, level, name_='batchSize')
+        if self._hdf5BatchSize is not None:
+            self.hdf5BatchSize.export(outfile, level, name_='hdf5BatchSize')
         if self._wedgeNumber is not None:
             self.wedgeNumber.export(outfile, level, name_='wedgeNumber')
         if self._radiationDamage is not None:
@@ -1319,6 +1340,11 @@ class XSDataInputControlDozor(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setBatchSize(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'hdf5BatchSize':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setHdf5BatchSize(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'wedgeNumber':
             obj_ = XSDataInteger()

@@ -88,6 +88,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.hasOverlap = False
         self.overlap = 0.0
         self.batchSize = None
+        self.hdf5BatchSize = None
 
 
     def checkParameters(self):
@@ -100,6 +101,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
     def configure(self):
         EDPluginControl.configure(self)
         self.batchSize = self.config.get("batchSize")
+        self.hdf5BatchSize = self.config.get("hdf5BatchSize")
 
 
     def preProcess(self, _edObject=None):
@@ -139,16 +141,21 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         else:
             # No connection to ISPyB, take parameters from input
             if self.dataInput.batchSize is None:
-                batchSize = 1
+                batchSize = self.maxBatchSize
             else:
                 batchSize = self.dataInput.batchSize.value
             dictImage = self.createImageDict(self.dataInput)
         self.screen("Batch size: {0}".format(batchSize))
+        if self.dataInput.hdf5BatchSize is not None:
+            self.hdf5BatchSize = self.dataInput.hdf5BatchSize.value
+        if self.hdf5BatchSize is not None:
+            self.screen("HDF5 converter batch size: {0}".format(self.hdf5BatchSize))
         listAllBatches = self.createListOfBatches(dictImage.keys(), batchSize)
         if dictImage[listAllBatches[0][0]].path.value.endswith("h5"):
             # Convert HDF5 images to CBF
             self.cbfTempDir = tempfile.mkdtemp(prefix="CbfTemp_")
-            dictImage, self.hasHdf5Prefix = self.convertToCBF(dictImage, listAllBatches)
+            listHdf5Batches = self.createListOfBatches(dictImage.keys(), self.hdf5BatchSize)
+            dictImage, self.hasHdf5Prefix = self.convertToCBF(dictImage, listHdf5Batches)
         for listBatch in listAllBatches:
             # Read the header from the first image in the batch
             xsDataFile = dictImage[listBatch[0]]

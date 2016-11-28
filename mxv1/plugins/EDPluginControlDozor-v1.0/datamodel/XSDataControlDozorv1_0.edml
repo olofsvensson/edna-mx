@@ -55,6 +55,7 @@ complex type XSDataInputControlDozor extends XSDataInput {
 	startNo : XSDataInteger optional
 	endNo : XSDataInteger optional
 	batchSize : XSDataInteger optional
+	hdf5BatchSize : XSDataInteger optional
 	wedgeNumber : XSDataInteger optional
 	radiationDamage : XSDataBoolean optional
 }
