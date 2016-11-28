@@ -149,7 +149,6 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             # Convert HDF5 images to CBF
             self.cbfTempDir = tempfile.mkdtemp(prefix="CbfTemp_")
             dictImage, self.hasHdf5Prefix = self.convertToCBF(dictImage, listAllBatches)
-        listPluginDozor = []
         for listBatch in listAllBatches:
             # Read the header from the first image in the batch
             xsDataFile = dictImage[listBatch[0]]
@@ -195,8 +194,6 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             edPluginDozor = self.loadPlugin(self.strEDPluginDozorName, "Dozor_%05d" % subWedge.image[0].number.value)
             edPluginDozor.dataInput = xsDataInputDozor
             edPluginDozor.execute()
-            listPluginDozor.append(edPluginDozor)
-        for edPluginDozor in listPluginDozor:
             edPluginDozor.synchronize()
             indexImage = 0
             for xsDataResultDozor in edPluginDozor.dataOutput.imageDozor:
