@@ -87,6 +87,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.cbfTempDir = None
         self.hasOverlap = False
         self.overlap = 0.0
+        self.batchSize = None
 
 
     def checkParameters(self):
@@ -96,12 +97,18 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.DEBUG("EDPluginControlDozorv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
+    def configure(self):
+        EDPluginControl.configure(self)
+        self.batchSize = self.config.get("batchSize")
+
 
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlDozorv1_0.preProcess")
         self.edPluginControlReadImageHeader = self.loadPlugin(self.strEDPluginControlReadImageHeaderName, "SubWedgeAssemble")
         self.edPluginDozor = self.loadPlugin(self.strEDPluginDozorName, "Dozor")
+        if self.dataInput.batchSize is not None:
+            self.batchSize = self.dataInput.batchSize.value
 
 
 
@@ -119,10 +126,10 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             edPluginRetrieveDataCollection.dataInput = xsDataInputRetrieveDataCollection
             edPluginRetrieveDataCollection.executeSynchronous()
             ispybDataCollection = edPluginRetrieveDataCollection.dataOutput.dataCollection
-            if self.dataInput.batchSize is None:
+            if self.batchSize is None:
                 batchSize = ispybDataCollection.numberOfImages
             else:
-                batchSize = self.dataInput.batchSize.value
+                batchSize = self.batchSize
             if batchSize > self.maxBatchSize:
                 batchSize = self.maxBatchSize
             if abs(ispybDataCollection.overlap) > 1:
@@ -136,6 +143,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             else:
                 batchSize = self.dataInput.batchSize.value
             dictImage = self.createImageDict(self.dataInput)
+        self.screen("Batch size: {0}".format(batchSize))
         listAllBatches = self.createListOfBatches(dictImage.keys(), batchSize)
         if dictImage[listAllBatches[0][0]].path.value.endswith("h5"):
             # Convert HDF5 images to CBF
