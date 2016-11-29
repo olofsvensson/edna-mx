@@ -652,7 +652,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>600</value>
+					<value>7200</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
