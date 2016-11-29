@@ -148,11 +148,11 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.screen("Batch size: {0}".format(batchSize))
         if self.dataInput.hdf5BatchSize is not None:
             self.hdf5BatchSize = self.dataInput.hdf5BatchSize.value
-        if self.hdf5BatchSize is not None:
-            self.screen("HDF5 converter batch size: {0}".format(self.hdf5BatchSize))
         listAllBatches = self.createListOfBatches(dictImage.keys(), batchSize)
         if dictImage[listAllBatches[0][0]].path.value.endswith("h5"):
             # Convert HDF5 images to CBF
+            if self.hdf5BatchSize is not None:
+                self.screen("HDF5 converter batch size: {0}".format(self.hdf5BatchSize))
             self.cbfTempDir = tempfile.mkdtemp(prefix="CbfTemp_")
             listHdf5Batches = self.createListOfBatches(dictImage.keys(), self.hdf5BatchSize)
             dictImage, self.hasHdf5Prefix = self.convertToCBF(dictImage, listHdf5Batches)
