@@ -189,6 +189,10 @@
 			<name>EDPluginControlDozorv1_0</name>
 			<XSParamList>
 				<XSParamItem>
+					<name>timeOut</name>
+					<value>7200</value>
+				</XSParamItem>
+				<XSParamItem>
 					<name>hdf5BatchSize</name>
 					<value>100</value>
 				</XSParamItem>
