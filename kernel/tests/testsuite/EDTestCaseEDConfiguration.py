@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors: Marie-Francoise Incardona (incardon@esrf.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -19,7 +19,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -53,11 +53,11 @@ class EDTestCaseEDConfiguration(EDTestCase):
         strDataDir = "EDConfiguration"
         self.strDataPath = EDUtilsPath.mergePath(strKernelDataHome, strDataDir)
         self.strEdnaSiteOrig = EDUtilsPath.getEdnaSite()
-        
+
 
     def preProcess(self):
         """Set EDNA_SITE to TestSite for these tests"""
-        EDUtilsPath.setEdnaSite("TestSite") 
+        EDUtilsPath.setEdnaSite("TestSite")
 
 
     def testAddConfigFile(self):
@@ -68,7 +68,7 @@ class EDTestCaseEDConfiguration(EDTestCase):
         # Load the config file again, this time the cache should be used
         edConfiguration.addConfigurationFile(strPath)
 
-    
+
     def testGetXSConfigurationItem1(self):
         strPath = os.path.join(self.strDataPath, "XSConfiguration.xml")
         edConfiguration = EDConfiguration()
@@ -84,8 +84,8 @@ class EDTestCaseEDConfiguration(EDTestCase):
         EDAssert.equal(True, xsDataPluginItem2 is not None, "Obtanied imported configuration for EDPluginTestPluginFactoryImport1")
         xsDataPluginItem3 = edConfiguration.getXSConfigurationItem("EDPluginTestPluginFactoryImport2")
         EDAssert.equal(True, xsDataPluginItem3 is not None, "Obtanied imported configuration for EDPluginTestPluginFactoryImport2")
-        
-        
+
+
     def testSetXSConfigurationItem(self):
         xsPluginItem = XSPluginItem()
         xsPluginItem.name = "EDPluginTestSetConfig"
@@ -114,16 +114,16 @@ class EDTestCaseEDConfiguration(EDTestCase):
         strPathToTestConfigFile = os.path.join(self.strDataPath, "XSConfiguration_testNonStatic.xml")
         edConfiguration = EDConfiguration(strPathToTestConfigFile)
         strParam1 = edConfiguration.getStringValue("EDPluginTestPluginFactory", "testItemName")
-        EDUtilsPath.setEdnaSite("TestStaticConfiguration") 
+        EDUtilsPath.setEdnaSite("TestStaticConfiguration")
         strParam2 = EDConfigurationStatic.getStringValue("EDPluginTestPluginFactory", "testItemName")
         EDAssert.equal(False, strParam1 == strParam2, "Static config is not equal to local config")
-        
+
 
     def finallyProcess(self):
         """Restores EDNA_SITE"""
-        EDUtilsPath.setEdnaSite(self.strEdnaSiteOrig) 
+        EDUtilsPath.setEdnaSite(self.strEdnaSiteOrig)
 
-         
+
 
     def testGetPluginListSize(self):
         """
@@ -144,15 +144,16 @@ class EDTestCaseEDConfiguration(EDTestCase):
         edConfiguration = EDConfiguration()
         edConfiguration.addConfigurationFile(strPath)
         xsPluginItem = edConfiguration.getXSConfigurationItem("indexingMosflm")
-        EDAssert.equal("indexingMosflm", xsPluginItem.getName())
+        EDAssert.equal("indexingMosflm", xsPluginItem.name)
 
-        paramList = xsPluginItem.getXSParamList()
-        paramItems = paramList.getXSParamItem()
+        paramList = xsPluginItem.XSParamList
+        paramItems = paramList.XSParamItem
 
-        EDAssert.equal("workingDir", paramItems[0].getName())
-        EDAssert.equal("/path/to/working/dir", paramItems[0].getValue())
-        EDAssert.equal("number", paramItems[1].getName())
-        EDAssert.equal("3", paramItems[1].getValue())
+        for paramItem in paramItems:
+            if paramItem.name == "workingDir":
+                EDAssert.equal("/path/to/working/dir", paramItem.value)
+            elif paramItem.name == "number":
+                EDAssert.equal("3", paramItem.value)
 
 
     def testGetPluginItemError(self):
