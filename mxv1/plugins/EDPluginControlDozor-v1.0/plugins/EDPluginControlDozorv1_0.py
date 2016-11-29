@@ -323,6 +323,11 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             else:
                 minResolution = int(minResolution * 10.0) / 10.0 + 1
 
+            if maxDozorValue < 0.001 and minDozorValue < 0.001:
+                yscale = "set yrange [-0.5:0.5]\n    set ytics 1"
+            else:
+                yscale = "set autoscale  y"
+
             gnuplotFile.close()
             gnuplotScript = \
     """#
@@ -340,7 +345,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
     set y2tics
     set xrange [{minImageNumber}:{maxImageNumber}]
     set x2range [{minAngle}:{maxAngle}]
-    set autoscale  y
+    {yscale}
     set y2range [{minResolution}:{maxResolution}]
     set key below
     plot '{dozorCsvFileName}' using 1:3 title 'Number of spots' axes x1y1 with points linetype rgb 'goldenrod' pointtype 7 pointsize 1.5, \
@@ -356,6 +361,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                minResolution=minResolution,
                maxResolution=maxResolution,
                xtics=xtics,
+               yscale=yscale,
                )
             pathGnuplotScript = os.path.join(self.getWorkingDirectory(), "gnuplot.sh")
             data_file = open(pathGnuplotScript, "w")
