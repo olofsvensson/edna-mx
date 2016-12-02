@@ -40,7 +40,7 @@ class EDTestSuitePluginExecuteMXESRF(EDTestSuite):
         # From mxPluginExec:
         self.addTestSuiteFromName("EDTestSuitePluginUnitMXPluginExec")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteMXPluginExec")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteXDSv1_0.py")
+        self.addTestSuiteFromName("EDTestSuitePluginExecuteXDSv1_0")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteISPyBv1_4")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteSTACv2_0")
         self.addTestSuiteFromName("EDTestSuitePluginPlotGlev1_1")
