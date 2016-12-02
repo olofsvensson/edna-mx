@@ -4,6 +4,7 @@ import XSDataCommon.XSDataInteger
 import XSDataCommon.XSDataFile
 import XSDataCommon.XSDataInput
 import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataBoolean
 
 
 
@@ -13,6 +14,7 @@ complex type XSDataInputControlH5ToCBF extends XSDataInput {
 	hdf5File : XSDataFile
 	ispybDataCollection: XSDataISPyBDataCollection optional
 	forcedOutputDirectory : XSDataFile optional
+	forcedOutputImageNumber : XSDataInteger optional
 }
 
 complex type XSDataResultControlH5ToCBF extends XSDataResult {

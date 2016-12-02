@@ -89,6 +89,7 @@ class EDPluginControlH5ToCBFv1_1(EDPluginControl):
         xsDataInputH5ToCBF.imageNumber = self.dataInput.imageNumber
         xsDataInputH5ToCBF.hdf5ImageNumber = XSDataInteger(hdf5ImageNumber)
         xsDataInputH5ToCBF.forcedOutputDirectory = self.dataInput.forcedOutputDirectory
+        xsDataInputH5ToCBF.forcedOutputImageNumber = self.dataInput.forcedOutputImageNumber
         self.edPluginEDPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
         self.edPluginEDPluginH5ToCBF.executeSynchronous()
         if self.edPluginEDPluginH5ToCBF.dataOutput is not None:

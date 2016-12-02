@@ -34,7 +34,9 @@
 #
 
 import os
+import re
 import sys
+import glob
 import time
 import pprint
 import tempfile
@@ -81,7 +83,7 @@ timeString = time.strftime("%H%M%S", time.localtime(time.time()))
 pluginBaseDir = os.path.join("/tmp_14_days", user, dateString)
 if not os.path.exists(pluginBaseDir):
     try:
-        os.makedirs(pluginBaseDir, 0755)
+        os.makedirs(pluginBaseDir, 0o755)
     except:
         pass
 baseDir = tempfile.mkdtemp(prefix="{0}_autoPROC_".format(timeString),
@@ -101,16 +103,47 @@ for index in range(len(sys.argv)):
             index += 1
         break
 
-for imagePath in listImages:
+# Find the series number
+firstImagePath = listImages[0]
+imagePrefixAndRunNumber = EDUtilsImage.getPrefix(firstImagePath)
+imageDirectory = os.path.dirname(firstImagePath)
+listFilePath = glob.glob(os.path.join(imageDirectory, imagePrefixAndRunNumber + "*"))
+listH5Number = []
+listSerialNumber = []
+#
+# NSLS Eiger HDF 5 naming convention, e.g.:
+# ref-XtalSamp_3_4_10_master.h5       ref-XtalSamp_3_4_11_master.h5
+# ref-XtalSamp_3_4_10_data_000001.h5  ref-XtalSamp_3_4_11_data_000001.h5
+#
+p = re.compile('{0}_(?P<serialNumber>\d+)_data_(?P<imageNumber>\d+).h5'.format(imagePrefixAndRunNumber))
+firstSerialNumber = None
+for filePath in listFilePath:
+    # Regular expression, looking for <prefix>_<runnumber>_data_<serialNumber>.h5
+    fileName = os.path.basename(filePath)
+    m = p.search(fileName)
+    if m:
+        dictMatch = m.groupdict()
+        serialNumber = int(dictMatch["serialNumber"])
+        imageNumber = int(dictMatch["imageNumber"])
+        listSerialNumber.append((serialNumber, imageNumber))
+        if firstSerialNumber is None or firstSerialNumber > serialNumber:
+            firstSerialNumber = serialNumber
+
+
+
+for serialNumber, imageNumber in listSerialNumber:
+    imagePath = "{0}_{1:04d}.h5".format(imagePrefixAndRunNumber, int(imageNumber))
     xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
-    xsDataInputControlH5ToCBF.hdf5File = XSDataFile(XSDataString(imagePath))
-    xsDataInputControlH5ToCBF.imageNumber = XSDataInteger(EDUtilsImage.getImageNumber(imagePath))
+    xsDataInputControlH5ToCBF.hdf5File = XSDataFile(XSDataString(os.path.join(imageDirectory, imagePath)))
+    newImageNumber = serialNumber - firstSerialNumber + 1
+    xsDataInputControlH5ToCBF.imageNumber = XSDataInteger(1)
+    xsDataInputControlH5ToCBF.hdf5ImageNumber = XSDataInteger(serialNumber)
+    xsDataInputControlH5ToCBF.forcedOutputImageNumber = XSDataInteger(newImageNumber)
     edPlugin = EDFactoryPluginStatic.loadPlugin("EDPluginControlH5ToCBFv1_1")
     edPlugin.dataInput = xsDataInputControlH5ToCBF
     edPlugin.setBaseDirectory(pluginBaseDir)
     edPlugin.setBaseName(baseName)
     edPlugin.executeSynchronous()
-
 
 #
 # Now the edApplicationMXv1Characterisation can be imported and started

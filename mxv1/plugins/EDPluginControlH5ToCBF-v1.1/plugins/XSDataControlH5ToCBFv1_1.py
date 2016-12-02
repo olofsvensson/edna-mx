@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue Apr 26 08:56::09 2016 by EDGenerateDS.
+# Generated Fri Dec 2 09:05::27 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -1471,7 +1471,7 @@ class XSDataISPyBDataCollection(object):
 
 
 class XSDataInputControlH5ToCBF(XSDataInput):
-    def __init__(self, configuration=None, forcedOutputDirectory=None, ispybDataCollection=None, hdf5File=None, hdf5ImageNumber=None, imageNumber=None):
+    def __init__(self, configuration=None, forcedOutputImageNumber=None, forcedOutputDirectory=None, ispybDataCollection=None, hdf5File=None, hdf5ImageNumber=None, imageNumber=None):
         XSDataInput.__init__(self, configuration)
         if imageNumber is None:
             self._imageNumber = None
@@ -1507,6 +1507,13 @@ class XSDataInputControlH5ToCBF(XSDataInput):
             self._forcedOutputDirectory = forcedOutputDirectory
         else:
             strMessage = "ERROR! XSDataInputControlH5ToCBF constructor argument 'forcedOutputDirectory' is not XSDataFile but %s" % self._forcedOutputDirectory.__class__.__name__
+            raise BaseException(strMessage)
+        if forcedOutputImageNumber is None:
+            self._forcedOutputImageNumber = None
+        elif forcedOutputImageNumber.__class__.__name__ == "XSDataInteger":
+            self._forcedOutputImageNumber = forcedOutputImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputControlH5ToCBF constructor argument 'forcedOutputImageNumber' is not XSDataInteger but %s" % self._forcedOutputImageNumber.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'imageNumber' attribute
     def getImageNumber(self): return self._imageNumber
@@ -1568,6 +1575,18 @@ class XSDataInputControlH5ToCBF(XSDataInput):
             raise BaseException(strMessage)
     def delForcedOutputDirectory(self): self._forcedOutputDirectory = None
     forcedOutputDirectory = property(getForcedOutputDirectory, setForcedOutputDirectory, delForcedOutputDirectory, "Property for forcedOutputDirectory")
+    # Methods and properties for the 'forcedOutputImageNumber' attribute
+    def getForcedOutputImageNumber(self): return self._forcedOutputImageNumber
+    def setForcedOutputImageNumber(self, forcedOutputImageNumber):
+        if forcedOutputImageNumber is None:
+            self._forcedOutputImageNumber = None
+        elif forcedOutputImageNumber.__class__.__name__ == "XSDataInteger":
+            self._forcedOutputImageNumber = forcedOutputImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputControlH5ToCBF.setForcedOutputImageNumber argument is not XSDataInteger but %s" % forcedOutputImageNumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delForcedOutputImageNumber(self): self._forcedOutputImageNumber = None
+    forcedOutputImageNumber = property(getForcedOutputImageNumber, setForcedOutputImageNumber, delForcedOutputImageNumber, "Property for forcedOutputImageNumber")
     def export(self, outfile, level, name_='XSDataInputControlH5ToCBF'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1590,6 +1609,8 @@ class XSDataInputControlH5ToCBF(XSDataInput):
             self.ispybDataCollection.export(outfile, level, name_='ispybDataCollection')
         if self._forcedOutputDirectory is not None:
             self.forcedOutputDirectory.export(outfile, level, name_='forcedOutputDirectory')
+        if self._forcedOutputImageNumber is not None:
+            self.forcedOutputImageNumber.export(outfile, level, name_='forcedOutputImageNumber')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1620,6 +1641,11 @@ class XSDataInputControlH5ToCBF(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setForcedOutputDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'forcedOutputImageNumber':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setForcedOutputImageNumber(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
