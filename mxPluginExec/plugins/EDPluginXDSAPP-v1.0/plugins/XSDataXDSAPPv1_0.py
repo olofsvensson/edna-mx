@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Dec 2 11:10::14 2016 by EDGenerateDS.
+# Generated Fri Dec 2 02:43::30 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -16,12 +16,14 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
     from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
+    from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataResult
 except ImportError as error:
     if strEdnaHome is not None:
@@ -36,6 +38,7 @@ except ImportError as error:
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
+from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataResult
 
 
@@ -117,7 +120,7 @@ class MixedContainer(object):
 
 
 class XSDataInputXDSAPP(XSDataInput):
-    def __init__(self, configuration=None, anomalous=None, image=None):
+    def __init__(self, configuration=None, anomalous=None, endImageNumber=None, startImageNumber=None, image=None):
         XSDataInput.__init__(self, configuration)
         if image is None:
             self._image = None
@@ -125,6 +128,20 @@ class XSDataInputXDSAPP(XSDataInput):
             self._image = image
         else:
             strMessage = "ERROR! XSDataInputXDSAPP constructor argument 'image' is not XSDataFile but %s" % self._image.__class__.__name__
+            raise BaseException(strMessage)
+        if startImageNumber is None:
+            self._startImageNumber = None
+        elif startImageNumber.__class__.__name__ == "XSDataInteger":
+            self._startImageNumber = startImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputXDSAPP constructor argument 'startImageNumber' is not XSDataInteger but %s" % self._startImageNumber.__class__.__name__
+            raise BaseException(strMessage)
+        if endImageNumber is None:
+            self._endImageNumber = None
+        elif endImageNumber.__class__.__name__ == "XSDataInteger":
+            self._endImageNumber = endImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputXDSAPP constructor argument 'endImageNumber' is not XSDataInteger but %s" % self._endImageNumber.__class__.__name__
             raise BaseException(strMessage)
         if anomalous is None:
             self._anomalous = None
@@ -145,6 +162,30 @@ class XSDataInputXDSAPP(XSDataInput):
             raise BaseException(strMessage)
     def delImage(self): self._image = None
     image = property(getImage, setImage, delImage, "Property for image")
+    # Methods and properties for the 'startImageNumber' attribute
+    def getStartImageNumber(self): return self._startImageNumber
+    def setStartImageNumber(self, startImageNumber):
+        if startImageNumber is None:
+            self._startImageNumber = None
+        elif startImageNumber.__class__.__name__ == "XSDataInteger":
+            self._startImageNumber = startImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputXDSAPP.setStartImageNumber argument is not XSDataInteger but %s" % startImageNumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delStartImageNumber(self): self._startImageNumber = None
+    startImageNumber = property(getStartImageNumber, setStartImageNumber, delStartImageNumber, "Property for startImageNumber")
+    # Methods and properties for the 'endImageNumber' attribute
+    def getEndImageNumber(self): return self._endImageNumber
+    def setEndImageNumber(self, endImageNumber):
+        if endImageNumber is None:
+            self._endImageNumber = None
+        elif endImageNumber.__class__.__name__ == "XSDataInteger":
+            self._endImageNumber = endImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputXDSAPP.setEndImageNumber argument is not XSDataInteger but %s" % endImageNumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delEndImageNumber(self): self._endImageNumber = None
+    endImageNumber = property(getEndImageNumber, setEndImageNumber, delEndImageNumber, "Property for endImageNumber")
     # Methods and properties for the 'anomalous' attribute
     def getAnomalous(self): return self._anomalous
     def setAnomalous(self, anomalous):
@@ -169,6 +210,10 @@ class XSDataInputXDSAPP(XSDataInput):
             self.image.export(outfile, level, name_='image')
         else:
             warnEmptyAttribute("image", "XSDataFile")
+        if self._startImageNumber is not None:
+            self.startImageNumber.export(outfile, level, name_='startImageNumber')
+        if self._endImageNumber is not None:
+            self.endImageNumber.export(outfile, level, name_='endImageNumber')
         if self._anomalous is not None:
             self.anomalous.export(outfile, level, name_='anomalous')
     def build(self, node_):
@@ -181,6 +226,16 @@ class XSDataInputXDSAPP(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setImage(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'startImageNumber':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setStartImageNumber(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'endImageNumber':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setEndImageNumber(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'anomalous':
             obj_ = XSDataBoolean()
@@ -232,8 +287,103 @@ class XSDataInputXDSAPP(XSDataInput):
 
 
 class XSDataResultXDSAPP(XSDataResult):
-    def __init__(self, status=None):
+    def __init__(self, status=None, XDS_ASCII_HKL_1=None, XDS_ASCII_HKL=None, phenixXtriageLog=None, pointlessLog=None, logFile=None):
         XSDataResult.__init__(self, status)
+        if logFile is None:
+            self._logFile = None
+        elif logFile.__class__.__name__ == "XSDataFile":
+            self._logFile = logFile
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'logFile' is not XSDataFile but %s" % self._logFile.__class__.__name__
+            raise BaseException(strMessage)
+        if pointlessLog is None:
+            self._pointlessLog = None
+        elif pointlessLog.__class__.__name__ == "XSDataFile":
+            self._pointlessLog = pointlessLog
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'pointlessLog' is not XSDataFile but %s" % self._pointlessLog.__class__.__name__
+            raise BaseException(strMessage)
+        if phenixXtriageLog is None:
+            self._phenixXtriageLog = None
+        elif phenixXtriageLog.__class__.__name__ == "XSDataFile":
+            self._phenixXtriageLog = phenixXtriageLog
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'phenixXtriageLog' is not XSDataFile but %s" % self._phenixXtriageLog.__class__.__name__
+            raise BaseException(strMessage)
+        if XDS_ASCII_HKL is None:
+            self._XDS_ASCII_HKL = None
+        elif XDS_ASCII_HKL.__class__.__name__ == "XSDataFile":
+            self._XDS_ASCII_HKL = XDS_ASCII_HKL
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'XDS_ASCII_HKL' is not XSDataFile but %s" % self._XDS_ASCII_HKL.__class__.__name__
+            raise BaseException(strMessage)
+        if XDS_ASCII_HKL_1 is None:
+            self._XDS_ASCII_HKL_1 = None
+        elif XDS_ASCII_HKL_1.__class__.__name__ == "XSDataFile":
+            self._XDS_ASCII_HKL_1 = XDS_ASCII_HKL_1
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'XDS_ASCII_HKL_1' is not XSDataFile but %s" % self._XDS_ASCII_HKL_1.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'logFile' attribute
+    def getLogFile(self): return self._logFile
+    def setLogFile(self, logFile):
+        if logFile is None:
+            self._logFile = None
+        elif logFile.__class__.__name__ == "XSDataFile":
+            self._logFile = logFile
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setLogFile argument is not XSDataFile but %s" % logFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delLogFile(self): self._logFile = None
+    logFile = property(getLogFile, setLogFile, delLogFile, "Property for logFile")
+    # Methods and properties for the 'pointlessLog' attribute
+    def getPointlessLog(self): return self._pointlessLog
+    def setPointlessLog(self, pointlessLog):
+        if pointlessLog is None:
+            self._pointlessLog = None
+        elif pointlessLog.__class__.__name__ == "XSDataFile":
+            self._pointlessLog = pointlessLog
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setPointlessLog argument is not XSDataFile but %s" % pointlessLog.__class__.__name__
+            raise BaseException(strMessage)
+    def delPointlessLog(self): self._pointlessLog = None
+    pointlessLog = property(getPointlessLog, setPointlessLog, delPointlessLog, "Property for pointlessLog")
+    # Methods and properties for the 'phenixXtriageLog' attribute
+    def getPhenixXtriageLog(self): return self._phenixXtriageLog
+    def setPhenixXtriageLog(self, phenixXtriageLog):
+        if phenixXtriageLog is None:
+            self._phenixXtriageLog = None
+        elif phenixXtriageLog.__class__.__name__ == "XSDataFile":
+            self._phenixXtriageLog = phenixXtriageLog
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setPhenixXtriageLog argument is not XSDataFile but %s" % phenixXtriageLog.__class__.__name__
+            raise BaseException(strMessage)
+    def delPhenixXtriageLog(self): self._phenixXtriageLog = None
+    phenixXtriageLog = property(getPhenixXtriageLog, setPhenixXtriageLog, delPhenixXtriageLog, "Property for phenixXtriageLog")
+    # Methods and properties for the 'XDS_ASCII_HKL' attribute
+    def getXDS_ASCII_HKL(self): return self._XDS_ASCII_HKL
+    def setXDS_ASCII_HKL(self, XDS_ASCII_HKL):
+        if XDS_ASCII_HKL is None:
+            self._XDS_ASCII_HKL = None
+        elif XDS_ASCII_HKL.__class__.__name__ == "XSDataFile":
+            self._XDS_ASCII_HKL = XDS_ASCII_HKL
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setXDS_ASCII_HKL argument is not XSDataFile but %s" % XDS_ASCII_HKL.__class__.__name__
+            raise BaseException(strMessage)
+    def delXDS_ASCII_HKL(self): self._XDS_ASCII_HKL = None
+    XDS_ASCII_HKL = property(getXDS_ASCII_HKL, setXDS_ASCII_HKL, delXDS_ASCII_HKL, "Property for XDS_ASCII_HKL")
+    # Methods and properties for the 'XDS_ASCII_HKL_1' attribute
+    def getXDS_ASCII_HKL_1(self): return self._XDS_ASCII_HKL_1
+    def setXDS_ASCII_HKL_1(self, XDS_ASCII_HKL_1):
+        if XDS_ASCII_HKL_1 is None:
+            self._XDS_ASCII_HKL_1 = None
+        elif XDS_ASCII_HKL_1.__class__.__name__ == "XSDataFile":
+            self._XDS_ASCII_HKL_1 = XDS_ASCII_HKL_1
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setXDS_ASCII_HKL_1 argument is not XSDataFile but %s" % XDS_ASCII_HKL_1.__class__.__name__
+            raise BaseException(strMessage)
+    def delXDS_ASCII_HKL_1(self): self._XDS_ASCII_HKL_1 = None
+    XDS_ASCII_HKL_1 = property(getXDS_ASCII_HKL_1, setXDS_ASCII_HKL_1, delXDS_ASCII_HKL_1, "Property for XDS_ASCII_HKL_1")
     def export(self, outfile, level, name_='XSDataResultXDSAPP'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -242,12 +392,46 @@ class XSDataResultXDSAPP(XSDataResult):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataResultXDSAPP'):
         XSDataResult.exportChildren(self, outfile, level, name_)
+        if self._logFile is not None:
+            self.logFile.export(outfile, level, name_='logFile')
+        if self._pointlessLog is not None:
+            self.pointlessLog.export(outfile, level, name_='pointlessLog')
+        if self._phenixXtriageLog is not None:
+            self.phenixXtriageLog.export(outfile, level, name_='phenixXtriageLog')
+        if self._XDS_ASCII_HKL is not None:
+            self.XDS_ASCII_HKL.export(outfile, level, name_='XDS_ASCII_HKL')
+        if self._XDS_ASCII_HKL_1 is not None:
+            self.XDS_ASCII_HKL_1.export(outfile, level, name_='XDS_ASCII_HKL_1')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
-        pass
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'logFile':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setLogFile(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pointlessLog':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setPointlessLog(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'phenixXtriageLog':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setPhenixXtriageLog(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'XDS_ASCII_HKL':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setXDS_ASCII_HKL(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'XDS_ASCII_HKL_1':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setXDS_ASCII_HKL_1(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

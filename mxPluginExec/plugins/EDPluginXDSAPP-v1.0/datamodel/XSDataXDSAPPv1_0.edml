@@ -12,8 +12,15 @@ import XSDataCommon.XSDataInteger
 
 complex type XSDataInputXDSAPP extends XSDataInput {
 	image : XSDataFile
+	startImageNumber : XSDataInteger optional
+	endImageNumber : XSDataInteger optional
 	anomalous : XSDataBoolean optional
 }
 
 complex type XSDataResultXDSAPP extends XSDataResult {
+	logFile : XSDataFile optional
+	pointlessLog : XSDataFile optional
+	phenixXtriageLog : XSDataFile optional
+	XDS_ASCII_HKL: XSDataFile optional
+	XDS_ASCII_HKL_1 : XSDataFile optional
 }

@@ -73,8 +73,8 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.postProcess(self)
         self.DEBUG("EDPluginExecXDSAPPv1_0.postProcess")
         # Populate the results
-#        xsDataResultXDSAPP = self.parseOutputDirectory(self.getWorkingDirectory())
-#        self.dataOutput = xsDataResultXDSAPP
+        xsDataResultXDSAPP = self.parseOutputDirectory(self.getWorkingDirectory())
+        self.dataOutput = xsDataResultXDSAPP
 
 
     def generateCommandLine(self, _xsDataInputXDSAPP):
@@ -95,37 +95,35 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
         if anomalous:
             strCommandText += " --fried=true"
         else:
-            strCommandText += " --fried=true"
+            strCommandText += " --fried=false"
 
         strCommandText += " --dir={0}".format(self.getWorkingDirectory())
 
-        print(strCommandText)
+        if self.maxNoProcessors is not None:
+            strCommandText += " --cpu={0} --jobs=1".format(self.maxNoProcessors)
+
+        if _xsDataInputXDSAPP.startImageNumber is not None and \
+           _xsDataInputXDSAPP.endImageNumber is not None:
+            strCommandText += " --range=\"{0} {1}\"".format(_xsDataInputXDSAPP.startImageNumber.value,
+                                                            _xsDataInputXDSAPP.endImageNumber.value)
+
         return strCommandText
 
-#    def parseOutputDirectory(self, _workingDirectory):
-#        xsDataResultXDSAPP = XSDataResultXDSAPP()
-#        # Log file
-#        xia2txtPath = os.path.join(_workingDirectory, "xia2.txt")
-#        if os.path.exists(xia2txtPath):
-#            xsDataResultXDSAPP.logFile = XSDataFile(XSDataString(xia2txtPath))
-#        # Html file
-#        xia2htmlPath = os.path.join(_workingDirectory, "xia2.html")
-#        if os.path.exists(xia2htmlPath):
-#            xsDataResultXDSAPP.htmlFile = XSDataFile(XSDataString(xia2htmlPath))
-#        # Summary file
-#        summaryPath = os.path.join(_workingDirectory, "xia2-summary.dat")
-#        if os.path.exists(summaryPath):
-#            xsDataResultXDSAPP.summary = XSDataFile(XSDataString(summaryPath))
-#        # ISPyB XML file
-#        ispybXmlPath = os.path.join(_workingDirectory, "ispyb.xml")
-#        if os.path.exists(ispybXmlPath):
-#            xsDataResultXDSAPP.ispybXML = XSDataFile(XSDataString(ispybXmlPath))
-#        # Datafiles
-#        dataFiles = glob.glob(os.path.join(_workingDirectory, "DataFiles", "*"))
-#        for dataFile in dataFiles:
-#            xsDataResultXDSAPP.addDataFiles(XSDataFile(XSDataString(dataFile)))
-#        # Log files
-#        logFiles = glob.glob(os.path.join(_workingDirectory, "LogFiles", "*"))
-#        for logFile in logFiles:
-#            xsDataResultXDSAPP.addLogFiles(XSDataFile(XSDataString(logFile)))
-#        return xsDataResultXDSAPP
+    def parseOutputDirectory(self, _workingDirectory):
+        xsDataResultXDSAPP = XSDataResultXDSAPP()
+        # Log file
+        listLogFile = glob.glob(os.path.join(_workingDirectory, "result*.txt"))
+        if len(listLogFile) > 0:
+            xsDataResultXDSAPP.logFile = XSDataFile(XSDataString(listLogFile[0]))
+        # Pointless log
+        if os.path.exists(os.path.join(_workingDirectory, "pointless.log")):
+            xsDataResultXDSAPP.pointlessLog = XSDataFile(XSDataString(os.path.join(_workingDirectory, "pointless.log")))
+        # Phenix Xtriage log
+        if os.path.exists(os.path.join(_workingDirectory, "phenix_xtriage.log")):
+            xsDataResultXDSAPP.phenixXtriageLog = XSDataFile(XSDataString(os.path.join(_workingDirectory, "phenix_xtriage.log")))
+        # XDS_ASCII.HKL
+        if os.path.exists(os.path.join(_workingDirectory, "XDS_ASCII.HKL")):
+            xsDataResultXDSAPP.XDS_ASCII_HKL = XSDataFile(XSDataString(os.path.join(_workingDirectory, "XDS_ASCII.HKL")))
+        if os.path.exists(os.path.join(_workingDirectory, "XDS_ASCII.HKL_1")):
+            xsDataResultXDSAPP.XDS_ASCII_HKL_1 = XSDataFile(XSDataString(os.path.join(_workingDirectory, "XDS_ASCII.HKL_1")))
+        return xsDataResultXDSAPP
