@@ -40,6 +40,7 @@ class EDTestSuitePluginExecuteXDSv1_0(EDTestSuite):
     def process(self):
 #        self.addTestCaseFromName("EDTestCasePluginExecuteXDSIndexingv1_0")
         self.addTestCaseFromName("EDTestCasePluginExecuteExecMinimalXdsv1_0")
+        self.addTestCaseFromName("EDTestCasePluginExecuteExecMinimalXdsv1_0_HDF5")
         self.addTestCaseFromName("EDTestCasePluginExecuteExecXscalev1_0")
         self.addTestCaseFromName("EDTestCasePluginExecuteXDSGenerateBackgroundImagev1_0")
         self.addTestCaseFromName("EDTestCasePluginParseXdsOutputv1_0")

@@ -95,7 +95,10 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginMinimalXDS.preProcess")
         xds_input = os.path.abspath(self.dataInput.input_file.value)
-        shutil.copy(xds_input, self.getWorkingDirectory())
+        workingDirectory = self.getWorkingDirectory()
+        if not os.path.exists(workingDirectory):
+            os.makedirs(workingDirectory, 0o755)
+        shutil.copy(xds_input, workingDirectory)
 
         # our new xds file
         xds_file = os.path.join(self.getWorkingDirectory(), 'XDS.INP')
