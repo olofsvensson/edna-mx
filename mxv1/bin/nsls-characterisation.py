@@ -103,10 +103,16 @@ for index in range(len(sys.argv)):
             index += 1
         break
 
+if len(listImages) == 0:
+    print("No --image keyword found!")
+    sys.exit(1)
+
 # Find the series number
 firstImagePath = listImages[0]
 imagePrefixAndRunNumber = EDUtilsImage.getPrefix(firstImagePath)
 imageDirectory = os.path.dirname(firstImagePath)
+if imageDirectory == "":
+    imageDirectory = os.getcwd()
 listFilePath = glob.glob(os.path.join(imageDirectory, imagePrefixAndRunNumber + "*"))
 listH5Number = []
 listSerialNumber = []
