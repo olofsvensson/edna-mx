@@ -69,6 +69,7 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginExecXDSAPPv1_0.preProcess")
         strCommandLine = self.generateCommandLine(self.dataInput)
         self.setScriptCommandline(strCommandLine)
+        self.addListCommandPreExecution("export PATH=/opt/pxsoft/bin:$PATH")
 
 
     def postProcess(self, _edObject=None):

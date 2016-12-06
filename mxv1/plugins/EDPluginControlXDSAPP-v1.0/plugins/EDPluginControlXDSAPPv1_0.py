@@ -418,25 +418,26 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         return strLog
 
     def runXscale(self, _workingDirectory, merged=False, anom=False):
-        if merged:
-            strMerged = "merged"
-        else:
-            strMerged = "unmerged"
-        if anom:
-            strAnom = "anom"
-        else:
-            strAnom = "noanom"
-        strXscaleInp = "OUTPUT_FILE= {0}_{1}_XSCALE.hkl\n".format(strMerged, strAnom)
-        strXscaleInp += "INPUT_FILE= XDS_ASCII.HKL\n"
-        strXscaleInp += "MERGE= {0}\n".format(str(merged).upper())
-        strXscaleInp += "FRIEDEL'S_LAW= {0}\n".format(str(not anom).upper())
-        EDUtilsFile.writeFile(os.path.join(_workingDirectory, "XSCALE.INP"), strXscaleInp)
-        xscaleLog = os.path.join(_workingDirectory, "xscale.log")
-        pipe1 = subprocess.Popen("/opt/pxsoft/bin/xscale",
-                                 shell=True,
-                                 stdout=subprocess.PIPE,
-                                 close_fds=True,
-                                 cwd=_workingDirectory)
-        xdsInp = pipe1.communicate()[0]
-        with open(xscaleLog, "w") as f:
-            f.write(str(xdsInp))
+        if os.path.exists(os.path.join(_workingDirectory, "XDS_ASCII.HKL")):
+            if merged:
+                strMerged = "merged"
+            else:
+                strMerged = "unmerged"
+            if anom:
+                strAnom = "anom"
+            else:
+                strAnom = "noanom"
+            strXscaleInp = "OUTPUT_FILE= {0}_{1}_XSCALE.hkl\n".format(strMerged, strAnom)
+            strXscaleInp += "INPUT_FILE= XDS_ASCII.HKL\n"
+            strXscaleInp += "MERGE= {0}\n".format(str(merged).upper())
+            strXscaleInp += "FRIEDEL'S_LAW= {0}\n".format(str(not anom).upper())
+            EDUtilsFile.writeFile(os.path.join(_workingDirectory, "XSCALE.INP"), strXscaleInp)
+            xscaleLog = os.path.join(_workingDirectory, "xscale.log")
+            pipe1 = subprocess.Popen("/opt/pxsoft/bin/xscale",
+                                     shell=True,
+                                     stdout=subprocess.PIPE,
+                                     close_fds=True,
+                                     cwd=_workingDirectory)
+            xdsInp = pipe1.communicate()[0]
+            with open(xscaleLog, "w") as f:
+                f.write(str(xdsInp))
