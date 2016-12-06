@@ -29,10 +29,12 @@ import os
 import time
 import shutil
 import socket
+import subprocess
 
 from EDPluginControl import EDPluginControl
 from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
 from EDUtilsPath import EDUtilsPath
+from EDUtilsFile import EDUtilsFile
 
 from EDFactoryPlugin import edFactoryPlugin
 
@@ -278,123 +280,127 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             self.edPluginExecXDSAPPNoanom.dataInput = xsDataInputXDSAPPNoanom
             self.edPluginExecXDSAPPNoanom.execute()
         self.edPluginExecXDSAPPAnom.synchronize()
+        self.runXscale(self.edPluginExecXDSAPPAnom.getWorkingDirectory(), anom=True, merged=True)
+        xsDataResultXDSAPPAnom = self.edPluginExecXDSAPPAnom.dataOutput
         if self.doAnomAndNonanom:
             self.edPluginExecXDSAPPNoanom.synchronize()
+            self.runXscale(self.edPluginExecXDSAPPNoanom.getWorkingDirectory(), anom=False, merged=True)
+            xsDataResultXDSAPPNoanom = self.edPluginExecXDSAPPNoanom.dataOutput
         timeEnd = time.localtime()
 
         # Upload to ISPyB
-        self.uploadToISPyB(self.edPluginExecXDSAPPAnom, True, proposal, timeStart, timeEnd)
+        self.uploadToISPyB(xsDataResultXDSAPPAnom, True, proposal, timeStart, timeEnd)
         if self.doAnomAndNonanom:
-            self.uploadToISPyB(self.edPluginExecXDSAPPNoanom, False, proposal, timeStart, timeEnd)
+            self.uploadToISPyB(xsDataResultXDSAPPNoanom, False, proposal, timeStart, timeEnd)
 
 
-    def uploadToISPyB(self, edPluginExecXDSAPP, isAnom, proposal, timeStart, timeEnd):
+    def uploadToISPyB(self, xsDataResultXDSAPP, isAnom, proposal, timeStart, timeEnd):
         if isAnom:
             anomString = "anom"
         else:
             anomString = "noanom"
 
-        # Copy dataFiles to results directory
-        for dataFile in edPluginExecXDSAPP.dataOutput.dataFiles:
-            trunc, suffix = os.path.splitext(dataFile.path.value)
-            newFileName = trunc + "_" + anomString + suffix
-            shutil.copy(dataFile.path.value, os.path.join(self.resultsDirectory, newFileName))
-
-        # Read the generated ISPyB xml file - if any
-        if edPluginExecXDSAPP.dataOutput.ispybXML is not None:
-            autoProcContainer = AutoProcContainer.parseFile(edPluginExecXDSAPP.dataOutput.ispybXML.path.value)
-
-            # "Fix" certain entries in the ISPyB xml file
-            autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
-            for autoProcScalingStatistics in autoProcScalingContainer.AutoProcScalingStatistics:
-                if isAnom:
-                    autoProcScalingStatistics.anomalous = True
-                else:
-                    autoProcScalingStatistics.anomalous = False
-                # Convert from fraction to %
-                autoProcScalingStatistics.rMerge *= 100.0
-            autoProcIntegrationContainer = autoProcScalingContainer.AutoProcIntegrationContainer
-            autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
-            if isAnom:
-                autoProcIntegration.anomalous = True
-            else:
-                autoProcIntegration.anomalous = False
-            image = autoProcIntegrationContainer.Image
-            image.dataCollectionId = self.dataInput.dataCollectionId.value
-            autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
-            autoProcProgram = autoProcProgramContainer.AutoProcProgram
-            autoProcProgram.processingPrograms = "XIA2_DIALS"
-            autoProcProgram.processingStatus = True
-            autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
-            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
-            autoProcProgramContainer.AutoProcProgramAttachment = []
-            # Upload the log file to ISPyB
-            if edPluginExecXDSAPP.dataOutput.logFile is not None:
-                pathToLogFile = edPluginExecXDSAPP.dataOutput.logFile.path.value
-                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.log"
-                shutil.copy(pathToLogFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-                autoProcProgramAttachment = AutoProcProgramAttachment()
-                autoProcProgramAttachment.fileName = pyarchFileName
-                autoProcProgramAttachment.filePath = self.pyarchDirectory
-                autoProcProgramAttachment.fileType = "Log"
-                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-            # Upload the summary file to ISPyB
-            if edPluginExecXDSAPP.dataOutput.summary is not None:
-                pathToSummaryFile = edPluginExecXDSAPP.dataOutput.summary.path.value
-                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2-summary.log"
-                shutil.copy(pathToSummaryFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-                autoProcProgramAttachment = AutoProcProgramAttachment()
-                autoProcProgramAttachment.fileName = pyarchFileName
-                autoProcProgramAttachment.filePath = self.pyarchDirectory
-                autoProcProgramAttachment.fileType = "Log"
-                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-            # Create a pdf file of the html page
-            if edPluginExecXDSAPP.dataOutput.htmlFile is not None:
-                pathToHtmlFile = edPluginExecXDSAPP.dataOutput.htmlFile.path.value
-                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.pdf"
-                # Convert the xia2.html to xia2.pdf
-                xsDataInputHTML2PDF = XSDataInputHTML2PDF()
-                xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(pathToHtmlFile)))
-                xsDataInputHTML2PDF.paperSize = XSDataString("A4")
-                xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
-                edPluginHTML2Pdf = self.loadPlugin("EDPluginHTML2PDFv1_0", "EDPluginHTML2PDFv1_0_{0}".format(anomString))
-                edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
-                edPluginHTML2Pdf.executeSynchronous()
-                pdfFile = edPluginHTML2Pdf.dataOutput.pdfFile.path.value
-                shutil.copy(pdfFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-                autoProcProgramAttachment = AutoProcProgramAttachment()
-                autoProcProgramAttachment.fileName = pyarchFileName
-                autoProcProgramAttachment.filePath = self.pyarchDirectory
-                autoProcProgramAttachment.fileType = "Log"
-                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-            # Copy all log files
-            for logFile in edPluginExecXDSAPP.dataOutput.logFiles:
-                pathToLogFile = logFile.path.value
-                if pathToLogFile.endswith(".log"):
-                    pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToLogFile)
-                    shutil.copy(pathToLogFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-                    autoProcProgramAttachment = AutoProcProgramAttachment()
-                    autoProcProgramAttachment.fileName = pyarchFileName
-                    autoProcProgramAttachment.filePath = self.pyarchDirectory
-                    autoProcProgramAttachment.fileType = "Log"
-                    autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-            # Copy data files
-            for dataFile in edPluginExecXDSAPP.dataOutput.dataFiles:
-                pathToDataFile = dataFile.path.value
-                if pathToDataFile.endswith(".mtz"):
-                    pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToDataFile)
-                    shutil.copy(pathToDataFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-                    autoProcProgramAttachment = AutoProcProgramAttachment()
-                    autoProcProgramAttachment.fileName = pyarchFileName
-                    autoProcProgramAttachment.filePath = self.pyarchDirectory
-                    autoProcProgramAttachment.fileType = "Result"
-                    autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-            # Upload the xml to ISPyB
-            xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
-            xsDataInputStoreAutoProc.AutoProcContainer = autoProcContainer
-            edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}".format(anomString))
-            edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
-            edPluginStoreAutoproc.executeSynchronous()
+#        # Copy dataFiles to results directory
+#        for dataFile in edPluginExecXDSAPP.dataOutput.dataFiles:
+#            trunc, suffix = os.path.splitext(dataFile.path.value)
+#            newFileName = trunc + "_" + anomString + suffix
+#            shutil.copy(dataFile.path.value, os.path.join(self.resultsDirectory, newFileName))
+#
+#        # Read the generated ISPyB xml file - if any
+#        if edPluginExecXDSAPP.dataOutput.ispybXML is not None:
+#            autoProcContainer = AutoProcContainer.parseFile(edPluginExecXDSAPP.dataOutput.ispybXML.path.value)
+#
+#            # "Fix" certain entries in the ISPyB xml file
+#            autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
+#            for autoProcScalingStatistics in autoProcScalingContainer.AutoProcScalingStatistics:
+#                if isAnom:
+#                    autoProcScalingStatistics.anomalous = True
+#                else:
+#                    autoProcScalingStatistics.anomalous = False
+#                # Convert from fraction to %
+#                autoProcScalingStatistics.rMerge *= 100.0
+#            autoProcIntegrationContainer = autoProcScalingContainer.AutoProcIntegrationContainer
+#            autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
+#            if isAnom:
+#                autoProcIntegration.anomalous = True
+#            else:
+#                autoProcIntegration.anomalous = False
+#            image = autoProcIntegrationContainer.Image
+#            image.dataCollectionId = self.dataInput.dataCollectionId.value
+#            autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
+#            autoProcProgram = autoProcProgramContainer.AutoProcProgram
+#            autoProcProgram.processingPrograms = "XIA2_DIALS"
+#            autoProcProgram.processingStatus = True
+#            autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
+#            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
+#            autoProcProgramContainer.AutoProcProgramAttachment = []
+#            # Upload the log file to ISPyB
+#            if edPluginExecXDSAPP.dataOutput.logFile is not None:
+#                pathToLogFile = edPluginExecXDSAPP.dataOutput.logFile.path.value
+#                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.log"
+#                shutil.copy(pathToLogFile, os.path.join(self.pyarchDirectory, pyarchFileName))
+#                autoProcProgramAttachment = AutoProcProgramAttachment()
+#                autoProcProgramAttachment.fileName = pyarchFileName
+#                autoProcProgramAttachment.filePath = self.pyarchDirectory
+#                autoProcProgramAttachment.fileType = "Log"
+#                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
+#            # Upload the summary file to ISPyB
+#            if edPluginExecXDSAPP.dataOutput.summary is not None:
+#                pathToSummaryFile = edPluginExecXDSAPP.dataOutput.summary.path.value
+#                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2-summary.log"
+#                shutil.copy(pathToSummaryFile, os.path.join(self.pyarchDirectory, pyarchFileName))
+#                autoProcProgramAttachment = AutoProcProgramAttachment()
+#                autoProcProgramAttachment.fileName = pyarchFileName
+#                autoProcProgramAttachment.filePath = self.pyarchDirectory
+#                autoProcProgramAttachment.fileType = "Log"
+#                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
+#            # Create a pdf file of the html page
+#            if edPluginExecXDSAPP.dataOutput.htmlFile is not None:
+#                pathToHtmlFile = edPluginExecXDSAPP.dataOutput.htmlFile.path.value
+#                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.pdf"
+#                # Convert the xia2.html to xia2.pdf
+#                xsDataInputHTML2PDF = XSDataInputHTML2PDF()
+#                xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(pathToHtmlFile)))
+#                xsDataInputHTML2PDF.paperSize = XSDataString("A4")
+#                xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
+#                edPluginHTML2Pdf = self.loadPlugin("EDPluginHTML2PDFv1_0", "EDPluginHTML2PDFv1_0_{0}".format(anomString))
+#                edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
+#                edPluginHTML2Pdf.executeSynchronous()
+#                pdfFile = edPluginHTML2Pdf.dataOutput.pdfFile.path.value
+#                shutil.copy(pdfFile, os.path.join(self.pyarchDirectory, pyarchFileName))
+#                autoProcProgramAttachment = AutoProcProgramAttachment()
+#                autoProcProgramAttachment.fileName = pyarchFileName
+#                autoProcProgramAttachment.filePath = self.pyarchDirectory
+#                autoProcProgramAttachment.fileType = "Log"
+#                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
+#            # Copy all log files
+#            for logFile in edPluginExecXDSAPP.dataOutput.logFiles:
+#                pathToLogFile = logFile.path.value
+#                if pathToLogFile.endswith(".log"):
+#                    pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToLogFile)
+#                    shutil.copy(pathToLogFile, os.path.join(self.pyarchDirectory, pyarchFileName))
+#                    autoProcProgramAttachment = AutoProcProgramAttachment()
+#                    autoProcProgramAttachment.fileName = pyarchFileName
+#                    autoProcProgramAttachment.filePath = self.pyarchDirectory
+#                    autoProcProgramAttachment.fileType = "Log"
+#                    autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
+#            # Copy data files
+#            for dataFile in edPluginExecXDSAPP.dataOutput.dataFiles:
+#                pathToDataFile = dataFile.path.value
+#                if pathToDataFile.endswith(".mtz"):
+#                    pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToDataFile)
+#                    shutil.copy(pathToDataFile, os.path.join(self.pyarchDirectory, pyarchFileName))
+#                    autoProcProgramAttachment = AutoProcProgramAttachment()
+#                    autoProcProgramAttachment.fileName = pyarchFileName
+#                    autoProcProgramAttachment.filePath = self.pyarchDirectory
+#                    autoProcProgramAttachment.fileType = "Result"
+#                    autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
+#            # Upload the xml to ISPyB
+#            xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
+#            xsDataInputStoreAutoProc.AutoProcContainer = autoProcContainer
+#            edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}".format(anomString))
+#            edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
+#            edPluginStoreAutoproc.executeSynchronous()
 
     def eiger_template_to_image(self, fmt, num):
         fileNumber = int(num / 100)
@@ -406,3 +412,31 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
     def eiger_template_to_master(self, fmt):
         fmt_string = fmt.replace("####", "1_master")
         return fmt_string
+
+    def parseLogFile(self, _logFile):
+        strLog = EDUtilsFile.readFile(_logFile)
+        return strLog
+
+    def runXscale(self, _workingDirectory, merged=False, anom=False):
+        if merged:
+            strMerged = "merged"
+        else:
+            strMerged = "unmerged"
+        if anom:
+            strAnom = "anom"
+        else:
+            strAnom = "noanom"
+        strXscaleInp = "OUTPUT_FILE= {0}_{1}_XSCALE.hkl\n".format(strMerged, strAnom)
+        strXscaleInp += "INPUT_FILE= XDS_ASCII.HKL\n"
+        strXscaleInp += "MERGE= {0}\n".format(str(merged).upper())
+        strXscaleInp += "FRIEDEL'S_LAW= {0}\n".format(str(not anom).upper())
+        EDUtilsFile.writeFile(os.path.join(_workingDirectory, "XSCALE.INP"), strXscaleInp)
+        xscaleLog = os.path.join(_workingDirectory, "xscale.log")
+        pipe1 = subprocess.Popen("/opt/pxsoft/bin/xscale",
+                                 shell=True,
+                                 stdout=subprocess.PIPE,
+                                 close_fds=True,
+                                 cwd=_workingDirectory)
+        xdsInp = pipe1.communicate()[0]
+        with open(xscaleLog, "w") as f:
+            f.write(str(xdsInp))

@@ -29,6 +29,7 @@ import os
 import glob
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
+from EDUtilsImage import EDUtilsImage
 
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataString
@@ -55,6 +56,7 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginExecXDSAPPv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
+        self.prefixRunNumber = None
 
 
     def configure(self):
@@ -73,7 +75,8 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.postProcess(self)
         self.DEBUG("EDPluginExecXDSAPPv1_0.postProcess")
         # Populate the results
-        xsDataResultXDSAPP = self.parseOutputDirectory(self.getWorkingDirectory())
+        prefixRunNumber = EDUtilsImage.getPrefix(self.dataInput.image.path.value)
+        xsDataResultXDSAPP = self.parseOutputDirectory(self.getWorkingDirectory(), prefixRunNumber)
         self.dataOutput = xsDataResultXDSAPP
 
 
@@ -109,12 +112,12 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
 
         return strCommandText
 
-    def parseOutputDirectory(self, _workingDirectory):
+    def parseOutputDirectory(self, _workingDirectory, _prefixRunNumber):
         xsDataResultXDSAPP = XSDataResultXDSAPP()
         # Log file
-        listLogFile = glob.glob(os.path.join(_workingDirectory, "result*.txt"))
-        if len(listLogFile) > 0:
-            xsDataResultXDSAPP.logFile = XSDataFile(XSDataString(listLogFile[0]))
+        logFile = os.path.join(_workingDirectory, "results_{0}.txt").format(_prefixRunNumber)
+        if os.path.exists(logFile):
+            xsDataResultXDSAPP.logFile = XSDataFile(XSDataString(logFile))
         # Pointless log
         if os.path.exists(os.path.join(_workingDirectory, "pointless.log")):
             xsDataResultXDSAPP.pointlessLog = XSDataFile(XSDataString(os.path.join(_workingDirectory, "pointless.log")))
@@ -126,4 +129,20 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
             xsDataResultXDSAPP.XDS_ASCII_HKL = XSDataFile(XSDataString(os.path.join(_workingDirectory, "XDS_ASCII.HKL")))
         if os.path.exists(os.path.join(_workingDirectory, "XDS_ASCII.HKL_1")):
             xsDataResultXDSAPP.XDS_ASCII_HKL_1 = XSDataFile(XSDataString(os.path.join(_workingDirectory, "XDS_ASCII.HKL_1")))
+        # Result files
+        mtz_F = os.path.join(_workingDirectory, "{0}_F.mtz".format(_prefixRunNumber))
+        if os.path.exists(mtz_F):
+            xsDataResultXDSAPP.mtz_F = XSDataFile(XSDataString(mtz_F))
+        mtz_I = os.path.join(_workingDirectory, "{0}_I.mtz".format(_prefixRunNumber))
+        if os.path.exists(mtz_I):
+            xsDataResultXDSAPP.mtz_I = XSDataFile(XSDataString(mtz_I))
+        F_plus_F_minus = os.path.join(_workingDirectory, "{0}_F_plus_F_minus.mtz".format(_prefixRunNumber))
+        if os.path.exists(F_plus_F_minus):
+            xsDataResultXDSAPP.F_plus_F_minus = XSDataFile(XSDataString(F_plus_F_minus))
+        hkl = os.path.join(_workingDirectory, "{0}.hkl".format(_prefixRunNumber))
+        if os.path.exists(hkl):
+            xsDataResultXDSAPP.hkl = XSDataFile(XSDataString(hkl))
+        cv = os.path.join(_workingDirectory, "{0}.cv".format(_prefixRunNumber))
+        if os.path.exists(hkl):
+            xsDataResultXDSAPP.cv = XSDataFile(XSDataString(cv))
         return xsDataResultXDSAPP

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Dec 2 02:43::30 2016 by EDGenerateDS.
+# Generated Fri Dec 2 04:03::00 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -287,7 +287,7 @@ class XSDataInputXDSAPP(XSDataInput):
 
 
 class XSDataResultXDSAPP(XSDataResult):
-    def __init__(self, status=None, XDS_ASCII_HKL_1=None, XDS_ASCII_HKL=None, phenixXtriageLog=None, pointlessLog=None, logFile=None):
+    def __init__(self, status=None, cv=None, hkl=None, F_plus_F_minus=None, mtz_I=None, mtz_F=None, XDS_ASCII_HKL_1=None, XDS_ASCII_HKL=None, phenixXtriageLog=None, pointlessLog=None, logFile=None):
         XSDataResult.__init__(self, status)
         if logFile is None:
             self._logFile = None
@@ -323,6 +323,41 @@ class XSDataResultXDSAPP(XSDataResult):
             self._XDS_ASCII_HKL_1 = XDS_ASCII_HKL_1
         else:
             strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'XDS_ASCII_HKL_1' is not XSDataFile but %s" % self._XDS_ASCII_HKL_1.__class__.__name__
+            raise BaseException(strMessage)
+        if mtz_F is None:
+            self._mtz_F = None
+        elif mtz_F.__class__.__name__ == "XSDataFile":
+            self._mtz_F = mtz_F
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'mtz_F' is not XSDataFile but %s" % self._mtz_F.__class__.__name__
+            raise BaseException(strMessage)
+        if mtz_I is None:
+            self._mtz_I = None
+        elif mtz_I.__class__.__name__ == "XSDataFile":
+            self._mtz_I = mtz_I
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'mtz_I' is not XSDataFile but %s" % self._mtz_I.__class__.__name__
+            raise BaseException(strMessage)
+        if F_plus_F_minus is None:
+            self._F_plus_F_minus = None
+        elif F_plus_F_minus.__class__.__name__ == "XSDataFile":
+            self._F_plus_F_minus = F_plus_F_minus
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'F_plus_F_minus' is not XSDataFile but %s" % self._F_plus_F_minus.__class__.__name__
+            raise BaseException(strMessage)
+        if hkl is None:
+            self._hkl = None
+        elif hkl.__class__.__name__ == "XSDataFile":
+            self._hkl = hkl
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'hkl' is not XSDataFile but %s" % self._hkl.__class__.__name__
+            raise BaseException(strMessage)
+        if cv is None:
+            self._cv = None
+        elif cv.__class__.__name__ == "XSDataFile":
+            self._cv = cv
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'cv' is not XSDataFile but %s" % self._cv.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'logFile' attribute
     def getLogFile(self): return self._logFile
@@ -384,6 +419,66 @@ class XSDataResultXDSAPP(XSDataResult):
             raise BaseException(strMessage)
     def delXDS_ASCII_HKL_1(self): self._XDS_ASCII_HKL_1 = None
     XDS_ASCII_HKL_1 = property(getXDS_ASCII_HKL_1, setXDS_ASCII_HKL_1, delXDS_ASCII_HKL_1, "Property for XDS_ASCII_HKL_1")
+    # Methods and properties for the 'mtz_F' attribute
+    def getMtz_F(self): return self._mtz_F
+    def setMtz_F(self, mtz_F):
+        if mtz_F is None:
+            self._mtz_F = None
+        elif mtz_F.__class__.__name__ == "XSDataFile":
+            self._mtz_F = mtz_F
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setMtz_F argument is not XSDataFile but %s" % mtz_F.__class__.__name__
+            raise BaseException(strMessage)
+    def delMtz_F(self): self._mtz_F = None
+    mtz_F = property(getMtz_F, setMtz_F, delMtz_F, "Property for mtz_F")
+    # Methods and properties for the 'mtz_I' attribute
+    def getMtz_I(self): return self._mtz_I
+    def setMtz_I(self, mtz_I):
+        if mtz_I is None:
+            self._mtz_I = None
+        elif mtz_I.__class__.__name__ == "XSDataFile":
+            self._mtz_I = mtz_I
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setMtz_I argument is not XSDataFile but %s" % mtz_I.__class__.__name__
+            raise BaseException(strMessage)
+    def delMtz_I(self): self._mtz_I = None
+    mtz_I = property(getMtz_I, setMtz_I, delMtz_I, "Property for mtz_I")
+    # Methods and properties for the 'F_plus_F_minus' attribute
+    def getF_plus_F_minus(self): return self._F_plus_F_minus
+    def setF_plus_F_minus(self, F_plus_F_minus):
+        if F_plus_F_minus is None:
+            self._F_plus_F_minus = None
+        elif F_plus_F_minus.__class__.__name__ == "XSDataFile":
+            self._F_plus_F_minus = F_plus_F_minus
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setF_plus_F_minus argument is not XSDataFile but %s" % F_plus_F_minus.__class__.__name__
+            raise BaseException(strMessage)
+    def delF_plus_F_minus(self): self._F_plus_F_minus = None
+    F_plus_F_minus = property(getF_plus_F_minus, setF_plus_F_minus, delF_plus_F_minus, "Property for F_plus_F_minus")
+    # Methods and properties for the 'hkl' attribute
+    def getHkl(self): return self._hkl
+    def setHkl(self, hkl):
+        if hkl is None:
+            self._hkl = None
+        elif hkl.__class__.__name__ == "XSDataFile":
+            self._hkl = hkl
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setHkl argument is not XSDataFile but %s" % hkl.__class__.__name__
+            raise BaseException(strMessage)
+    def delHkl(self): self._hkl = None
+    hkl = property(getHkl, setHkl, delHkl, "Property for hkl")
+    # Methods and properties for the 'cv' attribute
+    def getCv(self): return self._cv
+    def setCv(self, cv):
+        if cv is None:
+            self._cv = None
+        elif cv.__class__.__name__ == "XSDataFile":
+            self._cv = cv
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setCv argument is not XSDataFile but %s" % cv.__class__.__name__
+            raise BaseException(strMessage)
+    def delCv(self): self._cv = None
+    cv = property(getCv, setCv, delCv, "Property for cv")
     def export(self, outfile, level, name_='XSDataResultXDSAPP'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -402,6 +497,16 @@ class XSDataResultXDSAPP(XSDataResult):
             self.XDS_ASCII_HKL.export(outfile, level, name_='XDS_ASCII_HKL')
         if self._XDS_ASCII_HKL_1 is not None:
             self.XDS_ASCII_HKL_1.export(outfile, level, name_='XDS_ASCII_HKL_1')
+        if self._mtz_F is not None:
+            self.mtz_F.export(outfile, level, name_='mtz_F')
+        if self._mtz_I is not None:
+            self.mtz_I.export(outfile, level, name_='mtz_I')
+        if self._F_plus_F_minus is not None:
+            self.F_plus_F_minus.export(outfile, level, name_='F_plus_F_minus')
+        if self._hkl is not None:
+            self.hkl.export(outfile, level, name_='hkl')
+        if self._cv is not None:
+            self.cv.export(outfile, level, name_='cv')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -432,6 +537,31 @@ class XSDataResultXDSAPP(XSDataResult):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setXDS_ASCII_HKL_1(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'mtz_F':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setMtz_F(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'mtz_I':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setMtz_I(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'F_plus_F_minus':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setF_plus_F_minus(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'hkl':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setHkl(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cv':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setCv(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

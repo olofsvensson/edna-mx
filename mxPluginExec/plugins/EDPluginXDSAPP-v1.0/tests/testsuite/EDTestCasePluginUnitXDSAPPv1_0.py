@@ -55,7 +55,7 @@ class EDTestCasePluginUnitXDSAPPv1_0(EDTestCasePluginUnit):
     def test_parseOutputDirectory(self):
         testXDSAPPDir = "/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0"
         edPlugin = self.getPlugin()
-        xsDataResultXDSAPP = edPlugin.parseOutputDirectory(testXDSAPPDir)
+        xsDataResultXDSAPP = edPlugin.parseOutputDirectory(testXDSAPPDir, "xtal5w1_1")
         print(xsDataResultXDSAPP.marshal())
         # EDAssert.equal(os.path.exists(xsDataResultXDSAPP.logFile.path.value), True, "Xia2 log file")
 
