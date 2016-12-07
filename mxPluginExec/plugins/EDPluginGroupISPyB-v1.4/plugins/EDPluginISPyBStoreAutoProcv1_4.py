@@ -321,6 +321,8 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         bAnomalous = self.getXSValue(_xsDataAutoProcScalingStatistics.getAnomalous(), False)
         iAutoProcScalingId = self.iAutoProcScalingId
         fCcHalf = self.getXSValue(_xsDataAutoProcScalingStatistics.getCcHalf())
+        fCcAno = self.getXSValue(_xsDataAutoProcScalingStatistics.getCcAno())
+        fSigAno = self.getXSValue(_xsDataAutoProcScalingStatistics.getSigAno())
         iAutoProcScalingStatisticsId = _clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcScalingStatistics(
                 arg0=iAutoProcScalingStatisticsId, \
                 scalingStatisticsType=strScalingStatisticsType, \
@@ -344,6 +346,8 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
                 anomalous=bAnomalous, \
                 autoProcScalingId=iAutoProcScalingId, \
                 ccHalf=fCcHalf, \
+                ccAno=fCcAno, \
+                sigAno=fSigAno, \
                 )
         self.DEBUG("AutoProcScalingStatisticsId: %r" % iAutoProcScalingStatisticsId)
         return iAutoProcScalingStatisticsId

@@ -114,6 +114,8 @@ complex type AutoProcScalingStatistics {
 	recordTimeStamp : string
 	anomalous : boolean
 	ccHalf : float
+	ccAno : float
+	sigAno : float
 }
 
 complex type Image {

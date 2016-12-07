@@ -26,6 +26,8 @@ __license__ = "GPLv2+"
 __copyright__ = "ESRF"
 
 import os
+import sys
+import gzip
 import time
 import shutil
 import socket
@@ -54,7 +56,15 @@ from XSDataXDSAPPv1_0 import XSDataInputXDSAPP
 
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
 # plugin input/output
+from XSDataISPyBv1_4 import AutoProc
+from XSDataISPyBv1_4 import Image
+from XSDataISPyBv1_4 import AutoProcProgram
 from XSDataISPyBv1_4 import AutoProcContainer
+from XSDataISPyBv1_4 import AutoProcIntegration
+from XSDataISPyBv1_4 import AutoProcScalingContainer
+from XSDataISPyBv1_4 import AutoProcScalingStatistics
+from XSDataISPyBv1_4 import AutoProcIntegrationContainer
+from XSDataISPyBv1_4 import AutoProcProgramContainer
 from XSDataISPyBv1_4 import AutoProcProgramAttachment
 from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
@@ -194,21 +204,6 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         else:
             processDirectory = directory.replace("RAW_DATA", "PROCESSED_DATA")
 
-        # Make results directory
-        self.resultsDirectory = os.path.join(processDirectory, "results")
-        if not os.path.exists(self.resultsDirectory):
-            os.makedirs(self.resultsDirectory, 0o755)
-
-        # Create path to pyarch
-        self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
-        self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
-        if self.pyarchDirectory is not None and not os.path.exists(self.pyarchDirectory):
-            os.makedirs(self.pyarchDirectory, 0o755)
-
-        # Determine pyarch prefix
-        listPrefix = template.split("_")
-        self.pyarchPrefix = "di_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
-
         isH5 = False
         if any(beamline in pathToStartImage for beamline in ["id23eh1", "id29"]):
             minSizeFirst = 6000000
@@ -280,27 +275,164 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             self.edPluginExecXDSAPPNoanom.dataInput = xsDataInputXDSAPPNoanom
             self.edPluginExecXDSAPPNoanom.execute()
         self.edPluginExecXDSAPPAnom.synchronize()
-        self.runXscale(self.edPluginExecXDSAPPAnom.getWorkingDirectory(), anom=True, merged=True)
+        strPathXscaleLpAnom = self.runXscale(self.edPluginExecXDSAPPAnom.getWorkingDirectory(), anom=True, merged=True)
         xsDataResultXDSAPPAnom = self.edPluginExecXDSAPPAnom.dataOutput
         if self.doAnomAndNonanom:
             self.edPluginExecXDSAPPNoanom.synchronize()
-            self.runXscale(self.edPluginExecXDSAPPNoanom.getWorkingDirectory(), anom=False, merged=True)
+            strPathXscaleLpNoanom = self.runXscale(self.edPluginExecXDSAPPNoanom.getWorkingDirectory(), anom=False, merged=True)
             xsDataResultXDSAPPNoanom = self.edPluginExecXDSAPPNoanom.dataOutput
         timeEnd = time.localtime()
 
         # Upload to ISPyB
-        self.uploadToISPyB(xsDataResultXDSAPPAnom, True, proposal, timeStart, timeEnd)
-        if self.doAnomAndNonanom:
-            self.uploadToISPyB(xsDataResultXDSAPPNoanom, False, proposal, timeStart, timeEnd)
+        if self.dataInput.dataCollectionId is not None:
+            self.uploadToISPyB(xsDataResultXDSAPPAnom, processDirectory, template,
+                               strPathXscaleLpAnom, True, proposal, timeStart, timeEnd,
+                               self.dataInput.dataCollectionId.value)
+            if self.doAnomAndNonanom:
+                self.uploadToISPyB(xsDataResultXDSAPPNoanom, processDirectory, template,
+                                   strPathXscaleLpNoanom, False, proposal, timeStart, timeEnd,
+                                   self.dataInput.dataCollectionId.value)
 
 
-    def uploadToISPyB(self, xsDataResultXDSAPP, isAnom, proposal, timeStart, timeEnd):
+    def uploadToISPyB(self, xsDataResultXDSAPP, processDirectory, template,
+                      strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId):
+
+        # Parse log file
+        dictLog = self.parseLogFile(xsDataResultXDSAPP.logFile.path.value)
+        dictXscale = self.parseXscaleLp(strPathXscaleLp)
+
+        # Make results directory
+        resultsDirectory = os.path.join(processDirectory, "results")
+        if not os.path.exists(resultsDirectory):
+            os.makedirs(resultsDirectory, 0o755)
+
+        # Create path to pyarch
+        self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(resultsDirectory)
+        self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
+        if self.pyarchDirectory is not None and not os.path.exists(self.pyarchDirectory):
+            os.makedirs(self.pyarchDirectory, 0o755)
+
+        # Determine pyarch prefix
+        listPrefix = template.split("_")
+        self.pyarchPrefix = "xa_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
+
+        # Result file directory
+        self.strResultPath = os.path.join(processDirectory, "results")
+        if not os.path.exists(self.strResultPath):
+            os.makedirs(self.strResultPath, 0o755)
+
+
+        xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
+        autoProcContainer = AutoProcContainer()
+
+
+        # AutoProc
+        autoProc = AutoProc()
+        autoProc.spaceGroup = dictLog["spaceGroup"]
+        autoProc.refinedCell_a = dictLog["cellA"]
+        autoProc.refinedCell_b = dictLog["cellB"]
+        autoProc.refinedCell_c = dictLog["cellC"]
+        autoProc.refinedCell_alpha = dictLog["cellAlpha"]
+        autoProc.refinedCell_beta = dictLog["cellBeta"]
+        autoProc.refinedCell_gamma = dictLog["cellGamma"]
+        autoProcContainer.AutoProc = autoProc
+
+        # AutoProcIntegrationContainer
+        autoProcIntegrationContainer = AutoProcIntegrationContainer()
+        autoProcIntegration = AutoProcIntegration()
+        autoProcIntegration.cell_a = dictLog["cellA"]
+        autoProcIntegration.cell_b = dictLog["cellB"]
+        autoProcIntegration.cell_c = dictLog["cellC"]
+        autoProcIntegration.cell_alpha = dictLog["cellAlpha"]
+        autoProcIntegration.cell_beta = dictLog["cellBeta"]
+        autoProcIntegration.cell_gamma = dictLog["cellGamma"]
+        autoProcIntegration.anomalous = isAnom
+
+        image = Image()
+        image.dataCollectionId = dataCollectionId
+        autoProcIntegrationContainer.AutoProcIntegration = autoProcIntegration
+        autoProcIntegrationContainer.Image = image
+
+
+        # Scaling container
+        autoProcScalingContainer = AutoProcScalingContainer()
+        for scalingStatisticsType in dictXscale:
+            autoProcScalingStatistics = AutoProcScalingStatistics()
+            autoProcScalingStatistics.scalingStatisticsType = scalingStatisticsType
+            autoProcScalingStatistics.anomalous = isAnom
+            for scalingStatisticsAttribute in dictXscale[scalingStatisticsType]:
+                setattr(autoProcScalingStatistics, scalingStatisticsAttribute, dictXscale[scalingStatisticsType][scalingStatisticsAttribute])
+            autoProcScalingContainer.addAutoProcScalingStatistics(autoProcScalingStatistics)
+        autoProcScalingContainer.AutoProcIntegrationContainer = autoProcIntegrationContainer
+        autoProcContainer.AutoProcScalingContainer = autoProcScalingContainer
+
+        # Program
+        autoProcProgramContainer = AutoProcProgramContainer()
+        autoProcProgram = AutoProcProgram()
+        autoProcProgram.processingCommandLine = ' '.join(sys.argv)
+        autoProcProgram.processingPrograms = "XDSAPP"
+        autoProcProgram.processingStatus = "true"
+        autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
+        autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
+        autoProcProgramContainer.AutoProcProgram = autoProcProgram
+
+        # Attached files
+        pyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(processDirectory)
+        pyarchResultPath = os.path.join(pyarchPath, "results")
+        print(pyarchResultPath)
+        if not os.path.exists(pyarchResultPath):
+            os.makedirs(pyarchResultPath, 0o755)
+
+
+        # XDSAPP log file
+        if xsDataResultXDSAPP.logFile is not None:
+            self.addAttachment(autoProcProgramContainer, xsDataResultXDSAPP.logFile.path.value,
+                               "xdsapp", "log", isAnom, attachmentType="Log")
+        if xsDataResultXDSAPP.pointlessLog is not None:
+            self.addAttachment(autoProcProgramContainer, xsDataResultXDSAPP.pointlessLog.path.value,
+                               "pointless", "log", isAnom, attachmentType="Log")
+        if xsDataResultXDSAPP.phenixXtriageLog is not None:
+            self.addAttachment(autoProcProgramContainer, xsDataResultXDSAPP.phenixXtriageLog.path.value,
+                               "xtriage", "log", isAnom, attachmentType="Log")
+        if xsDataResultXDSAPP.XDS_ASCII_HKL is not None:
+            self.addAttachment(autoProcProgramContainer, xsDataResultXDSAPP.XDS_ASCII_HKL.path.value,
+                               "XDS_ASCII", "HKL", isAnom, attachmentType="Result", doGzip=True)
+        if os.path.exists(strPathXscaleLp):
+            self.addAttachment(autoProcProgramContainer, strPathXscaleLp,
+                               "XSCALE", "LP", isAnom, attachmentType="Result")
+        autoProcContainer.AutoProcProgramContainer = autoProcProgramContainer
+        xsDataInputStoreAutoProc.AutoProcContainer = autoProcContainer
         if isAnom:
             anomString = "anom"
         else:
             anomString = "noanom"
+        edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}".format(anomString))
+        edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
+        edPluginStoreAutoproc.executeSynchronous()
 
-#        # Copy dataFiles to results directory
+
+    def addAttachment(self, autoProcProgramContainer, strPath, name, suffix, isAnom=True, attachmentType="Log", doGzip=False):
+        if isAnom:
+            anomString = "anom"
+        else:
+            anomString = "noanom"
+        pyarchFileName = self.pyarchPrefix + "_" + anomString + "_{0}.{1}".format(name, suffix)
+        shutil.copy(strPath, os.path.join(self.strResultPath, pyarchFileName))
+        if doGzip:
+            pyarchFileName += ".gz"
+            f_in = open(strPath)
+            f_out = gzip.open(os.path.join(self.pyarchDirectory, pyarchFileName), "wb")
+            f_out.writelines(f_in)
+            f_out.close()
+            f_in.close()
+        else:
+            shutil.copy(strPath, os.path.join(self.pyarchDirectory, pyarchFileName))
+        autoProcProgramAttachment = AutoProcProgramAttachment()
+        autoProcProgramAttachment.fileName = pyarchFileName
+        autoProcProgramAttachment.filePath = self.pyarchDirectory
+        autoProcProgramAttachment.fileType = attachmentType
+        autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
+
 #        for dataFile in edPluginExecXDSAPP.dataOutput.dataFiles:
 #            trunc, suffix = os.path.splitext(dataFile.path.value)
 #            newFileName = trunc + "_" + anomString + suffix
@@ -414,10 +546,28 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         return fmt_string
 
     def parseLogFile(self, _logFile):
+        dictLog = {}
         strLog = EDUtilsFile.readFile(_logFile)
-        return strLog
+        print(strLog)
+        for strLine in strLog.split("\n"):
+            if "Space group" in strLine and not "spaceGroup" in dictLog:
+                listLine = strLine.split()
+                print(listLine)
+                dictLog["spaceGroup"] = listLine[2]
+                dictLog["spaceGroupNumber"] = int(listLine[3].replace("(", "").replace(")", ""))
+            elif "Unit cell parameters" in strLine:
+                listLine = strLine.split()
+                dictLog["cellA"] = float(listLine[4])
+                dictLog["cellB"] = float(listLine[5])
+                dictLog["cellC"] = float(listLine[6])
+                dictLog["cellAlpha"] = float(listLine[7])
+                dictLog["cellBeta"] = float(listLine[8])
+                dictLog["cellGamma"] = float(listLine[9])
+                print(listLine)
+        return dictLog
 
     def runXscale(self, _workingDirectory, merged=False, anom=False):
+        strPathXscaleLp = None
         if os.path.exists(os.path.join(_workingDirectory, "XDS_ASCII.HKL")):
             if merged:
                 strMerged = "merged"
@@ -441,3 +591,58 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             xdsInp = pipe1.communicate()[0]
             with open(xscaleLog, "w") as f:
                 f.write(str(xdsInp))
+            # Find path to XSCALE.LP file
+            strPathXscaleLp = os.path.join(_workingDirectory, "XSCALE.LP")
+        return strPathXscaleLp
+
+    def parseXscaleLp(self, _strPathXscaleLp):
+        dictXscale = {}
+        strXscaleLp = EDUtilsFile.readFile(_strPathXscaleLp)
+        isTable = False
+        hasDoneInnerShell = False
+        tableParsed = False
+        listXscaleLp = strXscaleLp.split("\n")
+        index = 0
+        while not tableParsed and index < len(listXscaleLp):
+            strLine = listXscaleLp[index]
+            if "SUBSET OF INTENSITY DATA WITH SIGNAL/NOISE" in strLine:
+                index += 3
+                isTable = True
+            elif isTable:
+                listLine = strLine.split()
+                if not hasDoneInnerShell:
+                    dictXscale["innerShell"] = self.parseXscaleLine(listLine)
+                    dictXscale["innerShell"]["resolutionLimitLow"] = 100
+                    hasDoneInnerShell = True
+                if listLine[0] == "total":
+                    dictXscale["outerShell"] = self.parseXscaleLine(listXscaleLp[index - 1].split())
+                    dictXscale["outerShell"]["resolutionLimitLow"] = float(listXscaleLp[index - 2].split()[0])
+                    dictXscale["overall"] = self.parseXscaleLine(listLine)
+                    tableParsed = True
+            index += 1
+        # Fix resolution ranges
+        dictXscale["overall"]["resolutionLimitLow"] = dictXscale["innerShell"]["resolutionLimitHigh"]
+        dictXscale["overall"]["resolutionLimitHigh"] = dictXscale["outerShell"]["resolutionLimitHigh"]
+        return dictXscale
+
+    def parseXscaleLine(self, listLine):
+        dictLine = {}
+        try:
+            try:
+                value = float(listLine[0])
+            except:
+                value = listLine[0]
+            dictLine["resolutionLimitLow"] = value
+            dictLine["resolutionLimitHigh"] = value
+            dictLine["rmerge"] = float(listLine[5].split("%")[0])
+            dictLine["multiplicity"] = round(float(listLine[1]) / float(listLine[3]), 2)
+            dictLine["completeness"] = float(listLine[4].split("%")[0])
+            dictLine["nTotalObservations"] = int(listLine[1])
+            dictLine["CCHalf"] = float(listLine[10].split("*")[0])
+            dictLine["CCHalf"] = float(listLine[10].split("*")[0])
+            dictLine["ccAno"] = float(listLine[11])
+            dictLine["sigAno"] = float(listLine[12])
+        except Exception as e:
+            self.error(e)
+            self.error("Couldn't parse line: {0}".format(listLine))
+        return dictLine

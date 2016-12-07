@@ -36,6 +36,8 @@
 				<anomalousMultiplicity>17</anomalousMultiplicity>
 				<recordTimeStamp>2011-04-20 11:36:46</recordTimeStamp>
 				<ccHalf>18</ccHalf>
+				<ccAno>12</ccAno>
+				<sigAno>23</sigAno>
 			</AutoProcScalingStatistics>
 	
 			<AutoProcScalingStatistics>
@@ -58,6 +60,8 @@
 				<anomalousMultiplicity>17</anomalousMultiplicity>
 				<recordTimeStamp>2011-04-20 11:36:46</recordTimeStamp>
 				<ccHalf>18</ccHalf>
+				<ccAno>34</ccAno>
+				<sigAno>45</sigAno>
 			</AutoProcScalingStatistics>
 	
 			<AutoProcScalingStatistics>
@@ -80,6 +84,8 @@
 				<anomalousMultiplicity>17</anomalousMultiplicity>
 				<recordTimeStamp>2011-04-20 11:36:46</recordTimeStamp>
 				<ccHalf>18</ccHalf>
+				<ccAno>56</ccAno>
+				<sigAno>67</sigAno>
 			</AutoProcScalingStatistics>
 	
 			<AutoProcIntegrationContainer>
