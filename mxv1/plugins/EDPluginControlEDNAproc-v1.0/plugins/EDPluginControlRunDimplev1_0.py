@@ -122,17 +122,36 @@ class EDPluginControlRunDimplev1_0(EDPluginControl):
         # Run dimple
         xsDataResultDimple = self.runDimple(self.strPdbPath, self.strPathNoanomAimlessMtz)
         if xsDataResultDimple is not None:
+            if self.dataInput.resultsDirectory is not None:
+                # Copy results to PROCESSED_DATA
+                strOrigDimpleResultsDirectory = xsDataResultDimple.resultsDirectory.path.value
+                strResultsDirectory = self.dataInput.resultsDirectory.path.value
+                targetDirectoryName = os.path.basename(strOrigDimpleResultsDirectory)
+                if os.path.exists(os.path.join(strResultsDirectory, targetDirectoryName)):
+                    index = 1
+                    newTargetDirectoryName = "{0}_{1:02d}".format(targetDirectoryName, index)
+                    while os.path.exists(os.path.join(strResultsDirectory, newTargetDirectoryName)):
+                        index += 1
+                        newTargetDirectoryName = "{0}_{1:02d}".format(targetDirectoryName, index)
+                    targetDirectoryName = newTargetDirectoryName
+                strDimpleResultsDirectory = os.path.join(strResultsDirectory, targetDirectoryName)
+                shutil.copytree(strOrigDimpleResultsDirectory, strDimpleResultsDirectory)
+                strDimpleHtmlPath = os.path.join(strDimpleResultsDirectory, "html")
+            else:
+                strDimpleHtmlPath = os.path.join(self.getWorkingDirectory(), "html")
+                strDimpleResultsDirectory = xsDataResultDimple.resultsDirectory.path.value
             # Create HTML page
             listHtmlPath = self.createHtmlPage(self.dataInput.imagePrefix.value,
                                                xsDataResultDimple,
-                                               os.path.join(self.getWorkingDirectory(), "html"),
+                                               strDimpleResultsDirectory,
+                                               strDimpleHtmlPath,
                                                self.dataInput.proposal.value,
                                                self.dataInput.sessionDate.value,
                                                self.dataInput.beamline.value)
             xsDataInputHTML2PDF = XSDataInputHTML2PDF()
             for strHtmlPath in listHtmlPath:
                 xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(strHtmlPath)))
-            xsDataInputHTML2PDF.resultDirectory = xsDataResultDimple.resultsDirectory
+            xsDataInputHTML2PDF.resultDirectory = XSDataFile(XSDataString(strDimpleResultsDirectory))
             edPluginHTML2PDF = self.loadPlugin("EDPluginHTML2PDFv1_0")
             edPluginHTML2PDF.dataInput = xsDataInputHTML2PDF
             edPluginHTML2PDF.executeSynchronous()
@@ -201,14 +220,13 @@ class EDPluginControlRunDimplev1_0(EDPluginControl):
         return listOfTargetPaths
 
 
-    def createHtmlPage(self, strImagePrefix, xsDataResultDimple, strHtmlPath, strProposal, strSessionDate, strBeamline):
+    def createHtmlPage(self, strImagePrefix, xsDataResultDimple, strResultsDirectory, strHtmlPath, strProposal, strSessionDate, strBeamline):
         """Create an HTML page with the results"""
         if not os.path.exists(strHtmlPath):
             os.makedirs(strHtmlPath, 0o755)
         strSample = "_".join(strImagePrefix.split("_")[0:-1])
         strHtmlFileName = "ep_%s_index.html" % strImagePrefix
         strPath = os.path.join(strHtmlPath, strHtmlFileName)
-        strResultsDirectory = xsDataResultDimple.resultsDirectory.path.value
         page = markupv1_10.page(mode='loose_html')
         # Title and footer
         page.init(title="Dimple Results",

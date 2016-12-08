@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Jul 22 10:42::15 2016 by EDGenerateDS.
+# Generated Thu Dec 8 11:46::03 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -1746,7 +1746,7 @@ class XSDataFileConversionOut(XSDataResult):
 
 
 class XSDataInputControlDimple(XSDataInput):
-    def __init__(self, configuration=None, autoProcProgramId=None, pdbDirectory=None, beamline=None, sessionDate=None, proposal=None, imagePrefix=None, pyarchPath=None, mtzFile=None, dataCollectionId=None):
+    def __init__(self, configuration=None, resultsDirectory=None, autoProcProgramId=None, pdbDirectory=None, beamline=None, sessionDate=None, proposal=None, imagePrefix=None, pyarchPath=None, mtzFile=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -1810,6 +1810,13 @@ class XSDataInputControlDimple(XSDataInput):
             self._autoProcProgramId = autoProcProgramId
         else:
             strMessage = "ERROR! XSDataInputControlDimple constructor argument 'autoProcProgramId' is not XSDataInteger but %s" % self._autoProcProgramId.__class__.__name__
+            raise BaseException(strMessage)
+        if resultsDirectory is None:
+            self._resultsDirectory = None
+        elif resultsDirectory.__class__.__name__ == "XSDataFile":
+            self._resultsDirectory = resultsDirectory
+        else:
+            strMessage = "ERROR! XSDataInputControlDimple constructor argument 'resultsDirectory' is not XSDataFile but %s" % self._resultsDirectory.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -1919,6 +1926,18 @@ class XSDataInputControlDimple(XSDataInput):
             raise BaseException(strMessage)
     def delAutoProcProgramId(self): self._autoProcProgramId = None
     autoProcProgramId = property(getAutoProcProgramId, setAutoProcProgramId, delAutoProcProgramId, "Property for autoProcProgramId")
+    # Methods and properties for the 'resultsDirectory' attribute
+    def getResultsDirectory(self): return self._resultsDirectory
+    def setResultsDirectory(self, resultsDirectory):
+        if resultsDirectory is None:
+            self._resultsDirectory = None
+        elif resultsDirectory.__class__.__name__ == "XSDataFile":
+            self._resultsDirectory = resultsDirectory
+        else:
+            strMessage = "ERROR! XSDataInputControlDimple.setResultsDirectory argument is not XSDataFile but %s" % resultsDirectory.__class__.__name__
+            raise BaseException(strMessage)
+    def delResultsDirectory(self): self._resultsDirectory = None
+    resultsDirectory = property(getResultsDirectory, setResultsDirectory, delResultsDirectory, "Property for resultsDirectory")
     def export(self, outfile, level, name_='XSDataInputControlDimple'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1959,6 +1978,8 @@ class XSDataInputControlDimple(XSDataInput):
             self.pdbDirectory.export(outfile, level, name_='pdbDirectory')
         if self._autoProcProgramId is not None:
             self.autoProcProgramId.export(outfile, level, name_='autoProcProgramId')
+        if self._resultsDirectory is not None:
+            self.resultsDirectory.export(outfile, level, name_='resultsDirectory')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -2009,6 +2030,11 @@ class XSDataInputControlDimple(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setAutoProcProgramId(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'resultsDirectory':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setResultsDirectory(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

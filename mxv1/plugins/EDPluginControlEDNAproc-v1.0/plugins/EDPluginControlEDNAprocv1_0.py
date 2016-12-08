@@ -1294,6 +1294,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             xsDataInputControlDimple.sessionDate = XSDataString(self.strSessionDate)
             xsDataInputControlDimple.beamline = XSDataString(self.strBeamline)
             xsDataInputControlDimple.pdbDirectory = XSDataFile(XSDataString(self.root_dir))
+            xsDataInputControlDimple.resultsDirectory = XSDataFile(XSDataString(self.results_dir))
             if pyarch_path is not None:
                 xsDataInputControlDimple.pyarchPath = XSDataFile(XSDataString(pyarch_path))
             if autoProcProgramId is not None:
