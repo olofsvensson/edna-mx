@@ -640,10 +640,12 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
                     listLine[index] = float(listLine[index])
             dictLine["resolutionLimitLow"] = listLine[0]
             dictLine["resolutionLimitHigh"] = listLine[0]
-            dictLine["rmerge"] = listLine[5]
+            dictLine["nTotalObservations"] = int(listLine[1])
+            dictLine["ntotalUniqueObservations"] = int(listLine[2])
             dictLine["multiplicity"] = round(listLine[1] / listLine[3], 2)
             dictLine["completeness"] = listLine[4]
-            dictLine["nTotalObservations"] = int(listLine[1])
+            dictLine["rMerge"] = listLine[5]
+            dictLine["meanIOverSigI"] = listLine[8]
             dictLine["CCHalf"] = listLine[10]
             dictLine["ccAno"] = listLine[11]
             dictLine["sigAno"] = listLine[12]
