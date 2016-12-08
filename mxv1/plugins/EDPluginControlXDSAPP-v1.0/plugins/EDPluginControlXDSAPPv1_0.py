@@ -61,6 +61,7 @@ from XSDataISPyBv1_4 import Image
 from XSDataISPyBv1_4 import AutoProcProgram
 from XSDataISPyBv1_4 import AutoProcContainer
 from XSDataISPyBv1_4 import AutoProcIntegration
+from XSDataISPyBv1_4 import AutoProcScaling
 from XSDataISPyBv1_4 import AutoProcScalingContainer
 from XSDataISPyBv1_4 import AutoProcScalingStatistics
 from XSDataISPyBv1_4 import AutoProcIntegrationContainer
@@ -356,6 +357,9 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
 
         # Scaling container
         autoProcScalingContainer = AutoProcScalingContainer()
+        autoProcScaling = AutoProcScaling()
+        autoProcScaling.recordTimeStamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        autoProcScalingContainer.AutoProcScaling = autoProcScaling
         for scalingStatisticsType in dictXscale:
             autoProcScalingStatistics = AutoProcScalingStatistics()
             autoProcScalingStatistics.scalingStatisticsType = scalingStatisticsType
@@ -550,11 +554,10 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         strLog = EDUtilsFile.readFile(_logFile)
         print(strLog)
         for strLine in strLog.split("\n"):
-            if "Space group" in strLine and not "spaceGroup" in dictLog:
+            if "Selected space group" in strLine and not "spaceGroup" in dictLog:
                 listLine = strLine.split()
-                print(listLine)
-                dictLog["spaceGroup"] = listLine[2]
-                dictLog["spaceGroupNumber"] = int(listLine[3].replace("(", "").replace(")", ""))
+                dictLog["spaceGroup"] = " ".join(listLine[3:-1])
+                dictLog["spaceGroupNumber"] = int(listLine[-1].replace("(", "").replace(")", ""))
             elif "Unit cell parameters" in strLine:
                 listLine = strLine.split()
                 dictLog["cellA"] = float(listLine[4])
@@ -628,20 +631,22 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
     def parseXscaleLine(self, listLine):
         dictLine = {}
         try:
-            try:
-                value = float(listLine[0])
-            except:
-                value = listLine[0]
-            dictLine["resolutionLimitLow"] = value
-            dictLine["resolutionLimitHigh"] = value
-            dictLine["rmerge"] = float(listLine[5].split("%")[0])
-            dictLine["multiplicity"] = round(float(listLine[1]) / float(listLine[3]), 2)
-            dictLine["completeness"] = float(listLine[4].split("%")[0])
+            for index in range(len(listLine)):
+                if listLine[index] != "total":
+                    if "%" in listLine[index]:
+                        listLine[index] = listLine[index].split("%")[0]
+                    elif "*" in listLine[index]:
+                        listLine[index] = listLine[index].split("*")[0]
+                    listLine[index] = float(listLine[index])
+            dictLine["resolutionLimitLow"] = listLine[0]
+            dictLine["resolutionLimitHigh"] = listLine[0]
+            dictLine["rmerge"] = listLine[5]
+            dictLine["multiplicity"] = round(listLine[1] / listLine[3], 2)
+            dictLine["completeness"] = listLine[4]
             dictLine["nTotalObservations"] = int(listLine[1])
-            dictLine["CCHalf"] = float(listLine[10].split("*")[0])
-            dictLine["CCHalf"] = float(listLine[10].split("*")[0])
-            dictLine["ccAno"] = float(listLine[11])
-            dictLine["sigAno"] = float(listLine[12])
+            dictLine["CCHalf"] = listLine[10]
+            dictLine["ccAno"] = listLine[11]
+            dictLine["sigAno"] = listLine[12]
         except Exception as e:
             self.error(e)
             self.error("Couldn't parse line: {0}".format(listLine))

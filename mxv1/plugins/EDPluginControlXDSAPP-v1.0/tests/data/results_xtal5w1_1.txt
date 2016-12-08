@@ -1,0 +1,97 @@
+
+-------------------------------------------------------------------
+
+Processing summary for data set xtal5w1_1
+ 2016-12-02 14:14:46
+-------------------------------------------------------------------
+
+Things you may want to check:
+
+Indexing (std. of spotposition quite high)
+Indexing (low percentage of indexed spots)
+Indexing (large integer offset)
+-------------------------------------------------------------------
+
+
+
+Table 1 like summary 
+-------------------------------------------------------------------
+
+    Space group                            C222(1) (20)                          
+    Unit cell parameters [A]               52.71 149.00 79.73 90.0 90.0 90.0     
+    Resolution limit [A]                   42.17-1.9 (2.01-1.90)                 
+    No. of reflections                     103575                                
+    No. of uniques                         25085                                 
+    Multiplicity                           4.13                                  
+    I/sigI                                 8.82 (2.23)                           
+    R_meas [%]                             14.7 (66.7)                           
+    Completeness [%]                       99.3 (98.8)                           
+    B(Wilson) [A^2]                        23.63                                 
+    Mosaicity [deg]                        0.089                                 
+    ISa                                    24.62                                 
+
+
+Result files generated for CCP4, CNS, SHELX
+-------------------------------------------------------------------
+                                                                                 
+    xtal5w1_1_F.mtz                                                              
+    xtal5w1_1_F_plus_F_minus.mtz                                                 
+    xtal5w1_1_I.mtz                                                              
+    xtal5w1_1.hkl                                                                
+    xtal5w1_1.cv                                                                 
+
+
+Intensity checks
+-------------------------------------------------------------------
+
+    SFCHECK                                                                      
+     Perfect twinning test                 2.0640                                
+     Pseudo translation                    not detected                          
+    Phenix.xtriage                                                               
+     <I^2>/<I>                             1.963 (untwinned 2.000, perfect twin 1.500)
+     <F>^2/<F^2>                           0.800 (untwinned 0.785, perfect twin 0.885)
+     <|E^2-1|>                             0.711 (untwinned 0.736, perfect twin 0.541)
+    Pointless                                                                    
+     |L|-test                              0.454 (untwinned 0.500, perfect twin 0.375)
+     L^2-test                              0.283 (untwinned 0.333, perfect twin 0.200)
+
+
+Space group determination by Pointless
+-------------------------------------------------------------------
+
+    Selected space group                   C 2 2 21 (20)                         
+    Total probability                      0.947                                 
+    Systematic absences probability        0.972                                 
+    Next probable space group              C 2 2 2 (21)                          
+    Total probability                      0.027                                 
+    Systematic absences probability        0.028                                 
+
+
+Indexing summary
+-------------------------------------------------------------------
+
+    No. of subtrees                        504                                   
+    No of strong spots in root subtree     2112                                  
+    No. of strong spots in subtree 2       20                                    
+    Quality value                          1.1                                   
+    Delta                                  0.1                                   
+    DH, DK, DL                             0.12, 0.07, 0.14                      
+    Selected origin                        0 0 0                                 
+    Computed (given) beam position         1228.0, 1255.5 (1225.04, 1254.11)     
+    Std. of spot position (refined)        4.92 (1.34)                           
+    Std. of spindle position (refined)     2.61 (0.65)                           
+    Detector distance (refined)            305.044 (303.11)                      
+    No. of spots indexed (total)           5098 (18084) (=28.2 %)                
+
+
+Experimental settings
+-------------------------------------------------------------------
+
+    Detector used                          PILATUS MINIMUM_VALID_PIXEL_VALUE=0 OVERLOAD= 1048576 !PILATUS
+    Images processed                       1-1120                                
+    Detector distance [mm]                 305.044                               
+    Oscillation increment [deg]            0.1                                   
+    Wavelength [A]                         0.972386                              
+    Friedels law                           TRUE                                  
+
+

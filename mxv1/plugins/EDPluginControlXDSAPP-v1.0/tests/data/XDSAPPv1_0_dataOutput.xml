@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<XSDataResultXDSAPP>
+    <logFile>
+        <path>
+            <value>/tmp_14_days/id30a2/20161206/100705_XDSAPP_jAns9Z/XDSAPPv1_0_anom/results_t3_3.txt</value>
+        </path>
+    </logFile>
+    <pointlessLog>
+        <path>
+            <value>/tmp_14_days/id30a2/20161206/100705_XDSAPP_jAns9Z/XDSAPPv1_0_anom/pointless.log</value>
+        </path>
+    </pointlessLog>
+    <phenixXtriageLog>
+        <path>
+            <value>/tmp_14_days/id30a2/20161206/100705_XDSAPP_jAns9Z/XDSAPPv1_0_anom/phenix_xtriage.log</value>
+        </path>
+    </phenixXtriageLog>
+    <XDS_ASCII_HKL>
+        <path>
+            <value>/tmp_14_days/id30a2/20161206/100705_XDSAPP_jAns9Z/XDSAPPv1_0_anom/XDS_ASCII.HKL</value>
+        </path>
+    </XDS_ASCII_HKL>
+    <XDS_ASCII_HKL_1>
+        <path>
+            <value>/tmp_14_days/id30a2/20161206/100705_XDSAPP_jAns9Z/XDSAPPv1_0_anom/XDS_ASCII.HKL_1</value>
+        </path>
+    </XDS_ASCII_HKL_1>
+</XSDataResultXDSAPP>
