@@ -31,6 +31,7 @@ __date__ = "20161109"
 __status__ = "production"
 
 import os
+import datetime
 
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
