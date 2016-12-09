@@ -403,22 +403,22 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             basenameMtz_F = os.path.splitext(os.path.basename(mtz_F.path.value))[0]
             self.addAttachment(autoProcProgramContainer, mtz_F.path.value,
                                basenameMtz_F, "mtz", isAnom, attachmentType="Result")
-        for mtz_I in xsDataResultXDSAPP.mtz_I:
-            basenameMtz_I = os.path.splitext(os.path.basename(mtz_I.path.value))[0]
-            self.addAttachment(autoProcProgramContainer, mtz_I.path.value,
-                               basenameMtz_I, "mtz", isAnom, attachmentType="Result")
         for mtz_F_plus_F_minus in xsDataResultXDSAPP.mtz_F_plus_F_minus:
             basenameMtz_F_plus_F_minus = os.path.splitext(os.path.basename(mtz_F_plus_F_minus.path.value))[0]
             self.addAttachment(autoProcProgramContainer, mtz_F_plus_F_minus.path.value,
                                basenameMtz_F_plus_F_minus, "mtz", isAnom, attachmentType="Result")
-        for hkl in xsDataResultXDSAPP.hkl:
-            basenameHkl = os.path.splitext(os.path.basename(hkl.path.value))[0]
-            self.addAttachment(autoProcProgramContainer, hkl.path.value,
-                               basenameHkl, "hkl", isAnom, attachmentType="Result", doGzip=True)
-        for cv in xsDataResultXDSAPP.cv:
-            basenameCv = os.path.splitext(os.path.basename(cv.path.value))[0]
-            self.addAttachment(autoProcProgramContainer, cv.path.value,
-                               basenameCv, "cv", isAnom, attachmentType="Result", doGzip=True)
+#        for mtz_I in xsDataResultXDSAPP.mtz_I:
+#            basenameMtz_I = os.path.splitext(os.path.basename(mtz_I.path.value))[0]
+#            self.addAttachment(autoProcProgramContainer, mtz_I.path.value,
+#                               basenameMtz_I, "mtz", isAnom, attachmentType="Result")
+#        for hkl in xsDataResultXDSAPP.hkl:
+#            basenameHkl = os.path.splitext(os.path.basename(hkl.path.value))[0]
+#            self.addAttachment(autoProcProgramContainer, hkl.path.value,
+#                               basenameHkl, "hkl", isAnom, attachmentType="Result", doGzip=True)
+#        for cv in xsDataResultXDSAPP.cv:
+#            basenameCv = os.path.splitext(os.path.basename(cv.path.value))[0]
+#            self.addAttachment(autoProcProgramContainer, cv.path.value,
+#                               basenameCv, "cv", isAnom, attachmentType="Result", doGzip=True)
 
         if os.path.exists(strPathXscaleLp):
             self.addAttachment(autoProcProgramContainer, strPathXscaleLp,
@@ -456,106 +456,6 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         autoProcProgramAttachment.fileType = attachmentType
         autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
 
-#        for dataFile in edPluginExecXDSAPP.dataOutput.dataFiles:
-#            trunc, suffix = os.path.splitext(dataFile.path.value)
-#            newFileName = trunc + "_" + anomString + suffix
-#            shutil.copy(dataFile.path.value, os.path.join(self.resultsDirectory, newFileName))
-#
-#        # Read the generated ISPyB xml file - if any
-#        if edPluginExecXDSAPP.dataOutput.ispybXML is not None:
-#            autoProcContainer = AutoProcContainer.parseFile(edPluginExecXDSAPP.dataOutput.ispybXML.path.value)
-#
-#            # "Fix" certain entries in the ISPyB xml file
-#            autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
-#            for autoProcScalingStatistics in autoProcScalingContainer.AutoProcScalingStatistics:
-#                if isAnom:
-#                    autoProcScalingStatistics.anomalous = True
-#                else:
-#                    autoProcScalingStatistics.anomalous = False
-#                # Convert from fraction to %
-#                autoProcScalingStatistics.rMerge *= 100.0
-#            autoProcIntegrationContainer = autoProcScalingContainer.AutoProcIntegrationContainer
-#            autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
-#            if isAnom:
-#                autoProcIntegration.anomalous = True
-#            else:
-#                autoProcIntegration.anomalous = False
-#            image = autoProcIntegrationContainer.Image
-#            image.dataCollectionId = self.dataInput.dataCollectionId.value
-#            autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
-#            autoProcProgram = autoProcProgramContainer.AutoProcProgram
-#            autoProcProgram.processingPrograms = "XIA2_DIALS"
-#            autoProcProgram.processingStatus = True
-#            autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
-#            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
-#            autoProcProgramContainer.AutoProcProgramAttachment = []
-#            # Upload the log file to ISPyB
-#            if edPluginExecXDSAPP.dataOutput.logFile is not None:
-#                pathToLogFile = edPluginExecXDSAPP.dataOutput.logFile.path.value
-#                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.log"
-#                shutil.copy(pathToLogFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-#                autoProcProgramAttachment = AutoProcProgramAttachment()
-#                autoProcProgramAttachment.fileName = pyarchFileName
-#                autoProcProgramAttachment.filePath = self.pyarchDirectory
-#                autoProcProgramAttachment.fileType = "Log"
-#                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-#            # Upload the summary file to ISPyB
-#            if edPluginExecXDSAPP.dataOutput.summary is not None:
-#                pathToSummaryFile = edPluginExecXDSAPP.dataOutput.summary.path.value
-#                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2-summary.log"
-#                shutil.copy(pathToSummaryFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-#                autoProcProgramAttachment = AutoProcProgramAttachment()
-#                autoProcProgramAttachment.fileName = pyarchFileName
-#                autoProcProgramAttachment.filePath = self.pyarchDirectory
-#                autoProcProgramAttachment.fileType = "Log"
-#                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-#            # Create a pdf file of the html page
-#            if edPluginExecXDSAPP.dataOutput.htmlFile is not None:
-#                pathToHtmlFile = edPluginExecXDSAPP.dataOutput.htmlFile.path.value
-#                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.pdf"
-#                # Convert the xia2.html to xia2.pdf
-#                xsDataInputHTML2PDF = XSDataInputHTML2PDF()
-#                xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(pathToHtmlFile)))
-#                xsDataInputHTML2PDF.paperSize = XSDataString("A4")
-#                xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
-#                edPluginHTML2Pdf = self.loadPlugin("EDPluginHTML2PDFv1_0", "EDPluginHTML2PDFv1_0_{0}".format(anomString))
-#                edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
-#                edPluginHTML2Pdf.executeSynchronous()
-#                pdfFile = edPluginHTML2Pdf.dataOutput.pdfFile.path.value
-#                shutil.copy(pdfFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-#                autoProcProgramAttachment = AutoProcProgramAttachment()
-#                autoProcProgramAttachment.fileName = pyarchFileName
-#                autoProcProgramAttachment.filePath = self.pyarchDirectory
-#                autoProcProgramAttachment.fileType = "Log"
-#                autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-#            # Copy all log files
-#            for logFile in edPluginExecXDSAPP.dataOutput.logFiles:
-#                pathToLogFile = logFile.path.value
-#                if pathToLogFile.endswith(".log"):
-#                    pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToLogFile)
-#                    shutil.copy(pathToLogFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-#                    autoProcProgramAttachment = AutoProcProgramAttachment()
-#                    autoProcProgramAttachment.fileName = pyarchFileName
-#                    autoProcProgramAttachment.filePath = self.pyarchDirectory
-#                    autoProcProgramAttachment.fileType = "Log"
-#                    autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-#            # Copy data files
-#            for dataFile in edPluginExecXDSAPP.dataOutput.dataFiles:
-#                pathToDataFile = dataFile.path.value
-#                if pathToDataFile.endswith(".mtz"):
-#                    pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToDataFile)
-#                    shutil.copy(pathToDataFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-#                    autoProcProgramAttachment = AutoProcProgramAttachment()
-#                    autoProcProgramAttachment.fileName = pyarchFileName
-#                    autoProcProgramAttachment.filePath = self.pyarchDirectory
-#                    autoProcProgramAttachment.fileType = "Result"
-#                    autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
-#            # Upload the xml to ISPyB
-#            xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
-#            xsDataInputStoreAutoProc.AutoProcContainer = autoProcContainer
-#            edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}".format(anomString))
-#            edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
-#            edPluginStoreAutoproc.executeSynchronous()
 
     def eiger_template_to_image(self, fmt, num):
         fileNumber = int(num / 100)
@@ -564,9 +464,11 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         fmt_string = fmt.replace("####", "1_data_%06d" % fileNumber)
         return fmt_string.format(num)
 
+
     def eiger_template_to_master(self, fmt):
         fmt_string = fmt.replace("####", "1_master")
         return fmt_string
+
 
     def parseLogFile(self, _logFile):
         dictLog = {}
@@ -585,6 +487,7 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
                 dictLog["cellBeta"] = float(listLine[8])
                 dictLog["cellGamma"] = float(listLine[9])
         return dictLog
+
 
     def runXscale(self, _workingDirectory, merged=False, anom=False):
         strPathXscaleLp = None
@@ -615,6 +518,7 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             strPathXscaleLp = os.path.join(_workingDirectory, "XSCALE.LP")
         return strPathXscaleLp
 
+
     def parseXscaleLp(self, _strPathXscaleLp):
         dictXscale = {}
         strXscaleLp = EDUtilsFile.readFile(_strPathXscaleLp)
@@ -644,6 +548,7 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         dictXscale["overall"]["resolutionLimitLow"] = dictXscale["innerShell"]["resolutionLimitHigh"]
         dictXscale["overall"]["resolutionLimitHigh"] = dictXscale["outerShell"]["resolutionLimitHigh"]
         return dictXscale
+
 
     def parseXscaleLine(self, listLine):
         dictLine = {}
