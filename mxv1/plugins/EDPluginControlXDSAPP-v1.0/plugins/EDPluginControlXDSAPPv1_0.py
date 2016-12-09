@@ -383,12 +383,10 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         # Attached files
         pyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(processDirectory)
         pyarchResultPath = os.path.join(pyarchPath, "results")
-        print(pyarchResultPath)
         if not os.path.exists(pyarchResultPath):
             os.makedirs(pyarchResultPath, 0o755)
 
-
-        # XDSAPP log file
+        # XDSAPP log and result files
         if xsDataResultXDSAPP.logFile is not None:
             self.addAttachment(autoProcProgramContainer, xsDataResultXDSAPP.logFile.path.value,
                                "xdsapp", "log", isAnom, attachmentType="Log")
@@ -401,6 +399,27 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         if xsDataResultXDSAPP.XDS_ASCII_HKL is not None:
             self.addAttachment(autoProcProgramContainer, xsDataResultXDSAPP.XDS_ASCII_HKL.path.value,
                                "XDS_ASCII", "HKL", isAnom, attachmentType="Result", doGzip=True)
+        for mtz_F in xsDataResultXDSAPP.mtz_F:
+            basenameMtz_F = os.path.splitext(os.path.basename(mtz_F.path.value))[0]
+            self.addAttachment(autoProcProgramContainer, mtz_F.path.value,
+                               basenameMtz_F, "mtz", isAnom, attachmentType="Result")
+        for mtz_I in xsDataResultXDSAPP.mtz_I:
+            basenameMtz_I = os.path.splitext(os.path.basename(mtz_I.path.value))[0]
+            self.addAttachment(autoProcProgramContainer, mtz_I.path.value,
+                               basenameMtz_I, "mtz", isAnom, attachmentType="Result")
+        for mtz_F_plus_F_minus in xsDataResultXDSAPP.mtz_F_plus_F_minus:
+            basenameMtz_F_plus_F_minus = os.path.splitext(os.path.basename(mtz_F_plus_F_minus.path.value))[0]
+            self.addAttachment(autoProcProgramContainer, mtz_F_plus_F_minus.path.value,
+                               basenameMtz_F_plus_F_minus, "mtz", isAnom, attachmentType="Result")
+        for hkl in xsDataResultXDSAPP.hkl:
+            basenameHkl = os.path.splitext(os.path.basename(hkl.path.value))[0]
+            self.addAttachment(autoProcProgramContainer, hkl.path.value,
+                               basenameHkl, "hkl", isAnom, attachmentType="Result", doGzip=True)
+        for cv in xsDataResultXDSAPP.cv:
+            basenameCv = os.path.splitext(os.path.basename(cv.path.value))[0]
+            self.addAttachment(autoProcProgramContainer, cv.path.value,
+                               basenameCv, "cv", isAnom, attachmentType="Result", doGzip=True)
+
         if os.path.exists(strPathXscaleLp):
             self.addAttachment(autoProcProgramContainer, strPathXscaleLp,
                                "XSCALE", "LP", isAnom, attachmentType="Result")
@@ -552,7 +571,6 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
     def parseLogFile(self, _logFile):
         dictLog = {}
         strLog = EDUtilsFile.readFile(_logFile)
-        print(strLog)
         for strLine in strLog.split("\n"):
             if "Selected space group" in strLine and not "spaceGroup" in dictLog:
                 listLine = strLine.split()
@@ -566,7 +584,6 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
                 dictLog["cellAlpha"] = float(listLine[7])
                 dictLog["cellBeta"] = float(listLine[8])
                 dictLog["cellGamma"] = float(listLine[9])
-                print(listLine)
         return dictLog
 
     def runXscale(self, _workingDirectory, merged=False, anom=False):

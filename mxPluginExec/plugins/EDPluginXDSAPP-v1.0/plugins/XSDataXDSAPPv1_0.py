@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Dec 2 04:03::00 2016 by EDGenerateDS.
+# Generated Fri Dec 9 08:53::54 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -287,7 +287,7 @@ class XSDataInputXDSAPP(XSDataInput):
 
 
 class XSDataResultXDSAPP(XSDataResult):
-    def __init__(self, status=None, cv=None, hkl=None, F_plus_F_minus=None, mtz_I=None, mtz_F=None, XDS_ASCII_HKL_1=None, XDS_ASCII_HKL=None, phenixXtriageLog=None, pointlessLog=None, logFile=None):
+    def __init__(self, status=None, cv=None, hkl=None, mtz_F_plus_F_minus=None, mtz_I=None, mtz_F=None, XDS_ASCII_HKL_1=None, XDS_ASCII_HKL=None, phenixXtriageLog=None, pointlessLog=None, logFile=None):
         XSDataResult.__init__(self, status)
         if logFile is None:
             self._logFile = None
@@ -325,39 +325,39 @@ class XSDataResultXDSAPP(XSDataResult):
             strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'XDS_ASCII_HKL_1' is not XSDataFile but %s" % self._XDS_ASCII_HKL_1.__class__.__name__
             raise BaseException(strMessage)
         if mtz_F is None:
-            self._mtz_F = None
-        elif mtz_F.__class__.__name__ == "XSDataFile":
+            self._mtz_F = []
+        elif mtz_F.__class__.__name__ == "list":
             self._mtz_F = mtz_F
         else:
-            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'mtz_F' is not XSDataFile but %s" % self._mtz_F.__class__.__name__
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'mtz_F' is not list but %s" % self._mtz_F.__class__.__name__
             raise BaseException(strMessage)
         if mtz_I is None:
-            self._mtz_I = None
-        elif mtz_I.__class__.__name__ == "XSDataFile":
+            self._mtz_I = []
+        elif mtz_I.__class__.__name__ == "list":
             self._mtz_I = mtz_I
         else:
-            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'mtz_I' is not XSDataFile but %s" % self._mtz_I.__class__.__name__
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'mtz_I' is not list but %s" % self._mtz_I.__class__.__name__
             raise BaseException(strMessage)
-        if F_plus_F_minus is None:
-            self._F_plus_F_minus = None
-        elif F_plus_F_minus.__class__.__name__ == "XSDataFile":
-            self._F_plus_F_minus = F_plus_F_minus
+        if mtz_F_plus_F_minus is None:
+            self._mtz_F_plus_F_minus = []
+        elif mtz_F_plus_F_minus.__class__.__name__ == "list":
+            self._mtz_F_plus_F_minus = mtz_F_plus_F_minus
         else:
-            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'F_plus_F_minus' is not XSDataFile but %s" % self._F_plus_F_minus.__class__.__name__
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'mtz_F_plus_F_minus' is not list but %s" % self._mtz_F_plus_F_minus.__class__.__name__
             raise BaseException(strMessage)
         if hkl is None:
-            self._hkl = None
-        elif hkl.__class__.__name__ == "XSDataFile":
+            self._hkl = []
+        elif hkl.__class__.__name__ == "list":
             self._hkl = hkl
         else:
-            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'hkl' is not XSDataFile but %s" % self._hkl.__class__.__name__
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'hkl' is not list but %s" % self._hkl.__class__.__name__
             raise BaseException(strMessage)
         if cv is None:
-            self._cv = None
-        elif cv.__class__.__name__ == "XSDataFile":
+            self._cv = []
+        elif cv.__class__.__name__ == "list":
             self._cv = cv
         else:
-            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'cv' is not XSDataFile but %s" % self._cv.__class__.__name__
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'cv' is not list but %s" % self._cv.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'logFile' attribute
     def getLogFile(self): return self._logFile
@@ -423,62 +423,167 @@ class XSDataResultXDSAPP(XSDataResult):
     def getMtz_F(self): return self._mtz_F
     def setMtz_F(self, mtz_F):
         if mtz_F is None:
-            self._mtz_F = None
-        elif mtz_F.__class__.__name__ == "XSDataFile":
+            self._mtz_F = []
+        elif mtz_F.__class__.__name__ == "list":
             self._mtz_F = mtz_F
         else:
-            strMessage = "ERROR! XSDataResultXDSAPP.setMtz_F argument is not XSDataFile but %s" % mtz_F.__class__.__name__
+            strMessage = "ERROR! XSDataResultXDSAPP.setMtz_F argument is not list but %s" % mtz_F.__class__.__name__
             raise BaseException(strMessage)
     def delMtz_F(self): self._mtz_F = None
     mtz_F = property(getMtz_F, setMtz_F, delMtz_F, "Property for mtz_F")
+    def addMtz_F(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.addMtz_F argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._mtz_F.append(value)
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.addMtz_F argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertMtz_F(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.insertMtz_F argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.insertMtz_F argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._mtz_F[index] = value
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.addMtz_F argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     # Methods and properties for the 'mtz_I' attribute
     def getMtz_I(self): return self._mtz_I
     def setMtz_I(self, mtz_I):
         if mtz_I is None:
-            self._mtz_I = None
-        elif mtz_I.__class__.__name__ == "XSDataFile":
+            self._mtz_I = []
+        elif mtz_I.__class__.__name__ == "list":
             self._mtz_I = mtz_I
         else:
-            strMessage = "ERROR! XSDataResultXDSAPP.setMtz_I argument is not XSDataFile but %s" % mtz_I.__class__.__name__
+            strMessage = "ERROR! XSDataResultXDSAPP.setMtz_I argument is not list but %s" % mtz_I.__class__.__name__
             raise BaseException(strMessage)
     def delMtz_I(self): self._mtz_I = None
     mtz_I = property(getMtz_I, setMtz_I, delMtz_I, "Property for mtz_I")
-    # Methods and properties for the 'F_plus_F_minus' attribute
-    def getF_plus_F_minus(self): return self._F_plus_F_minus
-    def setF_plus_F_minus(self, F_plus_F_minus):
-        if F_plus_F_minus is None:
-            self._F_plus_F_minus = None
-        elif F_plus_F_minus.__class__.__name__ == "XSDataFile":
-            self._F_plus_F_minus = F_plus_F_minus
+    def addMtz_I(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.addMtz_I argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._mtz_I.append(value)
         else:
-            strMessage = "ERROR! XSDataResultXDSAPP.setF_plus_F_minus argument is not XSDataFile but %s" % F_plus_F_minus.__class__.__name__
+            strMessage = "ERROR! XSDataResultXDSAPP.addMtz_I argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
-    def delF_plus_F_minus(self): self._F_plus_F_minus = None
-    F_plus_F_minus = property(getF_plus_F_minus, setF_plus_F_minus, delF_plus_F_minus, "Property for F_plus_F_minus")
+    def insertMtz_I(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.insertMtz_I argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.insertMtz_I argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._mtz_I[index] = value
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.addMtz_I argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'mtz_F_plus_F_minus' attribute
+    def getMtz_F_plus_F_minus(self): return self._mtz_F_plus_F_minus
+    def setMtz_F_plus_F_minus(self, mtz_F_plus_F_minus):
+        if mtz_F_plus_F_minus is None:
+            self._mtz_F_plus_F_minus = []
+        elif mtz_F_plus_F_minus.__class__.__name__ == "list":
+            self._mtz_F_plus_F_minus = mtz_F_plus_F_minus
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setMtz_F_plus_F_minus argument is not list but %s" % mtz_F_plus_F_minus.__class__.__name__
+            raise BaseException(strMessage)
+    def delMtz_F_plus_F_minus(self): self._mtz_F_plus_F_minus = None
+    mtz_F_plus_F_minus = property(getMtz_F_plus_F_minus, setMtz_F_plus_F_minus, delMtz_F_plus_F_minus, "Property for mtz_F_plus_F_minus")
+    def addMtz_F_plus_F_minus(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.addMtz_F_plus_F_minus argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._mtz_F_plus_F_minus.append(value)
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.addMtz_F_plus_F_minus argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertMtz_F_plus_F_minus(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.insertMtz_F_plus_F_minus argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.insertMtz_F_plus_F_minus argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._mtz_F_plus_F_minus[index] = value
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.addMtz_F_plus_F_minus argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     # Methods and properties for the 'hkl' attribute
     def getHkl(self): return self._hkl
     def setHkl(self, hkl):
         if hkl is None:
-            self._hkl = None
-        elif hkl.__class__.__name__ == "XSDataFile":
+            self._hkl = []
+        elif hkl.__class__.__name__ == "list":
             self._hkl = hkl
         else:
-            strMessage = "ERROR! XSDataResultXDSAPP.setHkl argument is not XSDataFile but %s" % hkl.__class__.__name__
+            strMessage = "ERROR! XSDataResultXDSAPP.setHkl argument is not list but %s" % hkl.__class__.__name__
             raise BaseException(strMessage)
     def delHkl(self): self._hkl = None
     hkl = property(getHkl, setHkl, delHkl, "Property for hkl")
+    def addHkl(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.addHkl argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._hkl.append(value)
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.addHkl argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertHkl(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.insertHkl argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.insertHkl argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._hkl[index] = value
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.addHkl argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     # Methods and properties for the 'cv' attribute
     def getCv(self): return self._cv
     def setCv(self, cv):
         if cv is None:
-            self._cv = None
-        elif cv.__class__.__name__ == "XSDataFile":
+            self._cv = []
+        elif cv.__class__.__name__ == "list":
             self._cv = cv
         else:
-            strMessage = "ERROR! XSDataResultXDSAPP.setCv argument is not XSDataFile but %s" % cv.__class__.__name__
+            strMessage = "ERROR! XSDataResultXDSAPP.setCv argument is not list but %s" % cv.__class__.__name__
             raise BaseException(strMessage)
     def delCv(self): self._cv = None
     cv = property(getCv, setCv, delCv, "Property for cv")
+    def addCv(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.addCv argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._cv.append(value)
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.addCv argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertCv(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.insertCv argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataResultXDSAPP.insertCv argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._cv[index] = value
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.addCv argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     def export(self, outfile, level, name_='XSDataResultXDSAPP'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -497,16 +602,16 @@ class XSDataResultXDSAPP(XSDataResult):
             self.XDS_ASCII_HKL.export(outfile, level, name_='XDS_ASCII_HKL')
         if self._XDS_ASCII_HKL_1 is not None:
             self.XDS_ASCII_HKL_1.export(outfile, level, name_='XDS_ASCII_HKL_1')
-        if self._mtz_F is not None:
-            self.mtz_F.export(outfile, level, name_='mtz_F')
-        if self._mtz_I is not None:
-            self.mtz_I.export(outfile, level, name_='mtz_I')
-        if self._F_plus_F_minus is not None:
-            self.F_plus_F_minus.export(outfile, level, name_='F_plus_F_minus')
-        if self._hkl is not None:
-            self.hkl.export(outfile, level, name_='hkl')
-        if self._cv is not None:
-            self.cv.export(outfile, level, name_='cv')
+        for mtz_F_ in self.getMtz_F():
+            mtz_F_.export(outfile, level, name_='mtz_F')
+        for mtz_I_ in self.getMtz_I():
+            mtz_I_.export(outfile, level, name_='mtz_I')
+        for mtz_F_plus_F_minus_ in self.getMtz_F_plus_F_minus():
+            mtz_F_plus_F_minus_.export(outfile, level, name_='mtz_F_plus_F_minus')
+        for hkl_ in self.getHkl():
+            hkl_.export(outfile, level, name_='hkl')
+        for cv_ in self.getCv():
+            cv_.export(outfile, level, name_='cv')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -541,27 +646,27 @@ class XSDataResultXDSAPP(XSDataResult):
             nodeName_ == 'mtz_F':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setMtz_F(obj_)
+            self.mtz_F.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'mtz_I':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setMtz_I(obj_)
+            self.mtz_I.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'F_plus_F_minus':
+            nodeName_ == 'mtz_F_plus_F_minus':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setF_plus_F_minus(obj_)
+            self.mtz_F_plus_F_minus.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'hkl':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setHkl(obj_)
+            self.hkl.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'cv':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setCv(obj_)
+            self.cv.append(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

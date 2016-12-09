@@ -131,19 +131,14 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
         if os.path.exists(os.path.join(_workingDirectory, "XDS_ASCII.HKL_1")):
             xsDataResultXDSAPP.XDS_ASCII_HKL_1 = XSDataFile(XSDataString(os.path.join(_workingDirectory, "XDS_ASCII.HKL_1")))
         # Result files
-        mtz_F = os.path.join(_workingDirectory, "{0}_F.mtz".format(_prefixRunNumber))
-        if os.path.exists(mtz_F):
-            xsDataResultXDSAPP.mtz_F = XSDataFile(XSDataString(mtz_F))
-        mtz_I = os.path.join(_workingDirectory, "{0}_I.mtz".format(_prefixRunNumber))
-        if os.path.exists(mtz_I):
-            xsDataResultXDSAPP.mtz_I = XSDataFile(XSDataString(mtz_I))
-        F_plus_F_minus = os.path.join(_workingDirectory, "{0}_F_plus_F_minus.mtz".format(_prefixRunNumber))
-        if os.path.exists(F_plus_F_minus):
-            xsDataResultXDSAPP.F_plus_F_minus = XSDataFile(XSDataString(F_plus_F_minus))
-        hkl = os.path.join(_workingDirectory, "{0}.hkl".format(_prefixRunNumber))
-        if os.path.exists(hkl):
-            xsDataResultXDSAPP.hkl = XSDataFile(XSDataString(hkl))
-        cv = os.path.join(_workingDirectory, "{0}.cv".format(_prefixRunNumber))
-        if os.path.exists(hkl):
-            xsDataResultXDSAPP.cv = XSDataFile(XSDataString(cv))
+        for mtz_F in glob.glob(os.path.join(_workingDirectory, "{0}*_F.mtz".format(_prefixRunNumber))):
+            xsDataResultXDSAPP.addMtz_F(XSDataFile(XSDataString(mtz_F)))
+        for mtz_I in glob.glob(os.path.join(_workingDirectory, "{0}*_I.mtz".format(_prefixRunNumber))):
+            xsDataResultXDSAPP.addMtz_I(XSDataFile(XSDataString(mtz_I)))
+        for mtz_F_plus_F_minus in glob.glob(os.path.join(_workingDirectory, "{0}*_F_plus_F_minus.mtz".format(_prefixRunNumber))):
+            xsDataResultXDSAPP.addMtz_F_plus_F_minus(XSDataFile(XSDataString(mtz_F_plus_F_minus)))
+        for hkl in glob.glob(os.path.join(_workingDirectory, "{0}*.hkl".format(_prefixRunNumber))):
+            xsDataResultXDSAPP.addHkl(XSDataFile(XSDataString(hkl)))
+        for cv in glob.glob(os.path.join(_workingDirectory, "{0}*.cv".format(_prefixRunNumber))):
+            xsDataResultXDSAPP.addCv(XSDataFile(XSDataString(mtz_F)))
         return xsDataResultXDSAPP
