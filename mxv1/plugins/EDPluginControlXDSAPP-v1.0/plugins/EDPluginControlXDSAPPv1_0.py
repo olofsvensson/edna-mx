@@ -422,7 +422,7 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
 
         if os.path.exists(strPathXscaleLp):
             self.addAttachment(autoProcProgramContainer, strPathXscaleLp,
-                               "XSCALE", "LP", isAnom, attachmentType="Result")
+                               "XSCALE", "LP", isAnom, isMerged=True, attachmentType="Result")
         autoProcContainer.AutoProcProgramContainer = autoProcProgramContainer
         xsDataInputStoreAutoProc.AutoProcContainer = autoProcContainer
         if isAnom:
@@ -434,12 +434,20 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         edPluginStoreAutoproc.executeSynchronous()
 
 
-    def addAttachment(self, autoProcProgramContainer, strPath, name, suffix, isAnom=True, attachmentType="Log", doGzip=False):
+    def addAttachment(self, autoProcProgramContainer, strPath, name, suffix, isAnom=True,
+                      isMerged=None, attachmentType="Log", doGzip=False):
         if isAnom:
-            anomString = "anom"
+            anomString = "_anom"
         else:
-            anomString = "noanom"
-        pyarchFileName = self.pyarchPrefix + "_" + anomString + "_{0}.{1}".format(name, suffix)
+            anomString = "_noanom"
+        if isMerged is not None:
+            if isMerged:
+                mergeString = "_merged"
+            else:
+                mergeString = "_unmerged"
+        else:
+            mergeString = ""
+        pyarchFileName = self.pyarchPrefix + mergeString + anomString + "_{0}.{1}".format(name, suffix)
         shutil.copy(strPath, os.path.join(self.strResultPath, pyarchFileName))
         if doGzip:
             pyarchFileName += ".gz"
