@@ -83,9 +83,9 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.iyMaxPilatus2m = 852
         # Default values for ESRF Eiger4M
         self.ixMinEiger4m = 1
-        self.ixMaxEiger4m = 840
-        self.iyMinEiger4m = 776
-        self.iyMaxEiger4m = 852
+        self.ixMaxEiger4m = 1067
+        self.iyMinEiger4m = 1029
+        self.iyMaxEiger4m = 1108
         # Bad zones
         self.strBad_zona = None
 
