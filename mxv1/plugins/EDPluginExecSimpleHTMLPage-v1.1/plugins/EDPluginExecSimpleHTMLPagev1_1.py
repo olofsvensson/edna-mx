@@ -108,9 +108,10 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                 strPathToLogFile = self.dataInput.logFile.path.value
             if strPathToLogFile is not None:
                 self.workflowStepReport.addLogFile("edna_log", "EDNA log file", strPathToLogFile)
+            self.indexingResults()
             self.dataCollectionInfo()
-            self.diffractionPlan()
             self.strategyResults()
+            self.diffractionPlan()
             self.graphs()
             self.kappaResults()
             self.indexingResults()
@@ -237,8 +238,8 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                 if fRankingResolution != None and fResolutionMax != None:
                     if fRankingResolution < fResolutionMax:
                         if not bHigherResolutionDetected:
-                            self.workflowStepReport.addWarning("Best has detected that the sample can diffract to {0:.2f} &Aring;!".format(fRankingResolution))
-                            self.workflowStepReport.addWarning("Move the detector to collect {0:.2f} &Aring; data and re-launch the EDNA characterisation.".format(fRankingResolution))
+                            self.workflowStepReport.addWarning("Best has detected that the sample can diffract to {0:.2f} Å!".format(fRankingResolution))
+                            self.workflowStepReport.addWarning("Move the detector to collect {0:.2f} Å data and re-launch the EDNA characterisation.".format(fRankingResolution))
                         bHigherResolutionDetected = True
 
 
@@ -248,8 +249,8 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                     strResolutionReasoning = ""
                     if xsDataSummaryStrategy.getResolutionReasoning():
                         strResolutionReasoning = xsDataSummaryStrategy.getResolutionReasoning().getValue()
-                    tableColumns = ["Wedge", "Subwedge", "Start (&deg;)", "Width (&deg;)", "No images",
-                                    "Exp time (s)", "Max res (&Aring;)", "Rel trans (%)", "Distance (mm)"]
+                    tableColumns = ["Wedge", "Subwedge", "Start (°)", "Width (°)", "No images",
+                                    "Exp time (s)", "Max res (Å)", "Rel trans (%)", "Distance (mm)"]
                     xsDataCollectionStrategy = xsDataCollectionPlan.getCollectionStrategy()
                     tableData = []
                     for xsDataSubWegde in xsDataCollectionStrategy.getSubWedge():
@@ -358,7 +359,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         dictTable["columns"].append("Aimed\nmultiplicity")
         dictTable["columns"].append("Aimed\ncompleteness")
         dictTable["columns"].append("Aimed I/sigma\nat highest res.")
-        dictTable["columns"].append("Aimed\nresolution (&Aring;)")
+        dictTable["columns"].append("Aimed\nresolution (Å)")
         dictTable["columns"].append("Min osc.\nwidth")
         if strExtraColumnTitle is not None:
             dictTable["columns"].append(strExtraColumnTitle)
@@ -484,7 +485,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                 tableTitle = "Indexing summary: Forced spacegroup: %s" % strSpaceGroup
             else:
                 tableTitle = "Indexing summary: Selected spacegroup: %s, forced space group: %s" % (strSpaceGroup, _strForcedSpaceGroup)
-        tableColumns = ["a (&Aring;)", "b (&Aring;)", "c (&Aring;)", "alpha (&deg;)", "beta (&deg;)", "gamma (&deg;)"]
+        tableColumns = ["a (Å)", "b (Å)", "c (Å)", "alpha (°)", "beta (°)", "gamma (°)"]
         listRow = []
         tableData = []
         listRow.append("%.3f" % xsDataCell.getLength_a().getValue())

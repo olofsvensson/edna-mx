@@ -1,3 +1,4 @@
+# coding: utf8
 '''
 Created on May 9, 2016
 
@@ -105,6 +106,15 @@ class WorkflowStepReport(object):
         open(pathToJsonFile, "w").write(json.dumps(self.dictReport, indent=4))
         return pathToJsonFile
 
+    def escapeCharacters(self, strValue):
+        print("*"*10 + " value before: {0}".format(strValue))
+        strValue = strValue.replace("Å", "&Aring;")
+        strValue = strValue.replace("°", "&deg;")
+        strValue = strValue.replace("\n", "<br>")
+        print("*"*10 + " value after: {0}".format(strValue))
+        return strValue
+
+
     def renderHtml(self, pathToHtmlDir, nameOfIndexFile="index.html"):
         page = markupv1_10.page(mode='loose_html')
         page.init(title=self.dictReport["title"],
@@ -115,18 +125,22 @@ class WorkflowStepReport(object):
         page.h1.close()
         page.div.close()
         for item in self.dictReport["items"]:
+            if "value" in item:
+                itemValue = self.escapeCharacters(item["value"])
+            if "title" in item:
+                itemTitle = self.escapeCharacters(item["title"])
             if item["type"] == "info":
-                page.p(item["value"])
+                page.p(itemValue)
             if item["type"] == "warning":
                 page.font(_color="red", size="+1")
                 page.p()
-                page.strong(item["value"])
+                page.strong(itemValue)
                 page.p.close()
                 page.font.close()
             elif item["type"] == "image":
                 self.__renderImage(page, item, pathToHtmlDir)
                 page.br()
-                page.p(item["title"])
+                page.p(itemTitle)
             elif item["type"] == "images":
                 page.table()
                 page.tr(align_="CENTER")
@@ -139,7 +153,7 @@ class WorkflowStepReport(object):
                     page.td.close()
                     page.tr.close()
                     page.tr(align_="CENTER")
-                    page.td(item["title"])
+                    page.td(itemTitle)
                     page.tr.close()
                     page.table.close()
                     page.td.close()
@@ -148,36 +162,40 @@ class WorkflowStepReport(object):
                 page.br()
             elif item["type"] == "table":
                 page.h3()
-                page.strong(item["title"])
+                page.strong(itemTitle)
                 page.h3.close()
                 page.table(border_="1",
                            cellpadding_="2")
                 if "orientation" in item and item["orientation"] == "vertical":
                     for index1 in range(len(item["columns"])):
+                        itemColumn = self.escapeCharacters(item["columns"][index1])
                         page.tr(align_="CENTER")
-                        page.th(item["columns"][index1].replace("\n", "<br>"), bgcolor_="#F0F0FF", align_="LEFT")
+                        page.th(itemColumn, bgcolor_="#F0F0FF", align_="LEFT")
                         for index2 in range(len(item["data"])):
-                            page.th(str(item["data"][index2][index1]).replace("\n", "<br>"), bgcolor_="#FFFFA0")
+                            itemData = self.escapeCharacters(str(item["data"][index2][index1]))
+                            page.th(itemData, bgcolor_="#FFFFA0")
                         page.tr.close()
                 else:
                     page.tr(align_="CENTER", bgcolor_="#F0F0FF")
                     for column in item["columns"]:
-                        page.th(column.replace("\n", "<br>"))
+                        itemColumn = self.escapeCharacters(column)
+                        page.th(itemColumn)
                     page.tr.close()
                     for listRow in item["data"]:
                         page.tr(align_="CENTER", bgcolor_="#FFFFA0")
                         for cell in listRow:
-                            page.th(str(cell).replace("\n", "<br>"))
+                            itemCell = self.escapeCharacters(str(cell))
+                            page.th(itemCell)
                         page.tr.close()
                 page.table.close()
             elif item["type"] == "logFile":
-                pathToLogHtml = os.path.join(pathToHtmlDir, item["title"] + ".html")
+                pathToLogHtml = os.path.join(pathToHtmlDir, itemTitle + ".html")
                 if os.path.exists(pathToLogHtml):
                     pathToLogHtml = tempfile.mkstemp(suffix=".html",
-                                                     prefix=item["title"].replace(" ", "_") + "_",
+                                                     prefix=itemTitle.replace(" ", "_") + "_",
                                                      dir=pathToHtmlDir)[1]
                 pageLogHtml = markupv1_10.page()
-                pageLogHtml.h1(item["title"])
+                pageLogHtml.h1(itemTitle)
                 pageLogHtml.pre(cgi.escape(item["logText"]))
                 open(pathToLogHtml, "w").write(str(pageLogHtml))
                 os.chmod(pathToLogHtml, 0o644)
