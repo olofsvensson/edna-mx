@@ -6,6 +6,9 @@ Created on May 9, 2016
 '''
 
 import os
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 import cgi
 import PIL.Image
 import json
@@ -108,8 +111,8 @@ class WorkflowStepReport(object):
 
     def escapeCharacters(self, strValue):
         strValue = cgi.escape(strValue)
-        strValue = strValue.replace("Å", "&Aring;")
-        strValue = strValue.replace("°", "&deg;")
+        strValue = strValue.replace(unicode("Å"), "&Aring;")
+        strValue = strValue.replace(unicode("°"), "&deg;")
         strValue = strValue.replace("\n", "<br>")
         return strValue
 
