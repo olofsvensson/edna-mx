@@ -283,7 +283,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             if xsDataResultStrategy.bestLogFile:
                 strPathToBestLogFile = xsDataResultStrategy.bestLogFile.path.value
 #                self.workflowStepReport.addLogFile("BEST Log", "Best log file", strPathToBestLogFile)
-                self.workflowStepReport.addLogFile("bes_log", "Best log file", strPathToBestLogFile)
+                self.workflowStepReport.addLogFile("best_log", "Best log file", strPathToBestLogFile)
             if xsDataResultStrategy.raddoseLogFile:
                 strPathToRaddoseLogFile = xsDataResultStrategy.raddoseLogFile.path.value
 #                self.workflowStepReport.addLogFile("RADDOSE Log", "RADDOSE log file", strPathToRaddoseLogFile)
