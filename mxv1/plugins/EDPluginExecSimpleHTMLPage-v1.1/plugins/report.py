@@ -170,31 +170,31 @@ class WorkflowStepReport(object):
                 page.table(border_="1",
                            cellpadding_="2",
                            width="100%",
-                           style_="border-collapse: collapse; margin: 0px; font-size: 12px")
+                           style_="border: 1px solid black; border-collapse: collapse; margin: 0px; font-size: 12px")
                 page.tr(align_="LEFT")
                 # page.strong(itemTitle)
-                page.th(itemTitle, bgcolor_=titleBgColour, align_="LEFT", style_="padding: 5px;", colspan_=str(len(item["columns"])))
+                page.th(itemTitle, bgcolor_=titleBgColour, align_="LEFT", style_="border: 1px solid black; border-collapse: collapse; padding: 5px;", colspan_=str(len(item["columns"])))
                 page.tr.close()
                 if "orientation" in item and item["orientation"] == "vertical":
                     for index1 in range(len(item["columns"])):
                         itemColumn = self.escapeCharacters(item["columns"][index1])
                         page.tr(align_="LEFT")
-                        page.th(itemColumn, bgcolor_=columnTitleBgColour, align_="LEFT", style_="padding: 5px;")
+                        page.th(itemColumn, bgcolor_=columnTitleBgColour, align_="LEFT", style_="border: 1px solid black; border-collapse: collapse; padding: 5px;")
                         for index2 in range(len(item["data"])):
                             itemData = self.escapeCharacters(str(item["data"][index2][index1]))
                             page.th(itemData, bgcolor_=dataBgColour, style_="padding: 5px;")
                         page.tr.close()
                 else:
-                    page.tr(align_="LEFT", bgcolor_=columnTitleBgColour, style_="padding: 5px;")
+                    page.tr(align_="LEFT", bgcolor_=columnTitleBgColour, style_="border: 1px solid black; border-collapse: collapse; padding: 5px;")
                     for column in item["columns"]:
                         itemColumn = self.escapeCharacters(column)
-                        page.th(itemColumn, style_="padding: 5px;")
+                        page.th(itemColumn, style_="border: 1px solid black; border-collapse: collapse; padding: 5px;")
                     page.tr.close()
                     for listRow in item["data"]:
-                        page.tr(align_="LEFT", bgcolor_=dataBgColour, style_="padding: 5px;")
+                        page.tr(align_="LEFT", bgcolor_=dataBgColour, style_="border-collapse: collapse; padding: 5px;")
                         for cell in listRow:
                             itemCell = self.escapeCharacters(str(cell))
-                            page.th(itemCell, style_="padding: 5px;")
+                            page.th(itemCell, style_="border: 1px solid black; border-collapse: collapse; padding: 5px;")
                         page.tr.close()
                 page.table.close()
                 page.br()
