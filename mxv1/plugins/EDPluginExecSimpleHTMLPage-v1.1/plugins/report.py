@@ -107,11 +107,10 @@ class WorkflowStepReport(object):
         return pathToJsonFile
 
     def escapeCharacters(self, strValue):
-        print("*"*10 + " value before: {0}".format(strValue))
+        strValue = cgi.escape(strValue)
         strValue = strValue.replace("Å", "&Aring;")
         strValue = strValue.replace("°", "&deg;")
         strValue = strValue.replace("\n", "<br>")
-        print("*"*10 + " value after: {0}".format(strValue))
         return strValue
 
 
@@ -145,6 +144,7 @@ class WorkflowStepReport(object):
                 page.table()
                 page.tr(align_="CENTER")
                 for item in item["items"]:
+                    itemTitle = self.escapeCharacters(item["title"])
                     page.td()
                     page.table()
                     page.tr()

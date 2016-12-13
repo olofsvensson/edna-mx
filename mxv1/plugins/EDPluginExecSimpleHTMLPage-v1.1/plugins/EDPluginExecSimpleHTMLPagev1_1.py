@@ -101,6 +101,19 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                 self.workflowStepReport.setTitle("Characterisation Results")
             else:
                 self.workflowStepReport.setTitle("No Characterisation Results!")
+            self.transmissionWarning()
+            self.indexingResults()
+            self.strategyResults()
+            self.graphs()
+            self.diffractionPlan()
+            self.imageQualityIndicatorResults()
+            self.createPredictionRowOfImages()
+            self.createThumbnailRowOfImages()
+            self.kappaResults()
+            self.dataCollectionInfo()
+            self.indexingLogFile()
+            self.integrationLogFiles()
+            self.bestAndRaddoseLogFiles()
             # Link to the EDNA log file
             if self.dataInput.logFile is None:
                 strPathToLogFile = self.getLogFileName()
@@ -108,16 +121,6 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                 strPathToLogFile = self.dataInput.logFile.path.value
             if strPathToLogFile is not None:
                 self.workflowStepReport.addLogFile("edna_log", "EDNA log file", strPathToLogFile)
-            self.indexingResults()
-            self.dataCollectionInfo()
-            self.strategyResults()
-            self.diffractionPlan()
-            self.graphs()
-            self.kappaResults()
-            self.indexingResults()
-            self.integrationResults()
-            self.imageQualityIndicatorResults()
-            self.createThumbnailRowOfImages()
 
 
 
@@ -163,11 +166,10 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         if xsDataResultIndexing:
             # Table with indexing results
             self.createTableWithIndexResults(xsDataResultIndexing, strForcedSpaceGroup)
-            # Thumbnail images
-            self.createPredictionRowOfImages()
 
 
-    def integrationResults(self):
+
+    def integrationLogFiles(self):
         # Was the integration successful?
         xsDataResultIntegration = self.xsDataResultCharacterisation.getIntegrationResult()
         if xsDataResultIntegration:
@@ -175,9 +177,6 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             for xsDataIntegrationSubWedgeResult in xsDataResultIntegration.getIntegrationSubWedgeResult():
                 if xsDataIntegrationSubWedgeResult.getIntegrationLogFile() is not None:
                     strPathToIntegrationLogFile = xsDataIntegrationSubWedgeResult.getIntegrationLogFile().getPath().getValue()
-#                    self.workflowStepReport.addLogFile("Integration Log No %d" % iIntegration,
-#                                                       "Integration Log No %d" % iIntegration,
-#                                                       strPathToIntegrationLogFile)
                     self.workflowStepReport.addLogFile("integration_%d_log" % iIntegration,
                                                        "Integration Log No %d" % iIntegration,
                                                        strPathToIntegrationLogFile)
@@ -277,7 +276,9 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                         tableData.append(listRow)
                     strResolutionReasoningFirstLower = strResolutionReasoning[0].lower() + strResolutionReasoning[1:]
                     self.workflowStepReport.addTable(tabTitle + ": " + strResolutionReasoningFirstLower, tableColumns, tableData)
-        # Add log files
+
+    def bestAndRaddoseLogFiles(self):
+        xsDataResultStrategy = self.xsDataResultCharacterisation.getStrategyResult()
         if xsDataResultStrategy is not None:
             if xsDataResultStrategy.bestLogFile:
                 strPathToBestLogFile = xsDataResultStrategy.bestLogFile.path.value
@@ -289,7 +290,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                 self.workflowStepReport.addLogFile("raddose_log", "RADDOSE log file", strPathToRaddoseLogFile)
 
 
-    def dataCollectionInfo(self):
+    def transmissionWarning(self):
         xsDataCollection = self.xsDataResultCharacterisation.getDataCollection()
         if xsDataCollection is not None:
             firstSubWedge = xsDataCollection.subWedge[0]
@@ -302,6 +303,11 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                     strWarningMessage2 = "If this transmission setting is not intentional, please consider re-characterising with transmission set to 100 %"
                     self.workflowStepReport.addWarning(strWarningMessage1)
                     self.workflowStepReport.addWarning(strWarningMessage2)
+
+    def dataCollectionInfo(self):
+        xsDataCollection = self.xsDataResultCharacterisation.getDataCollection()
+        if xsDataCollection is not None:
+            firstSubWedge = xsDataCollection.subWedge[0]
             firstImage = firstSubWedge.image[0]
             if firstImage.date is not None:
                 strDate = firstImage.date.value
@@ -496,8 +502,11 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         listRow.append("%.3f" % xsDataCell.getAngle_gamma().getValue())
         tableData.append(listRow)
         self.workflowStepReport.addTable(tableTitle, tableColumns, tableData)
-        if _xsDataResultIndexing.getIndexingLogFile():
-            strPathToIndexingLogFile = _xsDataResultIndexing.getIndexingLogFile().getPath().getValue()
+
+    def indexingLogFile(self):
+        xsDataResultIndexing = self.xsDataResultCharacterisation.getIndexingResult()
+        if xsDataResultIndexing.getIndexingLogFile():
+            strPathToIndexingLogFile = xsDataResultIndexing.getIndexingLogFile().getPath().getValue()
 #            self.workflowStepReport.addLogFile("Indexing Log", "Indexing log file", strPathToIndexingLogFile)
             self.workflowStepReport.addLogFile("indexing_log", "Indexing log file", strPathToIndexingLogFile)
 
