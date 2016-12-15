@@ -506,7 +506,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
 
     def indexingLogFile(self):
         xsDataResultIndexing = self.xsDataResultCharacterisation.getIndexingResult()
-        if xsDataResultIndexing.getIndexingLogFile():
+        if xsDataResultIndexing is not None and xsDataResultIndexing.getIndexingLogFile():
             strPathToIndexingLogFile = xsDataResultIndexing.getIndexingLogFile().getPath().getValue()
 #            self.workflowStepReport.addLogFile("Indexing Log", "Indexing log file", strPathToIndexingLogFile)
             self.workflowStepReport.addLogFile("indexing_log", "Indexing log file", strPathToIndexingLogFile)
