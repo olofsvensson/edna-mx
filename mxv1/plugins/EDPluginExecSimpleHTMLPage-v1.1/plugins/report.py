@@ -235,7 +235,7 @@ class WorkflowStepReport(object):
                 pathToThumbnailImage = tempfile.mkstemp(suffix="." + item["suffix"],
                                                         prefix=thumbnailImageName + "_",
                                                         dir=pathToHtmlDir)[1]
-            open(pathToThumbnailImage, "w").write(base64.b64decode(item["value"]))
+            open(pathToThumbnailImage, "w").write(base64.b64decode(item["thumbnailValue"]))
             os.chmod(pathToThumbnailImage, 0o644)
             pageReferenceImage = markupv1_10.page(mode='loose_html')
             pageReferenceImage.init(title=imageName, footer="Generated on %s" % time.asctime())
