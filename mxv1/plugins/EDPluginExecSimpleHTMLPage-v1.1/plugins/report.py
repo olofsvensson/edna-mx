@@ -104,6 +104,10 @@ class WorkflowStepReport(object):
         self.dictReport["items"].append(item)
 
 
+    def getDictReport(self):
+        return self.dictReport
+
+
     def renderJson(self, pathToJsonDir):
         pathToJsonFile = os.path.join(pathToJsonDir, "report.json")
         open(pathToJsonFile, "w").write(json.dumps(self.dictReport, indent=4))
@@ -201,9 +205,10 @@ class WorkflowStepReport(object):
             elif item["type"] == "logFile":
                 pathToLogHtml = os.path.join(pathToHtmlDir, itemTitle + ".html")
                 if os.path.exists(pathToLogHtml):
-                    pathToLogHtml = tempfile.mkstemp(suffix=".html",
-                                                     prefix=itemTitle.replace(" ", "_") + "_",
-                                                     dir=pathToHtmlDir)[1]
+                    fd, pathToLogHtml = tempfile.mkstemp(suffix=".html",
+                                                         prefix=itemTitle.replace(" ", "_") + "_",
+                                                         dir=pathToHtmlDir)
+                    os.close(fd)
                 pageLogHtml = markupv1_10.page()
                 pageLogHtml.h1(itemTitle)
                 pageLogHtml.pre(cgi.escape(item["logText"]))
@@ -223,18 +228,20 @@ class WorkflowStepReport(object):
         imageName = item["title"].replace(" ", "_")
         pathToImage = os.path.join(pathToHtmlDir, "{0}.{1}".format(imageName, item["suffix"]))
         if os.path.exists(pathToImage):
-            pathToImage = tempfile.mkstemp(suffix="." + item["suffix"],
-                                           prefix=imageName + "_",
-                                           dir=pathToHtmlDir)[1]
+            fd, pathToImage = tempfile.mkstemp(suffix="." + item["suffix"],
+                                               prefix=imageName + "_",
+                                               dir=pathToHtmlDir)
+            os.close(fd)
         open(pathToImage, "w").write(base64.b64decode(item["value"]))
         os.chmod(pathToImage, 0o644)
         if "thumbnailValue" in item:
             thumbnailImageName = imageName + "_thumbnail"
             pathToThumbnailImage = os.path.join(pathToHtmlDir, "{0}.{1}".format(thumbnailImageName, item["suffix"]))
             if os.path.exists(pathToThumbnailImage):
-                pathToThumbnailImage = tempfile.mkstemp(suffix="." + item["suffix"],
-                                                        prefix=thumbnailImageName + "_",
-                                                        dir=pathToHtmlDir)[1]
+                fd, pathToThumbnailImage = tempfile.mkstemp(suffix="." + item["suffix"],
+                                                            prefix=thumbnailImageName + "_",
+                                                            dir=pathToHtmlDir)
+                os.close(fd)
             open(pathToThumbnailImage, "w").write(base64.b64decode(item["thumbnailValue"]))
             os.chmod(pathToThumbnailImage, 0o644)
             pageReferenceImage = markupv1_10.page(mode='loose_html')
