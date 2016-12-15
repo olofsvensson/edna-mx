@@ -452,31 +452,32 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
     def createPredictionRowOfImages(self):
         listPaths = []
         xsDataResultIndexing = self.xsDataResultCharacterisation.indexingResult
-        self.workflowStepReport.startImageList()
-        for xsDataSubWedge in self.xsDataResultCharacterisation.dataCollection.subWedge:
-            for xsDataImage in xsDataSubWedge.image:
-                xsDataResultPrediction = xsDataResultIndexing.predictionResult
-                listXSDataReferenceImage = xsDataResultIndexing.image
-                for xsDataImagePrediction in xsDataResultPrediction.predictionImage:
-                    if xsDataImagePrediction.number.value == xsDataImage.number.value:
-                        strPathToPredictionImage = xsDataImagePrediction.path.value
-                        strFileName = os.path.basename(strPathToPredictionImage)
-                        break
-                strReferenceFileName = None
-                if strReferenceFileName is None:
-                    strReferenceFileName = strFileName
-                if os.path.exists(strPathToPredictionImage):
-                    outfile = os.path.join(self.getWorkingDirectory(),
-                                           os.path.splitext(os.path.basename(strPathToPredictionImage))[0] + ".thumbnail.jpg")
-                    size = [256, 256]
-                    im = Image.open(strPathToPredictionImage)
-                    im.thumbnail(size, Image.ANTIALIAS)
-                    im.save(outfile, "JPEG")
-                    os.chmod(outfile, 0o644)
-                    self.workflowStepReport.addImage(strPathToPredictionImage, os.path.basename(os.path.splitext(strFileName)[0]),
-                                                     pathToThumbnailImage=outfile)
-                    os.remove(outfile)
-        self.workflowStepReport.endImageList()
+        if xsDataResultIndexing is not None:
+            self.workflowStepReport.startImageList()
+            for xsDataSubWedge in self.xsDataResultCharacterisation.dataCollection.subWedge:
+                for xsDataImage in xsDataSubWedge.image:
+                    xsDataResultPrediction = xsDataResultIndexing.predictionResult
+                    listXSDataReferenceImage = xsDataResultIndexing.image
+                    for xsDataImagePrediction in xsDataResultPrediction.predictionImage:
+                        if xsDataImagePrediction.number.value == xsDataImage.number.value:
+                            strPathToPredictionImage = xsDataImagePrediction.path.value
+                            strFileName = os.path.basename(strPathToPredictionImage)
+                            break
+                    strReferenceFileName = None
+                    if strReferenceFileName is None:
+                        strReferenceFileName = strFileName
+                    if os.path.exists(strPathToPredictionImage):
+                        outfile = os.path.join(self.getWorkingDirectory(),
+                                               os.path.splitext(os.path.basename(strPathToPredictionImage))[0] + ".thumbnail.jpg")
+                        size = [256, 256]
+                        im = Image.open(strPathToPredictionImage)
+                        im.thumbnail(size, Image.ANTIALIAS)
+                        im.save(outfile, "JPEG")
+                        os.chmod(outfile, 0o644)
+                        self.workflowStepReport.addImage(strPathToPredictionImage, os.path.basename(os.path.splitext(strFileName)[0]),
+                                                         pathToThumbnailImage=outfile)
+                        os.remove(outfile)
+            self.workflowStepReport.endImageList()
 
 
     def createTableWithIndexResults(self, _xsDataResultIndexing, _strForcedSpaceGroup):
