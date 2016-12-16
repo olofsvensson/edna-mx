@@ -8,7 +8,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ class EDTestCasePluginExecuteControlCharacterisationv1_4_integrationError(EDTest
 
     def preProcess(self):
         EDTestCasePluginExecuteControlCharacterisationv1_4.preProcess(self)
-        self.loadTestImage([ "integrationError_2_001.img" ])
+        self.loadTestImage([ "integrationError_2_0001.img" ])
 
 
     def testExecute(self):
