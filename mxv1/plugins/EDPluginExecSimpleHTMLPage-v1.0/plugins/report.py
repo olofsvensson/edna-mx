@@ -171,9 +171,10 @@ class WorkflowStepReport(object):
                         page.tr.close()
                 page.table.close()
             elif item["type"] == "logFile":
-                pathToLogHtml = tempfile.mkstemp(suffix=".html",
-                                                 prefix=item["title"].replace(" ", "_") + "_",
-                                                 dir=pathToHtmlDir)[1]
+                fd, pathToLogHtml = tempfile.mkstemp(suffix=".html",
+                                                     prefix=item["title"].replace(" ", "_") + "_",
+                                                     dir=pathToHtmlDir)
+                os.close(fd)
                 pageLogHtml = markupv1_10.page()
                 pageLogHtml.h1(item["title"])
                 pageLogHtml.pre(cgi.escape(item["logText"]))
@@ -193,9 +194,10 @@ class WorkflowStepReport(object):
         imageName = item["title"].replace(" ", "_")
         pathToImage = os.path.join(pathToHtmlDir, "{0}.{1}".format(imageName, item["suffix"]))
         if os.path.exists(pathToImage):
-            pathToImage = tempfile.mkstemp(suffix="." + item["suffix"],
-                                           prefix=imageName + "_",
-                                           dir=pathToHtmlDir)[1]
+            fd, pathToImage = tempfile.mkstemp(suffix="." + item["suffix"],
+                                               prefix=imageName + "_",
+                                               dir=pathToHtmlDir)
+            os.close(fd)
         open(pathToImage, "w").write(base64.b64decode(item["value"]))
         os.chmod(pathToImage, 0o644)
         if "thumbnailValue" in item:

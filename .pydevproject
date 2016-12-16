@@ -6,5 +6,7 @@
 <path>/edna-mx/kernel/src</path>
 <path>/edna-mx/kernel/tests/src</path>
 <path>/edna-mx/mxv1/plugins/EDPluginControlH5ToCBF-v1.0/plugins</path>
+<path>/edna-mx/mxv1/plugins/EDPluginControlXia2DIALS-v1.0/plugins</path>
+<path>/edna-mx/mxv1/bin</path>
 </pydev_pathproperty>
 </pydev_project>

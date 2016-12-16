@@ -198,8 +198,9 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
         iIndex = 1
         listDataFiles = []
         for xsDataGraph in _xsDataPlot.graph:
-            strTmpDataPath = tempfile.mkstemp(prefix="data_", suffix=".dat", \
-                                              dir=self.getWorkingDirectory(), text=True)[1]
+            fd, strTmpDataPath = tempfile.mkstemp(prefix="data_", suffix=".dat", \
+                                                  dir=self.getWorkingDirectory(), text=True)
+            os.close(fd)
             numpyData = numpy.array(json.loads(xsDataGraph.data))
             numpy.savetxt(strTmpDataPath, numpyData, delimiter=" ")
             listDataFiles.append(strTmpDataPath)
