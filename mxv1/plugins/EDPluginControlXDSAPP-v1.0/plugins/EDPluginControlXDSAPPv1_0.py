@@ -253,11 +253,11 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
 
         # Prepare input to execution plugin
         xsDataInputXDSAPPAnom = XSDataInputXDSAPP()
-        xsDataInputXDSAPPAnom.anomalous = XSDataBoolean(True)
+        xsDataInputXDSAPPAnom.anomalous = XSDataBoolean(False)
         xsDataInputXDSAPPAnom.image = XSDataFile(XSDataString(pathToStartImage))
         if self.doAnomAndNonanom:
             xsDataInputXDSAPPNoanom = XSDataInputXDSAPP()
-            xsDataInputXDSAPPNoanom.anomalous = XSDataBoolean(False)
+            xsDataInputXDSAPPNoanom.anomalous = XSDataBoolean(True)
             xsDataInputXDSAPPNoanom.image = XSDataFile(XSDataString(pathToStartImage))
 #        if isH5:
 #            masterFilePath = os.path.join(directory,
