@@ -97,9 +97,9 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
                 anomalous = False
 
         if anomalous:
-            strCommandText += " --fried=true"
-        else:
             strCommandText += " --fried=false"
+        else:
+            strCommandText += " --fried=true"
 
         strCommandText += " --dir={0}".format(self.getWorkingDirectory())
 
