@@ -58,10 +58,12 @@ complex type XSDataInputControlDozor extends XSDataInput {
 	hdf5BatchSize : XSDataInteger optional
 	wedgeNumber : XSDataInteger optional
 	radiationDamage : XSDataBoolean optional
+	keepCbfTmpDirectory : XSDataBoolean optional
 }
 
 complex type XSDataResultControlDozor extends XSDataResult {
 	imageDozor : XSDataControlImageDozor [] optional
 	inputDozor : XSDataDozorInput optional
 	halfDoseTime : XSDataDouble optional
+	pathToCbfDirectory : XSDataFile optional
 }

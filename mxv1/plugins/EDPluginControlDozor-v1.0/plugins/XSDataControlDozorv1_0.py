@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Nov 28 10:47::24 2016 by EDGenerateDS.
+# Generated Sun Dec 11 11:41::11 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -1033,7 +1033,7 @@ class XSDataDozorInput(XSDataInput):
 
 
 class XSDataInputControlDozor(XSDataInput):
-    def __init__(self, configuration=None, radiationDamage=None, wedgeNumber=None, hdf5BatchSize=None, batchSize=None, endNo=None, startNo=None, template=None, directory=None, image=None, processDirectory=None, dataCollectionId=None):
+    def __init__(self, configuration=None, keepCbfTmpDirectory=None, radiationDamage=None, wedgeNumber=None, hdf5BatchSize=None, batchSize=None, endNo=None, startNo=None, template=None, directory=None, image=None, processDirectory=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -1111,6 +1111,13 @@ class XSDataInputControlDozor(XSDataInput):
             self._radiationDamage = radiationDamage
         else:
             strMessage = "ERROR! XSDataInputControlDozor constructor argument 'radiationDamage' is not XSDataBoolean but %s" % self._radiationDamage.__class__.__name__
+            raise BaseException(strMessage)
+        if keepCbfTmpDirectory is None:
+            self._keepCbfTmpDirectory = None
+        elif keepCbfTmpDirectory.__class__.__name__ == "XSDataBoolean":
+            self._keepCbfTmpDirectory = keepCbfTmpDirectory
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor constructor argument 'keepCbfTmpDirectory' is not XSDataBoolean but %s" % self._keepCbfTmpDirectory.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -1265,6 +1272,18 @@ class XSDataInputControlDozor(XSDataInput):
             raise BaseException(strMessage)
     def delRadiationDamage(self): self._radiationDamage = None
     radiationDamage = property(getRadiationDamage, setRadiationDamage, delRadiationDamage, "Property for radiationDamage")
+    # Methods and properties for the 'keepCbfTmpDirectory' attribute
+    def getKeepCbfTmpDirectory(self): return self._keepCbfTmpDirectory
+    def setKeepCbfTmpDirectory(self, keepCbfTmpDirectory):
+        if keepCbfTmpDirectory is None:
+            self._keepCbfTmpDirectory = None
+        elif keepCbfTmpDirectory.__class__.__name__ == "XSDataBoolean":
+            self._keepCbfTmpDirectory = keepCbfTmpDirectory
+        else:
+            strMessage = "ERROR! XSDataInputControlDozor.setKeepCbfTmpDirectory argument is not XSDataBoolean but %s" % keepCbfTmpDirectory.__class__.__name__
+            raise BaseException(strMessage)
+    def delKeepCbfTmpDirectory(self): self._keepCbfTmpDirectory = None
+    keepCbfTmpDirectory = property(getKeepCbfTmpDirectory, setKeepCbfTmpDirectory, delKeepCbfTmpDirectory, "Property for keepCbfTmpDirectory")
     def export(self, outfile, level, name_='XSDataInputControlDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1295,6 +1314,8 @@ class XSDataInputControlDozor(XSDataInput):
             self.wedgeNumber.export(outfile, level, name_='wedgeNumber')
         if self._radiationDamage is not None:
             self.radiationDamage.export(outfile, level, name_='radiationDamage')
+        if self._keepCbfTmpDirectory is not None:
+            self.keepCbfTmpDirectory.export(outfile, level, name_='keepCbfTmpDirectory')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1355,6 +1376,11 @@ class XSDataInputControlDozor(XSDataInput):
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setRadiationDamage(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'keepCbfTmpDirectory':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setKeepCbfTmpDirectory(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -1401,7 +1427,7 @@ class XSDataInputControlDozor(XSDataInput):
 
 
 class XSDataResultControlDozor(XSDataResult):
-    def __init__(self, status=None, halfDoseTime=None, inputDozor=None, imageDozor=None):
+    def __init__(self, status=None, pathToCbfDirectory=None, halfDoseTime=None, inputDozor=None, imageDozor=None):
         XSDataResult.__init__(self, status)
         if imageDozor is None:
             self._imageDozor = []
@@ -1423,6 +1449,13 @@ class XSDataResultControlDozor(XSDataResult):
             self._halfDoseTime = halfDoseTime
         else:
             strMessage = "ERROR! XSDataResultControlDozor constructor argument 'halfDoseTime' is not XSDataDouble but %s" % self._halfDoseTime.__class__.__name__
+            raise BaseException(strMessage)
+        if pathToCbfDirectory is None:
+            self._pathToCbfDirectory = None
+        elif pathToCbfDirectory.__class__.__name__ == "XSDataFile":
+            self._pathToCbfDirectory = pathToCbfDirectory
+        else:
+            strMessage = "ERROR! XSDataResultControlDozor constructor argument 'pathToCbfDirectory' is not XSDataFile but %s" % self._pathToCbfDirectory.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'imageDozor' attribute
     def getImageDozor(self): return self._imageDozor
@@ -1481,6 +1514,18 @@ class XSDataResultControlDozor(XSDataResult):
             raise BaseException(strMessage)
     def delHalfDoseTime(self): self._halfDoseTime = None
     halfDoseTime = property(getHalfDoseTime, setHalfDoseTime, delHalfDoseTime, "Property for halfDoseTime")
+    # Methods and properties for the 'pathToCbfDirectory' attribute
+    def getPathToCbfDirectory(self): return self._pathToCbfDirectory
+    def setPathToCbfDirectory(self, pathToCbfDirectory):
+        if pathToCbfDirectory is None:
+            self._pathToCbfDirectory = None
+        elif pathToCbfDirectory.__class__.__name__ == "XSDataFile":
+            self._pathToCbfDirectory = pathToCbfDirectory
+        else:
+            strMessage = "ERROR! XSDataResultControlDozor.setPathToCbfDirectory argument is not XSDataFile but %s" % pathToCbfDirectory.__class__.__name__
+            raise BaseException(strMessage)
+    def delPathToCbfDirectory(self): self._pathToCbfDirectory = None
+    pathToCbfDirectory = property(getPathToCbfDirectory, setPathToCbfDirectory, delPathToCbfDirectory, "Property for pathToCbfDirectory")
     def export(self, outfile, level, name_='XSDataResultControlDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1495,6 +1540,8 @@ class XSDataResultControlDozor(XSDataResult):
             self.inputDozor.export(outfile, level, name_='inputDozor')
         if self._halfDoseTime is not None:
             self.halfDoseTime.export(outfile, level, name_='halfDoseTime')
+        if self._pathToCbfDirectory is not None:
+            self.pathToCbfDirectory.export(outfile, level, name_='pathToCbfDirectory')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1515,6 +1562,11 @@ class XSDataResultControlDozor(XSDataResult):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setHalfDoseTime(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pathToCbfDirectory':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setPathToCbfDirectory(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

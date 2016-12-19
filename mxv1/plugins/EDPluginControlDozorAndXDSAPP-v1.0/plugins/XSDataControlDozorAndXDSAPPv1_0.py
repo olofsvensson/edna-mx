@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Dec 19 11:21::43 2016 by EDGenerateDS.
+# Generated Fri Dec 16 01:18::44 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -119,36 +119,36 @@ class MixedContainer(object):
 
 
 
-class XSDataInputControlXDSAPP(XSDataInput):
-    def __init__(self, configuration=None, hdf5ToCbfDirectory=None, doAnomAndNonanom=None, processDirectory=None, dataCollectionId=None):
+class XSDataInputControlDozorAndXDSAPP(XSDataInput):
+    def __init__(self, configuration=None, doAnomAndNonanom=None, xdsappProcessDirectory=None, dozorProcessDirectory=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
         elif dataCollectionId.__class__.__name__ == "XSDataInteger":
             self._dataCollectionId = dataCollectionId
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'dataCollectionId' is not XSDataInteger but %s" % self._dataCollectionId.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlDozorAndXDSAPP constructor argument 'dataCollectionId' is not XSDataInteger but %s" % self._dataCollectionId.__class__.__name__
             raise BaseException(strMessage)
-        if processDirectory is None:
-            self._processDirectory = None
-        elif processDirectory.__class__.__name__ == "XSDataFile":
-            self._processDirectory = processDirectory
+        if dozorProcessDirectory is None:
+            self._dozorProcessDirectory = None
+        elif dozorProcessDirectory.__class__.__name__ == "XSDataFile":
+            self._dozorProcessDirectory = dozorProcessDirectory
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlDozorAndXDSAPP constructor argument 'dozorProcessDirectory' is not XSDataFile but %s" % self._dozorProcessDirectory.__class__.__name__
+            raise BaseException(strMessage)
+        if xdsappProcessDirectory is None:
+            self._xdsappProcessDirectory = None
+        elif xdsappProcessDirectory.__class__.__name__ == "XSDataFile":
+            self._xdsappProcessDirectory = xdsappProcessDirectory
+        else:
+            strMessage = "ERROR! XSDataInputControlDozorAndXDSAPP constructor argument 'xdsappProcessDirectory' is not XSDataFile but %s" % self._xdsappProcessDirectory.__class__.__name__
             raise BaseException(strMessage)
         if doAnomAndNonanom is None:
             self._doAnomAndNonanom = None
         elif doAnomAndNonanom.__class__.__name__ == "XSDataBoolean":
             self._doAnomAndNonanom = doAnomAndNonanom
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'doAnomAndNonanom' is not XSDataBoolean but %s" % self._doAnomAndNonanom.__class__.__name__
-            raise BaseException(strMessage)
-        if hdf5ToCbfDirectory is None:
-            self._hdf5ToCbfDirectory = None
-        elif hdf5ToCbfDirectory.__class__.__name__ == "XSDataFile":
-            self._hdf5ToCbfDirectory = hdf5ToCbfDirectory
-        else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'hdf5ToCbfDirectory' is not XSDataFile but %s" % self._hdf5ToCbfDirectory.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlDozorAndXDSAPP constructor argument 'doAnomAndNonanom' is not XSDataBoolean but %s" % self._doAnomAndNonanom.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -158,22 +158,34 @@ class XSDataInputControlXDSAPP(XSDataInput):
         elif dataCollectionId.__class__.__name__ == "XSDataInteger":
             self._dataCollectionId = dataCollectionId
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP.setDataCollectionId argument is not XSDataInteger but %s" % dataCollectionId.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlDozorAndXDSAPP.setDataCollectionId argument is not XSDataInteger but %s" % dataCollectionId.__class__.__name__
             raise BaseException(strMessage)
     def delDataCollectionId(self): self._dataCollectionId = None
     dataCollectionId = property(getDataCollectionId, setDataCollectionId, delDataCollectionId, "Property for dataCollectionId")
-    # Methods and properties for the 'processDirectory' attribute
-    def getProcessDirectory(self): return self._processDirectory
-    def setProcessDirectory(self, processDirectory):
-        if processDirectory is None:
-            self._processDirectory = None
-        elif processDirectory.__class__.__name__ == "XSDataFile":
-            self._processDirectory = processDirectory
+    # Methods and properties for the 'dozorProcessDirectory' attribute
+    def getDozorProcessDirectory(self): return self._dozorProcessDirectory
+    def setDozorProcessDirectory(self, dozorProcessDirectory):
+        if dozorProcessDirectory is None:
+            self._dozorProcessDirectory = None
+        elif dozorProcessDirectory.__class__.__name__ == "XSDataFile":
+            self._dozorProcessDirectory = dozorProcessDirectory
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP.setProcessDirectory argument is not XSDataFile but %s" % processDirectory.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlDozorAndXDSAPP.setDozorProcessDirectory argument is not XSDataFile but %s" % dozorProcessDirectory.__class__.__name__
             raise BaseException(strMessage)
-    def delProcessDirectory(self): self._processDirectory = None
-    processDirectory = property(getProcessDirectory, setProcessDirectory, delProcessDirectory, "Property for processDirectory")
+    def delDozorProcessDirectory(self): self._dozorProcessDirectory = None
+    dozorProcessDirectory = property(getDozorProcessDirectory, setDozorProcessDirectory, delDozorProcessDirectory, "Property for dozorProcessDirectory")
+    # Methods and properties for the 'xdsappProcessDirectory' attribute
+    def getXdsappProcessDirectory(self): return self._xdsappProcessDirectory
+    def setXdsappProcessDirectory(self, xdsappProcessDirectory):
+        if xdsappProcessDirectory is None:
+            self._xdsappProcessDirectory = None
+        elif xdsappProcessDirectory.__class__.__name__ == "XSDataFile":
+            self._xdsappProcessDirectory = xdsappProcessDirectory
+        else:
+            strMessage = "ERROR! XSDataInputControlDozorAndXDSAPP.setXdsappProcessDirectory argument is not XSDataFile but %s" % xdsappProcessDirectory.__class__.__name__
+            raise BaseException(strMessage)
+    def delXdsappProcessDirectory(self): self._xdsappProcessDirectory = None
+    xdsappProcessDirectory = property(getXdsappProcessDirectory, setXdsappProcessDirectory, delXdsappProcessDirectory, "Property for xdsappProcessDirectory")
     # Methods and properties for the 'doAnomAndNonanom' attribute
     def getDoAnomAndNonanom(self): return self._doAnomAndNonanom
     def setDoAnomAndNonanom(self, doAnomAndNonanom):
@@ -182,38 +194,26 @@ class XSDataInputControlXDSAPP(XSDataInput):
         elif doAnomAndNonanom.__class__.__name__ == "XSDataBoolean":
             self._doAnomAndNonanom = doAnomAndNonanom
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP.setDoAnomAndNonanom argument is not XSDataBoolean but %s" % doAnomAndNonanom.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlDozorAndXDSAPP.setDoAnomAndNonanom argument is not XSDataBoolean but %s" % doAnomAndNonanom.__class__.__name__
             raise BaseException(strMessage)
     def delDoAnomAndNonanom(self): self._doAnomAndNonanom = None
     doAnomAndNonanom = property(getDoAnomAndNonanom, setDoAnomAndNonanom, delDoAnomAndNonanom, "Property for doAnomAndNonanom")
-    # Methods and properties for the 'hdf5ToCbfDirectory' attribute
-    def getHdf5ToCbfDirectory(self): return self._hdf5ToCbfDirectory
-    def setHdf5ToCbfDirectory(self, hdf5ToCbfDirectory):
-        if hdf5ToCbfDirectory is None:
-            self._hdf5ToCbfDirectory = None
-        elif hdf5ToCbfDirectory.__class__.__name__ == "XSDataFile":
-            self._hdf5ToCbfDirectory = hdf5ToCbfDirectory
-        else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP.setHdf5ToCbfDirectory argument is not XSDataFile but %s" % hdf5ToCbfDirectory.__class__.__name__
-            raise BaseException(strMessage)
-    def delHdf5ToCbfDirectory(self): self._hdf5ToCbfDirectory = None
-    hdf5ToCbfDirectory = property(getHdf5ToCbfDirectory, setHdf5ToCbfDirectory, delHdf5ToCbfDirectory, "Property for hdf5ToCbfDirectory")
-    def export(self, outfile, level, name_='XSDataInputControlXDSAPP'):
+    def export(self, outfile, level, name_='XSDataInputControlDozorAndXDSAPP'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
         self.exportChildren(outfile, level + 1, name_)
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataInputControlXDSAPP'):
+    def exportChildren(self, outfile, level, name_='XSDataInputControlDozorAndXDSAPP'):
         XSDataInput.exportChildren(self, outfile, level, name_)
         if self._dataCollectionId is not None:
             self.dataCollectionId.export(outfile, level, name_='dataCollectionId')
-        if self._processDirectory is not None:
-            self.processDirectory.export(outfile, level, name_='processDirectory')
+        if self._dozorProcessDirectory is not None:
+            self.dozorProcessDirectory.export(outfile, level, name_='dozorProcessDirectory')
+        if self._xdsappProcessDirectory is not None:
+            self.xdsappProcessDirectory.export(outfile, level, name_='xdsappProcessDirectory')
         if self._doAnomAndNonanom is not None:
             self.doAnomAndNonanom.export(outfile, level, name_='doAnomAndNonanom')
-        if self._hdf5ToCbfDirectory is not None:
-            self.hdf5ToCbfDirectory.export(outfile, level, name_='hdf5ToCbfDirectory')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -225,26 +225,26 @@ class XSDataInputControlXDSAPP(XSDataInput):
             obj_.build(child_)
             self.setDataCollectionId(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'processDirectory':
+            nodeName_ == 'dozorProcessDirectory':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setProcessDirectory(obj_)
+            self.setDozorProcessDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'xdsappProcessDirectory':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setXdsappProcessDirectory(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'doAnomAndNonanom':
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setDoAnomAndNonanom(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'hdf5ToCbfDirectory':
-            obj_ = XSDataFile()
-            obj_.build(child_)
-            self.setHdf5ToCbfDirectory(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()
         oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataInputControlXDSAPP" )
+        self.export( oStreamString, 0, name_="XSDataInputControlDozorAndXDSAPP" )
         oStringXML = oStreamString.getvalue()
         oStreamString.close()
         return oStringXML
@@ -252,24 +252,24 @@ class XSDataInputControlXDSAPP(XSDataInput):
     def exportToFile( self, _outfileName ):
         outfile = open( _outfileName, "w" )
         outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataInputControlXDSAPP' )
+        self.export( outfile, 0, name_='XSDataInputControlDozorAndXDSAPP' )
         outfile.close()
     #Deprecated method, replaced by exportToFile
     def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataInputControlXDSAPP is deprecated, please use instead exportToFile!")
+        print("WARNING: Method outputFile in class XSDataInputControlDozorAndXDSAPP is deprecated, please use instead exportToFile!")
         self.exportToFile(_outfileName)
     #Method for making a copy in a new instance
     def copy( self ):
-        return XSDataInputControlXDSAPP.parseString(self.marshal())
+        return XSDataInputControlDozorAndXDSAPP.parseString(self.marshal())
     #Static method for parsing a string
     def parseString( _inString ):
         doc = minidom.parseString(_inString)
         rootNode = doc.documentElement
-        rootObj = XSDataInputControlXDSAPP()
+        rootObj = XSDataInputControlDozorAndXDSAPP()
         rootObj.build(rootNode)
         # Check that all minOccurs are obeyed by marshalling the created object
         oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataInputControlXDSAPP" )
+        rootObj.export( oStreamString, 0, name_="XSDataInputControlDozorAndXDSAPP" )
         oStreamString.close()
         return rootObj
     parseString = staticmethod( parseString )
@@ -277,23 +277,23 @@ class XSDataInputControlXDSAPP(XSDataInput):
     def parseFile( _inFilePath ):
         doc = minidom.parse(_inFilePath)
         rootNode = doc.documentElement
-        rootObj = XSDataInputControlXDSAPP()
+        rootObj = XSDataInputControlDozorAndXDSAPP()
         rootObj.build(rootNode)
         return rootObj
     parseFile = staticmethod( parseFile )
-# end class XSDataInputControlXDSAPP
+# end class XSDataInputControlDozorAndXDSAPP
 
 
-class XSDataResultControlXDSAPP(XSDataResult):
+class XSDataResultControlDozorAndXDSAPP(XSDataResult):
     def __init__(self, status=None):
         XSDataResult.__init__(self, status)
-    def export(self, outfile, level, name_='XSDataResultControlXDSAPP'):
+    def export(self, outfile, level, name_='XSDataResultControlDozorAndXDSAPP'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
         self.exportChildren(outfile, level + 1, name_)
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataResultControlXDSAPP'):
+    def exportChildren(self, outfile, level, name_='XSDataResultControlDozorAndXDSAPP'):
         XSDataResult.exportChildren(self, outfile, level, name_)
     def build(self, node_):
         for child_ in node_.childNodes:
@@ -306,7 +306,7 @@ class XSDataResultControlXDSAPP(XSDataResult):
     def marshal( self ):
         oStreamString = StringIO()
         oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataResultControlXDSAPP" )
+        self.export( oStreamString, 0, name_="XSDataResultControlDozorAndXDSAPP" )
         oStringXML = oStreamString.getvalue()
         oStreamString.close()
         return oStringXML
@@ -314,24 +314,24 @@ class XSDataResultControlXDSAPP(XSDataResult):
     def exportToFile( self, _outfileName ):
         outfile = open( _outfileName, "w" )
         outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataResultControlXDSAPP' )
+        self.export( outfile, 0, name_='XSDataResultControlDozorAndXDSAPP' )
         outfile.close()
     #Deprecated method, replaced by exportToFile
     def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataResultControlXDSAPP is deprecated, please use instead exportToFile!")
+        print("WARNING: Method outputFile in class XSDataResultControlDozorAndXDSAPP is deprecated, please use instead exportToFile!")
         self.exportToFile(_outfileName)
     #Method for making a copy in a new instance
     def copy( self ):
-        return XSDataResultControlXDSAPP.parseString(self.marshal())
+        return XSDataResultControlDozorAndXDSAPP.parseString(self.marshal())
     #Static method for parsing a string
     def parseString( _inString ):
         doc = minidom.parseString(_inString)
         rootNode = doc.documentElement
-        rootObj = XSDataResultControlXDSAPP()
+        rootObj = XSDataResultControlDozorAndXDSAPP()
         rootObj.build(rootNode)
         # Check that all minOccurs are obeyed by marshalling the created object
         oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataResultControlXDSAPP" )
+        rootObj.export( oStreamString, 0, name_="XSDataResultControlDozorAndXDSAPP" )
         oStreamString.close()
         return rootObj
     parseString = staticmethod( parseString )
@@ -339,11 +339,11 @@ class XSDataResultControlXDSAPP(XSDataResult):
     def parseFile( _inFilePath ):
         doc = minidom.parse(_inFilePath)
         rootNode = doc.documentElement
-        rootObj = XSDataResultControlXDSAPP()
+        rootObj = XSDataResultControlDozorAndXDSAPP()
         rootObj.build(rootNode)
         return rootObj
     parseFile = staticmethod( parseFile )
-# end class XSDataResultControlXDSAPP
+# end class XSDataResultControlDozorAndXDSAPP
 
 
 

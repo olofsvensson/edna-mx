@@ -186,6 +186,15 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
+			<name>EDPluginControlDozorAndXDSAPPv1_0</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>7200</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginControlXia2DIALSv1_0</name>
 			<XSParamList>
 				<XSParamItem>

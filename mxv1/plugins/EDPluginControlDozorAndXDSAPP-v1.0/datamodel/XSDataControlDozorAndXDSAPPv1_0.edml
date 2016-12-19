@@ -9,12 +9,12 @@ import XSDataCommon.XSDataString
 import XSDataCommon.XSDataBoolean
 
 
-complex type XSDataInputControlXDSAPP extends XSDataInput {
+complex type XSDataInputControlDozorAndXDSAPP extends XSDataInput {
 	dataCollectionId : XSDataInteger optional
-	processDirectory : XSDataFile optional
+	dozorProcessDirectory : XSDataFile optional
+	xdsappProcessDirectory : XSDataFile optional
 	doAnomAndNonanom : XSDataBoolean optional
-	hdf5ToCbfDirectory : XSDataFile optional
 }
 
-complex type XSDataResultControlXDSAPP extends XSDataResult {
+complex type XSDataResultControlDozorAndXDSAPP extends XSDataResult {
 }

@@ -27,6 +27,7 @@ __copyright__ = "ESRF"
 
 import os
 import sys
+import glob
 import gzip
 import time
 import shutil
@@ -250,6 +251,9 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             self.setFailure()
 
 
+        if self.dataInput.hdf5ToCbfDirectory is not None:
+            dir = self.dataInput.hdf5ToCbfDirectory.path.value
+            pathToStartImage = glob.glob(os.path.join(dir, "*000001*"))[0]
 
         # Prepare input to execution plugin
         xsDataInputXDSAPPAnom = XSDataInputXDSAPP()

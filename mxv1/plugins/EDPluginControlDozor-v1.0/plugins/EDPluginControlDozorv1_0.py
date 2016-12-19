@@ -227,7 +227,10 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             xsDataResultControlDozor.halfDoseTime = edPluginDozor.dataOutput.halfDoseTime
         self.dataOutput = xsDataResultControlDozor
         if self.cbfTempDir is not None:
-            shutil.rmtree(self.cbfTempDir)
+            if self.dataInput.keepCbfTmpDirectory is not None and self.dataInput.keepCbfTmpDirectory.value:
+                self.dataOutput.pathToCbfDirectory = XSDataFile(XSDataString(self.cbfTempDir))
+            else:
+                shutil.rmtree(self.cbfTempDir)
 
     def postProcess(self, _edObject=None):
         EDPluginControl.postProcess(self)
