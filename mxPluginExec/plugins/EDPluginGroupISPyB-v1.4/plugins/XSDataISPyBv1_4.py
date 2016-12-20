@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Dec 7 09:26::22 2016 by EDGenerateDS.
+# Generated Tue Dec 20 04:24::44 2016 by EDGenerateDS.
 #
 
 import os, sys
@@ -403,6 +403,854 @@ class AutoProc(object):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class AutoProc
+
+
+class AutoProcProgramContainer(object):
+    def __init__(self, AutoProcProgramAttachment=None, AutoProcProgram=None):
+        if AutoProcProgram is None:
+            self._AutoProcProgram = None
+        elif AutoProcProgram.__class__.__name__ == "AutoProcProgram":
+            self._AutoProcProgram = AutoProcProgram
+        else:
+            strMessage = "ERROR! AutoProcProgramContainer constructor argument 'AutoProcProgram' is not AutoProcProgram but %s" % self._AutoProcProgram.__class__.__name__
+            raise BaseException(strMessage)
+        if AutoProcProgramAttachment is None:
+            self._AutoProcProgramAttachment = []
+        elif AutoProcProgramAttachment.__class__.__name__ == "list":
+            self._AutoProcProgramAttachment = AutoProcProgramAttachment
+        else:
+            strMessage = "ERROR! AutoProcProgramContainer constructor argument 'AutoProcProgramAttachment' is not list but %s" % self._AutoProcProgramAttachment.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'AutoProcProgram' attribute
+    def getAutoProcProgram(self): return self._AutoProcProgram
+    def setAutoProcProgram(self, AutoProcProgram):
+        if AutoProcProgram is None:
+            self._AutoProcProgram = None
+        elif AutoProcProgram.__class__.__name__ == "AutoProcProgram":
+            self._AutoProcProgram = AutoProcProgram
+        else:
+            strMessage = "ERROR! AutoProcProgramContainer.setAutoProcProgram argument is not AutoProcProgram but %s" % AutoProcProgram.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcProgram(self): self._AutoProcProgram = None
+    AutoProcProgram = property(getAutoProcProgram, setAutoProcProgram, delAutoProcProgram, "Property for AutoProcProgram")
+    # Methods and properties for the 'AutoProcProgramAttachment' attribute
+    def getAutoProcProgramAttachment(self): return self._AutoProcProgramAttachment
+    def setAutoProcProgramAttachment(self, AutoProcProgramAttachment):
+        if AutoProcProgramAttachment is None:
+            self._AutoProcProgramAttachment = []
+        elif AutoProcProgramAttachment.__class__.__name__ == "list":
+            self._AutoProcProgramAttachment = AutoProcProgramAttachment
+        else:
+            strMessage = "ERROR! AutoProcProgramContainer.setAutoProcProgramAttachment argument is not list but %s" % AutoProcProgramAttachment.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcProgramAttachment(self): self._AutoProcProgramAttachment = None
+    AutoProcProgramAttachment = property(getAutoProcProgramAttachment, setAutoProcProgramAttachment, delAutoProcProgramAttachment, "Property for AutoProcProgramAttachment")
+    def addAutoProcProgramAttachment(self, value):
+        if value is None:
+            strMessage = "ERROR! AutoProcProgramContainer.addAutoProcProgramAttachment argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "AutoProcProgramAttachment":
+            self._AutoProcProgramAttachment.append(value)
+        else:
+            strMessage = "ERROR! AutoProcProgramContainer.addAutoProcProgramAttachment argument is not AutoProcProgramAttachment but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertAutoProcProgramAttachment(self, index, value):
+        if index is None:
+            strMessage = "ERROR! AutoProcProgramContainer.insertAutoProcProgramAttachment argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! AutoProcProgramContainer.insertAutoProcProgramAttachment argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "AutoProcProgramAttachment":
+            self._AutoProcProgramAttachment[index] = value
+        else:
+            strMessage = "ERROR! AutoProcProgramContainer.addAutoProcProgramAttachment argument is not AutoProcProgramAttachment but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def export(self, outfile, level, name_='AutoProcProgramContainer'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='AutoProcProgramContainer'):
+        pass
+        if self._AutoProcProgram is not None:
+            self.AutoProcProgram.export(outfile, level, name_='AutoProcProgram')
+        else:
+            warnEmptyAttribute("AutoProcProgram", "AutoProcProgram")
+        for AutoProcProgramAttachment_ in self.getAutoProcProgramAttachment():
+            AutoProcProgramAttachment_.export(outfile, level, name_='AutoProcProgramAttachment')
+        if self.getAutoProcProgramAttachment() == []:
+            warnEmptyAttribute("AutoProcProgramAttachment", "AutoProcProgramAttachment")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcProgram':
+            obj_ = AutoProcProgram()
+            obj_.build(child_)
+            self.setAutoProcProgram(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcProgramAttachment':
+            obj_ = AutoProcProgramAttachment()
+            obj_.build(child_)
+            self.AutoProcProgramAttachment.append(obj_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="AutoProcProgramContainer" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='AutoProcProgramContainer' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class AutoProcProgramContainer is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return AutoProcProgramContainer.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = AutoProcProgramContainer()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="AutoProcProgramContainer" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = AutoProcProgramContainer()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class AutoProcProgramContainer
+
+
+class AutoProcContainer(object):
+    def __init__(self, AutoProcProgramContainer=None, AutoProcScalingContainer=None, AutoProc=None):
+        if AutoProc is None:
+            self._AutoProc = None
+        elif AutoProc.__class__.__name__ == "AutoProc":
+            self._AutoProc = AutoProc
+        else:
+            strMessage = "ERROR! AutoProcContainer constructor argument 'AutoProc' is not AutoProc but %s" % self._AutoProc.__class__.__name__
+            raise BaseException(strMessage)
+        if AutoProcScalingContainer is None:
+            self._AutoProcScalingContainer = None
+        elif AutoProcScalingContainer.__class__.__name__ == "AutoProcScalingContainer":
+            self._AutoProcScalingContainer = AutoProcScalingContainer
+        else:
+            strMessage = "ERROR! AutoProcContainer constructor argument 'AutoProcScalingContainer' is not AutoProcScalingContainer but %s" % self._AutoProcScalingContainer.__class__.__name__
+            raise BaseException(strMessage)
+        if AutoProcProgramContainer is None:
+            self._AutoProcProgramContainer = None
+        elif AutoProcProgramContainer.__class__.__name__ == "AutoProcProgramContainer":
+            self._AutoProcProgramContainer = AutoProcProgramContainer
+        else:
+            strMessage = "ERROR! AutoProcContainer constructor argument 'AutoProcProgramContainer' is not AutoProcProgramContainer but %s" % self._AutoProcProgramContainer.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'AutoProc' attribute
+    def getAutoProc(self): return self._AutoProc
+    def setAutoProc(self, AutoProc):
+        if AutoProc is None:
+            self._AutoProc = None
+        elif AutoProc.__class__.__name__ == "AutoProc":
+            self._AutoProc = AutoProc
+        else:
+            strMessage = "ERROR! AutoProcContainer.setAutoProc argument is not AutoProc but %s" % AutoProc.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProc(self): self._AutoProc = None
+    AutoProc = property(getAutoProc, setAutoProc, delAutoProc, "Property for AutoProc")
+    # Methods and properties for the 'AutoProcScalingContainer' attribute
+    def getAutoProcScalingContainer(self): return self._AutoProcScalingContainer
+    def setAutoProcScalingContainer(self, AutoProcScalingContainer):
+        if AutoProcScalingContainer is None:
+            self._AutoProcScalingContainer = None
+        elif AutoProcScalingContainer.__class__.__name__ == "AutoProcScalingContainer":
+            self._AutoProcScalingContainer = AutoProcScalingContainer
+        else:
+            strMessage = "ERROR! AutoProcContainer.setAutoProcScalingContainer argument is not AutoProcScalingContainer but %s" % AutoProcScalingContainer.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcScalingContainer(self): self._AutoProcScalingContainer = None
+    AutoProcScalingContainer = property(getAutoProcScalingContainer, setAutoProcScalingContainer, delAutoProcScalingContainer, "Property for AutoProcScalingContainer")
+    # Methods and properties for the 'AutoProcProgramContainer' attribute
+    def getAutoProcProgramContainer(self): return self._AutoProcProgramContainer
+    def setAutoProcProgramContainer(self, AutoProcProgramContainer):
+        if AutoProcProgramContainer is None:
+            self._AutoProcProgramContainer = None
+        elif AutoProcProgramContainer.__class__.__name__ == "AutoProcProgramContainer":
+            self._AutoProcProgramContainer = AutoProcProgramContainer
+        else:
+            strMessage = "ERROR! AutoProcContainer.setAutoProcProgramContainer argument is not AutoProcProgramContainer but %s" % AutoProcProgramContainer.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcProgramContainer(self): self._AutoProcProgramContainer = None
+    AutoProcProgramContainer = property(getAutoProcProgramContainer, setAutoProcProgramContainer, delAutoProcProgramContainer, "Property for AutoProcProgramContainer")
+    def export(self, outfile, level, name_='AutoProcContainer'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='AutoProcContainer'):
+        pass
+        if self._AutoProc is not None:
+            self.AutoProc.export(outfile, level, name_='AutoProc')
+        else:
+            warnEmptyAttribute("AutoProc", "AutoProc")
+        if self._AutoProcScalingContainer is not None:
+            self.AutoProcScalingContainer.export(outfile, level, name_='AutoProcScalingContainer')
+        else:
+            warnEmptyAttribute("AutoProcScalingContainer", "AutoProcScalingContainer")
+        if self._AutoProcProgramContainer is not None:
+            self.AutoProcProgramContainer.export(outfile, level, name_='AutoProcProgramContainer')
+        else:
+            warnEmptyAttribute("AutoProcProgramContainer", "AutoProcProgramContainer")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProc':
+            obj_ = AutoProc()
+            obj_.build(child_)
+            self.setAutoProc(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcScalingContainer':
+            obj_ = AutoProcScalingContainer()
+            obj_.build(child_)
+            self.setAutoProcScalingContainer(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcProgramContainer':
+            obj_ = AutoProcProgramContainer()
+            obj_.build(child_)
+            self.setAutoProcProgramContainer(obj_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="AutoProcContainer" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='AutoProcContainer' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class AutoProcContainer is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return AutoProcContainer.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = AutoProcContainer()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="AutoProcContainer" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = AutoProcContainer()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class AutoProcContainer
+
+
+class AutoProcIntegration(object):
+    def __init__(self, anomalous=None, cell_gamma=None, cell_beta=None, cell_alpha=None, cell_c=None, cell_b=None, cell_a=None, beamVectorZ=None, beamVectorY=None, beamVectorX=None, rotationAxisZ=None, rotationAxisY=None, rotationAxisX=None, refinedYbeam=None, refinedXbeam=None, refinedDetectorDistance=None, endImageNumber=None, startImageNumber=None, autoProcIntegrationId=None):
+        if autoProcIntegrationId is None:
+            self._autoProcIntegrationId = None
+        else:
+            self._autoProcIntegrationId = int(autoProcIntegrationId)
+        if startImageNumber is None:
+            self._startImageNumber = None
+        else:
+            self._startImageNumber = int(startImageNumber)
+        if endImageNumber is None:
+            self._endImageNumber = None
+        else:
+            self._endImageNumber = int(endImageNumber)
+        if refinedDetectorDistance is None:
+            self._refinedDetectorDistance = None
+        else:
+            self._refinedDetectorDistance = float(refinedDetectorDistance)
+        if refinedXbeam is None:
+            self._refinedXbeam = None
+        else:
+            self._refinedXbeam = float(refinedXbeam)
+        if refinedYbeam is None:
+            self._refinedYbeam = None
+        else:
+            self._refinedYbeam = float(refinedYbeam)
+        if rotationAxisX is None:
+            self._rotationAxisX = None
+        else:
+            self._rotationAxisX = float(rotationAxisX)
+        if rotationAxisY is None:
+            self._rotationAxisY = None
+        else:
+            self._rotationAxisY = float(rotationAxisY)
+        if rotationAxisZ is None:
+            self._rotationAxisZ = None
+        else:
+            self._rotationAxisZ = float(rotationAxisZ)
+        if beamVectorX is None:
+            self._beamVectorX = None
+        else:
+            self._beamVectorX = float(beamVectorX)
+        if beamVectorY is None:
+            self._beamVectorY = None
+        else:
+            self._beamVectorY = float(beamVectorY)
+        if beamVectorZ is None:
+            self._beamVectorZ = None
+        else:
+            self._beamVectorZ = float(beamVectorZ)
+        if cell_a is None:
+            self._cell_a = None
+        else:
+            self._cell_a = float(cell_a)
+        if cell_b is None:
+            self._cell_b = None
+        else:
+            self._cell_b = float(cell_b)
+        if cell_c is None:
+            self._cell_c = None
+        else:
+            self._cell_c = float(cell_c)
+        if cell_alpha is None:
+            self._cell_alpha = None
+        else:
+            self._cell_alpha = float(cell_alpha)
+        if cell_beta is None:
+            self._cell_beta = None
+        else:
+            self._cell_beta = float(cell_beta)
+        if cell_gamma is None:
+            self._cell_gamma = None
+        else:
+            self._cell_gamma = float(cell_gamma)
+        self._anomalous = bool(anomalous)
+    # Methods and properties for the 'autoProcIntegrationId' attribute
+    def getAutoProcIntegrationId(self): return self._autoProcIntegrationId
+    def setAutoProcIntegrationId(self, autoProcIntegrationId):
+        if autoProcIntegrationId is None:
+            self._autoProcIntegrationId = None
+        else:
+            self._autoProcIntegrationId = int(autoProcIntegrationId)
+    def delAutoProcIntegrationId(self): self._autoProcIntegrationId = None
+    autoProcIntegrationId = property(getAutoProcIntegrationId, setAutoProcIntegrationId, delAutoProcIntegrationId, "Property for autoProcIntegrationId")
+    # Methods and properties for the 'startImageNumber' attribute
+    def getStartImageNumber(self): return self._startImageNumber
+    def setStartImageNumber(self, startImageNumber):
+        if startImageNumber is None:
+            self._startImageNumber = None
+        else:
+            self._startImageNumber = int(startImageNumber)
+    def delStartImageNumber(self): self._startImageNumber = None
+    startImageNumber = property(getStartImageNumber, setStartImageNumber, delStartImageNumber, "Property for startImageNumber")
+    # Methods and properties for the 'endImageNumber' attribute
+    def getEndImageNumber(self): return self._endImageNumber
+    def setEndImageNumber(self, endImageNumber):
+        if endImageNumber is None:
+            self._endImageNumber = None
+        else:
+            self._endImageNumber = int(endImageNumber)
+    def delEndImageNumber(self): self._endImageNumber = None
+    endImageNumber = property(getEndImageNumber, setEndImageNumber, delEndImageNumber, "Property for endImageNumber")
+    # Methods and properties for the 'refinedDetectorDistance' attribute
+    def getRefinedDetectorDistance(self): return self._refinedDetectorDistance
+    def setRefinedDetectorDistance(self, refinedDetectorDistance):
+        if refinedDetectorDistance is None:
+            self._refinedDetectorDistance = None
+        else:
+            self._refinedDetectorDistance = float(refinedDetectorDistance)
+    def delRefinedDetectorDistance(self): self._refinedDetectorDistance = None
+    refinedDetectorDistance = property(getRefinedDetectorDistance, setRefinedDetectorDistance, delRefinedDetectorDistance, "Property for refinedDetectorDistance")
+    # Methods and properties for the 'refinedXbeam' attribute
+    def getRefinedXbeam(self): return self._refinedXbeam
+    def setRefinedXbeam(self, refinedXbeam):
+        if refinedXbeam is None:
+            self._refinedXbeam = None
+        else:
+            self._refinedXbeam = float(refinedXbeam)
+    def delRefinedXbeam(self): self._refinedXbeam = None
+    refinedXbeam = property(getRefinedXbeam, setRefinedXbeam, delRefinedXbeam, "Property for refinedXbeam")
+    # Methods and properties for the 'refinedYbeam' attribute
+    def getRefinedYbeam(self): return self._refinedYbeam
+    def setRefinedYbeam(self, refinedYbeam):
+        if refinedYbeam is None:
+            self._refinedYbeam = None
+        else:
+            self._refinedYbeam = float(refinedYbeam)
+    def delRefinedYbeam(self): self._refinedYbeam = None
+    refinedYbeam = property(getRefinedYbeam, setRefinedYbeam, delRefinedYbeam, "Property for refinedYbeam")
+    # Methods and properties for the 'rotationAxisX' attribute
+    def getRotationAxisX(self): return self._rotationAxisX
+    def setRotationAxisX(self, rotationAxisX):
+        if rotationAxisX is None:
+            self._rotationAxisX = None
+        else:
+            self._rotationAxisX = float(rotationAxisX)
+    def delRotationAxisX(self): self._rotationAxisX = None
+    rotationAxisX = property(getRotationAxisX, setRotationAxisX, delRotationAxisX, "Property for rotationAxisX")
+    # Methods and properties for the 'rotationAxisY' attribute
+    def getRotationAxisY(self): return self._rotationAxisY
+    def setRotationAxisY(self, rotationAxisY):
+        if rotationAxisY is None:
+            self._rotationAxisY = None
+        else:
+            self._rotationAxisY = float(rotationAxisY)
+    def delRotationAxisY(self): self._rotationAxisY = None
+    rotationAxisY = property(getRotationAxisY, setRotationAxisY, delRotationAxisY, "Property for rotationAxisY")
+    # Methods and properties for the 'rotationAxisZ' attribute
+    def getRotationAxisZ(self): return self._rotationAxisZ
+    def setRotationAxisZ(self, rotationAxisZ):
+        if rotationAxisZ is None:
+            self._rotationAxisZ = None
+        else:
+            self._rotationAxisZ = float(rotationAxisZ)
+    def delRotationAxisZ(self): self._rotationAxisZ = None
+    rotationAxisZ = property(getRotationAxisZ, setRotationAxisZ, delRotationAxisZ, "Property for rotationAxisZ")
+    # Methods and properties for the 'beamVectorX' attribute
+    def getBeamVectorX(self): return self._beamVectorX
+    def setBeamVectorX(self, beamVectorX):
+        if beamVectorX is None:
+            self._beamVectorX = None
+        else:
+            self._beamVectorX = float(beamVectorX)
+    def delBeamVectorX(self): self._beamVectorX = None
+    beamVectorX = property(getBeamVectorX, setBeamVectorX, delBeamVectorX, "Property for beamVectorX")
+    # Methods and properties for the 'beamVectorY' attribute
+    def getBeamVectorY(self): return self._beamVectorY
+    def setBeamVectorY(self, beamVectorY):
+        if beamVectorY is None:
+            self._beamVectorY = None
+        else:
+            self._beamVectorY = float(beamVectorY)
+    def delBeamVectorY(self): self._beamVectorY = None
+    beamVectorY = property(getBeamVectorY, setBeamVectorY, delBeamVectorY, "Property for beamVectorY")
+    # Methods and properties for the 'beamVectorZ' attribute
+    def getBeamVectorZ(self): return self._beamVectorZ
+    def setBeamVectorZ(self, beamVectorZ):
+        if beamVectorZ is None:
+            self._beamVectorZ = None
+        else:
+            self._beamVectorZ = float(beamVectorZ)
+    def delBeamVectorZ(self): self._beamVectorZ = None
+    beamVectorZ = property(getBeamVectorZ, setBeamVectorZ, delBeamVectorZ, "Property for beamVectorZ")
+    # Methods and properties for the 'cell_a' attribute
+    def getCell_a(self): return self._cell_a
+    def setCell_a(self, cell_a):
+        if cell_a is None:
+            self._cell_a = None
+        else:
+            self._cell_a = float(cell_a)
+    def delCell_a(self): self._cell_a = None
+    cell_a = property(getCell_a, setCell_a, delCell_a, "Property for cell_a")
+    # Methods and properties for the 'cell_b' attribute
+    def getCell_b(self): return self._cell_b
+    def setCell_b(self, cell_b):
+        if cell_b is None:
+            self._cell_b = None
+        else:
+            self._cell_b = float(cell_b)
+    def delCell_b(self): self._cell_b = None
+    cell_b = property(getCell_b, setCell_b, delCell_b, "Property for cell_b")
+    # Methods and properties for the 'cell_c' attribute
+    def getCell_c(self): return self._cell_c
+    def setCell_c(self, cell_c):
+        if cell_c is None:
+            self._cell_c = None
+        else:
+            self._cell_c = float(cell_c)
+    def delCell_c(self): self._cell_c = None
+    cell_c = property(getCell_c, setCell_c, delCell_c, "Property for cell_c")
+    # Methods and properties for the 'cell_alpha' attribute
+    def getCell_alpha(self): return self._cell_alpha
+    def setCell_alpha(self, cell_alpha):
+        if cell_alpha is None:
+            self._cell_alpha = None
+        else:
+            self._cell_alpha = float(cell_alpha)
+    def delCell_alpha(self): self._cell_alpha = None
+    cell_alpha = property(getCell_alpha, setCell_alpha, delCell_alpha, "Property for cell_alpha")
+    # Methods and properties for the 'cell_beta' attribute
+    def getCell_beta(self): return self._cell_beta
+    def setCell_beta(self, cell_beta):
+        if cell_beta is None:
+            self._cell_beta = None
+        else:
+            self._cell_beta = float(cell_beta)
+    def delCell_beta(self): self._cell_beta = None
+    cell_beta = property(getCell_beta, setCell_beta, delCell_beta, "Property for cell_beta")
+    # Methods and properties for the 'cell_gamma' attribute
+    def getCell_gamma(self): return self._cell_gamma
+    def setCell_gamma(self, cell_gamma):
+        if cell_gamma is None:
+            self._cell_gamma = None
+        else:
+            self._cell_gamma = float(cell_gamma)
+    def delCell_gamma(self): self._cell_gamma = None
+    cell_gamma = property(getCell_gamma, setCell_gamma, delCell_gamma, "Property for cell_gamma")
+    # Methods and properties for the 'anomalous' attribute
+    def getAnomalous(self): return self._anomalous
+    def setAnomalous(self, anomalous):
+        self._anomalous = bool(anomalous)
+    def delAnomalous(self): self._anomalous = None
+    anomalous = property(getAnomalous, setAnomalous, delAnomalous, "Property for anomalous")
+    def export(self, outfile, level, name_='AutoProcIntegration'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='AutoProcIntegration'):
+        pass
+        if self._autoProcIntegrationId is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<autoProcIntegrationId>%d</autoProcIntegrationId>\n' % self._autoProcIntegrationId))
+        if self._startImageNumber is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<startImageNumber>%d</startImageNumber>\n' % self._startImageNumber))
+        else:
+            warnEmptyAttribute("startImageNumber", "integer")
+        if self._endImageNumber is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<endImageNumber>%d</endImageNumber>\n' % self._endImageNumber))
+        else:
+            warnEmptyAttribute("endImageNumber", "integer")
+        if self._refinedDetectorDistance is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<refinedDetectorDistance>%e</refinedDetectorDistance>\n' % self._refinedDetectorDistance))
+        else:
+            warnEmptyAttribute("refinedDetectorDistance", "float")
+        if self._refinedXbeam is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<refinedXbeam>%e</refinedXbeam>\n' % self._refinedXbeam))
+        else:
+            warnEmptyAttribute("refinedXbeam", "float")
+        if self._refinedYbeam is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<refinedYbeam>%e</refinedYbeam>\n' % self._refinedYbeam))
+        else:
+            warnEmptyAttribute("refinedYbeam", "float")
+        if self._rotationAxisX is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<rotationAxisX>%e</rotationAxisX>\n' % self._rotationAxisX))
+        else:
+            warnEmptyAttribute("rotationAxisX", "float")
+        if self._rotationAxisY is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<rotationAxisY>%e</rotationAxisY>\n' % self._rotationAxisY))
+        else:
+            warnEmptyAttribute("rotationAxisY", "float")
+        if self._rotationAxisZ is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<rotationAxisZ>%e</rotationAxisZ>\n' % self._rotationAxisZ))
+        else:
+            warnEmptyAttribute("rotationAxisZ", "float")
+        if self._beamVectorX is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<beamVectorX>%e</beamVectorX>\n' % self._beamVectorX))
+        else:
+            warnEmptyAttribute("beamVectorX", "float")
+        if self._beamVectorY is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<beamVectorY>%e</beamVectorY>\n' % self._beamVectorY))
+        else:
+            warnEmptyAttribute("beamVectorY", "float")
+        if self._beamVectorZ is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<beamVectorZ>%e</beamVectorZ>\n' % self._beamVectorZ))
+        else:
+            warnEmptyAttribute("beamVectorZ", "float")
+        if self._cell_a is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<cell_a>%e</cell_a>\n' % self._cell_a))
+        else:
+            warnEmptyAttribute("cell_a", "float")
+        if self._cell_b is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<cell_b>%e</cell_b>\n' % self._cell_b))
+        else:
+            warnEmptyAttribute("cell_b", "float")
+        if self._cell_c is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<cell_c>%e</cell_c>\n' % self._cell_c))
+        else:
+            warnEmptyAttribute("cell_c", "float")
+        if self._cell_alpha is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<cell_alpha>%e</cell_alpha>\n' % self._cell_alpha))
+        else:
+            warnEmptyAttribute("cell_alpha", "float")
+        if self._cell_beta is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<cell_beta>%e</cell_beta>\n' % self._cell_beta))
+        else:
+            warnEmptyAttribute("cell_beta", "float")
+        if self._cell_gamma is not None:
+            showIndent(outfile, level)
+            outfile.write(unicode('<cell_gamma>%e</cell_gamma>\n' % self._cell_gamma))
+        else:
+            warnEmptyAttribute("cell_gamma", "float")
+        if self._anomalous is not None:
+            showIndent(outfile, level)
+            if self._anomalous:
+                outfile.write(unicode('<anomalous>true</anomalous>\n'))
+            else:
+                outfile.write(unicode('<anomalous>false</anomalous>\n'))
+        else:
+            warnEmptyAttribute("anomalous", "boolean")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'autoProcIntegrationId':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    ival_ = int(sval_)
+                except ValueError:
+                    raise ValueError('requires integer -- %s' % child_.toxml())
+                self._autoProcIntegrationId = ival_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'startImageNumber':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    ival_ = int(sval_)
+                except ValueError:
+                    raise ValueError('requires integer -- %s' % child_.toxml())
+                self._startImageNumber = ival_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'endImageNumber':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    ival_ = int(sval_)
+                except ValueError:
+                    raise ValueError('requires integer -- %s' % child_.toxml())
+                self._endImageNumber = ival_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'refinedDetectorDistance':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._refinedDetectorDistance = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'refinedXbeam':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._refinedXbeam = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'refinedYbeam':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._refinedYbeam = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rotationAxisX':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._rotationAxisX = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rotationAxisY':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._rotationAxisY = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rotationAxisZ':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._rotationAxisZ = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'beamVectorX':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._beamVectorX = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'beamVectorY':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._beamVectorY = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'beamVectorZ':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._beamVectorZ = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cell_a':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._cell_a = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cell_b':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._cell_b = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cell_c':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._cell_c = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cell_alpha':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._cell_alpha = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cell_beta':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._cell_beta = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cell_gamma':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                try:
+                    fval_ = float(sval_)
+                except ValueError:
+                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
+                self._cell_gamma = fval_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'anomalous':
+            if child_.firstChild:
+                sval_ = child_.firstChild.nodeValue
+                if sval_ in ('True', 'true', '1'):
+                    ival_ = True
+                elif sval_ in ('False', 'false', '0'):
+                    ival_ = False
+                else:
+                    raise ValueError('requires boolean -- %s' % child_.toxml())
+                self._anomalous = ival_
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="AutoProcIntegration" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='AutoProcIntegration' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class AutoProcIntegration is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return AutoProcIntegration.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = AutoProcIntegration()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="AutoProcIntegration" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = AutoProcIntegration()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class AutoProcIntegration
 
 
 class AutoProcIntegrationContainer(object):
@@ -927,142 +1775,6 @@ class AutoProcProgramAttachment(object):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class AutoProcProgramAttachment
-
-
-class AutoProcProgramContainer(object):
-    def __init__(self, AutoProcProgramAttachment=None, AutoProcProgram=None):
-        if AutoProcProgram is None:
-            self._AutoProcProgram = None
-        elif AutoProcProgram.__class__.__name__ == "AutoProcProgram":
-            self._AutoProcProgram = AutoProcProgram
-        else:
-            strMessage = "ERROR! AutoProcProgramContainer constructor argument 'AutoProcProgram' is not AutoProcProgram but %s" % self._AutoProcProgram.__class__.__name__
-            raise BaseException(strMessage)
-        if AutoProcProgramAttachment is None:
-            self._AutoProcProgramAttachment = []
-        elif AutoProcProgramAttachment.__class__.__name__ == "list":
-            self._AutoProcProgramAttachment = AutoProcProgramAttachment
-        else:
-            strMessage = "ERROR! AutoProcProgramContainer constructor argument 'AutoProcProgramAttachment' is not list but %s" % self._AutoProcProgramAttachment.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'AutoProcProgram' attribute
-    def getAutoProcProgram(self): return self._AutoProcProgram
-    def setAutoProcProgram(self, AutoProcProgram):
-        if AutoProcProgram is None:
-            self._AutoProcProgram = None
-        elif AutoProcProgram.__class__.__name__ == "AutoProcProgram":
-            self._AutoProcProgram = AutoProcProgram
-        else:
-            strMessage = "ERROR! AutoProcProgramContainer.setAutoProcProgram argument is not AutoProcProgram but %s" % AutoProcProgram.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProcProgram(self): self._AutoProcProgram = None
-    AutoProcProgram = property(getAutoProcProgram, setAutoProcProgram, delAutoProcProgram, "Property for AutoProcProgram")
-    # Methods and properties for the 'AutoProcProgramAttachment' attribute
-    def getAutoProcProgramAttachment(self): return self._AutoProcProgramAttachment
-    def setAutoProcProgramAttachment(self, AutoProcProgramAttachment):
-        if AutoProcProgramAttachment is None:
-            self._AutoProcProgramAttachment = []
-        elif AutoProcProgramAttachment.__class__.__name__ == "list":
-            self._AutoProcProgramAttachment = AutoProcProgramAttachment
-        else:
-            strMessage = "ERROR! AutoProcProgramContainer.setAutoProcProgramAttachment argument is not list but %s" % AutoProcProgramAttachment.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProcProgramAttachment(self): self._AutoProcProgramAttachment = None
-    AutoProcProgramAttachment = property(getAutoProcProgramAttachment, setAutoProcProgramAttachment, delAutoProcProgramAttachment, "Property for AutoProcProgramAttachment")
-    def addAutoProcProgramAttachment(self, value):
-        if value is None:
-            strMessage = "ERROR! AutoProcProgramContainer.addAutoProcProgramAttachment argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "AutoProcProgramAttachment":
-            self._AutoProcProgramAttachment.append(value)
-        else:
-            strMessage = "ERROR! AutoProcProgramContainer.addAutoProcProgramAttachment argument is not AutoProcProgramAttachment but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertAutoProcProgramAttachment(self, index, value):
-        if index is None:
-            strMessage = "ERROR! AutoProcProgramContainer.insertAutoProcProgramAttachment argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! AutoProcProgramContainer.insertAutoProcProgramAttachment argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "AutoProcProgramAttachment":
-            self._AutoProcProgramAttachment[index] = value
-        else:
-            strMessage = "ERROR! AutoProcProgramContainer.addAutoProcProgramAttachment argument is not AutoProcProgramAttachment but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def export(self, outfile, level, name_='AutoProcProgramContainer'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='AutoProcProgramContainer'):
-        pass
-        if self._AutoProcProgram is not None:
-            self.AutoProcProgram.export(outfile, level, name_='AutoProcProgram')
-        else:
-            warnEmptyAttribute("AutoProcProgram", "AutoProcProgram")
-        for AutoProcProgramAttachment_ in self.getAutoProcProgramAttachment():
-            AutoProcProgramAttachment_.export(outfile, level, name_='AutoProcProgramAttachment')
-        if self.getAutoProcProgramAttachment() == []:
-            warnEmptyAttribute("AutoProcProgramAttachment", "AutoProcProgramAttachment")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProcProgram':
-            obj_ = AutoProcProgram()
-            obj_.build(child_)
-            self.setAutoProcProgram(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProcProgramAttachment':
-            obj_ = AutoProcProgramAttachment()
-            obj_.build(child_)
-            self.AutoProcProgramAttachment.append(obj_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="AutoProcProgramContainer" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='AutoProcProgramContainer' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class AutoProcProgramContainer is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return AutoProcProgramContainer.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = AutoProcProgramContainer()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="AutoProcProgramContainer" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = AutoProcProgramContainer()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class AutoProcProgramContainer
 
 
 class AutoProcScaling(object):
@@ -1983,718 +2695,6 @@ class AutoProcScalingContainer(object):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class AutoProcScalingContainer
-
-
-class AutoProcContainer(object):
-    def __init__(self, AutoProcProgramContainer=None, AutoProcScalingContainer=None, AutoProc=None):
-        if AutoProc is None:
-            self._AutoProc = None
-        elif AutoProc.__class__.__name__ == "AutoProc":
-            self._AutoProc = AutoProc
-        else:
-            strMessage = "ERROR! AutoProcContainer constructor argument 'AutoProc' is not AutoProc but %s" % self._AutoProc.__class__.__name__
-            raise BaseException(strMessage)
-        if AutoProcScalingContainer is None:
-            self._AutoProcScalingContainer = None
-        elif AutoProcScalingContainer.__class__.__name__ == "AutoProcScalingContainer":
-            self._AutoProcScalingContainer = AutoProcScalingContainer
-        else:
-            strMessage = "ERROR! AutoProcContainer constructor argument 'AutoProcScalingContainer' is not AutoProcScalingContainer but %s" % self._AutoProcScalingContainer.__class__.__name__
-            raise BaseException(strMessage)
-        if AutoProcProgramContainer is None:
-            self._AutoProcProgramContainer = None
-        elif AutoProcProgramContainer.__class__.__name__ == "AutoProcProgramContainer":
-            self._AutoProcProgramContainer = AutoProcProgramContainer
-        else:
-            strMessage = "ERROR! AutoProcContainer constructor argument 'AutoProcProgramContainer' is not AutoProcProgramContainer but %s" % self._AutoProcProgramContainer.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'AutoProc' attribute
-    def getAutoProc(self): return self._AutoProc
-    def setAutoProc(self, AutoProc):
-        if AutoProc is None:
-            self._AutoProc = None
-        elif AutoProc.__class__.__name__ == "AutoProc":
-            self._AutoProc = AutoProc
-        else:
-            strMessage = "ERROR! AutoProcContainer.setAutoProc argument is not AutoProc but %s" % AutoProc.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProc(self): self._AutoProc = None
-    AutoProc = property(getAutoProc, setAutoProc, delAutoProc, "Property for AutoProc")
-    # Methods and properties for the 'AutoProcScalingContainer' attribute
-    def getAutoProcScalingContainer(self): return self._AutoProcScalingContainer
-    def setAutoProcScalingContainer(self, AutoProcScalingContainer):
-        if AutoProcScalingContainer is None:
-            self._AutoProcScalingContainer = None
-        elif AutoProcScalingContainer.__class__.__name__ == "AutoProcScalingContainer":
-            self._AutoProcScalingContainer = AutoProcScalingContainer
-        else:
-            strMessage = "ERROR! AutoProcContainer.setAutoProcScalingContainer argument is not AutoProcScalingContainer but %s" % AutoProcScalingContainer.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProcScalingContainer(self): self._AutoProcScalingContainer = None
-    AutoProcScalingContainer = property(getAutoProcScalingContainer, setAutoProcScalingContainer, delAutoProcScalingContainer, "Property for AutoProcScalingContainer")
-    # Methods and properties for the 'AutoProcProgramContainer' attribute
-    def getAutoProcProgramContainer(self): return self._AutoProcProgramContainer
-    def setAutoProcProgramContainer(self, AutoProcProgramContainer):
-        if AutoProcProgramContainer is None:
-            self._AutoProcProgramContainer = None
-        elif AutoProcProgramContainer.__class__.__name__ == "AutoProcProgramContainer":
-            self._AutoProcProgramContainer = AutoProcProgramContainer
-        else:
-            strMessage = "ERROR! AutoProcContainer.setAutoProcProgramContainer argument is not AutoProcProgramContainer but %s" % AutoProcProgramContainer.__class__.__name__
-            raise BaseException(strMessage)
-    def delAutoProcProgramContainer(self): self._AutoProcProgramContainer = None
-    AutoProcProgramContainer = property(getAutoProcProgramContainer, setAutoProcProgramContainer, delAutoProcProgramContainer, "Property for AutoProcProgramContainer")
-    def export(self, outfile, level, name_='AutoProcContainer'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='AutoProcContainer'):
-        pass
-        if self._AutoProc is not None:
-            self.AutoProc.export(outfile, level, name_='AutoProc')
-        else:
-            warnEmptyAttribute("AutoProc", "AutoProc")
-        if self._AutoProcScalingContainer is not None:
-            self.AutoProcScalingContainer.export(outfile, level, name_='AutoProcScalingContainer')
-        else:
-            warnEmptyAttribute("AutoProcScalingContainer", "AutoProcScalingContainer")
-        if self._AutoProcProgramContainer is not None:
-            self.AutoProcProgramContainer.export(outfile, level, name_='AutoProcProgramContainer')
-        else:
-            warnEmptyAttribute("AutoProcProgramContainer", "AutoProcProgramContainer")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProc':
-            obj_ = AutoProc()
-            obj_.build(child_)
-            self.setAutoProc(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProcScalingContainer':
-            obj_ = AutoProcScalingContainer()
-            obj_.build(child_)
-            self.setAutoProcScalingContainer(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'AutoProcProgramContainer':
-            obj_ = AutoProcProgramContainer()
-            obj_.build(child_)
-            self.setAutoProcProgramContainer(obj_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="AutoProcContainer" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='AutoProcContainer' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class AutoProcContainer is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return AutoProcContainer.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = AutoProcContainer()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="AutoProcContainer" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = AutoProcContainer()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class AutoProcContainer
-
-
-class AutoProcIntegration(object):
-    def __init__(self, anomalous=None, cell_gamma=None, cell_beta=None, cell_alpha=None, cell_c=None, cell_b=None, cell_a=None, beamVectorZ=None, beamVectorY=None, beamVectorX=None, rotationAxisZ=None, rotationAxisY=None, rotationAxisX=None, refinedYbeam=None, refinedXbeam=None, refinedDetectorDistance=None, endImageNumber=None, startImageNumber=None, autoProcIntegrationId=None):
-        if autoProcIntegrationId is None:
-            self._autoProcIntegrationId = None
-        else:
-            self._autoProcIntegrationId = int(autoProcIntegrationId)
-        if startImageNumber is None:
-            self._startImageNumber = None
-        else:
-            self._startImageNumber = int(startImageNumber)
-        if endImageNumber is None:
-            self._endImageNumber = None
-        else:
-            self._endImageNumber = int(endImageNumber)
-        if refinedDetectorDistance is None:
-            self._refinedDetectorDistance = None
-        else:
-            self._refinedDetectorDistance = float(refinedDetectorDistance)
-        if refinedXbeam is None:
-            self._refinedXbeam = None
-        else:
-            self._refinedXbeam = float(refinedXbeam)
-        if refinedYbeam is None:
-            self._refinedYbeam = None
-        else:
-            self._refinedYbeam = float(refinedYbeam)
-        if rotationAxisX is None:
-            self._rotationAxisX = None
-        else:
-            self._rotationAxisX = float(rotationAxisX)
-        if rotationAxisY is None:
-            self._rotationAxisY = None
-        else:
-            self._rotationAxisY = float(rotationAxisY)
-        if rotationAxisZ is None:
-            self._rotationAxisZ = None
-        else:
-            self._rotationAxisZ = float(rotationAxisZ)
-        if beamVectorX is None:
-            self._beamVectorX = None
-        else:
-            self._beamVectorX = float(beamVectorX)
-        if beamVectorY is None:
-            self._beamVectorY = None
-        else:
-            self._beamVectorY = float(beamVectorY)
-        if beamVectorZ is None:
-            self._beamVectorZ = None
-        else:
-            self._beamVectorZ = float(beamVectorZ)
-        if cell_a is None:
-            self._cell_a = None
-        else:
-            self._cell_a = float(cell_a)
-        if cell_b is None:
-            self._cell_b = None
-        else:
-            self._cell_b = float(cell_b)
-        if cell_c is None:
-            self._cell_c = None
-        else:
-            self._cell_c = float(cell_c)
-        if cell_alpha is None:
-            self._cell_alpha = None
-        else:
-            self._cell_alpha = float(cell_alpha)
-        if cell_beta is None:
-            self._cell_beta = None
-        else:
-            self._cell_beta = float(cell_beta)
-        if cell_gamma is None:
-            self._cell_gamma = None
-        else:
-            self._cell_gamma = float(cell_gamma)
-        self._anomalous = bool(anomalous)
-    # Methods and properties for the 'autoProcIntegrationId' attribute
-    def getAutoProcIntegrationId(self): return self._autoProcIntegrationId
-    def setAutoProcIntegrationId(self, autoProcIntegrationId):
-        if autoProcIntegrationId is None:
-            self._autoProcIntegrationId = None
-        else:
-            self._autoProcIntegrationId = int(autoProcIntegrationId)
-    def delAutoProcIntegrationId(self): self._autoProcIntegrationId = None
-    autoProcIntegrationId = property(getAutoProcIntegrationId, setAutoProcIntegrationId, delAutoProcIntegrationId, "Property for autoProcIntegrationId")
-    # Methods and properties for the 'startImageNumber' attribute
-    def getStartImageNumber(self): return self._startImageNumber
-    def setStartImageNumber(self, startImageNumber):
-        if startImageNumber is None:
-            self._startImageNumber = None
-        else:
-            self._startImageNumber = int(startImageNumber)
-    def delStartImageNumber(self): self._startImageNumber = None
-    startImageNumber = property(getStartImageNumber, setStartImageNumber, delStartImageNumber, "Property for startImageNumber")
-    # Methods and properties for the 'endImageNumber' attribute
-    def getEndImageNumber(self): return self._endImageNumber
-    def setEndImageNumber(self, endImageNumber):
-        if endImageNumber is None:
-            self._endImageNumber = None
-        else:
-            self._endImageNumber = int(endImageNumber)
-    def delEndImageNumber(self): self._endImageNumber = None
-    endImageNumber = property(getEndImageNumber, setEndImageNumber, delEndImageNumber, "Property for endImageNumber")
-    # Methods and properties for the 'refinedDetectorDistance' attribute
-    def getRefinedDetectorDistance(self): return self._refinedDetectorDistance
-    def setRefinedDetectorDistance(self, refinedDetectorDistance):
-        if refinedDetectorDistance is None:
-            self._refinedDetectorDistance = None
-        else:
-            self._refinedDetectorDistance = float(refinedDetectorDistance)
-    def delRefinedDetectorDistance(self): self._refinedDetectorDistance = None
-    refinedDetectorDistance = property(getRefinedDetectorDistance, setRefinedDetectorDistance, delRefinedDetectorDistance, "Property for refinedDetectorDistance")
-    # Methods and properties for the 'refinedXbeam' attribute
-    def getRefinedXbeam(self): return self._refinedXbeam
-    def setRefinedXbeam(self, refinedXbeam):
-        if refinedXbeam is None:
-            self._refinedXbeam = None
-        else:
-            self._refinedXbeam = float(refinedXbeam)
-    def delRefinedXbeam(self): self._refinedXbeam = None
-    refinedXbeam = property(getRefinedXbeam, setRefinedXbeam, delRefinedXbeam, "Property for refinedXbeam")
-    # Methods and properties for the 'refinedYbeam' attribute
-    def getRefinedYbeam(self): return self._refinedYbeam
-    def setRefinedYbeam(self, refinedYbeam):
-        if refinedYbeam is None:
-            self._refinedYbeam = None
-        else:
-            self._refinedYbeam = float(refinedYbeam)
-    def delRefinedYbeam(self): self._refinedYbeam = None
-    refinedYbeam = property(getRefinedYbeam, setRefinedYbeam, delRefinedYbeam, "Property for refinedYbeam")
-    # Methods and properties for the 'rotationAxisX' attribute
-    def getRotationAxisX(self): return self._rotationAxisX
-    def setRotationAxisX(self, rotationAxisX):
-        if rotationAxisX is None:
-            self._rotationAxisX = None
-        else:
-            self._rotationAxisX = float(rotationAxisX)
-    def delRotationAxisX(self): self._rotationAxisX = None
-    rotationAxisX = property(getRotationAxisX, setRotationAxisX, delRotationAxisX, "Property for rotationAxisX")
-    # Methods and properties for the 'rotationAxisY' attribute
-    def getRotationAxisY(self): return self._rotationAxisY
-    def setRotationAxisY(self, rotationAxisY):
-        if rotationAxisY is None:
-            self._rotationAxisY = None
-        else:
-            self._rotationAxisY = float(rotationAxisY)
-    def delRotationAxisY(self): self._rotationAxisY = None
-    rotationAxisY = property(getRotationAxisY, setRotationAxisY, delRotationAxisY, "Property for rotationAxisY")
-    # Methods and properties for the 'rotationAxisZ' attribute
-    def getRotationAxisZ(self): return self._rotationAxisZ
-    def setRotationAxisZ(self, rotationAxisZ):
-        if rotationAxisZ is None:
-            self._rotationAxisZ = None
-        else:
-            self._rotationAxisZ = float(rotationAxisZ)
-    def delRotationAxisZ(self): self._rotationAxisZ = None
-    rotationAxisZ = property(getRotationAxisZ, setRotationAxisZ, delRotationAxisZ, "Property for rotationAxisZ")
-    # Methods and properties for the 'beamVectorX' attribute
-    def getBeamVectorX(self): return self._beamVectorX
-    def setBeamVectorX(self, beamVectorX):
-        if beamVectorX is None:
-            self._beamVectorX = None
-        else:
-            self._beamVectorX = float(beamVectorX)
-    def delBeamVectorX(self): self._beamVectorX = None
-    beamVectorX = property(getBeamVectorX, setBeamVectorX, delBeamVectorX, "Property for beamVectorX")
-    # Methods and properties for the 'beamVectorY' attribute
-    def getBeamVectorY(self): return self._beamVectorY
-    def setBeamVectorY(self, beamVectorY):
-        if beamVectorY is None:
-            self._beamVectorY = None
-        else:
-            self._beamVectorY = float(beamVectorY)
-    def delBeamVectorY(self): self._beamVectorY = None
-    beamVectorY = property(getBeamVectorY, setBeamVectorY, delBeamVectorY, "Property for beamVectorY")
-    # Methods and properties for the 'beamVectorZ' attribute
-    def getBeamVectorZ(self): return self._beamVectorZ
-    def setBeamVectorZ(self, beamVectorZ):
-        if beamVectorZ is None:
-            self._beamVectorZ = None
-        else:
-            self._beamVectorZ = float(beamVectorZ)
-    def delBeamVectorZ(self): self._beamVectorZ = None
-    beamVectorZ = property(getBeamVectorZ, setBeamVectorZ, delBeamVectorZ, "Property for beamVectorZ")
-    # Methods and properties for the 'cell_a' attribute
-    def getCell_a(self): return self._cell_a
-    def setCell_a(self, cell_a):
-        if cell_a is None:
-            self._cell_a = None
-        else:
-            self._cell_a = float(cell_a)
-    def delCell_a(self): self._cell_a = None
-    cell_a = property(getCell_a, setCell_a, delCell_a, "Property for cell_a")
-    # Methods and properties for the 'cell_b' attribute
-    def getCell_b(self): return self._cell_b
-    def setCell_b(self, cell_b):
-        if cell_b is None:
-            self._cell_b = None
-        else:
-            self._cell_b = float(cell_b)
-    def delCell_b(self): self._cell_b = None
-    cell_b = property(getCell_b, setCell_b, delCell_b, "Property for cell_b")
-    # Methods and properties for the 'cell_c' attribute
-    def getCell_c(self): return self._cell_c
-    def setCell_c(self, cell_c):
-        if cell_c is None:
-            self._cell_c = None
-        else:
-            self._cell_c = float(cell_c)
-    def delCell_c(self): self._cell_c = None
-    cell_c = property(getCell_c, setCell_c, delCell_c, "Property for cell_c")
-    # Methods and properties for the 'cell_alpha' attribute
-    def getCell_alpha(self): return self._cell_alpha
-    def setCell_alpha(self, cell_alpha):
-        if cell_alpha is None:
-            self._cell_alpha = None
-        else:
-            self._cell_alpha = float(cell_alpha)
-    def delCell_alpha(self): self._cell_alpha = None
-    cell_alpha = property(getCell_alpha, setCell_alpha, delCell_alpha, "Property for cell_alpha")
-    # Methods and properties for the 'cell_beta' attribute
-    def getCell_beta(self): return self._cell_beta
-    def setCell_beta(self, cell_beta):
-        if cell_beta is None:
-            self._cell_beta = None
-        else:
-            self._cell_beta = float(cell_beta)
-    def delCell_beta(self): self._cell_beta = None
-    cell_beta = property(getCell_beta, setCell_beta, delCell_beta, "Property for cell_beta")
-    # Methods and properties for the 'cell_gamma' attribute
-    def getCell_gamma(self): return self._cell_gamma
-    def setCell_gamma(self, cell_gamma):
-        if cell_gamma is None:
-            self._cell_gamma = None
-        else:
-            self._cell_gamma = float(cell_gamma)
-    def delCell_gamma(self): self._cell_gamma = None
-    cell_gamma = property(getCell_gamma, setCell_gamma, delCell_gamma, "Property for cell_gamma")
-    # Methods and properties for the 'anomalous' attribute
-    def getAnomalous(self): return self._anomalous
-    def setAnomalous(self, anomalous):
-        self._anomalous = bool(anomalous)
-    def delAnomalous(self): self._anomalous = None
-    anomalous = property(getAnomalous, setAnomalous, delAnomalous, "Property for anomalous")
-    def export(self, outfile, level, name_='AutoProcIntegration'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='AutoProcIntegration'):
-        pass
-        if self._autoProcIntegrationId is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<autoProcIntegrationId>%d</autoProcIntegrationId>\n' % self._autoProcIntegrationId))
-        if self._startImageNumber is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<startImageNumber>%d</startImageNumber>\n' % self._startImageNumber))
-        else:
-            warnEmptyAttribute("startImageNumber", "integer")
-        if self._endImageNumber is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<endImageNumber>%d</endImageNumber>\n' % self._endImageNumber))
-        else:
-            warnEmptyAttribute("endImageNumber", "integer")
-        if self._refinedDetectorDistance is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<refinedDetectorDistance>%e</refinedDetectorDistance>\n' % self._refinedDetectorDistance))
-        else:
-            warnEmptyAttribute("refinedDetectorDistance", "float")
-        if self._refinedXbeam is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<refinedXbeam>%e</refinedXbeam>\n' % self._refinedXbeam))
-        else:
-            warnEmptyAttribute("refinedXbeam", "float")
-        if self._refinedYbeam is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<refinedYbeam>%e</refinedYbeam>\n' % self._refinedYbeam))
-        else:
-            warnEmptyAttribute("refinedYbeam", "float")
-        if self._rotationAxisX is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<rotationAxisX>%e</rotationAxisX>\n' % self._rotationAxisX))
-        else:
-            warnEmptyAttribute("rotationAxisX", "float")
-        if self._rotationAxisY is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<rotationAxisY>%e</rotationAxisY>\n' % self._rotationAxisY))
-        else:
-            warnEmptyAttribute("rotationAxisY", "float")
-        if self._rotationAxisZ is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<rotationAxisZ>%e</rotationAxisZ>\n' % self._rotationAxisZ))
-        else:
-            warnEmptyAttribute("rotationAxisZ", "float")
-        if self._beamVectorX is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<beamVectorX>%e</beamVectorX>\n' % self._beamVectorX))
-        else:
-            warnEmptyAttribute("beamVectorX", "float")
-        if self._beamVectorY is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<beamVectorY>%e</beamVectorY>\n' % self._beamVectorY))
-        else:
-            warnEmptyAttribute("beamVectorY", "float")
-        if self._beamVectorZ is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<beamVectorZ>%e</beamVectorZ>\n' % self._beamVectorZ))
-        else:
-            warnEmptyAttribute("beamVectorZ", "float")
-        if self._cell_a is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<cell_a>%e</cell_a>\n' % self._cell_a))
-        else:
-            warnEmptyAttribute("cell_a", "float")
-        if self._cell_b is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<cell_b>%e</cell_b>\n' % self._cell_b))
-        else:
-            warnEmptyAttribute("cell_b", "float")
-        if self._cell_c is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<cell_c>%e</cell_c>\n' % self._cell_c))
-        else:
-            warnEmptyAttribute("cell_c", "float")
-        if self._cell_alpha is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<cell_alpha>%e</cell_alpha>\n' % self._cell_alpha))
-        else:
-            warnEmptyAttribute("cell_alpha", "float")
-        if self._cell_beta is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<cell_beta>%e</cell_beta>\n' % self._cell_beta))
-        else:
-            warnEmptyAttribute("cell_beta", "float")
-        if self._cell_gamma is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<cell_gamma>%e</cell_gamma>\n' % self._cell_gamma))
-        else:
-            warnEmptyAttribute("cell_gamma", "float")
-        if self._anomalous is not None:
-            showIndent(outfile, level)
-            if self._anomalous:
-                outfile.write(unicode('<anomalous>true</anomalous>\n'))
-            else:
-                outfile.write(unicode('<anomalous>false</anomalous>\n'))
-        else:
-            warnEmptyAttribute("anomalous", "boolean")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'autoProcIntegrationId':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._autoProcIntegrationId = ival_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'startImageNumber':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._startImageNumber = ival_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'endImageNumber':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._endImageNumber = ival_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'refinedDetectorDistance':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._refinedDetectorDistance = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'refinedXbeam':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._refinedXbeam = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'refinedYbeam':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._refinedYbeam = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rotationAxisX':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._rotationAxisX = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rotationAxisY':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._rotationAxisY = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rotationAxisZ':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._rotationAxisZ = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'beamVectorX':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._beamVectorX = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'beamVectorY':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._beamVectorY = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'beamVectorZ':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._beamVectorZ = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'cell_a':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._cell_a = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'cell_b':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._cell_b = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'cell_c':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._cell_c = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'cell_alpha':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._cell_alpha = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'cell_beta':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._cell_beta = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'cell_gamma':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    fval_ = float(sval_)
-                except ValueError:
-                    raise ValueError('requires float (or double) -- %s' % child_.toxml())
-                self._cell_gamma = fval_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'anomalous':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                if sval_ in ('True', 'true', '1'):
-                    ival_ = True
-                elif sval_ in ('False', 'false', '0'):
-                    ival_ = False
-                else:
-                    raise ValueError('requires boolean -- %s' % child_.toxml())
-                self._anomalous = ival_
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="AutoProcIntegration" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='AutoProcIntegration' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class AutoProcIntegration is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return AutoProcIntegration.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = AutoProcIntegration()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="AutoProcIntegration" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = AutoProcIntegration()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class AutoProcIntegration
 
 
 class AutoProcStatus(object):
@@ -9745,6 +9745,142 @@ class XSDataISPyBScreeningStrategy(XSData):
 # end class XSDataISPyBScreeningStrategy
 
 
+class XSDataISPyBScreeningStrategyContainer(XSData):
+    def __init__(self, screeningStrategyWedgeContainer=None, screeningStrategy=None):
+        XSData.__init__(self, )
+        if screeningStrategy is None:
+            self._screeningStrategy = None
+        elif screeningStrategy.__class__.__name__ == "XSDataISPyBScreeningStrategy":
+            self._screeningStrategy = screeningStrategy
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer constructor argument 'screeningStrategy' is not XSDataISPyBScreeningStrategy but %s" % self._screeningStrategy.__class__.__name__
+            raise BaseException(strMessage)
+        if screeningStrategyWedgeContainer is None:
+            self._screeningStrategyWedgeContainer = []
+        elif screeningStrategyWedgeContainer.__class__.__name__ == "list":
+            self._screeningStrategyWedgeContainer = screeningStrategyWedgeContainer
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer constructor argument 'screeningStrategyWedgeContainer' is not list but %s" % self._screeningStrategyWedgeContainer.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'screeningStrategy' attribute
+    def getScreeningStrategy(self): return self._screeningStrategy
+    def setScreeningStrategy(self, screeningStrategy):
+        if screeningStrategy is None:
+            self._screeningStrategy = None
+        elif screeningStrategy.__class__.__name__ == "XSDataISPyBScreeningStrategy":
+            self._screeningStrategy = screeningStrategy
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.setScreeningStrategy argument is not XSDataISPyBScreeningStrategy but %s" % screeningStrategy.__class__.__name__
+            raise BaseException(strMessage)
+    def delScreeningStrategy(self): self._screeningStrategy = None
+    screeningStrategy = property(getScreeningStrategy, setScreeningStrategy, delScreeningStrategy, "Property for screeningStrategy")
+    # Methods and properties for the 'screeningStrategyWedgeContainer' attribute
+    def getScreeningStrategyWedgeContainer(self): return self._screeningStrategyWedgeContainer
+    def setScreeningStrategyWedgeContainer(self, screeningStrategyWedgeContainer):
+        if screeningStrategyWedgeContainer is None:
+            self._screeningStrategyWedgeContainer = []
+        elif screeningStrategyWedgeContainer.__class__.__name__ == "list":
+            self._screeningStrategyWedgeContainer = screeningStrategyWedgeContainer
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.setScreeningStrategyWedgeContainer argument is not list but %s" % screeningStrategyWedgeContainer.__class__.__name__
+            raise BaseException(strMessage)
+    def delScreeningStrategyWedgeContainer(self): self._screeningStrategyWedgeContainer = None
+    screeningStrategyWedgeContainer = property(getScreeningStrategyWedgeContainer, setScreeningStrategyWedgeContainer, delScreeningStrategyWedgeContainer, "Property for screeningStrategyWedgeContainer")
+    def addScreeningStrategyWedgeContainer(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataISPyBScreeningStrategyWedgeContainer":
+            self._screeningStrategyWedgeContainer.append(value)
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer argument is not XSDataISPyBScreeningStrategyWedgeContainer but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertScreeningStrategyWedgeContainer(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.insertScreeningStrategyWedgeContainer argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.insertScreeningStrategyWedgeContainer argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataISPyBScreeningStrategyWedgeContainer":
+            self._screeningStrategyWedgeContainer[index] = value
+        else:
+            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer argument is not XSDataISPyBScreeningStrategyWedgeContainer but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def export(self, outfile, level, name_='XSDataISPyBScreeningStrategyContainer'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataISPyBScreeningStrategyContainer'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._screeningStrategy is not None:
+            self.screeningStrategy.export(outfile, level, name_='screeningStrategy')
+        else:
+            warnEmptyAttribute("screeningStrategy", "XSDataISPyBScreeningStrategy")
+        for screeningStrategyWedgeContainer_ in self.getScreeningStrategyWedgeContainer():
+            screeningStrategyWedgeContainer_.export(outfile, level, name_='screeningStrategyWedgeContainer')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'screeningStrategy':
+            obj_ = XSDataISPyBScreeningStrategy()
+            obj_.build(child_)
+            self.setScreeningStrategy(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'screeningStrategyWedgeContainer':
+            obj_ = XSDataISPyBScreeningStrategyWedgeContainer()
+            obj_.build(child_)
+            self.screeningStrategyWedgeContainer.append(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataISPyBScreeningStrategyContainer" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataISPyBScreeningStrategyContainer' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataISPyBScreeningStrategyContainer is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataISPyBScreeningStrategyContainer.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataISPyBScreeningStrategyContainer()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataISPyBScreeningStrategyContainer" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataISPyBScreeningStrategyContainer()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataISPyBScreeningStrategyContainer
+
+
 class XSDataISPyBScreeningStrategySubWedge(XSData):
     def __init__(self, comments=None, numberOfImages=None, doseTotal=None, multiplicity=None, completeness=None, oscillationRange=None, transmission=None, exposureTime=None, axisEnd=None, axisStart=None, rotationAxis=None, subWedgeNumber=None, screeningStrategyWedgeId=None, screeningStrategySubWedgeId=None):
         XSData.__init__(self, )
@@ -10757,142 +10893,6 @@ class XSDataISPyBScreeningStrategyWedgeContainer(XSData):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataISPyBScreeningStrategyWedgeContainer
-
-
-class XSDataISPyBScreeningStrategyContainer(XSData):
-    def __init__(self, screeningStrategyWedgeContainer=None, screeningStrategy=None):
-        XSData.__init__(self, )
-        if screeningStrategy is None:
-            self._screeningStrategy = None
-        elif screeningStrategy.__class__.__name__ == "XSDataISPyBScreeningStrategy":
-            self._screeningStrategy = screeningStrategy
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer constructor argument 'screeningStrategy' is not XSDataISPyBScreeningStrategy but %s" % self._screeningStrategy.__class__.__name__
-            raise BaseException(strMessage)
-        if screeningStrategyWedgeContainer is None:
-            self._screeningStrategyWedgeContainer = []
-        elif screeningStrategyWedgeContainer.__class__.__name__ == "list":
-            self._screeningStrategyWedgeContainer = screeningStrategyWedgeContainer
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer constructor argument 'screeningStrategyWedgeContainer' is not list but %s" % self._screeningStrategyWedgeContainer.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'screeningStrategy' attribute
-    def getScreeningStrategy(self): return self._screeningStrategy
-    def setScreeningStrategy(self, screeningStrategy):
-        if screeningStrategy is None:
-            self._screeningStrategy = None
-        elif screeningStrategy.__class__.__name__ == "XSDataISPyBScreeningStrategy":
-            self._screeningStrategy = screeningStrategy
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.setScreeningStrategy argument is not XSDataISPyBScreeningStrategy but %s" % screeningStrategy.__class__.__name__
-            raise BaseException(strMessage)
-    def delScreeningStrategy(self): self._screeningStrategy = None
-    screeningStrategy = property(getScreeningStrategy, setScreeningStrategy, delScreeningStrategy, "Property for screeningStrategy")
-    # Methods and properties for the 'screeningStrategyWedgeContainer' attribute
-    def getScreeningStrategyWedgeContainer(self): return self._screeningStrategyWedgeContainer
-    def setScreeningStrategyWedgeContainer(self, screeningStrategyWedgeContainer):
-        if screeningStrategyWedgeContainer is None:
-            self._screeningStrategyWedgeContainer = []
-        elif screeningStrategyWedgeContainer.__class__.__name__ == "list":
-            self._screeningStrategyWedgeContainer = screeningStrategyWedgeContainer
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.setScreeningStrategyWedgeContainer argument is not list but %s" % screeningStrategyWedgeContainer.__class__.__name__
-            raise BaseException(strMessage)
-    def delScreeningStrategyWedgeContainer(self): self._screeningStrategyWedgeContainer = None
-    screeningStrategyWedgeContainer = property(getScreeningStrategyWedgeContainer, setScreeningStrategyWedgeContainer, delScreeningStrategyWedgeContainer, "Property for screeningStrategyWedgeContainer")
-    def addScreeningStrategyWedgeContainer(self, value):
-        if value is None:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataISPyBScreeningStrategyWedgeContainer":
-            self._screeningStrategyWedgeContainer.append(value)
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer argument is not XSDataISPyBScreeningStrategyWedgeContainer but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertScreeningStrategyWedgeContainer(self, index, value):
-        if index is None:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.insertScreeningStrategyWedgeContainer argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.insertScreeningStrategyWedgeContainer argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataISPyBScreeningStrategyWedgeContainer":
-            self._screeningStrategyWedgeContainer[index] = value
-        else:
-            strMessage = "ERROR! XSDataISPyBScreeningStrategyContainer.addScreeningStrategyWedgeContainer argument is not XSDataISPyBScreeningStrategyWedgeContainer but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def export(self, outfile, level, name_='XSDataISPyBScreeningStrategyContainer'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataISPyBScreeningStrategyContainer'):
-        XSData.exportChildren(self, outfile, level, name_)
-        if self._screeningStrategy is not None:
-            self.screeningStrategy.export(outfile, level, name_='screeningStrategy')
-        else:
-            warnEmptyAttribute("screeningStrategy", "XSDataISPyBScreeningStrategy")
-        for screeningStrategyWedgeContainer_ in self.getScreeningStrategyWedgeContainer():
-            screeningStrategyWedgeContainer_.export(outfile, level, name_='screeningStrategyWedgeContainer')
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'screeningStrategy':
-            obj_ = XSDataISPyBScreeningStrategy()
-            obj_.build(child_)
-            self.setScreeningStrategy(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'screeningStrategyWedgeContainer':
-            obj_ = XSDataISPyBScreeningStrategyWedgeContainer()
-            obj_.build(child_)
-            self.screeningStrategyWedgeContainer.append(obj_)
-        XSData.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataISPyBScreeningStrategyContainer" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataISPyBScreeningStrategyContainer' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataISPyBScreeningStrategyContainer is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataISPyBScreeningStrategyContainer.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataISPyBScreeningStrategyContainer()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataISPyBScreeningStrategyContainer" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataISPyBScreeningStrategyContainer()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataISPyBScreeningStrategyContainer
 
 
 class XSDataISPyBWorkflow(XSData):
@@ -14431,7 +14431,7 @@ class XSDataInputStoreAutoProcProgramAttachment(XSDataInput):
 
 
 class XSDataInputStoreAutoProcStatus(XSDataInput):
-    def __init__(self, configuration=None, AutoProcStatus=None, autoProcStatusId=None, autoProcIntegrationId=None, dataCollectionId=None):
+    def __init__(self, configuration=None, AutoProcStatus=None, AutoProcProgram=None, autoProcStatusId=None, autoProcIntegrationId=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -14445,6 +14445,13 @@ class XSDataInputStoreAutoProcStatus(XSDataInput):
             self._autoProcStatusId = None
         else:
             self._autoProcStatusId = int(autoProcStatusId)
+        if AutoProcProgram is None:
+            self._AutoProcProgram = None
+        elif AutoProcProgram.__class__.__name__ == "AutoProcProgram":
+            self._AutoProcProgram = AutoProcProgram
+        else:
+            strMessage = "ERROR! XSDataInputStoreAutoProcStatus constructor argument 'AutoProcProgram' is not AutoProcProgram but %s" % self._AutoProcProgram.__class__.__name__
+            raise BaseException(strMessage)
         if AutoProcStatus is None:
             self._AutoProcStatus = None
         elif AutoProcStatus.__class__.__name__ == "AutoProcStatus":
@@ -14479,6 +14486,18 @@ class XSDataInputStoreAutoProcStatus(XSDataInput):
             self._autoProcStatusId = int(autoProcStatusId)
     def delAutoProcStatusId(self): self._autoProcStatusId = None
     autoProcStatusId = property(getAutoProcStatusId, setAutoProcStatusId, delAutoProcStatusId, "Property for autoProcStatusId")
+    # Methods and properties for the 'AutoProcProgram' attribute
+    def getAutoProcProgram(self): return self._AutoProcProgram
+    def setAutoProcProgram(self, AutoProcProgram):
+        if AutoProcProgram is None:
+            self._AutoProcProgram = None
+        elif AutoProcProgram.__class__.__name__ == "AutoProcProgram":
+            self._AutoProcProgram = AutoProcProgram
+        else:
+            strMessage = "ERROR! XSDataInputStoreAutoProcStatus.setAutoProcProgram argument is not AutoProcProgram but %s" % AutoProcProgram.__class__.__name__
+            raise BaseException(strMessage)
+    def delAutoProcProgram(self): self._AutoProcProgram = None
+    AutoProcProgram = property(getAutoProcProgram, setAutoProcProgram, delAutoProcProgram, "Property for AutoProcProgram")
     # Methods and properties for the 'AutoProcStatus' attribute
     def getAutoProcStatus(self): return self._AutoProcStatus
     def setAutoProcStatus(self, AutoProcStatus):
@@ -14508,6 +14527,8 @@ class XSDataInputStoreAutoProcStatus(XSDataInput):
         if self._autoProcStatusId is not None:
             showIndent(outfile, level)
             outfile.write(unicode('<autoProcStatusId>%d</autoProcStatusId>\n' % self._autoProcStatusId))
+        if self._AutoProcProgram is not None:
+            self.AutoProcProgram.export(outfile, level, name_='AutoProcProgram')
         if self._AutoProcStatus is not None:
             self.AutoProcStatus.export(outfile, level, name_='AutoProcStatus')
         else:
@@ -14544,6 +14565,11 @@ class XSDataInputStoreAutoProcStatus(XSDataInput):
                 except ValueError:
                     raise ValueError('requires integer -- %s' % child_.toxml())
                 self._autoProcStatusId = ival_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'AutoProcProgram':
+            obj_ = AutoProcProgram()
+            obj_.build(child_)
+            self.setAutoProcProgram(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'AutoProcStatus':
             obj_ = AutoProcStatus()

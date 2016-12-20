@@ -1458,7 +1458,15 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         status_data.step = "Indexing"
         status_data.status = "Launched"
         status_data.comments = comments
+
+        # Program
+        autoProcProgram = AutoProcProgram()
+        autoProcProgram.processingPrograms = "EDNA_proc"
+        autoProcProgram.processingStatus = False
+
+        status_input.AutoProcProgram = autoProcProgram
         status_input.AutoProcStatus = status_data
+
 
         autoproc_status.dataInput = status_input
         # get our EDNAproc status id

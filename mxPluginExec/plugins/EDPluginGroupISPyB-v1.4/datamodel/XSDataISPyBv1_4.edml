@@ -185,6 +185,7 @@ complex type XSDataInputStoreAutoProcStatus extends XSDataInput {
 	dataCollectionId : integer optional
 	autoProcIntegrationId : integer optional
 	autoProcStatusId : integer optional
+	AutoProcProgram : AutoProcProgram optional
 	AutoProcStatus : AutoProcStatus
 } 
 

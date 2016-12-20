@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<XSDataInputAutoProcStatus>
+	<dataCollectionId>19570</dataCollectionId>
+    <AutoProcProgram>
+        <processingCommandLine>/mntdirect/_scisoft/users/svensson/git/edna-mx/kernel/bin/edna-test-launcher.py --test EDTestCasePluginControlEDNAprocv1_0_id29_20130301 --verbose</processingCommandLine>
+        <processingPrograms>EDNA_proc</processingPrograms>
+        <processingStatus>true</processingStatus>
+        <processingMessage>None</processingMessage>
+        <processingStartTime>Tue Dec 20 14:44:11 2016</processingStartTime>
+        <processingEnvironment>None</processingEnvironment>
+    </AutoProcProgram>	
+    <AutoProcStatus>
+		<step>Integration</step>
+		<status>Launched</status>
+		<comments>Another completely useless comment only put here for testing purposes.</comments>
+	</AutoProcStatus>
+</XSDataInputAutoProcStatus>
