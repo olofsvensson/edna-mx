@@ -5,7 +5,7 @@
 #    Copyright (C) 2012      European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -29,18 +29,18 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os, shutil
 
-from EDVerbose import EDVerbose 
-from EDUtilsImage import EDUtilsImage   
+from EDVerbose import EDVerbose
+from EDUtilsImage import EDUtilsImage
 from EDUtilsPath import EDUtilsPath
 
 class EDHandlerESRFPyarchv1_0:
 
-    
+
     @staticmethod
     def createPyarchFilePath(_strESRFPath):
         """
         This method translates from an ESRF "visitor" path to a "pyarch" path:
-        /data/visitor/mx415/id14eh1/20100209 -> /data/pyarch/id14eh1/mx415/20100209
+        /data/visitor/mx415/id14eh1/20100209 -> /data/pyarch/2010/id14eh1/mx415/20100209
         """
         strPyarchDNAFilePath = None
         listOfDirectories = _strESRFPath.split(os.sep)
@@ -59,7 +59,7 @@ class EDHandlerESRFPyarchv1_0:
             return strPyarchDNAFilePath
 
 
-        listBeamlines = ["bm14", "id14eh1", "id14eh2", "id14eh3", "id14eh4", "id23eh1", "id23eh2", 
+        listBeamlines = ["bm14", "id14eh1", "id14eh2", "id14eh3", "id14eh4", "id23eh1", "id23eh2",
                          "id29", "id30a1", "id30a2", "id30a3", "id30b", "simulator_mxcube"]
         # Check that we have at least four levels of directories:
         if (len(listOfDirectories) > 5):
@@ -68,6 +68,7 @@ class EDHandlerESRFPyarchv1_0:
             strThirdDirectory = listOfDirectories[ 3 ]
             strFourthDirectory = listOfDirectories[ 4 ]
             strFifthDirectory = listOfDirectories[ 5 ]
+            year = strFifthDirectory[0:4]
             strProposal = None
             strBeamline = None
             if (strDataDirectory == "data") and (strSecondDirectory == "gz"):
@@ -91,6 +92,7 @@ class EDHandlerESRFPyarchv1_0:
             if (strProposal != None) and (strBeamline != None):
                 strPyarchDNAFilePath = os.path.join(os.sep, "data")
                 strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, "pyarch")
+                strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, year)
                 strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, strBeamline)
                 strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, strProposal)
                 for strDirectory in listOfRemainingDirectories:
@@ -129,10 +131,10 @@ class EDHandlerESRFPyarchv1_0:
         strHtmlDirectoryPath = os.path.join(strImageDirectory, "%s_dnafiles" % strPrefix)
         strPyarchHtmlDirectoryPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(strHtmlDirectoryPath)
         return strPyarchHtmlDirectoryPath
-    
+
 
     @staticmethod
-    def copyHTMLDir( _strPathToHTMLDir, _strPathToPyarchDirectory):
+    def copyHTMLDir(_strPathToHTMLDir, _strPathToPyarchDirectory):
         if not os.path.exists(_strPathToPyarchDirectory):
             try:
                 os.mkdir(_strPathToPyarchDirectory)
@@ -140,7 +142,7 @@ class EDHandlerESRFPyarchv1_0:
                 EDVerbose.WARNING("EDHandlerESRFPyarchv1_0.copyHTMLFilesAndDir: cannot create pyarch html directory %s" % _strPathToPyarchDirectory)
                 return
         elif not os.path.exists(_strPathToHTMLDir):
-            EDVerbose.ERROR("EDHandlerESRFPyarchv1_0.copyHTMLFilesAndDir: path to html directory does not exist: %s" % _strPathToHTMLDir)            
+            EDVerbose.ERROR("EDHandlerESRFPyarchv1_0.copyHTMLFilesAndDir: path to html directory does not exist: %s" % _strPathToHTMLDir)
         else:
             try:
                 strPathToPyArchHtmlDirectory = os.path.join(_strPathToPyarchDirectory, "index")

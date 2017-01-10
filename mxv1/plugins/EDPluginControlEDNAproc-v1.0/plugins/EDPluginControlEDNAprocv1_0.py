@@ -1160,27 +1160,13 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 if not os.path.exists(pyarch_base):
                     os.makedirs(pyarch_base)
                 pyarch_path = tempfile.mkdtemp(prefix=strTime + "_", dir=pyarch_base)
-            elif files_dir.startswith('/data/gz'):
-                if files_dir.startswith('/data/gz/visitor'):
-                    tokens = [elem for elem in files_dir.split(os.path.sep)
-                              if len(elem) > 0]
-                    pyarch_path = os.path.join('/data/pyarch',
-                                               tokens[4], tokens[3],
-                                               *tokens[5:])
-                else:
-                    # We might get empty elements at the head/tail of the list
-                    tokens = [elem for elem in files_dir.split(os.path.sep)
-                              if len(elem) > 0]
-                    if tokens[3] == 'inhouse':
-                        pyarch_path = os.path.join('/data/pyarch', tokens[2],
-                                                   *tokens[4:])
-
 
             elif files_dir.startswith('/data/visitor'):
                 # We might get empty elements at the head/tail of the list
                 tokens = [elem for elem in files_dir.split(os.path.sep)
                           if len(elem) > 0]
-                pyarch_path = os.path.join('/data/pyarch',
+                year = tokens[4][0:4]
+                pyarch_path = os.path.join('/data/pyarch', year,
                                            tokens[3], tokens[2],
                                            *tokens[4:])
             else:
@@ -1188,7 +1174,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 tokens = [elem for elem in files_dir.split(os.path.sep)
                           if len(elem) > 0]
                 if tokens[2] == 'inhouse':
-                    pyarch_path = os.path.join('/data/pyarch', tokens[1],
+                    year = tokens[4][0:4]
+                    pyarch_path = os.path.join('/data/pyarch', year, tokens[1],
                                                *tokens[3:])
         if pyarch_path is not None:
             pyarch_path = pyarch_path.replace('PROCESSED_DATA', 'RAW_DATA')
