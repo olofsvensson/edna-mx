@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Sep 5 03:57::42 2016 by EDGenerateDS.
+# Generated Thu Jan 12 02:11::05 2017 by EDGenerateDS.
 #
 
 import os, sys
@@ -1083,7 +1083,7 @@ class XSDataInputDozor(XSDataInput):
 
 
 class XSDataResultDozor(XSDataResult):
-    def __init__(self, status=None, halfDoseTime=None, imageDozor=None):
+    def __init__(self, status=None, pngPlots=None, plotmtvFile=None, halfDoseTime=None, imageDozor=None):
         XSDataResult.__init__(self, status)
         if imageDozor is None:
             self._imageDozor = []
@@ -1098,6 +1098,20 @@ class XSDataResultDozor(XSDataResult):
             self._halfDoseTime = halfDoseTime
         else:
             strMessage = "ERROR! XSDataResultDozor constructor argument 'halfDoseTime' is not XSDataDouble but %s" % self._halfDoseTime.__class__.__name__
+            raise BaseException(strMessage)
+        if plotmtvFile is None:
+            self._plotmtvFile = None
+        elif plotmtvFile.__class__.__name__ == "XSDataFile":
+            self._plotmtvFile = plotmtvFile
+        else:
+            strMessage = "ERROR! XSDataResultDozor constructor argument 'plotmtvFile' is not XSDataFile but %s" % self._plotmtvFile.__class__.__name__
+            raise BaseException(strMessage)
+        if pngPlots is None:
+            self._pngPlots = []
+        elif pngPlots.__class__.__name__ == "list":
+            self._pngPlots = pngPlots
+        else:
+            strMessage = "ERROR! XSDataResultDozor constructor argument 'pngPlots' is not list but %s" % self._pngPlots.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'imageDozor' attribute
     def getImageDozor(self): return self._imageDozor
@@ -1144,6 +1158,51 @@ class XSDataResultDozor(XSDataResult):
             raise BaseException(strMessage)
     def delHalfDoseTime(self): self._halfDoseTime = None
     halfDoseTime = property(getHalfDoseTime, setHalfDoseTime, delHalfDoseTime, "Property for halfDoseTime")
+    # Methods and properties for the 'plotmtvFile' attribute
+    def getPlotmtvFile(self): return self._plotmtvFile
+    def setPlotmtvFile(self, plotmtvFile):
+        if plotmtvFile is None:
+            self._plotmtvFile = None
+        elif plotmtvFile.__class__.__name__ == "XSDataFile":
+            self._plotmtvFile = plotmtvFile
+        else:
+            strMessage = "ERROR! XSDataResultDozor.setPlotmtvFile argument is not XSDataFile but %s" % plotmtvFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delPlotmtvFile(self): self._plotmtvFile = None
+    plotmtvFile = property(getPlotmtvFile, setPlotmtvFile, delPlotmtvFile, "Property for plotmtvFile")
+    # Methods and properties for the 'pngPlots' attribute
+    def getPngPlots(self): return self._pngPlots
+    def setPngPlots(self, pngPlots):
+        if pngPlots is None:
+            self._pngPlots = []
+        elif pngPlots.__class__.__name__ == "list":
+            self._pngPlots = pngPlots
+        else:
+            strMessage = "ERROR! XSDataResultDozor.setPngPlots argument is not list but %s" % pngPlots.__class__.__name__
+            raise BaseException(strMessage)
+    def delPngPlots(self): self._pngPlots = None
+    pngPlots = property(getPngPlots, setPngPlots, delPngPlots, "Property for pngPlots")
+    def addPngPlots(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataResultDozor.addPngPlots argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._pngPlots.append(value)
+        else:
+            strMessage = "ERROR! XSDataResultDozor.addPngPlots argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertPngPlots(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataResultDozor.insertPngPlots argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataResultDozor.insertPngPlots argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._pngPlots[index] = value
+        else:
+            strMessage = "ERROR! XSDataResultDozor.addPngPlots argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     def export(self, outfile, level, name_='XSDataResultDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1156,6 +1215,10 @@ class XSDataResultDozor(XSDataResult):
             imageDozor_.export(outfile, level, name_='imageDozor')
         if self._halfDoseTime is not None:
             self.halfDoseTime.export(outfile, level, name_='halfDoseTime')
+        if self._plotmtvFile is not None:
+            self.plotmtvFile.export(outfile, level, name_='plotmtvFile')
+        for pngPlots_ in self.getPngPlots():
+            pngPlots_.export(outfile, level, name_='pngPlots')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1171,6 +1234,16 @@ class XSDataResultDozor(XSDataResult):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setHalfDoseTime(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'plotmtvFile':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setPlotmtvFile(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pngPlots':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.pngPlots.append(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

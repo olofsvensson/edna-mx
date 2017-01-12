@@ -1,0 +1,78 @@
+$ DATA=CURVE2D
+% toplabel  = 'Spot number vs.Exposure'
+%xmin = 0
+%ymin = 0
+% xlabel = 'Exposure time, s'
+% ylabel = Spot number
+# Curve 1
+% linetype   = 5
+% linewidth  = 1
+% linecolor  = 4
+% linelabel  = 'N.of Spots'
+% markertype = 5
+% markercolor= 6
+  0.50   18396
+  1.50   17914
+  2.50   17449
+  3.50   16998
+  4.50   16551
+  5.50   16136
+  6.50   15803
+  7.50   15369
+  8.50   14938
+  9.50   14417
+# Curve 2
+% linetype   = 11
+% linewidth  = 3
+% linecolor  = 4
+% linelabel  = 'Fit'
+  0.00   18549.9
+  0.50   18334.6
+  1.50   17904.1
+  2.50   17473.5
+  3.50   17042.9
+  4.50   16612.4
+  5.50   16181.8
+  6.50   15751.3
+  7.50   15320.7
+  8.50   14890.1
+  9.50   14459.6
+$ DATA=CURVE2D
+% toplabel  = 'Av.Wilson Intensity vs.Exposure'
+%xmin = 0
+%ymin = 0
+% xlabel = 'Exposure time, s'
+% ylabel = intensity
+# Curve 1
+% linetype   = 5
+% linewidth  = 1
+% linecolor  = 3
+% linelabel  = 'rel.Intensity'
+% markertype = 10
+% markercolor= 4
+  0.50     1.000
+  1.50     1.021
+  2.50     0.996
+  3.50     0.994
+  4.50     0.993
+  5.50     0.946
+  6.50     0.906
+  7.50     0.917
+  8.50     0.895
+  9.50     0.865
+# Curve 2
+% linetype   = 11
+% linewidth  = 3
+% linecolor  = 4
+% linelabel  = 'Fit'
+  0.00     1.038
+  0.50     1.030
+  1.50     1.013
+  2.50     0.996
+  3.50     0.979
+  4.50     0.962
+  5.50     0.945
+  6.50     0.928
+  7.50     0.911
+  8.50     0.894
+  9.50     0.877

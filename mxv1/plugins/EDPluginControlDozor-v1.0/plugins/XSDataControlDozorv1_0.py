@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Sun Dec 11 11:41::11 2016 by EDGenerateDS.
+# Generated Thu Jan 12 02:18::50 2017 by EDGenerateDS.
 #
 
 import os, sys
@@ -1427,7 +1427,7 @@ class XSDataInputControlDozor(XSDataInput):
 
 
 class XSDataResultControlDozor(XSDataResult):
-    def __init__(self, status=None, pathToCbfDirectory=None, halfDoseTime=None, inputDozor=None, imageDozor=None):
+    def __init__(self, status=None, pngPlots=None, pathToCbfDirectory=None, halfDoseTime=None, inputDozor=None, imageDozor=None):
         XSDataResult.__init__(self, status)
         if imageDozor is None:
             self._imageDozor = []
@@ -1456,6 +1456,13 @@ class XSDataResultControlDozor(XSDataResult):
             self._pathToCbfDirectory = pathToCbfDirectory
         else:
             strMessage = "ERROR! XSDataResultControlDozor constructor argument 'pathToCbfDirectory' is not XSDataFile but %s" % self._pathToCbfDirectory.__class__.__name__
+            raise BaseException(strMessage)
+        if pngPlots is None:
+            self._pngPlots = []
+        elif pngPlots.__class__.__name__ == "list":
+            self._pngPlots = pngPlots
+        else:
+            strMessage = "ERROR! XSDataResultControlDozor constructor argument 'pngPlots' is not list but %s" % self._pngPlots.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'imageDozor' attribute
     def getImageDozor(self): return self._imageDozor
@@ -1526,6 +1533,39 @@ class XSDataResultControlDozor(XSDataResult):
             raise BaseException(strMessage)
     def delPathToCbfDirectory(self): self._pathToCbfDirectory = None
     pathToCbfDirectory = property(getPathToCbfDirectory, setPathToCbfDirectory, delPathToCbfDirectory, "Property for pathToCbfDirectory")
+    # Methods and properties for the 'pngPlots' attribute
+    def getPngPlots(self): return self._pngPlots
+    def setPngPlots(self, pngPlots):
+        if pngPlots is None:
+            self._pngPlots = []
+        elif pngPlots.__class__.__name__ == "list":
+            self._pngPlots = pngPlots
+        else:
+            strMessage = "ERROR! XSDataResultControlDozor.setPngPlots argument is not list but %s" % pngPlots.__class__.__name__
+            raise BaseException(strMessage)
+    def delPngPlots(self): self._pngPlots = None
+    pngPlots = property(getPngPlots, setPngPlots, delPngPlots, "Property for pngPlots")
+    def addPngPlots(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataResultControlDozor.addPngPlots argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._pngPlots.append(value)
+        else:
+            strMessage = "ERROR! XSDataResultControlDozor.addPngPlots argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertPngPlots(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataResultControlDozor.insertPngPlots argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataResultControlDozor.insertPngPlots argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataFile":
+            self._pngPlots[index] = value
+        else:
+            strMessage = "ERROR! XSDataResultControlDozor.addPngPlots argument is not XSDataFile but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     def export(self, outfile, level, name_='XSDataResultControlDozor'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1542,6 +1582,8 @@ class XSDataResultControlDozor(XSDataResult):
             self.halfDoseTime.export(outfile, level, name_='halfDoseTime')
         if self._pathToCbfDirectory is not None:
             self.pathToCbfDirectory.export(outfile, level, name_='pathToCbfDirectory')
+        for pngPlots_ in self.getPngPlots():
+            pngPlots_.export(outfile, level, name_='pngPlots')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1567,6 +1609,11 @@ class XSDataResultControlDozor(XSDataResult):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setPathToCbfDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pngPlots':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.pngPlots.append(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

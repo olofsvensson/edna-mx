@@ -108,7 +108,6 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlDozorv1_0.preProcess")
         self.edPluginControlReadImageHeader = self.loadPlugin(self.strEDPluginControlReadImageHeaderName, "SubWedgeAssemble")
-        self.edPluginDozor = self.loadPlugin(self.strEDPluginDozorName, "Dozor")
         if self.dataInput.batchSize is not None:
             self.batchSize = self.dataInput.batchSize.value
 
@@ -225,6 +224,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                     xsDataResultControlDozor.inputDozor = XSDataDozorInput().parseString(xsDataInputDozor.marshal())
                 indexImage += 1
             xsDataResultControlDozor.halfDoseTime = edPluginDozor.dataOutput.halfDoseTime
+            xsDataResultControlDozor.pngPlots = edPluginDozor.dataOutput.pngPlots
         self.dataOutput = xsDataResultControlDozor
         if self.cbfTempDir is not None:
             if self.dataInput.keepCbfTmpDirectory is not None and self.dataInput.keepCbfTmpDirectory.value:

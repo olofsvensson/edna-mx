@@ -50,4 +50,6 @@ complex type XSDataInputDozor extends XSDataInput {
 complex type XSDataResultDozor extends XSDataResult {
 	imageDozor : XSDataImageDozor [] optional
 	halfDoseTime : XSDataDouble optional
+	plotmtvFile : XSDataFile optional
+	pngPlots : XSDataFile [] optional
 }

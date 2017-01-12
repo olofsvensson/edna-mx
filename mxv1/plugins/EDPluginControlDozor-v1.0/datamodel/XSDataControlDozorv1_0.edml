@@ -66,4 +66,5 @@ complex type XSDataResultControlDozor extends XSDataResult {
 	inputDozor : XSDataDozorInput optional
 	halfDoseTime : XSDataDouble optional
 	pathToCbfDirectory : XSDataFile optional
+	pngPlots : XSDataFile [] optional
 }

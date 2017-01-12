@@ -68,8 +68,16 @@ class EDTestCasePluginUnitDozorv1_0(EDTestCasePluginUnit):
         EDAssert.strAlmostEqual(1.0, edPlugin.parseDouble("1.0").value, "Parsing '1.0'")
         EDAssert.equal(None, edPlugin.parseDouble("****"), "Parsing '****'")
 
+    def test_generatePngPlots(self):
+        edPlugin = self.getPlugin()
+        plotmtvFile = os.path.join(self.strDataPath, "dozor_rd.mtv")
+        tmpDir = tempfile.mkdtemp(suffix="EDTestCasePluginUnitDozorv1_0_")
+        listXSFile = edPlugin.generatePngPlots(plotmtvFile, tmpDir)
+        for xsFile in listXSFile:
+            print(xsFile.marshal())
 
     def process(self):
         self.addTestMethod(self.test_generateCommands)
         self.addTestMethod(self.test_parseOutput)
         self.addTestMethod(self.test_parseDouble)
+        self.addTestMethod(self.test_generatePngPlots)

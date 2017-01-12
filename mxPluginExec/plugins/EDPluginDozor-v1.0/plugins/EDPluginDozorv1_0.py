@@ -25,7 +25,13 @@ __author__ = "Olof Svensson"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
-import os, time, shlex
+import os
+import time
+import shlex
+import pprint
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 from EDUtilsTable              import EDUtilsTable
@@ -247,6 +253,14 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 xsDataResultDozor.addImageDozor(xsDataImageDozor)
             elif strLine.startswith("h"):
                 xsDataResultDozor.halfDoseTime = XSDataDouble(strLine.split("=")[1].split()[0])
+
+        # Check if mtv plot file exists
+        mtvFileName = "dozor_rd.mtv"
+        mtvFilePath = os.path.join(self.getWorkingDirectory(), mtvFileName)
+        if os.path.exists(mtvFilePath):
+            xsDataResultDozor.plotmtvFile = XSDataFile(XSDataString(mtvFilePath))
+            xsDataResultDozor.pngPlots = self.generatePngPlots(mtvFilePath, self.getWorkingDirectory())
+
         return xsDataResultDozor
 
     def parseDouble(self, _strValue):
@@ -256,3 +270,109 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         except Exception as ex:
             self.warning("Error when trying to parse '" + _strValue + "': %r" % ex)
         return returnValue
+
+    def generatePngPlots(self, _plotmtvFile, _workingDir):
+        listXSFile = []
+        # Create plot dictionary
+        with open(_plotmtvFile) as f:
+            listLines = f.readlines()
+        dictPlot = None
+        plotData = None
+        listPlots = []
+        index = 0
+        while index < len(listLines):
+            # print("0" + listLines[index])
+            if listLines[index].startswith("$"):
+                dictPlot = {}
+                dictPlotList = []
+                listPlots.append(dictPlot)
+                dictPlot["plotList"] = dictPlotList
+                index += 1
+                dictPlot["name"] = listLines[index].split("'")[1]
+                index += 1
+                # print(listLines[index])
+                while listLines[index].startswith("%"):
+                    listLine = listLines[index].split("=")
+                    # print(listLine)
+                    label = listLine[0][1:].strip()
+                    # print("label: " + str([label]))
+                    if "'" in listLine[1]:
+                        value = listLine[1].split("'")[1]
+                    else:
+                        value = listLine[1]
+                    value = value.replace("\n", "").strip()
+                    # print("value: " + str([value]))
+                    dictPlot[label] = value
+                    index += 1
+                    # print(listLines[index])
+            elif listLines[index].startswith("#"):
+                dictSubPlot = {}
+                dictPlotList.append(dictSubPlot)
+                plotName = listLines[index].split("#")[1].replace("\n", "").strip()
+                dictSubPlot["name"] = plotName
+                index += 1
+                # print("1" + listLines[index])
+                while listLines[index].startswith("%"):
+                    listLine = listLines[index].split("=")
+                    # print(listLine)
+                    label = listLine[0][1:].strip()
+                    # print("label: " + str([label]))
+                    if "'" in listLine[1]:
+                        value = listLine[1].split("'")[1]
+                    else:
+                        value = listLine[1]
+                    value = value.replace("\n", "").strip()
+                    # print("value: " + str([value]))
+                    dictSubPlot[label] = value
+                    index += 1
+                    # print(listLines[index])
+                dictSubPlot["xValues"] = []
+                dictSubPlot["yValues"] = []
+            else:
+                listData = listLines[index].replace("\n", "").split()
+                dictSubPlot["xValues"].append(float(listData[0]))
+                dictSubPlot["yValues"].append(float(listData[1]))
+                index += 1
+        # pprint.pprint(listPlots)
+        # Generate the plots
+        for mtvplot in listPlots:
+            listLegend = []
+            xmin = None
+            xmax = None
+            ymin = None
+            ymax = None
+            for subPlot in mtvplot["plotList"]:
+                xmin1 = min(subPlot["xValues"])
+                if xmin is None or xmin > xmin1:
+                    xmin = xmin1
+                xmax1 = max(subPlot["xValues"])
+                if xmax is None or xmax < xmax1:
+                    xmax = xmax1
+                ymin1 = min(subPlot["yValues"])
+                if ymin is None or ymin > ymin1:
+                    ymin = ymin1
+                ymax1 = max(subPlot["yValues"])
+                if ymax is None or ymax < ymax1:
+                    ymax = ymax1
+            if "xmin" in mtvplot:
+                xmin = float(mtvplot["xmin"])
+            if "ymin" in mtvplot:
+                ymin = float(mtvplot["xmin"])
+            plt.xlim(xmin, xmax)
+            plt.ylim(ymin, ymax)
+            plt.xlabel(mtvplot["xlabel"])
+            plt.ylabel(mtvplot["ylabel"])
+            plt.title(mtvplot["name"])
+            for subPlot in mtvplot["plotList"]:
+                if "markercolor" in subPlot:
+                    style = "bs-."
+                else:
+                    style = "r"
+                plt.plot(subPlot["xValues"], subPlot["yValues"], style, linewidth=2)
+                listLegend.append(subPlot["linelabel"])
+            plt.legend(listLegend, loc='lower right')
+            plotPath = os.path.join(_workingDir, mtvplot["name"].replace(" ", "").replace(".", "_") + ".png")
+            plt.savefig(plotPath, bbox_inches='tight', dpi=75)
+            plt.close()
+            listXSFile.append(XSDataFile(XSDataString(plotPath)))
+        return listXSFile
