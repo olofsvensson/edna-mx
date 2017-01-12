@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Jan 12 02:18::50 2017 by EDGenerateDS.
+# Generated Thu Jan 12 03:59::59 2017 by EDGenerateDS.
 #
 
 import os, sys
@@ -1427,7 +1427,7 @@ class XSDataInputControlDozor(XSDataInput):
 
 
 class XSDataResultControlDozor(XSDataResult):
-    def __init__(self, status=None, pngPlots=None, pathToCbfDirectory=None, halfDoseTime=None, inputDozor=None, imageDozor=None):
+    def __init__(self, status=None, pngPlots=None, pathToCbfDirectory=None, dozorPlot=None, halfDoseTime=None, inputDozor=None, imageDozor=None):
         XSDataResult.__init__(self, status)
         if imageDozor is None:
             self._imageDozor = []
@@ -1449,6 +1449,13 @@ class XSDataResultControlDozor(XSDataResult):
             self._halfDoseTime = halfDoseTime
         else:
             strMessage = "ERROR! XSDataResultControlDozor constructor argument 'halfDoseTime' is not XSDataDouble but %s" % self._halfDoseTime.__class__.__name__
+            raise BaseException(strMessage)
+        if dozorPlot is None:
+            self._dozorPlot = None
+        elif dozorPlot.__class__.__name__ == "XSDataFile":
+            self._dozorPlot = dozorPlot
+        else:
+            strMessage = "ERROR! XSDataResultControlDozor constructor argument 'dozorPlot' is not XSDataFile but %s" % self._dozorPlot.__class__.__name__
             raise BaseException(strMessage)
         if pathToCbfDirectory is None:
             self._pathToCbfDirectory = None
@@ -1521,6 +1528,18 @@ class XSDataResultControlDozor(XSDataResult):
             raise BaseException(strMessage)
     def delHalfDoseTime(self): self._halfDoseTime = None
     halfDoseTime = property(getHalfDoseTime, setHalfDoseTime, delHalfDoseTime, "Property for halfDoseTime")
+    # Methods and properties for the 'dozorPlot' attribute
+    def getDozorPlot(self): return self._dozorPlot
+    def setDozorPlot(self, dozorPlot):
+        if dozorPlot is None:
+            self._dozorPlot = None
+        elif dozorPlot.__class__.__name__ == "XSDataFile":
+            self._dozorPlot = dozorPlot
+        else:
+            strMessage = "ERROR! XSDataResultControlDozor.setDozorPlot argument is not XSDataFile but %s" % dozorPlot.__class__.__name__
+            raise BaseException(strMessage)
+    def delDozorPlot(self): self._dozorPlot = None
+    dozorPlot = property(getDozorPlot, setDozorPlot, delDozorPlot, "Property for dozorPlot")
     # Methods and properties for the 'pathToCbfDirectory' attribute
     def getPathToCbfDirectory(self): return self._pathToCbfDirectory
     def setPathToCbfDirectory(self, pathToCbfDirectory):
@@ -1580,6 +1599,8 @@ class XSDataResultControlDozor(XSDataResult):
             self.inputDozor.export(outfile, level, name_='inputDozor')
         if self._halfDoseTime is not None:
             self.halfDoseTime.export(outfile, level, name_='halfDoseTime')
+        if self._dozorPlot is not None:
+            self.dozorPlot.export(outfile, level, name_='dozorPlot')
         if self._pathToCbfDirectory is not None:
             self.pathToCbfDirectory.export(outfile, level, name_='pathToCbfDirectory')
         for pngPlots_ in self.getPngPlots():
@@ -1604,6 +1625,11 @@ class XSDataResultControlDozor(XSDataResult):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setHalfDoseTime(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'dozorPlot':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setDozorPlot(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'pathToCbfDirectory':
             obj_ = XSDataFile()
