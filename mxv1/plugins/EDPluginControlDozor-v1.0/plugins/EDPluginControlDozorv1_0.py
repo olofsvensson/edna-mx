@@ -375,7 +375,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             os.system("gnuplot %s" % pathGnuplotScript)
             os.chdir(oldCwd)
 
-            self.dataOutput.dozorPlot = XSDataFile(XSDataString(os.path.join(self.getWorkingDir(), dozorPlotFileName)))
+            self.dataOutput.dozorPlot = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), dozorPlotFileName)))
 
             if self.dataInput.processDirectory is not None:
                 processDirectory = self.dataInput.processDirectory.path.value
