@@ -400,6 +400,9 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         if xsDataResultXDSAPP.phenixXtriageLog is not None:
             self.addAttachment(autoProcProgramContainer, xsDataResultXDSAPP.phenixXtriageLog.path.value,
                                "xtriage", "log", isAnom, attachmentType="Log")
+        if xsDataResultXDSAPP.correctLP is not None:
+            self.addAttachment(autoProcProgramContainer, xsDataResultXDSAPP.correctLP.path.value,
+                               "CORRECT", "LP", isAnom, attachmentType="Log")
         if xsDataResultXDSAPP.XDS_ASCII_HKL is not None:
             self.addAttachment(autoProcProgramContainer, xsDataResultXDSAPP.XDS_ASCII_HKL.path.value,
                                "XDS_ASCII", "HKL", isAnom, attachmentType="Result", doGzip=True)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Dec 9 08:53::54 2016 by EDGenerateDS.
+# Generated Wed Jan 18 02:12::10 2017 by EDGenerateDS.
 #
 
 import os, sys
@@ -287,7 +287,7 @@ class XSDataInputXDSAPP(XSDataInput):
 
 
 class XSDataResultXDSAPP(XSDataResult):
-    def __init__(self, status=None, cv=None, hkl=None, mtz_F_plus_F_minus=None, mtz_I=None, mtz_F=None, XDS_ASCII_HKL_1=None, XDS_ASCII_HKL=None, phenixXtriageLog=None, pointlessLog=None, logFile=None):
+    def __init__(self, status=None, cv=None, hkl=None, mtz_F_plus_F_minus=None, mtz_I=None, mtz_F=None, XDS_ASCII_HKL_1=None, XDS_ASCII_HKL=None, correctLP=None, phenixXtriageLog=None, pointlessLog=None, logFile=None):
         XSDataResult.__init__(self, status)
         if logFile is None:
             self._logFile = None
@@ -309,6 +309,13 @@ class XSDataResultXDSAPP(XSDataResult):
             self._phenixXtriageLog = phenixXtriageLog
         else:
             strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'phenixXtriageLog' is not XSDataFile but %s" % self._phenixXtriageLog.__class__.__name__
+            raise BaseException(strMessage)
+        if correctLP is None:
+            self._correctLP = None
+        elif correctLP.__class__.__name__ == "XSDataFile":
+            self._correctLP = correctLP
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'correctLP' is not XSDataFile but %s" % self._correctLP.__class__.__name__
             raise BaseException(strMessage)
         if XDS_ASCII_HKL is None:
             self._XDS_ASCII_HKL = None
@@ -395,6 +402,18 @@ class XSDataResultXDSAPP(XSDataResult):
             raise BaseException(strMessage)
     def delPhenixXtriageLog(self): self._phenixXtriageLog = None
     phenixXtriageLog = property(getPhenixXtriageLog, setPhenixXtriageLog, delPhenixXtriageLog, "Property for phenixXtriageLog")
+    # Methods and properties for the 'correctLP' attribute
+    def getCorrectLP(self): return self._correctLP
+    def setCorrectLP(self, correctLP):
+        if correctLP is None:
+            self._correctLP = None
+        elif correctLP.__class__.__name__ == "XSDataFile":
+            self._correctLP = correctLP
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setCorrectLP argument is not XSDataFile but %s" % correctLP.__class__.__name__
+            raise BaseException(strMessage)
+    def delCorrectLP(self): self._correctLP = None
+    correctLP = property(getCorrectLP, setCorrectLP, delCorrectLP, "Property for correctLP")
     # Methods and properties for the 'XDS_ASCII_HKL' attribute
     def getXDS_ASCII_HKL(self): return self._XDS_ASCII_HKL
     def setXDS_ASCII_HKL(self, XDS_ASCII_HKL):
@@ -598,6 +617,8 @@ class XSDataResultXDSAPP(XSDataResult):
             self.pointlessLog.export(outfile, level, name_='pointlessLog')
         if self._phenixXtriageLog is not None:
             self.phenixXtriageLog.export(outfile, level, name_='phenixXtriageLog')
+        if self._correctLP is not None:
+            self.correctLP.export(outfile, level, name_='correctLP')
         if self._XDS_ASCII_HKL is not None:
             self.XDS_ASCII_HKL.export(outfile, level, name_='XDS_ASCII_HKL')
         if self._XDS_ASCII_HKL_1 is not None:
@@ -632,6 +653,11 @@ class XSDataResultXDSAPP(XSDataResult):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setPhenixXtriageLog(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'correctLP':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setCorrectLP(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'XDS_ASCII_HKL':
             obj_ = XSDataFile()

@@ -21,6 +21,7 @@ complex type XSDataResultXDSAPP extends XSDataResult {
 	logFile : XSDataFile optional
 	pointlessLog : XSDataFile optional
 	phenixXtriageLog : XSDataFile optional
+	correctLP: XSDataFile optional
 	XDS_ASCII_HKL: XSDataFile optional
 	XDS_ASCII_HKL_1 : XSDataFile optional
 	mtz_F : XSDataFile [] optional

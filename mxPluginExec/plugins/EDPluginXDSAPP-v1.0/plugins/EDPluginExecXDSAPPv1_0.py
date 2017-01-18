@@ -125,6 +125,9 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
         # Phenix Xtriage log
         if os.path.exists(os.path.join(_workingDirectory, "phenix_xtriage.log")):
             xsDataResultXDSAPP.phenixXtriageLog = XSDataFile(XSDataString(os.path.join(_workingDirectory, "phenix_xtriage.log")))
+        # CORRECT.LP
+        if os.path.exists(os.path.join(_workingDirectory, "CORRECT.LP")):
+            xsDataResultXDSAPP.correctLP = XSDataFile(XSDataString(os.path.join(_workingDirectory, "CORRECT.LP")))
         # XDS_ASCII.HKL
         if os.path.exists(os.path.join(_workingDirectory, "XDS_ASCII.HKL")):
             xsDataResultXDSAPP.XDS_ASCII_HKL = XSDataFile(XSDataString(os.path.join(_workingDirectory, "XDS_ASCII.HKL")))
