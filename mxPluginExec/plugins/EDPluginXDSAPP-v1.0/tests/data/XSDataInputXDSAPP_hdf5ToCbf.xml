@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<XSDataInputXDSAPP>
+  <image>
+    <path>
+      <value>/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/hdf5/thaumatin14_fast_w1_1_000001.cbf</value>
+    </path>
+  </image>
+</XSDataInputXDSAPP>

@@ -20,4 +20,9 @@
 	<proposal>
 		<value>mx415</value>
 	</proposal>
+	<resultsDirectory>
+		<path>
+			<value>/tmp</value>
+		</path>
+	</resultsDirectory>
 </XSDataInputControlDimple>

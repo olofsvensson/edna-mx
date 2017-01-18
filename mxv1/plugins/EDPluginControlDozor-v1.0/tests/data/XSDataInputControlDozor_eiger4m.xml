@@ -2,7 +2,10 @@
 <XSDataInputControlDozor>
 	<image>
 	  <path>
-	    <value>${EDNA_TESTIMAGES}/lyso_12_0001.cbf</value>
+	    <value>${EDNA_TESTIMAGES}/ref-test_1_0001.h5</value>
 	  </path>
 	</image>
+	<keepCbfTmpDirectory>
+		<value>true</value>
+	</keepCbfTmpDirectory>
 </XSDataInputControlDozor>

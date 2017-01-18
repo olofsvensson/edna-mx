@@ -40,7 +40,7 @@ class EDTestCasePluginExecuteExecSimpleHTMLPagev1_1(EDTestCasePluginExecute):
     def __init__(self, _edStringTestName=None):
         EDTestCasePluginExecute.__init__(self, "EDPluginExecSimpleHTMLPagev1_1")
         self.setConfigurationFile(self.getRefConfigFile())
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputSimpleHTMLPage_reference.xml"))
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "SimpleHTMLPagev1_1_dataInput.xml"))
 
 
     def preProcess(self):
