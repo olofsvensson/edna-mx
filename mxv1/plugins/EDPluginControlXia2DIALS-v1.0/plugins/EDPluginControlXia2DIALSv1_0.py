@@ -199,9 +199,10 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
         # Create path to pyarch
         self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
-        self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
-        if self.pyarchDirectory is not None and not os.path.exists(self.pyarchDirectory):
-            os.makedirs(self.pyarchDirectory, 0o755)
+        if self.pyarchDirectory is not None:
+            self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
+            if not os.path.exists(self.pyarchDirectory):
+                os.makedirs(self.pyarchDirectory, 0o755)
 
         # Determine pyarch prefix
         listPrefix = template.split("_")
@@ -299,7 +300,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             shutil.copy(dataFile.path.value, os.path.join(self.resultsDirectory, newFileName))
 
         # Read the generated ISPyB xml file - if any
-        if edPluginExecXia2DIALS.dataOutput.ispybXML is not None:
+        if self.pyarchDirectory is not None and edPluginExecXia2DIALS.dataOutput.ispybXML is not None:
             autoProcContainer = AutoProcContainer.parseFile(edPluginExecXia2DIALS.dataOutput.ispybXML.path.value)
 
             # "Fix" certain entries in the ISPyB xml file
