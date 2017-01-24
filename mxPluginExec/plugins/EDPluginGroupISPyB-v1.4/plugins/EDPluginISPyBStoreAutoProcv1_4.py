@@ -323,6 +323,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         fCcHalf = self.getXSValue(_xsDataAutoProcScalingStatistics.getCcHalf())
         fCcAno = self.getXSValue(_xsDataAutoProcScalingStatistics.getCcAno())
         fSigAno = self.getXSValue(_xsDataAutoProcScalingStatistics.getSigAno())
+        fIsa = self.getXSValue(_xsDataAutoProcScalingStatistics.getIsa())
         iAutoProcScalingStatisticsId = _clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcScalingStatistics(
                 arg0=iAutoProcScalingStatisticsId, \
                 scalingStatisticsType=strScalingStatisticsType, \
@@ -348,6 +349,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
                 ccHalf=fCcHalf, \
                 ccAno=fCcAno, \
                 sigAno=fSigAno, \
+                isa=fIsa, \
                 )
         self.DEBUG("AutoProcScalingStatisticsId: %r" % iAutoProcScalingStatisticsId)
         return iAutoProcScalingStatisticsId

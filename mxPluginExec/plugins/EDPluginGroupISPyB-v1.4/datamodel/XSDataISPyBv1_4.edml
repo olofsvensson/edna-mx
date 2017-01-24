@@ -116,6 +116,7 @@ complex type AutoProcScalingStatistics {
 	ccHalf : float
 	ccAno : float
 	sigAno : float
+	isa : float
 }
 
 complex type Image {
