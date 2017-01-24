@@ -31,6 +31,7 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 import os
 import time
 import pprint
+import shutil
 import tempfile
 
 from EDUtilsFile import EDUtilsFile
@@ -53,17 +54,25 @@ class EDTestCasePluginUnitControlXDSAPPv1_0(EDTestCasePluginUnit):
         edPlugin = self.getPlugin()
         logFile = os.path.join(self.strDataPath, "results_xtal5w1_1.txt")
         dictLog = edPlugin.parseLogFile(logFile)
-        pprint.pprint(dictLog)
+        # pprint.pprint(dictLog)
+        for item in ["spaceGroup", "spaceGroupNumber",
+                     "cellA", "cellB", "cellC",
+                     "cellAlpha", "cellBeta", "cellGamma"]:
+            EDAssert.equal(True, item in dictLog, item)
 
 
     def test_runXscale(self):
         workingDirectory = tempfile.mkdtemp(prefix="XDSAPP_XSCALE_")
         pathToXdsAsciiHkl = "/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XDS_ASCII.HKL"
-        self.screen(workingDirectory)
+        shutil.copy(pathToXdsAsciiHkl, workingDirectory)
+        # self.screen(workingDirectory)
         edPlugin = self.getPlugin()
-        edPlugin.runXscale(workingDirectory, pathToXdsAsciiHkl, merged=True)
+        edPlugin.runXscale(workingDirectory, merged=True)
+        for fileName in ["XSCALE.LP", "merged_noanom_XSCALE.hkl", "XSCALE.INP", "xscale.log"]:
+            EDAssert.equal(True, os.path.exists(os.path.join(workingDirectory, fileName)), fileName)
+        shutil.rmtree(workingDirectory)
 
-    def test_uploadToISPyB(self):
+    def test_createXSDataInputStoreAutoProc(self):
         edPlugin = self.getPlugin()
         strPath = os.path.join(self.strDataPath, "XDSAPPv1_0_dataOutput.xml")
         xsDataResultXDSAPP = XSDataResultXDSAPP.parseFile(strPath)
@@ -75,17 +84,31 @@ class EDTestCasePluginUnitControlXDSAPPv1_0(EDTestCasePluginUnit):
         template = "t3_3_####.cbf"
         strPathXscaleLp = "/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XSCALE.LP"
         dataCollectionId = 123456
-        edPlugin.uploadToISPyB(xsDataResultXDSAPP, processDirectory, template,
-                               strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId)
+        edPlugin.createXSDataInputStoreAutoProc(xsDataResultXDSAPP, processDirectory, template,
+                                                strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId)
 
     def test_parseXscaleLp(self):
         strPathXscaleLp = "/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XSCALE.LP"
         edPlugin = self.getPlugin()
         dictXscale = edPlugin.parseXscaleLp(strPathXscaleLp)
-        pprint.pprint(dictXscale)
+        # pprint.pprint(dictXscale)
+        for resolutionShell in ["innerShell", "outerShell", "overall"]:
+            for item in ["CCHalf", "ccAno", "completeness", "meanIOverSigI",
+                         "multiplicity", "nTotalObservations", "ntotalUniqueObservations",
+                         "rMerge", "resolutionLimitHigh", "resolutionLimitLow"]:
+                EDAssert.equal(True, dictXscale[resolutionShell][item] is not None, resolutionShell + "." + item)
+
+    def test_parseCorrectLp(self):
+        strPathCorrectLp = "/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/CORRECT.LP"
+        edPlugin = self.getPlugin()
+        isa = edPlugin.parseCorrectLp(strPathCorrectLp)
+        EDAssert.equal(24.62, isa, "ISa value")
+
+
 
     def process(self):
-#        self.addTestMethod(self.test_parseLogFile)
-#        self.addTestMethod(self.test_runXscale)
-        self.addTestMethod(self.test_uploadToISPyB)
-#        self.addTestMethod(self.test_parseXscaleLp)
+        self.addTestMethod(self.test_parseLogFile)
+        self.addTestMethod(self.test_runXscale)
+        self.addTestMethod(self.test_createXSDataInputStoreAutoProc)
+        self.addTestMethod(self.test_parseXscaleLp)
+        self.addTestMethod(self.test_parseCorrectLp)

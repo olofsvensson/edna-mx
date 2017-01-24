@@ -30,6 +30,7 @@ import sys
 import glob
 import gzip
 import time
+import pprint
 import shutil
 import socket
 import subprocess
@@ -299,8 +300,8 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
                                    self.dataInput.dataCollectionId.value)
 
 
-    def uploadToISPyB(self, xsDataResultXDSAPP, processDirectory, template,
-                      strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId):
+    def createXSDataInputStoreAutoProc(self, xsDataResultXDSAPP, processDirectory, template,
+                                       strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId):
 
         # Parse log file
         dictLog = self.parseLogFile(xsDataResultXDSAPP.logFile.path.value)
@@ -360,6 +361,10 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
 
 
         # Scaling container
+        if xsDataResultXDSAPP.correctLP is not None:
+            isa = self.parseCorrectLp(xsDataResultXDSAPP.correctLP.path.value)
+        else:
+            isa = None
         autoProcScalingContainer = AutoProcScalingContainer()
         autoProcScaling = AutoProcScaling()
         autoProcScaling.recordTimeStamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -370,6 +375,8 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             autoProcScalingStatistics.anomalous = isAnom
             for scalingStatisticsAttribute in dictXscale[scalingStatisticsType]:
                 setattr(autoProcScalingStatistics, scalingStatisticsAttribute, dictXscale[scalingStatisticsType][scalingStatisticsAttribute])
+            if scalingStatisticsType == "overall" and isa is not None:
+                autoProcScalingStatistics.isa = isa
             autoProcScalingContainer.addAutoProcScalingStatistics(autoProcScalingStatistics)
         autoProcScalingContainer.AutoProcIntegrationContainer = autoProcIntegrationContainer
         autoProcContainer.AutoProcScalingContainer = autoProcScalingContainer
@@ -436,6 +443,13 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             anomString = "anom"
         else:
             anomString = "noanom"
+        return xsDataInputStoreAutoProc
+
+
+    def uploadToISPyB(self, xsDataResultXDSAPP, processDirectory, template,
+                      strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId):
+        xsDataInputStoreAutoProc = self.createXSDataInputStoreAutoProc(xsDataResultXDSAPP, processDirectory, template,
+                                                                       strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId)
         edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}".format(anomString))
         edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
         edPluginStoreAutoproc.executeSynchronous()
@@ -590,3 +604,17 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             self.error(e)
             self.error("Couldn't parse line: {0}".format(listLine))
         return dictLine
+
+    def parseCorrectLp(self, _strPathCorrectLp):
+        isa = None
+        strCorrectLp = EDUtilsFile.readFile(_strPathCorrectLp)
+        listCorrectLp = strCorrectLp.split("\n")
+        index = 0
+        while index < len(listCorrectLp):
+            if "a        b          ISa" in listCorrectLp[index]:
+                isa = float(listCorrectLp[index + 1].split()[2])
+                break
+            index += 1
+        return isa
+
+
