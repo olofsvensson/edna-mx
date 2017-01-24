@@ -439,10 +439,6 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
                                "XSCALE", "LP", isAnom, isMerged=True, attachmentType="Result")
         autoProcContainer.AutoProcProgramContainer = autoProcProgramContainer
         xsDataInputStoreAutoProc.AutoProcContainer = autoProcContainer
-        if isAnom:
-            anomString = "anom"
-        else:
-            anomString = "noanom"
         return xsDataInputStoreAutoProc
 
 
@@ -450,6 +446,10 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
                       strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId):
         xsDataInputStoreAutoProc = self.createXSDataInputStoreAutoProc(xsDataResultXDSAPP, processDirectory, template,
                                                                        strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId)
+        if isAnom:
+            anomString = "anom"
+        else:
+            anomString = "noanom"
         edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}".format(anomString))
         edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
         edPluginStoreAutoproc.executeSynchronous()
