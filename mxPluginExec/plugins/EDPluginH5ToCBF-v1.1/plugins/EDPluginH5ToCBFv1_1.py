@@ -40,7 +40,8 @@ from XSDataH5ToCBFv1_1 import XSDataResultH5ToCBF
 
 class EDPluginH5ToCBFv1_1(EDPluginExecProcessScript):
     """
-    This plugin runs H5ToXDS to create CBF files from an Eiger HDF5 file. 
+    This plugin runs the 'MOSFLM' converter (eiger2cbf or minicbf) 
+    to create CBF files from Eiger HDF5 images. 
     """
 
 
@@ -92,7 +93,7 @@ class EDPluginH5ToCBFv1_1(EDPluginExecProcessScript):
 
     def generateCommands(self, _xsDataInputH5ToCBF):
         """
-        This method creates a list of commands for H5ToXDS
+        This method creates a list of commands for the converter
         """
         self.DEBUG("EDPluginH5ToCBFv1_1.generateCommands")
 

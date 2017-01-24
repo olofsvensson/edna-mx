@@ -1,11 +1,11 @@
 # coding: utf8
 #
-#    Project: autoPROC
+#    Project: MXv1
 #             http://www.edna-site.org
 #
 #    Copyright (C) ESRF
 #
-#    Principal authors: Thomas Boeglin and Olof Svensson
+#    Principal author: Olof Svensson
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -58,7 +58,12 @@ from XSDataControlXDSAPPv1_0 import XSDataInputControlXDSAPP
 
 class EDPluginControlDozorAndXDSAPPv1_0(EDPluginControl):
     """
-    Control plugin for xia2 -dials
+    Control plugin for running both Dozor and XDSAPP. This plugin is intended
+    to be used for Eiger HDF5 images.
+    
+    The control Dozor plugin will generate CBF images for the whole data collection
+    in a temporary directory and then these images are used by XDSAPP. When the XDSAPP
+    processing is finished the temporary directory containing the CBF images is deleted.
     """
 
 
@@ -89,7 +94,7 @@ class EDPluginControlDozorAndXDSAPPv1_0(EDPluginControl):
         EDPluginControl.process(self)
         self.DEBUG('EDPluginControlDozorAndXDSAPPv1_0.process starting')
 
-        # Run dozor control plugin
+        # Run the Dozor control plugin keeping the CBF file directory
         xsDataInputControlDozor = XSDataInputControlDozor()
         xsDataInputControlDozor.dataCollectionId = self.dataInput.dataCollectionId
         xsDataInputControlDozor.processDirectory = self.dataInput.dozorProcessDirectory
@@ -97,6 +102,8 @@ class EDPluginControlDozorAndXDSAPPv1_0(EDPluginControl):
         edPluginControlDozor = self.loadPlugin("EDPluginControlDozorv1_0")
         edPluginControlDozor.dataInput = xsDataInputControlDozor
         edPluginControlDozor.executeSynchronous()
+
+        # Run the XDSAPP control plugin
         xsDataInputControlXDSAPP = XSDataInputControlXDSAPP()
         xsDataInputControlXDSAPP.dataCollectionId = self.dataInput.dataCollectionId
         xsDataInputControlXDSAPP.doAnomAndNonanom = self.dataInput.doAnomAndNonanom
@@ -105,5 +112,7 @@ class EDPluginControlDozorAndXDSAPPv1_0(EDPluginControl):
         edPluginControlXDSAPP = self.loadPlugin("EDPluginControlXDSAPPv1_0")
         edPluginControlXDSAPP.dataInput = xsDataInputControlXDSAPP
         edPluginControlXDSAPP.executeSynchronous()
+
+        # Delete the temporary directory containing the CBF images
         shutil.rmtree(edPluginControlDozor.dataOutput.pathToCbfDirectory.path.value)
 
