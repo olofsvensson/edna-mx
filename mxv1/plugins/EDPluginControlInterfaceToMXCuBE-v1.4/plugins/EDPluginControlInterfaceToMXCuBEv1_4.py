@@ -245,7 +245,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
 
 
     def storeResultsInISPyB(self, _strSubject, _strMessage):
-        strPyArchPathToHtmlFileDirectory = None
+        strPyArchPathToDNAFileDirectory = None
         strSubject = _strSubject
         strMessage = _strMessage
         xsDataResultCharacterisation = self.edPluginControlInterface.getDataOutput().getResultCharacterisation()
@@ -305,18 +305,18 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             strWorkflowStepImage = None
             strPyarchWorkflowStepImage = None
             strBestWilsonPlotPath = EDHandlerXSDataISPyBv1_4.getBestWilsonPlotPath(xsDataResultCharacterisation)
-            if strPyArchPathToHtmlFileDirectory is not None:
+            if strPyArchPathToDNAFileDirectory is not None:
                 if strBestWilsonPlotPath is not None:
                     # Copy wilson path to Pyarch
                     strWorkflowStepImage = strBestWilsonPlotPath
-                    strPyarchWorkflowStepImage = os.path.join(strPyArchPathToHtmlFileDirectory, os.path.basename(strBestWilsonPlotPath))
+                    strPyarchWorkflowStepImage = os.path.join(strPyArchPathToDNAFileDirectory, os.path.basename(strBestWilsonPlotPath))
                 else:
                     # Copy first thumbnail image
                     if len(xsDataResultCharacterisation.thumbnailImage) > 1:
                         strThumbnailImage = xsDataResultCharacterisation.thumbnailImage[0].path.value
                         if os.path.exists(strThumbnailImage):
                             strWorkflowStepImage = strThumbnailImage
-                            strPyarchWorkflowStepImage = os.path.join(strPyArchPathToHtmlFileDirectory, os.path.basename(strWorkflowStepImage))
+                            strPyarchWorkflowStepImage = os.path.join(strPyArchPathToDNAFileDirectory, os.path.basename(strWorkflowStepImage))
             if strPyarchWorkflowStepImage is not None:
                 if not os.path.exists(strPyarchWorkflowStepImage):
                     if not os.path.exists(os.path.dirname(strPyarchWorkflowStepImage)):
@@ -362,8 +362,8 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataInputISPyBStoreWorkflowStep.status = XSDataString("Success")
                     if strPyarchWorkflowStepImage is not None:
                         xsDataInputISPyBStoreWorkflowStep.imageResultFilePath = XSDataString(strPyarchWorkflowStepImage)
-                    if strPyArchPathToHtmlFileDirectory is not None:
-                        xsDataInputISPyBStoreWorkflowStep.htmlResultFilePath = XSDataString(os.path.join(strPyArchPathToHtmlFileDirectory, "Characterisation", "index.html"))
+                    if strPyArchPathToDNAFileDirectory is not None:
+                        xsDataInputISPyBStoreWorkflowStep.htmlResultFilePath = XSDataString(os.path.join(strPyArchPathToDNAFileDirectory, "Characterisation", "index.html"))
                     if self.edPluginExecSimpleHTML.dataOutput is not None:
                          strResultFilePath = self.edPluginExecSimpleHTML.dataOutput.pathToJsonFile.path.value
                          # strPyarchResultFilePath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(strResultFilePath)
