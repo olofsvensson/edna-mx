@@ -301,23 +301,34 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             # Execute plugin which creates a simple HTML page
             self.executeSimpleHTML(xsDataResultCharacterisation)
             # Upload the best wilson plot path to ISPyB
+            strWorkflowStepImage = None
+            strPyarchWorkflowStepImage = None
             strBestWilsonPlotPath = EDHandlerXSDataISPyBv1_4.getBestWilsonPlotPath(xsDataResultCharacterisation)
-            strBestWilsonPlotPyarchPath = None
-            if strBestWilsonPlotPath is not None and strPyArchPathToDNAFileDirectory is not None:
-                # Copy wilson path to Pyarch
-                strBestWilsonPlotPyarchPath = os.path.join(strPyArchPathToDNAFileDirectory, os.path.basename(strBestWilsonPlotPath))
-                if not os.path.exists(strBestWilsonPlotPyarchPath):
-                    if not os.path.exists(os.path.dirname(strBestWilsonPlotPyarchPath)):
-                        os.makedirs(os.path.dirname(strBestWilsonPlotPyarchPath), 755)
-                    shutil.copy(strBestWilsonPlotPath, strBestWilsonPlotPyarchPath)
-                self.DEBUG("Best wilson pyarch path: %s " % strBestWilsonPlotPyarchPath)
+            if strPyArchPathToHtmlFileDirectory is not None:
+                if strBestWilsonPlotPath is not None:
+                    # Copy wilson path to Pyarch
+                    strWorkflowStepImage = strBestWilsonPlotPath
+                    strPyarchWorkflowStepImage = os.path.join(strPyArchPathToHtmlFileDirectory, os.path.basename(strBestWilsonPlotPath))
+                else:
+                    # Copy first thumbnail image
+                    if len(xsDataResultCharacterisation.thumbnailImage) > 1:
+                        strThumbnailImage = xsDataResultCharacterisation.thumbnailImage[0].path.value
+                        if os.path.exists(strThumbnailImage):
+                            strWorkflowStepImage = strThumbnailImage
+                            strPyarchWorkflowStepImage = os.path.join(strPyArchPathToHtmlFileDirectory, os.path.basename(strPyarchWorkflowStepImage))
+            if strPyarchWorkflowStepImage is not None:
+                if not os.path.exists(strPyarchWorkflowStepImage):
+                    if not os.path.exists(os.path.dirname(strPyarchWorkflowStepImage)):
+                        os.makedirs(os.path.dirname(strPyarchWorkflowStepImage), 755)
+                    shutil.copy(strWorkflowStepImage, strPyarchWorkflowStepImage)
+                self.DEBUG("Workflow step image pyarch path: %s " % strPyarchWorkflowStepImage)
                 if self.edPluginControlInterface.dataOutput.resultControlISPyB is not None:
                     xsDataInputISPyBSetBestWilsonPlotPath = XSDataInputISPyBSetBestWilsonPlotPath()
                     if self.edPluginISPyBRetrieveDataCollection is not None:
                         if self.edPluginISPyBRetrieveDataCollection.dataOutput is not None:
                             dataCollectionId = self.edPluginISPyBRetrieveDataCollection.dataOutput.dataCollection.dataCollectionId
                             xsDataInputISPyBSetBestWilsonPlotPath.dataCollectionId = XSDataInteger(dataCollectionId)
-                            xsDataInputISPyBSetBestWilsonPlotPath.bestWilsonPlotPath = XSDataString(strBestWilsonPlotPyarchPath)
+                            xsDataInputISPyBSetBestWilsonPlotPath.bestWilsonPlotPath = XSDataString(strPyarchWorkflowStepImage)
                             edPluginSetBestWilsonPlotPath = self.loadPlugin("EDPluginISPyBSetBestWilsonPlotPathv1_4", "ISPyBSetBestWilsonPlotPath")
                             edPluginSetBestWilsonPlotPath.dataInput = xsDataInputISPyBSetBestWilsonPlotPath
                             edPluginSetBestWilsonPlotPath.executeSynchronous()
@@ -348,9 +359,10 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataInputISPyBStoreWorkflowStep.workflowId = XSDataInteger(workflowId)
                     xsDataInputISPyBStoreWorkflowStep.workflowStepType = XSDataString("Characterisation")
                     xsDataInputISPyBStoreWorkflowStep.status = XSDataString("Success")
-                    if strBestWilsonPlotPyarchPath is not None:
-                        xsDataInputISPyBStoreWorkflowStep.imageResultFilePath = XSDataString(strBestWilsonPlotPyarchPath)
-                    xsDataInputISPyBStoreWorkflowStep.htmlResultFilePath = XSDataString(strPyArchPathToDNAFileDirectory)
+                    if strPyarchWorkflowStepImage is not None:
+                        xsDataInputISPyBStoreWorkflowStep.imageResultFilePath = XSDataString(strPyarchWorkflowStepImage)
+                    if strPyArchPathToHtmlFileDirectory is not None:
+                        xsDataInputISPyBStoreWorkflowStep.htmlResultFilePath = XSDataString(os.path.join(strPyArchPathToHtmlFileDirectory, "Characterisation", "index.html"))
                     if self.edPluginExecSimpleHTML.dataOutput is not None:
                          strResultFilePath = self.edPluginExecSimpleHTML.dataOutput.pathToJsonFile.path.value
                          # strPyarchResultFilePath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(strResultFilePath)
