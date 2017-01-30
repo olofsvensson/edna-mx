@@ -316,7 +316,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                         strThumbnailImage = xsDataResultCharacterisation.thumbnailImage[0].path.value
                         if os.path.exists(strThumbnailImage):
                             strWorkflowStepImage = strThumbnailImage
-                            strPyarchWorkflowStepImage = os.path.join(strPyArchPathToHtmlFileDirectory, os.path.basename(strPyarchWorkflowStepImage))
+                            strPyarchWorkflowStepImage = os.path.join(strPyArchPathToHtmlFileDirectory, os.path.basename(strWorkflowStepImage))
             if strPyarchWorkflowStepImage is not None:
                 if not os.path.exists(strPyarchWorkflowStepImage):
                     if not os.path.exists(os.path.dirname(strPyarchWorkflowStepImage)):
