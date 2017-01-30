@@ -245,6 +245,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
 
 
     def storeResultsInISPyB(self, _strSubject, _strMessage):
+        strPyArchPathToHtmlFileDirectory = None
         strSubject = _strSubject
         strMessage = _strMessage
         xsDataResultCharacterisation = self.edPluginControlInterface.getDataOutput().getResultCharacterisation()
