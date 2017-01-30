@@ -299,6 +299,11 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                         strPath = os.path.join(strDir, "bestfile.par")
                         EDUtilsFile.writeFile(strPath, strBestfilePar)
                         break
+            # Check if success
+            if xsDataResultCharacterisation.strategyResult is None:
+                characterisationSuccess = "Failure"
+            else:
+                characterisationSuccess = "Success"
             # Execute plugin which creates a simple HTML page
             self.executeSimpleHTML(xsDataResultCharacterisation)
             # Upload the best wilson plot path to ISPyB
@@ -359,7 +364,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataInputISPyBStoreWorkflowStep = XSDataInputISPyBStoreWorkflowStep()
                     xsDataInputISPyBStoreWorkflowStep.workflowId = XSDataInteger(workflowId)
                     xsDataInputISPyBStoreWorkflowStep.workflowStepType = XSDataString("Characterisation")
-                    xsDataInputISPyBStoreWorkflowStep.status = XSDataString("Success")
+                    xsDataInputISPyBStoreWorkflowStep.status = XSDataString(characterisationSuccess)
                     if strPyarchWorkflowStepImage is not None:
                         xsDataInputISPyBStoreWorkflowStep.imageResultFilePath = XSDataString(strPyarchWorkflowStepImage)
                     if strPyArchPathToDNAFileDirectory is not None:
