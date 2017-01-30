@@ -246,6 +246,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
 
     def storeResultsInISPyB(self, _strSubject, _strMessage):
         strPyArchPathToDNAFileDirectory = None
+        strCharacterisationSuccess = None
         strSubject = _strSubject
         strMessage = _strMessage
         xsDataResultCharacterisation = self.edPluginControlInterface.getDataOutput().getResultCharacterisation()
@@ -299,11 +300,6 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                         strPath = os.path.join(strDir, "bestfile.par")
                         EDUtilsFile.writeFile(strPath, strBestfilePar)
                         break
-            # Check if success
-            if xsDataResultCharacterisation.strategyResult is None:
-                characterisationSuccess = "Failure"
-            else:
-                characterisationSuccess = "Success"
             # Execute plugin which creates a simple HTML page
             self.executeSimpleHTML(xsDataResultCharacterisation)
             # Upload the best wilson plot path to ISPyB
@@ -312,10 +308,12 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             strBestWilsonPlotPath = EDHandlerXSDataISPyBv1_4.getBestWilsonPlotPath(xsDataResultCharacterisation)
             if strPyArchPathToDNAFileDirectory is not None:
                 if strBestWilsonPlotPath is not None:
+                    strCharacterisationSuccess = "Success"
                     # Copy wilson path to Pyarch
                     strWorkflowStepImage = strBestWilsonPlotPath
                     strPyarchWorkflowStepImage = os.path.join(strPyArchPathToDNAFileDirectory, os.path.basename(strBestWilsonPlotPath))
                 else:
+                    strCharacterisationSuccess = "Failure"
                     # Copy first thumbnail image
                     if len(xsDataResultCharacterisation.thumbnailImage) > 1:
                         strThumbnailImage = xsDataResultCharacterisation.thumbnailImage[0].path.value
@@ -364,7 +362,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataInputISPyBStoreWorkflowStep = XSDataInputISPyBStoreWorkflowStep()
                     xsDataInputISPyBStoreWorkflowStep.workflowId = XSDataInteger(workflowId)
                     xsDataInputISPyBStoreWorkflowStep.workflowStepType = XSDataString("Characterisation")
-                    xsDataInputISPyBStoreWorkflowStep.status = XSDataString(characterisationSuccess)
+                    xsDataInputISPyBStoreWorkflowStep.status = XSDataString(strCharacterisationSuccess)
                     if strPyarchWorkflowStepImage is not None:
                         xsDataInputISPyBStoreWorkflowStep.imageResultFilePath = XSDataString(strPyarchWorkflowStepImage)
                     if strPyArchPathToDNAFileDirectory is not None:
