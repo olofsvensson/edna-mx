@@ -182,6 +182,30 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
                 self.ERROR(strError)
                 self.setFailure()
             else:
+                # Load the thumbnail plugins
+                self._iNoReferenceImages = 0
+                for subWedge in xsDataInputCharacterisation.dataCollection.subWedge:
+                    for image in subWedge.image:
+                        self._iNoReferenceImages += 1
+                        edPluginJpeg = self.loadPlugin(self._strPluginGenerateThumbnailName)
+                        xsDataInputMXThumbnail = XSDataInputMXThumbnail()
+                        xsDataInputMXThumbnail.image = XSDataFile(image.path)
+                        xsDataInputMXThumbnail.height = XSDataInteger(1024)
+                        xsDataInputMXThumbnail.width = XSDataInteger(1024)
+                        jpegFilename = os.path.splitext(os.path.basename(image.path.value))[0] + ".jpg"
+                        xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), jpegFilename)))
+                        edPluginJpeg.dataInput = xsDataInputMXThumbnail
+                        edPluginThumnail = self.loadPlugin(self._strPluginGenerateThumbnailName)
+                        xsDataInputMXThumbnail = XSDataInputMXThumbnail()
+                        xsDataInputMXThumbnail.image = XSDataFile(image.path)
+                        xsDataInputMXThumbnail.height = XSDataInteger(256)
+                        xsDataInputMXThumbnail.width = XSDataInteger(256)
+                        thumbnailFilename = os.path.splitext(os.path.basename(image.path.value))[0] + ".thumbnail.jpg"
+                        xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), thumbnailFilename)))
+                        edPluginThumnail.dataInput = xsDataInputMXThumbnail
+                        self._listPluginGenerateThumbnail.append((image, edPluginJpeg, edPluginThumnail))
+                        edPluginJpeg.execute()
+                        edPluginThumnail.execute()
                 xsDataExperimentalCondition = xsDataSubWedgeList[0].getExperimentalCondition()
 
                 # Fix for bug 431: if the flux is zero raise an error
@@ -209,29 +233,6 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
 
                 # Populate characterisation object
                 self._xsDataResultCharacterisation.setDataCollection(XSDataCollection.parseString(self._xsDataCollection.marshal()))
-            # Load the thumbnail plugins
-            self._iNoReferenceImages = 0
-            if not self.isFailure():
-                for subWedge in xsDataInputCharacterisation.dataCollection.subWedge:
-                    for image in subWedge.image:
-                        self._iNoReferenceImages += 1
-                        edPluginJpeg = self.loadPlugin(self._strPluginGenerateThumbnailName)
-                        xsDataInputMXThumbnail = XSDataInputMXThumbnail()
-                        xsDataInputMXThumbnail.image = XSDataFile(image.path)
-                        xsDataInputMXThumbnail.height = XSDataInteger(1024)
-                        xsDataInputMXThumbnail.width = XSDataInteger(1024)
-                        jpegFilename = os.path.splitext(os.path.basename(image.path.value))[0] + ".jpg"
-                        xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), jpegFilename)))
-                        edPluginJpeg.dataInput = xsDataInputMXThumbnail
-                        edPluginThumnail = self.loadPlugin(self._strPluginGenerateThumbnailName)
-                        xsDataInputMXThumbnail = XSDataInputMXThumbnail()
-                        xsDataInputMXThumbnail.image = XSDataFile(image.path)
-                        xsDataInputMXThumbnail.height = XSDataInteger(256)
-                        xsDataInputMXThumbnail.width = XSDataInteger(256)
-                        thumbnailFilename = os.path.splitext(os.path.basename(image.path.value))[0] + ".thumbnail.jpg"
-                        xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), thumbnailFilename)))
-                        edPluginThumnail.dataInput = xsDataInputMXThumbnail
-                        self._listPluginGenerateThumbnail.append((image, edPluginJpeg, edPluginThumnail))
 
 
     def process(self, _edObject=None):
@@ -305,9 +306,6 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             indicatorsShortSummary = self._edPluginControlIndexingIndicators.getDataOutput("indicatorsShortSummary")[0].getValue()
             self._strCharacterisationShortSummary += indicatorsShortSummary
             self.sendMessageToMXCuBE(indicatorsShortSummary)
-        for tuplePlugin in self._listPluginGenerateThumbnail:
-            tuplePlugin[1].execute()
-            tuplePlugin[2].execute()
         self.executePluginSynchronous(self._edPluginExecEvaluationIndexingLABELIT)
 
 
