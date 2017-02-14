@@ -485,16 +485,18 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         xsDataCrystal = xsDataSolutionSelected.getCrystal()
         xsDataCell = xsDataCrystal.getCell()
         strSpaceGroup = xsDataCrystal.spaceGroup.name.value
+        tableTitle = "Indexing summary"
         if _strForcedSpaceGroup is None:
-            tableTitle = "Indexing summary: Selected spacegroup: %s" % strSpaceGroup
+            spaceGroupTitle = "Selected spacegroup"
         else:
             if strSpaceGroup.upper() == _strForcedSpaceGroup.upper():
-                tableTitle = "Indexing summary: Forced spacegroup: %s" % strSpaceGroup
+                spaceGroupTitle = "Forced spacegroup"
             else:
-                tableTitle = "Indexing summary: Selected spacegroup: %s, forced space group: %s" % (strSpaceGroup, _strForcedSpaceGroup)
-        tableColumns = ["a (Å)", "b (Å)", "c (Å)", "alpha (°)", "beta (°)", "gamma (°)"]
+                spaceGroupTitle = "Selected spacegroup\n(Forced space group: %s)" % (_strForcedSpaceGroup)
+        tableColumns = [spaceGroupTitle, "a (Å)", "b (Å)", "c (Å)", "alpha (°)", "beta (°)", "gamma (°)"]
         listRow = []
         tableData = []
+        listRow.append(strSpaceGroup)
         listRow.append("%.3f" % xsDataCell.getLength_a().getValue())
         listRow.append("%.3f" % xsDataCell.getLength_b().getValue())
         listRow.append("%.3f" % xsDataCell.getLength_c().getValue())
