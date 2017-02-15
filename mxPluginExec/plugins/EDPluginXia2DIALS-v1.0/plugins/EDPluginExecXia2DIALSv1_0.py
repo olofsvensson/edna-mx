@@ -27,6 +27,7 @@ __copyright__ = "ESRF"
 
 import os
 import glob
+import subprocess
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
