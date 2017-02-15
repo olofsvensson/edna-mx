@@ -72,6 +72,11 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
     def postProcess(self, _edObject=None):
         EDPluginExecProcessScript.postProcess(self)
         self.DEBUG("EDPluginExecXia2DIALSv1_0.postProcess")
+        # Run xia2.ispyb_xml
+        currentDir = os.getcwd()
+        os.chdir(self.getWorkingDirectory())
+        subprocess.call("/opt/pxsoft/bin/xia2.ispyb_xml")
+        os.chdir(currentDir)
         # Populate the results
         xsDataResultXia2DIALS = self.parseOutputDirectory(self.getWorkingDirectory())
         self.dataOutput = xsDataResultXia2DIALS
@@ -82,7 +87,7 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         This method creates the input command line for Xia2DIALS
         """
         self.DEBUG("EDPluginExecXia2DIALSv1_0.generateCommands")
-        strCommandText = "-dials -ispyb_xml_out ispyb.xml"
+        strCommandText = "pipeline=dials"
 
         anomalous = True
         if _xsDataInputXia2DIALS.anomalous is not None:
@@ -90,7 +95,7 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
                 anomalous = False
 
         if anomalous:
-            strCommandText += " -atom X"
+            strCommandText += " atom=X"
 
         for image in _xsDataInputXia2DIALS.image:
             strCommandText += " image={0}".format(image.path.value)
