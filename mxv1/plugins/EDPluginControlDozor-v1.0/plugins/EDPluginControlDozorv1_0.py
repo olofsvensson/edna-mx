@@ -26,8 +26,11 @@ __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
 import os
+import numpy
 import shutil
+import base64
 import tempfile
+import xmlrpclib
 
 from EDPluginControl import EDPluginControl
 from EDUtilsImage import EDUtilsImage
@@ -89,6 +92,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.overlap = 0.0
         self.batchSize = None
         self.hdf5BatchSize = None
+        self._strMxCuBE_URI = None
 
 
     def checkParameters(self):
@@ -102,6 +106,11 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         EDPluginControl.configure(self)
         self.batchSize = self.config.get("batchSize")
         self.hdf5BatchSize = self.config.get("hdf5BatchSize")
+
+        self._strMxCuBE_URI = self.config.get("mxCuBE_URI", None)
+        if self._strMxCuBE_URI is not None:
+            self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
+            self._oServerProxy = xmlrpclib.ServerProxy(self._strMxCuBE_URI)
 
 
     def preProcess(self, _edObject=None):
@@ -117,6 +126,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
     def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlDozorv1_0.process")
+        self.sendMessageToMXCuBE("Processing started...", "info")
         EDUtilsParallel.initializeNbThread()
         xsDataResultControlDozor = XSDataResultControlDozor()
         # Check if connection to ISPyB needed
@@ -202,6 +212,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             edPluginDozor.execute()
             edPluginDozor.synchronize()
             indexImage = 0
+            imageDozorBatchList = []
+
             for xsDataResultDozor in edPluginDozor.dataOutput.imageDozor:
                 xsDataControlImageDozor = XSDataControlImageDozor()
                 xsDataControlImageDozor.number = xsDataResultDozor.number
@@ -223,8 +235,33 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 if xsDataResultControlDozor.inputDozor is None:
                     xsDataResultControlDozor.inputDozor = XSDataDozorInput().parseString(xsDataInputDozor.marshal())
                 indexImage += 1
+
+                dozorSpotListShape = []
+                if xsDataControlImageDozor.spotFile is not None:
+                    if os.path.exists(xsDataControlImageDozor.spotFile.path.value):
+                        numpyArray = numpy.loadtxt(xsDataControlImageDozor.spotFile.path.value, skiprows=3)
+                        dozorSpotList = base64.b64encode(numpyArray.tostring())
+                        dozorSpotListShape.append(numpyArray.shape[0])
+                        if len(numpyArray.shape) > 1:
+                            dozorSpotListShape.append(numpyArray.shape[1])
+
+                imageDozorDict = {"index": xsDataControlImageDozor.number.value,
+                                  "imageName": xsDataControlImageDozor.image.path.value,
+                                  "dozor_score": xsDataControlImageDozor.mainScore.value,
+                                  "dozorSpotsNumOf" : xsDataControlImageDozor.spotsNumOf.value,
+                                  "dozorSpotFile": xsDataControlImageDozor.spotFile.path.value,
+                                  "dozorSpotList" : dozorSpotList,
+                                  "dozorSpotListShape": dozorSpotListShape,
+                                  "dozorSpotsIntAver": xsDataControlImageDozor.spotsIntAver.value,
+                                  "dozorSpotsResolution": xsDataControlImageDozor.spotsResolution.value
+                                  }
+                imageDozorBatchList.append(imageDozorDict)
+
             xsDataResultControlDozor.halfDoseTime = edPluginDozor.dataOutput.halfDoseTime
             xsDataResultControlDozor.pngPlots = edPluginDozor.dataOutput.pngPlots
+            
+            self.sendResultToMXCuBE(imageDozorBatchList)
+            self.sendMessageToMXCuBE("Batch processed")
         self.dataOutput = xsDataResultControlDozor
         if self.cbfTempDir is not None:
             if self.dataInput.keepCbfTmpDirectory is not None and self.dataInput.keepCbfTmpDirectory.value:
@@ -411,6 +448,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             except:
                 self.warning("Couldn't copy files to pyarch: {0}".format(dozorPlotPyarchPath))
 
+        self.sendMessageToMXCuBE("Processing finished", "info")
+        self.setStatusToMXCuBE("Success")
 
 
     def createImageDict(self, _xsDataControlDozorInput):
@@ -537,3 +576,28 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                         newDict[image] = XSDataFile(XSDataString(outputCBFFileTemplate.format(image)))
         return newDict, hasHdf5Prefix
 
+    def sendMessageToMXCuBE(self, _strMessage, level = "info"):
+        if self._oServerProxy is not None:
+            self.DEBUG("Sending message to mxCuBE: {0}".format(_strMessage))
+            try:
+                for strMessage in _strMessage.split("\n"):
+                    if strMessage != "":
+                        self._oServerProxy.log_message("EDNA | Dozor: " + _strMessage, level)
+            except:
+                self.DEBUG("Sending message to mxCuBE failed!")
+
+    def sendResultToMXCuBE(self, _batchData):
+        if self._oServerProxy is not None:
+            self.DEBUG("Sending Dozor results to mxCuBE")
+            try:
+                self._oServerProxy.dozor_batch_processed(_batchData)
+            except:
+                pass
+
+    def setStatusToMXCuBE(self, status):
+        if self._oServerProxy is not None:
+            self.DEBUG("Sending dozor status %s to mxCuBE" % status)
+            try:
+                self._oServerProxy.dozor_status_changed(status)
+            except:
+                pass

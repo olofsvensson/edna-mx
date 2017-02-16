@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+
 <XSConfiguration> 
 	<XSPluginList>
 		<XSPluginItem> 
@@ -632,27 +632,6 @@
 			    </XSParamList>
 		</XSPluginItem>
                 <XSPluginItem>
-                        <name>EDPluginDozorv1_0</name>
-                        <XSParamList>
-                                <XSParamItem>
-                                        <name>execProcessScriptShell</name>
-                                        <value>/bin/bash</value>
-                                </XSParamItem>
-                                <XSParamItem>
-                                        <name>execProcessScriptSetupCCP4</name>
-                                        <value>/mx-beta/dozor/dozor-env.sh</value>
-                                </XSParamItem>
-                                <XSParamItem>
-                                         <name>execProcessScriptExecutable</name>
-                                         <value>/mx-beta/dozor/dozor</value>
-                                 </XSParamItem>
-                                 <XSParamItem>
-                                          <name>timeOut</name>
-                                          <value>600</value>
-                                 </XSParamItem>
-                        </XSParamList>
-                </XSPluginItem>
-                 <XSPluginItem>
                         <name>EDPluginPhenixXtriagev1_1</name>
                         <XSParamList>
                                 <XSParamItem>
@@ -757,6 +736,44 @@
                                         <name>maxNoProcessors</name>
                                         <value>12</value>
                                 </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+		<XSPluginItem>
+                        <name>EDPluginControlImageQualityIndicatorsv1_4</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>1800</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>MXWaitFileTimeOut</name>
+                                        <value>120</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>minImageSize</name>
+                                        <value>6000000</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginDozorv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>execProcessScriptShell</name>
+                                        <value>/bin/bash</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>execProcessScriptSetupCCP4</name>
+                                        <value>/mx-beta/dozor/dozor-env.sh</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                         <name>execProcessScriptExecutable</name>
+                                         <value>/mx-beta/dozor/dozor.20170104</value>
+                                 </XSParamItem>
+                                 <XSParamItem>
+                                          <name>timeOut</name>
+                                          <value>600</value>
+                                 </XSParamItem>
                         </XSParamList>
                 </XSPluginItem>
 	</XSPluginList>

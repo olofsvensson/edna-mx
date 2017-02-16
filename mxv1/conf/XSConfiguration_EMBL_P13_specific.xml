@@ -88,6 +88,23 @@
                                          <value>300</value>
                                  </XSParamItem>  
                         </XSParamList>
-                </XSPluginItem> 
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginControlDozorv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>7200</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>hdf5BatchSize</name>
+                                        <value>100</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                         <name>mxCuBE_URI</name>
+                                         <value>http://p13ui01:8011</value>
+                                 </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
 	</XSPluginList>
 </XSConfiguration> 
