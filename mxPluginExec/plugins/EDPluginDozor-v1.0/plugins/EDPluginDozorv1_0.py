@@ -217,7 +217,6 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         for strLine in listOutput:
             # Remove "|"
             listLine = shlex.split(strLine.replace("|", " "))
-            print listLine
             if listLine != [] and not strLine.startswith("-") and not strLine.startswith("h"):
                 xsDataImageDozor = XSDataImageDozor()
                 imageNumber = int(listLine[0])
@@ -255,7 +254,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                     strSpotFile = os.path.join(self.getWorkingDirectory(), "%05d.spot" % xsDataImageDozor.number.value)
                     if os.path.exists(strSpotFile):
                         xsDataImageDozor.spotFile = XSDataFile(XSDataString(strSpotFile))
-#                print xsDataImageDozor.marshal()
+#                #print xsDataImageDozor.marshal()
                 xsDataResultDozor.addImageDozor(xsDataImageDozor)
             elif strLine.startswith("h"):
                 xsDataResultDozor.halfDoseTime = XSDataDouble(strLine.split("=")[1].split()[0])
