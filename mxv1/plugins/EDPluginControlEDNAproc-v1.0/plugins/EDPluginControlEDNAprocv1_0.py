@@ -258,16 +258,16 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if sgnumber is not None:
             xds_in.spacegroup = XSDataInteger(sgnumber)
 
+        if data_in.unit_cell is not None:
+            # Workaround for mxCuBE unit cell comma separation and trailing "2"
+            unit_cell = data_in.unit_cell
+            unit_cell.value = unit_cell.value.replace(",", " ")
+            if unit_cell.value.endswith("2"):
+                unit_cell.value = unit_cell.value[:-1]
 
-        # Workaround for mxCuBE unit cell comma separation and trailing "2"
-        unit_cell = data_in.unit_cell
-        unit_cell.value = unit_cell.value.replace(",", " ")
-        if unit_cell.value.endswith("2"):
-            unit_cell.value = unit_cell.value[:-1]
-
-        # Check that unit cell is not zero
-        if not any(abs(float(num)) < 0.1 for num in unit_cell.value.split()):
-            xds_in.unit_cell = unit_cell
+            # Check that unit cell is not zero
+            if not any(abs(float(num)) < 0.1 for num in unit_cell.value.split()):
+                xds_in.unit_cell = unit_cell
 
         self.stats = dict()
 
@@ -488,24 +488,27 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.process_start = time.time()
 
 
-        # get our two integration IDs
-        try:
-            self.integration_id_noanom = self.create_integration_id(self.dataInput.data_collection_id.value,
-                                                                    "Creating non-anomalous integration ID")
-        except Exception as e:
-            strErrorMessage = "Could not get non-anom integration ID: \n{0}".format(traceback.format_exc(e))
-            self.addErrorMessage(strErrorMessage)
-            self.ERROR(strErrorMessage)
-            self.integration_id_noanom = None
+        self.integration_id_noanom = None
+        self.integration_id_anom = None
+        if self.dataInput.data_collection_id is not None:
+            # get our two integration IDs
+            try:
+                self.integration_id_noanom = self.create_integration_id(self.dataInput.data_collection_id.value,
+                                                                        "Creating non-anomalous integration ID")
+            except Exception as e:
+                strErrorMessage = "Could not get non-anom integration ID: \n{0}".format(traceback.format_exc(e))
+                self.addErrorMessage(strErrorMessage)
+                self.ERROR(strErrorMessage)
+                self.integration_id_noanom = None
 
-        try:
-            self.integration_id_anom = self.create_integration_id(self.dataInput.data_collection_id.value,
-                                                                  "Creating anomalous integration ID")
-        except Exception as e:
-            strErrorMessage = "Could not get anom integration ID: \n{0}".format(traceback.format_exc(e))
-            self.addErrorMessage(strErrorMessage)
-            self.ERROR(strErrorMessage)
-            self.integration_id_anom = None
+            try:
+                self.integration_id_anom = self.create_integration_id(self.dataInput.data_collection_id.value,
+                                                                      "Creating anomalous integration ID")
+            except Exception as e:
+                strErrorMessage = "Could not get anom integration ID: \n{0}".format(traceback.format_exc(e))
+                self.addErrorMessage(strErrorMessage)
+                self.ERROR(strErrorMessage)
+                self.integration_id_anom = None
 
         # first XDS plugin run with supplied XDS file
         self.screen('Starting first XDS run...')
@@ -1035,7 +1038,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         integration_container_noanom = AutoProcIntegrationContainer()
         image = Image()
-        image.dataCollectionId = self.dataInput.data_collection_id.value
+        if self.dataInput.data_collection_id is not None:
+            image.dataCollectionId = self.dataInput.data_collection_id.value
         integration_container_noanom.Image = image
 
         integration_noanom = AutoProcIntegration()
@@ -1088,7 +1092,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         integration_container_anom = AutoProcIntegrationContainer()
         image = Image()
-        image.dataCollectionId = self.dataInput.data_collection_id.value
+        if self.dataInput.data_collection_id is not None:
+            image.dataCollectionId = self.dataInput.data_collection_id.value
         integration_container_anom.Image = image
 
         integration_anom = AutoProcIntegration()
@@ -1232,19 +1237,21 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         with open(self.dataInput.output_file.path.value, 'w') as f:
             f.write(ispyb_input.marshal())
 
-        # store results in ispyb
-        self.store_autoproc_anom.dataInput = ispyb_input
-        t0 = time.time()
-        self.store_autoproc_anom.executeSynchronous()
-        self.retrieveFailureMessages(self.store_autoproc_anom, "Store EDNAproc anom")
-        self.stats['ispyb_upload'] = time.time() - t0
+        if self.dataInput.data_collection_id is not None:
+            # store results in ispyb
+            self.store_autoproc_anom.dataInput = ispyb_input
+            t0 = time.time()
+            self.store_autoproc_anom.executeSynchronous()
+            self.retrieveFailureMessages(self.store_autoproc_anom, "Store EDNAproc anom")
+            self.stats['ispyb_upload'] = time.time() - t0
 
-        if self.store_autoproc_anom.isFailure():
-            self.ERROR('could not send results to ispyb')
-        else:
-            # store the EDNAproc ID as a filename in the
-            # fastproc_integration_ids directory
-            os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_anom)), 0o755)
+            if self.store_autoproc_anom.isFailure():
+                self.ERROR('could not send results to ispyb')
+            else:
+                # store the EDNAproc ID as a filename in the
+                # fastproc_integration_ids directory
+                os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_anom)), 0o755)
+
         # then noanom stats
 
         output.AutoProcProgramContainer = program_container_noanom
@@ -1257,19 +1264,21 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         with open(self.dataInput.output_file.path.value, 'w') as f:
             f.write(ispyb_input.marshal())
 
-        # store results in ispyb
-        self.store_autoproc_noanom.dataInput = ispyb_input
-        t0 = time.time()
-        self.store_autoproc_noanom.executeSynchronous()
-        autoProcProgramId = self.store_autoproc_noanom.dataOutput.autoProcProgramId.value
-        self.retrieveFailureMessages(self.store_autoproc_noanom, "Store EDNAproc noanom")
-        self.stats['ispyb_upload'] = time.time() - t0
+        autoProcProgramId = None
+        if self.dataInput.data_collection_id is not None:
+            # store results in ispyb
+            self.store_autoproc_noanom.dataInput = ispyb_input
+            t0 = time.time()
+            self.store_autoproc_noanom.executeSynchronous()
+            autoProcProgramId = self.store_autoproc_noanom.dataOutput.autoProcProgramId.value
+            self.retrieveFailureMessages(self.store_autoproc_noanom, "Store EDNAproc noanom")
+            self.stats['ispyb_upload'] = time.time() - t0
 
-        if self.store_autoproc_noanom.isFailure():
-            self.ERROR('could not send results to ispyb')
-        else:
-            # store the EDNAproc id
-            os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0o755)
+            if self.store_autoproc_noanom.isFailure():
+                self.ERROR('could not send results to ispyb')
+            else:
+                # store the EDNAproc id
+                os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0o755)
 
         # Finally run dimple if executed at the ESRF
         if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():
@@ -1408,14 +1417,15 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
     # Proxy since the API changed and we can now log to several ids
     def log_to_ispyb(self, integration_id, step, status, comments=""):
-        if type(integration_id) is list:
-            for item in integration_id:
-                self.log_to_ispyb_impl(item, step, status, comments)
-        else:
-            self.log_to_ispyb_impl(integration_id, step, status, comments)
-            if status == "Failed":
-                for strErrorMessage in self.getListOfErrorMessages():
-                    self.log_to_ispyb_impl(integration_id, step, status, strErrorMessage)
+        if integration_id is not None:
+            if type(integration_id) is list:
+                for item in integration_id:
+                    self.log_to_ispyb_impl(item, step, status, comments)
+            else:
+                self.log_to_ispyb_impl(integration_id, step, status, comments)
+                if status == "Failed":
+                    for strErrorMessage in self.getListOfErrorMessages():
+                        self.log_to_ispyb_impl(integration_id, step, status, strErrorMessage)
 
     def log_to_ispyb_impl(self, integration_id, step, status, comments=""):
         # hack in the event we could not create an integration ID
