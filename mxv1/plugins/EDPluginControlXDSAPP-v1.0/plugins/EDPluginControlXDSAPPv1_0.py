@@ -281,12 +281,19 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             self.edPluginExecXDSAPPNoanom.dataInput = xsDataInputXDSAPPNoanom
             self.edPluginExecXDSAPPNoanom.execute()
         self.edPluginExecXDSAPPAnom.synchronize()
-        strPathXscaleLpAnom = self.runXscale(self.edPluginExecXDSAPPAnom.getWorkingDirectory(), anom=True, merged=True)
         xsDataResultXDSAPPAnom = self.edPluginExecXDSAPPAnom.dataOutput
+        # Old versions of XDSAPP didn't run XSCALE
+        if xsDataResultXDSAPPAnom.XSCALE_LP is None:
+            strPathXscaleLpAnom = self.runXscale(self.edPluginExecXDSAPPAnom.getWorkingDirectory(), anom=True, merged=True)
+        else:
+            strPathXscaleLpAnom = xsDataResultXDSAPPAnom.XSCALE_LP.path.value
         if self.doAnomAndNonanom:
             self.edPluginExecXDSAPPNoanom.synchronize()
-            strPathXscaleLpNoanom = self.runXscale(self.edPluginExecXDSAPPNoanom.getWorkingDirectory(), anom=False, merged=True)
             xsDataResultXDSAPPNoanom = self.edPluginExecXDSAPPNoanom.dataOutput
+            if xsDataResultXDSAPPNoanom.XSCALE_LP is None:
+                strPathXscaleLpNoanom = self.runXscale(self.edPluginExecXDSAPPNoanom.getWorkingDirectory(), anom=False, merged=True)
+            else:
+                strPathXscaleLpNoanom = xsDataResultXDSAPPNoanom.XSCALE_LP.path.value
         timeEnd = time.localtime()
 
         # Upload to ISPyB
