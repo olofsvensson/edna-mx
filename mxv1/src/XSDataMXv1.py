@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Jul 28 05:04::13 2016 by EDGenerateDS.
+# Generated Thu Mar 9 01:28::39 2017 by EDGenerateDS.
 #
 
 import os, sys
@@ -1501,6 +1501,542 @@ class XSDataCrystal(XSData):
 # end class XSDataCrystal
 
 
+class XSDataDetector(XSData):
+    """The properties of a detector. """
+    def __init__(self, type=None, twoTheta=None, serialNumber=None, pixelSizeY=None, pixelSizeX=None, numberPixelY=None, numberPixelX=None, numberBytesInHeader=None, name=None, imageSaturation=None, gain=None, distance=None, dataType=None, byteOrder=None, bin=None, beamPositionY=None, beamPositionX=None):
+        XSData.__init__(self, )
+        if beamPositionX is None:
+            self._beamPositionX = None
+        elif beamPositionX.__class__.__name__ == "XSDataLength":
+            self._beamPositionX = beamPositionX
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'beamPositionX' is not XSDataLength but %s" % self._beamPositionX.__class__.__name__
+            raise BaseException(strMessage)
+        if beamPositionY is None:
+            self._beamPositionY = None
+        elif beamPositionY.__class__.__name__ == "XSDataLength":
+            self._beamPositionY = beamPositionY
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'beamPositionY' is not XSDataLength but %s" % self._beamPositionY.__class__.__name__
+            raise BaseException(strMessage)
+        if bin is None:
+            self._bin = None
+        elif bin.__class__.__name__ == "XSDataString":
+            self._bin = bin
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'bin' is not XSDataString but %s" % self._bin.__class__.__name__
+            raise BaseException(strMessage)
+        if byteOrder is None:
+            self._byteOrder = None
+        elif byteOrder.__class__.__name__ == "XSDataString":
+            self._byteOrder = byteOrder
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'byteOrder' is not XSDataString but %s" % self._byteOrder.__class__.__name__
+            raise BaseException(strMessage)
+        if dataType is None:
+            self._dataType = None
+        elif dataType.__class__.__name__ == "XSDataString":
+            self._dataType = dataType
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'dataType' is not XSDataString but %s" % self._dataType.__class__.__name__
+            raise BaseException(strMessage)
+        if distance is None:
+            self._distance = None
+        elif distance.__class__.__name__ == "XSDataLength":
+            self._distance = distance
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'distance' is not XSDataLength but %s" % self._distance.__class__.__name__
+            raise BaseException(strMessage)
+        if gain is None:
+            self._gain = None
+        elif gain.__class__.__name__ == "XSDataFloat":
+            self._gain = gain
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'gain' is not XSDataFloat but %s" % self._gain.__class__.__name__
+            raise BaseException(strMessage)
+        if imageSaturation is None:
+            self._imageSaturation = None
+        elif imageSaturation.__class__.__name__ == "XSDataInteger":
+            self._imageSaturation = imageSaturation
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'imageSaturation' is not XSDataInteger but %s" % self._imageSaturation.__class__.__name__
+            raise BaseException(strMessage)
+        if name is None:
+            self._name = None
+        elif name.__class__.__name__ == "XSDataString":
+            self._name = name
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'name' is not XSDataString but %s" % self._name.__class__.__name__
+            raise BaseException(strMessage)
+        if numberBytesInHeader is None:
+            self._numberBytesInHeader = None
+        elif numberBytesInHeader.__class__.__name__ == "XSDataInteger":
+            self._numberBytesInHeader = numberBytesInHeader
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'numberBytesInHeader' is not XSDataInteger but %s" % self._numberBytesInHeader.__class__.__name__
+            raise BaseException(strMessage)
+        if numberPixelX is None:
+            self._numberPixelX = None
+        elif numberPixelX.__class__.__name__ == "XSDataInteger":
+            self._numberPixelX = numberPixelX
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'numberPixelX' is not XSDataInteger but %s" % self._numberPixelX.__class__.__name__
+            raise BaseException(strMessage)
+        if numberPixelY is None:
+            self._numberPixelY = None
+        elif numberPixelY.__class__.__name__ == "XSDataInteger":
+            self._numberPixelY = numberPixelY
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'numberPixelY' is not XSDataInteger but %s" % self._numberPixelY.__class__.__name__
+            raise BaseException(strMessage)
+        if pixelSizeX is None:
+            self._pixelSizeX = None
+        elif pixelSizeX.__class__.__name__ == "XSDataLength":
+            self._pixelSizeX = pixelSizeX
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'pixelSizeX' is not XSDataLength but %s" % self._pixelSizeX.__class__.__name__
+            raise BaseException(strMessage)
+        if pixelSizeY is None:
+            self._pixelSizeY = None
+        elif pixelSizeY.__class__.__name__ == "XSDataLength":
+            self._pixelSizeY = pixelSizeY
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'pixelSizeY' is not XSDataLength but %s" % self._pixelSizeY.__class__.__name__
+            raise BaseException(strMessage)
+        if serialNumber is None:
+            self._serialNumber = None
+        elif serialNumber.__class__.__name__ == "XSDataString":
+            self._serialNumber = serialNumber
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'serialNumber' is not XSDataString but %s" % self._serialNumber.__class__.__name__
+            raise BaseException(strMessage)
+        if twoTheta is None:
+            self._twoTheta = None
+        elif twoTheta.__class__.__name__ == "XSDataAngle":
+            self._twoTheta = twoTheta
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'twoTheta' is not XSDataAngle but %s" % self._twoTheta.__class__.__name__
+            raise BaseException(strMessage)
+        if type is None:
+            self._type = None
+        elif type.__class__.__name__ == "XSDataString":
+            self._type = type
+        else:
+            strMessage = "ERROR! XSDataDetector constructor argument 'type' is not XSDataString but %s" % self._type.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'beamPositionX' attribute
+    def getBeamPositionX(self): return self._beamPositionX
+    def setBeamPositionX(self, beamPositionX):
+        if beamPositionX is None:
+            self._beamPositionX = None
+        elif beamPositionX.__class__.__name__ == "XSDataLength":
+            self._beamPositionX = beamPositionX
+        else:
+            strMessage = "ERROR! XSDataDetector.setBeamPositionX argument is not XSDataLength but %s" % beamPositionX.__class__.__name__
+            raise BaseException(strMessage)
+    def delBeamPositionX(self): self._beamPositionX = None
+    beamPositionX = property(getBeamPositionX, setBeamPositionX, delBeamPositionX, "Property for beamPositionX")
+    # Methods and properties for the 'beamPositionY' attribute
+    def getBeamPositionY(self): return self._beamPositionY
+    def setBeamPositionY(self, beamPositionY):
+        if beamPositionY is None:
+            self._beamPositionY = None
+        elif beamPositionY.__class__.__name__ == "XSDataLength":
+            self._beamPositionY = beamPositionY
+        else:
+            strMessage = "ERROR! XSDataDetector.setBeamPositionY argument is not XSDataLength but %s" % beamPositionY.__class__.__name__
+            raise BaseException(strMessage)
+    def delBeamPositionY(self): self._beamPositionY = None
+    beamPositionY = property(getBeamPositionY, setBeamPositionY, delBeamPositionY, "Property for beamPositionY")
+    # Methods and properties for the 'bin' attribute
+    def getBin(self): return self._bin
+    def setBin(self, bin):
+        if bin is None:
+            self._bin = None
+        elif bin.__class__.__name__ == "XSDataString":
+            self._bin = bin
+        else:
+            strMessage = "ERROR! XSDataDetector.setBin argument is not XSDataString but %s" % bin.__class__.__name__
+            raise BaseException(strMessage)
+    def delBin(self): self._bin = None
+    bin = property(getBin, setBin, delBin, "Property for bin")
+    # Methods and properties for the 'byteOrder' attribute
+    def getByteOrder(self): return self._byteOrder
+    def setByteOrder(self, byteOrder):
+        if byteOrder is None:
+            self._byteOrder = None
+        elif byteOrder.__class__.__name__ == "XSDataString":
+            self._byteOrder = byteOrder
+        else:
+            strMessage = "ERROR! XSDataDetector.setByteOrder argument is not XSDataString but %s" % byteOrder.__class__.__name__
+            raise BaseException(strMessage)
+    def delByteOrder(self): self._byteOrder = None
+    byteOrder = property(getByteOrder, setByteOrder, delByteOrder, "Property for byteOrder")
+    # Methods and properties for the 'dataType' attribute
+    def getDataType(self): return self._dataType
+    def setDataType(self, dataType):
+        if dataType is None:
+            self._dataType = None
+        elif dataType.__class__.__name__ == "XSDataString":
+            self._dataType = dataType
+        else:
+            strMessage = "ERROR! XSDataDetector.setDataType argument is not XSDataString but %s" % dataType.__class__.__name__
+            raise BaseException(strMessage)
+    def delDataType(self): self._dataType = None
+    dataType = property(getDataType, setDataType, delDataType, "Property for dataType")
+    # Methods and properties for the 'distance' attribute
+    def getDistance(self): return self._distance
+    def setDistance(self, distance):
+        if distance is None:
+            self._distance = None
+        elif distance.__class__.__name__ == "XSDataLength":
+            self._distance = distance
+        else:
+            strMessage = "ERROR! XSDataDetector.setDistance argument is not XSDataLength but %s" % distance.__class__.__name__
+            raise BaseException(strMessage)
+    def delDistance(self): self._distance = None
+    distance = property(getDistance, setDistance, delDistance, "Property for distance")
+    # Methods and properties for the 'gain' attribute
+    def getGain(self): return self._gain
+    def setGain(self, gain):
+        if gain is None:
+            self._gain = None
+        elif gain.__class__.__name__ == "XSDataFloat":
+            self._gain = gain
+        else:
+            strMessage = "ERROR! XSDataDetector.setGain argument is not XSDataFloat but %s" % gain.__class__.__name__
+            raise BaseException(strMessage)
+    def delGain(self): self._gain = None
+    gain = property(getGain, setGain, delGain, "Property for gain")
+    # Methods and properties for the 'imageSaturation' attribute
+    def getImageSaturation(self): return self._imageSaturation
+    def setImageSaturation(self, imageSaturation):
+        if imageSaturation is None:
+            self._imageSaturation = None
+        elif imageSaturation.__class__.__name__ == "XSDataInteger":
+            self._imageSaturation = imageSaturation
+        else:
+            strMessage = "ERROR! XSDataDetector.setImageSaturation argument is not XSDataInteger but %s" % imageSaturation.__class__.__name__
+            raise BaseException(strMessage)
+    def delImageSaturation(self): self._imageSaturation = None
+    imageSaturation = property(getImageSaturation, setImageSaturation, delImageSaturation, "Property for imageSaturation")
+    # Methods and properties for the 'name' attribute
+    def getName(self): return self._name
+    def setName(self, name):
+        if name is None:
+            self._name = None
+        elif name.__class__.__name__ == "XSDataString":
+            self._name = name
+        else:
+            strMessage = "ERROR! XSDataDetector.setName argument is not XSDataString but %s" % name.__class__.__name__
+            raise BaseException(strMessage)
+    def delName(self): self._name = None
+    name = property(getName, setName, delName, "Property for name")
+    # Methods and properties for the 'numberBytesInHeader' attribute
+    def getNumberBytesInHeader(self): return self._numberBytesInHeader
+    def setNumberBytesInHeader(self, numberBytesInHeader):
+        if numberBytesInHeader is None:
+            self._numberBytesInHeader = None
+        elif numberBytesInHeader.__class__.__name__ == "XSDataInteger":
+            self._numberBytesInHeader = numberBytesInHeader
+        else:
+            strMessage = "ERROR! XSDataDetector.setNumberBytesInHeader argument is not XSDataInteger but %s" % numberBytesInHeader.__class__.__name__
+            raise BaseException(strMessage)
+    def delNumberBytesInHeader(self): self._numberBytesInHeader = None
+    numberBytesInHeader = property(getNumberBytesInHeader, setNumberBytesInHeader, delNumberBytesInHeader, "Property for numberBytesInHeader")
+    # Methods and properties for the 'numberPixelX' attribute
+    def getNumberPixelX(self): return self._numberPixelX
+    def setNumberPixelX(self, numberPixelX):
+        if numberPixelX is None:
+            self._numberPixelX = None
+        elif numberPixelX.__class__.__name__ == "XSDataInteger":
+            self._numberPixelX = numberPixelX
+        else:
+            strMessage = "ERROR! XSDataDetector.setNumberPixelX argument is not XSDataInteger but %s" % numberPixelX.__class__.__name__
+            raise BaseException(strMessage)
+    def delNumberPixelX(self): self._numberPixelX = None
+    numberPixelX = property(getNumberPixelX, setNumberPixelX, delNumberPixelX, "Property for numberPixelX")
+    # Methods and properties for the 'numberPixelY' attribute
+    def getNumberPixelY(self): return self._numberPixelY
+    def setNumberPixelY(self, numberPixelY):
+        if numberPixelY is None:
+            self._numberPixelY = None
+        elif numberPixelY.__class__.__name__ == "XSDataInteger":
+            self._numberPixelY = numberPixelY
+        else:
+            strMessage = "ERROR! XSDataDetector.setNumberPixelY argument is not XSDataInteger but %s" % numberPixelY.__class__.__name__
+            raise BaseException(strMessage)
+    def delNumberPixelY(self): self._numberPixelY = None
+    numberPixelY = property(getNumberPixelY, setNumberPixelY, delNumberPixelY, "Property for numberPixelY")
+    # Methods and properties for the 'pixelSizeX' attribute
+    def getPixelSizeX(self): return self._pixelSizeX
+    def setPixelSizeX(self, pixelSizeX):
+        if pixelSizeX is None:
+            self._pixelSizeX = None
+        elif pixelSizeX.__class__.__name__ == "XSDataLength":
+            self._pixelSizeX = pixelSizeX
+        else:
+            strMessage = "ERROR! XSDataDetector.setPixelSizeX argument is not XSDataLength but %s" % pixelSizeX.__class__.__name__
+            raise BaseException(strMessage)
+    def delPixelSizeX(self): self._pixelSizeX = None
+    pixelSizeX = property(getPixelSizeX, setPixelSizeX, delPixelSizeX, "Property for pixelSizeX")
+    # Methods and properties for the 'pixelSizeY' attribute
+    def getPixelSizeY(self): return self._pixelSizeY
+    def setPixelSizeY(self, pixelSizeY):
+        if pixelSizeY is None:
+            self._pixelSizeY = None
+        elif pixelSizeY.__class__.__name__ == "XSDataLength":
+            self._pixelSizeY = pixelSizeY
+        else:
+            strMessage = "ERROR! XSDataDetector.setPixelSizeY argument is not XSDataLength but %s" % pixelSizeY.__class__.__name__
+            raise BaseException(strMessage)
+    def delPixelSizeY(self): self._pixelSizeY = None
+    pixelSizeY = property(getPixelSizeY, setPixelSizeY, delPixelSizeY, "Property for pixelSizeY")
+    # Methods and properties for the 'serialNumber' attribute
+    def getSerialNumber(self): return self._serialNumber
+    def setSerialNumber(self, serialNumber):
+        if serialNumber is None:
+            self._serialNumber = None
+        elif serialNumber.__class__.__name__ == "XSDataString":
+            self._serialNumber = serialNumber
+        else:
+            strMessage = "ERROR! XSDataDetector.setSerialNumber argument is not XSDataString but %s" % serialNumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delSerialNumber(self): self._serialNumber = None
+    serialNumber = property(getSerialNumber, setSerialNumber, delSerialNumber, "Property for serialNumber")
+    # Methods and properties for the 'twoTheta' attribute
+    def getTwoTheta(self): return self._twoTheta
+    def setTwoTheta(self, twoTheta):
+        if twoTheta is None:
+            self._twoTheta = None
+        elif twoTheta.__class__.__name__ == "XSDataAngle":
+            self._twoTheta = twoTheta
+        else:
+            strMessage = "ERROR! XSDataDetector.setTwoTheta argument is not XSDataAngle but %s" % twoTheta.__class__.__name__
+            raise BaseException(strMessage)
+    def delTwoTheta(self): self._twoTheta = None
+    twoTheta = property(getTwoTheta, setTwoTheta, delTwoTheta, "Property for twoTheta")
+    # Methods and properties for the 'type' attribute
+    def getType(self): return self._type
+    def setType(self, type):
+        if type is None:
+            self._type = None
+        elif type.__class__.__name__ == "XSDataString":
+            self._type = type
+        else:
+            strMessage = "ERROR! XSDataDetector.setType argument is not XSDataString but %s" % type.__class__.__name__
+            raise BaseException(strMessage)
+    def delType(self): self._type = None
+    type = property(getType, setType, delType, "Property for type")
+    def export(self, outfile, level, name_='XSDataDetector'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataDetector'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._beamPositionX is not None:
+            self.beamPositionX.export(outfile, level, name_='beamPositionX')
+        else:
+            warnEmptyAttribute("beamPositionX", "XSDataLength")
+        if self._beamPositionY is not None:
+            self.beamPositionY.export(outfile, level, name_='beamPositionY')
+        else:
+            warnEmptyAttribute("beamPositionY", "XSDataLength")
+        if self._bin is not None:
+            self.bin.export(outfile, level, name_='bin')
+        else:
+            warnEmptyAttribute("bin", "XSDataString")
+        if self._byteOrder is not None:
+            self.byteOrder.export(outfile, level, name_='byteOrder')
+        else:
+            warnEmptyAttribute("byteOrder", "XSDataString")
+        if self._dataType is not None:
+            self.dataType.export(outfile, level, name_='dataType')
+        else:
+            warnEmptyAttribute("dataType", "XSDataString")
+        if self._distance is not None:
+            self.distance.export(outfile, level, name_='distance')
+        else:
+            warnEmptyAttribute("distance", "XSDataLength")
+        if self._gain is not None:
+            self.gain.export(outfile, level, name_='gain')
+        if self._imageSaturation is not None:
+            self.imageSaturation.export(outfile, level, name_='imageSaturation')
+        else:
+            warnEmptyAttribute("imageSaturation", "XSDataInteger")
+        if self._name is not None:
+            self.name.export(outfile, level, name_='name')
+        else:
+            warnEmptyAttribute("name", "XSDataString")
+        if self._numberBytesInHeader is not None:
+            self.numberBytesInHeader.export(outfile, level, name_='numberBytesInHeader')
+        else:
+            warnEmptyAttribute("numberBytesInHeader", "XSDataInteger")
+        if self._numberPixelX is not None:
+            self.numberPixelX.export(outfile, level, name_='numberPixelX')
+        else:
+            warnEmptyAttribute("numberPixelX", "XSDataInteger")
+        if self._numberPixelY is not None:
+            self.numberPixelY.export(outfile, level, name_='numberPixelY')
+        else:
+            warnEmptyAttribute("numberPixelY", "XSDataInteger")
+        if self._pixelSizeX is not None:
+            self.pixelSizeX.export(outfile, level, name_='pixelSizeX')
+        else:
+            warnEmptyAttribute("pixelSizeX", "XSDataLength")
+        if self._pixelSizeY is not None:
+            self.pixelSizeY.export(outfile, level, name_='pixelSizeY')
+        else:
+            warnEmptyAttribute("pixelSizeY", "XSDataLength")
+        if self._serialNumber is not None:
+            self.serialNumber.export(outfile, level, name_='serialNumber')
+        else:
+            warnEmptyAttribute("serialNumber", "XSDataString")
+        if self._twoTheta is not None:
+            self.twoTheta.export(outfile, level, name_='twoTheta')
+        else:
+            warnEmptyAttribute("twoTheta", "XSDataAngle")
+        if self._type is not None:
+            self.type.export(outfile, level, name_='type')
+        else:
+            warnEmptyAttribute("type", "XSDataString")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'beamPositionX':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setBeamPositionX(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'beamPositionY':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setBeamPositionY(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'bin':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setBin(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'byteOrder':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setByteOrder(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'dataType':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setDataType(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'distance':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setDistance(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'gain':
+            obj_ = XSDataFloat()
+            obj_.build(child_)
+            self.setGain(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'imageSaturation':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setImageSaturation(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'name':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setName(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'numberBytesInHeader':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setNumberBytesInHeader(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'numberPixelX':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setNumberPixelX(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'numberPixelY':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setNumberPixelY(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pixelSizeX':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setPixelSizeX(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pixelSizeY':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setPixelSizeY(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'serialNumber':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setSerialNumber(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'twoTheta':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setTwoTheta(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'type':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setType(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataDetector" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataDetector' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataDetector is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataDetector.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataDetector()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataDetector" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataDetector()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataDetector
+
+
 class XSDataDiffractionPlan(XSData):
     """This object contains the main properties a user can parameterize for a crystal characterisation:
 
@@ -2247,6 +2783,169 @@ class XSDataDiffractionPlan(XSData):
 # end class XSDataDiffractionPlan
 
 
+class XSDataCollection(XSData):
+    """The data collection carried out or to be carried out with a particular sample with specific user inputs defined by the diffraction plan."""
+    def __init__(self, subWedge=None, sample=None, diffractionPlan=None):
+        XSData.__init__(self, )
+        if diffractionPlan is None:
+            self._diffractionPlan = None
+        elif diffractionPlan.__class__.__name__ == "XSDataDiffractionPlan":
+            self._diffractionPlan = diffractionPlan
+        else:
+            strMessage = "ERROR! XSDataCollection constructor argument 'diffractionPlan' is not XSDataDiffractionPlan but %s" % self._diffractionPlan.__class__.__name__
+            raise BaseException(strMessage)
+        if sample is None:
+            self._sample = None
+        elif sample.__class__.__name__ == "XSDataSampleCrystalMM":
+            self._sample = sample
+        else:
+            strMessage = "ERROR! XSDataCollection constructor argument 'sample' is not XSDataSampleCrystalMM but %s" % self._sample.__class__.__name__
+            raise BaseException(strMessage)
+        if subWedge is None:
+            self._subWedge = []
+        elif subWedge.__class__.__name__ == "list":
+            self._subWedge = subWedge
+        else:
+            strMessage = "ERROR! XSDataCollection constructor argument 'subWedge' is not list but %s" % self._subWedge.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'diffractionPlan' attribute
+    def getDiffractionPlan(self): return self._diffractionPlan
+    def setDiffractionPlan(self, diffractionPlan):
+        if diffractionPlan is None:
+            self._diffractionPlan = None
+        elif diffractionPlan.__class__.__name__ == "XSDataDiffractionPlan":
+            self._diffractionPlan = diffractionPlan
+        else:
+            strMessage = "ERROR! XSDataCollection.setDiffractionPlan argument is not XSDataDiffractionPlan but %s" % diffractionPlan.__class__.__name__
+            raise BaseException(strMessage)
+    def delDiffractionPlan(self): self._diffractionPlan = None
+    diffractionPlan = property(getDiffractionPlan, setDiffractionPlan, delDiffractionPlan, "Property for diffractionPlan")
+    # Methods and properties for the 'sample' attribute
+    def getSample(self): return self._sample
+    def setSample(self, sample):
+        if sample is None:
+            self._sample = None
+        elif sample.__class__.__name__ == "XSDataSampleCrystalMM":
+            self._sample = sample
+        else:
+            strMessage = "ERROR! XSDataCollection.setSample argument is not XSDataSampleCrystalMM but %s" % sample.__class__.__name__
+            raise BaseException(strMessage)
+    def delSample(self): self._sample = None
+    sample = property(getSample, setSample, delSample, "Property for sample")
+    # Methods and properties for the 'subWedge' attribute
+    def getSubWedge(self): return self._subWedge
+    def setSubWedge(self, subWedge):
+        if subWedge is None:
+            self._subWedge = []
+        elif subWedge.__class__.__name__ == "list":
+            self._subWedge = subWedge
+        else:
+            strMessage = "ERROR! XSDataCollection.setSubWedge argument is not list but %s" % subWedge.__class__.__name__
+            raise BaseException(strMessage)
+    def delSubWedge(self): self._subWedge = None
+    subWedge = property(getSubWedge, setSubWedge, delSubWedge, "Property for subWedge")
+    def addSubWedge(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataCollection.addSubWedge argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataSubWedge":
+            self._subWedge.append(value)
+        else:
+            strMessage = "ERROR! XSDataCollection.addSubWedge argument is not XSDataSubWedge but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertSubWedge(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataCollection.insertSubWedge argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataCollection.insertSubWedge argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataSubWedge":
+            self._subWedge[index] = value
+        else:
+            strMessage = "ERROR! XSDataCollection.addSubWedge argument is not XSDataSubWedge but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def export(self, outfile, level, name_='XSDataCollection'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataCollection'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._diffractionPlan is not None:
+            self.diffractionPlan.export(outfile, level, name_='diffractionPlan')
+        if self._sample is not None:
+            self.sample.export(outfile, level, name_='sample')
+        for subWedge_ in self.getSubWedge():
+            subWedge_.export(outfile, level, name_='subWedge')
+        if self.getSubWedge() == []:
+            warnEmptyAttribute("subWedge", "XSDataSubWedge")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'diffractionPlan':
+            obj_ = XSDataDiffractionPlan()
+            obj_.build(child_)
+            self.setDiffractionPlan(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'sample':
+            obj_ = XSDataSampleCrystalMM()
+            obj_.build(child_)
+            self.setSample(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'subWedge':
+            obj_ = XSDataSubWedge()
+            obj_.build(child_)
+            self.subWedge.append(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataCollection" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataCollection' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataCollection is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataCollection.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataCollection()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataCollection" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataCollection()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataCollection
+
+
 class XSDataGoniostat(XSData):
     """The properties of a goniostat:
 - the maximal rotation speed permitted
@@ -2744,7 +3443,7 @@ class XSDataExperimentalCondition(XSData):
 
 
 class XSDataImageQualityIndicators(XSData):
-    def __init__(self, totalIntegratedSignal=None, spotTotal=None, signalRangeMin=None, signalRangeMax=None, signalRangeAverage=None, selectedIndexingSolution=None, saturationRangeMin=None, saturationRangeMax=None, saturationRangeAverage=None, pctSaturationTop50Peaks=None, method2Res=None, method1Res=None, maxUnitCell=None, inResolutionOvrlSpots=None, inResTotal=None, image=None, iceRings=None, goodBraggCandidates=None, binPopCutOffMethod2Res=None, dozorSpotsResolution=None, dozorSpotsIntAver=None, dozorSpotListShape=None, dozorSpotList=None, dozorSpotFile=None, dozor_score=None):
+    def __init__(self, totalIntegratedSignal=None, spotTotal=None, signalRangeMin=None, signalRangeMax=None, signalRangeAverage=None, selectedIndexingSolution=None, saturationRangeMin=None, saturationRangeMax=None, saturationRangeAverage=None, pctSaturationTop50Peaks=None, method2Res=None, method1Res=None, maxUnitCell=None, inResolutionOvrlSpots=None, inResTotal=None, image=None, iceRings=None, goodBraggCandidates=None, binPopCutOffMethod2Res=None, dozorVisibleResolution=None, dozorSpotsResolution=None, dozorSpotsIntAver=None, dozorSpotListShape=None, dozorSpotList=None, dozorSpotFile=None, dozor_score=None):
         XSData.__init__(self, )
         if dozor_score is None:
             self._dozor_score = None
@@ -2787,6 +3486,13 @@ class XSDataImageQualityIndicators(XSData):
             self._dozorSpotsResolution = dozorSpotsResolution
         else:
             strMessage = "ERROR! XSDataImageQualityIndicators constructor argument 'dozorSpotsResolution' is not XSDataDouble but %s" % self._dozorSpotsResolution.__class__.__name__
+            raise BaseException(strMessage)
+        if dozorVisibleResolution is None:
+            self._dozorVisibleResolution = None
+        elif dozorVisibleResolution.__class__.__name__ == "XSDataDouble":
+            self._dozorVisibleResolution = dozorVisibleResolution
+        else:
+            strMessage = "ERROR! XSDataImageQualityIndicators constructor argument 'dozorVisibleResolution' is not XSDataDouble but %s" % self._dozorVisibleResolution.__class__.__name__
             raise BaseException(strMessage)
         if binPopCutOffMethod2Res is None:
             self._binPopCutOffMethod2Res = None
@@ -3014,6 +3720,18 @@ class XSDataImageQualityIndicators(XSData):
             raise BaseException(strMessage)
     def delDozorSpotsResolution(self): self._dozorSpotsResolution = None
     dozorSpotsResolution = property(getDozorSpotsResolution, setDozorSpotsResolution, delDozorSpotsResolution, "Property for dozorSpotsResolution")
+    # Methods and properties for the 'dozorVisibleResolution' attribute
+    def getDozorVisibleResolution(self): return self._dozorVisibleResolution
+    def setDozorVisibleResolution(self, dozorVisibleResolution):
+        if dozorVisibleResolution is None:
+            self._dozorVisibleResolution = None
+        elif dozorVisibleResolution.__class__.__name__ == "XSDataDouble":
+            self._dozorVisibleResolution = dozorVisibleResolution
+        else:
+            strMessage = "ERROR! XSDataImageQualityIndicators.setDozorVisibleResolution argument is not XSDataDouble but %s" % dozorVisibleResolution.__class__.__name__
+            raise BaseException(strMessage)
+    def delDozorVisibleResolution(self): self._dozorVisibleResolution = None
+    dozorVisibleResolution = property(getDozorVisibleResolution, setDozorVisibleResolution, delDozorVisibleResolution, "Property for dozorVisibleResolution")
     # Methods and properties for the 'binPopCutOffMethod2Res' attribute
     def getBinPopCutOffMethod2Res(self): return self._binPopCutOffMethod2Res
     def setBinPopCutOffMethod2Res(self, binPopCutOffMethod2Res):
@@ -3262,6 +3980,8 @@ class XSDataImageQualityIndicators(XSData):
             self.dozorSpotsIntAver.export(outfile, level, name_='dozorSpotsIntAver')
         if self._dozorSpotsResolution is not None:
             self.dozorSpotsResolution.export(outfile, level, name_='dozorSpotsResolution')
+        if self._dozorVisibleResolution is not None:
+            self.dozorVisibleResolution.export(outfile, level, name_='dozorVisibleResolution')
         if self._binPopCutOffMethod2Res is not None:
             self.binPopCutOffMethod2Res.export(outfile, level, name_='binPopCutOffMethod2Res')
         else:
@@ -3351,6 +4071,11 @@ class XSDataImageQualityIndicators(XSData):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setDozorSpotsResolution(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'dozorVisibleResolution':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setDozorVisibleResolution(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'binPopCutOffMethod2Res':
             obj_ = XSDataDouble()
@@ -4912,6 +5637,254 @@ class XSDataResolutionBin(XSData):
 # end class XSDataResolutionBin
 
 
+class XSDataSample(XSData):
+    """This defines the main properties of a sample:
+- absorbed dose rate in Gray/sec
+- shape: the factor that is related to the sample and the beam size (1 if crystal smaller than beam size or = to the ratio of crystal size to the beam size if the beam is smaller then crystal).
+- sample size
+- the susceptibility of the sample to radiation damage."""
+    def __init__(self, susceptibility=None, omegaMin=None, size=None, shape=None, radiationDamageModelGamma=None, radiationDamageModelBeta=None, absorbedDoseRate=None):
+        XSData.__init__(self, )
+        if absorbedDoseRate is None:
+            self._absorbedDoseRate = None
+        elif absorbedDoseRate.__class__.__name__ == "XSDataAbsorbedDoseRate":
+            self._absorbedDoseRate = absorbedDoseRate
+        else:
+            strMessage = "ERROR! XSDataSample constructor argument 'absorbedDoseRate' is not XSDataAbsorbedDoseRate but %s" % self._absorbedDoseRate.__class__.__name__
+            raise BaseException(strMessage)
+        if radiationDamageModelBeta is None:
+            self._radiationDamageModelBeta = None
+        elif radiationDamageModelBeta.__class__.__name__ == "XSDataDouble":
+            self._radiationDamageModelBeta = radiationDamageModelBeta
+        else:
+            strMessage = "ERROR! XSDataSample constructor argument 'radiationDamageModelBeta' is not XSDataDouble but %s" % self._radiationDamageModelBeta.__class__.__name__
+            raise BaseException(strMessage)
+        if radiationDamageModelGamma is None:
+            self._radiationDamageModelGamma = None
+        elif radiationDamageModelGamma.__class__.__name__ == "XSDataDouble":
+            self._radiationDamageModelGamma = radiationDamageModelGamma
+        else:
+            strMessage = "ERROR! XSDataSample constructor argument 'radiationDamageModelGamma' is not XSDataDouble but %s" % self._radiationDamageModelGamma.__class__.__name__
+            raise BaseException(strMessage)
+        if shape is None:
+            self._shape = None
+        elif shape.__class__.__name__ == "XSDataDouble":
+            self._shape = shape
+        else:
+            strMessage = "ERROR! XSDataSample constructor argument 'shape' is not XSDataDouble but %s" % self._shape.__class__.__name__
+            raise BaseException(strMessage)
+        if size is None:
+            self._size = None
+        elif size.__class__.__name__ == "XSDataSize":
+            self._size = size
+        else:
+            strMessage = "ERROR! XSDataSample constructor argument 'size' is not XSDataSize but %s" % self._size.__class__.__name__
+            raise BaseException(strMessage)
+        if omegaMin is None:
+            self._omegaMin = None
+        elif omegaMin.__class__.__name__ == "XSDataAngle":
+            self._omegaMin = omegaMin
+        else:
+            strMessage = "ERROR! XSDataSample constructor argument 'omegaMin' is not XSDataAngle but %s" % self._omegaMin.__class__.__name__
+            raise BaseException(strMessage)
+        if susceptibility is None:
+            self._susceptibility = None
+        elif susceptibility.__class__.__name__ == "XSDataDouble":
+            self._susceptibility = susceptibility
+        else:
+            strMessage = "ERROR! XSDataSample constructor argument 'susceptibility' is not XSDataDouble but %s" % self._susceptibility.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'absorbedDoseRate' attribute
+    def getAbsorbedDoseRate(self): return self._absorbedDoseRate
+    def setAbsorbedDoseRate(self, absorbedDoseRate):
+        if absorbedDoseRate is None:
+            self._absorbedDoseRate = None
+        elif absorbedDoseRate.__class__.__name__ == "XSDataAbsorbedDoseRate":
+            self._absorbedDoseRate = absorbedDoseRate
+        else:
+            strMessage = "ERROR! XSDataSample.setAbsorbedDoseRate argument is not XSDataAbsorbedDoseRate but %s" % absorbedDoseRate.__class__.__name__
+            raise BaseException(strMessage)
+    def delAbsorbedDoseRate(self): self._absorbedDoseRate = None
+    absorbedDoseRate = property(getAbsorbedDoseRate, setAbsorbedDoseRate, delAbsorbedDoseRate, "Property for absorbedDoseRate")
+    # Methods and properties for the 'radiationDamageModelBeta' attribute
+    def getRadiationDamageModelBeta(self): return self._radiationDamageModelBeta
+    def setRadiationDamageModelBeta(self, radiationDamageModelBeta):
+        if radiationDamageModelBeta is None:
+            self._radiationDamageModelBeta = None
+        elif radiationDamageModelBeta.__class__.__name__ == "XSDataDouble":
+            self._radiationDamageModelBeta = radiationDamageModelBeta
+        else:
+            strMessage = "ERROR! XSDataSample.setRadiationDamageModelBeta argument is not XSDataDouble but %s" % radiationDamageModelBeta.__class__.__name__
+            raise BaseException(strMessage)
+    def delRadiationDamageModelBeta(self): self._radiationDamageModelBeta = None
+    radiationDamageModelBeta = property(getRadiationDamageModelBeta, setRadiationDamageModelBeta, delRadiationDamageModelBeta, "Property for radiationDamageModelBeta")
+    # Methods and properties for the 'radiationDamageModelGamma' attribute
+    def getRadiationDamageModelGamma(self): return self._radiationDamageModelGamma
+    def setRadiationDamageModelGamma(self, radiationDamageModelGamma):
+        if radiationDamageModelGamma is None:
+            self._radiationDamageModelGamma = None
+        elif radiationDamageModelGamma.__class__.__name__ == "XSDataDouble":
+            self._radiationDamageModelGamma = radiationDamageModelGamma
+        else:
+            strMessage = "ERROR! XSDataSample.setRadiationDamageModelGamma argument is not XSDataDouble but %s" % radiationDamageModelGamma.__class__.__name__
+            raise BaseException(strMessage)
+    def delRadiationDamageModelGamma(self): self._radiationDamageModelGamma = None
+    radiationDamageModelGamma = property(getRadiationDamageModelGamma, setRadiationDamageModelGamma, delRadiationDamageModelGamma, "Property for radiationDamageModelGamma")
+    # Methods and properties for the 'shape' attribute
+    def getShape(self): return self._shape
+    def setShape(self, shape):
+        if shape is None:
+            self._shape = None
+        elif shape.__class__.__name__ == "XSDataDouble":
+            self._shape = shape
+        else:
+            strMessage = "ERROR! XSDataSample.setShape argument is not XSDataDouble but %s" % shape.__class__.__name__
+            raise BaseException(strMessage)
+    def delShape(self): self._shape = None
+    shape = property(getShape, setShape, delShape, "Property for shape")
+    # Methods and properties for the 'size' attribute
+    def getSize(self): return self._size
+    def setSize(self, size):
+        if size is None:
+            self._size = None
+        elif size.__class__.__name__ == "XSDataSize":
+            self._size = size
+        else:
+            strMessage = "ERROR! XSDataSample.setSize argument is not XSDataSize but %s" % size.__class__.__name__
+            raise BaseException(strMessage)
+    def delSize(self): self._size = None
+    size = property(getSize, setSize, delSize, "Property for size")
+    # Methods and properties for the 'omegaMin' attribute
+    def getOmegaMin(self): return self._omegaMin
+    def setOmegaMin(self, omegaMin):
+        if omegaMin is None:
+            self._omegaMin = None
+        elif omegaMin.__class__.__name__ == "XSDataAngle":
+            self._omegaMin = omegaMin
+        else:
+            strMessage = "ERROR! XSDataSample.setOmegaMin argument is not XSDataAngle but %s" % omegaMin.__class__.__name__
+            raise BaseException(strMessage)
+    def delOmegaMin(self): self._omegaMin = None
+    omegaMin = property(getOmegaMin, setOmegaMin, delOmegaMin, "Property for omegaMin")
+    # Methods and properties for the 'susceptibility' attribute
+    def getSusceptibility(self): return self._susceptibility
+    def setSusceptibility(self, susceptibility):
+        if susceptibility is None:
+            self._susceptibility = None
+        elif susceptibility.__class__.__name__ == "XSDataDouble":
+            self._susceptibility = susceptibility
+        else:
+            strMessage = "ERROR! XSDataSample.setSusceptibility argument is not XSDataDouble but %s" % susceptibility.__class__.__name__
+            raise BaseException(strMessage)
+    def delSusceptibility(self): self._susceptibility = None
+    susceptibility = property(getSusceptibility, setSusceptibility, delSusceptibility, "Property for susceptibility")
+    def export(self, outfile, level, name_='XSDataSample'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataSample'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._absorbedDoseRate is not None:
+            self.absorbedDoseRate.export(outfile, level, name_='absorbedDoseRate')
+        if self._radiationDamageModelBeta is not None:
+            self.radiationDamageModelBeta.export(outfile, level, name_='radiationDamageModelBeta')
+        if self._radiationDamageModelGamma is not None:
+            self.radiationDamageModelGamma.export(outfile, level, name_='radiationDamageModelGamma')
+        if self._shape is not None:
+            self.shape.export(outfile, level, name_='shape')
+        if self._size is not None:
+            self.size.export(outfile, level, name_='size')
+        if self._omegaMin is not None:
+            self.omegaMin.export(outfile, level, name_='omegaMin')
+        if self._susceptibility is not None:
+            self.susceptibility.export(outfile, level, name_='susceptibility')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'absorbedDoseRate':
+            obj_ = XSDataAbsorbedDoseRate()
+            obj_.build(child_)
+            self.setAbsorbedDoseRate(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'radiationDamageModelBeta':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setRadiationDamageModelBeta(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'radiationDamageModelGamma':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setRadiationDamageModelGamma(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'shape':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setShape(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'size':
+            obj_ = XSDataSize()
+            obj_.build(child_)
+            self.setSize(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'omegaMin':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setOmegaMin(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'susceptibility':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setSusceptibility(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataSample" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataSample' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataSample is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataSample.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataSample()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataSample" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataSample()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataSample
+
+
 class XSDataSolvent(XSData):
     """Defines the content of the solvent by defining the concentration of elements in millimoles/litre. Note that this atom composition should not include oxygen and lighter atoms."""
     def __init__(self, atoms=None):
@@ -5002,396 +5975,196 @@ class XSDataSolvent(XSData):
 # end class XSDataSolvent
 
 
-class XSDataSpaceGroup(XSData):
-    """Crystallographic properties"""
-    def __init__(self, name=None, ITNumber=None):
+class XSDataStatisticsIndexing(XSData):
+    def __init__(self, spotsUsed=None, spotsTotal=None, spotDeviationPositional=None, spotDeviationAngular=None, beamPositionShiftY=None, beamPositionShiftX=None):
         XSData.__init__(self, )
-        if ITNumber is None:
-            self._ITNumber = None
-        elif ITNumber.__class__.__name__ == "XSDataInteger":
-            self._ITNumber = ITNumber
+        if beamPositionShiftX is None:
+            self._beamPositionShiftX = None
+        elif beamPositionShiftX.__class__.__name__ == "XSDataLength":
+            self._beamPositionShiftX = beamPositionShiftX
         else:
-            strMessage = "ERROR! XSDataSpaceGroup constructor argument 'ITNumber' is not XSDataInteger but %s" % self._ITNumber.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIndexing constructor argument 'beamPositionShiftX' is not XSDataLength but %s" % self._beamPositionShiftX.__class__.__name__
             raise BaseException(strMessage)
-        if name is None:
-            self._name = None
-        elif name.__class__.__name__ == "XSDataString":
-            self._name = name
+        if beamPositionShiftY is None:
+            self._beamPositionShiftY = None
+        elif beamPositionShiftY.__class__.__name__ == "XSDataLength":
+            self._beamPositionShiftY = beamPositionShiftY
         else:
-            strMessage = "ERROR! XSDataSpaceGroup constructor argument 'name' is not XSDataString but %s" % self._name.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIndexing constructor argument 'beamPositionShiftY' is not XSDataLength but %s" % self._beamPositionShiftY.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'ITNumber' attribute
-    def getITNumber(self): return self._ITNumber
-    def setITNumber(self, ITNumber):
-        if ITNumber is None:
-            self._ITNumber = None
-        elif ITNumber.__class__.__name__ == "XSDataInteger":
-            self._ITNumber = ITNumber
+        if spotDeviationAngular is None:
+            self._spotDeviationAngular = None
+        elif spotDeviationAngular.__class__.__name__ == "XSDataAngle":
+            self._spotDeviationAngular = spotDeviationAngular
         else:
-            strMessage = "ERROR! XSDataSpaceGroup.setITNumber argument is not XSDataInteger but %s" % ITNumber.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIndexing constructor argument 'spotDeviationAngular' is not XSDataAngle but %s" % self._spotDeviationAngular.__class__.__name__
             raise BaseException(strMessage)
-    def delITNumber(self): self._ITNumber = None
-    ITNumber = property(getITNumber, setITNumber, delITNumber, "Property for ITNumber")
-    # Methods and properties for the 'name' attribute
-    def getName(self): return self._name
-    def setName(self, name):
-        if name is None:
-            self._name = None
-        elif name.__class__.__name__ == "XSDataString":
-            self._name = name
+        if spotDeviationPositional is None:
+            self._spotDeviationPositional = None
+        elif spotDeviationPositional.__class__.__name__ == "XSDataLength":
+            self._spotDeviationPositional = spotDeviationPositional
         else:
-            strMessage = "ERROR! XSDataSpaceGroup.setName argument is not XSDataString but %s" % name.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIndexing constructor argument 'spotDeviationPositional' is not XSDataLength but %s" % self._spotDeviationPositional.__class__.__name__
             raise BaseException(strMessage)
-    def delName(self): self._name = None
-    name = property(getName, setName, delName, "Property for name")
-    def export(self, outfile, level, name_='XSDataSpaceGroup'):
+        if spotsTotal is None:
+            self._spotsTotal = None
+        elif spotsTotal.__class__.__name__ == "XSDataInteger":
+            self._spotsTotal = spotsTotal
+        else:
+            strMessage = "ERROR! XSDataStatisticsIndexing constructor argument 'spotsTotal' is not XSDataInteger but %s" % self._spotsTotal.__class__.__name__
+            raise BaseException(strMessage)
+        if spotsUsed is None:
+            self._spotsUsed = None
+        elif spotsUsed.__class__.__name__ == "XSDataInteger":
+            self._spotsUsed = spotsUsed
+        else:
+            strMessage = "ERROR! XSDataStatisticsIndexing constructor argument 'spotsUsed' is not XSDataInteger but %s" % self._spotsUsed.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'beamPositionShiftX' attribute
+    def getBeamPositionShiftX(self): return self._beamPositionShiftX
+    def setBeamPositionShiftX(self, beamPositionShiftX):
+        if beamPositionShiftX is None:
+            self._beamPositionShiftX = None
+        elif beamPositionShiftX.__class__.__name__ == "XSDataLength":
+            self._beamPositionShiftX = beamPositionShiftX
+        else:
+            strMessage = "ERROR! XSDataStatisticsIndexing.setBeamPositionShiftX argument is not XSDataLength but %s" % beamPositionShiftX.__class__.__name__
+            raise BaseException(strMessage)
+    def delBeamPositionShiftX(self): self._beamPositionShiftX = None
+    beamPositionShiftX = property(getBeamPositionShiftX, setBeamPositionShiftX, delBeamPositionShiftX, "Property for beamPositionShiftX")
+    # Methods and properties for the 'beamPositionShiftY' attribute
+    def getBeamPositionShiftY(self): return self._beamPositionShiftY
+    def setBeamPositionShiftY(self, beamPositionShiftY):
+        if beamPositionShiftY is None:
+            self._beamPositionShiftY = None
+        elif beamPositionShiftY.__class__.__name__ == "XSDataLength":
+            self._beamPositionShiftY = beamPositionShiftY
+        else:
+            strMessage = "ERROR! XSDataStatisticsIndexing.setBeamPositionShiftY argument is not XSDataLength but %s" % beamPositionShiftY.__class__.__name__
+            raise BaseException(strMessage)
+    def delBeamPositionShiftY(self): self._beamPositionShiftY = None
+    beamPositionShiftY = property(getBeamPositionShiftY, setBeamPositionShiftY, delBeamPositionShiftY, "Property for beamPositionShiftY")
+    # Methods and properties for the 'spotDeviationAngular' attribute
+    def getSpotDeviationAngular(self): return self._spotDeviationAngular
+    def setSpotDeviationAngular(self, spotDeviationAngular):
+        if spotDeviationAngular is None:
+            self._spotDeviationAngular = None
+        elif spotDeviationAngular.__class__.__name__ == "XSDataAngle":
+            self._spotDeviationAngular = spotDeviationAngular
+        else:
+            strMessage = "ERROR! XSDataStatisticsIndexing.setSpotDeviationAngular argument is not XSDataAngle but %s" % spotDeviationAngular.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpotDeviationAngular(self): self._spotDeviationAngular = None
+    spotDeviationAngular = property(getSpotDeviationAngular, setSpotDeviationAngular, delSpotDeviationAngular, "Property for spotDeviationAngular")
+    # Methods and properties for the 'spotDeviationPositional' attribute
+    def getSpotDeviationPositional(self): return self._spotDeviationPositional
+    def setSpotDeviationPositional(self, spotDeviationPositional):
+        if spotDeviationPositional is None:
+            self._spotDeviationPositional = None
+        elif spotDeviationPositional.__class__.__name__ == "XSDataLength":
+            self._spotDeviationPositional = spotDeviationPositional
+        else:
+            strMessage = "ERROR! XSDataStatisticsIndexing.setSpotDeviationPositional argument is not XSDataLength but %s" % spotDeviationPositional.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpotDeviationPositional(self): self._spotDeviationPositional = None
+    spotDeviationPositional = property(getSpotDeviationPositional, setSpotDeviationPositional, delSpotDeviationPositional, "Property for spotDeviationPositional")
+    # Methods and properties for the 'spotsTotal' attribute
+    def getSpotsTotal(self): return self._spotsTotal
+    def setSpotsTotal(self, spotsTotal):
+        if spotsTotal is None:
+            self._spotsTotal = None
+        elif spotsTotal.__class__.__name__ == "XSDataInteger":
+            self._spotsTotal = spotsTotal
+        else:
+            strMessage = "ERROR! XSDataStatisticsIndexing.setSpotsTotal argument is not XSDataInteger but %s" % spotsTotal.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpotsTotal(self): self._spotsTotal = None
+    spotsTotal = property(getSpotsTotal, setSpotsTotal, delSpotsTotal, "Property for spotsTotal")
+    # Methods and properties for the 'spotsUsed' attribute
+    def getSpotsUsed(self): return self._spotsUsed
+    def setSpotsUsed(self, spotsUsed):
+        if spotsUsed is None:
+            self._spotsUsed = None
+        elif spotsUsed.__class__.__name__ == "XSDataInteger":
+            self._spotsUsed = spotsUsed
+        else:
+            strMessage = "ERROR! XSDataStatisticsIndexing.setSpotsUsed argument is not XSDataInteger but %s" % spotsUsed.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpotsUsed(self): self._spotsUsed = None
+    spotsUsed = property(getSpotsUsed, setSpotsUsed, delSpotsUsed, "Property for spotsUsed")
+    def export(self, outfile, level, name_='XSDataStatisticsIndexing'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
         self.exportChildren(outfile, level + 1, name_)
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataSpaceGroup'):
+    def exportChildren(self, outfile, level, name_='XSDataStatisticsIndexing'):
         XSData.exportChildren(self, outfile, level, name_)
-        if self._ITNumber is not None:
-            self.ITNumber.export(outfile, level, name_='ITNumber')
-        if self._name is not None:
-            self.name.export(outfile, level, name_='name')
+        if self._beamPositionShiftX is not None:
+            self.beamPositionShiftX.export(outfile, level, name_='beamPositionShiftX')
         else:
-            warnEmptyAttribute("name", "XSDataString")
+            warnEmptyAttribute("beamPositionShiftX", "XSDataLength")
+        if self._beamPositionShiftY is not None:
+            self.beamPositionShiftY.export(outfile, level, name_='beamPositionShiftY')
+        else:
+            warnEmptyAttribute("beamPositionShiftY", "XSDataLength")
+        if self._spotDeviationAngular is not None:
+            self.spotDeviationAngular.export(outfile, level, name_='spotDeviationAngular')
+        else:
+            warnEmptyAttribute("spotDeviationAngular", "XSDataAngle")
+        if self._spotDeviationPositional is not None:
+            self.spotDeviationPositional.export(outfile, level, name_='spotDeviationPositional')
+        else:
+            warnEmptyAttribute("spotDeviationPositional", "XSDataLength")
+        if self._spotsTotal is not None:
+            self.spotsTotal.export(outfile, level, name_='spotsTotal')
+        else:
+            warnEmptyAttribute("spotsTotal", "XSDataInteger")
+        if self._spotsUsed is not None:
+            self.spotsUsed.export(outfile, level, name_='spotsUsed')
+        else:
+            warnEmptyAttribute("spotsUsed", "XSDataInteger")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'ITNumber':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setITNumber(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'name':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setName(obj_)
-        XSData.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataSpaceGroup" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataSpaceGroup' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataSpaceGroup is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataSpaceGroup.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataSpaceGroup()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataSpaceGroup" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataSpaceGroup()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataSpaceGroup
-
-
-class XSDataStatisticsIntegration(XSData):
-    def __init__(self, numberOfReflectionsGenerated=None, numberOfPartialReflections=None, numberOfOverlappedReflections=None, numberOfNegativeReflections=None, numberOfFullyRecordedReflections=None, numberOfBadReflections=None, iOverSigmaOverall=None, iOverSigmaAtHighestResolution=None, RMSSpotDeviation=None):
-        XSData.__init__(self, )
-        if RMSSpotDeviation is None:
-            self._RMSSpotDeviation = None
-        elif RMSSpotDeviation.__class__.__name__ == "XSDataLength":
-            self._RMSSpotDeviation = RMSSpotDeviation
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'RMSSpotDeviation' is not XSDataLength but %s" % self._RMSSpotDeviation.__class__.__name__
-            raise BaseException(strMessage)
-        if iOverSigmaAtHighestResolution is None:
-            self._iOverSigmaAtHighestResolution = None
-        elif iOverSigmaAtHighestResolution.__class__.__name__ == "XSDataDouble":
-            self._iOverSigmaAtHighestResolution = iOverSigmaAtHighestResolution
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'iOverSigmaAtHighestResolution' is not XSDataDouble but %s" % self._iOverSigmaAtHighestResolution.__class__.__name__
-            raise BaseException(strMessage)
-        if iOverSigmaOverall is None:
-            self._iOverSigmaOverall = None
-        elif iOverSigmaOverall.__class__.__name__ == "XSDataDouble":
-            self._iOverSigmaOverall = iOverSigmaOverall
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'iOverSigmaOverall' is not XSDataDouble but %s" % self._iOverSigmaOverall.__class__.__name__
-            raise BaseException(strMessage)
-        if numberOfBadReflections is None:
-            self._numberOfBadReflections = None
-        elif numberOfBadReflections.__class__.__name__ == "XSDataInteger":
-            self._numberOfBadReflections = numberOfBadReflections
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'numberOfBadReflections' is not XSDataInteger but %s" % self._numberOfBadReflections.__class__.__name__
-            raise BaseException(strMessage)
-        if numberOfFullyRecordedReflections is None:
-            self._numberOfFullyRecordedReflections = None
-        elif numberOfFullyRecordedReflections.__class__.__name__ == "XSDataInteger":
-            self._numberOfFullyRecordedReflections = numberOfFullyRecordedReflections
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'numberOfFullyRecordedReflections' is not XSDataInteger but %s" % self._numberOfFullyRecordedReflections.__class__.__name__
-            raise BaseException(strMessage)
-        if numberOfNegativeReflections is None:
-            self._numberOfNegativeReflections = None
-        elif numberOfNegativeReflections.__class__.__name__ == "XSDataInteger":
-            self._numberOfNegativeReflections = numberOfNegativeReflections
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'numberOfNegativeReflections' is not XSDataInteger but %s" % self._numberOfNegativeReflections.__class__.__name__
-            raise BaseException(strMessage)
-        if numberOfOverlappedReflections is None:
-            self._numberOfOverlappedReflections = None
-        elif numberOfOverlappedReflections.__class__.__name__ == "XSDataInteger":
-            self._numberOfOverlappedReflections = numberOfOverlappedReflections
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'numberOfOverlappedReflections' is not XSDataInteger but %s" % self._numberOfOverlappedReflections.__class__.__name__
-            raise BaseException(strMessage)
-        if numberOfPartialReflections is None:
-            self._numberOfPartialReflections = None
-        elif numberOfPartialReflections.__class__.__name__ == "XSDataInteger":
-            self._numberOfPartialReflections = numberOfPartialReflections
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'numberOfPartialReflections' is not XSDataInteger but %s" % self._numberOfPartialReflections.__class__.__name__
-            raise BaseException(strMessage)
-        if numberOfReflectionsGenerated is None:
-            self._numberOfReflectionsGenerated = None
-        elif numberOfReflectionsGenerated.__class__.__name__ == "XSDataInteger":
-            self._numberOfReflectionsGenerated = numberOfReflectionsGenerated
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'numberOfReflectionsGenerated' is not XSDataInteger but %s" % self._numberOfReflectionsGenerated.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'RMSSpotDeviation' attribute
-    def getRMSSpotDeviation(self): return self._RMSSpotDeviation
-    def setRMSSpotDeviation(self, RMSSpotDeviation):
-        if RMSSpotDeviation is None:
-            self._RMSSpotDeviation = None
-        elif RMSSpotDeviation.__class__.__name__ == "XSDataLength":
-            self._RMSSpotDeviation = RMSSpotDeviation
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration.setRMSSpotDeviation argument is not XSDataLength but %s" % RMSSpotDeviation.__class__.__name__
-            raise BaseException(strMessage)
-    def delRMSSpotDeviation(self): self._RMSSpotDeviation = None
-    RMSSpotDeviation = property(getRMSSpotDeviation, setRMSSpotDeviation, delRMSSpotDeviation, "Property for RMSSpotDeviation")
-    # Methods and properties for the 'iOverSigmaAtHighestResolution' attribute
-    def getIOverSigmaAtHighestResolution(self): return self._iOverSigmaAtHighestResolution
-    def setIOverSigmaAtHighestResolution(self, iOverSigmaAtHighestResolution):
-        if iOverSigmaAtHighestResolution is None:
-            self._iOverSigmaAtHighestResolution = None
-        elif iOverSigmaAtHighestResolution.__class__.__name__ == "XSDataDouble":
-            self._iOverSigmaAtHighestResolution = iOverSigmaAtHighestResolution
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration.setIOverSigmaAtHighestResolution argument is not XSDataDouble but %s" % iOverSigmaAtHighestResolution.__class__.__name__
-            raise BaseException(strMessage)
-    def delIOverSigmaAtHighestResolution(self): self._iOverSigmaAtHighestResolution = None
-    iOverSigmaAtHighestResolution = property(getIOverSigmaAtHighestResolution, setIOverSigmaAtHighestResolution, delIOverSigmaAtHighestResolution, "Property for iOverSigmaAtHighestResolution")
-    # Methods and properties for the 'iOverSigmaOverall' attribute
-    def getIOverSigmaOverall(self): return self._iOverSigmaOverall
-    def setIOverSigmaOverall(self, iOverSigmaOverall):
-        if iOverSigmaOverall is None:
-            self._iOverSigmaOverall = None
-        elif iOverSigmaOverall.__class__.__name__ == "XSDataDouble":
-            self._iOverSigmaOverall = iOverSigmaOverall
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration.setIOverSigmaOverall argument is not XSDataDouble but %s" % iOverSigmaOverall.__class__.__name__
-            raise BaseException(strMessage)
-    def delIOverSigmaOverall(self): self._iOverSigmaOverall = None
-    iOverSigmaOverall = property(getIOverSigmaOverall, setIOverSigmaOverall, delIOverSigmaOverall, "Property for iOverSigmaOverall")
-    # Methods and properties for the 'numberOfBadReflections' attribute
-    def getNumberOfBadReflections(self): return self._numberOfBadReflections
-    def setNumberOfBadReflections(self, numberOfBadReflections):
-        if numberOfBadReflections is None:
-            self._numberOfBadReflections = None
-        elif numberOfBadReflections.__class__.__name__ == "XSDataInteger":
-            self._numberOfBadReflections = numberOfBadReflections
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration.setNumberOfBadReflections argument is not XSDataInteger but %s" % numberOfBadReflections.__class__.__name__
-            raise BaseException(strMessage)
-    def delNumberOfBadReflections(self): self._numberOfBadReflections = None
-    numberOfBadReflections = property(getNumberOfBadReflections, setNumberOfBadReflections, delNumberOfBadReflections, "Property for numberOfBadReflections")
-    # Methods and properties for the 'numberOfFullyRecordedReflections' attribute
-    def getNumberOfFullyRecordedReflections(self): return self._numberOfFullyRecordedReflections
-    def setNumberOfFullyRecordedReflections(self, numberOfFullyRecordedReflections):
-        if numberOfFullyRecordedReflections is None:
-            self._numberOfFullyRecordedReflections = None
-        elif numberOfFullyRecordedReflections.__class__.__name__ == "XSDataInteger":
-            self._numberOfFullyRecordedReflections = numberOfFullyRecordedReflections
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration.setNumberOfFullyRecordedReflections argument is not XSDataInteger but %s" % numberOfFullyRecordedReflections.__class__.__name__
-            raise BaseException(strMessage)
-    def delNumberOfFullyRecordedReflections(self): self._numberOfFullyRecordedReflections = None
-    numberOfFullyRecordedReflections = property(getNumberOfFullyRecordedReflections, setNumberOfFullyRecordedReflections, delNumberOfFullyRecordedReflections, "Property for numberOfFullyRecordedReflections")
-    # Methods and properties for the 'numberOfNegativeReflections' attribute
-    def getNumberOfNegativeReflections(self): return self._numberOfNegativeReflections
-    def setNumberOfNegativeReflections(self, numberOfNegativeReflections):
-        if numberOfNegativeReflections is None:
-            self._numberOfNegativeReflections = None
-        elif numberOfNegativeReflections.__class__.__name__ == "XSDataInteger":
-            self._numberOfNegativeReflections = numberOfNegativeReflections
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration.setNumberOfNegativeReflections argument is not XSDataInteger but %s" % numberOfNegativeReflections.__class__.__name__
-            raise BaseException(strMessage)
-    def delNumberOfNegativeReflections(self): self._numberOfNegativeReflections = None
-    numberOfNegativeReflections = property(getNumberOfNegativeReflections, setNumberOfNegativeReflections, delNumberOfNegativeReflections, "Property for numberOfNegativeReflections")
-    # Methods and properties for the 'numberOfOverlappedReflections' attribute
-    def getNumberOfOverlappedReflections(self): return self._numberOfOverlappedReflections
-    def setNumberOfOverlappedReflections(self, numberOfOverlappedReflections):
-        if numberOfOverlappedReflections is None:
-            self._numberOfOverlappedReflections = None
-        elif numberOfOverlappedReflections.__class__.__name__ == "XSDataInteger":
-            self._numberOfOverlappedReflections = numberOfOverlappedReflections
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration.setNumberOfOverlappedReflections argument is not XSDataInteger but %s" % numberOfOverlappedReflections.__class__.__name__
-            raise BaseException(strMessage)
-    def delNumberOfOverlappedReflections(self): self._numberOfOverlappedReflections = None
-    numberOfOverlappedReflections = property(getNumberOfOverlappedReflections, setNumberOfOverlappedReflections, delNumberOfOverlappedReflections, "Property for numberOfOverlappedReflections")
-    # Methods and properties for the 'numberOfPartialReflections' attribute
-    def getNumberOfPartialReflections(self): return self._numberOfPartialReflections
-    def setNumberOfPartialReflections(self, numberOfPartialReflections):
-        if numberOfPartialReflections is None:
-            self._numberOfPartialReflections = None
-        elif numberOfPartialReflections.__class__.__name__ == "XSDataInteger":
-            self._numberOfPartialReflections = numberOfPartialReflections
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration.setNumberOfPartialReflections argument is not XSDataInteger but %s" % numberOfPartialReflections.__class__.__name__
-            raise BaseException(strMessage)
-    def delNumberOfPartialReflections(self): self._numberOfPartialReflections = None
-    numberOfPartialReflections = property(getNumberOfPartialReflections, setNumberOfPartialReflections, delNumberOfPartialReflections, "Property for numberOfPartialReflections")
-    # Methods and properties for the 'numberOfReflectionsGenerated' attribute
-    def getNumberOfReflectionsGenerated(self): return self._numberOfReflectionsGenerated
-    def setNumberOfReflectionsGenerated(self, numberOfReflectionsGenerated):
-        if numberOfReflectionsGenerated is None:
-            self._numberOfReflectionsGenerated = None
-        elif numberOfReflectionsGenerated.__class__.__name__ == "XSDataInteger":
-            self._numberOfReflectionsGenerated = numberOfReflectionsGenerated
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegration.setNumberOfReflectionsGenerated argument is not XSDataInteger but %s" % numberOfReflectionsGenerated.__class__.__name__
-            raise BaseException(strMessage)
-    def delNumberOfReflectionsGenerated(self): self._numberOfReflectionsGenerated = None
-    numberOfReflectionsGenerated = property(getNumberOfReflectionsGenerated, setNumberOfReflectionsGenerated, delNumberOfReflectionsGenerated, "Property for numberOfReflectionsGenerated")
-    def export(self, outfile, level, name_='XSDataStatisticsIntegration'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataStatisticsIntegration'):
-        XSData.exportChildren(self, outfile, level, name_)
-        if self._RMSSpotDeviation is not None:
-            self.RMSSpotDeviation.export(outfile, level, name_='RMSSpotDeviation')
-        else:
-            warnEmptyAttribute("RMSSpotDeviation", "XSDataLength")
-        if self._iOverSigmaAtHighestResolution is not None:
-            self.iOverSigmaAtHighestResolution.export(outfile, level, name_='iOverSigmaAtHighestResolution')
-        else:
-            warnEmptyAttribute("iOverSigmaAtHighestResolution", "XSDataDouble")
-        if self._iOverSigmaOverall is not None:
-            self.iOverSigmaOverall.export(outfile, level, name_='iOverSigmaOverall')
-        else:
-            warnEmptyAttribute("iOverSigmaOverall", "XSDataDouble")
-        if self._numberOfBadReflections is not None:
-            self.numberOfBadReflections.export(outfile, level, name_='numberOfBadReflections')
-        else:
-            warnEmptyAttribute("numberOfBadReflections", "XSDataInteger")
-        if self._numberOfFullyRecordedReflections is not None:
-            self.numberOfFullyRecordedReflections.export(outfile, level, name_='numberOfFullyRecordedReflections')
-        else:
-            warnEmptyAttribute("numberOfFullyRecordedReflections", "XSDataInteger")
-        if self._numberOfNegativeReflections is not None:
-            self.numberOfNegativeReflections.export(outfile, level, name_='numberOfNegativeReflections')
-        else:
-            warnEmptyAttribute("numberOfNegativeReflections", "XSDataInteger")
-        if self._numberOfOverlappedReflections is not None:
-            self.numberOfOverlappedReflections.export(outfile, level, name_='numberOfOverlappedReflections')
-        else:
-            warnEmptyAttribute("numberOfOverlappedReflections", "XSDataInteger")
-        if self._numberOfPartialReflections is not None:
-            self.numberOfPartialReflections.export(outfile, level, name_='numberOfPartialReflections')
-        else:
-            warnEmptyAttribute("numberOfPartialReflections", "XSDataInteger")
-        if self._numberOfReflectionsGenerated is not None:
-            self.numberOfReflectionsGenerated.export(outfile, level, name_='numberOfReflectionsGenerated')
-        else:
-            warnEmptyAttribute("numberOfReflectionsGenerated", "XSDataInteger")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'RMSSpotDeviation':
+            nodeName_ == 'beamPositionShiftX':
             obj_ = XSDataLength()
             obj_.build(child_)
-            self.setRMSSpotDeviation(obj_)
+            self.setBeamPositionShiftX(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'iOverSigmaAtHighestResolution':
-            obj_ = XSDataDouble()
+            nodeName_ == 'beamPositionShiftY':
+            obj_ = XSDataLength()
             obj_.build(child_)
-            self.setIOverSigmaAtHighestResolution(obj_)
+            self.setBeamPositionShiftY(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'iOverSigmaOverall':
-            obj_ = XSDataDouble()
+            nodeName_ == 'spotDeviationAngular':
+            obj_ = XSDataAngle()
             obj_.build(child_)
-            self.setIOverSigmaOverall(obj_)
+            self.setSpotDeviationAngular(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'numberOfBadReflections':
+            nodeName_ == 'spotDeviationPositional':
+            obj_ = XSDataLength()
+            obj_.build(child_)
+            self.setSpotDeviationPositional(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spotsTotal':
             obj_ = XSDataInteger()
             obj_.build(child_)
-            self.setNumberOfBadReflections(obj_)
+            self.setSpotsTotal(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'numberOfFullyRecordedReflections':
+            nodeName_ == 'spotsUsed':
             obj_ = XSDataInteger()
             obj_.build(child_)
-            self.setNumberOfFullyRecordedReflections(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'numberOfNegativeReflections':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setNumberOfNegativeReflections(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'numberOfOverlappedReflections':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setNumberOfOverlappedReflections(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'numberOfPartialReflections':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setNumberOfPartialReflections(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'numberOfReflectionsGenerated':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setNumberOfReflectionsGenerated(obj_)
+            self.setSpotsUsed(obj_)
         XSData.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()
         oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataStatisticsIntegration" )
+        self.export( oStreamString, 0, name_="XSDataStatisticsIndexing" )
         oStringXML = oStreamString.getvalue()
         oStreamString.close()
         return oStringXML
@@ -5399,24 +6172,24 @@ class XSDataStatisticsIntegration(XSData):
     def exportToFile( self, _outfileName ):
         outfile = open( _outfileName, "w" )
         outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataStatisticsIntegration' )
+        self.export( outfile, 0, name_='XSDataStatisticsIndexing' )
         outfile.close()
     #Deprecated method, replaced by exportToFile
     def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataStatisticsIntegration is deprecated, please use instead exportToFile!")
+        print("WARNING: Method outputFile in class XSDataStatisticsIndexing is deprecated, please use instead exportToFile!")
         self.exportToFile(_outfileName)
     #Method for making a copy in a new instance
     def copy( self ):
-        return XSDataStatisticsIntegration.parseString(self.marshal())
+        return XSDataStatisticsIndexing.parseString(self.marshal())
     #Static method for parsing a string
     def parseString( _inString ):
         doc = minidom.parseString(_inString)
         rootNode = doc.documentElement
-        rootObj = XSDataStatisticsIntegration()
+        rootObj = XSDataStatisticsIndexing()
         rootObj.build(rootNode)
         # Check that all minOccurs are obeyed by marshalling the created object
         oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataStatisticsIntegration" )
+        rootObj.export( oStreamString, 0, name_="XSDataStatisticsIndexing" )
         oStreamString.close()
         return rootObj
     parseString = staticmethod( parseString )
@@ -5424,128 +6197,11 @@ class XSDataStatisticsIntegration(XSData):
     def parseFile( _inFilePath ):
         doc = minidom.parse(_inFilePath)
         rootNode = doc.documentElement
-        rootObj = XSDataStatisticsIntegration()
+        rootObj = XSDataStatisticsIndexing()
         rootObj.build(rootNode)
         return rootObj
     parseFile = staticmethod( parseFile )
-# end class XSDataStatisticsIntegration
-
-
-class XSDataStatisticsIntegrationPerReflectionType(XSData):
-    def __init__(self, partials=None, fullyRecorded=None):
-        XSData.__init__(self, )
-        if fullyRecorded is None:
-            self._fullyRecorded = None
-        elif fullyRecorded.__class__.__name__ == "XSDataStatisticsIntegrationAverageAndNumberOfReflections":
-            self._fullyRecorded = fullyRecorded
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegrationPerReflectionType constructor argument 'fullyRecorded' is not XSDataStatisticsIntegrationAverageAndNumberOfReflections but %s" % self._fullyRecorded.__class__.__name__
-            raise BaseException(strMessage)
-        if partials is None:
-            self._partials = None
-        elif partials.__class__.__name__ == "XSDataStatisticsIntegrationAverageAndNumberOfReflections":
-            self._partials = partials
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegrationPerReflectionType constructor argument 'partials' is not XSDataStatisticsIntegrationAverageAndNumberOfReflections but %s" % self._partials.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'fullyRecorded' attribute
-    def getFullyRecorded(self): return self._fullyRecorded
-    def setFullyRecorded(self, fullyRecorded):
-        if fullyRecorded is None:
-            self._fullyRecorded = None
-        elif fullyRecorded.__class__.__name__ == "XSDataStatisticsIntegrationAverageAndNumberOfReflections":
-            self._fullyRecorded = fullyRecorded
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegrationPerReflectionType.setFullyRecorded argument is not XSDataStatisticsIntegrationAverageAndNumberOfReflections but %s" % fullyRecorded.__class__.__name__
-            raise BaseException(strMessage)
-    def delFullyRecorded(self): self._fullyRecorded = None
-    fullyRecorded = property(getFullyRecorded, setFullyRecorded, delFullyRecorded, "Property for fullyRecorded")
-    # Methods and properties for the 'partials' attribute
-    def getPartials(self): return self._partials
-    def setPartials(self, partials):
-        if partials is None:
-            self._partials = None
-        elif partials.__class__.__name__ == "XSDataStatisticsIntegrationAverageAndNumberOfReflections":
-            self._partials = partials
-        else:
-            strMessage = "ERROR! XSDataStatisticsIntegrationPerReflectionType.setPartials argument is not XSDataStatisticsIntegrationAverageAndNumberOfReflections but %s" % partials.__class__.__name__
-            raise BaseException(strMessage)
-    def delPartials(self): self._partials = None
-    partials = property(getPartials, setPartials, delPartials, "Property for partials")
-    def export(self, outfile, level, name_='XSDataStatisticsIntegrationPerReflectionType'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataStatisticsIntegrationPerReflectionType'):
-        XSData.exportChildren(self, outfile, level, name_)
-        if self._fullyRecorded is not None:
-            self.fullyRecorded.export(outfile, level, name_='fullyRecorded')
-        else:
-            warnEmptyAttribute("fullyRecorded", "XSDataStatisticsIntegrationAverageAndNumberOfReflections")
-        if self._partials is not None:
-            self.partials.export(outfile, level, name_='partials')
-        else:
-            warnEmptyAttribute("partials", "XSDataStatisticsIntegrationAverageAndNumberOfReflections")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'fullyRecorded':
-            obj_ = XSDataStatisticsIntegrationAverageAndNumberOfReflections()
-            obj_.build(child_)
-            self.setFullyRecorded(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'partials':
-            obj_ = XSDataStatisticsIntegrationAverageAndNumberOfReflections()
-            obj_.build(child_)
-            self.setPartials(obj_)
-        XSData.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataStatisticsIntegrationPerReflectionType" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataStatisticsIntegrationPerReflectionType' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataStatisticsIntegrationPerReflectionType is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataStatisticsIntegrationPerReflectionType.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataStatisticsIntegrationPerReflectionType()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataStatisticsIntegrationPerReflectionType" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataStatisticsIntegrationPerReflectionType()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataStatisticsIntegrationPerReflectionType
+# end class XSDataStatisticsIndexing
 
 
 class XSDataStatisticsIntegrationPerResolutionBin(XSData):
@@ -6341,225 +6997,36 @@ class XSDataCollectionPlan(XSData):
 # end class XSDataCollectionPlan
 
 
-class XSDataDetector(XSData):
-    """The properties of a detector. """
-    def __init__(self, type=None, twoTheta=None, serialNumber=None, pixelSizeY=None, pixelSizeX=None, numberPixelY=None, numberPixelX=None, numberBytesInHeader=None, name=None, imageSaturation=None, gain=None, distance=None, dataType=None, byteOrder=None, bin=None, beamPositionY=None, beamPositionX=None):
+class XSDataSpaceGroup(XSData):
+    """Crystallographic properties"""
+    def __init__(self, name=None, ITNumber=None):
         XSData.__init__(self, )
-        if beamPositionX is None:
-            self._beamPositionX = None
-        elif beamPositionX.__class__.__name__ == "XSDataLength":
-            self._beamPositionX = beamPositionX
+        if ITNumber is None:
+            self._ITNumber = None
+        elif ITNumber.__class__.__name__ == "XSDataInteger":
+            self._ITNumber = ITNumber
         else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'beamPositionX' is not XSDataLength but %s" % self._beamPositionX.__class__.__name__
-            raise BaseException(strMessage)
-        if beamPositionY is None:
-            self._beamPositionY = None
-        elif beamPositionY.__class__.__name__ == "XSDataLength":
-            self._beamPositionY = beamPositionY
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'beamPositionY' is not XSDataLength but %s" % self._beamPositionY.__class__.__name__
-            raise BaseException(strMessage)
-        if bin is None:
-            self._bin = None
-        elif bin.__class__.__name__ == "XSDataString":
-            self._bin = bin
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'bin' is not XSDataString but %s" % self._bin.__class__.__name__
-            raise BaseException(strMessage)
-        if byteOrder is None:
-            self._byteOrder = None
-        elif byteOrder.__class__.__name__ == "XSDataString":
-            self._byteOrder = byteOrder
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'byteOrder' is not XSDataString but %s" % self._byteOrder.__class__.__name__
-            raise BaseException(strMessage)
-        if dataType is None:
-            self._dataType = None
-        elif dataType.__class__.__name__ == "XSDataString":
-            self._dataType = dataType
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'dataType' is not XSDataString but %s" % self._dataType.__class__.__name__
-            raise BaseException(strMessage)
-        if distance is None:
-            self._distance = None
-        elif distance.__class__.__name__ == "XSDataLength":
-            self._distance = distance
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'distance' is not XSDataLength but %s" % self._distance.__class__.__name__
-            raise BaseException(strMessage)
-        if gain is None:
-            self._gain = None
-        elif gain.__class__.__name__ == "XSDataFloat":
-            self._gain = gain
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'gain' is not XSDataFloat but %s" % self._gain.__class__.__name__
-            raise BaseException(strMessage)
-        if imageSaturation is None:
-            self._imageSaturation = None
-        elif imageSaturation.__class__.__name__ == "XSDataInteger":
-            self._imageSaturation = imageSaturation
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'imageSaturation' is not XSDataInteger but %s" % self._imageSaturation.__class__.__name__
+            strMessage = "ERROR! XSDataSpaceGroup constructor argument 'ITNumber' is not XSDataInteger but %s" % self._ITNumber.__class__.__name__
             raise BaseException(strMessage)
         if name is None:
             self._name = None
         elif name.__class__.__name__ == "XSDataString":
             self._name = name
         else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'name' is not XSDataString but %s" % self._name.__class__.__name__
+            strMessage = "ERROR! XSDataSpaceGroup constructor argument 'name' is not XSDataString but %s" % self._name.__class__.__name__
             raise BaseException(strMessage)
-        if numberBytesInHeader is None:
-            self._numberBytesInHeader = None
-        elif numberBytesInHeader.__class__.__name__ == "XSDataInteger":
-            self._numberBytesInHeader = numberBytesInHeader
+    # Methods and properties for the 'ITNumber' attribute
+    def getITNumber(self): return self._ITNumber
+    def setITNumber(self, ITNumber):
+        if ITNumber is None:
+            self._ITNumber = None
+        elif ITNumber.__class__.__name__ == "XSDataInteger":
+            self._ITNumber = ITNumber
         else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'numberBytesInHeader' is not XSDataInteger but %s" % self._numberBytesInHeader.__class__.__name__
+            strMessage = "ERROR! XSDataSpaceGroup.setITNumber argument is not XSDataInteger but %s" % ITNumber.__class__.__name__
             raise BaseException(strMessage)
-        if numberPixelX is None:
-            self._numberPixelX = None
-        elif numberPixelX.__class__.__name__ == "XSDataInteger":
-            self._numberPixelX = numberPixelX
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'numberPixelX' is not XSDataInteger but %s" % self._numberPixelX.__class__.__name__
-            raise BaseException(strMessage)
-        if numberPixelY is None:
-            self._numberPixelY = None
-        elif numberPixelY.__class__.__name__ == "XSDataInteger":
-            self._numberPixelY = numberPixelY
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'numberPixelY' is not XSDataInteger but %s" % self._numberPixelY.__class__.__name__
-            raise BaseException(strMessage)
-        if pixelSizeX is None:
-            self._pixelSizeX = None
-        elif pixelSizeX.__class__.__name__ == "XSDataLength":
-            self._pixelSizeX = pixelSizeX
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'pixelSizeX' is not XSDataLength but %s" % self._pixelSizeX.__class__.__name__
-            raise BaseException(strMessage)
-        if pixelSizeY is None:
-            self._pixelSizeY = None
-        elif pixelSizeY.__class__.__name__ == "XSDataLength":
-            self._pixelSizeY = pixelSizeY
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'pixelSizeY' is not XSDataLength but %s" % self._pixelSizeY.__class__.__name__
-            raise BaseException(strMessage)
-        if serialNumber is None:
-            self._serialNumber = None
-        elif serialNumber.__class__.__name__ == "XSDataString":
-            self._serialNumber = serialNumber
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'serialNumber' is not XSDataString but %s" % self._serialNumber.__class__.__name__
-            raise BaseException(strMessage)
-        if twoTheta is None:
-            self._twoTheta = None
-        elif twoTheta.__class__.__name__ == "XSDataAngle":
-            self._twoTheta = twoTheta
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'twoTheta' is not XSDataAngle but %s" % self._twoTheta.__class__.__name__
-            raise BaseException(strMessage)
-        if type is None:
-            self._type = None
-        elif type.__class__.__name__ == "XSDataString":
-            self._type = type
-        else:
-            strMessage = "ERROR! XSDataDetector constructor argument 'type' is not XSDataString but %s" % self._type.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'beamPositionX' attribute
-    def getBeamPositionX(self): return self._beamPositionX
-    def setBeamPositionX(self, beamPositionX):
-        if beamPositionX is None:
-            self._beamPositionX = None
-        elif beamPositionX.__class__.__name__ == "XSDataLength":
-            self._beamPositionX = beamPositionX
-        else:
-            strMessage = "ERROR! XSDataDetector.setBeamPositionX argument is not XSDataLength but %s" % beamPositionX.__class__.__name__
-            raise BaseException(strMessage)
-    def delBeamPositionX(self): self._beamPositionX = None
-    beamPositionX = property(getBeamPositionX, setBeamPositionX, delBeamPositionX, "Property for beamPositionX")
-    # Methods and properties for the 'beamPositionY' attribute
-    def getBeamPositionY(self): return self._beamPositionY
-    def setBeamPositionY(self, beamPositionY):
-        if beamPositionY is None:
-            self._beamPositionY = None
-        elif beamPositionY.__class__.__name__ == "XSDataLength":
-            self._beamPositionY = beamPositionY
-        else:
-            strMessage = "ERROR! XSDataDetector.setBeamPositionY argument is not XSDataLength but %s" % beamPositionY.__class__.__name__
-            raise BaseException(strMessage)
-    def delBeamPositionY(self): self._beamPositionY = None
-    beamPositionY = property(getBeamPositionY, setBeamPositionY, delBeamPositionY, "Property for beamPositionY")
-    # Methods and properties for the 'bin' attribute
-    def getBin(self): return self._bin
-    def setBin(self, bin):
-        if bin is None:
-            self._bin = None
-        elif bin.__class__.__name__ == "XSDataString":
-            self._bin = bin
-        else:
-            strMessage = "ERROR! XSDataDetector.setBin argument is not XSDataString but %s" % bin.__class__.__name__
-            raise BaseException(strMessage)
-    def delBin(self): self._bin = None
-    bin = property(getBin, setBin, delBin, "Property for bin")
-    # Methods and properties for the 'byteOrder' attribute
-    def getByteOrder(self): return self._byteOrder
-    def setByteOrder(self, byteOrder):
-        if byteOrder is None:
-            self._byteOrder = None
-        elif byteOrder.__class__.__name__ == "XSDataString":
-            self._byteOrder = byteOrder
-        else:
-            strMessage = "ERROR! XSDataDetector.setByteOrder argument is not XSDataString but %s" % byteOrder.__class__.__name__
-            raise BaseException(strMessage)
-    def delByteOrder(self): self._byteOrder = None
-    byteOrder = property(getByteOrder, setByteOrder, delByteOrder, "Property for byteOrder")
-    # Methods and properties for the 'dataType' attribute
-    def getDataType(self): return self._dataType
-    def setDataType(self, dataType):
-        if dataType is None:
-            self._dataType = None
-        elif dataType.__class__.__name__ == "XSDataString":
-            self._dataType = dataType
-        else:
-            strMessage = "ERROR! XSDataDetector.setDataType argument is not XSDataString but %s" % dataType.__class__.__name__
-            raise BaseException(strMessage)
-    def delDataType(self): self._dataType = None
-    dataType = property(getDataType, setDataType, delDataType, "Property for dataType")
-    # Methods and properties for the 'distance' attribute
-    def getDistance(self): return self._distance
-    def setDistance(self, distance):
-        if distance is None:
-            self._distance = None
-        elif distance.__class__.__name__ == "XSDataLength":
-            self._distance = distance
-        else:
-            strMessage = "ERROR! XSDataDetector.setDistance argument is not XSDataLength but %s" % distance.__class__.__name__
-            raise BaseException(strMessage)
-    def delDistance(self): self._distance = None
-    distance = property(getDistance, setDistance, delDistance, "Property for distance")
-    # Methods and properties for the 'gain' attribute
-    def getGain(self): return self._gain
-    def setGain(self, gain):
-        if gain is None:
-            self._gain = None
-        elif gain.__class__.__name__ == "XSDataFloat":
-            self._gain = gain
-        else:
-            strMessage = "ERROR! XSDataDetector.setGain argument is not XSDataFloat but %s" % gain.__class__.__name__
-            raise BaseException(strMessage)
-    def delGain(self): self._gain = None
-    gain = property(getGain, setGain, delGain, "Property for gain")
-    # Methods and properties for the 'imageSaturation' attribute
-    def getImageSaturation(self): return self._imageSaturation
-    def setImageSaturation(self, imageSaturation):
-        if imageSaturation is None:
-            self._imageSaturation = None
-        elif imageSaturation.__class__.__name__ == "XSDataInteger":
-            self._imageSaturation = imageSaturation
-        else:
-            strMessage = "ERROR! XSDataDetector.setImageSaturation argument is not XSDataInteger but %s" % imageSaturation.__class__.__name__
-            raise BaseException(strMessage)
-    def delImageSaturation(self): self._imageSaturation = None
-    imageSaturation = property(getImageSaturation, setImageSaturation, delImageSaturation, "Property for imageSaturation")
+    def delITNumber(self): self._ITNumber = None
+    ITNumber = property(getITNumber, setITNumber, delITNumber, "Property for ITNumber")
     # Methods and properties for the 'name' attribute
     def getName(self): return self._name
     def setName(self, name):
@@ -6568,276 +7035,45 @@ class XSDataDetector(XSData):
         elif name.__class__.__name__ == "XSDataString":
             self._name = name
         else:
-            strMessage = "ERROR! XSDataDetector.setName argument is not XSDataString but %s" % name.__class__.__name__
+            strMessage = "ERROR! XSDataSpaceGroup.setName argument is not XSDataString but %s" % name.__class__.__name__
             raise BaseException(strMessage)
     def delName(self): self._name = None
     name = property(getName, setName, delName, "Property for name")
-    # Methods and properties for the 'numberBytesInHeader' attribute
-    def getNumberBytesInHeader(self): return self._numberBytesInHeader
-    def setNumberBytesInHeader(self, numberBytesInHeader):
-        if numberBytesInHeader is None:
-            self._numberBytesInHeader = None
-        elif numberBytesInHeader.__class__.__name__ == "XSDataInteger":
-            self._numberBytesInHeader = numberBytesInHeader
-        else:
-            strMessage = "ERROR! XSDataDetector.setNumberBytesInHeader argument is not XSDataInteger but %s" % numberBytesInHeader.__class__.__name__
-            raise BaseException(strMessage)
-    def delNumberBytesInHeader(self): self._numberBytesInHeader = None
-    numberBytesInHeader = property(getNumberBytesInHeader, setNumberBytesInHeader, delNumberBytesInHeader, "Property for numberBytesInHeader")
-    # Methods and properties for the 'numberPixelX' attribute
-    def getNumberPixelX(self): return self._numberPixelX
-    def setNumberPixelX(self, numberPixelX):
-        if numberPixelX is None:
-            self._numberPixelX = None
-        elif numberPixelX.__class__.__name__ == "XSDataInteger":
-            self._numberPixelX = numberPixelX
-        else:
-            strMessage = "ERROR! XSDataDetector.setNumberPixelX argument is not XSDataInteger but %s" % numberPixelX.__class__.__name__
-            raise BaseException(strMessage)
-    def delNumberPixelX(self): self._numberPixelX = None
-    numberPixelX = property(getNumberPixelX, setNumberPixelX, delNumberPixelX, "Property for numberPixelX")
-    # Methods and properties for the 'numberPixelY' attribute
-    def getNumberPixelY(self): return self._numberPixelY
-    def setNumberPixelY(self, numberPixelY):
-        if numberPixelY is None:
-            self._numberPixelY = None
-        elif numberPixelY.__class__.__name__ == "XSDataInteger":
-            self._numberPixelY = numberPixelY
-        else:
-            strMessage = "ERROR! XSDataDetector.setNumberPixelY argument is not XSDataInteger but %s" % numberPixelY.__class__.__name__
-            raise BaseException(strMessage)
-    def delNumberPixelY(self): self._numberPixelY = None
-    numberPixelY = property(getNumberPixelY, setNumberPixelY, delNumberPixelY, "Property for numberPixelY")
-    # Methods and properties for the 'pixelSizeX' attribute
-    def getPixelSizeX(self): return self._pixelSizeX
-    def setPixelSizeX(self, pixelSizeX):
-        if pixelSizeX is None:
-            self._pixelSizeX = None
-        elif pixelSizeX.__class__.__name__ == "XSDataLength":
-            self._pixelSizeX = pixelSizeX
-        else:
-            strMessage = "ERROR! XSDataDetector.setPixelSizeX argument is not XSDataLength but %s" % pixelSizeX.__class__.__name__
-            raise BaseException(strMessage)
-    def delPixelSizeX(self): self._pixelSizeX = None
-    pixelSizeX = property(getPixelSizeX, setPixelSizeX, delPixelSizeX, "Property for pixelSizeX")
-    # Methods and properties for the 'pixelSizeY' attribute
-    def getPixelSizeY(self): return self._pixelSizeY
-    def setPixelSizeY(self, pixelSizeY):
-        if pixelSizeY is None:
-            self._pixelSizeY = None
-        elif pixelSizeY.__class__.__name__ == "XSDataLength":
-            self._pixelSizeY = pixelSizeY
-        else:
-            strMessage = "ERROR! XSDataDetector.setPixelSizeY argument is not XSDataLength but %s" % pixelSizeY.__class__.__name__
-            raise BaseException(strMessage)
-    def delPixelSizeY(self): self._pixelSizeY = None
-    pixelSizeY = property(getPixelSizeY, setPixelSizeY, delPixelSizeY, "Property for pixelSizeY")
-    # Methods and properties for the 'serialNumber' attribute
-    def getSerialNumber(self): return self._serialNumber
-    def setSerialNumber(self, serialNumber):
-        if serialNumber is None:
-            self._serialNumber = None
-        elif serialNumber.__class__.__name__ == "XSDataString":
-            self._serialNumber = serialNumber
-        else:
-            strMessage = "ERROR! XSDataDetector.setSerialNumber argument is not XSDataString but %s" % serialNumber.__class__.__name__
-            raise BaseException(strMessage)
-    def delSerialNumber(self): self._serialNumber = None
-    serialNumber = property(getSerialNumber, setSerialNumber, delSerialNumber, "Property for serialNumber")
-    # Methods and properties for the 'twoTheta' attribute
-    def getTwoTheta(self): return self._twoTheta
-    def setTwoTheta(self, twoTheta):
-        if twoTheta is None:
-            self._twoTheta = None
-        elif twoTheta.__class__.__name__ == "XSDataAngle":
-            self._twoTheta = twoTheta
-        else:
-            strMessage = "ERROR! XSDataDetector.setTwoTheta argument is not XSDataAngle but %s" % twoTheta.__class__.__name__
-            raise BaseException(strMessage)
-    def delTwoTheta(self): self._twoTheta = None
-    twoTheta = property(getTwoTheta, setTwoTheta, delTwoTheta, "Property for twoTheta")
-    # Methods and properties for the 'type' attribute
-    def getType(self): return self._type
-    def setType(self, type):
-        if type is None:
-            self._type = None
-        elif type.__class__.__name__ == "XSDataString":
-            self._type = type
-        else:
-            strMessage = "ERROR! XSDataDetector.setType argument is not XSDataString but %s" % type.__class__.__name__
-            raise BaseException(strMessage)
-    def delType(self): self._type = None
-    type = property(getType, setType, delType, "Property for type")
-    def export(self, outfile, level, name_='XSDataDetector'):
+    def export(self, outfile, level, name_='XSDataSpaceGroup'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
         self.exportChildren(outfile, level + 1, name_)
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataDetector'):
+    def exportChildren(self, outfile, level, name_='XSDataSpaceGroup'):
         XSData.exportChildren(self, outfile, level, name_)
-        if self._beamPositionX is not None:
-            self.beamPositionX.export(outfile, level, name_='beamPositionX')
-        else:
-            warnEmptyAttribute("beamPositionX", "XSDataLength")
-        if self._beamPositionY is not None:
-            self.beamPositionY.export(outfile, level, name_='beamPositionY')
-        else:
-            warnEmptyAttribute("beamPositionY", "XSDataLength")
-        if self._bin is not None:
-            self.bin.export(outfile, level, name_='bin')
-        else:
-            warnEmptyAttribute("bin", "XSDataString")
-        if self._byteOrder is not None:
-            self.byteOrder.export(outfile, level, name_='byteOrder')
-        else:
-            warnEmptyAttribute("byteOrder", "XSDataString")
-        if self._dataType is not None:
-            self.dataType.export(outfile, level, name_='dataType')
-        else:
-            warnEmptyAttribute("dataType", "XSDataString")
-        if self._distance is not None:
-            self.distance.export(outfile, level, name_='distance')
-        else:
-            warnEmptyAttribute("distance", "XSDataLength")
-        if self._gain is not None:
-            self.gain.export(outfile, level, name_='gain')
-        if self._imageSaturation is not None:
-            self.imageSaturation.export(outfile, level, name_='imageSaturation')
-        else:
-            warnEmptyAttribute("imageSaturation", "XSDataInteger")
+        if self._ITNumber is not None:
+            self.ITNumber.export(outfile, level, name_='ITNumber')
         if self._name is not None:
             self.name.export(outfile, level, name_='name')
         else:
             warnEmptyAttribute("name", "XSDataString")
-        if self._numberBytesInHeader is not None:
-            self.numberBytesInHeader.export(outfile, level, name_='numberBytesInHeader')
-        else:
-            warnEmptyAttribute("numberBytesInHeader", "XSDataInteger")
-        if self._numberPixelX is not None:
-            self.numberPixelX.export(outfile, level, name_='numberPixelX')
-        else:
-            warnEmptyAttribute("numberPixelX", "XSDataInteger")
-        if self._numberPixelY is not None:
-            self.numberPixelY.export(outfile, level, name_='numberPixelY')
-        else:
-            warnEmptyAttribute("numberPixelY", "XSDataInteger")
-        if self._pixelSizeX is not None:
-            self.pixelSizeX.export(outfile, level, name_='pixelSizeX')
-        else:
-            warnEmptyAttribute("pixelSizeX", "XSDataLength")
-        if self._pixelSizeY is not None:
-            self.pixelSizeY.export(outfile, level, name_='pixelSizeY')
-        else:
-            warnEmptyAttribute("pixelSizeY", "XSDataLength")
-        if self._serialNumber is not None:
-            self.serialNumber.export(outfile, level, name_='serialNumber')
-        else:
-            warnEmptyAttribute("serialNumber", "XSDataString")
-        if self._twoTheta is not None:
-            self.twoTheta.export(outfile, level, name_='twoTheta')
-        else:
-            warnEmptyAttribute("twoTheta", "XSDataAngle")
-        if self._type is not None:
-            self.type.export(outfile, level, name_='type')
-        else:
-            warnEmptyAttribute("type", "XSDataString")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'beamPositionX':
-            obj_ = XSDataLength()
-            obj_.build(child_)
-            self.setBeamPositionX(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'beamPositionY':
-            obj_ = XSDataLength()
-            obj_.build(child_)
-            self.setBeamPositionY(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'bin':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setBin(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'byteOrder':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setByteOrder(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'dataType':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setDataType(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'distance':
-            obj_ = XSDataLength()
-            obj_.build(child_)
-            self.setDistance(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'gain':
-            obj_ = XSDataFloat()
-            obj_.build(child_)
-            self.setGain(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'imageSaturation':
+            nodeName_ == 'ITNumber':
             obj_ = XSDataInteger()
             obj_.build(child_)
-            self.setImageSaturation(obj_)
+            self.setITNumber(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'name':
             obj_ = XSDataString()
             obj_.build(child_)
             self.setName(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'numberBytesInHeader':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setNumberBytesInHeader(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'numberPixelX':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setNumberPixelX(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'numberPixelY':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setNumberPixelY(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'pixelSizeX':
-            obj_ = XSDataLength()
-            obj_.build(child_)
-            self.setPixelSizeX(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'pixelSizeY':
-            obj_ = XSDataLength()
-            obj_.build(child_)
-            self.setPixelSizeY(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'serialNumber':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setSerialNumber(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'twoTheta':
-            obj_ = XSDataAngle()
-            obj_.build(child_)
-            self.setTwoTheta(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'type':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setType(obj_)
         XSData.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()
         oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataDetector" )
+        self.export( oStreamString, 0, name_="XSDataSpaceGroup" )
         oStringXML = oStreamString.getvalue()
         oStreamString.close()
         return oStringXML
@@ -6845,24 +7081,24 @@ class XSDataDetector(XSData):
     def exportToFile( self, _outfileName ):
         outfile = open( _outfileName, "w" )
         outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataDetector' )
+        self.export( outfile, 0, name_='XSDataSpaceGroup' )
         outfile.close()
     #Deprecated method, replaced by exportToFile
     def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataDetector is deprecated, please use instead exportToFile!")
+        print("WARNING: Method outputFile in class XSDataSpaceGroup is deprecated, please use instead exportToFile!")
         self.exportToFile(_outfileName)
     #Method for making a copy in a new instance
     def copy( self ):
-        return XSDataDetector.parseString(self.marshal())
+        return XSDataSpaceGroup.parseString(self.marshal())
     #Static method for parsing a string
     def parseString( _inString ):
         doc = minidom.parseString(_inString)
         rootNode = doc.documentElement
-        rootObj = XSDataDetector()
+        rootObj = XSDataSpaceGroup()
         rootObj.build(rootNode)
         # Check that all minOccurs are obeyed by marshalling the created object
         oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataDetector" )
+        rootObj.export( oStreamString, 0, name_="XSDataSpaceGroup" )
         oStreamString.close()
         return rootObj
     parseString = staticmethod( parseString )
@@ -6870,222 +7106,287 @@ class XSDataDetector(XSData):
     def parseFile( _inFilePath ):
         doc = minidom.parse(_inFilePath)
         rootNode = doc.documentElement
-        rootObj = XSDataDetector()
+        rootObj = XSDataSpaceGroup()
         rootObj.build(rootNode)
         return rootObj
     parseFile = staticmethod( parseFile )
-# end class XSDataDetector
+# end class XSDataSpaceGroup
 
 
-class XSDataSample(XSData):
-    """This defines the main properties of a sample:
-- absorbed dose rate in Gray/sec
-- shape: the factor that is related to the sample and the beam size (1 if crystal smaller than beam size or = to the ratio of crystal size to the beam size if the beam is smaller then crystal).
-- sample size
-- the susceptibility of the sample to radiation damage."""
-    def __init__(self, susceptibility=None, omegaMin=None, size=None, shape=None, radiationDamageModelGamma=None, radiationDamageModelBeta=None, absorbedDoseRate=None):
+class XSDataStatisticsIntegration(XSData):
+    def __init__(self, numberOfReflectionsGenerated=None, numberOfPartialReflections=None, numberOfOverlappedReflections=None, numberOfNegativeReflections=None, numberOfFullyRecordedReflections=None, numberOfBadReflections=None, iOverSigmaOverall=None, iOverSigmaAtHighestResolution=None, RMSSpotDeviation=None):
         XSData.__init__(self, )
-        if absorbedDoseRate is None:
-            self._absorbedDoseRate = None
-        elif absorbedDoseRate.__class__.__name__ == "XSDataAbsorbedDoseRate":
-            self._absorbedDoseRate = absorbedDoseRate
+        if RMSSpotDeviation is None:
+            self._RMSSpotDeviation = None
+        elif RMSSpotDeviation.__class__.__name__ == "XSDataLength":
+            self._RMSSpotDeviation = RMSSpotDeviation
         else:
-            strMessage = "ERROR! XSDataSample constructor argument 'absorbedDoseRate' is not XSDataAbsorbedDoseRate but %s" % self._absorbedDoseRate.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'RMSSpotDeviation' is not XSDataLength but %s" % self._RMSSpotDeviation.__class__.__name__
             raise BaseException(strMessage)
-        if radiationDamageModelBeta is None:
-            self._radiationDamageModelBeta = None
-        elif radiationDamageModelBeta.__class__.__name__ == "XSDataDouble":
-            self._radiationDamageModelBeta = radiationDamageModelBeta
+        if iOverSigmaAtHighestResolution is None:
+            self._iOverSigmaAtHighestResolution = None
+        elif iOverSigmaAtHighestResolution.__class__.__name__ == "XSDataDouble":
+            self._iOverSigmaAtHighestResolution = iOverSigmaAtHighestResolution
         else:
-            strMessage = "ERROR! XSDataSample constructor argument 'radiationDamageModelBeta' is not XSDataDouble but %s" % self._radiationDamageModelBeta.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'iOverSigmaAtHighestResolution' is not XSDataDouble but %s" % self._iOverSigmaAtHighestResolution.__class__.__name__
             raise BaseException(strMessage)
-        if radiationDamageModelGamma is None:
-            self._radiationDamageModelGamma = None
-        elif radiationDamageModelGamma.__class__.__name__ == "XSDataDouble":
-            self._radiationDamageModelGamma = radiationDamageModelGamma
+        if iOverSigmaOverall is None:
+            self._iOverSigmaOverall = None
+        elif iOverSigmaOverall.__class__.__name__ == "XSDataDouble":
+            self._iOverSigmaOverall = iOverSigmaOverall
         else:
-            strMessage = "ERROR! XSDataSample constructor argument 'radiationDamageModelGamma' is not XSDataDouble but %s" % self._radiationDamageModelGamma.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'iOverSigmaOverall' is not XSDataDouble but %s" % self._iOverSigmaOverall.__class__.__name__
             raise BaseException(strMessage)
-        if shape is None:
-            self._shape = None
-        elif shape.__class__.__name__ == "XSDataDouble":
-            self._shape = shape
+        if numberOfBadReflections is None:
+            self._numberOfBadReflections = None
+        elif numberOfBadReflections.__class__.__name__ == "XSDataInteger":
+            self._numberOfBadReflections = numberOfBadReflections
         else:
-            strMessage = "ERROR! XSDataSample constructor argument 'shape' is not XSDataDouble but %s" % self._shape.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'numberOfBadReflections' is not XSDataInteger but %s" % self._numberOfBadReflections.__class__.__name__
             raise BaseException(strMessage)
-        if size is None:
-            self._size = None
-        elif size.__class__.__name__ == "XSDataSize":
-            self._size = size
+        if numberOfFullyRecordedReflections is None:
+            self._numberOfFullyRecordedReflections = None
+        elif numberOfFullyRecordedReflections.__class__.__name__ == "XSDataInteger":
+            self._numberOfFullyRecordedReflections = numberOfFullyRecordedReflections
         else:
-            strMessage = "ERROR! XSDataSample constructor argument 'size' is not XSDataSize but %s" % self._size.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'numberOfFullyRecordedReflections' is not XSDataInteger but %s" % self._numberOfFullyRecordedReflections.__class__.__name__
             raise BaseException(strMessage)
-        if omegaMin is None:
-            self._omegaMin = None
-        elif omegaMin.__class__.__name__ == "XSDataAngle":
-            self._omegaMin = omegaMin
+        if numberOfNegativeReflections is None:
+            self._numberOfNegativeReflections = None
+        elif numberOfNegativeReflections.__class__.__name__ == "XSDataInteger":
+            self._numberOfNegativeReflections = numberOfNegativeReflections
         else:
-            strMessage = "ERROR! XSDataSample constructor argument 'omegaMin' is not XSDataAngle but %s" % self._omegaMin.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'numberOfNegativeReflections' is not XSDataInteger but %s" % self._numberOfNegativeReflections.__class__.__name__
             raise BaseException(strMessage)
-        if susceptibility is None:
-            self._susceptibility = None
-        elif susceptibility.__class__.__name__ == "XSDataDouble":
-            self._susceptibility = susceptibility
+        if numberOfOverlappedReflections is None:
+            self._numberOfOverlappedReflections = None
+        elif numberOfOverlappedReflections.__class__.__name__ == "XSDataInteger":
+            self._numberOfOverlappedReflections = numberOfOverlappedReflections
         else:
-            strMessage = "ERROR! XSDataSample constructor argument 'susceptibility' is not XSDataDouble but %s" % self._susceptibility.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'numberOfOverlappedReflections' is not XSDataInteger but %s" % self._numberOfOverlappedReflections.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'absorbedDoseRate' attribute
-    def getAbsorbedDoseRate(self): return self._absorbedDoseRate
-    def setAbsorbedDoseRate(self, absorbedDoseRate):
-        if absorbedDoseRate is None:
-            self._absorbedDoseRate = None
-        elif absorbedDoseRate.__class__.__name__ == "XSDataAbsorbedDoseRate":
-            self._absorbedDoseRate = absorbedDoseRate
+        if numberOfPartialReflections is None:
+            self._numberOfPartialReflections = None
+        elif numberOfPartialReflections.__class__.__name__ == "XSDataInteger":
+            self._numberOfPartialReflections = numberOfPartialReflections
         else:
-            strMessage = "ERROR! XSDataSample.setAbsorbedDoseRate argument is not XSDataAbsorbedDoseRate but %s" % absorbedDoseRate.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'numberOfPartialReflections' is not XSDataInteger but %s" % self._numberOfPartialReflections.__class__.__name__
             raise BaseException(strMessage)
-    def delAbsorbedDoseRate(self): self._absorbedDoseRate = None
-    absorbedDoseRate = property(getAbsorbedDoseRate, setAbsorbedDoseRate, delAbsorbedDoseRate, "Property for absorbedDoseRate")
-    # Methods and properties for the 'radiationDamageModelBeta' attribute
-    def getRadiationDamageModelBeta(self): return self._radiationDamageModelBeta
-    def setRadiationDamageModelBeta(self, radiationDamageModelBeta):
-        if radiationDamageModelBeta is None:
-            self._radiationDamageModelBeta = None
-        elif radiationDamageModelBeta.__class__.__name__ == "XSDataDouble":
-            self._radiationDamageModelBeta = radiationDamageModelBeta
+        if numberOfReflectionsGenerated is None:
+            self._numberOfReflectionsGenerated = None
+        elif numberOfReflectionsGenerated.__class__.__name__ == "XSDataInteger":
+            self._numberOfReflectionsGenerated = numberOfReflectionsGenerated
         else:
-            strMessage = "ERROR! XSDataSample.setRadiationDamageModelBeta argument is not XSDataDouble but %s" % radiationDamageModelBeta.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration constructor argument 'numberOfReflectionsGenerated' is not XSDataInteger but %s" % self._numberOfReflectionsGenerated.__class__.__name__
             raise BaseException(strMessage)
-    def delRadiationDamageModelBeta(self): self._radiationDamageModelBeta = None
-    radiationDamageModelBeta = property(getRadiationDamageModelBeta, setRadiationDamageModelBeta, delRadiationDamageModelBeta, "Property for radiationDamageModelBeta")
-    # Methods and properties for the 'radiationDamageModelGamma' attribute
-    def getRadiationDamageModelGamma(self): return self._radiationDamageModelGamma
-    def setRadiationDamageModelGamma(self, radiationDamageModelGamma):
-        if radiationDamageModelGamma is None:
-            self._radiationDamageModelGamma = None
-        elif radiationDamageModelGamma.__class__.__name__ == "XSDataDouble":
-            self._radiationDamageModelGamma = radiationDamageModelGamma
+    # Methods and properties for the 'RMSSpotDeviation' attribute
+    def getRMSSpotDeviation(self): return self._RMSSpotDeviation
+    def setRMSSpotDeviation(self, RMSSpotDeviation):
+        if RMSSpotDeviation is None:
+            self._RMSSpotDeviation = None
+        elif RMSSpotDeviation.__class__.__name__ == "XSDataLength":
+            self._RMSSpotDeviation = RMSSpotDeviation
         else:
-            strMessage = "ERROR! XSDataSample.setRadiationDamageModelGamma argument is not XSDataDouble but %s" % radiationDamageModelGamma.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration.setRMSSpotDeviation argument is not XSDataLength but %s" % RMSSpotDeviation.__class__.__name__
             raise BaseException(strMessage)
-    def delRadiationDamageModelGamma(self): self._radiationDamageModelGamma = None
-    radiationDamageModelGamma = property(getRadiationDamageModelGamma, setRadiationDamageModelGamma, delRadiationDamageModelGamma, "Property for radiationDamageModelGamma")
-    # Methods and properties for the 'shape' attribute
-    def getShape(self): return self._shape
-    def setShape(self, shape):
-        if shape is None:
-            self._shape = None
-        elif shape.__class__.__name__ == "XSDataDouble":
-            self._shape = shape
+    def delRMSSpotDeviation(self): self._RMSSpotDeviation = None
+    RMSSpotDeviation = property(getRMSSpotDeviation, setRMSSpotDeviation, delRMSSpotDeviation, "Property for RMSSpotDeviation")
+    # Methods and properties for the 'iOverSigmaAtHighestResolution' attribute
+    def getIOverSigmaAtHighestResolution(self): return self._iOverSigmaAtHighestResolution
+    def setIOverSigmaAtHighestResolution(self, iOverSigmaAtHighestResolution):
+        if iOverSigmaAtHighestResolution is None:
+            self._iOverSigmaAtHighestResolution = None
+        elif iOverSigmaAtHighestResolution.__class__.__name__ == "XSDataDouble":
+            self._iOverSigmaAtHighestResolution = iOverSigmaAtHighestResolution
         else:
-            strMessage = "ERROR! XSDataSample.setShape argument is not XSDataDouble but %s" % shape.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration.setIOverSigmaAtHighestResolution argument is not XSDataDouble but %s" % iOverSigmaAtHighestResolution.__class__.__name__
             raise BaseException(strMessage)
-    def delShape(self): self._shape = None
-    shape = property(getShape, setShape, delShape, "Property for shape")
-    # Methods and properties for the 'size' attribute
-    def getSize(self): return self._size
-    def setSize(self, size):
-        if size is None:
-            self._size = None
-        elif size.__class__.__name__ == "XSDataSize":
-            self._size = size
+    def delIOverSigmaAtHighestResolution(self): self._iOverSigmaAtHighestResolution = None
+    iOverSigmaAtHighestResolution = property(getIOverSigmaAtHighestResolution, setIOverSigmaAtHighestResolution, delIOverSigmaAtHighestResolution, "Property for iOverSigmaAtHighestResolution")
+    # Methods and properties for the 'iOverSigmaOverall' attribute
+    def getIOverSigmaOverall(self): return self._iOverSigmaOverall
+    def setIOverSigmaOverall(self, iOverSigmaOverall):
+        if iOverSigmaOverall is None:
+            self._iOverSigmaOverall = None
+        elif iOverSigmaOverall.__class__.__name__ == "XSDataDouble":
+            self._iOverSigmaOverall = iOverSigmaOverall
         else:
-            strMessage = "ERROR! XSDataSample.setSize argument is not XSDataSize but %s" % size.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration.setIOverSigmaOverall argument is not XSDataDouble but %s" % iOverSigmaOverall.__class__.__name__
             raise BaseException(strMessage)
-    def delSize(self): self._size = None
-    size = property(getSize, setSize, delSize, "Property for size")
-    # Methods and properties for the 'omegaMin' attribute
-    def getOmegaMin(self): return self._omegaMin
-    def setOmegaMin(self, omegaMin):
-        if omegaMin is None:
-            self._omegaMin = None
-        elif omegaMin.__class__.__name__ == "XSDataAngle":
-            self._omegaMin = omegaMin
+    def delIOverSigmaOverall(self): self._iOverSigmaOverall = None
+    iOverSigmaOverall = property(getIOverSigmaOverall, setIOverSigmaOverall, delIOverSigmaOverall, "Property for iOverSigmaOverall")
+    # Methods and properties for the 'numberOfBadReflections' attribute
+    def getNumberOfBadReflections(self): return self._numberOfBadReflections
+    def setNumberOfBadReflections(self, numberOfBadReflections):
+        if numberOfBadReflections is None:
+            self._numberOfBadReflections = None
+        elif numberOfBadReflections.__class__.__name__ == "XSDataInteger":
+            self._numberOfBadReflections = numberOfBadReflections
         else:
-            strMessage = "ERROR! XSDataSample.setOmegaMin argument is not XSDataAngle but %s" % omegaMin.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration.setNumberOfBadReflections argument is not XSDataInteger but %s" % numberOfBadReflections.__class__.__name__
             raise BaseException(strMessage)
-    def delOmegaMin(self): self._omegaMin = None
-    omegaMin = property(getOmegaMin, setOmegaMin, delOmegaMin, "Property for omegaMin")
-    # Methods and properties for the 'susceptibility' attribute
-    def getSusceptibility(self): return self._susceptibility
-    def setSusceptibility(self, susceptibility):
-        if susceptibility is None:
-            self._susceptibility = None
-        elif susceptibility.__class__.__name__ == "XSDataDouble":
-            self._susceptibility = susceptibility
+    def delNumberOfBadReflections(self): self._numberOfBadReflections = None
+    numberOfBadReflections = property(getNumberOfBadReflections, setNumberOfBadReflections, delNumberOfBadReflections, "Property for numberOfBadReflections")
+    # Methods and properties for the 'numberOfFullyRecordedReflections' attribute
+    def getNumberOfFullyRecordedReflections(self): return self._numberOfFullyRecordedReflections
+    def setNumberOfFullyRecordedReflections(self, numberOfFullyRecordedReflections):
+        if numberOfFullyRecordedReflections is None:
+            self._numberOfFullyRecordedReflections = None
+        elif numberOfFullyRecordedReflections.__class__.__name__ == "XSDataInteger":
+            self._numberOfFullyRecordedReflections = numberOfFullyRecordedReflections
         else:
-            strMessage = "ERROR! XSDataSample.setSusceptibility argument is not XSDataDouble but %s" % susceptibility.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegration.setNumberOfFullyRecordedReflections argument is not XSDataInteger but %s" % numberOfFullyRecordedReflections.__class__.__name__
             raise BaseException(strMessage)
-    def delSusceptibility(self): self._susceptibility = None
-    susceptibility = property(getSusceptibility, setSusceptibility, delSusceptibility, "Property for susceptibility")
-    def export(self, outfile, level, name_='XSDataSample'):
+    def delNumberOfFullyRecordedReflections(self): self._numberOfFullyRecordedReflections = None
+    numberOfFullyRecordedReflections = property(getNumberOfFullyRecordedReflections, setNumberOfFullyRecordedReflections, delNumberOfFullyRecordedReflections, "Property for numberOfFullyRecordedReflections")
+    # Methods and properties for the 'numberOfNegativeReflections' attribute
+    def getNumberOfNegativeReflections(self): return self._numberOfNegativeReflections
+    def setNumberOfNegativeReflections(self, numberOfNegativeReflections):
+        if numberOfNegativeReflections is None:
+            self._numberOfNegativeReflections = None
+        elif numberOfNegativeReflections.__class__.__name__ == "XSDataInteger":
+            self._numberOfNegativeReflections = numberOfNegativeReflections
+        else:
+            strMessage = "ERROR! XSDataStatisticsIntegration.setNumberOfNegativeReflections argument is not XSDataInteger but %s" % numberOfNegativeReflections.__class__.__name__
+            raise BaseException(strMessage)
+    def delNumberOfNegativeReflections(self): self._numberOfNegativeReflections = None
+    numberOfNegativeReflections = property(getNumberOfNegativeReflections, setNumberOfNegativeReflections, delNumberOfNegativeReflections, "Property for numberOfNegativeReflections")
+    # Methods and properties for the 'numberOfOverlappedReflections' attribute
+    def getNumberOfOverlappedReflections(self): return self._numberOfOverlappedReflections
+    def setNumberOfOverlappedReflections(self, numberOfOverlappedReflections):
+        if numberOfOverlappedReflections is None:
+            self._numberOfOverlappedReflections = None
+        elif numberOfOverlappedReflections.__class__.__name__ == "XSDataInteger":
+            self._numberOfOverlappedReflections = numberOfOverlappedReflections
+        else:
+            strMessage = "ERROR! XSDataStatisticsIntegration.setNumberOfOverlappedReflections argument is not XSDataInteger but %s" % numberOfOverlappedReflections.__class__.__name__
+            raise BaseException(strMessage)
+    def delNumberOfOverlappedReflections(self): self._numberOfOverlappedReflections = None
+    numberOfOverlappedReflections = property(getNumberOfOverlappedReflections, setNumberOfOverlappedReflections, delNumberOfOverlappedReflections, "Property for numberOfOverlappedReflections")
+    # Methods and properties for the 'numberOfPartialReflections' attribute
+    def getNumberOfPartialReflections(self): return self._numberOfPartialReflections
+    def setNumberOfPartialReflections(self, numberOfPartialReflections):
+        if numberOfPartialReflections is None:
+            self._numberOfPartialReflections = None
+        elif numberOfPartialReflections.__class__.__name__ == "XSDataInteger":
+            self._numberOfPartialReflections = numberOfPartialReflections
+        else:
+            strMessage = "ERROR! XSDataStatisticsIntegration.setNumberOfPartialReflections argument is not XSDataInteger but %s" % numberOfPartialReflections.__class__.__name__
+            raise BaseException(strMessage)
+    def delNumberOfPartialReflections(self): self._numberOfPartialReflections = None
+    numberOfPartialReflections = property(getNumberOfPartialReflections, setNumberOfPartialReflections, delNumberOfPartialReflections, "Property for numberOfPartialReflections")
+    # Methods and properties for the 'numberOfReflectionsGenerated' attribute
+    def getNumberOfReflectionsGenerated(self): return self._numberOfReflectionsGenerated
+    def setNumberOfReflectionsGenerated(self, numberOfReflectionsGenerated):
+        if numberOfReflectionsGenerated is None:
+            self._numberOfReflectionsGenerated = None
+        elif numberOfReflectionsGenerated.__class__.__name__ == "XSDataInteger":
+            self._numberOfReflectionsGenerated = numberOfReflectionsGenerated
+        else:
+            strMessage = "ERROR! XSDataStatisticsIntegration.setNumberOfReflectionsGenerated argument is not XSDataInteger but %s" % numberOfReflectionsGenerated.__class__.__name__
+            raise BaseException(strMessage)
+    def delNumberOfReflectionsGenerated(self): self._numberOfReflectionsGenerated = None
+    numberOfReflectionsGenerated = property(getNumberOfReflectionsGenerated, setNumberOfReflectionsGenerated, delNumberOfReflectionsGenerated, "Property for numberOfReflectionsGenerated")
+    def export(self, outfile, level, name_='XSDataStatisticsIntegration'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
         self.exportChildren(outfile, level + 1, name_)
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataSample'):
+    def exportChildren(self, outfile, level, name_='XSDataStatisticsIntegration'):
         XSData.exportChildren(self, outfile, level, name_)
-        if self._absorbedDoseRate is not None:
-            self.absorbedDoseRate.export(outfile, level, name_='absorbedDoseRate')
-        if self._radiationDamageModelBeta is not None:
-            self.radiationDamageModelBeta.export(outfile, level, name_='radiationDamageModelBeta')
-        if self._radiationDamageModelGamma is not None:
-            self.radiationDamageModelGamma.export(outfile, level, name_='radiationDamageModelGamma')
-        if self._shape is not None:
-            self.shape.export(outfile, level, name_='shape')
-        if self._size is not None:
-            self.size.export(outfile, level, name_='size')
-        if self._omegaMin is not None:
-            self.omegaMin.export(outfile, level, name_='omegaMin')
-        if self._susceptibility is not None:
-            self.susceptibility.export(outfile, level, name_='susceptibility')
+        if self._RMSSpotDeviation is not None:
+            self.RMSSpotDeviation.export(outfile, level, name_='RMSSpotDeviation')
+        else:
+            warnEmptyAttribute("RMSSpotDeviation", "XSDataLength")
+        if self._iOverSigmaAtHighestResolution is not None:
+            self.iOverSigmaAtHighestResolution.export(outfile, level, name_='iOverSigmaAtHighestResolution')
+        else:
+            warnEmptyAttribute("iOverSigmaAtHighestResolution", "XSDataDouble")
+        if self._iOverSigmaOverall is not None:
+            self.iOverSigmaOverall.export(outfile, level, name_='iOverSigmaOverall')
+        else:
+            warnEmptyAttribute("iOverSigmaOverall", "XSDataDouble")
+        if self._numberOfBadReflections is not None:
+            self.numberOfBadReflections.export(outfile, level, name_='numberOfBadReflections')
+        else:
+            warnEmptyAttribute("numberOfBadReflections", "XSDataInteger")
+        if self._numberOfFullyRecordedReflections is not None:
+            self.numberOfFullyRecordedReflections.export(outfile, level, name_='numberOfFullyRecordedReflections')
+        else:
+            warnEmptyAttribute("numberOfFullyRecordedReflections", "XSDataInteger")
+        if self._numberOfNegativeReflections is not None:
+            self.numberOfNegativeReflections.export(outfile, level, name_='numberOfNegativeReflections')
+        else:
+            warnEmptyAttribute("numberOfNegativeReflections", "XSDataInteger")
+        if self._numberOfOverlappedReflections is not None:
+            self.numberOfOverlappedReflections.export(outfile, level, name_='numberOfOverlappedReflections')
+        else:
+            warnEmptyAttribute("numberOfOverlappedReflections", "XSDataInteger")
+        if self._numberOfPartialReflections is not None:
+            self.numberOfPartialReflections.export(outfile, level, name_='numberOfPartialReflections')
+        else:
+            warnEmptyAttribute("numberOfPartialReflections", "XSDataInteger")
+        if self._numberOfReflectionsGenerated is not None:
+            self.numberOfReflectionsGenerated.export(outfile, level, name_='numberOfReflectionsGenerated')
+        else:
+            warnEmptyAttribute("numberOfReflectionsGenerated", "XSDataInteger")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'absorbedDoseRate':
-            obj_ = XSDataAbsorbedDoseRate()
+            nodeName_ == 'RMSSpotDeviation':
+            obj_ = XSDataLength()
             obj_.build(child_)
-            self.setAbsorbedDoseRate(obj_)
+            self.setRMSSpotDeviation(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'radiationDamageModelBeta':
+            nodeName_ == 'iOverSigmaAtHighestResolution':
             obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setRadiationDamageModelBeta(obj_)
+            self.setIOverSigmaAtHighestResolution(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'radiationDamageModelGamma':
+            nodeName_ == 'iOverSigmaOverall':
             obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setRadiationDamageModelGamma(obj_)
+            self.setIOverSigmaOverall(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'shape':
-            obj_ = XSDataDouble()
+            nodeName_ == 'numberOfBadReflections':
+            obj_ = XSDataInteger()
             obj_.build(child_)
-            self.setShape(obj_)
+            self.setNumberOfBadReflections(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'size':
-            obj_ = XSDataSize()
+            nodeName_ == 'numberOfFullyRecordedReflections':
+            obj_ = XSDataInteger()
             obj_.build(child_)
-            self.setSize(obj_)
+            self.setNumberOfFullyRecordedReflections(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'omegaMin':
-            obj_ = XSDataAngle()
+            nodeName_ == 'numberOfNegativeReflections':
+            obj_ = XSDataInteger()
             obj_.build(child_)
-            self.setOmegaMin(obj_)
+            self.setNumberOfNegativeReflections(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'susceptibility':
-            obj_ = XSDataDouble()
+            nodeName_ == 'numberOfOverlappedReflections':
+            obj_ = XSDataInteger()
             obj_.build(child_)
-            self.setSusceptibility(obj_)
+            self.setNumberOfOverlappedReflections(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'numberOfPartialReflections':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setNumberOfPartialReflections(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'numberOfReflectionsGenerated':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setNumberOfReflectionsGenerated(obj_)
         XSData.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()
         oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataSample" )
+        self.export( oStreamString, 0, name_="XSDataStatisticsIntegration" )
         oStringXML = oStreamString.getvalue()
         oStreamString.close()
         return oStringXML
@@ -7093,24 +7394,24 @@ class XSDataSample(XSData):
     def exportToFile( self, _outfileName ):
         outfile = open( _outfileName, "w" )
         outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataSample' )
+        self.export( outfile, 0, name_='XSDataStatisticsIntegration' )
         outfile.close()
     #Deprecated method, replaced by exportToFile
     def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataSample is deprecated, please use instead exportToFile!")
+        print("WARNING: Method outputFile in class XSDataStatisticsIntegration is deprecated, please use instead exportToFile!")
         self.exportToFile(_outfileName)
     #Method for making a copy in a new instance
     def copy( self ):
-        return XSDataSample.parseString(self.marshal())
+        return XSDataStatisticsIntegration.parseString(self.marshal())
     #Static method for parsing a string
     def parseString( _inString ):
         doc = minidom.parseString(_inString)
         rootNode = doc.documentElement
-        rootObj = XSDataSample()
+        rootObj = XSDataStatisticsIntegration()
         rootObj.build(rootNode)
         # Check that all minOccurs are obeyed by marshalling the created object
         oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataSample" )
+        rootObj.export( oStreamString, 0, name_="XSDataStatisticsIntegration" )
         oStreamString.close()
         return rootObj
     parseString = staticmethod( parseString )
@@ -7118,203 +7419,91 @@ class XSDataSample(XSData):
     def parseFile( _inFilePath ):
         doc = minidom.parse(_inFilePath)
         rootNode = doc.documentElement
-        rootObj = XSDataSample()
+        rootObj = XSDataStatisticsIntegration()
         rootObj.build(rootNode)
         return rootObj
     parseFile = staticmethod( parseFile )
-# end class XSDataSample
+# end class XSDataStatisticsIntegration
 
 
-class XSDataStatisticsIndexing(XSData):
-    def __init__(self, spotsUsed=None, spotsTotal=None, spotDeviationPositional=None, spotDeviationAngular=None, beamPositionShiftY=None, beamPositionShiftX=None):
+class XSDataStatisticsIntegrationPerReflectionType(XSData):
+    def __init__(self, partials=None, fullyRecorded=None):
         XSData.__init__(self, )
-        if beamPositionShiftX is None:
-            self._beamPositionShiftX = None
-        elif beamPositionShiftX.__class__.__name__ == "XSDataLength":
-            self._beamPositionShiftX = beamPositionShiftX
+        if fullyRecorded is None:
+            self._fullyRecorded = None
+        elif fullyRecorded.__class__.__name__ == "XSDataStatisticsIntegrationAverageAndNumberOfReflections":
+            self._fullyRecorded = fullyRecorded
         else:
-            strMessage = "ERROR! XSDataStatisticsIndexing constructor argument 'beamPositionShiftX' is not XSDataLength but %s" % self._beamPositionShiftX.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegrationPerReflectionType constructor argument 'fullyRecorded' is not XSDataStatisticsIntegrationAverageAndNumberOfReflections but %s" % self._fullyRecorded.__class__.__name__
             raise BaseException(strMessage)
-        if beamPositionShiftY is None:
-            self._beamPositionShiftY = None
-        elif beamPositionShiftY.__class__.__name__ == "XSDataLength":
-            self._beamPositionShiftY = beamPositionShiftY
+        if partials is None:
+            self._partials = None
+        elif partials.__class__.__name__ == "XSDataStatisticsIntegrationAverageAndNumberOfReflections":
+            self._partials = partials
         else:
-            strMessage = "ERROR! XSDataStatisticsIndexing constructor argument 'beamPositionShiftY' is not XSDataLength but %s" % self._beamPositionShiftY.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegrationPerReflectionType constructor argument 'partials' is not XSDataStatisticsIntegrationAverageAndNumberOfReflections but %s" % self._partials.__class__.__name__
             raise BaseException(strMessage)
-        if spotDeviationAngular is None:
-            self._spotDeviationAngular = None
-        elif spotDeviationAngular.__class__.__name__ == "XSDataAngle":
-            self._spotDeviationAngular = spotDeviationAngular
+    # Methods and properties for the 'fullyRecorded' attribute
+    def getFullyRecorded(self): return self._fullyRecorded
+    def setFullyRecorded(self, fullyRecorded):
+        if fullyRecorded is None:
+            self._fullyRecorded = None
+        elif fullyRecorded.__class__.__name__ == "XSDataStatisticsIntegrationAverageAndNumberOfReflections":
+            self._fullyRecorded = fullyRecorded
         else:
-            strMessage = "ERROR! XSDataStatisticsIndexing constructor argument 'spotDeviationAngular' is not XSDataAngle but %s" % self._spotDeviationAngular.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegrationPerReflectionType.setFullyRecorded argument is not XSDataStatisticsIntegrationAverageAndNumberOfReflections but %s" % fullyRecorded.__class__.__name__
             raise BaseException(strMessage)
-        if spotDeviationPositional is None:
-            self._spotDeviationPositional = None
-        elif spotDeviationPositional.__class__.__name__ == "XSDataLength":
-            self._spotDeviationPositional = spotDeviationPositional
+    def delFullyRecorded(self): self._fullyRecorded = None
+    fullyRecorded = property(getFullyRecorded, setFullyRecorded, delFullyRecorded, "Property for fullyRecorded")
+    # Methods and properties for the 'partials' attribute
+    def getPartials(self): return self._partials
+    def setPartials(self, partials):
+        if partials is None:
+            self._partials = None
+        elif partials.__class__.__name__ == "XSDataStatisticsIntegrationAverageAndNumberOfReflections":
+            self._partials = partials
         else:
-            strMessage = "ERROR! XSDataStatisticsIndexing constructor argument 'spotDeviationPositional' is not XSDataLength but %s" % self._spotDeviationPositional.__class__.__name__
+            strMessage = "ERROR! XSDataStatisticsIntegrationPerReflectionType.setPartials argument is not XSDataStatisticsIntegrationAverageAndNumberOfReflections but %s" % partials.__class__.__name__
             raise BaseException(strMessage)
-        if spotsTotal is None:
-            self._spotsTotal = None
-        elif spotsTotal.__class__.__name__ == "XSDataInteger":
-            self._spotsTotal = spotsTotal
-        else:
-            strMessage = "ERROR! XSDataStatisticsIndexing constructor argument 'spotsTotal' is not XSDataInteger but %s" % self._spotsTotal.__class__.__name__
-            raise BaseException(strMessage)
-        if spotsUsed is None:
-            self._spotsUsed = None
-        elif spotsUsed.__class__.__name__ == "XSDataInteger":
-            self._spotsUsed = spotsUsed
-        else:
-            strMessage = "ERROR! XSDataStatisticsIndexing constructor argument 'spotsUsed' is not XSDataInteger but %s" % self._spotsUsed.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'beamPositionShiftX' attribute
-    def getBeamPositionShiftX(self): return self._beamPositionShiftX
-    def setBeamPositionShiftX(self, beamPositionShiftX):
-        if beamPositionShiftX is None:
-            self._beamPositionShiftX = None
-        elif beamPositionShiftX.__class__.__name__ == "XSDataLength":
-            self._beamPositionShiftX = beamPositionShiftX
-        else:
-            strMessage = "ERROR! XSDataStatisticsIndexing.setBeamPositionShiftX argument is not XSDataLength but %s" % beamPositionShiftX.__class__.__name__
-            raise BaseException(strMessage)
-    def delBeamPositionShiftX(self): self._beamPositionShiftX = None
-    beamPositionShiftX = property(getBeamPositionShiftX, setBeamPositionShiftX, delBeamPositionShiftX, "Property for beamPositionShiftX")
-    # Methods and properties for the 'beamPositionShiftY' attribute
-    def getBeamPositionShiftY(self): return self._beamPositionShiftY
-    def setBeamPositionShiftY(self, beamPositionShiftY):
-        if beamPositionShiftY is None:
-            self._beamPositionShiftY = None
-        elif beamPositionShiftY.__class__.__name__ == "XSDataLength":
-            self._beamPositionShiftY = beamPositionShiftY
-        else:
-            strMessage = "ERROR! XSDataStatisticsIndexing.setBeamPositionShiftY argument is not XSDataLength but %s" % beamPositionShiftY.__class__.__name__
-            raise BaseException(strMessage)
-    def delBeamPositionShiftY(self): self._beamPositionShiftY = None
-    beamPositionShiftY = property(getBeamPositionShiftY, setBeamPositionShiftY, delBeamPositionShiftY, "Property for beamPositionShiftY")
-    # Methods and properties for the 'spotDeviationAngular' attribute
-    def getSpotDeviationAngular(self): return self._spotDeviationAngular
-    def setSpotDeviationAngular(self, spotDeviationAngular):
-        if spotDeviationAngular is None:
-            self._spotDeviationAngular = None
-        elif spotDeviationAngular.__class__.__name__ == "XSDataAngle":
-            self._spotDeviationAngular = spotDeviationAngular
-        else:
-            strMessage = "ERROR! XSDataStatisticsIndexing.setSpotDeviationAngular argument is not XSDataAngle but %s" % spotDeviationAngular.__class__.__name__
-            raise BaseException(strMessage)
-    def delSpotDeviationAngular(self): self._spotDeviationAngular = None
-    spotDeviationAngular = property(getSpotDeviationAngular, setSpotDeviationAngular, delSpotDeviationAngular, "Property for spotDeviationAngular")
-    # Methods and properties for the 'spotDeviationPositional' attribute
-    def getSpotDeviationPositional(self): return self._spotDeviationPositional
-    def setSpotDeviationPositional(self, spotDeviationPositional):
-        if spotDeviationPositional is None:
-            self._spotDeviationPositional = None
-        elif spotDeviationPositional.__class__.__name__ == "XSDataLength":
-            self._spotDeviationPositional = spotDeviationPositional
-        else:
-            strMessage = "ERROR! XSDataStatisticsIndexing.setSpotDeviationPositional argument is not XSDataLength but %s" % spotDeviationPositional.__class__.__name__
-            raise BaseException(strMessage)
-    def delSpotDeviationPositional(self): self._spotDeviationPositional = None
-    spotDeviationPositional = property(getSpotDeviationPositional, setSpotDeviationPositional, delSpotDeviationPositional, "Property for spotDeviationPositional")
-    # Methods and properties for the 'spotsTotal' attribute
-    def getSpotsTotal(self): return self._spotsTotal
-    def setSpotsTotal(self, spotsTotal):
-        if spotsTotal is None:
-            self._spotsTotal = None
-        elif spotsTotal.__class__.__name__ == "XSDataInteger":
-            self._spotsTotal = spotsTotal
-        else:
-            strMessage = "ERROR! XSDataStatisticsIndexing.setSpotsTotal argument is not XSDataInteger but %s" % spotsTotal.__class__.__name__
-            raise BaseException(strMessage)
-    def delSpotsTotal(self): self._spotsTotal = None
-    spotsTotal = property(getSpotsTotal, setSpotsTotal, delSpotsTotal, "Property for spotsTotal")
-    # Methods and properties for the 'spotsUsed' attribute
-    def getSpotsUsed(self): return self._spotsUsed
-    def setSpotsUsed(self, spotsUsed):
-        if spotsUsed is None:
-            self._spotsUsed = None
-        elif spotsUsed.__class__.__name__ == "XSDataInteger":
-            self._spotsUsed = spotsUsed
-        else:
-            strMessage = "ERROR! XSDataStatisticsIndexing.setSpotsUsed argument is not XSDataInteger but %s" % spotsUsed.__class__.__name__
-            raise BaseException(strMessage)
-    def delSpotsUsed(self): self._spotsUsed = None
-    spotsUsed = property(getSpotsUsed, setSpotsUsed, delSpotsUsed, "Property for spotsUsed")
-    def export(self, outfile, level, name_='XSDataStatisticsIndexing'):
+    def delPartials(self): self._partials = None
+    partials = property(getPartials, setPartials, delPartials, "Property for partials")
+    def export(self, outfile, level, name_='XSDataStatisticsIntegrationPerReflectionType'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
         self.exportChildren(outfile, level + 1, name_)
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataStatisticsIndexing'):
+    def exportChildren(self, outfile, level, name_='XSDataStatisticsIntegrationPerReflectionType'):
         XSData.exportChildren(self, outfile, level, name_)
-        if self._beamPositionShiftX is not None:
-            self.beamPositionShiftX.export(outfile, level, name_='beamPositionShiftX')
+        if self._fullyRecorded is not None:
+            self.fullyRecorded.export(outfile, level, name_='fullyRecorded')
         else:
-            warnEmptyAttribute("beamPositionShiftX", "XSDataLength")
-        if self._beamPositionShiftY is not None:
-            self.beamPositionShiftY.export(outfile, level, name_='beamPositionShiftY')
+            warnEmptyAttribute("fullyRecorded", "XSDataStatisticsIntegrationAverageAndNumberOfReflections")
+        if self._partials is not None:
+            self.partials.export(outfile, level, name_='partials')
         else:
-            warnEmptyAttribute("beamPositionShiftY", "XSDataLength")
-        if self._spotDeviationAngular is not None:
-            self.spotDeviationAngular.export(outfile, level, name_='spotDeviationAngular')
-        else:
-            warnEmptyAttribute("spotDeviationAngular", "XSDataAngle")
-        if self._spotDeviationPositional is not None:
-            self.spotDeviationPositional.export(outfile, level, name_='spotDeviationPositional')
-        else:
-            warnEmptyAttribute("spotDeviationPositional", "XSDataLength")
-        if self._spotsTotal is not None:
-            self.spotsTotal.export(outfile, level, name_='spotsTotal')
-        else:
-            warnEmptyAttribute("spotsTotal", "XSDataInteger")
-        if self._spotsUsed is not None:
-            self.spotsUsed.export(outfile, level, name_='spotsUsed')
-        else:
-            warnEmptyAttribute("spotsUsed", "XSDataInteger")
+            warnEmptyAttribute("partials", "XSDataStatisticsIntegrationAverageAndNumberOfReflections")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'beamPositionShiftX':
-            obj_ = XSDataLength()
+            nodeName_ == 'fullyRecorded':
+            obj_ = XSDataStatisticsIntegrationAverageAndNumberOfReflections()
             obj_.build(child_)
-            self.setBeamPositionShiftX(obj_)
+            self.setFullyRecorded(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'beamPositionShiftY':
-            obj_ = XSDataLength()
+            nodeName_ == 'partials':
+            obj_ = XSDataStatisticsIntegrationAverageAndNumberOfReflections()
             obj_.build(child_)
-            self.setBeamPositionShiftY(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'spotDeviationAngular':
-            obj_ = XSDataAngle()
-            obj_.build(child_)
-            self.setSpotDeviationAngular(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'spotDeviationPositional':
-            obj_ = XSDataLength()
-            obj_.build(child_)
-            self.setSpotDeviationPositional(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'spotsTotal':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setSpotsTotal(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'spotsUsed':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setSpotsUsed(obj_)
+            self.setPartials(obj_)
         XSData.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()
         oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataStatisticsIndexing" )
+        self.export( oStreamString, 0, name_="XSDataStatisticsIntegrationPerReflectionType" )
         oStringXML = oStreamString.getvalue()
         oStreamString.close()
         return oStringXML
@@ -7322,24 +7511,24 @@ class XSDataStatisticsIndexing(XSData):
     def exportToFile( self, _outfileName ):
         outfile = open( _outfileName, "w" )
         outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataStatisticsIndexing' )
+        self.export( outfile, 0, name_='XSDataStatisticsIntegrationPerReflectionType' )
         outfile.close()
     #Deprecated method, replaced by exportToFile
     def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataStatisticsIndexing is deprecated, please use instead exportToFile!")
+        print("WARNING: Method outputFile in class XSDataStatisticsIntegrationPerReflectionType is deprecated, please use instead exportToFile!")
         self.exportToFile(_outfileName)
     #Method for making a copy in a new instance
     def copy( self ):
-        return XSDataStatisticsIndexing.parseString(self.marshal())
+        return XSDataStatisticsIntegrationPerReflectionType.parseString(self.marshal())
     #Static method for parsing a string
     def parseString( _inString ):
         doc = minidom.parseString(_inString)
         rootNode = doc.documentElement
-        rootObj = XSDataStatisticsIndexing()
+        rootObj = XSDataStatisticsIntegrationPerReflectionType()
         rootObj.build(rootNode)
         # Check that all minOccurs are obeyed by marshalling the created object
         oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataStatisticsIndexing" )
+        rootObj.export( oStreamString, 0, name_="XSDataStatisticsIntegrationPerReflectionType" )
         oStreamString.close()
         return rootObj
     parseString = staticmethod( parseString )
@@ -7347,11 +7536,11 @@ class XSDataStatisticsIndexing(XSData):
     def parseFile( _inFilePath ):
         doc = minidom.parse(_inFilePath)
         rootNode = doc.documentElement
-        rootObj = XSDataStatisticsIndexing()
+        rootObj = XSDataStatisticsIntegrationPerReflectionType()
         rootObj.build(rootNode)
         return rootObj
     parseFile = staticmethod( parseFile )
-# end class XSDataStatisticsIndexing
+# end class XSDataStatisticsIntegrationPerReflectionType
 
 
 class XSDataStructure(XSData):
@@ -7727,169 +7916,6 @@ The subWedgeNumber is an optional number for relating different subwedges, espec
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataSubWedge
-
-
-class XSDataCollection(XSData):
-    """The data collection carried out or to be carried out with a particular sample with specific user inputs defined by the diffraction plan."""
-    def __init__(self, subWedge=None, sample=None, diffractionPlan=None):
-        XSData.__init__(self, )
-        if diffractionPlan is None:
-            self._diffractionPlan = None
-        elif diffractionPlan.__class__.__name__ == "XSDataDiffractionPlan":
-            self._diffractionPlan = diffractionPlan
-        else:
-            strMessage = "ERROR! XSDataCollection constructor argument 'diffractionPlan' is not XSDataDiffractionPlan but %s" % self._diffractionPlan.__class__.__name__
-            raise BaseException(strMessage)
-        if sample is None:
-            self._sample = None
-        elif sample.__class__.__name__ == "XSDataSampleCrystalMM":
-            self._sample = sample
-        else:
-            strMessage = "ERROR! XSDataCollection constructor argument 'sample' is not XSDataSampleCrystalMM but %s" % self._sample.__class__.__name__
-            raise BaseException(strMessage)
-        if subWedge is None:
-            self._subWedge = []
-        elif subWedge.__class__.__name__ == "list":
-            self._subWedge = subWedge
-        else:
-            strMessage = "ERROR! XSDataCollection constructor argument 'subWedge' is not list but %s" % self._subWedge.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'diffractionPlan' attribute
-    def getDiffractionPlan(self): return self._diffractionPlan
-    def setDiffractionPlan(self, diffractionPlan):
-        if diffractionPlan is None:
-            self._diffractionPlan = None
-        elif diffractionPlan.__class__.__name__ == "XSDataDiffractionPlan":
-            self._diffractionPlan = diffractionPlan
-        else:
-            strMessage = "ERROR! XSDataCollection.setDiffractionPlan argument is not XSDataDiffractionPlan but %s" % diffractionPlan.__class__.__name__
-            raise BaseException(strMessage)
-    def delDiffractionPlan(self): self._diffractionPlan = None
-    diffractionPlan = property(getDiffractionPlan, setDiffractionPlan, delDiffractionPlan, "Property for diffractionPlan")
-    # Methods and properties for the 'sample' attribute
-    def getSample(self): return self._sample
-    def setSample(self, sample):
-        if sample is None:
-            self._sample = None
-        elif sample.__class__.__name__ == "XSDataSampleCrystalMM":
-            self._sample = sample
-        else:
-            strMessage = "ERROR! XSDataCollection.setSample argument is not XSDataSampleCrystalMM but %s" % sample.__class__.__name__
-            raise BaseException(strMessage)
-    def delSample(self): self._sample = None
-    sample = property(getSample, setSample, delSample, "Property for sample")
-    # Methods and properties for the 'subWedge' attribute
-    def getSubWedge(self): return self._subWedge
-    def setSubWedge(self, subWedge):
-        if subWedge is None:
-            self._subWedge = []
-        elif subWedge.__class__.__name__ == "list":
-            self._subWedge = subWedge
-        else:
-            strMessage = "ERROR! XSDataCollection.setSubWedge argument is not list but %s" % subWedge.__class__.__name__
-            raise BaseException(strMessage)
-    def delSubWedge(self): self._subWedge = None
-    subWedge = property(getSubWedge, setSubWedge, delSubWedge, "Property for subWedge")
-    def addSubWedge(self, value):
-        if value is None:
-            strMessage = "ERROR! XSDataCollection.addSubWedge argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataSubWedge":
-            self._subWedge.append(value)
-        else:
-            strMessage = "ERROR! XSDataCollection.addSubWedge argument is not XSDataSubWedge but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertSubWedge(self, index, value):
-        if index is None:
-            strMessage = "ERROR! XSDataCollection.insertSubWedge argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! XSDataCollection.insertSubWedge argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataSubWedge":
-            self._subWedge[index] = value
-        else:
-            strMessage = "ERROR! XSDataCollection.addSubWedge argument is not XSDataSubWedge but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def export(self, outfile, level, name_='XSDataCollection'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataCollection'):
-        XSData.exportChildren(self, outfile, level, name_)
-        if self._diffractionPlan is not None:
-            self.diffractionPlan.export(outfile, level, name_='diffractionPlan')
-        if self._sample is not None:
-            self.sample.export(outfile, level, name_='sample')
-        for subWedge_ in self.getSubWedge():
-            subWedge_.export(outfile, level, name_='subWedge')
-        if self.getSubWedge() == []:
-            warnEmptyAttribute("subWedge", "XSDataSubWedge")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'diffractionPlan':
-            obj_ = XSDataDiffractionPlan()
-            obj_.build(child_)
-            self.setDiffractionPlan(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'sample':
-            obj_ = XSDataSampleCrystalMM()
-            obj_.build(child_)
-            self.setSample(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'subWedge':
-            obj_ = XSDataSubWedge()
-            obj_.build(child_)
-            self.subWedge.append(obj_)
-        XSData.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataCollection" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataCollection' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataCollection is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataCollection.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataCollection()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataCollection" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataCollection()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataCollection
 
 
 class XSDataDozorInput(XSDataInput):
@@ -8339,177 +8365,6 @@ class XSDataDozorInput(XSDataInput):
 # end class XSDataDozorInput
 
 
-class XSDataIndexingSolutionSelected(XSDataIndexingSolution):
-    def __init__(self, penalty=None, number=None, crystal=None, statistics=None, orientation=None, mosaicityEstimation=None, experimentalConditionRefined=None):
-        XSDataIndexingSolution.__init__(self, penalty, number, crystal)
-        if experimentalConditionRefined is None:
-            self._experimentalConditionRefined = None
-        elif experimentalConditionRefined.__class__.__name__ == "XSDataExperimentalCondition":
-            self._experimentalConditionRefined = experimentalConditionRefined
-        else:
-            strMessage = "ERROR! XSDataIndexingSolutionSelected constructor argument 'experimentalConditionRefined' is not XSDataExperimentalCondition but %s" % self._experimentalConditionRefined.__class__.__name__
-            raise BaseException(strMessage)
-        if mosaicityEstimation is None:
-            self._mosaicityEstimation = None
-        elif mosaicityEstimation.__class__.__name__ == "XSDataFloat":
-            self._mosaicityEstimation = mosaicityEstimation
-        else:
-            strMessage = "ERROR! XSDataIndexingSolutionSelected constructor argument 'mosaicityEstimation' is not XSDataFloat but %s" % self._mosaicityEstimation.__class__.__name__
-            raise BaseException(strMessage)
-        if orientation is None:
-            self._orientation = None
-        elif orientation.__class__.__name__ == "XSDataOrientation":
-            self._orientation = orientation
-        else:
-            strMessage = "ERROR! XSDataIndexingSolutionSelected constructor argument 'orientation' is not XSDataOrientation but %s" % self._orientation.__class__.__name__
-            raise BaseException(strMessage)
-        if statistics is None:
-            self._statistics = None
-        elif statistics.__class__.__name__ == "XSDataStatisticsIndexing":
-            self._statistics = statistics
-        else:
-            strMessage = "ERROR! XSDataIndexingSolutionSelected constructor argument 'statistics' is not XSDataStatisticsIndexing but %s" % self._statistics.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'experimentalConditionRefined' attribute
-    def getExperimentalConditionRefined(self): return self._experimentalConditionRefined
-    def setExperimentalConditionRefined(self, experimentalConditionRefined):
-        if experimentalConditionRefined is None:
-            self._experimentalConditionRefined = None
-        elif experimentalConditionRefined.__class__.__name__ == "XSDataExperimentalCondition":
-            self._experimentalConditionRefined = experimentalConditionRefined
-        else:
-            strMessage = "ERROR! XSDataIndexingSolutionSelected.setExperimentalConditionRefined argument is not XSDataExperimentalCondition but %s" % experimentalConditionRefined.__class__.__name__
-            raise BaseException(strMessage)
-    def delExperimentalConditionRefined(self): self._experimentalConditionRefined = None
-    experimentalConditionRefined = property(getExperimentalConditionRefined, setExperimentalConditionRefined, delExperimentalConditionRefined, "Property for experimentalConditionRefined")
-    # Methods and properties for the 'mosaicityEstimation' attribute
-    def getMosaicityEstimation(self): return self._mosaicityEstimation
-    def setMosaicityEstimation(self, mosaicityEstimation):
-        if mosaicityEstimation is None:
-            self._mosaicityEstimation = None
-        elif mosaicityEstimation.__class__.__name__ == "XSDataFloat":
-            self._mosaicityEstimation = mosaicityEstimation
-        else:
-            strMessage = "ERROR! XSDataIndexingSolutionSelected.setMosaicityEstimation argument is not XSDataFloat but %s" % mosaicityEstimation.__class__.__name__
-            raise BaseException(strMessage)
-    def delMosaicityEstimation(self): self._mosaicityEstimation = None
-    mosaicityEstimation = property(getMosaicityEstimation, setMosaicityEstimation, delMosaicityEstimation, "Property for mosaicityEstimation")
-    # Methods and properties for the 'orientation' attribute
-    def getOrientation(self): return self._orientation
-    def setOrientation(self, orientation):
-        if orientation is None:
-            self._orientation = None
-        elif orientation.__class__.__name__ == "XSDataOrientation":
-            self._orientation = orientation
-        else:
-            strMessage = "ERROR! XSDataIndexingSolutionSelected.setOrientation argument is not XSDataOrientation but %s" % orientation.__class__.__name__
-            raise BaseException(strMessage)
-    def delOrientation(self): self._orientation = None
-    orientation = property(getOrientation, setOrientation, delOrientation, "Property for orientation")
-    # Methods and properties for the 'statistics' attribute
-    def getStatistics(self): return self._statistics
-    def setStatistics(self, statistics):
-        if statistics is None:
-            self._statistics = None
-        elif statistics.__class__.__name__ == "XSDataStatisticsIndexing":
-            self._statistics = statistics
-        else:
-            strMessage = "ERROR! XSDataIndexingSolutionSelected.setStatistics argument is not XSDataStatisticsIndexing but %s" % statistics.__class__.__name__
-            raise BaseException(strMessage)
-    def delStatistics(self): self._statistics = None
-    statistics = property(getStatistics, setStatistics, delStatistics, "Property for statistics")
-    def export(self, outfile, level, name_='XSDataIndexingSolutionSelected'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataIndexingSolutionSelected'):
-        XSDataIndexingSolution.exportChildren(self, outfile, level, name_)
-        if self._experimentalConditionRefined is not None:
-            self.experimentalConditionRefined.export(outfile, level, name_='experimentalConditionRefined')
-        else:
-            warnEmptyAttribute("experimentalConditionRefined", "XSDataExperimentalCondition")
-        if self._mosaicityEstimation is not None:
-            self.mosaicityEstimation.export(outfile, level, name_='mosaicityEstimation')
-        if self._orientation is not None:
-            self.orientation.export(outfile, level, name_='orientation')
-        else:
-            warnEmptyAttribute("orientation", "XSDataOrientation")
-        if self._statistics is not None:
-            self.statistics.export(outfile, level, name_='statistics')
-        else:
-            warnEmptyAttribute("statistics", "XSDataStatisticsIndexing")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'experimentalConditionRefined':
-            obj_ = XSDataExperimentalCondition()
-            obj_.build(child_)
-            self.setExperimentalConditionRefined(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'mosaicityEstimation':
-            obj_ = XSDataFloat()
-            obj_.build(child_)
-            self.setMosaicityEstimation(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'orientation':
-            obj_ = XSDataOrientation()
-            obj_.build(child_)
-            self.setOrientation(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'statistics':
-            obj_ = XSDataStatisticsIndexing()
-            obj_.build(child_)
-            self.setStatistics(obj_)
-        XSDataIndexingSolution.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataIndexingSolutionSelected" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataIndexingSolutionSelected' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataIndexingSolutionSelected is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataIndexingSolutionSelected.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataIndexingSolutionSelected()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataIndexingSolutionSelected" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataIndexingSolutionSelected()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataIndexingSolutionSelected
-
-
 class XSDataGeneratePredictionInput(XSDataInput):
     """This generalisation is not very logical in terms of names, it should be fixed after the prototype (see bug #49)."""
     def __init__(self, configuration=None, selectedIndexingSolution=None, dataCollection=None):
@@ -8877,6 +8732,177 @@ class XSDataIndexingInput(XSDataInput):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataIndexingInput
+
+
+class XSDataIndexingSolutionSelected(XSDataIndexingSolution):
+    def __init__(self, penalty=None, number=None, crystal=None, statistics=None, orientation=None, mosaicityEstimation=None, experimentalConditionRefined=None):
+        XSDataIndexingSolution.__init__(self, penalty, number, crystal)
+        if experimentalConditionRefined is None:
+            self._experimentalConditionRefined = None
+        elif experimentalConditionRefined.__class__.__name__ == "XSDataExperimentalCondition":
+            self._experimentalConditionRefined = experimentalConditionRefined
+        else:
+            strMessage = "ERROR! XSDataIndexingSolutionSelected constructor argument 'experimentalConditionRefined' is not XSDataExperimentalCondition but %s" % self._experimentalConditionRefined.__class__.__name__
+            raise BaseException(strMessage)
+        if mosaicityEstimation is None:
+            self._mosaicityEstimation = None
+        elif mosaicityEstimation.__class__.__name__ == "XSDataFloat":
+            self._mosaicityEstimation = mosaicityEstimation
+        else:
+            strMessage = "ERROR! XSDataIndexingSolutionSelected constructor argument 'mosaicityEstimation' is not XSDataFloat but %s" % self._mosaicityEstimation.__class__.__name__
+            raise BaseException(strMessage)
+        if orientation is None:
+            self._orientation = None
+        elif orientation.__class__.__name__ == "XSDataOrientation":
+            self._orientation = orientation
+        else:
+            strMessage = "ERROR! XSDataIndexingSolutionSelected constructor argument 'orientation' is not XSDataOrientation but %s" % self._orientation.__class__.__name__
+            raise BaseException(strMessage)
+        if statistics is None:
+            self._statistics = None
+        elif statistics.__class__.__name__ == "XSDataStatisticsIndexing":
+            self._statistics = statistics
+        else:
+            strMessage = "ERROR! XSDataIndexingSolutionSelected constructor argument 'statistics' is not XSDataStatisticsIndexing but %s" % self._statistics.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'experimentalConditionRefined' attribute
+    def getExperimentalConditionRefined(self): return self._experimentalConditionRefined
+    def setExperimentalConditionRefined(self, experimentalConditionRefined):
+        if experimentalConditionRefined is None:
+            self._experimentalConditionRefined = None
+        elif experimentalConditionRefined.__class__.__name__ == "XSDataExperimentalCondition":
+            self._experimentalConditionRefined = experimentalConditionRefined
+        else:
+            strMessage = "ERROR! XSDataIndexingSolutionSelected.setExperimentalConditionRefined argument is not XSDataExperimentalCondition but %s" % experimentalConditionRefined.__class__.__name__
+            raise BaseException(strMessage)
+    def delExperimentalConditionRefined(self): self._experimentalConditionRefined = None
+    experimentalConditionRefined = property(getExperimentalConditionRefined, setExperimentalConditionRefined, delExperimentalConditionRefined, "Property for experimentalConditionRefined")
+    # Methods and properties for the 'mosaicityEstimation' attribute
+    def getMosaicityEstimation(self): return self._mosaicityEstimation
+    def setMosaicityEstimation(self, mosaicityEstimation):
+        if mosaicityEstimation is None:
+            self._mosaicityEstimation = None
+        elif mosaicityEstimation.__class__.__name__ == "XSDataFloat":
+            self._mosaicityEstimation = mosaicityEstimation
+        else:
+            strMessage = "ERROR! XSDataIndexingSolutionSelected.setMosaicityEstimation argument is not XSDataFloat but %s" % mosaicityEstimation.__class__.__name__
+            raise BaseException(strMessage)
+    def delMosaicityEstimation(self): self._mosaicityEstimation = None
+    mosaicityEstimation = property(getMosaicityEstimation, setMosaicityEstimation, delMosaicityEstimation, "Property for mosaicityEstimation")
+    # Methods and properties for the 'orientation' attribute
+    def getOrientation(self): return self._orientation
+    def setOrientation(self, orientation):
+        if orientation is None:
+            self._orientation = None
+        elif orientation.__class__.__name__ == "XSDataOrientation":
+            self._orientation = orientation
+        else:
+            strMessage = "ERROR! XSDataIndexingSolutionSelected.setOrientation argument is not XSDataOrientation but %s" % orientation.__class__.__name__
+            raise BaseException(strMessage)
+    def delOrientation(self): self._orientation = None
+    orientation = property(getOrientation, setOrientation, delOrientation, "Property for orientation")
+    # Methods and properties for the 'statistics' attribute
+    def getStatistics(self): return self._statistics
+    def setStatistics(self, statistics):
+        if statistics is None:
+            self._statistics = None
+        elif statistics.__class__.__name__ == "XSDataStatisticsIndexing":
+            self._statistics = statistics
+        else:
+            strMessage = "ERROR! XSDataIndexingSolutionSelected.setStatistics argument is not XSDataStatisticsIndexing but %s" % statistics.__class__.__name__
+            raise BaseException(strMessage)
+    def delStatistics(self): self._statistics = None
+    statistics = property(getStatistics, setStatistics, delStatistics, "Property for statistics")
+    def export(self, outfile, level, name_='XSDataIndexingSolutionSelected'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataIndexingSolutionSelected'):
+        XSDataIndexingSolution.exportChildren(self, outfile, level, name_)
+        if self._experimentalConditionRefined is not None:
+            self.experimentalConditionRefined.export(outfile, level, name_='experimentalConditionRefined')
+        else:
+            warnEmptyAttribute("experimentalConditionRefined", "XSDataExperimentalCondition")
+        if self._mosaicityEstimation is not None:
+            self.mosaicityEstimation.export(outfile, level, name_='mosaicityEstimation')
+        if self._orientation is not None:
+            self.orientation.export(outfile, level, name_='orientation')
+        else:
+            warnEmptyAttribute("orientation", "XSDataOrientation")
+        if self._statistics is not None:
+            self.statistics.export(outfile, level, name_='statistics')
+        else:
+            warnEmptyAttribute("statistics", "XSDataStatisticsIndexing")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'experimentalConditionRefined':
+            obj_ = XSDataExperimentalCondition()
+            obj_.build(child_)
+            self.setExperimentalConditionRefined(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'mosaicityEstimation':
+            obj_ = XSDataFloat()
+            obj_.build(child_)
+            self.setMosaicityEstimation(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'orientation':
+            obj_ = XSDataOrientation()
+            obj_.build(child_)
+            self.setOrientation(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'statistics':
+            obj_ = XSDataStatisticsIndexing()
+            obj_.build(child_)
+            self.setStatistics(obj_)
+        XSDataIndexingSolution.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataIndexingSolutionSelected" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataIndexingSolutionSelected' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataIndexingSolutionSelected is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataIndexingSolutionSelected.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataIndexingSolutionSelected()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataIndexingSolutionSelected" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataIndexingSolutionSelected()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataIndexingSolutionSelected
 
 
 class XSDataIndexingResult(XSDataResult):
@@ -9699,6 +9725,95 @@ class XSDataInputControlXDSGenerateBackgroundImage(XSDataInput):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataInputControlXDSGenerateBackgroundImage
+
+
+class XSDataInputInducedRadiationProcess(XSDataInput):
+    def __init__(self, configuration=None, characterisationResult=None):
+        XSDataInput.__init__(self, configuration)
+        if characterisationResult is None:
+            self._characterisationResult = None
+        elif characterisationResult.__class__.__name__ == "XSDataResultCharacterisation":
+            self._characterisationResult = characterisationResult
+        else:
+            strMessage = "ERROR! XSDataInputInducedRadiationProcess constructor argument 'characterisationResult' is not XSDataResultCharacterisation but %s" % self._characterisationResult.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'characterisationResult' attribute
+    def getCharacterisationResult(self): return self._characterisationResult
+    def setCharacterisationResult(self, characterisationResult):
+        if characterisationResult is None:
+            self._characterisationResult = None
+        elif characterisationResult.__class__.__name__ == "XSDataResultCharacterisation":
+            self._characterisationResult = characterisationResult
+        else:
+            strMessage = "ERROR! XSDataInputInducedRadiationProcess.setCharacterisationResult argument is not XSDataResultCharacterisation but %s" % characterisationResult.__class__.__name__
+            raise BaseException(strMessage)
+    def delCharacterisationResult(self): self._characterisationResult = None
+    characterisationResult = property(getCharacterisationResult, setCharacterisationResult, delCharacterisationResult, "Property for characterisationResult")
+    def export(self, outfile, level, name_='XSDataInputInducedRadiationProcess'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataInputInducedRadiationProcess'):
+        XSDataInput.exportChildren(self, outfile, level, name_)
+        if self._characterisationResult is not None:
+            self.characterisationResult.export(outfile, level, name_='characterisationResult')
+        else:
+            warnEmptyAttribute("characterisationResult", "XSDataResultCharacterisation")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'characterisationResult':
+            obj_ = XSDataResultCharacterisation()
+            obj_.build(child_)
+            self.setCharacterisationResult(obj_)
+        XSDataInput.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataInputInducedRadiationProcess" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataInputInducedRadiationProcess' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataInputInducedRadiationProcess is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataInputInducedRadiationProcess.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataInputInducedRadiationProcess()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataInputInducedRadiationProcess" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataInputInducedRadiationProcess()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataInputInducedRadiationProcess
 
 
 class XSDataInputReadImageHeader(XSDataInput):
@@ -10698,330 +10813,6 @@ class XSDataResultControlKappa(XSDataResult):
 # end class XSDataResultControlKappa
 
 
-class XSDataResultControlXDSGenerateBackgroundImage(XSDataResult):
-    def __init__(self, status=None, xdsBackgroundImage=None):
-        XSDataResult.__init__(self, status)
-        if xdsBackgroundImage is None:
-            self._xdsBackgroundImage = None
-        elif xdsBackgroundImage.__class__.__name__ == "XSDataFile":
-            self._xdsBackgroundImage = xdsBackgroundImage
-        else:
-            strMessage = "ERROR! XSDataResultControlXDSGenerateBackgroundImage constructor argument 'xdsBackgroundImage' is not XSDataFile but %s" % self._xdsBackgroundImage.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'xdsBackgroundImage' attribute
-    def getXdsBackgroundImage(self): return self._xdsBackgroundImage
-    def setXdsBackgroundImage(self, xdsBackgroundImage):
-        if xdsBackgroundImage is None:
-            self._xdsBackgroundImage = None
-        elif xdsBackgroundImage.__class__.__name__ == "XSDataFile":
-            self._xdsBackgroundImage = xdsBackgroundImage
-        else:
-            strMessage = "ERROR! XSDataResultControlXDSGenerateBackgroundImage.setXdsBackgroundImage argument is not XSDataFile but %s" % xdsBackgroundImage.__class__.__name__
-            raise BaseException(strMessage)
-    def delXdsBackgroundImage(self): self._xdsBackgroundImage = None
-    xdsBackgroundImage = property(getXdsBackgroundImage, setXdsBackgroundImage, delXdsBackgroundImage, "Property for xdsBackgroundImage")
-    def export(self, outfile, level, name_='XSDataResultControlXDSGenerateBackgroundImage'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataResultControlXDSGenerateBackgroundImage'):
-        XSDataResult.exportChildren(self, outfile, level, name_)
-        if self._xdsBackgroundImage is not None:
-            self.xdsBackgroundImage.export(outfile, level, name_='xdsBackgroundImage')
-        else:
-            warnEmptyAttribute("xdsBackgroundImage", "XSDataFile")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'xdsBackgroundImage':
-            obj_ = XSDataFile()
-            obj_.build(child_)
-            self.setXdsBackgroundImage(obj_)
-        XSDataResult.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataResultControlXDSGenerateBackgroundImage" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataResultControlXDSGenerateBackgroundImage' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataResultControlXDSGenerateBackgroundImage is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataResultControlXDSGenerateBackgroundImage.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataResultControlXDSGenerateBackgroundImage()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataResultControlXDSGenerateBackgroundImage" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataResultControlXDSGenerateBackgroundImage()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataResultControlXDSGenerateBackgroundImage
-
-
-class XSDataResultInducedRadiationProcess(XSDataResult):
-    def __init__(self, status=None, scale=None, crystal=None, bFactor=None):
-        XSDataResult.__init__(self, status)
-        if bFactor is None:
-            self._bFactor = None
-        elif bFactor.__class__.__name__ == "XSDataDouble":
-            self._bFactor = bFactor
-        else:
-            strMessage = "ERROR! XSDataResultInducedRadiationProcess constructor argument 'bFactor' is not XSDataDouble but %s" % self._bFactor.__class__.__name__
-            raise BaseException(strMessage)
-        if crystal is None:
-            self._crystal = None
-        elif crystal.__class__.__name__ == "XSDataCrystal":
-            self._crystal = crystal
-        else:
-            strMessage = "ERROR! XSDataResultInducedRadiationProcess constructor argument 'crystal' is not XSDataCrystal but %s" % self._crystal.__class__.__name__
-            raise BaseException(strMessage)
-        if scale is None:
-            self._scale = None
-        elif scale.__class__.__name__ == "XSDataDouble":
-            self._scale = scale
-        else:
-            strMessage = "ERROR! XSDataResultInducedRadiationProcess constructor argument 'scale' is not XSDataDouble but %s" % self._scale.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'bFactor' attribute
-    def getBFactor(self): return self._bFactor
-    def setBFactor(self, bFactor):
-        if bFactor is None:
-            self._bFactor = None
-        elif bFactor.__class__.__name__ == "XSDataDouble":
-            self._bFactor = bFactor
-        else:
-            strMessage = "ERROR! XSDataResultInducedRadiationProcess.setBFactor argument is not XSDataDouble but %s" % bFactor.__class__.__name__
-            raise BaseException(strMessage)
-    def delBFactor(self): self._bFactor = None
-    bFactor = property(getBFactor, setBFactor, delBFactor, "Property for bFactor")
-    # Methods and properties for the 'crystal' attribute
-    def getCrystal(self): return self._crystal
-    def setCrystal(self, crystal):
-        if crystal is None:
-            self._crystal = None
-        elif crystal.__class__.__name__ == "XSDataCrystal":
-            self._crystal = crystal
-        else:
-            strMessage = "ERROR! XSDataResultInducedRadiationProcess.setCrystal argument is not XSDataCrystal but %s" % crystal.__class__.__name__
-            raise BaseException(strMessage)
-    def delCrystal(self): self._crystal = None
-    crystal = property(getCrystal, setCrystal, delCrystal, "Property for crystal")
-    # Methods and properties for the 'scale' attribute
-    def getScale(self): return self._scale
-    def setScale(self, scale):
-        if scale is None:
-            self._scale = None
-        elif scale.__class__.__name__ == "XSDataDouble":
-            self._scale = scale
-        else:
-            strMessage = "ERROR! XSDataResultInducedRadiationProcess.setScale argument is not XSDataDouble but %s" % scale.__class__.__name__
-            raise BaseException(strMessage)
-    def delScale(self): self._scale = None
-    scale = property(getScale, setScale, delScale, "Property for scale")
-    def export(self, outfile, level, name_='XSDataResultInducedRadiationProcess'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataResultInducedRadiationProcess'):
-        XSDataResult.exportChildren(self, outfile, level, name_)
-        if self._bFactor is not None:
-            self.bFactor.export(outfile, level, name_='bFactor')
-        else:
-            warnEmptyAttribute("bFactor", "XSDataDouble")
-        if self._crystal is not None:
-            self.crystal.export(outfile, level, name_='crystal')
-        else:
-            warnEmptyAttribute("crystal", "XSDataCrystal")
-        if self._scale is not None:
-            self.scale.export(outfile, level, name_='scale')
-        else:
-            warnEmptyAttribute("scale", "XSDataDouble")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'bFactor':
-            obj_ = XSDataDouble()
-            obj_.build(child_)
-            self.setBFactor(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'crystal':
-            obj_ = XSDataCrystal()
-            obj_.build(child_)
-            self.setCrystal(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'scale':
-            obj_ = XSDataDouble()
-            obj_.build(child_)
-            self.setScale(obj_)
-        XSDataResult.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataResultInducedRadiationProcess" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataResultInducedRadiationProcess' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataResultInducedRadiationProcess is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataResultInducedRadiationProcess.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataResultInducedRadiationProcess()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataResultInducedRadiationProcess" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataResultInducedRadiationProcess()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataResultInducedRadiationProcess
-
-
-class XSDataResultReadImageHeader(XSDataResult):
-    """These two definitions are used by the read image header plugin."""
-    def __init__(self, status=None, subWedge=None):
-        XSDataResult.__init__(self, status)
-        if subWedge is None:
-            self._subWedge = None
-        elif subWedge.__class__.__name__ == "XSDataSubWedge":
-            self._subWedge = subWedge
-        else:
-            strMessage = "ERROR! XSDataResultReadImageHeader constructor argument 'subWedge' is not XSDataSubWedge but %s" % self._subWedge.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'subWedge' attribute
-    def getSubWedge(self): return self._subWedge
-    def setSubWedge(self, subWedge):
-        if subWedge is None:
-            self._subWedge = None
-        elif subWedge.__class__.__name__ == "XSDataSubWedge":
-            self._subWedge = subWedge
-        else:
-            strMessage = "ERROR! XSDataResultReadImageHeader.setSubWedge argument is not XSDataSubWedge but %s" % subWedge.__class__.__name__
-            raise BaseException(strMessage)
-    def delSubWedge(self): self._subWedge = None
-    subWedge = property(getSubWedge, setSubWedge, delSubWedge, "Property for subWedge")
-    def export(self, outfile, level, name_='XSDataResultReadImageHeader'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataResultReadImageHeader'):
-        XSDataResult.exportChildren(self, outfile, level, name_)
-        if self._subWedge is not None:
-            self.subWedge.export(outfile, level, name_='subWedge')
-        else:
-            warnEmptyAttribute("subWedge", "XSDataSubWedge")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'subWedge':
-            obj_ = XSDataSubWedge()
-            obj_.build(child_)
-            self.setSubWedge(obj_)
-        XSDataResult.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataResultReadImageHeader" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataResultReadImageHeader' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataResultReadImageHeader is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataResultReadImageHeader.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataResultReadImageHeader()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataResultReadImageHeader" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataResultReadImageHeader()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataResultReadImageHeader
-
-
 class XSDataResultStrategy(XSDataResult):
     """Several collection plans could be present in case of multi-sweep strategy"""
     def __init__(self, status=None, timeToReachHendersonLimit=None, sample=None, raddoseLogFile=None, collectionPlan=None, bestLogFile=None, bestGraphFile=None):
@@ -11726,95 +11517,6 @@ class XSDataResultCharacterisation(XSDataResult):
 # end class XSDataResultCharacterisation
 
 
-class XSDataInputInducedRadiationProcess(XSDataInput):
-    def __init__(self, configuration=None, characterisationResult=None):
-        XSDataInput.__init__(self, configuration)
-        if characterisationResult is None:
-            self._characterisationResult = None
-        elif characterisationResult.__class__.__name__ == "XSDataResultCharacterisation":
-            self._characterisationResult = characterisationResult
-        else:
-            strMessage = "ERROR! XSDataInputInducedRadiationProcess constructor argument 'characterisationResult' is not XSDataResultCharacterisation but %s" % self._characterisationResult.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'characterisationResult' attribute
-    def getCharacterisationResult(self): return self._characterisationResult
-    def setCharacterisationResult(self, characterisationResult):
-        if characterisationResult is None:
-            self._characterisationResult = None
-        elif characterisationResult.__class__.__name__ == "XSDataResultCharacterisation":
-            self._characterisationResult = characterisationResult
-        else:
-            strMessage = "ERROR! XSDataInputInducedRadiationProcess.setCharacterisationResult argument is not XSDataResultCharacterisation but %s" % characterisationResult.__class__.__name__
-            raise BaseException(strMessage)
-    def delCharacterisationResult(self): self._characterisationResult = None
-    characterisationResult = property(getCharacterisationResult, setCharacterisationResult, delCharacterisationResult, "Property for characterisationResult")
-    def export(self, outfile, level, name_='XSDataInputInducedRadiationProcess'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataInputInducedRadiationProcess'):
-        XSDataInput.exportChildren(self, outfile, level, name_)
-        if self._characterisationResult is not None:
-            self.characterisationResult.export(outfile, level, name_='characterisationResult')
-        else:
-            warnEmptyAttribute("characterisationResult", "XSDataResultCharacterisation")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'characterisationResult':
-            obj_ = XSDataResultCharacterisation()
-            obj_.build(child_)
-            self.setCharacterisationResult(obj_)
-        XSDataInput.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataInputInducedRadiationProcess" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataInputInducedRadiationProcess' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataInputInducedRadiationProcess is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataInputInducedRadiationProcess.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataInputInducedRadiationProcess()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataInputInducedRadiationProcess" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataInputInducedRadiationProcess()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataInputInducedRadiationProcess
-
-
 class XSDataResultControlImageQualityIndicators(XSDataResult):
     def __init__(self, status=None, inputDozor=None, imageQualityIndicators=None):
         XSDataResult.__init__(self, status)
@@ -11947,6 +11649,330 @@ class XSDataResultControlImageQualityIndicators(XSDataResult):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataResultControlImageQualityIndicators
+
+
+class XSDataResultControlXDSGenerateBackgroundImage(XSDataResult):
+    def __init__(self, status=None, xdsBackgroundImage=None):
+        XSDataResult.__init__(self, status)
+        if xdsBackgroundImage is None:
+            self._xdsBackgroundImage = None
+        elif xdsBackgroundImage.__class__.__name__ == "XSDataFile":
+            self._xdsBackgroundImage = xdsBackgroundImage
+        else:
+            strMessage = "ERROR! XSDataResultControlXDSGenerateBackgroundImage constructor argument 'xdsBackgroundImage' is not XSDataFile but %s" % self._xdsBackgroundImage.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'xdsBackgroundImage' attribute
+    def getXdsBackgroundImage(self): return self._xdsBackgroundImage
+    def setXdsBackgroundImage(self, xdsBackgroundImage):
+        if xdsBackgroundImage is None:
+            self._xdsBackgroundImage = None
+        elif xdsBackgroundImage.__class__.__name__ == "XSDataFile":
+            self._xdsBackgroundImage = xdsBackgroundImage
+        else:
+            strMessage = "ERROR! XSDataResultControlXDSGenerateBackgroundImage.setXdsBackgroundImage argument is not XSDataFile but %s" % xdsBackgroundImage.__class__.__name__
+            raise BaseException(strMessage)
+    def delXdsBackgroundImage(self): self._xdsBackgroundImage = None
+    xdsBackgroundImage = property(getXdsBackgroundImage, setXdsBackgroundImage, delXdsBackgroundImage, "Property for xdsBackgroundImage")
+    def export(self, outfile, level, name_='XSDataResultControlXDSGenerateBackgroundImage'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataResultControlXDSGenerateBackgroundImage'):
+        XSDataResult.exportChildren(self, outfile, level, name_)
+        if self._xdsBackgroundImage is not None:
+            self.xdsBackgroundImage.export(outfile, level, name_='xdsBackgroundImage')
+        else:
+            warnEmptyAttribute("xdsBackgroundImage", "XSDataFile")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'xdsBackgroundImage':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setXdsBackgroundImage(obj_)
+        XSDataResult.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataResultControlXDSGenerateBackgroundImage" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataResultControlXDSGenerateBackgroundImage' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataResultControlXDSGenerateBackgroundImage is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataResultControlXDSGenerateBackgroundImage.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultControlXDSGenerateBackgroundImage()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataResultControlXDSGenerateBackgroundImage" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultControlXDSGenerateBackgroundImage()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataResultControlXDSGenerateBackgroundImage
+
+
+class XSDataResultInducedRadiationProcess(XSDataResult):
+    def __init__(self, status=None, scale=None, crystal=None, bFactor=None):
+        XSDataResult.__init__(self, status)
+        if bFactor is None:
+            self._bFactor = None
+        elif bFactor.__class__.__name__ == "XSDataDouble":
+            self._bFactor = bFactor
+        else:
+            strMessage = "ERROR! XSDataResultInducedRadiationProcess constructor argument 'bFactor' is not XSDataDouble but %s" % self._bFactor.__class__.__name__
+            raise BaseException(strMessage)
+        if crystal is None:
+            self._crystal = None
+        elif crystal.__class__.__name__ == "XSDataCrystal":
+            self._crystal = crystal
+        else:
+            strMessage = "ERROR! XSDataResultInducedRadiationProcess constructor argument 'crystal' is not XSDataCrystal but %s" % self._crystal.__class__.__name__
+            raise BaseException(strMessage)
+        if scale is None:
+            self._scale = None
+        elif scale.__class__.__name__ == "XSDataDouble":
+            self._scale = scale
+        else:
+            strMessage = "ERROR! XSDataResultInducedRadiationProcess constructor argument 'scale' is not XSDataDouble but %s" % self._scale.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'bFactor' attribute
+    def getBFactor(self): return self._bFactor
+    def setBFactor(self, bFactor):
+        if bFactor is None:
+            self._bFactor = None
+        elif bFactor.__class__.__name__ == "XSDataDouble":
+            self._bFactor = bFactor
+        else:
+            strMessage = "ERROR! XSDataResultInducedRadiationProcess.setBFactor argument is not XSDataDouble but %s" % bFactor.__class__.__name__
+            raise BaseException(strMessage)
+    def delBFactor(self): self._bFactor = None
+    bFactor = property(getBFactor, setBFactor, delBFactor, "Property for bFactor")
+    # Methods and properties for the 'crystal' attribute
+    def getCrystal(self): return self._crystal
+    def setCrystal(self, crystal):
+        if crystal is None:
+            self._crystal = None
+        elif crystal.__class__.__name__ == "XSDataCrystal":
+            self._crystal = crystal
+        else:
+            strMessage = "ERROR! XSDataResultInducedRadiationProcess.setCrystal argument is not XSDataCrystal but %s" % crystal.__class__.__name__
+            raise BaseException(strMessage)
+    def delCrystal(self): self._crystal = None
+    crystal = property(getCrystal, setCrystal, delCrystal, "Property for crystal")
+    # Methods and properties for the 'scale' attribute
+    def getScale(self): return self._scale
+    def setScale(self, scale):
+        if scale is None:
+            self._scale = None
+        elif scale.__class__.__name__ == "XSDataDouble":
+            self._scale = scale
+        else:
+            strMessage = "ERROR! XSDataResultInducedRadiationProcess.setScale argument is not XSDataDouble but %s" % scale.__class__.__name__
+            raise BaseException(strMessage)
+    def delScale(self): self._scale = None
+    scale = property(getScale, setScale, delScale, "Property for scale")
+    def export(self, outfile, level, name_='XSDataResultInducedRadiationProcess'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataResultInducedRadiationProcess'):
+        XSDataResult.exportChildren(self, outfile, level, name_)
+        if self._bFactor is not None:
+            self.bFactor.export(outfile, level, name_='bFactor')
+        else:
+            warnEmptyAttribute("bFactor", "XSDataDouble")
+        if self._crystal is not None:
+            self.crystal.export(outfile, level, name_='crystal')
+        else:
+            warnEmptyAttribute("crystal", "XSDataCrystal")
+        if self._scale is not None:
+            self.scale.export(outfile, level, name_='scale')
+        else:
+            warnEmptyAttribute("scale", "XSDataDouble")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'bFactor':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setBFactor(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'crystal':
+            obj_ = XSDataCrystal()
+            obj_.build(child_)
+            self.setCrystal(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'scale':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setScale(obj_)
+        XSDataResult.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataResultInducedRadiationProcess" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataResultInducedRadiationProcess' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataResultInducedRadiationProcess is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataResultInducedRadiationProcess.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultInducedRadiationProcess()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataResultInducedRadiationProcess" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultInducedRadiationProcess()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataResultInducedRadiationProcess
+
+
+class XSDataResultReadImageHeader(XSDataResult):
+    """These two definitions are used by the read image header plugin."""
+    def __init__(self, status=None, subWedge=None):
+        XSDataResult.__init__(self, status)
+        if subWedge is None:
+            self._subWedge = None
+        elif subWedge.__class__.__name__ == "XSDataSubWedge":
+            self._subWedge = subWedge
+        else:
+            strMessage = "ERROR! XSDataResultReadImageHeader constructor argument 'subWedge' is not XSDataSubWedge but %s" % self._subWedge.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'subWedge' attribute
+    def getSubWedge(self): return self._subWedge
+    def setSubWedge(self, subWedge):
+        if subWedge is None:
+            self._subWedge = None
+        elif subWedge.__class__.__name__ == "XSDataSubWedge":
+            self._subWedge = subWedge
+        else:
+            strMessage = "ERROR! XSDataResultReadImageHeader.setSubWedge argument is not XSDataSubWedge but %s" % subWedge.__class__.__name__
+            raise BaseException(strMessage)
+    def delSubWedge(self): self._subWedge = None
+    subWedge = property(getSubWedge, setSubWedge, delSubWedge, "Property for subWedge")
+    def export(self, outfile, level, name_='XSDataResultReadImageHeader'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataResultReadImageHeader'):
+        XSDataResult.exportChildren(self, outfile, level, name_)
+        if self._subWedge is not None:
+            self.subWedge.export(outfile, level, name_='subWedge')
+        else:
+            warnEmptyAttribute("subWedge", "XSDataSubWedge")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'subWedge':
+            obj_ = XSDataSubWedge()
+            obj_.build(child_)
+            self.setSubWedge(obj_)
+        XSDataResult.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataResultReadImageHeader" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataResultReadImageHeader' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataResultReadImageHeader is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataResultReadImageHeader.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultReadImageHeader()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataResultReadImageHeader" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultReadImageHeader()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataResultReadImageHeader
 
 
 class XSDataResultSubWedgeAssemble(XSDataResult):

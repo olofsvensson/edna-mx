@@ -30,6 +30,7 @@ package XSDataMXv1 {
 			dozorSpotListShape : XSDataInteger [] optional
 			dozorSpotsIntAver : XSDataDouble optional
 			dozorSpotsResolution : XSDataDouble optional
+			dozorVisibleResolution : XSDataDouble optional
 			binPopCutOffMethod2Res : XSDataDouble
 			goodBraggCandidates : XSDataInteger
 			iceRings : XSDataInteger
