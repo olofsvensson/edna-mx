@@ -285,7 +285,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         # The resultsdir used to be root_dir/results/fast_processing
         # self.results_dir = os.path.join(self.root_dir, 'results', 'fast_processing')
         # Now it is the <directory of the output_file>/results
-        if self.dataInput.output_file is not None and os.pat.dirname(self.dataInput.output_file.path.value) != "/":
+        if self.dataInput.output_file is not None and os.path.dirname(self.dataInput.output_file.path.value) != "":
             self.results_dir = os.path.join(os.path.dirname(self.dataInput.output_file.path.value), 'results')
         else:
             self.results_dir = os.path.join(os.path.dirname(self.dataInput.input_file.path.value), 'results')
