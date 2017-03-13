@@ -5,11 +5,6 @@
       <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/id29_20130301/XDS.INP</value>
     </path>
   </input_file>
-  <output_file>
-    <path>
-      <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/id29_20130301/EDNA_proc_ispyb.xml</value>
-    </path>
-  </output_file>
   <start_image>
     <value>1</value>
   </start_image>

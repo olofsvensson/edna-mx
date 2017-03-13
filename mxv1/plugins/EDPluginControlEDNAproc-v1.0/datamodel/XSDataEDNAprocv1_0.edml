@@ -26,7 +26,7 @@ complex type XSDataEDNAprocInput extends XSDataInput {
 
 	spacegroup : XSDataString optional
 	unit_cell : XSDataString optional // space separated numerical values
-	output_file : XSDataFile
+	output_file : XSDataFile optional
 
 	start_image : XSDataInteger optional
 	end_image : XSDataInteger optional
