@@ -296,7 +296,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         # Copy dataFiles to results directory
         for dataFile in edPluginExecXia2DIALS.dataOutput.dataFiles:
             trunc, suffix = os.path.splitext(dataFile.path.value)
-            newFileName = trunc + "_" + anomString + suffix
+            newFileName = os.path.basename(trunc) + "_" + anomString + suffix
             shutil.copy(dataFile.path.value, os.path.join(self.resultsDirectory, newFileName))
 
         # Read the generated ISPyB xml file - if any
