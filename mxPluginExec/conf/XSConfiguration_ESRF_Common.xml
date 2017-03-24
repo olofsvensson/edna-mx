@@ -584,7 +584,7 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
-		    <XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginExecMinimalXdsv1_0</name>
 			<XSParamList>
 				<XSParamItem>
