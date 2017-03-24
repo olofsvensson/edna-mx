@@ -49,6 +49,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         self.setXSDataInputClass(XSDataInputAutoPROC)
         self.setDataOutput(XSDataResultAutoPROC())
         self.maxNoProcessors = 12
+        self.pathToNeggiaPlugin = None
 
     def checkParameters(self):
         """
@@ -62,6 +63,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginExecAutoPROCv1_0.configure")
         self.maxNoProcessors = self.config.get("maxNoProcessors", self.maxNoProcessors)
+        self.pathToNeggiaPlugin = self.config.get("pathToNeggiaPlugin")
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
@@ -105,9 +107,9 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
             # Identifier(s)
             for identifier in _xsDataInputAutoPROC.identifier:
 
-                if EDUtilsPath.isEMBL():                
+                if EDUtilsPath.isEMBL():
                     identifier.templateN.value = identifier.templateN.value.replace(\
-                                    '%' + '05' + 'd', 5 * '#' )
+                                    '%' + '05' + 'd', 5 * '#')
                 strCommandText += " -Id {idN},{dirN},{templateN},{fromN},{toN}".format(
                                     idN=identifier.idN.value,
                                     dirN=identifier.dirN.path.value,
@@ -116,6 +118,8 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
                                     toN=identifier.toN.value)
         else:
             strCommandText += " -h5 {0}".format(masterH5.path.value)
+            if self.pathToNeggiaPlugin is not None:
+                strCommandText += " autoPROC_XdsKeyword_LIB={0}".format(self.pathToNeggiaPlugin)
 
         # Resolution
         lowResolutionLimit = _xsDataInputAutoPROC.lowResolutionLimit

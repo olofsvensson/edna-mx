@@ -702,6 +702,10 @@
 					<value>/opt/pxsoft/bin/process</value>
 				</XSParamItem>
 				<XSParamItem>
+					<name>pathToNeggiaPlugin</name>
+					<value>/opt/pxsoft/xds/v20161205/linux-x86_64/dectris-neggia.so</value>
+				</XSParamItem>
+				<XSParamItem>
 					<name>timeOut</name>
 					<value>3600</value>
 				</XSParamItem>
