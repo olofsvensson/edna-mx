@@ -366,10 +366,12 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             # Copy all log files
             for logFile in edPluginExecXia2DIALS.dataOutput.logFiles:
                 pathToLogFile = logFile.path.value
+                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToLogFile)
+                # Copy all log files to results:
+                shutil.copy(pathToLogFile, os.path.join(self.resultsDirectory, pyarchFileName))
+                # Only copy .log files to pyarch
                 if pathToLogFile.endswith(".log"):
-                    pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToLogFile)
                     shutil.copy(pathToLogFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-                    shutil.copy(pathToLogFile, os.path.join(self.resultsDirectory, pyarchFileName))
                     autoProcProgramAttachment = AutoProcProgramAttachment()
                     autoProcProgramAttachment.fileName = pyarchFileName
                     autoProcProgramAttachment.filePath = self.pyarchDirectory
