@@ -820,8 +820,8 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
 
 
     def sendMessageToMXCuBE(self, _strMessage, level="info"):
-        if self.strMxCuBE_URI is not None:
-            self.screen("Sending message to mxCuBE: {0}, level {1}".format(_strMessage, level))
+        if self.oServerProxy is not None:
+            self.debug("Sending message to mxCuBE: {0}, level {1}".format(_strMessage, level))
             try:
                 for strMessage in _strMessage.split("\n"):
                     if strMessage != "":
