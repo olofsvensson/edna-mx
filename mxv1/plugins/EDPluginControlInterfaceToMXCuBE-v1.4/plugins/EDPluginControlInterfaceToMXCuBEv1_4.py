@@ -212,7 +212,9 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         for xsDataImagePath in xsDataInputInterface.imagePath:
             imagePath = xsDataImagePath.path.value
             if os.path.exists(imagePath):
-                self.sendMessageToMXCuBE("Input file ok: {0}".format(imagePath))
+                message = "Input file ok: {0}".format(imagePath)
+                self.screen(message)
+                self.sendMessageToMXCuBE(message)
             else:
                 self.sendMessageToMXCuBE("Waiting for file: {0}, timeout {1} s".format(imagePath, self.fMXWaitFileTimeOut))
                 edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
@@ -224,7 +226,9 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                 edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
                 edPluginMXWaitFile.executeSynchronous()
                 if edPluginMXWaitFile.dataOutput.timedOut:
-                    self.sendMessageToMXCuBE("ERROR! File {0} does not exist on disk.".format(imagePath), "error")
+                    errorMessage = "ERROR! File {0} does not exist on disk.".format(imagePath)
+                    self.ERROR(errorMessage)
+                    self.sendMessageToMXCuBE(errorMessage, "error")
                     self.setFailure()
                     break
 
