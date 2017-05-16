@@ -14,6 +14,15 @@ import XSDataCommon.XSDataString
 import XSDataCommon.XSDataVectorDouble
 import XSDataCommon.XSDataWavelength
 
+complex type XSDataCell {
+	angle_alpha : XSDataAngle
+	angle_beta : XSDataAngle
+	angle_gamma : XSDataAngle
+	length_a : XSDataLength
+	length_b : XSDataLength
+	length_c : XSDataLength
+}
+
 complex type XSDataRange {
 	begin : integer
 	end : integer
@@ -199,6 +208,18 @@ complex type XSDataInputXDSIndexing extends XSDataInputXDS {
 }
 
 complex type XSDataResultXDS extends XSDataResult {
+}
+
+complex type XSDataResultXDSIndexing extends XSDataResultXDS {
+	latticeCharacter : XSDataInteger
+	bravaisLattice : XSDataString
+	qualityOfFit : XSDataFloat
+	unitCell : XSDataCell
+	beamCentreX : XSDataFloat
+	beamCentreY : XSDataFloat
+	distance : XSDataLength
+	mosaicity : XSDataAngle
+	pathToLogFile : XSDataFile
 }
 
 complex type XSDataResultXDSGenerateBackgroundImage extends XSDataResultXDS {
