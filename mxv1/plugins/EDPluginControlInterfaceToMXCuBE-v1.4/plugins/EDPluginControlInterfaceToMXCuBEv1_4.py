@@ -34,6 +34,11 @@ import socket
 import shutil
 import tempfile
 
+try:
+    from xmlrpclib import ServerProxy
+except:
+    from xmlrpc.client import ServerProxy
+
 from EDMessage import EDMessage
 from EDPluginControl import EDPluginControl
 from EDUtilsFile import EDUtilsFile
@@ -53,12 +58,16 @@ from XSDataCommon import XSDataSize
 from XSDataCommon import XSDataLength
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataInteger
+from XSDataCommon import XSDataTime
 
 from XSDataMXv1 import XSDataInputControlISPyB
 from XSDataMXv1 import XSDataResultCharacterisation
 
 from XSDataMXCuBEv1_4 import XSDataInputMXCuBE
 from XSDataMXCuBEv1_4 import XSDataResultMXCuBE
+
+EDFactoryPluginStatic.loadModule("XSDataMXWaitFilev1_1")
+from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
 EDFactoryPluginStatic.loadModule("XSDataSimpleHTMLPagev1_1")
 from XSDataSimpleHTMLPagev1_1 import XSDataInputSimpleHTMLPage
@@ -98,6 +107,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataInputMXCuBE)
+        self.strPluginMXWaitFileName = "EDPluginMXWaitFilev1_1"
         self.strPluginControlInterface = "EDPluginControlInterfacev1_2"
         self.edPluginControlInterface = None
         self.strPluginControlISPyB = "EDPluginControlISPyBv1_4"
@@ -125,7 +135,10 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.fFluxThreshold = 1e3
         self.bIsEigerDetector = False
         self.xsDataFirstImage = None
-
+        self.strMxCuBE_URI = None
+        self.oServerProxy = None
+        self.minImageSize = 100000
+        self.fMXWaitFileTimeOut = 10
 
     def checkParameters(self):
         """
@@ -143,6 +156,12 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_4.configure")
         self.strEDNAEmailSender = self.config.get(self.EDNA_EMAIL_SENDER, self.strEDNAEmailSender)
         self.strEDNAContactEmail = self.config.get(self.EDNA_CONTACT_EMAIL, self.strEDNAContactEmail)
+        self.strMxCuBE_URI = self.config.get("mxCuBE_URI", None)
+        if self.strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
+            self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self.strMxCuBE_URI))
+            self.oServerProxy = ServerProxy(self.strMxCuBE_URI)
+        self.minImageSize = int(self.config.get("minImageSize", self.minImageSize))
+        self.fMXWaitFileTimeOut = int(self.config.get("fileTimeOut", self.fMXWaitFileTimeOut))
 
 
 
@@ -189,6 +208,31 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                 if self.xsDataFirstImage is None:
                     self.xsDataFirstImage = xsDataFile
 
+        # Check that images are on disk, otherwise wait
+        for xsDataImagePath in xsDataInputInterface.imagePath:
+            imagePath = xsDataImagePath.path.value
+            if os.path.exists(imagePath):
+                message = "Input file ok: {0}".format(imagePath)
+                self.screen(message)
+                self.sendMessageToMXCuBE(message)
+            else:
+                self.sendMessageToMXCuBE("Waiting for file: {0}, timeout {1} s".format(imagePath, self.fMXWaitFileTimeOut))
+                edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
+                xsDataInputMXWaitFile = XSDataInputMXWaitFile()
+                xsDataInputMXWaitFile.file = XSDataFile(XSDataString(imagePath))
+                xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
+                xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
+                self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
+                edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
+                edPluginMXWaitFile.executeSynchronous()
+                if edPluginMXWaitFile.dataOutput.timedOut:
+                    errorMessage = "ERROR! File {0} does not exist on disk.".format(imagePath)
+                    self.ERROR(errorMessage)
+                    self.sendMessageToMXCuBE(errorMessage, "error")
+                    self.setFailure()
+                    break
+
+
         xsDataExperimentalCondition = self.getFluxAndBeamSizeFromISPyB(self.xsDataFirstImage, \
                                                             xsDataInputMXCuBE.getExperimentalCondition())
 
@@ -198,7 +242,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         xsDataInputInterface.setDataCollectionId(xsDataInputMXCuBE.getDataCollectionId())
         self.edPluginControlInterface.setDataInput(xsDataInputInterface)
 
-        if self.edPluginControlInterface is not None:
+        if not self.isFailure() and self.edPluginControlInterface is not None:
             self.connectProcess(self.edPluginControlInterface.executeSynchronous)
             self.edPluginControlInterface.connectSUCCESS(self.doSuccessActionInterface)
             self.edPluginControlInterface.connectFAILURE(self.doFailureActionInterface)
@@ -777,3 +821,15 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     self.screen("Strategy: number of images for subWedge #{0}: {1}".format(subWedge.subWedgeNumber.value, noImages))
 
         return xsDataResultCharacterisation
+
+
+    def sendMessageToMXCuBE(self, _strMessage, level="info"):
+        if self.oServerProxy is not None:
+            self.DEBUG("Sending message to mxCuBE: {0}, level {1}".format(_strMessage, level))
+            try:
+                for strMessage in _strMessage.split("\n"):
+                    if strMessage != "":
+                        self.oServerProxy.log_message("Characterisation: " + strMessage, level)
+            except Exception as e:
+                self.screen(e)
+                self.DEBUG("Sending message to mxCuBE failed!")

@@ -5,7 +5,7 @@
 #    Copyright (C) 2008 EMBL-Grenoble, Grenoble, France
 #
 #    Principal authors: Sandor Brockhauser (brockhauser@embl-grenoble.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #                       Pierre Legrand (pierre.legrand@synchrotron-soleil.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -32,12 +32,21 @@ __status__ = "alpha"
 
 
 import os
-
+import pprint
 
 
 from EDPluginXDSv1_0 import EDPluginXDSv1_0
 
+from XSDataCommon import XSDataAngle
+from XSDataCommon import XSDataFloat
+from XSDataCommon import XSDataLength
+from XSDataCommon import XSDataInteger
+from XSDataCommon import XSDataString
+from XSDataCommon import XSDataFile
+
+from XSDataXDSv1_0 import XSDataCell
 from XSDataXDSv1_0 import XSDataInputXDSIndexing
+from XSDataXDSv1_0 import XSDataResultXDSIndexing
 
 
 class EDPluginXDSIndexingv1_0(EDPluginXDSv1_0):
@@ -56,5 +65,56 @@ class EDPluginXDSIndexingv1_0(EDPluginXDSv1_0):
         self.addJob("COLSPOT")
         self.addJob("IDXREF")
 
+
+    def postProcess(self, _edObject=None):
+        EDPluginControl.postProcess(self)
+        self.DEBUG("EDPluginXDSIndexingv1_0.postProcess")
+
+
+    def readIdxrefLp(self, _pathToIdxrefLp):
+        self.DEBUG("EDPluginXDSIndexingv1_0.readIdxrefLp")
+        xsDataResultXDSIndexing = XSDataResultXDSIndexing()
+        if os.path.exists(_pathToIdxrefLp):
+            xsDataResultXDSIndexing.pathToLogFile = XSDataFile(XSDataString(_pathToIdxrefLp))
+            with open(_pathToIdxrefLp) as f:
+                listLines = f.readlines()
+            indexLine = 0
+            doParseParameters = False
+            doParseLattice = False
+            while (indexLine < len(listLines)):
+                if "DIFFRACTION PARAMETERS USED AT START OF INTEGRATION" in listLines[indexLine]:
+                    doParseParameters = True
+                    doParseLattice = False
+                elif "DETERMINATION OF LATTICE CHARACTER AND BRAVAIS LATTICE" in listLines[indexLine]:
+                    doParseParameters = False
+                    doParseLattice = True
+                if doParseParameters:
+                    if "MOSAICITY" in listLines[indexLine]:
+                        mosaicity = float(listLines[indexLine].split()[-1])
+                        xsDataResultXDSIndexing.mosaicity = XSDataAngle(mosaicity)
+                    elif "DETECTOR COORDINATES (PIXELS) OF DIRECT BEAM" in listLines[indexLine]:
+                        xBeam = float(listLines[indexLine].split()[-2])
+                        yBeam = float(listLines[indexLine].split()[-1])
+                        xsDataResultXDSIndexing.beamCentreX = XSDataFloat(xBeam)
+                        xsDataResultXDSIndexing.beamCentreY = XSDataFloat(yBeam)
+                    elif "CRYSTAL TO DETECTOR DISTANCE" in listLines[indexLine]:
+                        distance = float(listLines[indexLine].split()[-1])
+                        xsDataResultXDSIndexing.distance = XSDataLength(distance)
+                elif doParseLattice:
+                    if listLines[indexLine].startswith(" * ") and not listLines[indexLine + 1].startswith(" * "):
+                        listLine = listLines[indexLine].split()
+                        xsDataResultXDSIndexing.latticeCharacter = XSDataInteger(int(listLine[1]))
+                        xsDataResultXDSIndexing.bravaisLattice = XSDataString(listLine[2])
+                        xsDataResultXDSIndexing.qualityOfFit = XSDataFloat(float(listLine[3]))
+                        xsDataCell = XSDataCell()
+                        xsDataCell.length_a = XSDataLength(float(listLine[4]))
+                        xsDataCell.length_b = XSDataLength(float(listLine[5]))
+                        xsDataCell.length_c = XSDataLength(float(listLine[6]))
+                        xsDataCell.angle_alpha = XSDataAngle(float(listLine[7]))
+                        xsDataCell.angle_beta = XSDataAngle(float(listLine[8]))
+                        xsDataCell.angle_gamma = XSDataAngle(float(listLine[9]))
+                        xsDataResultXDSIndexing.unitCell = xsDataCell
+                indexLine += 1
+        return xsDataResultXDSIndexing
 
 

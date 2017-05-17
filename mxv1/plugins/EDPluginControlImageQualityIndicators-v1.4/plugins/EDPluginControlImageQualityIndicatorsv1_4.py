@@ -226,6 +226,8 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
             else:
                 # Check if we should run distl.signalStrength
                 xsDataImageNew = XSDataImage(XSDataString(strPathToImage))
+                xsDataImageNew.number = xsDataImage.number
+                xsDataImageNew.date = xsDataImage.date
                 edPluginPluginExecImageQualityIndicator = None
                 if bDoDistlSignalStrength:
                     if self.bUseThinClient:
@@ -307,6 +309,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                                     xsDataImageQualityIndicators.addDozorSpotListShape(XSDataInteger(numpyArray.shape[1]))
                         xsDataImageQualityIndicators.dozorSpotsIntAver = imageDozor.spotsIntAver
                         xsDataImageQualityIndicators.dozorSpotsResolution = imageDozor.spotsResolution
+                        xsDataImageQualityIndicators.dozorVisibleResolution = imageDozor.visibleResolution
                         if self.xsDataResultControlImageQualityIndicators.inputDozor is None:
                             if edPluginControlDozor.dataOutput.inputDozor is not None:
                                 self.xsDataResultControlImageQualityIndicators.inputDozor = XSDataDozorInput().parseString(

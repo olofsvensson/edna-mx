@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Jan 18 02:12::10 2017 by EDGenerateDS.
+# Generated Fri Mar 3 02:29::49 2017 by EDGenerateDS.
 #
 
 import os, sys
@@ -287,7 +287,7 @@ class XSDataInputXDSAPP(XSDataInput):
 
 
 class XSDataResultXDSAPP(XSDataResult):
-    def __init__(self, status=None, cv=None, hkl=None, mtz_F_plus_F_minus=None, mtz_I=None, mtz_F=None, XDS_ASCII_HKL_1=None, XDS_ASCII_HKL=None, correctLP=None, phenixXtriageLog=None, pointlessLog=None, logFile=None):
+    def __init__(self, status=None, cv=None, hkl=None, mtz_F_plus_F_minus=None, mtz_I=None, mtz_F=None, XSCALE_LP=None, XDS_ASCII_HKL_1=None, XDS_ASCII_HKL=None, correctLP=None, phenixXtriageLog=None, pointlessLog=None, logFile=None):
         XSDataResult.__init__(self, status)
         if logFile is None:
             self._logFile = None
@@ -330,6 +330,13 @@ class XSDataResultXDSAPP(XSDataResult):
             self._XDS_ASCII_HKL_1 = XDS_ASCII_HKL_1
         else:
             strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'XDS_ASCII_HKL_1' is not XSDataFile but %s" % self._XDS_ASCII_HKL_1.__class__.__name__
+            raise BaseException(strMessage)
+        if XSCALE_LP is None:
+            self._XSCALE_LP = None
+        elif XSCALE_LP.__class__.__name__ == "XSDataFile":
+            self._XSCALE_LP = XSCALE_LP
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP constructor argument 'XSCALE_LP' is not XSDataFile but %s" % self._XSCALE_LP.__class__.__name__
             raise BaseException(strMessage)
         if mtz_F is None:
             self._mtz_F = []
@@ -438,6 +445,18 @@ class XSDataResultXDSAPP(XSDataResult):
             raise BaseException(strMessage)
     def delXDS_ASCII_HKL_1(self): self._XDS_ASCII_HKL_1 = None
     XDS_ASCII_HKL_1 = property(getXDS_ASCII_HKL_1, setXDS_ASCII_HKL_1, delXDS_ASCII_HKL_1, "Property for XDS_ASCII_HKL_1")
+    # Methods and properties for the 'XSCALE_LP' attribute
+    def getXSCALE_LP(self): return self._XSCALE_LP
+    def setXSCALE_LP(self, XSCALE_LP):
+        if XSCALE_LP is None:
+            self._XSCALE_LP = None
+        elif XSCALE_LP.__class__.__name__ == "XSDataFile":
+            self._XSCALE_LP = XSCALE_LP
+        else:
+            strMessage = "ERROR! XSDataResultXDSAPP.setXSCALE_LP argument is not XSDataFile but %s" % XSCALE_LP.__class__.__name__
+            raise BaseException(strMessage)
+    def delXSCALE_LP(self): self._XSCALE_LP = None
+    XSCALE_LP = property(getXSCALE_LP, setXSCALE_LP, delXSCALE_LP, "Property for XSCALE_LP")
     # Methods and properties for the 'mtz_F' attribute
     def getMtz_F(self): return self._mtz_F
     def setMtz_F(self, mtz_F):
@@ -623,6 +642,8 @@ class XSDataResultXDSAPP(XSDataResult):
             self.XDS_ASCII_HKL.export(outfile, level, name_='XDS_ASCII_HKL')
         if self._XDS_ASCII_HKL_1 is not None:
             self.XDS_ASCII_HKL_1.export(outfile, level, name_='XDS_ASCII_HKL_1')
+        if self._XSCALE_LP is not None:
+            self.XSCALE_LP.export(outfile, level, name_='XSCALE_LP')
         for mtz_F_ in self.getMtz_F():
             mtz_F_.export(outfile, level, name_='mtz_F')
         for mtz_I_ in self.getMtz_I():
@@ -668,6 +689,11 @@ class XSDataResultXDSAPP(XSDataResult):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setXDS_ASCII_HKL_1(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'XSCALE_LP':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setXSCALE_LP(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'mtz_F':
             obj_ = XSDataFile()

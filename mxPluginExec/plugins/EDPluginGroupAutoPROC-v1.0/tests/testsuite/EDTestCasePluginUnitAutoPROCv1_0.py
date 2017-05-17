@@ -49,8 +49,8 @@ class EDTestCasePluginUnitAutoPROCv1_0(EDTestCasePluginUnit):
         strInputXML = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataInputAutoPROC_reference.xml"))
         xsDataInput = XSDataInputAutoPROC.parseString(strInputXML)
         strCommandLine = edPlugin.generateCommandLine(xsDataInput)
-        print(strCommandLine)
-        EDAssert.equal("-B -xml -I /scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5 -Id 1088454,/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5,xtal5w1_1_####.cbf,1,100 -R 5.0 2.0 -ANO", strCommandLine, "Reference data input")
+        # print(strCommandLine)
+        EDAssert.equal("-B -xml -nthreads 12 autoPROC_ScaleWithXscale='yes' -Id 1088454A,/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5,xtal5w1_1_####.cbf,1,50 -R 5.0 2.0", strCommandLine, "Reference data input")
 
 
     def process(self):

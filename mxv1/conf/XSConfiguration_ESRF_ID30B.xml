@@ -5,6 +5,15 @@
   	</XSImportConfiguration>	
   	<XSPluginList>
 		<XSPluginItem>
+			<name>EDPluginControlInterfaceToMXCuBEv1_4</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+ 					<value>http://bacon.esrf.fr:7171</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginControlCharacterisationv1_4</name>  
 			<XSParamList>
 				<XSParamItem>

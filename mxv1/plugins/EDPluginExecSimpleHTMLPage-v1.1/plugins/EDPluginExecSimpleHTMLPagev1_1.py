@@ -493,7 +493,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                 spaceGroupTitle = "Forced spacegroup"
             else:
                 spaceGroupTitle = "Selected spacegroup\n(Forced space group: %s)" % (_strForcedSpaceGroup)
-        tableColumns = [spaceGroupTitle, "a (Å)", "b (Å)", "c (Å)", "alpha (°)", "beta (°)", "gamma (°)"]
+        tableColumns = [spaceGroupTitle, "a [Å]", "b [Å]", "c [Å]", "alpha [°]", "beta [°]", "gamma [°]"]
         listRow = []
         tableData = []
         listRow.append(strSpaceGroup)
@@ -525,6 +525,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         tableColumns.append("File")
         if bDozor:
             tableColumns.append("Dozor score (1)")
+            tableColumns.append("Dozor visible res. [Å]")
             tableColumns.append("Tot integr signal (2)")
         else:
             tableColumns.append("Tot integr signal (1)")
@@ -546,6 +547,10 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                         listRow.append("%.1f" % fDozor_score)
                     else:
                         listRow.append("%.3f" % fDozor_score)
+                else:
+                    listRow.append("NA")
+                if xsDataResultImageQualityIndicators.dozorVisibleResolution:
+                    listRow.append("%.1f" % xsDataResultImageQualityIndicators.dozorVisibleResolution.value)
                 else:
                     listRow.append("NA")
             if xsDataResultImageQualityIndicators.totalIntegratedSignal:

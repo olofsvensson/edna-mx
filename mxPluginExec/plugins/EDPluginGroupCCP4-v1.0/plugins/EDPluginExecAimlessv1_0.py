@@ -25,7 +25,7 @@ from __future__ import with_statement
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="Thomas Boeglin"
+__author__ = "Thomas Boeglin"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
@@ -70,7 +70,10 @@ class EDPluginExecAimlessv1_0(EDPluginExecProcessScript):
 
         start_image = self.dataInput.start_image.value
         end_image = self.dataInput.end_image.value
-        dcid = self.dataInput.dataCollectionID.value
+        if self.dataInput.dataCollectionID is not None:
+            projectName = self.dataInput.dataCollectionID.value
+        else:
+            projectName = "EDNA_proc"
         resolution = self.dataInput.res.value
         if resolution is None:
             resolution = 0
@@ -78,7 +81,7 @@ class EDPluginExecAimlessv1_0(EDPluginExecProcessScript):
 
         self.addListCommandExecution('bins 15')
         self.addListCommandExecution('run 1 batch {0} to {1}'.format(start_image, end_image))
-        self.addListCommandExecution('name run 1 project {0} crystal DEFAULT dataset NATIVE'.format(dcid))
+        self.addListCommandExecution('name run 1 project {0} crystal DEFAULT dataset NATIVE'.format(projectName))
         self.addListCommandExecution('scales constant')
         self.addListCommandExecution('resolution 50 {0}'.format(resolution))
         self.addListCommandExecution('cycles 100')

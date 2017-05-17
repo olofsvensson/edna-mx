@@ -258,16 +258,16 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if sgnumber is not None:
             xds_in.spacegroup = XSDataInteger(sgnumber)
 
+        if data_in.unit_cell is not None:
+            # Workaround for mxCuBE unit cell comma separation and trailing "2"
+            unit_cell = data_in.unit_cell
+            unit_cell.value = unit_cell.value.replace(",", " ")
+            if unit_cell.value.endswith("2"):
+                unit_cell.value = unit_cell.value[:-1]
 
-        # Workaround for mxCuBE unit cell comma separation and trailing "2"
-        unit_cell = data_in.unit_cell
-        unit_cell.value = unit_cell.value.replace(",", " ")
-        if unit_cell.value.endswith("2"):
-            unit_cell.value = unit_cell.value[:-1]
-
-        # Check that unit cell is not zero
-        if not any(abs(float(num)) < 0.1 for num in unit_cell.value.split()):
-            xds_in.unit_cell = unit_cell
+            # Check that unit cell is not zero
+            if not any(abs(float(num)) < 0.1 for num in unit_cell.value.split()):
+                xds_in.unit_cell = unit_cell
 
         self.stats = dict()
 
@@ -285,7 +285,10 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         # The resultsdir used to be root_dir/results/fast_processing
         # self.results_dir = os.path.join(self.root_dir, 'results', 'fast_processing')
         # Now it is the <directory of the output_file>/results
-        self.results_dir = os.path.join(os.path.dirname(self.dataInput.output_file.path.value), 'results')
+        if self.dataInput.output_file is not None and os.path.dirname(self.dataInput.output_file.path.value) != "":
+            self.results_dir = os.path.join(os.path.dirname(self.dataInput.output_file.path.value), 'results')
+        else:
+            self.results_dir = os.path.join(os.path.dirname(self.dataInput.input_file.path.value), 'results')
         if os.path.exists(self.results_dir):
             # Remove existing results
             shutil.rmtree(self.results_dir)
@@ -488,24 +491,27 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.process_start = time.time()
 
 
-        # get our two integration IDs
-        try:
-            self.integration_id_noanom = self.create_integration_id(self.dataInput.data_collection_id.value,
-                                                                    "Creating non-anomalous integration ID")
-        except Exception as e:
-            strErrorMessage = "Could not get non-anom integration ID: \n{0}".format(traceback.format_exc(e))
-            self.addErrorMessage(strErrorMessage)
-            self.ERROR(strErrorMessage)
-            self.integration_id_noanom = None
+        self.integration_id_noanom = None
+        self.integration_id_anom = None
+        if self.dataInput.data_collection_id is not None:
+            # get our two integration IDs
+            try:
+                self.integration_id_noanom = self.create_integration_id(self.dataInput.data_collection_id.value,
+                                                                        "Creating non-anomalous integration ID")
+            except Exception as e:
+                strErrorMessage = "Could not get non-anom integration ID: \n{0}".format(traceback.format_exc(e))
+                self.addErrorMessage(strErrorMessage)
+                self.ERROR(strErrorMessage)
+                self.integration_id_noanom = None
 
-        try:
-            self.integration_id_anom = self.create_integration_id(self.dataInput.data_collection_id.value,
-                                                                  "Creating anomalous integration ID")
-        except Exception as e:
-            strErrorMessage = "Could not get anom integration ID: \n{0}".format(traceback.format_exc(e))
-            self.addErrorMessage(strErrorMessage)
-            self.ERROR(strErrorMessage)
-            self.integration_id_anom = None
+            try:
+                self.integration_id_anom = self.create_integration_id(self.dataInput.data_collection_id.value,
+                                                                      "Creating anomalous integration ID")
+            except Exception as e:
+                strErrorMessage = "Could not get anom integration ID: \n{0}".format(traceback.format_exc(e))
+                self.addErrorMessage(strErrorMessage)
+                self.ERROR(strErrorMessage)
+                self.integration_id_anom = None
 
         # first XDS plugin run with supplied XDS file
         self.screen('Starting first XDS run...')
@@ -944,7 +950,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                          'Successful',
                          strMessage)
 
-            if bPseudotranslation or bTwinning:
+            if self.dataInput.data_collection_id is not None and (bPseudotranslation or bTwinning):
                 if bPseudotranslation and bTwinning:
                     strISPyBComment = "EDNA dp: pseudo-translation and twinning detected."
                 elif bPseudotranslation:
@@ -977,327 +983,333 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         except OSError:  # file exists
             pass
 
+        if self.dataInput.data_collection_id is not None:
+            # Now that we have executed the whole thing we need to create
+            # the suitable ISPyB plugin input and serialize it to the file
+            # we've been given as input
+            output = AutoProcContainer()
 
-        # Now that we have executed the whole thing we need to create
-        # the suitable ISPyB plugin input and serialize it to the file
-        # we've been given as input
-        output = AutoProcContainer()
+            # AutoProc attr
+            autoproc = AutoProc()
 
-        # AutoProc attr
-        autoproc = AutoProc()
+            # There's also
+            pointless_sg_str = self.file_conversion.dataOutput.pointless_sgstring
+            if pointless_sg_str is not None:
+                autoproc.spaceGroup = pointless_sg_str.value
 
-        # There's also
-        pointless_sg_str = self.file_conversion.dataOutput.pointless_sgstring
-        if pointless_sg_str is not None:
-            autoproc.spaceGroup = pointless_sg_str.value
+            xdsout = self.xds_first.dataOutput
 
-        xdsout = self.xds_first.dataOutput
+            # The unit cell will be taken from the no anom aimless run below
 
-        # The unit cell will be taken from the no anom aimless run below
+            output.AutoProc = autoproc
 
-        output.AutoProc = autoproc
+            # NOANOM PATH
 
-        # NOANOM PATH
+            # scaling container and all the things that go in
+            scaling_container_noanom = AutoProcScalingContainer()
+            scaling = AutoProcScaling()
+            scaling.recordTimeStamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-        # scaling container and all the things that go in
-        scaling_container_noanom = AutoProcScalingContainer()
-        scaling = AutoProcScaling()
-        scaling.recordTimeStamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            scaling_container_noanom.AutoProcScaling = scaling
 
-        scaling_container_noanom.AutoProcScaling = scaling
+            inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_noanom.value)
 
-        inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_noanom.value)
+            autoproc.refinedCell_a = str(unit_cell[0])
+            autoproc.refinedCell_b = str(unit_cell[1])
+            autoproc.refinedCell_c = str(unit_cell[2])
+            autoproc.refinedCell_alpha = str(unit_cell[3])
+            autoproc.refinedCell_beta = str(unit_cell[4])
+            autoproc.refinedCell_gamma = str(unit_cell[5])
 
-        autoproc.refinedCell_a = str(unit_cell[0])
-        autoproc.refinedCell_b = str(unit_cell[1])
-        autoproc.refinedCell_c = str(unit_cell[2])
-        autoproc.refinedCell_alpha = str(unit_cell[3])
-        autoproc.refinedCell_beta = str(unit_cell[4])
-        autoproc.refinedCell_gamma = str(unit_cell[5])
+            inner_stats = AutoProcScalingStatistics()
+            for k, v in inner.items():
+                setattr(inner_stats, k, v)
+            inner_stats.anomalous = False
+            scaling_container_noanom.AutoProcScalingStatistics.append(inner_stats)
 
-        inner_stats = AutoProcScalingStatistics()
-        for k, v in inner.items():
-            setattr(inner_stats, k, v)
-        inner_stats.anomalous = False
-        scaling_container_noanom.AutoProcScalingStatistics.append(inner_stats)
+            outer_stats = AutoProcScalingStatistics()
+            for k, v in outer.items():
+                setattr(outer_stats, k, v)
+            outer_stats.anomalous = False
+            scaling_container_noanom.AutoProcScalingStatistics.append(outer_stats)
 
-        outer_stats = AutoProcScalingStatistics()
-        for k, v in outer.items():
-            setattr(outer_stats, k, v)
-        outer_stats.anomalous = False
-        scaling_container_noanom.AutoProcScalingStatistics.append(outer_stats)
+            overall_stats = AutoProcScalingStatistics()
+            for k, v in overall.items():
+                setattr(overall_stats, k, v)
+            overall_stats.anomalous = False
+            scaling_container_noanom.AutoProcScalingStatistics.append(overall_stats)
 
-        overall_stats = AutoProcScalingStatistics()
-        for k, v in overall.items():
-            setattr(overall_stats, k, v)
-        overall_stats.anomalous = False
-        scaling_container_noanom.AutoProcScalingStatistics.append(overall_stats)
+            integration_container_noanom = AutoProcIntegrationContainer()
+            image = Image()
+            if self.dataInput.data_collection_id is not None:
+                image.dataCollectionId = self.dataInput.data_collection_id.value
+            integration_container_noanom.Image = image
 
-        integration_container_noanom = AutoProcIntegrationContainer()
-        image = Image()
-        image.dataCollectionId = self.dataInput.data_collection_id.value
-        integration_container_noanom.Image = image
+            integration_noanom = AutoProcIntegration()
+            if self.integration_id_noanom is not None:
+                integration_noanom.autoProcIntegrationId = self.integration_id_noanom
+            integration_noanom.cell_a = unit_cell[0]
+            integration_noanom.cell_b = unit_cell[1]
+            integration_noanom.cell_c = unit_cell[2]
+            integration_noanom.cell_alpha = unit_cell[3]
+            integration_noanom.cell_beta = unit_cell[4]
+            integration_noanom.cell_gamma = unit_cell[5]
+            integration_noanom.anomalous = 0
 
-        integration_noanom = AutoProcIntegration()
-        if self.integration_id_noanom is not None:
-            integration_noanom.autoProcIntegrationId = self.integration_id_noanom
-        integration_noanom.cell_a = unit_cell[0]
-        integration_noanom.cell_b = unit_cell[1]
-        integration_noanom.cell_c = unit_cell[2]
-        integration_noanom.cell_alpha = unit_cell[3]
-        integration_noanom.cell_beta = unit_cell[4]
-        integration_noanom.cell_gamma = unit_cell[5]
-        integration_noanom.anomalous = 0
+            # done with the integration
+            integration_container_noanom.AutoProcIntegration = integration_noanom
+            scaling_container_noanom.AutoProcIntegrationContainer = integration_container_noanom
 
-        # done with the integration
-        integration_container_noanom.AutoProcIntegration = integration_noanom
-        scaling_container_noanom.AutoProcIntegrationContainer = integration_container_noanom
+            # ANOM PATH
+            scaling_container_anom = AutoProcScalingContainer()
 
-        # ANOM PATH
-        scaling_container_anom = AutoProcScalingContainer()
+            inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_anom.value)
+            inner_stats = AutoProcScalingStatistics()
+            for k, v in inner.items():
+                setattr(inner_stats, k, v)
+            inner_stats.anomalous = True
+            scaling_container_anom.AutoProcScalingStatistics.append(inner_stats)
 
-        inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_anom.value)
-        inner_stats = AutoProcScalingStatistics()
-        for k, v in inner.items():
-            setattr(inner_stats, k, v)
-        inner_stats.anomalous = True
-        scaling_container_anom.AutoProcScalingStatistics.append(inner_stats)
+            outer_stats = AutoProcScalingStatistics()
+            for k, v in outer.items():
+                setattr(outer_stats, k, v)
+            outer_stats.anomalous = True
+            scaling_container_anom.AutoProcScalingStatistics.append(outer_stats)
 
-        outer_stats = AutoProcScalingStatistics()
-        for k, v in outer.items():
-            setattr(outer_stats, k, v)
-        outer_stats.anomalous = True
-        scaling_container_anom.AutoProcScalingStatistics.append(outer_stats)
-
-        overall_stats = AutoProcScalingStatistics()
-        for k, v in overall.items():
-            setattr(overall_stats, k, v)
-        overall_stats.anomalous = True
-        scaling_container_anom.AutoProcScalingStatistics.append(overall_stats)
-
-
-
-        scaling = AutoProcScaling()
-        scaling.recordTimeStamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-
-        scaling_container_anom.AutoProcScaling = scaling
-
-        xscale_stats_anom = self.xscale_generate.dataOutput.stats_anom_merged
-        inner_stats_anom = xscale_stats_anom.completeness_entries[0]
-        outer_stats_anom = xscale_stats_anom.completeness_entries[-1]
-
-        integration_container_anom = AutoProcIntegrationContainer()
-        image = Image()
-        image.dataCollectionId = self.dataInput.data_collection_id.value
-        integration_container_anom.Image = image
-
-        integration_anom = AutoProcIntegration()
-        crystal_stats = self.parse_xds_anom.dataOutput
-        if self.integration_id_anom is not None:
-            integration_anom.autoProcIntegrationId = self.integration_id_anom
-        integration_anom.cell_a = unit_cell[0]
-        integration_anom.cell_b = unit_cell[1]
-        integration_anom.cell_c = unit_cell[2]
-        integration_anom.cell_alpha = unit_cell[3]
-        integration_anom.cell_beta = unit_cell[4]
-        integration_anom.cell_gamma = unit_cell[5]
-        integration_anom.anomalous = 1
-
-        # done with the integration
-        integration_container_anom.AutoProcIntegration = integration_anom
-        scaling_container_anom.AutoProcIntegrationContainer = integration_container_anom
+            overall_stats = AutoProcScalingStatistics()
+            for k, v in overall.items():
+                setattr(overall_stats, k, v)
+            overall_stats.anomalous = True
+            scaling_container_anom.AutoProcScalingStatistics.append(overall_stats)
 
 
-        # ------ NO ANOM / ANOM end
-        processingPrograms = 'EDNA_proc'
-        if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
-            processingPrograms = 'EDNA_proc reprocess'
 
-        program_container_anom = AutoProcProgramContainer()
-        program_container_anom.AutoProcProgram = AutoProcProgram()
-        program_container_anom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container_anom.AutoProcProgram.processingPrograms = processingPrograms
-        program_container_anom.AutoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
-        program_container_anom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
+            scaling = AutoProcScaling()
+            scaling.recordTimeStamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-        program_container_noanom = AutoProcProgramContainer()
-        program_container_noanom.AutoProcProgram = AutoProcProgram()
-        program_container_noanom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        program_container_noanom.AutoProcProgram.processingPrograms = processingPrograms
-        program_container_noanom.AutoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
-        program_container_noanom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
+            scaling_container_anom.AutoProcScaling = scaling
 
-        # now for the generated files. There's some magic to do with
-        # their paths to determine where to put them on pyarch
-        pyarch_path = None
-        # Note: the path is in the form /data/whatever
+            xscale_stats_anom = self.xscale_generate.dataOutput.stats_anom_merged
+            inner_stats_anom = xscale_stats_anom.completeness_entries[0]
+            outer_stats_anom = xscale_stats_anom.completeness_entries[-1]
 
-        # remove the edna-autoproc-import suffix
-        original_files_dir = self.file_conversion.dataInput.output_directory.value
-        # files_dir, _ = os.path.split(original_files_dir)
-        files_dir = original_files_dir
+            integration_container_anom = AutoProcIntegrationContainer()
+            image = Image()
+            if self.dataInput.data_collection_id is not None:
+                image.dataCollectionId = self.dataInput.data_collection_id.value
+            integration_container_anom.Image = image
 
-        # the whole transformation is fragile!
-        if EDUtilsPath.isEMBL():
-            tokens = [elem for elem in self.first_image.split(os.path.sep)
-                      if len(elem) > 0]
-            if 'p14' in tokens[0:2] or 'P14' in tokens[0:2]:
-                 strBeamline = 'p14'
-            elif 'p13' in tokens[0:2] or 'P13' in tokens[0:2]:
-                strBeamline = 'p13'
-            else:
-                 strBeamline = ''
-            pyarch_path = os.path.join('/data/ispyb', strBeamline, *tokens[3:-1])
-            pyarch_path = os.path.join(pyarch_path, "%s" % self.integration_id_anom)
-        elif EDUtilsPath.isESRF():
+            integration_anom = AutoProcIntegration()
+            crystal_stats = self.parse_xds_anom.dataOutput
+            if self.integration_id_anom is not None:
+                integration_anom.autoProcIntegrationId = self.integration_id_anom
+            integration_anom.cell_a = unit_cell[0]
+            integration_anom.cell_b = unit_cell[1]
+            integration_anom.cell_c = unit_cell[2]
+            integration_anom.cell_alpha = unit_cell[3]
+            integration_anom.cell_beta = unit_cell[4]
+            integration_anom.cell_gamma = unit_cell[5]
+            integration_anom.anomalous = 1
+
+            # done with the integration
+            integration_container_anom.AutoProcIntegration = integration_anom
+            scaling_container_anom.AutoProcIntegrationContainer = integration_container_anom
+
+
+            # ------ NO ANOM / ANOM end
+            processingPrograms = 'EDNA_proc'
             if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
-                strDate = time.strftime("%Y%m%d", time.localtime(time.time()))
-                strTime = time.strftime("%H%M%S", time.localtime(time.time()))
-                if self.dataInput.data_collection_id is not None:
-                    pyarch_base = os.path.join("/data/pyarch/id30a2/reprocess/EDNA_proc", str(self.dataInput.data_collection_id.value), strDate)
-                else:
-                    pyarch_base = os.path.join("/data/pyarch/id30a2/reprocess/EDNA_proc", strDate)
-                if not os.path.exists(pyarch_base):
-                    os.makedirs(pyarch_base)
-                pyarch_path = tempfile.mkdtemp(prefix=strTime + "_", dir=pyarch_base)
+                processingPrograms = 'EDNA_proc reprocess'
 
-            elif files_dir.startswith('/data/visitor'):
-                # We might get empty elements at the head/tail of the list
-                tokens = [elem for elem in files_dir.split(os.path.sep)
+            program_container_anom = AutoProcProgramContainer()
+            program_container_anom.AutoProcProgram = AutoProcProgram()
+            program_container_anom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
+            program_container_anom.AutoProcProgram.processingPrograms = processingPrograms
+            program_container_anom.AutoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
+            program_container_anom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
+
+            program_container_noanom = AutoProcProgramContainer()
+            program_container_noanom.AutoProcProgram = AutoProcProgram()
+            program_container_noanom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
+            program_container_noanom.AutoProcProgram.processingPrograms = processingPrograms
+            program_container_noanom.AutoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
+            program_container_noanom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
+
+            # now for the generated files. There's some magic to do with
+            # their paths to determine where to put them on pyarch
+            pyarch_path = None
+            # Note: the path is in the form /data/whatever
+
+            # remove the edna-autoproc-import suffix
+            original_files_dir = self.file_conversion.dataInput.output_directory.value
+            # files_dir, _ = os.path.split(original_files_dir)
+            files_dir = original_files_dir
+
+            # the whole transformation is fragile!
+            if EDUtilsPath.isEMBL():
+                tokens = [elem for elem in self.first_image.split(os.path.sep)
                           if len(elem) > 0]
-                year = tokens[4][0:4]
-                pyarch_path = os.path.join('/data/pyarch', year,
-                                           tokens[3], tokens[2],
-                                           *tokens[4:])
-            else:
-                # We might get empty elements at the head/tail of the list
-                tokens = [elem for elem in files_dir.split(os.path.sep)
-                          if len(elem) > 0]
-                if tokens[2] == 'inhouse':
+                if 'p14' in tokens[0:2] or 'P14' in tokens[0:2]:
+                     strBeamline = 'p14'
+                elif 'p13' in tokens[0:2] or 'P13' in tokens[0:2]:
+                    strBeamline = 'p13'
+                else:
+                     strBeamline = ''
+                pyarch_path = os.path.join('/data/ispyb', strBeamline, *tokens[3:-1])
+                pyarch_path = os.path.join(pyarch_path, "%s" % self.integration_id_anom)
+            elif EDUtilsPath.isESRF():
+                if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
+                    strDate = time.strftime("%Y%m%d", time.localtime(time.time()))
+                    strTime = time.strftime("%H%M%S", time.localtime(time.time()))
+                    if self.dataInput.data_collection_id is not None:
+                        pyarch_base = os.path.join("/data/pyarch/id30a2/reprocess/EDNA_proc", str(self.dataInput.data_collection_id.value), strDate)
+                    else:
+                        pyarch_base = os.path.join("/data/pyarch/id30a2/reprocess/EDNA_proc", strDate)
+                    if not os.path.exists(pyarch_base):
+                        os.makedirs(pyarch_base)
+                    pyarch_path = tempfile.mkdtemp(prefix=strTime + "_", dir=pyarch_base)
+
+                elif files_dir.startswith('/data/visitor'):
+                    # We might get empty elements at the head/tail of the list
+                    tokens = [elem for elem in files_dir.split(os.path.sep)
+                              if len(elem) > 0]
                     year = tokens[4][0:4]
-                    pyarch_path = os.path.join('/data/pyarch', year, tokens[1],
-                                               *tokens[3:])
-        if pyarch_path is not None:
-            pyarch_path = pyarch_path.replace('PROCESSED_DATA', 'RAW_DATA')
-            try:
-                os.makedirs(pyarch_path)
-            except OSError:
-                # dir already exists, may happen when testing
-                self.screen('Target directory on pyarch ({0}) already exists, ignoring'.format(pyarch_path))
-
-            file_list = []
-            # we can now copy the files to this dir
-            for f in os.listdir(original_files_dir):
-                current = os.path.join(original_files_dir, f)
-                if not os.path.isfile(current):
-                    continue
-                if not os.path.splitext(current)[1].lower() in ISPYB_UPLOAD_EXTENSIONS:
-                    continue
-                new_path = os.path.join(pyarch_path, f)
-                file_list.append(new_path)
-                shutil.copyfile(current,
-                                new_path)
-            # now add those to the ispyb upload
-            for path in file_list:
-                dirname, filename = os.path.split(path)
-                attach_anom = AutoProcProgramAttachment()
-                attach_anom.fileType = "Result"
-                attach_anom.fileName = filename
-                attach_noanom = AutoProcProgramAttachment()
-                attach_noanom.fileType = "Result"
-                attach_noanom.fileName = filename
-                attach_anom.filePath = dirname
-                attach_noanom.filePath = dirname
-                if "_anom" in filename:
-                    program_container_anom.AutoProcProgramAttachment.append(attach_anom)
-                elif "_noanom" in filename:
-                    program_container_noanom.AutoProcProgramAttachment.append(attach_noanom)
+                    pyarch_path = os.path.join('/data/pyarch', year,
+                                               tokens[3], tokens[2],
+                                               *tokens[4:])
                 else:
-                    program_container_noanom.AutoProcProgramAttachment.append(attach_anom)
-                    program_container_anom.AutoProcProgramAttachment.append(attach_noanom)
-
-
-        program_container_anom.AutoProcProgram.processingStatus = True
-        program_container_noanom.AutoProcProgram.processingStatus = True
-
-        # first with anom
-
-        output.AutoProcProgramContainer = program_container_anom
-        output.AutoProcScalingContainer = scaling_container_anom
-
-        ispyb_input = XSDataInputStoreAutoProc()
-        ispyb_input.AutoProcContainer = output
-
-
-        with open(self.dataInput.output_file.path.value, 'w') as f:
-            f.write(ispyb_input.marshal())
-
-        # store results in ispyb
-        self.store_autoproc_anom.dataInput = ispyb_input
-        t0 = time.time()
-        self.store_autoproc_anom.executeSynchronous()
-        self.retrieveFailureMessages(self.store_autoproc_anom, "Store EDNAproc anom")
-        self.stats['ispyb_upload'] = time.time() - t0
-
-        if self.store_autoproc_anom.isFailure():
-            self.ERROR('could not send results to ispyb')
-        else:
-            # store the EDNAproc ID as a filename in the
-            # fastproc_integration_ids directory
-            os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_anom)), 0o755)
-        # then noanom stats
-
-        output.AutoProcProgramContainer = program_container_noanom
-        output.AutoProcScalingContainer = scaling_container_noanom
-
-        ispyb_input = XSDataInputStoreAutoProc()
-        ispyb_input.AutoProcContainer = output
-
-
-        with open(self.dataInput.output_file.path.value, 'w') as f:
-            f.write(ispyb_input.marshal())
-
-        # store results in ispyb
-        self.store_autoproc_noanom.dataInput = ispyb_input
-        t0 = time.time()
-        self.store_autoproc_noanom.executeSynchronous()
-        autoProcProgramId = self.store_autoproc_noanom.dataOutput.autoProcProgramId.value
-        self.retrieveFailureMessages(self.store_autoproc_noanom, "Store EDNAproc noanom")
-        self.stats['ispyb_upload'] = time.time() - t0
-
-        if self.store_autoproc_noanom.isFailure():
-            self.ERROR('could not send results to ispyb')
-        else:
-            # store the EDNAproc id
-            os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0o755)
-
-        # Finally run dimple if executed at the ESRF
-        if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():
-            xsDataInputControlDimple = XSDataInputControlDimple()
-            xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
-            xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "ep_{0}_noanom_aimless.mtz".format(self.image_prefix))))
-            xsDataInputControlDimple.imagePrefix = XSDataString(self.image_prefix)
-            xsDataInputControlDimple.proposal = XSDataString(self.strProposal)
-            xsDataInputControlDimple.sessionDate = XSDataString(self.strSessionDate)
-            xsDataInputControlDimple.beamline = XSDataString(self.strBeamline)
-            xsDataInputControlDimple.pdbDirectory = XSDataFile(XSDataString(self.root_dir))
-            xsDataInputControlDimple.resultsDirectory = XSDataFile(XSDataString(self.results_dir))
+                    # We might get empty elements at the head/tail of the list
+                    tokens = [elem for elem in files_dir.split(os.path.sep)
+                              if len(elem) > 0]
+                    if tokens[2] == 'inhouse':
+                        year = tokens[4][0:4]
+                        pyarch_path = os.path.join('/data/pyarch', year, tokens[1],
+                                                   *tokens[3:])
             if pyarch_path is not None:
-                xsDataInputControlDimple.pyarchPath = XSDataFile(XSDataString(pyarch_path))
-            if autoProcProgramId is not None:
-                xsDataInputControlDimple.autoProcProgramId = XSDataInteger(autoProcProgramId)
-            edPluginControlRunDimple = self.loadPlugin("EDPluginControlRunDimplev1_0")
-            edPluginControlRunDimple.dataInput = xsDataInputControlDimple
-            edPluginControlRunDimple.executeSynchronous()
-            if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully is not None:
-                if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully.value:
-                    self.bExecutedDimple = True
-                    strISPyBComment = "DIMPLE results available for EDNA_proc"
-                    xsDataInput = XSDataInputISPyBUpdateDataCollectionGroupComment()
-                    xsDataInput.newComment = XSDataString(strISPyBComment)
-                    xsDataInput.dataCollectionId = self.dataInput.data_collection_id
-                    self.edPluginISPyBUpdateDataCollectionGroupComment.dataInput = xsDataInput
-                    self.executePluginSynchronous(self.edPluginISPyBUpdateDataCollectionGroupComment)
+                pyarch_path = pyarch_path.replace('PROCESSED_DATA', 'RAW_DATA')
+                try:
+                    os.makedirs(pyarch_path)
+                except OSError:
+                    # dir already exists, may happen when testing
+                    self.screen('Target directory on pyarch ({0}) already exists, ignoring'.format(pyarch_path))
+
+                file_list = []
+                # we can now copy the files to this dir
+                for f in os.listdir(original_files_dir):
+                    current = os.path.join(original_files_dir, f)
+                    if not os.path.isfile(current):
+                        continue
+                    if not os.path.splitext(current)[1].lower() in ISPYB_UPLOAD_EXTENSIONS:
+                        continue
+                    new_path = os.path.join(pyarch_path, f)
+                    file_list.append(new_path)
+                    shutil.copyfile(current,
+                                    new_path)
+                # now add those to the ispyb upload
+                for path in file_list:
+                    dirname, filename = os.path.split(path)
+                    attach_anom = AutoProcProgramAttachment()
+                    attach_anom.fileType = "Result"
+                    attach_anom.fileName = filename
+                    attach_noanom = AutoProcProgramAttachment()
+                    attach_noanom.fileType = "Result"
+                    attach_noanom.fileName = filename
+                    attach_anom.filePath = dirname
+                    attach_noanom.filePath = dirname
+                    if "_anom" in filename:
+                        program_container_anom.AutoProcProgramAttachment.append(attach_anom)
+                    elif "_noanom" in filename:
+                        program_container_noanom.AutoProcProgramAttachment.append(attach_noanom)
+                    else:
+                        program_container_noanom.AutoProcProgramAttachment.append(attach_anom)
+                        program_container_anom.AutoProcProgramAttachment.append(attach_noanom)
+
+
+            program_container_anom.AutoProcProgram.processingStatus = True
+            program_container_noanom.AutoProcProgram.processingStatus = True
+
+            # first with anom
+
+            output.AutoProcProgramContainer = program_container_anom
+            output.AutoProcScalingContainer = scaling_container_anom
+
+            ispyb_input = XSDataInputStoreAutoProc()
+            ispyb_input.AutoProcContainer = output
+
+            if self.dataInput.output_file is not None:
+                with open(self.dataInput.output_file.path.value, 'w') as f:
+                    f.write(ispyb_input.marshal())
+
+            # store results in ispyb
+            self.store_autoproc_anom.dataInput = ispyb_input
+            t0 = time.time()
+            self.store_autoproc_anom.executeSynchronous()
+            self.retrieveFailureMessages(self.store_autoproc_anom, "Store EDNAproc anom")
+            self.stats['ispyb_upload'] = time.time() - t0
+
+            if self.store_autoproc_anom.isFailure():
+                self.ERROR('could not send results to ispyb')
+            else:
+                # store the EDNAproc ID as a filename in the
+                # fastproc_integration_ids directory
+                os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_anom)), 0o755)
+
+            # then noanom stats
+
+            output.AutoProcProgramContainer = program_container_noanom
+            output.AutoProcScalingContainer = scaling_container_noanom
+
+            ispyb_input = XSDataInputStoreAutoProc()
+            ispyb_input.AutoProcContainer = output
+
+
+            if self.dataInput.output_file is not None:
+                with open(self.dataInput.output_file.path.value, 'w') as f:
+                    f.write(ispyb_input.marshal())
+
+            autoProcProgramId = None
+            if self.dataInput.data_collection_id is not None:
+                # store results in ispyb
+                self.store_autoproc_noanom.dataInput = ispyb_input
+                t0 = time.time()
+                self.store_autoproc_noanom.executeSynchronous()
+                autoProcProgramId = self.store_autoproc_noanom.dataOutput.autoProcProgramId.value
+                self.retrieveFailureMessages(self.store_autoproc_noanom, "Store EDNAproc noanom")
+                self.stats['ispyb_upload'] = time.time() - t0
+
+                if self.store_autoproc_noanom.isFailure():
+                    self.ERROR('could not send results to ispyb')
+                else:
+                    # store the EDNAproc id
+                    os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0o755)
+
+            # Finally run dimple if executed at the ESRF
+            if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():
+                xsDataInputControlDimple = XSDataInputControlDimple()
+                xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
+                xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "ep_{0}_noanom_aimless.mtz".format(self.image_prefix))))
+                xsDataInputControlDimple.imagePrefix = XSDataString(self.image_prefix)
+                xsDataInputControlDimple.proposal = XSDataString(self.strProposal)
+                xsDataInputControlDimple.sessionDate = XSDataString(self.strSessionDate)
+                xsDataInputControlDimple.beamline = XSDataString(self.strBeamline)
+                xsDataInputControlDimple.pdbDirectory = XSDataFile(XSDataString(self.root_dir))
+                xsDataInputControlDimple.resultsDirectory = XSDataFile(XSDataString(self.results_dir))
+                if pyarch_path is not None:
+                    xsDataInputControlDimple.pyarchPath = XSDataFile(XSDataString(pyarch_path))
+                if autoProcProgramId is not None:
+                    xsDataInputControlDimple.autoProcProgramId = XSDataInteger(autoProcProgramId)
+                edPluginControlRunDimple = self.loadPlugin("EDPluginControlRunDimplev1_0")
+                edPluginControlRunDimple.dataInput = xsDataInputControlDimple
+                edPluginControlRunDimple.executeSynchronous()
+                if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully is not None:
+                    if edPluginControlRunDimple.dataOutput.dimpleExecutedSuccessfully.value:
+                        self.bExecutedDimple = True
+                        strISPyBComment = "DIMPLE results available for EDNA_proc"
+                        xsDataInput = XSDataInputISPyBUpdateDataCollectionGroupComment()
+                        xsDataInput.newComment = XSDataString(strISPyBComment)
+                        xsDataInput.dataCollectionId = self.dataInput.data_collection_id
+                        self.edPluginISPyBUpdateDataCollectionGroupComment.dataInput = xsDataInput
+                        self.executePluginSynchronous(self.edPluginISPyBUpdateDataCollectionGroupComment)
 
 
 
@@ -1408,14 +1420,15 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
     # Proxy since the API changed and we can now log to several ids
     def log_to_ispyb(self, integration_id, step, status, comments=""):
-        if type(integration_id) is list:
-            for item in integration_id:
-                self.log_to_ispyb_impl(item, step, status, comments)
-        else:
-            self.log_to_ispyb_impl(integration_id, step, status, comments)
-            if status == "Failed":
-                for strErrorMessage in self.getListOfErrorMessages():
-                    self.log_to_ispyb_impl(integration_id, step, status, strErrorMessage)
+        if integration_id is not None:
+            if type(integration_id) is list:
+                for item in integration_id:
+                    self.log_to_ispyb_impl(item, step, status, comments)
+            else:
+                self.log_to_ispyb_impl(integration_id, step, status, comments)
+                if status == "Failed":
+                    for strErrorMessage in self.getListOfErrorMessages():
+                        self.log_to_ispyb_impl(integration_id, step, status, strErrorMessage)
 
     def log_to_ispyb_impl(self, integration_id, step, status, comments=""):
         # hack in the event we could not create an integration ID

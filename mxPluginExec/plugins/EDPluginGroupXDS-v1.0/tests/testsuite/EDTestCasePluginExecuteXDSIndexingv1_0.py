@@ -44,14 +44,11 @@ from EDUtilsTest                      import EDUtilsTest
 class EDTestCasePluginExecuteXDSIndexingv1_0 (EDTestCasePluginExecute):
 
 
-    def __init__(self, _pyStrTestName="EDPluginXDSIndexingv1_0"):
-        EDTestCasePluginExecute.__init__(self, _pyStrTestName)
+    def __init__(self, _strTestName="EDPluginXDSIndexingv1_0"):
+        EDTestCasePluginExecute.__init__(self, _strTestName)
 
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputXDSIndexing_reference.xml"))
-
-        #self.setReferenceDataOutputFile( os.path.join( self.getPluginTestsDataHome(), "XSDataResultXDSIndexing_reference.xml"))
-        #self.m_oedObtainedOutputDataFile = self.getPluginName() + "_output.xml"
 
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
@@ -59,21 +56,8 @@ class EDTestCasePluginExecuteXDSIndexingv1_0 (EDTestCasePluginExecute):
                             'ref-testscale_1_002.img'])
 
     def testExecute(self):
-        EDVerbose.WARNING('**************************************************')
-        EDVerbose.WARNING('plop')
-        EDVerbose.WARNING('**************************************************')
         self.run()
-        EDVerbose.WARNING('**************************************************')
-        EDVerbose.WARNING(str(self.getPlugin()))
-        EDVerbose.WARNING('**************************************************')
 
     def process(self):
         self.addTestMethod(self.testExecute)
 
-
-
-
-
-if __name__ == '__main__':
-    t = EDTestCasePluginExecuteXDSIndexingv1_0("EDTestCasePluginExecuteXDSIndexingv1_0")
-    t.execute()

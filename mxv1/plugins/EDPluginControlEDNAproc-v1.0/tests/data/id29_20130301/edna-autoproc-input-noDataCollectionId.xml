@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<XSDataEDNAprocInput>
+  <input_file>
+    <path>
+      <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/id29_20130301/XDS.INP</value>
+    </path>
+  </input_file>
+  <start_image>
+    <value>1</value>
+  </start_image>
+  <end_image>
+    <value>100</value>
+  </end_image>
+</XSDataEDNAprocInput>

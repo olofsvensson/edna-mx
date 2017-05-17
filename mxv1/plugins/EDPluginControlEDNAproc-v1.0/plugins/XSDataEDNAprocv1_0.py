@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Dec 8 11:46::03 2016 by EDGenerateDS.
+# Generated Mon Mar 13 06:21::04 2017 by EDGenerateDS.
 #
 
 import os, sys
@@ -1076,8 +1076,6 @@ class XSDataEDNAprocInput(XSDataInput):
             self.unit_cell.export(outfile, level, name_='unit_cell')
         if self._output_file is not None:
             self.output_file.export(outfile, level, name_='output_file')
-        else:
-            warnEmptyAttribute("output_file", "XSDataFile")
         if self._start_image is not None:
             self.start_image.export(outfile, level, name_='start_image')
         if self._end_image is not None:

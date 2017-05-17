@@ -281,12 +281,13 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             self.edPluginExecXDSAPPNoanom.dataInput = xsDataInputXDSAPPNoanom
             self.edPluginExecXDSAPPNoanom.execute()
         self.edPluginExecXDSAPPAnom.synchronize()
-        strPathXscaleLpAnom = self.runXscale(self.edPluginExecXDSAPPAnom.getWorkingDirectory(), anom=True, merged=True)
         xsDataResultXDSAPPAnom = self.edPluginExecXDSAPPAnom.dataOutput
+        # Run XSCALE even if XSCALE.LP is present
+        strPathXscaleLpAnom = self.runXscale(self.edPluginExecXDSAPPAnom.getWorkingDirectory(), anom=True, merged=True)
         if self.doAnomAndNonanom:
             self.edPluginExecXDSAPPNoanom.synchronize()
-            strPathXscaleLpNoanom = self.runXscale(self.edPluginExecXDSAPPNoanom.getWorkingDirectory(), anom=False, merged=True)
             xsDataResultXDSAPPNoanom = self.edPluginExecXDSAPPNoanom.dataOutput
+            strPathXscaleLpNoanom = self.runXscale(self.edPluginExecXDSAPPNoanom.getWorkingDirectory(), anom=False, merged=True)
         timeEnd = time.localtime()
 
         # Upload to ISPyB

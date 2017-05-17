@@ -52,11 +52,13 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         self.setDataOutput(XSDataMinimalXdsOut())
         self.dataOutput.succeeded = XSDataBoolean(False)
         self.maxNoProcessors = 10
+        self.pathToNeggiaPlugin = None
 
     def configure(self):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginExecMinimalXdsv1_0.configure")
         self.maxNoProcessors = self.config.get("maxNoProcessors", self.maxNoProcessors)
+        self.pathToNeggiaPlugin = self.config.get("pathToNeggiaPlugin")
 
 
     def checkParameters(self):
@@ -206,6 +208,10 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
             if not os.path.exists(ygeo_path):
                 os.symlink(ygeo, ygeo_path)
             parsed_config['Y-GEO_CORR='] = os.path.basename(ygeo)
+
+        # Neggia plugin
+        if not "LIB=" in parsed_config and self.pathToNeggiaPlugin is not None:
+            parsed_config["LIB="] = self.pathToNeggiaPlugin
 
         # Max no processors
         parsed_config['MAXIMUM_NUMBER_OF_PROCESSORS='] = str(self.maxNoProcessors)

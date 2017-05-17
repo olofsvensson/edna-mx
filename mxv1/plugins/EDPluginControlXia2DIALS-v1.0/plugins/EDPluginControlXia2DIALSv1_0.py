@@ -293,12 +293,6 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         else:
             anomString = "noanom"
 
-        # Copy dataFiles to results directory
-        for dataFile in edPluginExecXia2DIALS.dataOutput.dataFiles:
-            trunc, suffix = os.path.splitext(dataFile.path.value)
-            newFileName = trunc + "_" + anomString + suffix
-            shutil.copy(dataFile.path.value, os.path.join(self.resultsDirectory, newFileName))
-
         # Read the generated ISPyB xml file - if any
         if self.pyarchDirectory is not None and edPluginExecXia2DIALS.dataOutput.ispybXML is not None:
             autoProcContainer = AutoProcContainer.parseFile(edPluginExecXia2DIALS.dataOutput.ispybXML.path.value)
@@ -332,6 +326,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                 pathToLogFile = edPluginExecXia2DIALS.dataOutput.logFile.path.value
                 pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.log"
                 shutil.copy(pathToLogFile, os.path.join(self.pyarchDirectory, pyarchFileName))
+                shutil.copy(pathToLogFile, os.path.join(self.resultsDirectory, pyarchFileName))
                 autoProcProgramAttachment = AutoProcProgramAttachment()
                 autoProcProgramAttachment.fileName = pyarchFileName
                 autoProcProgramAttachment.filePath = self.pyarchDirectory
@@ -342,6 +337,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                 pathToSummaryFile = edPluginExecXia2DIALS.dataOutput.summary.path.value
                 pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2-summary.log"
                 shutil.copy(pathToSummaryFile, os.path.join(self.pyarchDirectory, pyarchFileName))
+                shutil.copy(pathToSummaryFile, os.path.join(self.resultsDirectory, pyarchFileName))
                 autoProcProgramAttachment = AutoProcProgramAttachment()
                 autoProcProgramAttachment.fileName = pyarchFileName
                 autoProcProgramAttachment.filePath = self.pyarchDirectory
@@ -361,6 +357,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                 edPluginHTML2Pdf.executeSynchronous()
                 pdfFile = edPluginHTML2Pdf.dataOutput.pdfFile.path.value
                 shutil.copy(pdfFile, os.path.join(self.pyarchDirectory, pyarchFileName))
+                shutil.copy(pdfFile, os.path.join(self.resultsDirectory, pyarchFileName))
                 autoProcProgramAttachment = AutoProcProgramAttachment()
                 autoProcProgramAttachment.fileName = pyarchFileName
                 autoProcProgramAttachment.filePath = self.pyarchDirectory
@@ -369,8 +366,11 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             # Copy all log files
             for logFile in edPluginExecXia2DIALS.dataOutput.logFiles:
                 pathToLogFile = logFile.path.value
+                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToLogFile)
+                # Copy all log files to results:
+                shutil.copy(pathToLogFile, os.path.join(self.resultsDirectory, pyarchFileName))
+                # Only copy .log files to pyarch
                 if pathToLogFile.endswith(".log"):
-                    pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToLogFile)
                     shutil.copy(pathToLogFile, os.path.join(self.pyarchDirectory, pyarchFileName))
                     autoProcProgramAttachment = AutoProcProgramAttachment()
                     autoProcProgramAttachment.fileName = pyarchFileName
@@ -383,6 +383,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                 if pathToDataFile.endswith(".mtz"):
                     pyarchFileName = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pathToDataFile)
                     shutil.copy(pathToDataFile, os.path.join(self.pyarchDirectory, pyarchFileName))
+                    shutil.copy(pathToDataFile, os.path.join(self.resultsDirectory, pyarchFileName))
                     autoProcProgramAttachment = AutoProcProgramAttachment()
                     autoProcProgramAttachment.fileName = pyarchFileName
                     autoProcProgramAttachment.filePath = self.pyarchDirectory
@@ -394,6 +395,12 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}".format(anomString))
             edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
             edPluginStoreAutoproc.executeSynchronous()
+        else:
+            # Copy dataFiles to results directory
+            for dataFile in edPluginExecXia2DIALS.dataOutput.dataFiles:
+                trunc, suffix = os.path.splitext(dataFile.path.value)
+                newFileName = os.path.basename(trunc) + "_" + anomString + suffix
+                shutil.copy(dataFile.path.value, os.path.join(self.resultsDirectory, newFileName))
 
     def eiger_template_to_image(self, fmt, num):
         fileNumber = int(num / 100)

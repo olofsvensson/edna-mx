@@ -5,7 +5,7 @@
 #    Copyright (C) 2008 EMBL-Grenoble, Grenoble, France
 #
 #    Principal authors: Sandor Brockhauser (brockhauser@embl-grenoble.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #                       Pierre Legrand (pierre.legrand@synchrotron-soleil.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -48,8 +48,6 @@ class EDTestCasePluginUnitXDSIndexingv1_0(EDTestCasePluginUnit):
 
 
     def testSetDataInput(self):
-        """
-        """
         edPluginXDSIndexingv1_0 = self.createPlugin()
         xsPluginItemGood01 = self.getPluginConfiguration(os.path.join(self.getPluginTestsDataHome(), "EDPluginXDSIndexingv1_0_configuration_OK_01.xml"))
         edPluginXDSIndexingv1_0.setConfiguration(xsPluginItemGood01)
@@ -69,11 +67,16 @@ class EDTestCasePluginUnitXDSIndexingv1_0(EDTestCasePluginUnit):
         self.cleanUp(edPluginXDSIndexingv1_0)
 
 
+    def testReadIdxrefLp(self):
+        idxrefLpFilePath = os.path.join(self.getPluginTestsDataHome(), "IDXREF.LP")
+        edPluginXDSIndexingv1_0 = self.createPlugin()
+        xsDataResultXDSIndexing = edPluginXDSIndexingv1_0.readIdxrefLp(idxrefLpFilePath)
+        print(xsDataResultXDSIndexing.marshal())
+
+
     def process(self):
-        self.addTestMethod(self.testSetDataInput)
+        # self.addTestMethod(self.testSetDataInput)
+        self.addTestMethod(self.testReadIdxrefLp)
 
 
-if __name__ == '__main__':
 
-    edTestCasePluginUnitXDSIndexingv1_0 = EDTestCasePluginUnitXDSIndexingv1_0("EDTestCasePluginUnitXDSIndexingv1_0")
-    edTestCasePluginUnitXDSIndexingv1_0.execute()
