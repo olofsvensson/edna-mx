@@ -347,7 +347,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             if strStrategyOption.find("-helic") != -1:
                 strTitle = "Helical Diffraction Plan"
                 self.bIsHelical = True
-                strExtraColumnTitle = "Helical<br>distance (mm)"
+                strExtraColumnTitle = "Helical\ndistance (mm)"
                 if self.dataInput.helicalDistance is not None:
                     fHelicalDistance = self.dataInput.helicalDistance.value
                     strExtraColumnValue = "%.3f" % fHelicalDistance
@@ -384,13 +384,13 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         listRow.append(strAnomalousData)
         # Aimed multiplicity
         if xsDataDiffractionPlan.getAimedMultiplicity() is None:
-            strAimedMultiplicity = "Default<br>(optimized)"
+            strAimedMultiplicity = "Default\n(optimized)"
         else:
             strAimedMultiplicity = "%.2f" % xsDataDiffractionPlan.getAimedMultiplicity().getValue()
         listRow.append(strAimedMultiplicity)
         # Aimed completeness
         if xsDataDiffractionPlan.getAimedCompleteness() is None:
-            strAimedCompleteness = "Default<br>(>= 0.99)"
+            strAimedCompleteness = "Default\n(>= 0.99)"
         else:
             strAimedCompleteness = "%.2f" % xsDataDiffractionPlan.getAimedCompleteness().getValue()
         listRow.append(strAimedCompleteness)
@@ -402,7 +402,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         listRow.append(strAimedIOverSigmaAtHighestResolution)
         # Aimed resolution
         if xsDataDiffractionPlan.getAimedResolution() is None:
-            strAimedResolution = "Default<br>(highest possible)"
+            strAimedResolution = "Default\n(highest possible)"
         else:
             strAimedResolution = "%0.2f" % xsDataDiffractionPlan.getAimedResolution().getValue()
         listRow.append(strAimedResolution)
