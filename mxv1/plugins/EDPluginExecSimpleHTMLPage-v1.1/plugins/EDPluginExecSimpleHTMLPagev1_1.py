@@ -245,9 +245,6 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                 for xsDataCollectionPlan in listXSDataCollectionPlan:
                     xsDataSummaryStrategy = xsDataCollectionPlan.getStrategySummary()
                     fResolutionMax = xsDataSummaryStrategy.getResolution().getValue()
-                    strResolutionReasoning = ""
-                    if xsDataSummaryStrategy.getResolutionReasoning():
-                        strResolutionReasoning = xsDataSummaryStrategy.getResolutionReasoning().getValue()
                     tableColumns = ["Wedge", "Subwedge", "Start (°)", "Width (°)", "No images",
                                     "Exp time (s)", "Max res (Å)", "Rel trans (%)", "Distance (mm)"]
                     xsDataCollectionStrategy = xsDataCollectionPlan.getCollectionStrategy()
@@ -274,8 +271,12 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                         listRow.append("%.2f" % fTransmission)
                         listRow.append("%.2f" % fDistance)
                         tableData.append(listRow)
-                    strResolutionReasoningFirstLower = strResolutionReasoning[0].lower() + strResolutionReasoning[1:]
-                    self.workflowStepReport.addTable(tabTitle + ": " + strResolutionReasoningFirstLower, tableColumns, tableData)
+                    if xsDataSummaryStrategy.getResolutionReasoning():
+                        strResolutionReasoning = xsDataSummaryStrategy.getResolutionReasoning().getValue()
+                        strResolutionReasoningFirstLower = strResolutionReasoning[0].lower() + strResolutionReasoning[1:]
+                        self.workflowStepReport.addTable(tabTitle + ": " + strResolutionReasoningFirstLower, tableColumns, tableData)
+                    else:
+                        self.workflowStepReport.addTable(tabTitle, tableColumns, tableData)
 
     def bestAndRaddoseLogFiles(self):
         xsDataResultStrategy = self.xsDataResultCharacterisation.getStrategyResult()
