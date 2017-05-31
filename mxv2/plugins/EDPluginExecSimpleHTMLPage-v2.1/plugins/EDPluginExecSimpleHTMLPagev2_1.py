@@ -660,7 +660,7 @@ class EDPluginExecSimpleHTMLPagev2_1(EDPluginExec):
             listRow.append(" %.2f " % float(self.xsDataSuggestedOrientation.getPhi()))
             tableData.append(listRow)
             self.workflowStepReport.addTable(tableTitle, tableColumns, tableData)
-        if self.xsDataKappa_alignment_response is not None:
+        if self.xsDataKappa_alignment_response is not None and len(self.xsDataKappa_alignment_response.getPossible_orientation()) > 0:
             tableTitle = "Other possible kappa goniostat reorientations (STAC)s"
             tableColumns = []
             tableData = []
