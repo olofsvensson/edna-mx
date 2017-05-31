@@ -203,7 +203,7 @@ class EDPluginRdfitv1_0(EDPluginExecProcessScript):
         htmlDir = os.path.join(self.getWorkingDirectory(), "html")
         os.makedirs(htmlDir, 0755)
         htmlPagePath = rdFitReport.renderHtml(htmlDir, "index.html")
-        jsonPath = rdFitReport.renderJson(self.getWorkingDirectory())
+        jsonPath = rdFitReport.renderJson(htmlDir)
         return (htmlPagePath, jsonPath)
 
 
