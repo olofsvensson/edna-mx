@@ -6,7 +6,7 @@
 #    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal author:       Olof Svensson (svensson@esrf.fr) 
+#    Principal author:       Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -27,7 +27,8 @@ import os, shutil, time, cgi
 from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDUtilsFile import EDUtilsFile
-from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
+
+
 from EDUtilsPath import EDUtilsPath
 from EDUtilsImage import EDUtilsImage
 
@@ -42,6 +43,7 @@ from XSDataSimpleHTMLPagev2_0 import XSDataResultSimpleHTMLPage
 
 EDFactoryPluginStatic.loadModule("XSDataMXv1")
 from XSDataMXv1 import XSDataDiffractionPlan
+from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
 
 
 class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
@@ -60,8 +62,8 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
         self.page = None
         self.strPath = None
         self.strTableColourTitle1 = "#F5F5FF"
-        self.strTableColourTitle2 = "#F0F0FF" 
-        self.strTableColourRows   = "#FFFFA0"
+        self.strTableColourTitle2 = "#F0F0FF"
+        self.strTableColourRows = "#FFFFA0"
         self.strPageEDNALog = None
         self.xsDataSuggestedStrategy = None
 
@@ -85,14 +87,14 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
         if self.xsDataResultCharacterisation is not None:
             # Create the simple characterisation result page
             self.page = markupv1_10.page(mode='loose_html')
-            self.page.init( title="Characterisation Results", 
+            self.page.init(title="Characterisation Results",
                        footer="Generated on %s" % time.asctime())
-            self.page.div( align_="CENTER")
+            self.page.div(align_="CENTER")
             self.page.h1()
             if self.xsDataResultCharacterisation is not None:
-                self.page.strong( "Characterisation Results " )
+                self.page.strong("Characterisation Results ")
             else:
-                self.page.strong( "No Characterisation Results! " )
+                self.page.strong("No Characterisation Results! ")
             # Link to the EDNA log file
             strPathToLogFile = self.findEDNALogFile()
             if strPathToLogFile is not None:
@@ -116,7 +118,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
             self.indexingResults()
             self.integrationResults()
             self.imageQualityIndicatorResults()
-        
+
 
 
     def finallyProcess(self, _edPlugin=None):
@@ -149,8 +151,8 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
                 strForcedSpaceGroup = self.xsDataResultCharacterisation.dataCollection.diffractionPlan.forcedSpaceGroup.value
         if xsDataResultIndexing:
             # Table containg indexing results and thumbnail images
-            self.page.table( class_='indexResultsAndThumbnails', border_="0", cellpadding_="0")
-            self.page.tr( align_="CENTER" )
+            self.page.table(class_='indexResultsAndThumbnails', border_="0", cellpadding_="0")
+            self.page.tr(align_="CENTER")
             self.page.td()
             # Table with indexing results
             self.createTableWithIndexResults(xsDataResultIndexing, strForcedSpaceGroup)
@@ -162,7 +164,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
             self.page.tr.close()
             self.page.table.close()
 
-    
+
     def integrationResults(self):
         # Was the integration successful?
         xsDataResultIntegration = self.xsDataResultCharacterisation.getIntegrationResult()
@@ -179,14 +181,14 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
                     pageIntegrationLog.pre(cgi.escape(EDUtilsFile.readFile(strPathToIntegrationLogFile)))
                     pageIntegrationLog.a("Back to previous page", href_=self.strHtmlFileName)
                     EDUtilsFile.writeFile(strPageIntegrationLog, str(pageIntegrationLog))
-                    self.page.a("Integration log file %d" % iIntegration, href=strIntegrationHtmlPageName) 
+                    self.page.a("Integration log file %d" % iIntegration, href=strIntegrationHtmlPageName)
                     self.page.br()
-                    iIntegration += 1               
+                    iIntegration += 1
 
 
 
 
-    
+
     def strategyResults(self):
         # Was the strategy successful?
         xsDataResultStrategy = self.xsDataResultCharacterisation.getStrategyResult()
@@ -197,27 +199,27 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
             if xsDataResultIndexing is None:
                 self.page.font(_color="red", size="+2")
                 self.page.h2()
-                self.page.strong("Strategy calculation not performed due to indexing failure, see the " )  
+                self.page.strong("Strategy calculation not performed due to indexing failure, see the ")
                 self.page.a("EDNA log file", href=self.strPageEDNALog)
-                self.page.strong(" for more details" )  
+                self.page.strong(" for more details")
                 self.page.h2.close()
-                self.page.font.close()                
+                self.page.font.close()
             elif xsDataResultIntegration is None:
                 self.page.font(_color="red", size="+2")
                 self.page.h2()
-                self.page.strong("Strategy calculation not performed due to integration failure, see the " )  
+                self.page.strong("Strategy calculation not performed due to integration failure, see the ")
                 self.page.a("EDNA log file", href=self.strPageEDNALog)
-                self.page.strong(" for more details" )  
+                self.page.strong(" for more details")
                 self.page.h2.close()
-                self.page.font.close()                
+                self.page.font.close()
             else:
                 self.page.font(_color="red", size="+2")
                 self.page.h2()
-                self.page.strong( "Strategy calculation failed, see the " )
+                self.page.strong("Strategy calculation failed, see the ")
                 self.page.a("EDNA log file", href=self.strPageEDNALog)
-                self.page.strong(" for more details" )  
+                self.page.strong(" for more details")
                 self.page.h2.close()
-                self.page.font.close()                
+                self.page.font.close()
         else:
             # Add link to BEST log file:
             if xsDataResultStrategy.getBestLogFile():
@@ -252,14 +254,14 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
                 if strPageRaddoseLog is not None:
                     self.page.a(" (RADDOSE log file)", href="raddose_log.html")
                 self.page.h2.close()
-                self.page.font.close()                
+                self.page.font.close()
             else:
                 iNoSubWedges = len(listXSDataCollectionPlan)
                 self.page.h2()
                 if iNoSubWedges != 1:
                     self.page.strong("Multi-wedge collection plan strategy (")
                 else:
-                    self.page.strong( "Collection plan strategy (" )
+                    self.page.strong("Collection plan strategy (")
                 if strPageRaddoseLog is not None:
                     self.page.a("RADDOSE log file", href="raddose_log.html")
                     self.page.strong(", ")
@@ -282,11 +284,11 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
                         if fResolutionMax is None:
                             fResolutionMax = fResolution
                             fDistanceMin = fDistance
-                        elif (fResolution < fResolutionMax) and (abs(fResolution-fResolutionMax) > 0.1):
-                            fResolutionMax = fResolution                        
+                        elif (fResolution < fResolutionMax) and (abs(fResolution - fResolutionMax) > 0.1):
+                            fResolutionMax = fResolution
                             fDistanceMin = fDistance
                         fRankingResolution = xsDataSummaryStrategy.getRankingResolution().getValue()
-                
+
                 if fRankingResolution != None and fResolutionMax != None:
                     if fRankingResolution < fResolutionMax:
                         if not bHigherResolutionDetected:
@@ -297,23 +299,23 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
                             self.page.font.close()
                             self.page.font(_color="red", size="+1")
                             self.page.strong("The current strategy is calculated to %.2f &Aring;." % fResolutionMax)
-                            #self.page.strong("In order to calculate a strategy to %.2f &Aring; set the detector distance to %.2f mm (%.2f &Aring;) and re-launch the EDNA characterisation." % (fRankingResolution,fDistanceMin,fRankingResolution))
-                            self.page.strong("In order to calculate a strategy to %.2f &Aring; move the detector to collect %.2f &Aring; data and re-launch the EDNA characterisation." % (fRankingResolution,fRankingResolution))
+                            # self.page.strong("In order to calculate a strategy to %.2f &Aring; set the detector distance to %.2f mm (%.2f &Aring;) and re-launch the EDNA characterisation." % (fRankingResolution,fDistanceMin,fRankingResolution))
+                            self.page.strong("In order to calculate a strategy to %.2f &Aring; move the detector to collect %.2f &Aring; data and re-launch the EDNA characterisation." % (fRankingResolution, fRankingResolution))
                             self.page.font.close()
                         bHigherResolutionDetected = True
-                    
-                    
+
+
                 for xsDataCollectionPlan in listXSDataCollectionPlan:
                     xsDataSummaryStrategy = xsDataCollectionPlan.getStrategySummary()
                     fResolutionMax = xsDataSummaryStrategy.getResolution().getValue()
                     strResolutionReasoning = ""
                     if xsDataSummaryStrategy.getResolutionReasoning():
                         strResolutionReasoning = xsDataSummaryStrategy.getResolutionReasoning().getValue()
-                    self.page.table( class_='indexResults', border_="1", cellpadding_="0")
-                    self.page.tr( align_="CENTER" )
+                    self.page.table(class_='indexResults', border_="1", cellpadding_="0")
+                    self.page.tr(align_="CENTER")
                     self.page.th(strResolutionReasoning, colspan_="9", bgcolor_=self.strTableColourTitle1)
                     self.page.tr.close()
-                    self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle2)
+                    self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
                     self.page.th("Wedge")
                     self.page.th("Subwedge")
                     self.page.th("Start (&deg;)")
@@ -332,11 +334,11 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
                         fRotationAxisStart = xsDataExperimentalCondition.getGoniostat().getRotationAxisStart().getValue()
                         fRotationAxisEnd = xsDataExperimentalCondition.getGoniostat().getRotationAxisEnd().getValue()
                         fOscillationWidth = xsDataExperimentalCondition.getGoniostat().getOscillationWidth().getValue()
-                        iNumberOfImages = int((fRotationAxisEnd-fRotationAxisStart)/fOscillationWidth)
+                        iNumberOfImages = int((fRotationAxisEnd - fRotationAxisStart) / fOscillationWidth)
                         fExposureTime = xsDataExperimentalCondition.getBeam().getExposureTime().getValue()
                         fTransmission = xsDataExperimentalCondition.getBeam().getTransmission().getValue()
                         fDistance = xsDataExperimentalCondition.getDetector().getDistance().getValue()
-                        self.page.tr( align_="CENTER", bgcolor_=self.strTableColourRows)
+                        self.page.tr(align_="CENTER", bgcolor_=self.strTableColourRows)
                         self.page.th(iWedge)
                         self.page.th(iRunNumber)
                         self.page.th("%.2f" % fRotationAxisStart)
@@ -353,7 +355,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
     def dataCollectionInfo(self):
         xsDataCollection = self.xsDataResultCharacterisation.getDataCollection()
         if xsDataCollection is not None:
-            self.page.h2( "Data collection info" )
+            self.page.h2("Data collection info")
             firstSubWedge = xsDataCollection.subWedge[0]
             firstImage = firstSubWedge.image[0]
             strDate = None
@@ -361,21 +363,21 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
                 strDate = firstImage.date.value
             strPrefix = EDUtilsImage.getPrefix(firstImage.path.value)
             strDirName = os.path.dirname(firstImage.path.value)
-            self.page.table( class_='dataCollectionInfo', border_="1", cellpadding_="0")
-            self.page.tr( align_="CENTER")
+            self.page.table(class_='dataCollectionInfo', border_="1", cellpadding_="0")
+            self.page.tr(align_="CENTER")
             self.page.th("Data collection date", bgcolor_=self.strTableColourTitle2)
             if not strDate is None:
                 self.page.th(strDate, bgcolor_=self.strTableColourRows)
             self.page.tr.close()
-            self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle2)
+            self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
             self.page.th("Image prefix", bgcolor_=self.strTableColourTitle2)
             self.page.th(strPrefix, bgcolor_=self.strTableColourRows)
             self.page.tr.close()
-            self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle2)
+            self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
             self.page.th("Directory", bgcolor_=self.strTableColourTitle2)
             self.page.th(strDirName, bgcolor_=self.strTableColourRows)
             self.page.tr.close()
-            self.page.table.close()     
+            self.page.table.close()
 
 
     def diffractionPlan(self):
@@ -383,9 +385,9 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
         xsDataDiffractionPlan = self.xsDataResultCharacterisation.getDataCollection().getDiffractionPlan()
         if xsDataDiffractionPlan is None:
             xsDataDiffractionPlan = XSDataDiffractionPlan()
-        self.page.h2( "Diffraction Plan" )
-        self.page.table( class_='diffractionPlan', border_="1", cellpadding_="0")
-        self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle2)
+        self.page.h2("Diffraction Plan")
+        self.page.table(class_='diffractionPlan', border_="1", cellpadding_="0")
+        self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
         self.page.th("Forced<br>space group")
         self.page.th("Anomalous<br>data")
         self.page.th("Aimed<br>multiplicity")
@@ -393,8 +395,8 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
         self.page.th("Aimed I/sigma<br>at highest res.")
         self.page.th("Aimed<br>resolution (&Aring;)")
         self.page.tr.close()
-        self.page.tr( align_="CENTER", bgcolor_=self.strTableColourRows)
-        # Forced space group               
+        self.page.tr(align_="CENTER", bgcolor_=self.strTableColourRows)
+        # Forced space group
         if xsDataDiffractionPlan.getForcedSpaceGroup() is None:
             strForcedSpaceGroup = "None"
         else:
@@ -424,7 +426,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
         else:
             strAimedIOverSigmaAtHighestResolution = "%.2f" % xsDataDiffractionPlan.getAimedIOverSigmaAtHighestResolution().getValue()
         self.page.th(strAimedIOverSigmaAtHighestResolution)
-        # Aimed resolution              
+        # Aimed resolution
         if xsDataDiffractionPlan.getAimedResolution() is None:
             strAimedResolution = "Default<br>(highest possible)"
         else:
@@ -432,20 +434,20 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
         self.page.th(strAimedResolution)
         # Close the table
         self.page.tr.close()
-        self.page.table.close()     
+        self.page.table.close()
 
 
     def createLinkToBestLogFile(self):
         xsDataResultStrategy = self.xsDataResultCharacterisation.getStrategyResult()
-        
+
 
     def createThumbnailRowOfImages(self, _xsDataResultIndexing):
         # Thumbnail images of the predictions
         xsDataResultPrediction = _xsDataResultIndexing.getPredictionResult()
         listPaths = []
         self.page.div(align_="left")
-        self.page.table( class_='imageRow' )
-        self.page.tr( align_="CENTER" )
+        self.page.table(class_='imageRow')
+        self.page.tr(align_="CENTER")
         listXSDataReferenceImage = _xsDataResultIndexing.getImage()
         for xsDataImagePrediction in xsDataResultPrediction.getPredictionImage():
             self.page.td()
@@ -461,25 +463,25 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
             if os.path.exists(strPathToPredictionImage):
                 shutil.copyfile(strPathToPredictionImage, strLocalPath)
                 listPaths.append(strLocalPath)
-                self.page.table( class_='image' )
-                self.page.tr( align_="CENTER" )
+                self.page.table(class_='image')
+                self.page.tr(align_="CENTER")
                 self.page.td()
-                strPageReferenceImage = os.path.splitext(strFileName)[0]+".html"
+                strPageReferenceImage = os.path.splitext(strFileName)[0] + ".html"
                 pageReferenceImage = markupv1_10.page()
-                pageReferenceImage.init( title=strReferenceFileName, 
+                pageReferenceImage.init(title=strReferenceFileName,
                        footer="Generated on %s" % time.asctime())
                 pageReferenceImage.h1(strReferenceFileName)
                 pageReferenceImage.a("Back to previous page", href_=self.strHtmlFileName)
                 pageReferenceImage.img(src=strFileName, title=strReferenceFileName)
                 pageReferenceImage.a("Back to previous page", href_=self.strHtmlFileName)
-                EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(),strPageReferenceImage), str(pageReferenceImage))
-                self.page.a( href=strPageReferenceImage)
-                self.page.img( src=strFileName, width=128, height=128, title=strFileName )
+                EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), strPageReferenceImage), str(pageReferenceImage))
+                self.page.a(href=strPageReferenceImage)
+                self.page.img(src=strFileName, width=128, height=128, title=strFileName)
                 self.page.a.close()
                 self.page.td.close()
                 self.page.tr.close()
-                self.page.tr( align_="CENTER" )
-                self.page.td( strReferenceFileName, class_="caption")
+                self.page.tr(align_="CENTER")
+                self.page.td(strReferenceFileName, class_="caption")
                 self.page.td.close()
                 self.page.tr.close()
                 self.page.table.close()
@@ -500,11 +502,11 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
                 self.page.h3("Indexing summary: Forced spacegroup: %s" % strSpaceGroup, align_="LEFT")
             else:
                 self.page.h3("Indexing summary: Selected spacegroup: %s, forced space group: %s" % (strSpaceGroup, _strForcedSpaceGroup), align_="LEFT")
-        self.page.table( class_='indexResults', border_="1", cellpadding_="0" )
-        self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle1 )
+        self.page.table(class_='indexResults', border_="1", cellpadding_="0")
+        self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle1)
         self.page.th("Refined unit cell parameters (&Aring;/degrees)", colspan_="6")
         self.page.tr.close()
-        self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle2 )
+        self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
         self.page.th("a (&Aring;)")
         self.page.th("b (&Aring;)")
         self.page.th("c (&Aring;)")
@@ -512,7 +514,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
         self.page.th("beta (&deg;)")
         self.page.th("gamma (&deg;)")
         self.page.tr.close()
-        self.page.tr( align_="CENTER", bgcolor_=self.strTableColourRows )
+        self.page.tr(align_="CENTER", bgcolor_=self.strTableColourRows)
         self.page.td("%.3f" % xsDataCell.getLength_a().getValue())
         self.page.td("%.3f" % xsDataCell.getLength_b().getValue())
         self.page.td("%.3f" % xsDataCell.getLength_c().getValue())
@@ -532,14 +534,14 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
             pageIndexingLog.a("Back to previous page", href_=self.strHtmlFileName)
             EDUtilsFile.writeFile(strPageIndexingLog, str(pageIndexingLog))
             self.page.a("Indexing log file", href="indexing_log.html")
-        
 
-        
+
+
     def imageQualityIndicatorResults(self):
         listXSDataResultImageQualityIndicators = self.xsDataResultCharacterisation.imageQualityIndicators
         self.page.h3("Image quality indicators")
-        self.page.table( class_='imageQualityIndicatorResults', border_="1", cellpadding_="0")
-        self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle2  )
+        self.page.table(class_='imageQualityIndicatorResults', border_="1", cellpadding_="0")
+        self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
         self.page.th("File")
         self.page.th("Tot integr signal")
         self.page.th("Spot total")
@@ -551,7 +553,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
         self.page.th("Max unit cell")
         self.page.tr.close()
         for xsDataResultImageQualityIndicators in listXSDataResultImageQualityIndicators:
-            self.page.tr( align_="CENTER", bgcolor_=self.strTableColourRows )
+            self.page.tr(align_="CENTER", bgcolor_=self.strTableColourRows)
             self.page.td("%s" % os.path.basename(xsDataResultImageQualityIndicators.image.path.value))
             if xsDataResultImageQualityIndicators.totalIntegratedSignal:
                 self.page.td("%.0f" % xsDataResultImageQualityIndicators.totalIntegratedSignal.value)
@@ -573,7 +575,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
             self.page.td.close()
             self.page.tr.close()
         self.page.table.close()
-        
+
 
 
     def findEDNALogFile(self):
@@ -586,10 +588,10 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
             self.DEBUG("Searching in strBaseDir: " + strBaseDir)
             # Now search for a ED*.log file...
             for strFileName in os.listdir(strBaseDir):
-                if strFileName.startswith("ED") and strFileName.endswith(".log") and not os.path.isdir(os.path.join(strBaseDir,strFileName)):
+                if strFileName.startswith("ED") and strFileName.endswith(".log") and not os.path.isdir(os.path.join(strBaseDir, strFileName)):
                     # Check that the corresponding directory exists...
                     strStrippedFileName = strFileName.replace("EDPlugin", "")
-                    strStrippedFileName = strStrippedFileName.replace(".log", "")                      
+                    strStrippedFileName = strStrippedFileName.replace(".log", "")
                     for strDirName in os.listdir(strBaseDir):
                         if os.path.isdir(os.path.join(strBaseDir, strDirName)):
                             if strDirName.find(strStrippedFileName) != -1:
@@ -601,14 +603,14 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
 
 
     def graphs(self):
-        self.page.table( class_='bestGraphs', border_="0", cellpadding_="0")
+        self.page.table(class_='bestGraphs', border_="0", cellpadding_="0")
         if self.xsDataResultCharacterisation.strategyResult is None:
             return
         if self.xsDataResultCharacterisation.strategyResult.bestGraphFile == []:
             return
         listXSDataFile = self.xsDataResultCharacterisation.strategyResult.bestGraphFile
         if listXSDataFile != []:
-            self.page.tr( align_="CENTER" )
+            self.page.tr(align_="CENTER")
             iIndex = 1
             # If -damPar is used only three plots are available:
             if len(listXSDataFile) >= 7:
@@ -620,43 +622,43 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
             for iIndexPlot in listPlotsToDisplay:
                 xsDataFile = listXSDataFile[iIndexPlot]
                 strFileName = os.path.basename(xsDataFile.path.value)
-                #print strFileName
+                # print strFileName
                 shutil.copy(xsDataFile.path.value, os.path.join(self.getWorkingDirectory(), strFileName))
                 self.page.td()
-                strPageGraphFileName = os.path.splitext(strFileName)[0]+".html"
+                strPageGraphFileName = os.path.splitext(strFileName)[0] + ".html"
                 strPageGraphPath = os.path.join(self.getWorkingDirectory(), strPageGraphFileName)
                 pageGraph = markupv1_10.page()
-                pageGraph.init( title=strFileName, 
+                pageGraph.init(title=strFileName,
                        footer="Generated on %s" % time.asctime())
                 pageGraph.img(src=strFileName, title=strFileName)
                 pageGraph.br()
                 pageGraph.a("Back to previous page", href_=self.strHtmlFileName)
                 EDUtilsFile.writeFile(strPageGraphPath, str(pageGraph))
-                self.page.a( href=strPageGraphFileName)
-                self.page.img( src=strFileName, width=200, height=150, title=strFileName )
+                self.page.a(href=strPageGraphFileName)
+                self.page.img(src=strFileName, width=200, height=150, title=strFileName)
                 self.page.a.close()
                 self.page.td.close()
                 iIndex += 1
                 if iIndex > 4:
                     iIndex = 1
                     self.page.tr.close()
-                    self.page.tr( align_="CENTER" )
+                    self.page.tr(align_="CENTER")
             self.page.tr.close()
             self.page.table.close()
-            
-            
+
+
     def stacResults(self):
         if self.xsDataSuggestedOrientation is not None:
-            self.page.h3( "Suggested kappa goniostat reorientation (STAC):" )
-            self.page.table( class_='stacSuggestedResult', border_="1", cellpadding_="1")
-            self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle2)
+            self.page.h3("Suggested kappa goniostat reorientation (STAC):")
+            self.page.table(class_='stacSuggestedResult', border_="1", cellpadding_="1")
+            self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
             self.page.th("Vector 1")
             self.page.th("Vector 2")
             self.page.th("Omega")
             self.page.th("Kappa")
             self.page.th("Phi")
             self.page.tr.close()
-            self.page.tr( align_="CENTER", bgcolor_=self.strTableColourRows)
+            self.page.tr(align_="CENTER", bgcolor_=self.strTableColourRows)
             self.page.th(" %s " % self.xsDataSuggestedOrientation.getV1())
             self.page.th(" %s " % self.xsDataSuggestedOrientation.getV2())
             self.page.th(" %.2f " % float(self.xsDataSuggestedOrientation.getOmega()))
@@ -667,9 +669,9 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
             self.page.strong(" ")
             self.page.br()
         if self.xsDataKappa_alignment_response is not None:
-            self.page.h3( "Other possible kappa goniostat reorientations (STAC):" )
-            self.page.table( class_='stacResults', border_="1", cellpadding_="1")
-            self.page.tr( align_="CENTER", bgcolor_=self.strTableColourTitle2)
+            self.page.h3("Other possible kappa goniostat reorientations (STAC):")
+            self.page.table(class_='stacResults', border_="1", cellpadding_="1")
+            self.page.tr(align_="CENTER", bgcolor_=self.strTableColourTitle2)
             self.page.th("Vector 1")
             self.page.th("Vector 2")
             self.page.th("Omega")
@@ -677,7 +679,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
             self.page.th("Phi")
             self.page.tr.close()
             for xsDataPossibleOrientation in self.xsDataKappa_alignment_response.getPossible_orientation():
-                self.page.tr( align_="CENTER", bgcolor_=self.strTableColourRows)
+                self.page.tr(align_="CENTER", bgcolor_=self.strTableColourRows)
                 self.page.th(" %s " % xsDataPossibleOrientation.getV1())
                 self.page.th(" %s " % xsDataPossibleOrientation.getV2())
                 self.page.th(" %.2f " % float(xsDataPossibleOrientation.getOmega()))

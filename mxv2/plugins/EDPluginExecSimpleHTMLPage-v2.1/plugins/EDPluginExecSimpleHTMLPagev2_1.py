@@ -33,7 +33,6 @@ from PIL import Image
 from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDUtilsFile import EDUtilsFile
-from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
 from EDUtilsPath import EDUtilsPath
 from EDUtilsImage import EDUtilsImage
 
@@ -42,14 +41,15 @@ from EDUtilsReport import EDUtilsReport
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
 
-from XSDataSimpleHTMLPagev1_1 import XSDataInputSimpleHTMLPage
-from XSDataSimpleHTMLPagev1_1 import XSDataResultSimpleHTMLPage
+from XSDataSimpleHTMLPagev2_1 import XSDataInputSimpleHTMLPage
+from XSDataSimpleHTMLPagev2_1 import XSDataResultSimpleHTMLPage
 
 EDFactoryPluginStatic.loadModule("XSDataMXv1")
 from XSDataMXv1 import XSDataDiffractionPlan
+from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
 
 
-class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
+class EDPluginExecSimpleHTMLPagev2_1(EDPluginExec):
     """
     This plugin launches the EDPluginExecOutputHTMLv1_0 for creating web pages for ISPyB
     """
@@ -61,6 +61,8 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         self.edPluginExecOutputHTML = None
         self.strHTML = None
         self.xsDataResultCharacterisation = None
+        self.xsDataKappa_alignment_response = None
+        self.page = None
         self.strPath = None
         self.strTableColourTitle1 = "#F5F5FF"
         self.strTableColourTitle2 = "#F0F0FF"
@@ -70,6 +72,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         self.bIsHelical = False
         self.bIsMultiPositional = False
         self.workflowStepReport = None
+        self.xsDataSuggestedStrategy = None
 
 
     def configure(self):
@@ -82,15 +85,20 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
 
     def preProcess(self, _edPlugin=None):
         EDPluginExec.preProcess(self, _edPlugin)
-        self.DEBUG("EDPluginExecSimpleHTMLPagev1_1.preProcess...")
+        self.DEBUG("EDPluginExecSimpleHTMLPagev2_1.preProcess...")
         self.xsDataResultCharacterisation = self.getDataInput().getCharacterisationResult()
+        if self.xsDataResultCharacterisation is None:
+            if not self.getDataInput().getCharacterisationResultv2_0() is None:
+                self.xsDataResultCharacterisation = self.getDataInput().getCharacterisationResultv2_0().getMxv1ResultCharacterisation()
+                self.xsDataKappa_alignment_response = self.getDataInput().getCharacterisationResultv2_0().getPossibleOrientations()
+                self.xsDataSuggestedOrientation = self.dataInput.characterisationResultv2_0.suggestedOrientation
         self.strHtmlFileName = "index.html"
         self.strPath = os.path.join(self.getWorkingDirectory(), self.strHtmlFileName)
 
 
     def process(self, _edPlugin=None):
         EDPluginExec.process(self, _edPlugin)
-        self.DEBUG("EDPluginExecSimpleHTMLPagev1_1.process...")
+        self.DEBUG("EDPluginExecSimpleHTMLPagev2_1.process...")
         if self.xsDataResultCharacterisation is not None:
             # EDutilsReport
             self.workflowStepReport = EDUtilsReport("Characterisation")
@@ -99,6 +107,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             else:
                 self.workflowStepReport.setTitle("No Characterisation Results!")
             self.transmissionWarning()
+            self.stacResults()
             self.indexingResults()
             self.strategyResults()
             self.graphs()
@@ -106,7 +115,6 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             self.imageQualityIndicatorResults()
             self.createPredictionRowOfImages()
             self.createThumbnailRowOfImages()
-            self.kappaResults()
             self.dataCollectionInfo()
             self.indexingLogFile()
             self.integrationLogFiles()
@@ -124,7 +132,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
 
     def finallyProcess(self, _edPlugin=None):
         EDPluginExec.finallyProcess(self, _edPlugin)
-        self.DEBUG("EDPluginExecSimpleHTMLPagev1_1.finallyProcess...")
+        self.DEBUG("EDPluginExecSimpleHTMLPagev2_1.finallyProcess...")
         xsDataResultSimpleHTMLPage = XSDataResultSimpleHTMLPage()
         xsDataResultSimpleHTMLPage.setPathToHTMLFile(XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), self.strHtmlFileName))))
         xsDataResultSimpleHTMLPage.setPathToHTMLDirectory(XSDataFile(XSDataString(self.getWorkingDirectory())))
@@ -165,7 +173,6 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             self.createTableWithIndexResults(xsDataResultIndexing, strForcedSpaceGroup)
 
 
-
     def integrationLogFiles(self):
         # Was the integration successful?
         xsDataResultIntegration = self.xsDataResultCharacterisation.getIntegrationResult()
@@ -178,8 +185,6 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                                                        "Integration Log No %d" % iIntegration,
                                                        strPathToIntegrationLogFile)
                     iIntegration += 1
-
-
 
 
 
@@ -603,11 +608,11 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
 
 
     def graphs(self):
-        if self.getDataInput().characterisationResult.strategyResult is None:
+        if self.xsDataResultCharacterisation.strategyResult is None:
             return
-        if self.getDataInput().characterisationResult.strategyResult.bestGraphFile == []:
+        if self.xsDataResultCharacterisation.strategyResult.bestGraphFile == []:
             return
-        listXSDataFile = self.getDataInput().characterisationResult.strategyResult.bestGraphFile
+        listXSDataFile = self.xsDataResultCharacterisation.strategyResult.bestGraphFile
         if listXSDataFile != []:
             iIndex = 1
             # If -damPar is used only three plots are available:
@@ -637,27 +642,39 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             self.workflowStepReport.endImageList()
 
 
-    def kappaResults(self):
-
-        if self.xsDataResultCharacterisation.kappaReorientation is not None and len(self.xsDataResultCharacterisation.kappaReorientation.solution) > 0:
-            strPathToKappaLogFile = None
-            if self.xsDataResultCharacterisation.kappaReorientation.logFile:
-                strPathToKappaLogFile = self.xsDataResultCharacterisation.kappaReorientation.logFile.path.value
-            tableColumns = ["Kappa", "Phi", "Settings"]
-            listRow = []
-            for solution in self.xsDataResultCharacterisation.kappaReorientation.solution:
-                listRow.append(" %.2f " % float(solution.kappa.value))
-                listRow.append(" %.2f " % float(solution.phi.value))
-                listRow.append(" %s " % cgi.escape(solution.settings.value))
+    def stacResults(self):
+        if self.xsDataSuggestedOrientation is not None:
+            tableTitle = "Suggested kappa goniostat reorientation (STAC)"
+            tableColumns = []
             tableData = []
+            tableColumns.append("Vector 1")
+            tableColumns.append("Vector 2")
+            tableColumns.append("Omega")
+            tableColumns.append("Kappa")
+            tableColumns.append("Phi")
+            listRow = []
+            listRow.append(" %s " % self.xsDataSuggestedOrientation.getV1())
+            listRow.append(" %s " % self.xsDataSuggestedOrientation.getV2())
+            listRow.append(" %.2f " % float(self.xsDataSuggestedOrientation.getOmega()))
+            listRow.append(" %.2f " % float(self.xsDataSuggestedOrientation.getKappa()))
+            listRow.append(" %.2f " % float(self.xsDataSuggestedOrientation.getPhi()))
             tableData.append(listRow)
-            self.workflowStepReport.addTable("Suggested kappa goniostat reorientation (XOAlign*)",
-                                             tableColumns, tableData)
-            if strPathToKappaLogFile is not None:
-#                self.workflowStepReport.addLogFile("Kappa re-orientation Log",
-#                                                   "Kappa re-orientation Log",
-#                                                   strPathToKappaLogFile)
-                self.workflowStepReport.addLogFile("kappa_log",
-                                                   "Kappa re-orientation Log",
-                                                   strPathToKappaLogFile)
-            self.workflowStepReport.addInfo("*) XOalign is a part of XDSme written by Pierre Legrand (https://code.google.com/p/xdsme)")
+            self.workflowStepReport.addTable(tableTitle, tableColumns, tableData)
+        if self.xsDataKappa_alignment_response is not None:
+            tableTitle = "Other possible kappa goniostat reorientations (STAC)s"
+            tableColumns = []
+            tableData = []
+            tableColumns.append("Vector 1")
+            tableColumns.append("Vector 2")
+            tableColumns.append("Omega")
+            tableColumns.append("Kappa")
+            tableColumns.append("Phi")
+            for xsDataPossibleOrientation in self.xsDataKappa_alignment_response.getPossible_orientation():
+                listRow = []
+                listRow.append(" %s " % xsDataPossibleOrientation.getV1())
+                listRow.append(" %s " % xsDataPossibleOrientation.getV2())
+                listRow.append(" %.2f " % float(xsDataPossibleOrientation.getOmega()))
+                listRow.append(" %.2f " % float(xsDataPossibleOrientation.getKappa()))
+                listRow.append(" %.2f " % float(xsDataPossibleOrientation.getPhi()))
+                tableData.append(listRow)
+            self.workflowStepReport.addTable(tableTitle, tableColumns, tableData)
