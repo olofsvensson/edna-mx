@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Apr 26 03:16::28 2013 by EDGenerateDS.
+# Generated Wed May 31 10:43::06 2017 by EDGenerateDS.
 #
 
 import os, sys
@@ -489,7 +489,7 @@ class XSDataInputRdfit(XSDataInput):
 
 
 class XSDataResultRdfit(XSDataResult):
-    def __init__(self, status=None, htmlPage=None, bFactorPlot=None, scaleIntensityPlot=None, relative_radiation_sensitivity=None, dose_half=None, dose_half_th=None, gama=None, beta=None):
+    def __init__(self, status=None, jsonPath=None, htmlPage=None, bFactorPlot=None, scaleIntensityPlot=None, relative_radiation_sensitivity=None, dose_half=None, dose_half_th=None, gama=None, beta=None):
         XSDataResult.__init__(self, status)
         if beta is None:
             self._beta = None
@@ -546,6 +546,13 @@ class XSDataResultRdfit(XSDataResult):
             self._htmlPage = htmlPage
         else:
             strMessage = "ERROR! XSDataResultRdfit constructor argument 'htmlPage' is not XSDataFile but %s" % self._htmlPage.__class__.__name__
+            raise BaseException(strMessage)
+        if jsonPath is None:
+            self._jsonPath = None
+        elif jsonPath.__class__.__name__ == "XSDataFile":
+            self._jsonPath = jsonPath
+        else:
+            strMessage = "ERROR! XSDataResultRdfit constructor argument 'jsonPath' is not XSDataFile but %s" % self._jsonPath.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'beta' attribute
     def getBeta(self): return self._beta
@@ -643,6 +650,18 @@ class XSDataResultRdfit(XSDataResult):
             raise BaseException(strMessage)
     def delHtmlPage(self): self._htmlPage = None
     htmlPage = property(getHtmlPage, setHtmlPage, delHtmlPage, "Property for htmlPage")
+    # Methods and properties for the 'jsonPath' attribute
+    def getJsonPath(self): return self._jsonPath
+    def setJsonPath(self, jsonPath):
+        if jsonPath is None:
+            self._jsonPath = None
+        elif jsonPath.__class__.__name__ == "XSDataFile":
+            self._jsonPath = jsonPath
+        else:
+            strMessage = "ERROR! XSDataResultRdfit.setJsonPath argument is not XSDataFile but %s" % jsonPath.__class__.__name__
+            raise BaseException(strMessage)
+    def delJsonPath(self): self._jsonPath = None
+    jsonPath = property(getJsonPath, setJsonPath, delJsonPath, "Property for jsonPath")
     def export(self, outfile, level, name_='XSDataResultRdfit'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -667,6 +686,8 @@ class XSDataResultRdfit(XSDataResult):
             self.bFactorPlot.export(outfile, level, name_='bFactorPlot')
         if self._htmlPage is not None:
             self.htmlPage.export(outfile, level, name_='htmlPage')
+        if self._jsonPath is not None:
+            self.jsonPath.export(outfile, level, name_='jsonPath')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -712,6 +733,11 @@ class XSDataResultRdfit(XSDataResult):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setHtmlPage(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'jsonPath':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setJsonPath(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
