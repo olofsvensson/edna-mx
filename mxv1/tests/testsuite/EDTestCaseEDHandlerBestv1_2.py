@@ -2,12 +2,10 @@
 #    Project: EDNA MXv1
 #             http://www.edna-site.org
 #
-#    File: "$Id: EDTestCaseEDHandlerLabelitv10.py 1525 2010-05-12 12:54:17Z svensson $"
-#
 #    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal author:       Olof Svensson (svensson@esrf.fr) 
+#    Principal author:       Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by

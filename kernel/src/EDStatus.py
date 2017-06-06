@@ -4,8 +4,6 @@
 #    Project: EDNA-Kernel
 #             http://www.edna-site.org
 #
-#    File: "$Id: EDParallelExecute.py 1990 2010-08-26 09:10:15Z svensson $"
-#
 #    Copyright (C) European Synchrotron Radiation Facility, Grenoble, France
 #
 #    Principal author:       Jérôme Kieffer (Jerome.Kieffer@ESRF.eu)
@@ -21,7 +19,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 from __future__ import with_statement
