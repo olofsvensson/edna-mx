@@ -8,7 +8,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #                            Ricardo Leal
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -84,9 +84,9 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
         self.DEBUG("EDPluginControlInducedRadiationProcessv10.preProcess...")
 
         # TODO, if it's Bonly no Indexation needed! Get matrix from reference
-        #xsDataStringStrategyOption = self.getDataInput().getDataCollection().getDiffractionPlan().getStrategyOption()
-        #pyStrStrategyOption = xsDataStringStrategyOption.getValue()
-        #if ( pyStrStrategyOption != "-Bonly" ):
+        # xsDataStringStrategyOption = self.getDataInput().getDataCollection().getDiffractionPlan().getStrategyOption()
+        # pyStrStrategyOption = xsDataStringStrategyOption.getValue()
+        # if ( pyStrStrategyOption != "-Bonly" ):
         #    self.__edPluginIndexing    = self.loadPlugin( self.__strPluginIndexingName   , "Indexing" )
 
         self.__edPluginIntegration = self.loadPlugin(self.__strPluginIntegrationName, "Integration")
@@ -100,11 +100,11 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
 #            xsDataSample       = xsDataCollection.getSample()
 #            xsDataSubWedgeList = xsDataCollection.getSubWedge()
 #            xsDataExperimentalCondition = xsDataSubWedgeList[0].getExperimentalCondition()
-#            
+#
 #            xsDataIndexingInput = XSDataIndexingInput()
 #            xsDataIndexingInput.setDataCollection( xsDataCollection )
 #            xsDataIndexingInput.setExperimentalCondition( xsDataExperimentalCondition )
-#            
+#
 #            xsDataDiffractionPlan = xsDataCollection.getDiffractionPlan()
 #            xsDataStringForcedSpaceGroup = xsDataDiffractionPlan.getForcedSpaceGroup()
 #            if ( xsDataStringForcedSpaceGroup is not None ):
@@ -113,9 +113,9 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
 #                xsDataSpaceGroup.setName( xsDataStringForcedSpaceGroup )
 #                xsDataCrystal.setSpaceGroup( xsDataSpaceGroup )
 #                xsDataIndexingInput.setCrystal( xsDataCrystal )
-#            
+#
 #            self.__edPluginIndexing.setDataInput( xsDataIndexingInput )
-#            
+#
 #            # Populate characterisation object
 #            self.__xsDataResultCharacterisation = XSDataResultCharacterisation()
 #            self.__xsDataResultCharacterisation.setDataCollection( XSDataCollection.parseString( xsDataCollection.marshal() ) )
@@ -162,7 +162,7 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
 
         xsDataIntegrationOutput = self.__edPluginIntegration.getDataOutput()
         self.__xsDataResultCharacterisation.setIntegrationResult(xsDataIntegrationOutput)
-        #self.DEBUG( self.__xsDataExperimentCharacterisation.marshal() )
+        # self.DEBUG( self.__xsDataExperimentCharacterisation.marshal() )
         xsDataInputStrategy = XSDataInputStrategy()
 
         xsDataSolutionSelected = self.__xsDataResultCharacterisation.getIndexingResult().getSelectedSolution()
@@ -181,7 +181,7 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
 
         xsDataInputStrategy.setDiffractionPlan(self.__xsDataResultCharacterisation.getDataCollection().getDiffractionPlan())
 
-        #print xsDataInputStrategy.marshal()
+        # print xsDataInputStrategy.marshal()
         self.__edPluginStrategy.setDataInput(xsDataInputStrategy)
         self.__edPluginStrategy.executeSynchronous()
 
@@ -210,32 +210,6 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlInducedRadiationProcessv10.doSuccessActionStrategy")
         xsDataResultStrategy = self.__edPluginStrategy.getDataOutput()
         self.__xsDataResultCharacterisation.setStrategyResult(xsDataResultStrategy)
-
-
-#    def configure(self):
-#        EDPluginControl.configure(self)
-#        self.DEBUG("EDPluginControlInducedRadiationProcessv10.configure")
-#        pluginConfiguration = self.getConfiguration()
-#
-#        if(pluginConfiguration == None):
-#            warningMessage = EDMessage.WARNING_NO_PLUGIN_CONFIGURATION_ITEM_FOUND_02 % ('EDPluginControlCharacterisationv01.configure', self.getPluginName())
-#            self.warning(warningMessage)
-#            self.addWarningMessage(warningMessage)
-#        else:
-#            strSymopHome = EDConfiguration.getStringParamValue(pluginConfiguration, "KAPPA")
-#            if(strSymopHome == None or strSymopHome != "ON"):
-#                #self.__strPluginStrategyName = "EDPluginControlStrategyv10"
-#                self.__strPluginStrategyName = self.__strPluginStrategyName
-#            else:
-#                self.__strPluginStrategyName = "EDPluginControlKappaStrategyv1_1"
-#
-#            strSymopHome = EDConfiguration.getStringParamValue(pluginConfiguration, "POINTLESS")
-#            if(strSymopHome == None or strSymopHome != "ON"):
-#                self.__strPluginIntegrationName = "EDPluginControlIntegrationv10"
-#            else:
-#                self.__strPluginIntegrationName = "EDPluginControlIntegrationPointlessv10"
-
-
 
 
     def generateExecutiveSummary(self, _edPlugin):
@@ -271,7 +245,7 @@ class EDPluginControlInducedRadiationProcessv10(EDPluginControl):
         if (xsDataDiffractionPlan.getMaxExposureTimePerDataCollection() is not None):
             self.addExecutiveSummaryLine("Max exposure time per data collection : %6.1f [s]" % xsDataDiffractionPlan.getMaxExposureTimePerDataCollection().getValue())
         self.addExecutiveSummarySeparator()
-        #if (self.__edPluginIndexing is not None):
+        # if (self.__edPluginIndexing is not None):
         #    self.appendExecutiveSummary(self.__edPluginIndexing, "Indexing : ")
         if (self.__edPluginIntegration is not None):
             self.appendExecutiveSummary(self.__edPluginIntegration, "Integration : ")

@@ -41,7 +41,6 @@ from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataTime
-from XSDataCommon import XSDataDouble
 
 from XSDataControlXia2DIALSv1_0 import XSDataInputControlXia2DIALS
 from XSDataControlXia2DIALSv1_0 import XSDataResultControlXia2DIALS
@@ -56,7 +55,6 @@ from XSDataISPyBv1_4 import AutoProcContainer
 from XSDataISPyBv1_4 import AutoProcProgramAttachment
 from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
-from XSDataISPyBv1_4 import XSDataResultStoreAutoProc
 
 
 edFactoryPlugin.loadModule("XSDataMXWaitFilev1_1")
@@ -74,7 +72,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
     def __init__(self):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataInputControlXia2DIALS)
-        self.dataOutput = XSDataResultStoreAutoProc()
+        self.dataOutput = XSDataResultControlXia2DIALS()
         self.doAnomAndNonanom = True
         self.pyarchPrefix = None
         self.resultsDirectory = None
@@ -138,7 +136,6 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         if self.dataInput.dataCollectionId is not None:
             # Recover the data collection from ISPyB
             xsDataInputRetrieveDataCollection = XSDataInputRetrieveDataCollection()
-            identifier = str(self.dataInput.dataCollectionId.value)
             xsDataInputRetrieveDataCollection.dataCollectionId = self.dataInput.dataCollectionId
             self.edPluginRetrieveDataCollection.dataInput = xsDataInputRetrieveDataCollection
             self.edPluginRetrieveDataCollection.executeSynchronous()
@@ -154,7 +151,6 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             pathToStartImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoEnd)
         else:
-            identifier = str(int(time.time()))
             directory = self.dataInput.dirN.value
             template = self.dataInput.templateN.value
             imageNoStart = self.dataInput.fromN.value

@@ -9,7 +9,7 @@
 #
 #    Principal author:       Marie-Francoise Incardona (incardon@esrf.fr)
 #
-#    Contributing author:    Olof Svensson (svensson@esrf.fr) 
+#    Contributing author:    Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -54,12 +54,8 @@ class EDPluginControlInterfacev1_1(EDPluginControl):
         """
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlInterfacev1_1.configure")
-        pluginConfiguration = self.getConfiguration()
-        if (pluginConfiguration is None):
-            self.DEBUG("No plugin configuration found for EDPluginControlInterfacev1_2.")
-        else:
-            if (self.getControlledPluginName("characterisationPlugin") is not None):
-                self.__strPluginCharacterisationName = self.getControlledPluginName("characterisationPlugin")
+        if self.getControlledPluginName("characterisationPlugin") is not None:
+            self.__strPluginCharacterisationName = self.getControlledPluginName("characterisationPlugin")
 
 
     def preProcess(self, _edPlugin=None):
