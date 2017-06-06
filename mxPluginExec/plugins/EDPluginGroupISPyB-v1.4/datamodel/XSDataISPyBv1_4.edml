@@ -192,6 +192,7 @@ complex type XSDataInputStoreAutoProcStatus extends XSDataInput {
 
 complex type XSDataResultStoreAutoProcStatus extends XSDataResult {
 	autoProcIntegrationId : integer
+	autoProcProgramId : integer
 	autoProcStatusId : integer
 } 
 

@@ -57,6 +57,7 @@ class EDPluginISPyBStoreAutoProcStatusv1_4(EDPluginISPyBv1_4):
         self.setXSDataInputClass(XSDataInputStoreAutoProcStatus)
         self.iAutoProcIntegrationId = None
         self.iAutoProcStatusId = None
+        self.iAutoProcProgramId = None
 
 
     def configure(self):
@@ -97,13 +98,17 @@ class EDPluginISPyBStoreAutoProcStatusv1_4(EDPluginISPyBv1_4):
                     strProcessingCommandLine = self.getXSValue(xsDataAutoProcProgram.getProcessingCommandLine())
                     strProcessingPrograms = self.getXSValue(xsDataAutoProcProgram.getProcessingPrograms())
                     strProcessingStatus = self.getXSValue(xsDataAutoProcProgram.getProcessingStatus(), "SUCCESS")
+                    if strProcessingStatus == "true" or strProcessingStatus == "1":
+                        strProcessingStatus = "SUCCESS"
+                    elif strProcessingStatus == "false" or strProcessingStatus == "0":
+                        strProcessingStatus = "FAILED"
                     strProcessingMessage = self.getXSValue(xsDataAutoProcProgram.getProcessingMessage())
                     processingStartTime = self.getDateValue(xsDataAutoProcProgram.getProcessingStartTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))
                     processingEndTime = self.getDateValue(xsDataAutoProcProgram.getProcessingEndTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))
                     strProcessingEnvironment = self.getXSValue(xsDataAutoProcProgram.getProcessingEnvironment())
                     recordTimeStamp = self.getDateValue(None, "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))
-                    iAutoProcProgramId = clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcProgram(
-                        arg0=iAutoProcProgramId, \
+                    self.iAutoProcProgramId = clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcProgram(
+                        arg0=self.iAutoProcProgramId, \
                         processingCommandLine=strProcessingCommandLine, \
                         processingPrograms=strProcessingPrograms, \
                         processingStatus=strProcessingStatus, \
@@ -114,8 +119,8 @@ class EDPluginISPyBStoreAutoProcStatusv1_4(EDPluginISPyBv1_4):
                         recordTimeStamp=recordTimeStamp
                         )
                 else:
-                    iAutoProcProgramId = None
-                self.DEBUG("iAutoProcProgramId: {0}".format(iAutoProcProgramId))
+                    self.iAutoProcProgramId = None
+                self.DEBUG("iAutoProcProgramId: {0}".format(self.iAutoProcProgramId))
                 # If no autoProcessingId is given create a dummy entry in the integration table
                 self.iAutoProcIntegrationId = self.storeOrUpdateAutoProcIntegration(clientToolsForAutoprocessingWebService,
                                                                                _iDataCollectionId=iDataCollectionId,
@@ -132,6 +137,7 @@ class EDPluginISPyBStoreAutoProcStatusv1_4(EDPluginISPyBv1_4):
         self.DEBUG("EDPluginISPyBStoreAutoProcStatusv1_4.finallyProcess")
         xsDataResultStoreAutoProcStatus = XSDataResultStoreAutoProcStatus()
         xsDataResultStoreAutoProcStatus.setAutoProcIntegrationId(self.iAutoProcIntegrationId)
+        xsDataResultStoreAutoProcStatus.setAutoProcProgramId(self.iAutoProcProgramId)
         xsDataResultStoreAutoProcStatus.setAutoProcStatusId(self.iAutoProcStatusId)
         self.setDataOutput(xsDataResultStoreAutoProcStatus)
 

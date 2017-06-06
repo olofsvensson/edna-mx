@@ -171,6 +171,9 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlEDNAprocv1_0.preProcess")
+        self.processingPrograms = 'EDNA_proc'
+        if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
+            self.processingPrograms = 'EDNA_proc reprocess'
         self.screen("EDNA Auto Processing started")
         self.strHost = socket.gethostname()
         self.screen("Running on {0}".format(self.strHost))
@@ -492,11 +495,13 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
 
         self.integration_id_noanom = None
+        self.program_id_noanom = None
         self.integration_id_anom = None
+        self.program_id_anom = None
         if self.dataInput.data_collection_id is not None:
             # get our two integration IDs
             try:
-                self.integration_id_noanom = self.create_integration_id(self.dataInput.data_collection_id.value,
+                self.integration_id_noanom, self.program_id_noanom = self.create_integration_id(self.dataInput.data_collection_id.value,
                                                                         "Creating non-anomalous integration ID")
             except Exception as e:
                 strErrorMessage = "Could not get non-anom integration ID: \n{0}".format(traceback.format_exc(e))
@@ -505,7 +510,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 self.integration_id_noanom = None
 
             try:
-                self.integration_id_anom = self.create_integration_id(self.dataInput.data_collection_id.value,
+                self.integration_id_anom, self.program_id_anom = self.create_integration_id(self.dataInput.data_collection_id.value,
                                                                       "Creating anomalous integration ID")
             except Exception as e:
                 strErrorMessage = "Could not get anom integration ID: \n{0}".format(traceback.format_exc(e))
@@ -1117,23 +1122,22 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
 
             # ------ NO ANOM / ANOM end
-            processingPrograms = 'EDNA_proc'
-            if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
-                processingPrograms = 'EDNA_proc reprocess'
 
             program_container_anom = AutoProcProgramContainer()
             program_container_anom.AutoProcProgram = AutoProcProgram()
-            program_container_anom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-            program_container_anom.AutoProcProgram.processingPrograms = processingPrograms
+            program_container_anom.AutoProcProgram.autoProcProgramId = self.program_id_anom
             program_container_anom.AutoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
             program_container_anom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
+            program_container_anom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
+            program_container_anom.AutoProcProgram.processingPrograms = self.processingPrograms
 
             program_container_noanom = AutoProcProgramContainer()
             program_container_noanom.AutoProcProgram = AutoProcProgram()
-            program_container_noanom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
-            program_container_noanom.AutoProcProgram.processingPrograms = processingPrograms
+            program_container_noanom.AutoProcProgram.autoProcProgramId = self.program_id_noanom
             program_container_noanom.AutoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
             program_container_noanom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
+            program_container_noanom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
+            program_container_noanom.AutoProcProgram.processingPrograms = self.processingPrograms
 
             # now for the generated files. There's some magic to do with
             # their paths to determine where to put them on pyarch
@@ -1461,8 +1465,10 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         # Program
         autoProcProgram = AutoProcProgram()
-        autoProcProgram.processingPrograms = "EDNA_proc"
+        autoProcProgram.processingPrograms = self.processingPrograms
         autoProcProgram.processingStatus = "RUNNING"
+        autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
+        autoProcProgram.processingCommandLine = ' '.join(sys.argv)
 
         status_input.AutoProcProgram = autoProcProgram
         status_input.AutoProcStatus = status_data
@@ -1471,7 +1477,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         autoproc_status.dataInput = status_input
         # get our EDNAproc status id
         autoproc_status.executeSynchronous()
-        return autoproc_status.dataOutput.autoProcIntegrationId
+        return (autoproc_status.dataOutput.autoProcIntegrationId,
+                autoproc_status.dataOutput.autoProcProgramId)
 
     def parse_aimless(self, filepath):
         # mapping between the start of the line and the name of the property

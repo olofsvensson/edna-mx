@@ -161,6 +161,10 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         strProcessingCommandLine = self.getXSValue(_xsDataAutoProcProgram.getProcessingCommandLine())
         strProcessingPrograms = self.getXSValue(_xsDataAutoProcProgram.getProcessingPrograms())
         strProcessingStatus = self.getXSValue(_xsDataAutoProcProgram.getProcessingStatus(), "SUCCESS")
+        if strProcessingStatus == "true" or strProcessingStatus == "1":
+            strProcessingStatus = "SUCCESS"
+        elif strProcessingStatus == "false" or strProcessingStatus == "0":
+            strProcessingStatus = "FAILED"
         strProcessingMessage = self.getXSValue(_xsDataAutoProcProgram.getProcessingMessage())
         processingStartTime = self.getDateValue(_xsDataAutoProcProgram.getProcessingStartTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))
         processingEndTime = self.getDateValue(_xsDataAutoProcProgram.getProcessingEndTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))
