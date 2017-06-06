@@ -317,7 +317,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
             autoProcProgram = autoProcProgramContainer.AutoProcProgram
             autoProcProgram.processingPrograms = "XIA2_DIALS"
-            autoProcProgram.processingStatus = True
+            autoProcProgram.processingStatus = "SUCCESS"
             autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
             autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
             autoProcProgramContainer.AutoProcProgramAttachment = []

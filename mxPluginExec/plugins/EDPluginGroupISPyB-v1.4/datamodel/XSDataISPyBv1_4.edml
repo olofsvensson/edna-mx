@@ -154,7 +154,7 @@ complex type AutoProcProgram {
 	autoProcProgramId : integer optional
 	processingCommandLine : string
 	processingPrograms : string
-	processingStatus : boolean
+	processingStatus : string
 	processingMessage : string
 	processingStartTime : string
 	processingEndTime : string

@@ -387,7 +387,7 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         autoProcProgram = AutoProcProgram()
         autoProcProgram.processingCommandLine = ' '.join(sys.argv)
         autoProcProgram.processingPrograms = "XDSAPP"
-        autoProcProgram.processingStatus = "true"
+        autoProcProgram.processingStatus = "SUCCESS"
         autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
         autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
         autoProcProgramContainer.AutoProcProgram = autoProcProgram

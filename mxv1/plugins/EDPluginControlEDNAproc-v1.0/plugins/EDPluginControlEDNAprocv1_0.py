@@ -1225,8 +1225,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                         program_container_anom.AutoProcProgramAttachment.append(attach_noanom)
 
 
-            program_container_anom.AutoProcProgram.processingStatus = True
-            program_container_noanom.AutoProcProgram.processingStatus = True
+            program_container_anom.AutoProcProgram.processingStatus = "SUCCESS"
+            program_container_noanom.AutoProcProgram.processingStatus = "SUCCESS"
 
             # first with anom
 
@@ -1462,7 +1462,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         # Program
         autoProcProgram = AutoProcProgram()
         autoProcProgram.processingPrograms = "EDNA_proc"
-        autoProcProgram.processingStatus = False
+        autoProcProgram.processingStatus = "RUNNING"
 
         status_input.AutoProcProgram = autoProcProgram
         status_input.AutoProcStatus = status_data
