@@ -8,5 +8,10 @@
 <path>/edna-mx/mxv1/plugins/EDPluginControlH5ToCBF-v1.0/plugins</path>
 <path>/edna-mx/mxv1/plugins/EDPluginControlXia2DIALS-v1.0/plugins</path>
 <path>/edna-mx/mxv1/bin</path>
+<path>/edna-mx/mxPluginExec/plugins/EDPluginGroupISPyB-v1.4/plugins</path>
+<path>/edna-mx/mxv1/src</path>
+<path>/edna-mx/mxPluginExec/plugins/EDPluginXia2DIALS-v1.0/plugins</path>
+<path>/edna-mx/mxPluginExec/plugins/EDPluginMXWaitFile-v1.1/plugins</path>
+<path>/edna-mx/mxPluginExec/plugins/EDPluginHTML2PDF-v1.0/plugins</path>
 </pydev_pathproperty>
 </pydev_project>
