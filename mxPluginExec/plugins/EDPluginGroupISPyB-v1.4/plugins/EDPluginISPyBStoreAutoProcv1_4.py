@@ -161,6 +161,10 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         strProcessingCommandLine = self.getXSValue(_xsDataAutoProcProgram.getProcessingCommandLine())
         strProcessingPrograms = self.getXSValue(_xsDataAutoProcProgram.getProcessingPrograms())
         bProcessingStatus = self.getXSValue(_xsDataAutoProcProgram.getProcessingStatus(), True)
+        if bProcessingStatus:
+            iProcessingStatus = 1
+        else:
+            iProcessingStatus = 0
         strProcessingMessage = self.getXSValue(_xsDataAutoProcProgram.getProcessingMessage())
         processingStartTime = self.getDateValue(_xsDataAutoProcProgram.getProcessingStartTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))
         processingEndTime = self.getDateValue(_xsDataAutoProcProgram.getProcessingEndTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))
@@ -170,7 +174,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
                 arg0=iAutoProcProgramId, \
                 processingCommandLine=strProcessingCommandLine, \
                 processingPrograms=strProcessingPrograms, \
-                processingStatus=bProcessingStatus, \
+                processingStatus=iProcessingStatus, \
                 processingMessage=strProcessingMessage, \
                 processingStartTime=processingStartTime, \
                 processingEndTime=processingEndTime, \
