@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue May 16 11:10::33 2017 by EDGenerateDS.
+# Generated Tue May 16 02:53::50 2017 by EDGenerateDS.
 #
 
 import os, sys
@@ -25,6 +25,7 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
@@ -35,6 +36,7 @@ try:
     from XSDataCommon import XSDataFloat
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataInteger
+    from XSDataCommon import XSDataMatrixDouble
     from XSDataCommon import XSDataResult
     from XSDataCommon import XSDataString
     from XSDataCommon import XSDataVectorDouble
@@ -58,6 +60,7 @@ from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataFloat
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
+from XSDataCommon import XSDataMatrixDouble
 from XSDataCommon import XSDataResult
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataVectorDouble
@@ -7059,7 +7062,7 @@ class XSDataResultXDSGenerateBackgroundImage(XSDataResultXDS):
 
 
 class XSDataResultXDSIndexing(XSDataResultXDS):
-    def __init__(self, status=None, pathToLogFile=None, mosaicity=None, distance=None, beamCentreY=None, beamCentreX=None, unitCell=None, qualityOfFit=None, bravaisLattice=None, latticeCharacter=None):
+    def __init__(self, status=None, uMatrix=None, aMatrix=None, pathToLogFile=None, mosaicity=None, distance=None, beamCentreY=None, beamCentreX=None, unitCell=None, qualityOfFit=None, bravaisLattice=None, latticeCharacter=None):
         XSDataResultXDS.__init__(self, status)
         if latticeCharacter is None:
             self._latticeCharacter = None
@@ -7123,6 +7126,20 @@ class XSDataResultXDSIndexing(XSDataResultXDS):
             self._pathToLogFile = pathToLogFile
         else:
             strMessage = "ERROR! XSDataResultXDSIndexing constructor argument 'pathToLogFile' is not XSDataFile but %s" % self._pathToLogFile.__class__.__name__
+            raise BaseException(strMessage)
+        if aMatrix is None:
+            self._aMatrix = None
+        elif aMatrix.__class__.__name__ == "XSDataMatrixDouble":
+            self._aMatrix = aMatrix
+        else:
+            strMessage = "ERROR! XSDataResultXDSIndexing constructor argument 'aMatrix' is not XSDataMatrixDouble but %s" % self._aMatrix.__class__.__name__
+            raise BaseException(strMessage)
+        if uMatrix is None:
+            self._uMatrix = None
+        elif uMatrix.__class__.__name__ == "XSDataMatrixDouble":
+            self._uMatrix = uMatrix
+        else:
+            strMessage = "ERROR! XSDataResultXDSIndexing constructor argument 'uMatrix' is not XSDataMatrixDouble but %s" % self._uMatrix.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'latticeCharacter' attribute
     def getLatticeCharacter(self): return self._latticeCharacter
@@ -7232,6 +7249,30 @@ class XSDataResultXDSIndexing(XSDataResultXDS):
             raise BaseException(strMessage)
     def delPathToLogFile(self): self._pathToLogFile = None
     pathToLogFile = property(getPathToLogFile, setPathToLogFile, delPathToLogFile, "Property for pathToLogFile")
+    # Methods and properties for the 'aMatrix' attribute
+    def getAMatrix(self): return self._aMatrix
+    def setAMatrix(self, aMatrix):
+        if aMatrix is None:
+            self._aMatrix = None
+        elif aMatrix.__class__.__name__ == "XSDataMatrixDouble":
+            self._aMatrix = aMatrix
+        else:
+            strMessage = "ERROR! XSDataResultXDSIndexing.setAMatrix argument is not XSDataMatrixDouble but %s" % aMatrix.__class__.__name__
+            raise BaseException(strMessage)
+    def delAMatrix(self): self._aMatrix = None
+    aMatrix = property(getAMatrix, setAMatrix, delAMatrix, "Property for aMatrix")
+    # Methods and properties for the 'uMatrix' attribute
+    def getUMatrix(self): return self._uMatrix
+    def setUMatrix(self, uMatrix):
+        if uMatrix is None:
+            self._uMatrix = None
+        elif uMatrix.__class__.__name__ == "XSDataMatrixDouble":
+            self._uMatrix = uMatrix
+        else:
+            strMessage = "ERROR! XSDataResultXDSIndexing.setUMatrix argument is not XSDataMatrixDouble but %s" % uMatrix.__class__.__name__
+            raise BaseException(strMessage)
+    def delUMatrix(self): self._uMatrix = None
+    uMatrix = property(getUMatrix, setUMatrix, delUMatrix, "Property for uMatrix")
     def export(self, outfile, level, name_='XSDataResultXDSIndexing'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -7276,6 +7317,14 @@ class XSDataResultXDSIndexing(XSDataResultXDS):
             self.pathToLogFile.export(outfile, level, name_='pathToLogFile')
         else:
             warnEmptyAttribute("pathToLogFile", "XSDataFile")
+        if self._aMatrix is not None:
+            self.aMatrix.export(outfile, level, name_='aMatrix')
+        else:
+            warnEmptyAttribute("aMatrix", "XSDataMatrixDouble")
+        if self._uMatrix is not None:
+            self.uMatrix.export(outfile, level, name_='uMatrix')
+        else:
+            warnEmptyAttribute("uMatrix", "XSDataMatrixDouble")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -7326,6 +7375,16 @@ class XSDataResultXDSIndexing(XSDataResultXDS):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setPathToLogFile(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'aMatrix':
+            obj_ = XSDataMatrixDouble()
+            obj_.build(child_)
+            self.setAMatrix(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'uMatrix':
+            obj_ = XSDataMatrixDouble()
+            obj_.build(child_)
+            self.setUMatrix(obj_)
         XSDataResultXDS.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

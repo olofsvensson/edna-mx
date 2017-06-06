@@ -13,6 +13,7 @@ import XSDataCommon.XSDataResult
 import XSDataCommon.XSDataString
 import XSDataCommon.XSDataVectorDouble
 import XSDataCommon.XSDataWavelength
+import XSDataCommon.XSDataMatrixDouble
 
 complex type XSDataCell {
 	angle_alpha : XSDataAngle
@@ -220,6 +221,9 @@ complex type XSDataResultXDSIndexing extends XSDataResultXDS {
 	distance : XSDataLength
 	mosaicity : XSDataAngle
 	pathToLogFile : XSDataFile
+	aMatrix : XSDataMatrixDouble
+	uMatrix : XSDataMatrixDouble
+	
 }
 
 complex type XSDataResultXDSGenerateBackgroundImage extends XSDataResultXDS {
