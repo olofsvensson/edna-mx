@@ -8,7 +8,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
         self.xsDataInputStrategy = None
 
         self.setXSDataInputClass(XSDataInputCharacterisationv2_0)
-        
+
         EDFactoryPluginStatic.loadModule("XSDataMXv1")
         import XSDataMXv1
         self.setXSDataInputClass(XSDataMXv1.XSDataInputCharacterisation, "mxv1InputCharacterisation")
@@ -107,7 +107,7 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
             # create Data Input for indexing
             xsDataInputStrategy = self.getDataInput("mxv1InputCharacterisation")[0]
             xsDataCollection = xsDataInputStrategy.getDataCollection()
-            #xsDataSample = xsDataCollection.getSample()
+            # xsDataSample = xsDataCollection.getSample()
             xsDataSubWedgeList = xsDataCollection.getSubWedge()
             xsDataExperimentalCondition = xsDataSubWedgeList[0].getExperimentalCondition()
 
@@ -175,7 +175,7 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
 
         xsDataIntegrationOutput = self.edPluginIntegration.getDataOutput()
         self.xsDataResultCharacterisation.setIntegrationResult(xsDataIntegrationOutput)
-        #self.DEBUG( self.xsDataExperimentCharacterisation.marshal() )
+        # self.DEBUG( self.xsDataExperimentCharacterisation.marshal() )
         from XSDataMXv1 import XSDataInputStrategy
         xsDataInputStrategyOLD = XSDataInputStrategy()
 
@@ -196,7 +196,7 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
         xsDataInputStrategyOLD.setDiffractionPlan(self.xsDataResultCharacterisation.getDataCollection().getDiffractionPlan())
         xsDataInputStrategyOLD.setXdsBackgroundImage(self.xsDataResultCharacterisation.getXdsBackgroundImage())
 
-        #print xsDataInputStrategy.marshal()
+        # print xsDataInputStrategy.marshal()
         self.edPluginStrategy.setDataInput(xsDataInputStrategyOLD, "mxv1InputStrategy")
         if self.hasDataInput("mxv2DataCollection"):
             self.edPluginStrategy.setDataInput(self.getDataInput("mxv2DataCollection")[0], "mxv2DataCollection")
@@ -233,14 +233,11 @@ class EDPluginControlCharacterisationv2_0(EDPluginControl):
     def configure(self):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlCharacterisationv2_0.configure")
-        pluginConfiguration = self.getConfiguration()
-
-        if(pluginConfiguration != None):
-            strPointlessOn = EDConfiguration.getStringParamValue(pluginConfiguration, "POINTLESS")
-            if(strPointlessOn == None or strPointlessOn != "True"):
-                self.strPluginIntegrationName = "EDPluginControlIntegrationv10"
-            else:
-                self.strPluginIntegrationName = "EDPluginControlIntegrationPointlessv10"
+        strPointlessOn = self.config.get("POINTLESS", None)
+        if(strPointlessOn == None or strPointlessOn != "True"):
+            self.strPluginIntegrationName = "EDPluginControlIntegrationv10"
+        else:
+            self.strPluginIntegrationName = "EDPluginControlIntegrationPointlessv10"
 
 
 
