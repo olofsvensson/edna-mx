@@ -1130,6 +1130,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             program_container_anom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
             program_container_anom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
             program_container_anom.AutoProcProgram.processingPrograms = self.processingPrograms
+            program_container_anom.AutoProcProgram.processingStatus = "SUCCESS"
 
             program_container_noanom = AutoProcProgramContainer()
             program_container_noanom.AutoProcProgram = AutoProcProgram()
@@ -1138,6 +1139,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             program_container_noanom.AutoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
             program_container_noanom.AutoProcProgram.processingCommandLine = ' '.join(sys.argv)
             program_container_noanom.AutoProcProgram.processingPrograms = self.processingPrograms
+            program_container_noanom.AutoProcProgram.processingStatus = "SUCCESS"
 
             # now for the generated files. There's some magic to do with
             # their paths to determine where to put them on pyarch
@@ -1227,10 +1229,6 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                     else:
                         program_container_noanom.AutoProcProgramAttachment.append(attach_anom)
                         program_container_anom.AutoProcProgramAttachment.append(attach_noanom)
-
-
-            program_container_anom.AutoProcProgram.processingStatus = "SUCCESS"
-            program_container_noanom.AutoProcProgram.processingStatus = "SUCCESS"
 
             # first with anom
 
