@@ -93,6 +93,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.batchSize = None
         self.hdf5BatchSize = None
         self._strMxCuBE_URI = None
+        self._oServerProxy = None
 
 
     def checkParameters(self):
@@ -259,7 +260,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
 
             xsDataResultControlDozor.halfDoseTime = edPluginDozor.dataOutput.halfDoseTime
             xsDataResultControlDozor.pngPlots = edPluginDozor.dataOutput.pngPlots
-            
+
             self.sendResultToMXCuBE(imageDozorBatchList)
             self.sendMessageToMXCuBE("Batch processed")
         self.dataOutput = xsDataResultControlDozor
@@ -576,7 +577,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                         newDict[image] = XSDataFile(XSDataString(outputCBFFileTemplate.format(image)))
         return newDict, hasHdf5Prefix
 
-    def sendMessageToMXCuBE(self, _strMessage, level = "info"):
+    def sendMessageToMXCuBE(self, _strMessage, level="info"):
         if self._oServerProxy is not None:
             self.DEBUG("Sending message to mxCuBE: {0}".format(_strMessage))
             try:
