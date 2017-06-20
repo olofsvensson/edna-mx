@@ -217,39 +217,44 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         for strLine in listOutput:
             # Remove "|"
             listLine = shlex.split(strLine.replace("|", " "))
-#            print listLine
             if listLine != [] and not strLine.startswith("-") and not strLine.startswith("h"):
                 xsDataImageDozor = XSDataImageDozor()
                 imageNumber = int(listLine[0])
                 angle = self.startingAngle + (imageNumber - self.firstImageNumber) * (self.oscillationRange - self.overlap) + self.oscillationRange / 2.0
                 xsDataImageDozor.number = XSDataInteger(imageNumber)
                 xsDataImageDozor.angle = XSDataAngle(angle)
-                if listLine[4].startswith("-"):
-                    xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
-                    xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
-                    xsDataImageDozor.spotsResolution = self.parseDouble(listLine[3])
-                    xsDataImageDozor.mainScore = self.parseDouble(listLine[7])
-                    xsDataImageDozor.spotScore = self.parseDouble(listLine[8])
-                    xsDataImageDozor.visibleResolution = self.parseDouble(listLine[9])
-                else:
-                    xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
-                    xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
-                    xsDataImageDozor.spotsResolution = self.parseDouble(listLine[3])
-                    xsDataImageDozor.powderWilsonScale = self.parseDouble(listLine[4])
-                    xsDataImageDozor.powderWilsonBfactor = self.parseDouble(listLine[5])
-                    xsDataImageDozor.powderWilsonResolution = self.parseDouble(listLine[6])
-                    xsDataImageDozor.powderWilsonCorrelation = self.parseDouble(listLine[7])
-                    xsDataImageDozor.powderWilsonRfactor = self.parseDouble(listLine[8])
-                    xsDataImageDozor.mainScore = self.parseDouble(listLine[9])
-                    xsDataImageDozor.spotScore = self.parseDouble(listLine[10])
-                    xsDataImageDozor.visibleResolution = self.parseDouble(listLine[11])
+              
+                xsDataImageDozor.spotScore = self.parseDouble(0)
+                xsDataImageDozor.visibleResolution = self.parseDouble(0)
+                try: 
+                    if listLine[4].startswith("-") or len(listLine) < 11:
+                        xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
+                        xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
+                        xsDataImageDozor.spotsResolution = self.parseDouble(listLine[3])
+                        xsDataImageDozor.mainScore = self.parseDouble(listLine[7])
+                        xsDataImageDozor.spotScore = self.parseDouble(listLine[8])
+                        xsDataImageDozor.visibleResolution = self.parseDouble(listLine[9])
+                    else:
+                        xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
+                        xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
+                        xsDataImageDozor.spotsResolution = self.parseDouble(listLine[3])
+                        xsDataImageDozor.powderWilsonScale = self.parseDouble(listLine[4])
+                        xsDataImageDozor.powderWilsonBfactor = self.parseDouble(listLine[5])
+                        xsDataImageDozor.powderWilsonResolution = self.parseDouble(listLine[6])
+                        xsDataImageDozor.powderWilsonCorrelation = self.parseDouble(listLine[7])
+                        xsDataImageDozor.powderWilsonRfactor = self.parseDouble(listLine[8])
+                        xsDataImageDozor.mainScore = self.parseDouble(listLine[9])
+                        xsDataImageDozor.spotScore = self.parseDouble(listLine[10])
+                        xsDataImageDozor.visibleResolution = self.parseDouble(listLine[11])
+                except:
+                    pass
                 # Dozor spot file
                 strWorkingDir = self.getWorkingDirectory()
                 if strWorkingDir is not None:
                     strSpotFile = os.path.join(self.getWorkingDirectory(), "%05d.spot" % xsDataImageDozor.number.value)
                     if os.path.exists(strSpotFile):
                         xsDataImageDozor.spotFile = XSDataFile(XSDataString(strSpotFile))
-#                print xsDataImageDozor.marshal()
+#                #print xsDataImageDozor.marshal()
                 xsDataResultDozor.addImageDozor(xsDataImageDozor)
             elif strLine.startswith("h"):
                 xsDataResultDozor.halfDoseTime = XSDataDouble(strLine.split("=")[1].split()[0])
