@@ -52,6 +52,7 @@ from XSDataISPyBv1_4 import XSDataISPyBScreeningStrategyWedgeContainer
 from XSDataISPyBv1_4 import XSDataISPyBScreeningStrategyWedge
 from XSDataISPyBv1_4 import XSDataISPyBScreeningStrategySubWedge
 from XSDataISPyBv1_4 import XSDataISPyBImage
+from XSDataISPyBv1_4 import AutoProcProgram
 
 
 class EDHandlerXSDataISPyBv1_4(object):
@@ -419,3 +420,17 @@ class EDHandlerXSDataISPyBv1_4(object):
                         strBestWilsonPlotPath = strPath
         return strBestWilsonPlotPath
 
+    @staticmethod
+    def createAutoProcProgram(programId=None, status="SUCCESS", timeStart=None, timeEnd=None,
+                              processingCommandLine=None, processingPrograms=None):
+        if timeStart is None:
+            timeStart = time.localtime()
+        autoProcProgram = AutoProcProgram()
+        autoProcProgram.autoProcProgramId = programId
+        autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
+        if timeEnd is not None:
+            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
+        autoProcProgram.processingCommandLine = processingCommandLine
+        autoProcProgram.processingPrograms = processingPrograms
+        autoProcProgram.processingStatus = status
+        return autoProcProgram

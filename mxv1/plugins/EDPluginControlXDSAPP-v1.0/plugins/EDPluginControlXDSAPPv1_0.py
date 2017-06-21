@@ -42,6 +42,8 @@ from EDUtilsFile import EDUtilsFile
 
 from EDFactoryPlugin import edFactoryPlugin
 
+from EDHandlerXSDataISPyBv1_4 import EDHandlerXSDataISPyBv1_4
+
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataString
@@ -302,7 +304,8 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
 
 
     def createXSDataInputStoreAutoProc(self, xsDataResultXDSAPP, processDirectory, template,
-                                       strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId):
+                                       strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId,
+                                       programId=None):
 
         # Parse log file
         dictLog = self.parseLogFile(xsDataResultXDSAPP.logFile.path.value)
@@ -384,12 +387,12 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
 
         # Program
         autoProcProgramContainer = AutoProcProgramContainer()
-        autoProcProgram = AutoProcProgram()
-        autoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        autoProcProgram.processingPrograms = "XDSAPP"
-        autoProcProgram.processingStatus = "SUCCESS"
-        autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
-        autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
+
+        processingCommandLine = ' '.join(sys.argv)
+        processingPrograms = "XDSAPP"
+        autoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
+                programId=programId, status="SUCCESS", timeStart=timeStart, timeEnd=timeEnd,
+                processingCommandLine=processingCommandLine, processingPrograms=processingPrograms)
         autoProcProgramContainer.AutoProcProgram = autoProcProgram
 
         # Attached files

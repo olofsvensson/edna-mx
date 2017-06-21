@@ -48,6 +48,8 @@ from EDVerbose import EDVerbose
 from EDFactoryPlugin import edFactoryPlugin
 from EDUtilsPath import EDUtilsPath
 
+from EDHandlerXSDataISPyBv1_4 import EDHandlerXSDataISPyBv1_4
+
 # try the suds from the system
 try:
     import suds
@@ -151,6 +153,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.bExecutedDimple = False
         self.timeStart = None
         self.timeEnd = None
+        self.processingCommandLine = ' '.join(sys.argv)
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -1123,10 +1126,14 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
             # ------ NO ANOM / ANOM end
             program_container_anom = AutoProcProgramContainer()
-            program_container_anom.AutoProcProgram = self.createAutoProcProgram(status="SUCCESS", isAnom=True)
+            program_container_anom.AutoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
+                programId=self.program_id_anom, status="SUCCESS", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
 
             program_container_noanom = AutoProcProgramContainer()
-            program_container_noanom.AutoProcProgram = self.createAutoProcProgram(status="SUCCESS", isAnom=False)
+            program_container_noanom.AutoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
+                programId=self.program_id_noanom, status="SUCCESS", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
 
             # now for the generated files. There's some magic to do with
             # their paths to determine where to put them on pyarch
@@ -1322,7 +1329,10 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 # anom
                 autoProcContainerAnom = AutoProcContainer()
                 programContainerAnom = AutoProcProgramContainer()
-                programContainerAnom.AutoProcProgram = self.createAutoProcProgram(status="FAILED", isAnom=True)
+                programContainerAnom.AutoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
+                    programId=self.program_id_anom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                    processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
+
                 autoProcContainerAnom.AutoProcProgramContainer = programContainerAnom
                 inputStoreAutoProcAnom = XSDataInputStoreAutoProc()
                 inputStoreAutoProcAnom.AutoProcContainer = autoProcContainerAnom
@@ -1331,7 +1341,9 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 # noanom
                 autoProcContainerNoanom = AutoProcContainer()
                 programContainerNoanom = AutoProcProgramContainer()
-                programContainerNoanom.AutoProcProgram = self.createAutoProcProgram(status="FAILED", isAnom=False)
+                programContainerNoanom.AutoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
+                    programId=self.program_id_noanom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                    processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
                 autoProcContainerNoanom.AutoProcProgramContainer = programContainerNoanom
                 inputStoreAutoProcNoanom = XSDataInputStoreAutoProc()
                 inputStoreAutoProcNoanom.AutoProcContainer = autoProcContainerNoanom
@@ -1470,7 +1482,9 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         status_data.comments = comments
 
         # Program
-        autoProcProgram = self.createAutoProcProgram(status="RUNNING")
+        autoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
+                    programId=None, status="RUNNING", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                    processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
 
         status_input.AutoProcProgram = autoProcProgram
         status_input.AutoProcStatus = status_data
@@ -1549,20 +1563,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             f.write(str(xdsInp))
         return inputFilePath
 
-    def createAutoProcProgram(self, status="SUCCESS", isAnom=True):
-        program_container_anom = AutoProcProgramContainer()
-        autoProcProgram = AutoProcProgram()
-        if isAnom:
-            autoProcProgram.autoProcProgramId = self.program_id_anom
-        else:
-            autoProcProgram.autoProcProgramId = self.program_id_noanom
-        autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeStart)
-        if self.timeEnd is not None:
-            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", self.timeEnd)
-        autoProcProgram.processingCommandLine = ' '.join(sys.argv)
-        autoProcProgram.processingPrograms = self.processingPrograms
-        autoProcProgram.processingStatus = status
-        return autoProcProgram
+
 
 def _create_scaling_stats(xscale_stats, stats_type, lowres, anom):
     stats = AutoProcScalingStatistics()
