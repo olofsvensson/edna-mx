@@ -238,9 +238,12 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 indexImage += 1
 
                 dozorSpotListShape = []
+                dozorSpotList = []
+                spotFile = None
                 if xsDataControlImageDozor.spotFile is not None:
-                    if os.path.exists(xsDataControlImageDozor.spotFile.path.value):
-                        numpyArray = numpy.loadtxt(xsDataControlImageDozor.spotFile.path.value, skiprows=3)
+                    spotFile = xsDataControlImageDozor.spotFile.path.value
+                    if os.path.exists(spotFile):
+                        numpyArray = numpy.loadtxt(spotFile, skiprows=3)
                         dozorSpotList = base64.b64encode(numpyArray.tostring())
                         dozorSpotListShape.append(numpyArray.shape[0])
                         if len(numpyArray.shape) > 1:
@@ -250,7 +253,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                                   "imageName": xsDataControlImageDozor.image.path.value,
                                   "dozor_score": xsDataControlImageDozor.mainScore.value,
                                   "dozorSpotsNumOf" : xsDataControlImageDozor.spotsNumOf.value,
-                                  "dozorSpotFile": xsDataControlImageDozor.spotFile.path.value,
+                                  "dozorSpotFile": spotFile,
                                   "dozorSpotList" : dozorSpotList,
                                   "dozorSpotListShape": dozorSpotListShape,
                                   "dozorSpotsIntAver": xsDataControlImageDozor.spotsIntAver.value,

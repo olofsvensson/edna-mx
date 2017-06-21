@@ -113,7 +113,6 @@ class EDPluginH5ToCBFv1_1(EDPluginExecProcessScript):
             if "master" in hdf5File:
                 masterFile = hdf5File
             else:
-                prefix = prefix[:-5] 
                 if EDUtilsPath.isEMBL():
                     masterFile = os.path.join(directory, prefix + "_master.h5".format(hdf5ImageNumber))
                 else:
