@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<XSConfiguration> 
+	<XSImportConfiguration>
+		<name>XSConfiguration_ESRF_Beamline</name>
+	</XSImportConfiguration>	
+  	<XSPluginList>
+		<XSPluginItem>
+			<name>EDPluginControlInterfaceToMXCuBEv1_4</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+ 					<value>http://bbking.esrf.fr:7171</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginControlCharacterisationv1_4</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+					<value>http://bbking.esrf.fr:7171</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginControlImageQualityIndicatorsv1_4</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>1800</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>MXWaitFileTimeOut</name>
+					<value>120</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>minImageSize</name>
+					<value>2000000</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+	</XSPluginList>
+</XSConfiguration> 
