@@ -1358,7 +1358,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 integrationNoanom = AutoProcIntegration()
                 if self.integration_id_noanom is not None:
                     integrationNoanom.autoProcIntegrationId = self.integration_id_noanom
-                    integrationNoanom.anomalous = True
+                    integrationNoanom.anomalous = False
                 integrationContainerNoanom.AutoProcIntegration = integrationNoanom
                 imageNoanom = Image()
                 imageNoanom.dataCollectionId = self.dataInput.data_collection_id.value
