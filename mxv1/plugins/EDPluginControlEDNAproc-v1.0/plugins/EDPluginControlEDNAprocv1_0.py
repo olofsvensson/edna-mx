@@ -602,8 +602,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         self.stats['first_res_cutoff'] = time.time() - t0
 
-        # if self.first_res_cutoff.isFailure():
-        if True:
+        if self.first_res_cutoff.isFailure():
             self.ERROR("res cutoff failed")
             self.log_to_ispyb(self.integration_id_noanom,
                          'Indexing',
