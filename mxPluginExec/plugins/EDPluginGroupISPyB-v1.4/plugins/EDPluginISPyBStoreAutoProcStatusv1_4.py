@@ -124,8 +124,8 @@ class EDPluginISPyBStoreAutoProcStatusv1_4(EDPluginISPyBv1_4):
                 # If no autoProcessingId is given create a dummy entry in the integration table
                 self.iAutoProcIntegrationId = self.storeOrUpdateAutoProcIntegration(clientToolsForAutoprocessingWebService,
                                                                                _iDataCollectionId=iDataCollectionId,
-                                                                               _iAutoProcProgramId=iAutoProcProgramId, \
-)
+                                                                               _iAutoProcProgramId=self.iAutoProcProgramId, \
+                                                                               )
             # Store the AutoProcStatus
             self.iAutoProcStatusId = self.storeOrUpdateAutoProcStatus(clientToolsForAutoprocessingWebService, \
                                                                  _xsDataAutoProcStatus=xsDataInputStoreAutoProcStatus.getAutoProcStatus(), \
