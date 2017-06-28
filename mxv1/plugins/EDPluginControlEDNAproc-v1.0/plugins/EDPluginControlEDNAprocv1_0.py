@@ -602,7 +602,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         self.stats['first_res_cutoff'] = time.time() - t0
 
-        if self.first_res_cutoff.isFailure():
+        # if self.first_res_cutoff.isFailure():
+        if True:
             self.ERROR("res cutoff failed")
             self.log_to_ispyb(self.integration_id_noanom,
                          'Indexing',
@@ -1328,23 +1329,47 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 # Upload program status to ISPyB
                 # anom
                 autoProcContainerAnom = AutoProcContainer()
+                integrationContainerAnom = AutoProcIntegrationContainer()
+                scalingContainerAnom = AutoProcScalingContainer()
+                integrationAnom = AutoProcIntegration()
+                if self.integration_id_anom is not None:
+                    integrationAnom.autoProcIntegrationId = self.integration_id_anom
+                    integrationAnom.anomalous = True
+                integrationContainerAnom.AutoProcIntegration = integrationAnom
+                imageAnom = Image()
+                imageAnom.dataCollectionId = self.dataInput.data_collection_id.value
+                integrationContainerAnom.Image = imageAnom
+                scalingContainerAnom.AutoProcIntegrationContainer = integrationContainerAnom
                 programContainerAnom = AutoProcProgramContainer()
                 programContainerAnom.AutoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
                     programId=self.program_id_anom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
                     processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
-
                 autoProcContainerAnom.AutoProcProgramContainer = programContainerAnom
+                autoProcContainerAnom.AutoProcScalingContainer = scalingContainerAnom
                 inputStoreAutoProcAnom = XSDataInputStoreAutoProc()
                 inputStoreAutoProcAnom.AutoProcContainer = autoProcContainerAnom
                 self.store_autoproc_anom.dataInput = inputStoreAutoProcAnom
                 self.store_autoproc_anom.executeSynchronous()
+
                 # noanom
                 autoProcContainerNoanom = AutoProcContainer()
+                integrationContainerNoanom = AutoProcIntegrationContainer()
+                scalingContainerNoanom = AutoProcScalingContainer()
+                integrationNoanom = AutoProcIntegration()
+                if self.integration_id_noanom is not None:
+                    integrationNoanom.autoProcIntegrationId = self.integration_id_noanom
+                    integrationNoanom.anomalous = True
+                integrationContainerNoanom.AutoProcIntegration = integrationNoanom
+                imageNoanom = Image()
+                imageNoanom.dataCollectionId = self.dataInput.data_collection_id.value
+                integrationContainerNoanom.Image = imageNoanom
+                scalingContainerNoanom.AutoProcIntegrationContainer = integrationContainerNoanom
                 programContainerNoanom = AutoProcProgramContainer()
                 programContainerNoanom.AutoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
                     programId=self.program_id_noanom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
                     processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
                 autoProcContainerNoanom.AutoProcProgramContainer = programContainerNoanom
+                autoProcContainerNoanom.AutoProcScalingContainer = scalingContainerNoanom
                 inputStoreAutoProcNoanom = XSDataInputStoreAutoProc()
                 inputStoreAutoProcNoanom.AutoProcContainer = autoProcContainerNoanom
                 self.store_autoproc_noanom.dataInput = inputStoreAutoProcNoanom

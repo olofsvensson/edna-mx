@@ -98,7 +98,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
             listAutoProcProgramAttachment = xsDataAutoProcContainer.getAutoProcProgramContainer().getAutoProcProgramAttachment()
             for xsDataAutoProcProgramAttachment in listAutoProcProgramAttachment:
                 self.storeOrUpdateAutoProcProgramAttachment(clientToolsForAutoprocessingWebService, xsDataAutoProcProgramAttachment)
-            if (xsDataAutoProcProgram.getProcessingStatus() == "FAILED") or (xsDataAutoProcScalingContainer is None):
+            if xsDataAutoProcScalingContainer is None:
                 self.bContinue = False
         if self.bContinue:
             # AutoProcIntegration
@@ -106,6 +106,8 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
             self.iAutoProcIntegrationId = self.storeOrUpdateAutoProcIntegration(clientToolsForAutoprocessingWebService, xsDataAutoProcIntegrationContainer)
             if self.iAutoProcIntegrationId is None:
                 self.WARNING("Couldn't create entry for AutoProcIntegration in ISPyB!")
+            if xsDataAutoProcProgram.getProcessingStatus() == "FAILED":
+                self.bContinue = False
         if self.bContinue:
             # AutoProc
             xsDataAutoProc = xsDataAutoProcContainer.getAutoProc()
