@@ -96,6 +96,14 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.pyarchPrefix = None
         self.resultsDirectory = None
         self.pyarchDirectory = None
+        self.processingCommandLine = None
+        self.processingPrograms = None
+        self.timeStart = None
+        self.timeEnd = None
+        self.autoProcIntegrationIdAnom = None
+        self.autoProcProgramIdAnom = None
+        self.autoProcIntegrationIdNoanom = None
+        self.autoProcProgramIdNoanom = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -113,6 +121,9 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlXDSAPPv1_0.preProcess")
         self.screen("XDSAPP processing started")
+
+        self.processingCommandLine = ' '.join(sys.argv)
+        self.processingPrograms = "XDSAPP"
 
         if self.dataInput.doAnomAndNonanom is not None:
             if self.dataInput.doAnomAndNonanom.value:
@@ -276,12 +287,21 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
 #            xsDataInputXDSAPPAnom.addImage(XSDataFile(XSDataString(pathToStartImage)))
 #            if self.doAnomAndNonanom:
 #                xsDataInputXDSAPPNoanom.addImage(XSDataFile(XSDataString(pathToStartImage)))
-        timeStart = time.localtime()
+        self.timeStart = time.localtime()
         self.edPluginExecXDSAPPAnom.dataInput = xsDataInputXDSAPPAnom
         self.edPluginExecXDSAPPAnom.execute()
+        if self.dataInput.dataCollectionId is not None:
+            # Set ISPyB to started
+            self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom = self.setIspybToRunning(isAnom=True,
+                                                                                                timeStart=self.timeStart)
+
         if self.doAnomAndNonanom:
             self.edPluginExecXDSAPPNoanom.dataInput = xsDataInputXDSAPPNoanom
             self.edPluginExecXDSAPPNoanom.execute()
+            if self.dataInput.dataCollectionId is not None:
+                # Set ISPyB to started
+                self.autoProcIntegrationIdNoanom, self.autoProcProgramIdNoanom = self.setIspybToRunning(isAnom=False,
+                                                                                                        timeStart=self.timeStart)
         self.edPluginExecXDSAPPAnom.synchronize()
         xsDataResultXDSAPPAnom = self.edPluginExecXDSAPPAnom.dataOutput
         # Run XSCALE even if XSCALE.LP is present
@@ -290,22 +310,60 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             self.edPluginExecXDSAPPNoanom.synchronize()
             xsDataResultXDSAPPNoanom = self.edPluginExecXDSAPPNoanom.dataOutput
             strPathXscaleLpNoanom = self.runXscale(self.edPluginExecXDSAPPNoanom.getWorkingDirectory(), anom=False, merged=True)
-        timeEnd = time.localtime()
-
+        self.timeEnd = time.localtime()
+        print(1 / 0)
         # Upload to ISPyB
         if self.dataInput.dataCollectionId is not None:
             self.uploadToISPyB(xsDataResultXDSAPPAnom, processDirectory, template,
-                               strPathXscaleLpAnom, True, proposal, timeStart, timeEnd,
-                               self.dataInput.dataCollectionId.value)
+                               strPathXscaleLpAnom, True, proposal, self.timeStart, self.timeEnd,
+                               self.dataInput.dataCollectionId.value,
+                               self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom)
             if self.doAnomAndNonanom:
                 self.uploadToISPyB(xsDataResultXDSAPPNoanom, processDirectory, template,
-                                   strPathXscaleLpNoanom, False, proposal, timeStart, timeEnd,
-                                   self.dataInput.dataCollectionId.value)
+                                   strPathXscaleLpNoanom, False, proposal, self.timeStart, self.timeEnd,
+                                   self.dataInput.dataCollectionId.value,
+                                   self.autoProcIntegrationIdNoanom, self.autoProcProgramIdNoanom)
 
+
+    def finallyProcess(self, _edObject=None):
+        EDPluginControl.finallyProcess(self)
+        self.edPluginExecXDSAPPAnom.synchronize()
+        self.edPluginExecXDSAPPNoanom.synchronize()
+        strMessage = ""
+        if self.getListOfWarningMessages() != []:
+            strMessage += "Warning messages: \n\n"
+            for strWarningMessage in self.getListOfWarningMessages():
+                strMessage += strWarningMessage + "\n\n"
+        if self.getListOfErrorMessages() != []:
+            strMessage += "Error messages: \n\n"
+            for strErrorMessage in self.getListOfErrorMessages():
+                strMessage += strErrorMessage + "\n\n"
+        if self.isFailure():
+            self.timeEnd = time.localtime()
+            if self.dataInput.dataCollectionId is not None:
+                # Upload program status to ISPyB
+                # anom
+                inputStoreAutoProcAnom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
+                        self.dataInput.dataCollectionId.value, self.autoProcIntegrationIdAnom, isAnomalous=True,
+                        programId=self.autoProcProgramIdAnom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                        processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
+                edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_anom")
+                edPluginStoreAutoproc.dataInput = inputStoreAutoProcAnom
+                edPluginStoreAutoproc.executeSynchronous()
+
+                if self.doAnomAndNonanom:
+                    # noanom
+                    inputStoreAutoProcNoanom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
+                            self.dataInput.dataCollectionId.value, self.autoProcIntegrationIdNoanom, isAnomalous=False,
+                            programId=self.autoProcProgramIdNoanom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                            processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
+                    edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_noanom")
+                    edPluginStoreAutoproc.dataInput = inputStoreAutoProcNoanom
+                    edPluginStoreAutoproc.executeSynchronous()
 
     def createXSDataInputStoreAutoProc(self, xsDataResultXDSAPP, processDirectory, template,
                                        strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId,
-                                       programId=None):
+                                       integrationId=None, programId=None):
 
         # Parse log file
         dictLog = self.parseLogFile(xsDataResultXDSAPP.logFile.path.value)
@@ -350,6 +408,7 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         # AutoProcIntegrationContainer
         autoProcIntegrationContainer = AutoProcIntegrationContainer()
         autoProcIntegration = AutoProcIntegration()
+        autoProcIntegration.autoProcIntegrationId = integrationId
         autoProcIntegration.cell_a = dictLog["cellA"]
         autoProcIntegration.cell_b = dictLog["cellB"]
         autoProcIntegration.cell_c = dictLog["cellC"]
@@ -388,11 +447,9 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         # Program
         autoProcProgramContainer = AutoProcProgramContainer()
 
-        processingCommandLine = ' '.join(sys.argv)
-        processingPrograms = "XDSAPP"
         autoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
                 programId=programId, status="SUCCESS", timeStart=timeStart, timeEnd=timeEnd,
-                processingCommandLine=processingCommandLine, processingPrograms=processingPrograms)
+                processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
         autoProcProgramContainer.AutoProcProgram = autoProcProgram
 
         # Attached files
@@ -447,9 +504,11 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
 
 
     def uploadToISPyB(self, xsDataResultXDSAPP, processDirectory, template,
-                      strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId):
+                      strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId,
+                      autoProcIntegrationId, autoProcProgramId):
         xsDataInputStoreAutoProc = self.createXSDataInputStoreAutoProc(xsDataResultXDSAPP, processDirectory, template,
-                                                                       strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId)
+                                                                       strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId,
+                                                                       autoProcIntegrationId, autoProcProgramId)
         if isAnom:
             anomString = "anom"
         else:
@@ -457,6 +516,23 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}".format(anomString))
         edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
         edPluginStoreAutoproc.executeSynchronous()
+
+    def setIspybToRunning(self, isAnom=False, timeStart=None):
+        if isAnom:
+            anomString = "anom"
+        else:
+            anomString = "noanom"
+        inputStoreAutoProcAnom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
+                self.dataInput.dataCollectionId.value, None, isAnomalous=True,
+                programId=None, status="RUNNING", timeStart=timeStart,
+                processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
+        edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}_started".format(anomString))
+        edPluginStoreAutoproc.dataInput = inputStoreAutoProcAnom
+        edPluginStoreAutoproc.executeSynchronous()
+        autoProcIntegrationId = edPluginStoreAutoproc.dataOutput.autoProcIntegrationId.value
+        autoProcProgramId = edPluginStoreAutoproc.dataOutput.autoProcProgramId.value
+        return autoProcIntegrationId, autoProcProgramId
+
 
 
     def addAttachment(self, autoProcProgramContainer, strPath, name, suffix, isAnom=True,

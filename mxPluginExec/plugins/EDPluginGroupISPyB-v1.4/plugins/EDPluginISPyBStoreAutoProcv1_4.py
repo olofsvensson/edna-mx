@@ -111,10 +111,10 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         if self.bContinue:
             # AutoProc
             xsDataAutoProc = xsDataAutoProcContainer.getAutoProc()
-            self.iAutoProcId = self.storeOrUpdateAutoProc(clientToolsForAutoprocessingWebService, xsDataAutoProc)
+            if xsDataAutoProc is not None:
+                self.iAutoProcId = self.storeOrUpdateAutoProc(clientToolsForAutoprocessingWebService, xsDataAutoProc)
             if self.iAutoProcId is None:
-                self.ERROR("Couldn't create entry for AutoProc in ISPyB!")
-                self.setFailure()
+                self.DEBUG("Couldn't create entry for AutoProc in ISPyB. Stopping here.")
                 self.bContinue = False
         if self.bContinue:
             # AutoProcScaling
@@ -148,6 +148,8 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         xsDataResultStoreAutoProc = XSDataResultStoreAutoProc()
         if self.iAutoProcId is not None:
             xsDataResultStoreAutoProc.setAutoProcId(XSDataInteger(self.iAutoProcId))
+        if self.iAutoProcIntegrationId is not None:
+            xsDataResultStoreAutoProc.setAutoProcIntegrationId(XSDataInteger(self.iAutoProcIntegrationId))
         if self.iAutoProcScalingId is not None:
             xsDataResultStoreAutoProc.setAutoProcScalingId(XSDataInteger(self.iAutoProcScalingId))
         if self.iAutoProcProgramId is not None:
