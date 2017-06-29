@@ -1,9 +1,20 @@
 <?xml version="1.0" ?>
-<XSDataInputAutoProcStatus>
-	<dataCollectionId>19570</dataCollectionId>
-	<AutoProcStatus>
-		<step>Indexing</step>
-		<status>Successful</status>
-		<comments>This is a rather long and useless comment.</comments>
-	</AutoProcStatus>
-</XSDataInputAutoProcStatus>
+<XSDataInputStoreAutoProcStatus>
+    <dataCollectionId>1088454</dataCollectionId>
+    <AutoProcProgram>
+        <processingCommandLine>/mntdirect/_scisoft/users/svensson/git/edna-mx/kernel/bin/edna-test-launcher.py --test EDTestCasePluginControlEDNAprocv1_0_id29_20130301 --verbose</processingCommandLine>
+        <processingPrograms>EDNA_proc</processingPrograms>
+        <processingStatus>RUNNING</processingStatus>
+        <processingMessage>None</processingMessage>
+        <processingStartTime>Wed Jun 28 16:09:30 2017</processingStartTime>
+        <processingEndTime>None</processingEndTime>
+        <processingEnvironment>None</processingEnvironment>
+    </AutoProcProgram>
+    <AutoProcStatus>
+        <step>Indexing</step>
+        <status>Launched</status>
+        <comments>Creating non-anomalous integration ID</comments>
+        <bltimeStamp>None</bltimeStamp>
+    </AutoProcStatus>
+    <anomalous>true</anomalous>
+</XSDataInputStoreAutoProcStatus>

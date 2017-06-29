@@ -53,6 +53,13 @@ from XSDataISPyBv1_4 import XSDataISPyBScreeningStrategyWedge
 from XSDataISPyBv1_4 import XSDataISPyBScreeningStrategySubWedge
 from XSDataISPyBv1_4 import XSDataISPyBImage
 from XSDataISPyBv1_4 import AutoProcProgram
+from XSDataISPyBv1_4 import AutoProcContainer
+from XSDataISPyBv1_4 import AutoProcIntegration
+from XSDataISPyBv1_4 import AutoProcIntegrationContainer
+from XSDataISPyBv1_4 import AutoProcScalingContainer
+from XSDataISPyBv1_4 import AutoProcProgramContainer
+from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
+from XSDataISPyBv1_4 import Image
 
 
 class EDHandlerXSDataISPyBv1_4(object):
@@ -434,3 +441,29 @@ class EDHandlerXSDataISPyBv1_4(object):
         autoProcProgram.processingPrograms = processingPrograms
         autoProcProgram.processingStatus = status
         return autoProcProgram
+
+    @staticmethod
+    def createInputStoreAutoProc(dataCollectionId, integrationId, isAnomalous=False,
+                                 programId=None, status="SUCCESS", timeStart=None, timeEnd=None,
+                                 processingCommandLine=None, processingPrograms=None):
+        autoProcContainer = AutoProcContainer()
+        integrationContainer = AutoProcIntegrationContainer()
+        scalingContainer = AutoProcScalingContainer()
+        integration = AutoProcIntegration()
+        if integrationId is not None:
+            integration.autoProcIntegrationId = integrationId
+            integration.anomalous = isAnomalous
+        integrationContainer.AutoProcIntegration = integration
+        image = Image()
+        image.dataCollectionId = dataCollectionId
+        integrationContainer.Image = image
+        scalingContainer.AutoProcIntegrationContainer = integrationContainer
+        programContainer = AutoProcProgramContainer()
+        programContainer.AutoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
+            programId=programId, status=status, timeStart=timeStart, timeEnd=timeEnd,
+            processingCommandLine=processingCommandLine, processingPrograms=processingPrograms)
+        autoProcContainer.AutoProcProgramContainer = programContainer
+        autoProcContainer.AutoProcScalingContainer = scalingContainer
+        inputStoreAutoProc = XSDataInputStoreAutoProc()
+        inputStoreAutoProc.AutoProcContainer = autoProcContainer
+        return inputStoreAutoProc

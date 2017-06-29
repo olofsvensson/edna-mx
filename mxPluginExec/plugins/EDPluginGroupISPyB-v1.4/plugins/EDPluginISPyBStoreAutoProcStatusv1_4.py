@@ -58,6 +58,7 @@ class EDPluginISPyBStoreAutoProcStatusv1_4(EDPluginISPyBv1_4):
         self.iAutoProcIntegrationId = None
         self.iAutoProcStatusId = None
         self.iAutoProcProgramId = None
+        self.bAnomalous = False
 
 
     def configure(self):
@@ -84,6 +85,8 @@ class EDPluginISPyBStoreAutoProcStatusv1_4(EDPluginISPyBv1_4):
             self.iAutoProcIntegrationId = xsDataInputStoreAutoProcStatus.autoProcIntegrationId
         if xsDataInputStoreAutoProcStatus.autoProcStatusId is not None:
             self.iAutoProcStatusId = xsDataInputStoreAutoProcStatus.autoProcStatusId
+        if xsDataInputStoreAutoProcStatus.anomalous is not None:
+            self.bAnomalous = xsDataInputStoreAutoProcStatus.anomalous
         # If autoProcIntegrationId is not given a dataCollectionId must be present:
         if (self.iAutoProcIntegrationId is None) and (iDataCollectionId is None):
             strErrorMessage = "Either data collection id or auto proc integration id must be given as input!"
@@ -108,7 +111,7 @@ class EDPluginISPyBStoreAutoProcStatusv1_4(EDPluginISPyBv1_4):
                     strProcessingEnvironment = self.getXSValue(xsDataAutoProcProgram.getProcessingEnvironment())
                     recordTimeStamp = self.getDateValue(None, "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))
                     self.iAutoProcProgramId = clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcProgram(
-                        arg0=self.iAutoProcProgramId, \
+                        arg0=iAutoProcProgramId, \
                         processingCommandLine=strProcessingCommandLine, \
                         processingPrograms=strProcessingPrograms, \
                         processingStatus=strProcessingStatus, \
@@ -125,7 +128,7 @@ class EDPluginISPyBStoreAutoProcStatusv1_4(EDPluginISPyBv1_4):
                 self.iAutoProcIntegrationId = self.storeOrUpdateAutoProcIntegration(clientToolsForAutoprocessingWebService,
                                                                                _iDataCollectionId=iDataCollectionId,
                                                                                _iAutoProcProgramId=self.iAutoProcProgramId, \
-                                                                               )
+                                                                               _bAnomalous=self.bAnomalous)
             # Store the AutoProcStatus
             self.iAutoProcStatusId = self.storeOrUpdateAutoProcStatus(clientToolsForAutoprocessingWebService, \
                                                                  _xsDataAutoProcStatus=xsDataInputStoreAutoProcStatus.getAutoProcStatus(), \
@@ -145,14 +148,15 @@ class EDPluginISPyBStoreAutoProcStatusv1_4(EDPluginISPyBv1_4):
 
     def storeOrUpdateAutoProcIntegration(self, _clientToolsForAutoprocessingWebService, \
                                          _iAutoProcIntegrationId=None, _iDataCollectionId=None,
-                                         _iAutoProcProgramId=None):
+                                         _iAutoProcProgramId=None, _bAnomalous=False):
         """Creates or updates an entry in the ISPyB AutoProcIntegration table"""
         recordTimeStamp = DateTime(datetime.datetime.now())
         iAutoProcIntegrationId = _clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcIntegration(
                 arg0=_iAutoProcIntegrationId, \
                 recordTimeStamp=recordTimeStamp, \
                 dataCollectionId=_iDataCollectionId, \
-                autoProcProgramId=_iAutoProcProgramId \
+                autoProcProgramId=_iAutoProcProgramId, \
+                anomalous=_bAnomalous, \
                 )
         self.DEBUG("AutoProcProgramIntegrationId: %r" % iAutoProcIntegrationId)
         return iAutoProcIntegrationId

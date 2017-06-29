@@ -505,7 +505,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             # get our two integration IDs
             try:
                 self.integration_id_noanom, self.program_id_noanom = self.create_integration_id(self.dataInput.data_collection_id.value,
-                                                                        "Creating non-anomalous integration ID")
+                                                                        "Creating non-anomalous integration ID",
+                                                                        isAnom=False)
             except Exception as e:
                 strErrorMessage = "Could not get non-anom integration ID: \n{0}".format(traceback.format_exc(e))
                 self.addErrorMessage(strErrorMessage)
@@ -514,7 +515,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
             try:
                 self.integration_id_anom, self.program_id_anom = self.create_integration_id(self.dataInput.data_collection_id.value,
-                                                                      "Creating anomalous integration ID")
+                                                                      "Creating anomalous integration ID",
+                                                                      isAnom=True)
             except Exception as e:
                 strErrorMessage = "Could not get anom integration ID: \n{0}".format(traceback.format_exc(e))
                 self.addErrorMessage(strErrorMessage)
@@ -1327,50 +1329,18 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             if self.dataInput.data_collection_id is not None:
                 # Upload program status to ISPyB
                 # anom
-                autoProcContainerAnom = AutoProcContainer()
-                integrationContainerAnom = AutoProcIntegrationContainer()
-                scalingContainerAnom = AutoProcScalingContainer()
-                integrationAnom = AutoProcIntegration()
-                if self.integration_id_anom is not None:
-                    integrationAnom.autoProcIntegrationId = self.integration_id_anom
-                    integrationAnom.anomalous = True
-                integrationContainerAnom.AutoProcIntegration = integrationAnom
-                imageAnom = Image()
-                imageAnom.dataCollectionId = self.dataInput.data_collection_id.value
-                integrationContainerAnom.Image = imageAnom
-                scalingContainerAnom.AutoProcIntegrationContainer = integrationContainerAnom
-                programContainerAnom = AutoProcProgramContainer()
-                programContainerAnom.AutoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
-                    programId=self.program_id_anom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
-                    processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
-                autoProcContainerAnom.AutoProcProgramContainer = programContainerAnom
-                autoProcContainerAnom.AutoProcScalingContainer = scalingContainerAnom
-                inputStoreAutoProcAnom = XSDataInputStoreAutoProc()
-                inputStoreAutoProcAnom.AutoProcContainer = autoProcContainerAnom
+                inputStoreAutoProcAnom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
+                        self.dataInput.data_collection_id.value, self.integration_id_anom, isAnomalous=True,
+                        programId=self.program_id_anom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                        processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
                 self.store_autoproc_anom.dataInput = inputStoreAutoProcAnom
                 self.store_autoproc_anom.executeSynchronous()
 
                 # noanom
-                autoProcContainerNoanom = AutoProcContainer()
-                integrationContainerNoanom = AutoProcIntegrationContainer()
-                scalingContainerNoanom = AutoProcScalingContainer()
-                integrationNoanom = AutoProcIntegration()
-                if self.integration_id_noanom is not None:
-                    integrationNoanom.autoProcIntegrationId = self.integration_id_noanom
-                    integrationNoanom.anomalous = False
-                integrationContainerNoanom.AutoProcIntegration = integrationNoanom
-                imageNoanom = Image()
-                imageNoanom.dataCollectionId = self.dataInput.data_collection_id.value
-                integrationContainerNoanom.Image = imageNoanom
-                scalingContainerNoanom.AutoProcIntegrationContainer = integrationContainerNoanom
-                programContainerNoanom = AutoProcProgramContainer()
-                programContainerNoanom.AutoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
-                    programId=self.program_id_noanom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
-                    processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
-                autoProcContainerNoanom.AutoProcProgramContainer = programContainerNoanom
-                autoProcContainerNoanom.AutoProcScalingContainer = scalingContainerNoanom
-                inputStoreAutoProcNoanom = XSDataInputStoreAutoProc()
-                inputStoreAutoProcNoanom.AutoProcContainer = autoProcContainerNoanom
+                inputStoreAutoProcNoanom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
+                        self.dataInput.data_collection_id.value, self.integration_id_noanom, isAnomalous=False,
+                        programId=self.program_id_noanom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                        processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
                 self.store_autoproc_noanom.dataInput = inputStoreAutoProcNoanom
                 self.store_autoproc_noanom.executeSynchronous()
 
@@ -1498,6 +1468,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         autoproc_status = edFactoryPlugin.loadPlugin('EDPluginISPyBStoreAutoProcStatusv1_4')
         status_input = XSDataInputStoreAutoProcStatus()
         status_input.dataCollectionId = datacollect_id
+        status_input.anomalous = isAnom
 
         # needed even if we only want to get an integration ID?
         status_data = AutoProcStatus()
