@@ -311,7 +311,6 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             xsDataResultXDSAPPNoanom = self.edPluginExecXDSAPPNoanom.dataOutput
             strPathXscaleLpNoanom = self.runXscale(self.edPluginExecXDSAPPNoanom.getWorkingDirectory(), anom=False, merged=True)
         self.timeEnd = time.localtime()
-        print(1 / 0)
         # Upload to ISPyB
         if self.dataInput.dataCollectionId is not None:
             self.uploadToISPyB(xsDataResultXDSAPPAnom, processDirectory, template,
