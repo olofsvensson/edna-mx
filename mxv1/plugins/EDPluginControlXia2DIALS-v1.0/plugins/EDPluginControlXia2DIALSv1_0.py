@@ -60,9 +60,6 @@ from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
 edFactoryPlugin.loadModule("XSDataMXWaitFilev1_1")
 from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
 
-edFactoryPlugin.loadModule("XSDataHTML2PDFv1_0")
-from XSDataHTML2PDFv1_0 import XSDataInputHTML2PDF
-
 class EDPluginControlXia2DIALSv1_0(EDPluginControl):
     """
     Control plugin for xia2 -dials
@@ -342,18 +339,9 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             # Create a pdf file of the html page
             if edPluginExecXia2DIALS.dataOutput.htmlFile is not None:
                 pathToHtmlFile = edPluginExecXia2DIALS.dataOutput.htmlFile.path.value
-                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.pdf"
-                # Convert the xia2.html to xia2.pdf
-                xsDataInputHTML2PDF = XSDataInputHTML2PDF()
-                xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(pathToHtmlFile)))
-                xsDataInputHTML2PDF.paperSize = XSDataString("A4")
-                xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
-                edPluginHTML2Pdf = self.loadPlugin("EDPluginHTML2PDFv1_0", "EDPluginHTML2PDFv1_0_{0}".format(anomString))
-                edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
-                edPluginHTML2Pdf.executeSynchronous()
-                pdfFile = edPluginHTML2Pdf.dataOutput.pdfFile.path.value
-                shutil.copy(pdfFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-                shutil.copy(pdfFile, os.path.join(self.resultsDirectory, pyarchFileName))
+                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.html"
+                shutil.copy(pathToHtmlFile, os.path.join(self.pyarchDirectory, pyarchFileName))
+                shutil.copy(pathToHtmlFile, os.path.join(self.resultsDirectory, pyarchFileName))
                 autoProcProgramAttachment = AutoProcProgramAttachment()
                 autoProcProgramAttachment.fileName = pyarchFileName
                 autoProcProgramAttachment.filePath = self.pyarchDirectory
