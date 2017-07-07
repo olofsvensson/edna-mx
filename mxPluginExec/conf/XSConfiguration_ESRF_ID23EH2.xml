@@ -94,5 +94,30 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem> 
+		<XSPluginItem> 
+			<name>EDPluginExecXDSAPPv1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/xdsit.py</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>7200</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>maxNoProcessors</name>
+					<value>6</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>raxis</name>
+					<value>0.0 -1.0 0.0</value>
+				</XSParamItem>				
+			</XSParamList>
+		</XSPluginItem>
 	</XSPluginList>
 </XSConfiguration> 

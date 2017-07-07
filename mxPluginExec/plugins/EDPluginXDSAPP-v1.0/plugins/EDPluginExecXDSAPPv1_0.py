@@ -49,6 +49,7 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
         self.setXSDataInputClass(XSDataInputXDSAPP)
         self.setDataOutput(XSDataResultXDSAPP())
         self.maxNoProcessors = None
+        self.raxis = None
 
     def checkParameters(self):
         """
@@ -63,6 +64,7 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginExecXDSAPPv1_0.configure")
         self.maxNoProcessors = self.config.get("maxNoProcessors", self.maxNoProcessors)
+        self.raxis = self.config.get("raxis", self.raxis)
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
@@ -100,6 +102,9 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
             strCommandText += " --fried=false"
         else:
             strCommandText += " --fried=true"
+
+        if self.raxis is not None:
+            strCommandText += " --raxis=\"{0}\"".format(self.raxis)
 
         strCommandText += " --dir={0}".format(self.getWorkingDirectory())
 
