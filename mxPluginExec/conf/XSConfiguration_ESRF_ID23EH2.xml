@@ -32,7 +32,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>omega</name>
-					<value>90</value>
+					<value>270</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
