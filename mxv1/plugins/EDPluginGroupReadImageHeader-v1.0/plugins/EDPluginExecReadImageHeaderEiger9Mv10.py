@@ -112,7 +112,7 @@ class EDPluginExecReadImageHeaderEiger9Mv10(EDPluginExec):
 #            #xsDataDetector.setByteOrder(           XSDataString(   dictEiger9MHeader[ "BYTE_ORDER" ] ) ) )
 #            xsDataDetector.setImageSaturation(XSDataInteger(int(dictEiger9MHeader[ "saturation_level" ])))
             xsDataDetector.setName(XSDataString("EIGER 9M"))
-            xsDataDetector.setType(XSDataString("eiger4m"))
+            xsDataDetector.setType(XSDataString("eiger9m"))
             xsDataExperimentalCondition.setDetector(xsDataDetector)
 
             # Beam object
