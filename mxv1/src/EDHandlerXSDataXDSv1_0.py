@@ -361,6 +361,38 @@ class EDHandlerXSDataXDSv1_0:
             xsDataXDSDetector.setTrusted_region(xsDataXDSDoubleRangeTrustedRegion)
 
             xsDataXDSDetector.setSensor_thickness(XSDataDouble(0.32))
+        elif strDetectorType == "eiger9m":
+            xsDataXDSDetector.setDetector_name(XSDataString("PILATUS"))
+            listUntrustedRectangle = \
+               [[ 1029, 1040, 0, 3269], \
+                [ 2069, 2082, 0, 3269], \
+                [ 0, 3110, 513, 553], \
+                [ 0, 3110, 1064, 1104], \
+                [ 0, 3110, 1615, 1655], \
+                [ 0, 3110, 2166, 2206], \
+                [ 0, 3110, 2717, 2757], \
+                ]
+            for listRectangle in listUntrustedRectangle:
+                xsDataXDSRectangle = XSDataXDSRectangle()
+                xsDataXDSRectangle.setX1(XSDataInteger(listRectangle[0]))
+                xsDataXDSRectangle.setX2(XSDataInteger(listRectangle[1]))
+                xsDataXDSRectangle.setY1(XSDataInteger(listRectangle[2]))
+                xsDataXDSRectangle.setY2(XSDataInteger(listRectangle[3]))
+                xsDataXDSDetector.addUntrusted_rectangle(xsDataXDSRectangle)
+            xsDataXDSDetector.setMinimum_valid_pixel_value(XSDataInteger(0))
+            xsDataXDSDetector.setOverload(XSDataInteger(1048500))
+
+            xsDataXDSIntegerRangeTrustedPixel = XSDataXDSIntegerRange()
+            xsDataXDSIntegerRangeTrustedPixel.setLower(XSDataInteger(7000))
+            xsDataXDSIntegerRangeTrustedPixel.setUpper(XSDataInteger(30000))
+            xsDataXDSDetector.setValue_range_for_trusted_detector_pixels(xsDataXDSIntegerRangeTrustedPixel)
+
+            xsDataXDSDoubleRangeTrustedRegion = XSDataXDSDoubleRange()
+            xsDataXDSDoubleRangeTrustedRegion.setLower(XSDataDouble(0.0))
+            xsDataXDSDoubleRangeTrustedRegion.setUpper(XSDataDouble(1.41))
+            xsDataXDSDetector.setTrusted_region(xsDataXDSDoubleRangeTrustedRegion)
+
+            xsDataXDSDetector.setSensor_thickness(XSDataDouble(0.45))
         elif strDetectorType == "eiger16m":
             xsDataXDSDetector.setDetector_name(XSDataString("PILATUS"))
             # From https://www.psi.ch/sls/pxi/ComputingEN/XDS.INP.E16M.X06SA_2016.txt
