@@ -50,6 +50,8 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         self.setDataOutput(XSDataResultAutoPROC())
         self.maxNoProcessors = 12
         self.pathToNeggiaPlugin = None
+        self.doScaleWithXscale = True
+        self.rotationAxis = None
 
     def checkParameters(self):
         """
@@ -64,6 +66,8 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginExecAutoPROCv1_0.configure")
         self.maxNoProcessors = self.config.get("maxNoProcessors", self.maxNoProcessors)
         self.pathToNeggiaPlugin = self.config.get("pathToNeggiaPlugin")
+        self.doScaleWithXscale = self.config.get("scaleWithXscale", self.doScaleWithXscale)
+        self.rotationAxis = self.config.get("rotationAxis", self.rotationAxis)
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
@@ -99,7 +103,13 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         This method creates the input command line for autoPROC
         """
         self.DEBUG("EDPluginExecAutoPROCv1_0.generateCommands")
-        strCommandText = "-B -xml -nthreads {0} autoPROC_ScaleWithXscale='yes'".format(self.maxNoProcessors)
+        strCommandText = "-B -xml -nthreads {0}".format(self.maxNoProcessors)
+
+        if self.doScaleWithXscale:
+            strCommandText = " autoPROC_ScaleWithXscale='yes'"
+
+        if self.rotationAxis is not None:
+            strCommandText = " autoPROC_XdsKeyword_ROTATION_AXIS=\"{0}\"".format(self.rotationAxis)
 
         # Master H5 file
         masterH5 = _xsDataInputAutoPROC.masterH5

@@ -119,5 +119,34 @@
 				</XSParamItem>				
 			</XSParamList>
 		</XSPluginItem>
+		<XSPluginItem> 
+			<name>EDPluginExecAutoPROCv1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/process</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>pathToNeggiaPlugin</name>
+					<value>/opt/pxsoft/xds/v20161205/linux-x86_64/dectris-neggia.so</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>3600</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>maxNoProcessors</name>
+					<value>6</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>rotationAxis</name>
+					<value>0.0 -1.0 0.0</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
 	</XSPluginList>
 </XSConfiguration> 
