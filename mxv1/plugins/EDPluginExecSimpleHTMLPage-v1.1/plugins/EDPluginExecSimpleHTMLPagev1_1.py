@@ -37,10 +37,7 @@ from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
 from EDUtilsPath import EDUtilsPath
 from EDUtilsImage import EDUtilsImage
 
-EDFactoryPluginStatic.loadModule("markupv1_10")
-import markupv1_10
-
-from report import WorkflowStepReport
+from EDUtilsReport import EDUtilsReport
 
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
@@ -95,8 +92,8 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         EDPluginExec.process(self, _edPlugin)
         self.DEBUG("EDPluginExecSimpleHTMLPagev1_1.process...")
         if self.xsDataResultCharacterisation is not None:
-            # WorkflowStepReport
-            self.workflowStepReport = WorkflowStepReport("Characterisation")
+            # EDutilsReport
+            self.workflowStepReport = EDUtilsReport("Characterisation")
             if self.xsDataResultCharacterisation is not None:
                 self.workflowStepReport.setTitle("Characterisation Results")
             else:
@@ -245,9 +242,6 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                 for xsDataCollectionPlan in listXSDataCollectionPlan:
                     xsDataSummaryStrategy = xsDataCollectionPlan.getStrategySummary()
                     fResolutionMax = xsDataSummaryStrategy.getResolution().getValue()
-                    strResolutionReasoning = ""
-                    if xsDataSummaryStrategy.getResolutionReasoning():
-                        strResolutionReasoning = xsDataSummaryStrategy.getResolutionReasoning().getValue()
                     tableColumns = ["Wedge", "Subwedge", "Start (°)", "Width (°)", "No images",
                                     "Exp time (s)", "Max res (Å)", "Rel trans (%)", "Distance (mm)"]
                     xsDataCollectionStrategy = xsDataCollectionPlan.getCollectionStrategy()
@@ -274,8 +268,12 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                         listRow.append("%.2f" % fTransmission)
                         listRow.append("%.2f" % fDistance)
                         tableData.append(listRow)
-                    strResolutionReasoningFirstLower = strResolutionReasoning[0].lower() + strResolutionReasoning[1:]
-                    self.workflowStepReport.addTable(tabTitle + ": " + strResolutionReasoningFirstLower, tableColumns, tableData)
+                    if xsDataSummaryStrategy.getResolutionReasoning():
+                        strResolutionReasoning = xsDataSummaryStrategy.getResolutionReasoning().getValue()
+                        strResolutionReasoningFirstLower = strResolutionReasoning[0].lower() + strResolutionReasoning[1:]
+                        self.workflowStepReport.addTable(tabTitle + ": " + strResolutionReasoningFirstLower, tableColumns, tableData)
+                    else:
+                        self.workflowStepReport.addTable(tabTitle, tableColumns, tableData)
 
     def bestAndRaddoseLogFiles(self):
         xsDataResultStrategy = self.xsDataResultCharacterisation.getStrategyResult()
@@ -347,7 +345,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             if strStrategyOption.find("-helic") != -1:
                 strTitle = "Helical Diffraction Plan"
                 self.bIsHelical = True
-                strExtraColumnTitle = "Helical<br>distance (mm)"
+                strExtraColumnTitle = "Helical\ndistance (mm)"
                 if self.dataInput.helicalDistance is not None:
                     fHelicalDistance = self.dataInput.helicalDistance.value
                     strExtraColumnValue = "%.3f" % fHelicalDistance
@@ -384,13 +382,13 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         listRow.append(strAnomalousData)
         # Aimed multiplicity
         if xsDataDiffractionPlan.getAimedMultiplicity() is None:
-            strAimedMultiplicity = "Default<br>(optimized)"
+            strAimedMultiplicity = "Default\n(optimized)"
         else:
             strAimedMultiplicity = "%.2f" % xsDataDiffractionPlan.getAimedMultiplicity().getValue()
         listRow.append(strAimedMultiplicity)
         # Aimed completeness
         if xsDataDiffractionPlan.getAimedCompleteness() is None:
-            strAimedCompleteness = "Default<br>(>= 0.99)"
+            strAimedCompleteness = "Default\n(>= 0.99)"
         else:
             strAimedCompleteness = "%.2f" % xsDataDiffractionPlan.getAimedCompleteness().getValue()
         listRow.append(strAimedCompleteness)
@@ -402,7 +400,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         listRow.append(strAimedIOverSigmaAtHighestResolution)
         # Aimed resolution
         if xsDataDiffractionPlan.getAimedResolution() is None:
-            strAimedResolution = "Default<br>(highest possible)"
+            strAimedResolution = "Default\n(highest possible)"
         else:
             strAimedResolution = "%0.2f" % xsDataDiffractionPlan.getAimedResolution().getValue()
         listRow.append(strAimedResolution)

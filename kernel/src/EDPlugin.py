@@ -7,7 +7,7 @@
 #                            Grenoble, France
 #
 #    Principal authors: Marie-Francoise Incardona (incardon@esrf.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #                       Jérôme Kieffer (Kieffer@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -29,8 +29,11 @@ __authors__ = ["Marie-Francoise Incardona", "Olof Svensson", "Jérôme Kieffer"]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-    
-import os, tempfile, stat, types, sys
+
+import os
+import tempfile
+import stat
+import sys
 
 if sys.version.startswith('3'):
     unicode = str
@@ -42,7 +45,6 @@ from EDConfigurationStatic import EDConfigurationStatic
 from EDUtilsFile           import EDUtilsFile
 from EDStatus              import EDStatus
 from EDAction              import EDAction
-from EDDecorator           import deprecated
 from XSDataCommon          import XSDataResult
 
 
@@ -158,37 +160,14 @@ class EDPlugin(EDAction):
             strErrorMessage = "Timeout when waiting for %s to terminate." % self.getClassName()
             self.addErrorMessage(strErrorMessage)
 
-    @deprecated
-    def setConfiguration(self, _xsPluginItem):
-        """
-        Receives a Plugin Configuration as XSPluginItem or python dict from the application.
-        """
-        self.DEBUG("EDPlugin.setConfiguration")
-        self.__edConfiguration = EDConfiguration()
-        if isinstance(_xsPluginItem, dict):
-            self.__edConfiguration[self.getPluginName()] = _xsPluginItem
-        else:
-            self.__edConfiguration.setXSConfigurationItem(_xsPluginItem)
-
-
-    @deprecated
-    def getConfiguration(self):
-        """
-        Gets the Plugin Configuration as an XSPluginItem
-        """
-        #self.DEBUG("EDPlugin.getConfiguration")
-        return self.__edConfiguration.getXSConfigurationItem(self.getPluginName())
-    configuration = property(getConfiguration, setConfiguration)
-
-
     def getConfig(self):
         """
         Gets the Plugin Configuration as a dictionary
         """
-        #self.DEBUG("EDPlugin.getConfig")
+        # self.DEBUG("EDPlugin.getConfig")
         return self.__edConfiguration.get(self.getPluginName(), {})
 
-    def setConfig(self, _dict, _bLocal = False):
+    def setConfig(self, _dict, _bLocal=False):
         """
         Receives a dictionary (Plugin Configuration) from the application.
         """
@@ -200,49 +179,6 @@ class EDPlugin(EDAction):
         else:
             self.__edConfiguration[self.getPluginName()] = {}
     config = property(getConfig, setConfig)
-
-
-    @deprecated
-    def getStringConfigurationParameterValue(self, _strConfigurationParameterName):
-        """
-        This method returns a configuration parameter value if a corresponding configuration
-        parameter name can be found in the configuration file.
-        
-        If an application wide configuration file is provided via EDApplication it will
-        override the product configuration file.
-        
-        The configuration parameter is then searched in the configration file in following order:
-          - If a plugin configuration item exists and the configration parameter name is present it will be used.
-          - Otherwise if a product-wide (e.g. "mxPluginExec") configuration value exists it will be used.         
-        """
-        strParameterValue = self.__edConfiguration.getStringValue(self.getPluginName(), _strConfigurationParameterName)
-        self.DEBUG("EDPlugin.getConfigurationParameterValue: %s, %s = %s" % (self.getPluginName(),
-                                                                             _strConfigurationParameterName,
-                                                                             strParameterValue))
-        return strParameterValue
-
-    @deprecated
-    def getDoubleConfigurationParameterValue(self, _strConfigurationParameterName):
-        fParameterValue = None
-        strParameterValue = self.getStringConfigurationParameterValue(_strConfigurationParameterName)
-        try:
-            return float(strParameterValue)
-        except TypeError:
-            return
-        except ValueError:
-            self.ERROR("float() argument must be a string or a number, got %s" % strParameterValue)
-
-
-    @deprecated
-    def getIntegerConfigurationParameterValue(self, _strConfigurationParameterName):
-        iParameterValue = None
-        strParameterValue = self.getStringConfigurationParameterValue(_strConfigurationParameterName)
-        try:
-            return int(strParameterValue)
-        except TypeError:
-            return
-        except ValueError:
-            self.ERROR("int() argument must be a string or a number, got %s" % strParameterValue)
 
 
     def configure(self):
@@ -461,7 +397,7 @@ class EDPlugin(EDAction):
         strDataOutputKey = _strDataOutputKey
         if (strDataOutputKey is None):
             strDataOutputKey = self.__strDefaultOutputDataKey
-        # Add the object to a list if its key not the default key 
+        # Add the object to a list if its key not the default key
         if (strDataOutputKey == self.__strDefaultOutputDataKey):
             self.__dictXSDataOutput[ strDataOutputKey ] = _xsDataOutput
         else:
@@ -582,11 +518,11 @@ class EDPlugin(EDAction):
         self.DEBUG("EDPlugin.writeDataInput")
         strBasename = os.path.join(self.getWorkingDirectory(), self.compactPluginName(self.getPluginName()))
         for strKey in self.__dictXSDataInput.keys():
-            if (strKey == self.__strDefaultInputDataKey):                # "Old" style
+            if (strKey == self.__strDefaultInputDataKey):  # "Old" style
                 xsDataInput = self.__dictXSDataInput[ self.__strDefaultInputDataKey ]
                 self.strPathDataInput = strBasename + "_dataInput.xml"
                 EDUtilsFile.writeFile(self.strPathDataInput, xsDataInput.marshal())
-            else:                                                       # We have a list of objects
+            else:  # We have a list of objects
                 listXSDataInput = self.__dictXSDataInput[ strKey ]
                 for iIndex, xsDataInput in enumerate(listXSDataInput):
                     strPathDataInput = "%s_%s_%d_dataInput.xml" % (strBasename, strKey, iIndex)
@@ -599,7 +535,7 @@ class EDPlugin(EDAction):
         """
         self.DEBUG("EDPlugin.writeDataOutput")
         for strKey in self.__dictXSDataOutput.keys():
-            if (strKey == self.__strDefaultOutputDataKey):                # "Old" style
+            if (strKey == self.__strDefaultOutputDataKey):  # "Old" style
                 xsDataOutput = self.__dictXSDataOutput[ self.__strDefaultOutputDataKey ]
                 if (xsDataOutput is not None):
                     self.strPathDataOutput = os.path.join(self.getWorkingDirectory(), self.compactPluginName(self.getPluginName()) + "_dataOutput.xml")

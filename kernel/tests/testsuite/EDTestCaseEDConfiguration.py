@@ -69,32 +69,6 @@ class EDTestCaseEDConfiguration(EDTestCase):
         edConfiguration.addConfigurationFile(strPath)
 
 
-    def testGetXSConfigurationItem1(self):
-        strPath = os.path.join(self.strDataPath, "XSConfiguration.xml")
-        edConfiguration = EDConfiguration()
-        edConfiguration.addConfigurationFile(strPath)
-        xsDataPluginItem = edConfiguration.getXSConfigurationItem("indexingMosflm")
-        EDAssert.equal(True, xsDataPluginItem is not None, "Obtanied configuration for indexingMosflm")
-
-    def testGetXSConfigurationItem2(self):
-        edConfiguration = EDConfiguration()
-        xsDataPluginItem1 = edConfiguration.getXSConfigurationItem("EDPluginTestPluginFactory")
-        EDAssert.equal(True, xsDataPluginItem1 is not None, "Obtanied configuration for EDPluginTestPluginFactory")
-        xsDataPluginItem2 = edConfiguration.getXSConfigurationItem("EDPluginTestPluginFactoryImport1")
-        EDAssert.equal(True, xsDataPluginItem2 is not None, "Obtanied imported configuration for EDPluginTestPluginFactoryImport1")
-        xsDataPluginItem3 = edConfiguration.getXSConfigurationItem("EDPluginTestPluginFactoryImport2")
-        EDAssert.equal(True, xsDataPluginItem3 is not None, "Obtanied imported configuration for EDPluginTestPluginFactoryImport2")
-
-
-    def testSetXSConfigurationItem(self):
-        xsPluginItem = XSPluginItem()
-        xsPluginItem.name = "EDPluginTestSetConfig"
-        edConfiguration = EDConfiguration()
-        edConfiguration.setXSConfigurationItem(xsPluginItem)
-        xsDataPluginItem = edConfiguration.getXSConfigurationItem("EDPluginTestSetConfig")
-        EDAssert.equal(True, xsDataPluginItem is not None, "Obtanied set configuration")
-
-
     def testGetPathToProjectConfigurationFile(self):
         edConfiguration = EDConfiguration()
         strPathToConfigurationFile1 = edConfiguration.getPathToProjectConfigurationFile("EDPluginTestPluginFactory")
@@ -106,17 +80,6 @@ class EDTestCaseEDConfiguration(EDTestCase):
         strPathToConfigurationFile2 = edConfiguration.getPathToProjectConfigurationFile("EDPluginTestPluginFactory")
         strPathToConfigurationFileReference2 = None
         EDAssert.equal(strPathToConfigurationFileReference2, strPathToConfigurationFile2)
-
-
-    def testStaticEDConfiguration(self):
-        # This test make sure that changing an instatiation of EDConfiguration does not change the
-        # corresponding plugin configuration for EDConfigurationStatic
-        strPathToTestConfigFile = os.path.join(self.strDataPath, "XSConfiguration_testNonStatic.xml")
-        edConfiguration = EDConfiguration(strPathToTestConfigFile)
-        strParam1 = edConfiguration.getStringValue("EDPluginTestPluginFactory", "testItemName")
-        EDUtilsPath.setEdnaSite("TestStaticConfiguration")
-        strParam2 = EDConfigurationStatic.getStringValue("EDPluginTestPluginFactory", "testItemName")
-        EDAssert.equal(False, strParam1 == strParam2, "Static config is not equal to local config")
 
 
     def finallyProcess(self):
@@ -136,74 +99,10 @@ class EDTestCaseEDConfiguration(EDTestCase):
         EDAssert.equal(1, iPluginListSize)
 
 
-    def testGetPluginItem(self):
-        """
-        Testing Plugin indexingMosflm Configuration
-        """
-        strPath = os.path.join(self.strDataPath, "XSConfiguration.xml")
-        edConfiguration = EDConfiguration()
-        edConfiguration.addConfigurationFile(strPath)
-        xsPluginItem = edConfiguration.getXSConfigurationItem("indexingMosflm")
-        EDAssert.equal("indexingMosflm", xsPluginItem.name)
-
-        paramList = xsPluginItem.XSParamList
-        paramItems = paramList.XSParamItem
-
-        for paramItem in paramItems:
-            if paramItem.name == "workingDir":
-                EDAssert.equal("/path/to/working/dir", paramItem.value)
-            elif paramItem.name == "number":
-                EDAssert.equal("3", paramItem.value)
-
-
-    def testGetPluginItemError(self):
-        """
-        Testing the retrieval of an absent plugin
-        """
-        strPath = os.path.join(self.strDataPath, "XSConfiguration.xml")
-        edConfiguration = EDConfiguration()
-        edConfiguration.addConfigurationFile(strPath)
-        xsPluginItem = edConfiguration.getXSConfigurationItem("toto")
-        EDAssert.equal(None, xsPluginItem, "Non-existing configuration item should be None")
-
-
-    def testGetParamItem(self):
-        """
-        Testing the XSParamItem inside an XSPluginItem
-        """
-        strPath = os.path.join(self.strDataPath, "XSConfiguration.xml")
-        edConfiguration = EDConfiguration()
-        edConfiguration.addConfigurationFile(strPath)
-        strValue = edConfiguration.getStringValue("indexingMosflm", "workingDir")
-        EDAssert.equal("/path/to/working/dir", strValue)
-
-
-    def testGetParamValue(self):
-        """
-        Testing the XSParamItem Value convertion from string to different formats
-        """
-        strPath = os.path.join(self.strDataPath, "XSConfiguration.xml")
-        edConfiguration = EDConfiguration()
-        edConfiguration.addConfigurationFile(strPath)
-        xsPluginItem = edConfiguration.getXSConfigurationItem("indexingMosflm")
-        EDAssert.equal("/path/to/working/dir", edConfiguration.getStringParamValue(xsPluginItem, "workingDir"))
-        EDAssert.equal("/path/to/working/dir", EDConfiguration.getStringParamValue(xsPluginItem, "workingDir"))
-        EDAssert.equal(3, edConfiguration.getIntegerParamValue(xsPluginItem, "number"))
-        EDAssert.equal(3, EDConfiguration.getIntegerParamValue(xsPluginItem, "number"))
-
-
     def process(self):
         self.addTestMethod(self.testAddConfigFile)
-        self.addTestMethod(self.testGetXSConfigurationItem1)
-        self.addTestMethod(self.testGetXSConfigurationItem2)
-        self.addTestMethod(self.testSetXSConfigurationItem)
         self.addTestMethod(self.testGetPathToProjectConfigurationFile)
-        self.addTestMethod(self.testStaticEDConfiguration)
         self.addTestMethod(self.testGetPluginListSize)
-        self.addTestMethod(self.testGetPluginItem)
-        self.addTestMethod(self.testGetPluginItemError)
-        self.addTestMethod(self.testGetParamItem)
-        self.addTestMethod(self.testGetParamValue)
 
 
 if __name__ == '__main__':

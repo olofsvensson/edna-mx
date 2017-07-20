@@ -102,6 +102,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self._strMxCuBE_URI = None
         self._oServerProxy = None
         self._runKappa = False
+        self._bDoOnlyMoslmfIndexing = False
 
 
     def checkParameters(self):
@@ -125,6 +126,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             self._oServerProxy = ServerProxy(self._strMxCuBE_URI)
         self._runKappa = self.config.get("runKappa", False)
         self._fMinTransmission = self.config.get("minTransmissionWarning", self._fMinTransmission)
+        self._bDoOnlyMoslmfIndexing = self.config.get("doOnlyMosflmIndexing", False)
 
 
 
@@ -317,10 +319,11 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             self._strCharacterisationShortSummary += indicatorsShortSummary
             self.sendMessageToMXCuBE(indicatorsShortSummary)
         if self._iNoImagesWithDozorScore > 0:
-            strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
-            self.WARNING(strWarningMessage)
-            self.sendMessageToMXCuBE(strWarningMessage, "warning")
-            self.addWarningMessage(strWarningMessage)
+            if not self._bDoOnlyMoslmfIndexing:
+                strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
+                self.WARNING(strWarningMessage)
+                self.sendMessageToMXCuBE(strWarningMessage, "warning")
+                self.addWarningMessage(strWarningMessage)
             xsDataIndexingInput = XSDataIndexingInput()
             xsDataIndexingInput.dataCollection = self._xsDataCollection
             xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
@@ -386,10 +389,11 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             self.indexingToIntegration()
         else:
             if self._iNoImagesWithDozorScore > 0:
-                strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
-                self.WARNING(strWarningMessage)
-                self.sendMessageToMXCuBE(strWarningMessage, "warning")
-                self.addWarningMessage(strWarningMessage)
+                if not self._bDoOnlyMoslmfIndexing:
+                    strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
+                    self.WARNING(strWarningMessage)
+                    self.sendMessageToMXCuBE(strWarningMessage, "warning")
+                    self.addWarningMessage(strWarningMessage)
                 xsDataIndexingInput = XSDataIndexingInput()
                 xsDataIndexingInput.dataCollection = self._xsDataCollection
                 xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition

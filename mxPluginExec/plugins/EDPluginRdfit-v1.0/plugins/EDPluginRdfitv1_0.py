@@ -35,11 +35,9 @@ except:
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 from EDUtilsTable              import EDUtilsTable
-from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDUtilsFile import EDUtilsFile
 
-EDFactoryPluginStatic.loadModule("markupv1_10")
-import markupv1_10
+from EDUtilsReport import EDUtilsReport
 
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
@@ -67,7 +65,7 @@ class EDPluginRdfitv1_0(EDPluginExecProcessScript):
     To run RDFIT need to set (like for BEST)
     setenv rdfithome  rdfit_directory  - can be used the BEST directory where must be file - symop.lib 
     """
-    
+
 
     def __init__(self):
         EDPluginExecProcessScript.__init__(self)
@@ -77,7 +75,9 @@ class EDPluginRdfitv1_0(EDPluginExecProcessScript):
         self.strScaleIntensityPlot = self.strScaleIntensityGleFile.replace(".gle", ".png")
         self.strBFactorGleFile = self.getBaseName() + "_bFactor.gle "
         self.strBFactorPlot = self.strBFactorGleFile.replace(".gle", ".png")
-        self.strHtmlPath = self.getBaseName() + ".html"
+        self.strHtmlPath = "html"
+        self.htmlPagePath = None
+        self.jsonPath = None
 
 
     def checkParameters(self):
@@ -88,36 +88,37 @@ class EDPluginRdfitv1_0(EDPluginExecProcessScript):
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
         self.checkMandatoryParameters(self.dataInput.getBestXmlFile(), "Best XML file path is None")
 
-    
+
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginExecMtz2Variousv1_0.preProcess")
         xsDataInputRdfit = self.getDataInput()
         self.setScriptCommandline(self.generateCommands(xsDataInputRdfit))
         self.addListCommandPostExecution("gle -device png -resolution 100 %s" % self.strScaleIntensityGleFile)
+        self.strScaleIntensityPlotPath = os.path.join(self.getWorkingDirectory(), self.strScaleIntensityPlot)
 
-        
-        
+
+
     def process(self, _edObject=None):
         EDPluginExecProcessScript.process(self)
         self.DEBUG("EDPluginExecMtz2Variousv1_0.process")
-        self.createHtmlPage()
+        self.htmlPagePath, self.jsonPath = self.createHtmlPage()
 
-        
+
     def finallyProcess(self, _edObject=None):
         EDPluginExecProcessScript.finallyProcess(self)
         self.DEBUG("EDPluginExecMtz2Variousv1_0.finallyProcess")
         xsDataResult = self.getOutputDataFromDNATableFile("rdfit.xml")
-        strScaleIntensityPlotPath = os.path.join(self.getWorkingDirectory(), self.strScaleIntensityPlot)
-        if os.path.exists(strScaleIntensityPlotPath):
-            xsDataResult.scaleIntensityPlot = XSDataFile(XSDataString(strScaleIntensityPlotPath))
+        if os.path.exists(self.strScaleIntensityPlotPath):
+            xsDataResult.scaleIntensityPlot = XSDataFile(XSDataString(self.strScaleIntensityPlotPath))
         if os.path.exists(self.strBFactorPlot):
             xsDataResult.bFactorPlot = XSDataFile(XSDataString(self.strBFactorPlot))
-        strHtmlPath = os.path.join(self.getWorkingDirectory(), self.strHtmlPath)
-        if os.path.exists(strHtmlPath):
-            xsDataResult.htmlPage = XSDataFile(XSDataString(strHtmlPath))
+        if os.path.exists(self.htmlPagePath):
+            xsDataResult.htmlPage = XSDataFile(XSDataString(self.htmlPagePath))
+        if os.path.exists(self.jsonPath):
+            xsDataResult.jsonPath = XSDataFile(XSDataString(self.jsonPath))
         self.setDataOutput(xsDataResult)
-    
+
     def generateCommands(self, _xsDataInputRdfit):
         """
         This method creates a list of commands for mtz2various
@@ -125,46 +126,46 @@ class EDPluginRdfitv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginExecMtz2Variousv1_0.generateCommands")
 
         if _xsDataInputRdfit is not None:
-            
+
             strScriptCommandLine = " -d " + _xsDataInputRdfit.bestXmlFile.path.value
-            
+
             if _xsDataInputRdfit.dmin is not None:
                 strScriptCommandLine += " -dmin %f" % _xsDataInputRdfit.dmin.value
-                
+
             if _xsDataInputRdfit.defaultBeta is not None:
                 strScriptCommandLine += " -beta %f" % _xsDataInputRdfit.defaultBeta.value
-            
+
             if _xsDataInputRdfit.defaultGama is not None:
                 strScriptCommandLine += " -gama %f" % _xsDataInputRdfit.defaultGama.value
-            
+
             if _xsDataInputRdfit.bFactorMtvplotFile is not None:
                 strScriptCommandLine += " -gb " + _xsDataInputRdfit.bFactorMtvplotFile.path.value
-            
+
             if _xsDataInputRdfit.bScaleIntensityMtvPlotFile is not None:
                 strScriptCommandLine += " -gr " + _xsDataInputRdfit.bScaleIntensityMtvPlotFile.path.value
-            
+
             if _xsDataInputRdfit.bFactorGlePlotFile is not None:
                 self.strBFactorGleFile = _xsDataInputRdfit.bFactorGlePlotFile.path.value
 #            strScriptCommandLine += " -glb " + _xsDataInputRdfit.bFactorGlePlotFile.path.value
-                            
+
             if _xsDataInputRdfit.bScaleIntensityGleFile is not None:
                 self.strScaleIntensityGleFile = _xsDataInputRdfit.bScaleIntensityGleFile.path.value
             strScriptCommandLine += " -glr " + self.strScaleIntensityGleFile
-            
+
             if _xsDataInputRdfit.resultsFile is not None:
                 strScriptCommandLine += " -result " + _xsDataInputRdfit.resultsFile.path.value
-            
+
             if _xsDataInputRdfit.resultsXmlFile is None:
                 strScriptCommandLine += " -xml rdfit.xml"
             else:
                 strScriptCommandLine += " -xml " + _xsDataInputRdfit.resultsXmlFile.path.value
-                
+
             for xsDataFile in _xsDataInputRdfit.xdsHklFile:
                 strScriptCommandLine += " " + xsDataFile.path.value
-            
+
             return strScriptCommandLine
 
-    
+
     def getOutputDataFromDNATableFile(self, _strFileName):
         """Parses the result 'DNA'-type XML file"""
         xsDataResultRdfit = XSDataResultRdfit()
@@ -196,19 +197,13 @@ class EDPluginRdfitv1_0(EDPluginExecProcessScript):
         return xsDataResultRdfit
 
     def createHtmlPage(self):
-        plotImage = Image.open(os.path.join(self.getWorkingDirectory(), self.strScaleIntensityPlot))
-        plotImageWidth, plotImageHeight = plotImage.size # (width,height) tuple
-        page = markupv1_10.page(mode='loose_html')
-        page.init(title="Burn Strategy Results",
-                        footer="Generated on %s" % time.asctime())
-        page.div(align_="CENTER")
-        page.h1()
-        page.strong("Burn Strategy  Results")
-        page.h1.close()
-        page.img(src=self.strScaleIntensityPlot, title=self.strScaleIntensityPlot,
-                 height=plotImageHeight, width=plotImageWidth)
-        page.div.close()
-        strHTML = str(page)
-        EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), self.strHtmlPath), strHTML)
-        
+        rdFitReport = EDUtilsReport("RDFit")
+        rdFitReport.setTitle("Burn strategy results")
+        rdFitReport.addImage(self.strScaleIntensityPlotPath, "Rdfit plots")
+        htmlDir = os.path.join(self.getWorkingDirectory(), "html")
+        os.makedirs(htmlDir, 0755)
+        htmlPagePath = rdFitReport.renderHtml(htmlDir, "index.html")
+        jsonPath = rdFitReport.renderJson(htmlDir)
+        return (htmlPagePath, jsonPath)
+
 

@@ -28,4 +28,5 @@ complex type XSDataResultRdfit extends XSDataResult {
 	scaleIntensityPlot : XSDataFile optional
 	bFactorPlot : XSDataFile optional
 	htmlPage : XSDataFile optional
+	jsonPath : XSDataFile optional
 }

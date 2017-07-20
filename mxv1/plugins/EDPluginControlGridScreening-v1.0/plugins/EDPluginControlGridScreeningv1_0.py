@@ -57,9 +57,9 @@ from XSDataGridScreeningv1_0 import XSDataResultGridScreening
 from XSDataGridScreeningv1_0 import XSDataGridScreeningFileNameParameters
 from XSDataGridScreeningv1_0 import XSDataGridScreeningResultIntegration
 
-EDFactoryPluginStatic.loadModule("XSDataISPyBv1_3")
-from XSDataISPyBv1_3 import XSDataInputStoreImageQualityIndicators
-from XSDataISPyBv1_3 import XSDataISPyBImageQualityIndicators
+EDFactoryPluginStatic.loadModule("XSDataISPyBv1_4")
+from XSDataISPyBv1_4 import XSDataInputStoreImageQualityIndicators
+from XSDataISPyBv1_4 import XSDataISPyBImageQualityIndicators
 
 EDFactoryPluginStatic.loadModule("XSDataCCP4v1_0")
 from XSDataCCP4v1_0 import XSDataInputMtz2Various
@@ -94,7 +94,7 @@ class EDPluginControlGridScreeningv1_0(EDPluginControl):
         self.xsDataCrystal = None
         self.strCharacterisationShortSummary = ""
         self.strStatusMessage = ""
-        self.xsDataDiffractionPlan = None 
+        self.xsDataDiffractionPlan = None
         self.xsDataCollection = None
         self.xsDataIndexingResult = None
         self.xsDataStrategyResult = None
@@ -151,7 +151,7 @@ class EDPluginControlGridScreeningv1_0(EDPluginControl):
         if self.bStoreImageQualityIndicatorsInISPyB:
             self.edPluginISPyBStoreImageQualityIndicators = self.loadPlugin(self.strISPyBStoreImageQualityIndicatorsPluginName, \
                                                          "ISPyBStoreImageQualityIndicators")
-        
+
 
 
     def process(self, _edObject=None):
@@ -243,9 +243,9 @@ class EDPluginControlGridScreeningv1_0(EDPluginControl):
     def doFailureReadImageHeader(self, _edPlugin=None):
         self.DEBUG("EDPluginControlGridScreeningv1_0.doFailureReadImageHeader")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlGridScreeningv1_0.doSuccessReadImageHeader")
-    
-    
-    
+
+
+
     def doSuccessIndicators(self, _edPlugin=None):
         self.DEBUG("EDPluginControlGridScreeningv1_0.doSuccessIndicators")
         # self.retrieveSuccessMessages(_edPlugin, "EDPluginControlGridScreeningv1_0.doSuccessIndexingIndicators")
@@ -460,6 +460,6 @@ class EDPluginControlGridScreeningv1_0(EDPluginControl):
         except:
             xsDataGridScreeningFileNameParameters = None
         return xsDataGridScreeningFileNameParameters
-        
-            
-            
+
+
+

@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Karl Levik (karl.levik@diamond.ac.uk)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -28,7 +28,9 @@ __contact__ = "svensson@esrf.fr"
 __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
-import os, tempfile
+import os
+import pprint
+import tempfile
 
 from EDAssert                            import EDAssert
 from EDTestCase                          import EDTestCase
@@ -84,16 +86,17 @@ class EDTestCaseEDHandlerISPyBv1_4(EDTestCase):
         xsDataCharacterisationResult = xsDataInputControlISPyB.characterisationResult
         strPath = EDHandlerXSDataISPyBv1_4.getBestWilsonPlotPath(xsDataCharacterisationResult)
         EDAssert.equal(True, strPath.endswith("B.jpg"), "Wilson plot path extracted from characterisation results")
-        
+
+
+    def testCreateAutoProcProgram(self):
+        autoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram()
+        print(autoProcProgram.marshal())
+
 
     def process(self):
         self.addTestMethod(self.testGenerateXSDataInputISPyB)
         self.addTestMethod(self.testGetBestWilsonPlotPath)
+        self.addTestMethod(self.testCreateAutoProcProgram)
 
 
-
-if __name__ == '__main__':
-
-    edTestCaseEDHandlerISPyBv1_4 = EDTestCaseEDHandlerISPyBv1_4("EDTestCaseEDHandlerISPyBv1_4")
-    edTestCaseEDHandlerISPyBv1_4.execute()
 

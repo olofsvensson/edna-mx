@@ -35,12 +35,10 @@ This class handles the EDNA configuration XML/JSON files.
 """
 
 import os, json
-from EDVerbose import EDVerbose
 from EDLogging import EDLogging
 from EDUtilsFile import EDUtilsFile
 from EDUtilsPath import EDUtilsPath
 from EDFactoryPluginStatic import EDFactoryPluginStatic
-from EDDecorator import deprecated
 from XSDataCommon import XSConfiguration, XSPluginItem, XSParamList, XSParamItem
 
 def bestType(a):
@@ -120,7 +118,7 @@ class EDConfiguration(EDLogging):
                                     for paramItem in paramList.getXSParamItem():
                                         plugin_conf[paramItem.name] = bestType(paramItem.value)
                                 dictConfig[plugin_name] = plugin_conf
-                else: #JSON mode
+                else:  # JSON mode
                     dictConfig = json.loads(strConfiguration)
                 # Make sure we are thread safe when manipulating the cache
                 with self.locked():
@@ -139,7 +137,7 @@ class EDConfiguration(EDLogging):
                                 strImportPath = path
                                 break
                     self.DEBUG("Importing configuration file : %s" % strImportPath)
-                    self.addConfigurationFile(strImportPath, _bReplace) #Was True, why?
+                    self.addConfigurationFile(strImportPath, _bReplace)  # Was True, why?
 
                 # Make sure we are thread safe when manipulating the cache
                 with self.locked():
@@ -154,7 +152,7 @@ class EDConfiguration(EDLogging):
                             else:
                                 self.DEBUG("EDConfiguration.addConfigurationFile: plugin configuration for %s already exists and will not be replaced." % strPluginName)
                         else:
-                            #self.DEBUG("EDConfiguration.addConfigurationFile: adding plugin configuration for %s." % strPluginName)
+                            # self.DEBUG("EDConfiguration.addConfigurationFile: adding plugin configuration for %s." % strPluginName)
                             self._dictPluginConfiguration[strPluginName] = dictConfig[strPluginName]
 
 
@@ -187,7 +185,7 @@ class EDConfiguration(EDLogging):
                     for ext in [".json", ".xml"]:
                         strPathToProjectConfigurationFile = os.path.abspath(os.path.join(strPathToConfigurationDirectory, \
                                                                                     strConfigurationFileBaseName + ext))
-                        #self.DEBUG("Looking for configuration file for %s in %s" %
+                        # self.DEBUG("Looking for configuration file for %s in %s" %
                         #            (_strPluginName, strPathToProjectConfigurationFile))
                         bConfFileFound = os.path.isfile(strPathToProjectConfigurationFile)
                         if bConfFileFound:
@@ -251,100 +249,21 @@ class EDConfiguration(EDLogging):
         """
         return len(self._dictPluginConfiguration)
 
-################################################################################
-# #    Deprecation zone
-################################################################################
-
-#    @deprecated
-    def getXSConfigurationItem(self, _strPluginName):
-        "Method offering compatibility with XML structure: deprecated !!!"
-        config = None
-        if _strPluginName  in self._dictPluginConfiguration:
-            config = self._dictPluginConfiguration[_strPluginName]
-        else: # Try to load "project" configuration
-            config = self.get(_strPluginName)
-        if config is not None:
-            return  XSPluginItem(name=_strPluginName,
-                             XSParamList=XSParamList([XSParamItem(name=i, value=str(config[i])) for i in config]))
-
-
-#    @deprecated
-    def setXSConfigurationItem(self, _xsPluginItem):
-        "Compatibility with XML structure: deprecated"
-        if _xsPluginItem is not None:
-            if _xsPluginItem.name is not None:
-                strPluginName = _xsPluginItem.name
-                plugin_conf = {}
-                paramList = _xsPluginItem.getXSParamList()
-                if paramList:
-                    for paramItem in paramList.getXSParamItem():
-                        plugin_conf[paramItem.name] = bestType(paramItem.value)
-                if strPluginName in self._dictPluginConfiguration.keys():
-                    self.DEBUG("Replacing configuration for plugin %s" % strPluginName)
-                else:
-                    self.DEBUG("Setting configuration for plugin %s" % strPluginName)
-                with self.locked():
-                    self._dictPluginConfiguration[strPluginName] = plugin_conf
-
 
     def getStringValue(self, _strPluginName, _strConfigurationName):
         "Get the configuration for one plugin and one config parameter, as a string"
         config = None
         if _strPluginName in self._dictPluginConfiguration:
             config = self._dictPluginConfiguration[_strPluginName]
-        else: # Try to load "project" configuration
+        else:  # Try to load "project" configuration
             config = self.get(_strPluginName)
         if (config is not None) and (_strConfigurationName in config):
             return str(config[_strConfigurationName])
 
 
 
-#    @deprecated
-    @staticmethod
-    def getParamItem(_xsPluginItem, _pyStrParamName):
-        """
-        Returns the corresponding 'paramItem' for a given plugin name
-        -> Deprecated
-        """
-        xsParamList = _xsPluginItem.getXSParamList()
-        xsParamItemReturn = None
 
-        if (xsParamList != None):
-            xsParamItems = xsParamList.getXSParamItem()
-            for xsParamItem in xsParamItems:
-                if (xsParamItem.getName() == _pyStrParamName):
-                    xsParamItemReturn = xsParamItem
-                    break
-        return xsParamItemReturn
 
-#    @deprecated
-    @classmethod
-    def getStringParamValue(cls, _xsPluginItem, _pyStrParamName):
-        """
-        Returns the parameter value in a string format
-        -> Deprecated
-        """
-        strParamValue = None
-        xsParamItem = cls.getParamItem(_xsPluginItem, _pyStrParamName)
-        if xsParamItem is not None:
-            strParamValue = xsParamItem.getValue()
-        return strParamValue
-    
-
-#    @deprecated
-    @classmethod
-    def getIntegerParamValue(cls, _xsPluginItem, _pyStrParamName):
-        """
-        Returns the parameter value in a integer format
-        -> Deprecated
-        """
-        strParamValue = cls.getStringParamValue(_xsPluginItem, _pyStrParamName)
-        try:
-            return int(strParamValue)
-        except TypeError:
-            return
-        except ValueError:
-            self.ERROR("invalid literal for int(), got %s" % strParamValue)
 
 
 

@@ -2,7 +2,7 @@
 #    Project: EDNA MXv1
 #             http://www.edna-site.org
 #
-#    Copyright (C) 2008-2014 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2017 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal authors:      Michael Hellmig (michael.hellmig@bessy.de)
@@ -67,6 +67,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.strSuffixPilatus2M = "cbf"
         self.strSuffixPilatus6M = "cbf"
         self.strSuffixEiger4M = "cbf"
+        self.strSuffixEiger9M = "cbf"
         self.strSuffixEiger16M = "cbf"
         # Recognised types of detectors
         self.strADSC = "ADSC"
@@ -74,6 +75,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.strPilatus2M = "Pilatus2M"
         self.strPilatus6M = "Pilatus6M"
         self.strEiger4M = "Eiger4M"
+        self.strEiger9M = "Eiger9M"
         self.strEiger16M = "Eiger16M"
         #
         self.strPluginExecMXWaitFile = "EDPluginMXWaitFilev1_1"
@@ -82,6 +84,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.strPluginExecReadImageHeaderPilatus2M = "EDPluginExecReadImageHeaderPilatus2Mv10"
         self.strPluginExecReadImageHeaderPilatus6M = "EDPluginExecReadImageHeaderPilatus6Mv10"
         self.strPluginExecReadImageHeaderEiger4M = "EDPluginExecReadImageHeaderEiger4Mv10"
+        self.strPluginExecReadImageHeaderEiger9M = "EDPluginExecReadImageHeaderEiger9Mv10"
         self.strPluginExecReadImageHeaderEiger16M = "EDPluginExecReadImageHeaderEiger16Mv10"
         # Table mapping image suffix with detector type
         self.dictSuffixToImageType = {
@@ -91,6 +94,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
               self.strSuffixPilatus2M : self.strPilatus2M,
               self.strSuffixPilatus6M : self.strPilatus6M,
               self.strSuffixEiger4M : self.strEiger4M,
+              self.strSuffixEiger9M : self.strEiger9M,
               self.strSuffixEiger16M : self.strEiger16M,
                                                     }
 		# Table mapping image type with exec read image header plugin
@@ -100,6 +104,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
               self.strPilatus2M : self.strPluginExecReadImageHeaderPilatus2M,
               self.strPilatus6M : self.strPluginExecReadImageHeaderPilatus6M,
               self.strEiger4M : self.strPluginExecReadImageHeaderEiger4M,
+              self.strEiger9M : self.strPluginExecReadImageHeaderEiger9M,
               self.strEiger16M : self.strPluginExecReadImageHeaderEiger16M,
                 									 }
 
@@ -357,6 +362,27 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
             pyFile.close()
         return bIsEiger4MFormat
 
+    def isEiger9MImageFormat(self, _strImageFileName):
+        """
+        Detects Eiger 9M CBF image format and returns True after successful identification.
+        """
+        strKeyword = None
+        pyFile = None
+        bIsEiger9MFormat = False
+        try:
+            pyFile = open(_strImageFileName, "r")
+        except:
+            self.warning("EDPluginControlReadImageHeaderv10.isEiger9MImageFormat: couldn't open file: " + _strImageFileName)
+
+        if pyFile != None:
+            self.DEBUG("EDPluginControlReadImageHeaderv10.isEiger9MImageFormat: detecting image format from file " + _strImageFileName)
+            pyFile.seek(0, 0)
+            for iIndex in range(20):
+                strLine = pyFile.readline()
+                if strLine.find("Detector: Dectris Eiger 9M") != -1:
+                    bIsEiger9MFormat = True
+            pyFile.close()
+        return bIsEiger9MFormat
 
     def isEiger16MImageFormat(self, _strImageFileName):
         """
@@ -402,6 +428,8 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
                 strImageType = self.strPilatus6M
             elif self.isEiger4MImageFormat(_strImagePath):
                 strImageType = self.strEiger4M
+            elif self.isEiger9MImageFormat(_strImagePath):
+                strImageType = self.strEiger9M
             elif self.isEiger16MImageFormat(_strImagePath):
                 strImageType = self.strEiger16M
             else:

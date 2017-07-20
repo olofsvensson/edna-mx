@@ -58,6 +58,7 @@ complex type XSDataInputStoreAutoProc extends XSDataInput {
 
 complex type XSDataResultStoreAutoProc extends XSDataResult {
 	autoProcId : XSDataInteger optional
+	autoProcIntegrationId : XSDataInteger optional
 	autoProcScalingId : XSDataInteger optional
 	autoProcProgramId : XSDataInteger optional
 } 
@@ -154,7 +155,7 @@ complex type AutoProcProgram {
 	autoProcProgramId : integer optional
 	processingCommandLine : string
 	processingPrograms : string
-	processingStatus : boolean
+	processingStatus : string
 	processingMessage : string
 	processingStartTime : string
 	processingEndTime : string
@@ -188,10 +189,12 @@ complex type XSDataInputStoreAutoProcStatus extends XSDataInput {
 	autoProcStatusId : integer optional
 	AutoProcProgram : AutoProcProgram optional
 	AutoProcStatus : AutoProcStatus
+	anomalous : boolean optional
 } 
 
 complex type XSDataResultStoreAutoProcStatus extends XSDataResult {
 	autoProcIntegrationId : integer
+	autoProcProgramId : integer
 	autoProcStatusId : integer
 } 
 

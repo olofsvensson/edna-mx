@@ -82,6 +82,7 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         self.xsDataExperimentalCondition = None
         self.strCONF_SYMOP_HOME = "symopHome"
         self.strSymopLib = None
+        self.bDoLabelitIndexing = True
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -93,6 +94,7 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
             self.addWarningMessage(strWarningMessage)
         else:
             self.strSymopLib = os.path.join(strSymopHome, "symop.lib")
+        self.bDoLabelitIndexing = self.config.get("doLabelitIndexing", self.bDoLabelitIndexing)
 
     def checkParameters(self):
         """
@@ -121,8 +123,9 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         xsDataInputLabelitIndexing = EDHandlerXSDataPhenixv1_1.generateXSDataInputLabelitIndexing(xsDataIndexingInput)
         self.edPluginIndexingLabelit.setDataInput(xsDataInputLabelitIndexing)
         #
-        if (self.getControlledPluginName("indicatorsPlugin") is not None):
-            self.strControlledIndicatorsPluginName = self.getControlledPluginName("indicatorsPlugin")
+        if self.bDoLabelitIndexing:
+            if (self.getControlledPluginName("indicatorsPlugin") is not None):
+                self.strControlledIndicatorsPluginName = self.getControlledPluginName("indicatorsPlugin")
         self.edPluginControlIndicators = self.loadPlugin(self.strControlledIndicatorsPluginName)
         # Extract the images from the data collections
         xsDataSubWedgeList = self.getDataInput("dataCollection")[0].getSubWedge()
@@ -138,10 +141,11 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.process")
         edActionCluster = EDActionCluster()
-        edActionCluster.addAction(self.edPluginIndexingLabelit)
+        if self.bDoLabelitIndexing:
+            edActionCluster.addAction(self.edPluginIndexingLabelit)
+            self.edPluginIndexingLabelit.connectSUCCESS(self.doSuccessLabelitIndexing)
+            self.edPluginIndexingLabelit.connectFAILURE(self.doFailureLabelitIndexing)
         edActionCluster.addAction(self.edPluginControlIndicators)
-        self.edPluginIndexingLabelit.connectSUCCESS(self.doSuccessLabelitIndexing)
-        self.edPluginIndexingLabelit.connectFAILURE(self.doFailureLabelitIndexing)
         self.edPluginControlIndicators.connectSUCCESS(self.doSuccessControlIndicators)
         self.edPluginControlIndicators.connectFAILURE(self.doFailureControlIndicators)
         edActionCluster.execute()

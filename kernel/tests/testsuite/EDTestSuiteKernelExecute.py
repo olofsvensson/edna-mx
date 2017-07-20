@@ -23,7 +23,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -40,11 +40,5 @@ class EDTestSuiteKernelExecute(EDTestSuite):
 
     def process(self):
         self.addTestCaseFromName("EDTestCasePluginExecuteTestPlugin")
-        self.addTestCaseFromName("EDTestCaseParallelExecute")
-        self.addTestCaseFromName("EDTestCaseEDJob")
 
-
-if __name__ == '__main__':
-    edTestSuiteKernelExecute = EDTestSuiteKernelExecute("EDTestSuiteKernelExecute")
-    edTestSuiteKernelExecute.execute()
 
