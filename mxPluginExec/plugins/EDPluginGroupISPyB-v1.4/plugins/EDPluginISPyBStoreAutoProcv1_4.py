@@ -63,6 +63,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         self.strToolsForAutoprocessingWebServiceWsdl = None
         self.iAutoProcId = None
         self.iAutoProcProgramId = None
+        self.iAutoProcIntegrationId = None
         self.iAutoProcScalingId = None
         self.bContinue = True
         self.iAutoProcScalingHasIntId = None
