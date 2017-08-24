@@ -106,10 +106,10 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         strCommandText = "-B -xml -nthreads {0}".format(self.maxNoProcessors)
 
         if self.doScaleWithXscale:
-            strCommandText = " autoPROC_ScaleWithXscale='yes'"
+            strCommandText += " autoPROC_ScaleWithXscale='yes'"
 
         if self.rotationAxis is not None:
-            strCommandText = " autoPROC_XdsKeyword_ROTATION_AXIS=\"{0}\"".format(self.rotationAxis)
+            strCommandText += " autoPROC_XdsKeyword_ROTATION_AXIS=\"{0}\"".format(self.rotationAxis)
 
         # Master H5 file
         masterH5 = _xsDataInputAutoPROC.masterH5
