@@ -67,8 +67,11 @@ class EDPluginXDSIndexingv1_0(EDPluginXDSv1_0):
 
 
     def postProcess(self, _edObject=None):
-        EDPluginControl.postProcess(self)
+        EDPluginXDSv1_0.postProcess(self)
         self.DEBUG("EDPluginXDSIndexingv1_0.postProcess")
+        pathToIdxrefLp = os.path.join(self.getWorkingDirectory(), "IDXREF.LP")
+        xsDataResultXDSIndexing = self.readIdxrefLp(pathToIdxrefLp)
+        self.dataOutput = xsDataResultXDSIndexing
 
 
     def readIdxrefLp(self, _pathToIdxrefLp):

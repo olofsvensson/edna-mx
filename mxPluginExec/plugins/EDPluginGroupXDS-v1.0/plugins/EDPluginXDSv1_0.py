@@ -243,8 +243,8 @@ class EDPluginXDSv1_0(EDPluginExecProcessScript):
 
         xsDataXDSCrystal = xsDataXDSInput.getCrystal()
 
-        #xsDataStringFriedelsLaw = xsDataXDSCrystal.getFriedels_law()
-        #if ( xsDataStringFriedelsLaw is not None ):
+        # xsDataStringFriedelsLaw = xsDataXDSCrystal.getFriedels_law()
+        # if ( xsDataStringFriedelsLaw is not None ):
         #    self.addInputLine( "FRIEDEL'S_LAW= %s" % ( xsDataStringFriedelsLaw.getValue() ) )
 
         if xsDataXDSCrystal:
@@ -262,6 +262,8 @@ class EDPluginXDSv1_0(EDPluginExecProcessScript):
                                  xsDataCell.getAngle_alpha().getValue(),
                                  xsDataCell.getAngle_beta().getValue(),
                                  xsDataCell.getAngle_gamma().getValue()))
+            if xsDataXDSCrystal.minimum_number_of_pixels_in_a_spot is not None:
+                self.addInputLine("MINIMUM_NUMBER_OF_PIXELS_IN_A_SPOT= {0}".format(xsDataXDSCrystal.minimum_number_of_pixels_in_a_spot.value))
         else:
             self.addInputLine("SPACE_GROUP_NUMBER= 0")
             self.addInputLine("UNIT_CELL_CONSTANTS= 0 0 0 0 0 0")

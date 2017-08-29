@@ -247,6 +247,7 @@ complex type XSDataXDSCrystal extends XSData {
 	space_group_number : XSDataInteger
 	strong_pixel : XSDataInteger
 	unit_cell_constants : XSDataXDSCell
+	minimum_number_of_pixels_in_a_spot : XSDataInteger
 }
 
 complex type XSDataXDSDetector extends XSData {
