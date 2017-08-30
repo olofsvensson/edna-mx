@@ -3,13 +3,11 @@
 #    Project: The EDNA Kernel
 #             http://www.edna-site.org
 #
-#    File: "$Id: EDTestCaseParallelExecute.py 2128 2010-10-04 16:39:42Z kieffer $"
-#
 #    Copyright (C) 2008-2010 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal authors: Jérôme Kieffer (kieffer@esrf.fr)
-# 
+#
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -22,7 +20,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 

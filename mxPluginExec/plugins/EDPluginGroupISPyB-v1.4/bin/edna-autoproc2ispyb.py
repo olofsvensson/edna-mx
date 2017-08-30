@@ -6,7 +6,7 @@
 #
 #    Copyright (C) European Synchrotron Radiation Facility, Grenoble, France
 #
-#    Principal authors:  Olof Svensson (svensson@esrf.fr)     
+#    Principal authors:  Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -94,6 +94,8 @@ if __name__ == '__main__':
         if xsDataAutoProcContainer is None:
             EDVerbose.WARNING("Couldn't parse file %s" % strPath)
         else:
+            if xsDataAutoProcContainer.AutoProcProgramContainer.AutoProcProgram.processingStatus == "True":
+                xsDataAutoProcContainer.AutoProcProgramContainer.AutoProcProgram.processingStatus = "SUCCESS"
             xsDataInputStoreAutoProc.setAutoProcContainer(xsDataAutoProcContainer)
             edPluginISPyBStoreAutoProc = EDFactoryPluginStatic.loadPlugin("EDPluginISPyBStoreAutoProcv1_4")
             edPluginISPyBStoreAutoProc.setDataInput(xsDataInputStoreAutoProc)
@@ -107,4 +109,4 @@ if __name__ == '__main__':
                     EDVerbose.screen("autoProcScalingId: %d" % xsDataResultISPyBStoreAutoProc.autoProcScalingId.value)
                 else:
                     EDVerbose.warning("No autoProcScalingId in results!")
-                
+

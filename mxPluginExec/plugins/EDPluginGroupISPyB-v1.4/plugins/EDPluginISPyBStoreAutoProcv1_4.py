@@ -63,6 +63,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         self.strToolsForAutoprocessingWebServiceWsdl = None
         self.iAutoProcId = None
         self.iAutoProcProgramId = None
+        self.iAutoProcIntegrationId = None
         self.iAutoProcScalingId = None
         self.bContinue = True
         self.iAutoProcScalingHasIntId = None
@@ -98,7 +99,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
             listAutoProcProgramAttachment = xsDataAutoProcContainer.getAutoProcProgramContainer().getAutoProcProgramAttachment()
             for xsDataAutoProcProgramAttachment in listAutoProcProgramAttachment:
                 self.storeOrUpdateAutoProcProgramAttachment(clientToolsForAutoprocessingWebService, xsDataAutoProcProgramAttachment)
-            if (xsDataAutoProcProgram.getProcessingStatus() == False) or (xsDataAutoProcScalingContainer is None):
+            if xsDataAutoProcScalingContainer is None:
                 self.bContinue = False
         if self.bContinue:
             # AutoProcIntegration
@@ -106,13 +107,15 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
             self.iAutoProcIntegrationId = self.storeOrUpdateAutoProcIntegration(clientToolsForAutoprocessingWebService, xsDataAutoProcIntegrationContainer)
             if self.iAutoProcIntegrationId is None:
                 self.WARNING("Couldn't create entry for AutoProcIntegration in ISPyB!")
+            if xsDataAutoProcProgram.getProcessingStatus() == "FAILED":
+                self.bContinue = False
         if self.bContinue:
             # AutoProc
             xsDataAutoProc = xsDataAutoProcContainer.getAutoProc()
-            self.iAutoProcId = self.storeOrUpdateAutoProc(clientToolsForAutoprocessingWebService, xsDataAutoProc)
+            if xsDataAutoProc is not None:
+                self.iAutoProcId = self.storeOrUpdateAutoProc(clientToolsForAutoprocessingWebService, xsDataAutoProc)
             if self.iAutoProcId is None:
-                self.ERROR("Couldn't create entry for AutoProc in ISPyB!")
-                self.setFailure()
+                self.DEBUG("Couldn't create entry for AutoProc in ISPyB. Stopping here.")
                 self.bContinue = False
         if self.bContinue:
             # AutoProcScaling
@@ -146,6 +149,8 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         xsDataResultStoreAutoProc = XSDataResultStoreAutoProc()
         if self.iAutoProcId is not None:
             xsDataResultStoreAutoProc.setAutoProcId(XSDataInteger(self.iAutoProcId))
+        if self.iAutoProcIntegrationId is not None:
+            xsDataResultStoreAutoProc.setAutoProcIntegrationId(XSDataInteger(self.iAutoProcIntegrationId))
         if self.iAutoProcScalingId is not None:
             xsDataResultStoreAutoProc.setAutoProcScalingId(XSDataInteger(self.iAutoProcScalingId))
         if self.iAutoProcProgramId is not None:
@@ -160,7 +165,11 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         iAutoProcProgramId = self.getXSValue(_xsDataAutoProcProgram.getAutoProcProgramId())
         strProcessingCommandLine = self.getXSValue(_xsDataAutoProcProgram.getProcessingCommandLine())
         strProcessingPrograms = self.getXSValue(_xsDataAutoProcProgram.getProcessingPrograms())
-        bProcessingStatus = self.getXSValue(_xsDataAutoProcProgram.getProcessingStatus(), True)
+        strProcessingStatus = self.getXSValue(_xsDataAutoProcProgram.getProcessingStatus(), "SUCCESS")
+        if strProcessingStatus == "true" or strProcessingStatus == "1":
+            strProcessingStatus = "SUCCESS"
+        elif strProcessingStatus == "false" or strProcessingStatus == "0":
+            strProcessingStatus = "FAILED"
         strProcessingMessage = self.getXSValue(_xsDataAutoProcProgram.getProcessingMessage())
         processingStartTime = self.getDateValue(_xsDataAutoProcProgram.getProcessingStartTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))
         processingEndTime = self.getDateValue(_xsDataAutoProcProgram.getProcessingEndTime(), "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))
@@ -170,7 +179,7 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
                 arg0=iAutoProcProgramId, \
                 processingCommandLine=strProcessingCommandLine, \
                 processingPrograms=strProcessingPrograms, \
-                processingStatus=bProcessingStatus, \
+                processingStatus=strProcessingStatus, \
                 processingMessage=strProcessingMessage, \
                 processingStartTime=processingStartTime, \
                 processingEndTime=processingEndTime, \

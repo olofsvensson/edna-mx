@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
 #
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -37,7 +37,7 @@ from EDUtilsPath                         import EDUtilsPath
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataString
 
-#from XSDataSTACv2_0 import XSDataSTACOutputStrategy
+# from XSDataSTACv2_0 import XSDataSTACOutputStrategy
 
 class EDTestCasePluginExecuteSTACStrategyv2_0(EDTestCasePluginExecute):
 
@@ -51,10 +51,10 @@ class EDTestCasePluginExecuteSTACStrategyv2_0(EDTestCasePluginExecute):
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.m_edStringExecutionTestDataInputHome, "EDPluginSTACStrategyv2_0_dataInputKappa_strategy_request_reference.xml"), "kappa_strategy_request")
         self.setDataInputFile(os.path.join(self.m_edStringExecutionTestDataInputHome, "EDPluginSTACStrategyv2_0_dataInputDataCollection_reference.xml"), "dataCollection")
-        #not used: self.setDataInputFile( os.path.join( self.m_edStringExecutionTestDataInputHome, "EDPluginSTACStrategyv2_0_dataInputIndexingResult_reference.xml" ), "indexingResult" )
-        #self.setDataInputFile( os.path.join( self.m_edStringExecutionTestDataInputHome, "EDPluginSTACStrategyv2_0_dataInputStrategy_reference.xml" ), "inputStrategy" )
+        # not used: self.setDataInputFile( os.path.join( self.m_edStringExecutionTestDataInputHome, "EDPluginSTACStrategyv2_0_dataInputIndexingResult_reference.xml" ), "indexingResult" )
+        # self.setDataInputFile( os.path.join( self.m_edStringExecutionTestDataInputHome, "EDPluginSTACStrategyv2_0_dataInputStrategy_reference.xml" ), "inputStrategy" )
         self.setDataInputFile(os.path.join(self.m_edStringExecutionTestDataInputHome, "EDPluginSTACStrategyv2_0_dataInputStrategy_reference.xml"), "inputBest")
-        #self.setDataInputFile( os.path.join( self.m_edStringExecutionTestDataInputHome, "EDPluginSTACAlignmentv2_0_dataInputBest_reference.xml" ), "inputBest" )
+        # self.setDataInputFile( os.path.join( self.m_edStringExecutionTestDataInputHome, "EDPluginSTACAlignmentv2_0_dataInputBest_reference.xml" ), "inputBest" )
 #        self.__pyStrBCMDEFReference = os.path.join(self.m_edStringExecutionTestDataInputHome, "BCM.dat")
 
         self.setReferenceDataOutputFile(os.path.join(self.m_edStringExecutionTestDataResultHome, "EDPluginSTACStrategyv2_0_dataOutput_reference.xml"))
@@ -64,11 +64,8 @@ class EDTestCasePluginExecuteSTACStrategyv2_0(EDTestCasePluginExecute):
         EDTestCasePluginExecute.preProcess(self)
         edPluginSTACAlignment = self.getPlugin()
 #        edPluginSTACAlignment.setBCMDEF(self.__pyStrBCMDEFReference)
-        #self.loadTestImage( [ "ref-testscale_1_001.img", "ref-testscale_1_002.img" ] )
+        # self.loadTestImage( [ "ref-testscale_1_001.img", "ref-testscale_1_002.img" ] )
 
-        #prepare STAC configuration file
-        #xsPluginItem = self.getPlugin().getConfiguration()
-        #EDConfiguration.getStringParamValue( xsPluginItem, "BCMDEF", EDDiskExplorer.mergePath( self.m_edStringExecutionTestDataInputHome, "BCM.dat"))
 
     def testExecute(self):
         self.run()

@@ -2,8 +2,6 @@
 #    Project: The EDNA Kernel
 #             http://www.edna-site.org
 #
-#    File: "$Id: EDImportLib.py 1453 2010-04-28 16:20:46Z svensson $"
-#
 #    Copyright (C) 2010-2010 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #

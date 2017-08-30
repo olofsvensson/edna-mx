@@ -414,6 +414,31 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem> 
+		<XSPluginItem> 
+			<name>EDPluginXDSIntegrationv1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/xds</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>600</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>x-geo_corr</name>
+					<value>/data/id29/inhouse/opid291/x_geo_corr.cbf</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>y-geo_corr</name>
+					<value>/data/id29/inhouse/opid291/y_geo_corr.cbf</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem> 
 		<XSPluginItem>
 			<name>EDPluginSTACOrientationv2_0</name>
 			<XSParamList>

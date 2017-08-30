@@ -1,4 +1,4 @@
-#coding: utf8
+# coding: utf8
 #    Project: The EDNA Kernel
 #             http://www.edna-site.org
 #
@@ -8,8 +8,8 @@
 #                            Grenoble, France
 #
 #    Principal authors: Marie-Francoise Incardona (incardon@esrf.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
-#                       Jérôme Kieffer (kieffer@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
+#                       Jérôme Kieffer (kieffer@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -22,7 +22,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -66,21 +66,6 @@ class EDTestCasePluginUnit(EDTestCasePlugin):
         Returns the main plugin instance
         """
         return self.__edPlugin
-
-
-    def getPluginConfiguration(self, _strConfigurationFileName):
-        """
-        Returns the plugin configuration from a configuration file
-        """
-        xsPluginItem = None
-        edConfiguration = EDConfiguration(_strConfigurationFileName)
-        if(edConfiguration != None):
-            xsPluginItem = edConfiguration.getXSConfigurationItem(self.getPluginName())
-            if(xsPluginItem == None):
-                EDVerbose.warning("EDTestCasePluginUnit.getPluginConfiguration: Could not get configuration plugin item for: " + self.getPluginName())
-        else:
-            EDVerbose.warning("EDTestCasePluginUnit.getPluginConfiguration: Could not load Configuration: " + _strConfigurationFileName)
-        return xsPluginItem
 
 
     def cleanUp(self, _edPlugin):

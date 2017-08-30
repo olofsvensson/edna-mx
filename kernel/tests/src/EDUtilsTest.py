@@ -9,7 +9,7 @@
 #                       Grenoble, France
 #
 #    Principal authors: Marie-Francoise Incardona (incardon@esrf.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@ __date__ = "20120213"
 from EDUtilsPath            import EDUtilsPath
 from EDUtilsFile            import EDUtilsFile
 from EDFactoryPluginTest    import EDFactoryPluginTest
-from EDDecorator            import deprecated
 
 
 class EDUtilsTest:
@@ -59,18 +58,6 @@ class EDUtilsTest:
 
 
     @staticmethod
-    @deprecated
-    def readFileAndParseVariable(_strFileName, _strKey, _strValue):
-        """
-        Reads a file and parses potential existing environment variables such as:
-        Returns the content of this file as a string
-        """
-
-        return EDUtilsFile.readFileAndParseVariables(_strFileName, {_strKey:_strValue})
-
-
-    @staticmethod
-    @deprecated
     def readFileAndParseVariables(_strFileName, _dictReplacements):
         """
         Returns the content of this file as a string
@@ -79,7 +66,6 @@ class EDUtilsTest:
 
 
     @staticmethod
-    @deprecated
     def readFile(_strFileName):
         """
         Reads a file
@@ -88,7 +74,6 @@ class EDUtilsTest:
         return EDUtilsFile.readFile(_strFileName)
 
     @staticmethod
-    @deprecated
     def writeFile(_strFileName, _strContent):
         """
         Writes a string into a file
@@ -98,7 +83,6 @@ class EDUtilsTest:
 
 
     @staticmethod
-    @deprecated
     def getTestsHome():
         """
         Returns the tests home directory path <EDNA_HOME>/tests
@@ -107,7 +91,6 @@ class EDUtilsTest:
 
 
     @staticmethod
-    @deprecated
     def getTestsDataHome():
         """
         Returns the tests data directory path <EDNA_HOME>/tests/data
@@ -116,7 +99,6 @@ class EDUtilsTest:
 
 
     @staticmethod
-    @deprecated
     def getTestsDataImagesHome():
         """
         Returns the tests data image directory path <EDNA_HOME>/tests/data/images or what is relevant

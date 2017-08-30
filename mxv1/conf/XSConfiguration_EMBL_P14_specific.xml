@@ -124,6 +124,44 @@
                                           <value>30</value>
                                   </XSParamItem>  
                         </XSParamList>
-                </XSPluginItem--> 
+                </XSPluginItem-->
+                <XSPluginItem>
+                        <name>EDPluginDozorv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>execProcessScriptShell</name>
+                                        <value>/bin/bash</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>execProcessScriptSetupCCP4</name>
+                                        <value>/mx-beta/dozor/dozor-env.sh</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                         <name>execProcessScriptExecutable</name>
+                                         <value>/mx-beta/dozor/dozor.20170104</value>
+                                 </XSParamItem>
+                                 <XSParamItem>
+                                          <name>timeOut</name>
+                                          <value>600</value>
+                                 </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginControlDozorv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>7200</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>hdf5BatchSize</name>
+                                        <value>100</value>
+                                </XSParamItem>
+				<XSParamItem>
+                                         <name>mxCuBE_URI</name>
+                                         <value>http://p14ui01:8011</value>
+                                 </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
 	</XSPluginList>
 </XSConfiguration> 

@@ -56,20 +56,15 @@ class EDPluginMxv1ParamsToXMLv1_0(EDPluginExecProcessScript):
         Gets the name (with full path) of the bash script to run 
         """
         EDPluginExecProcessScript.configure(self)
-        pluginConfiguration = self.getConfiguration()
         self.setRequireCCP4(True)
 
-        if(pluginConfiguration == None):
-            self.DEBUG("*** EDPluginMxv1ParamsToXMLv1_0.configure: pluginConfiguration is None, using default settings")
-        else:
-            self.DEBUG("*** EDPluginMxv1ParamsToXMLv1_0.configure: pluginConfiguration found, using settings from there")
-            strScriptExecutable = self.getScriptExecutable()
-            if (strScriptExecutable == None):
-                strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ("EDPluginMxv1ParamsToXMLv1_0.configure", self.getClassName(), \
-                                                                     "Configuration parameter missing: strScriptExecutable")
-                self.error(strErrorMessage)
-                self.addErrorMessage(strErrorMessage)
-                raise RuntimeError, strErrorMessage
+        strScriptExecutable = self.getScriptExecutable()
+        if (strScriptExecutable == None):
+            strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ("EDPluginMxv1ParamsToXMLv1_0.configure", self.getClassName(), \
+                                                                 "Configuration parameter missing: strScriptExecutable")
+            self.error(strErrorMessage)
+            self.addErrorMessage(strErrorMessage)
+            raise RuntimeError, strErrorMessage
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
@@ -87,7 +82,7 @@ class EDPluginMxv1ParamsToXMLv1_0(EDPluginExecProcessScript):
             self.addErrorMessage(strErrorMessage)
             raise RuntimeError, strErrorMessage
 
-        # This should work as long as there is a single output, i.e. not a list: 
+        # This should work as long as there is a single output, i.e. not a list:
         strFilePath = os.path.join(self.getWorkingDirectory(), self.getScriptLogFileName())
         xsDataFileResult = XSDataFile()
         xsDataFileResult.setPath(XSDataString(strFilePath))

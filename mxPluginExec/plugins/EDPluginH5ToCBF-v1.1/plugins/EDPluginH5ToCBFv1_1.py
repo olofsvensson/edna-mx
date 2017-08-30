@@ -31,6 +31,7 @@ import shutil
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 from EDUtilsImage import EDUtilsImage
+from EDUtilsPath import EDUtilsPath
 
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
@@ -112,7 +113,10 @@ class EDPluginH5ToCBFv1_1(EDPluginExecProcessScript):
             if "master" in hdf5File:
                 masterFile = hdf5File
             else:
-                masterFile = os.path.join(directory, prefix + "_{0}_master.h5".format(hdf5ImageNumber))
+                if EDUtilsPath.isEMBL():
+                    masterFile = os.path.join(directory, prefix + "_master.h5".format(hdf5ImageNumber))
+                else:
+                    masterFile = os.path.join(directory, prefix + "_{0}_master.h5".format(hdf5ImageNumber))
 
             if _xsDataInputH5ToCBF.forcedOutputImageNumber is not None:
                 CBFFileName = prefix + "_%04d" % _xsDataInputH5ToCBF.forcedOutputImageNumber.value + ".cbf"

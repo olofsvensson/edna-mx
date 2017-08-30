@@ -2,11 +2,11 @@
 #    Project: EDNA MXv1
 #             http://www.edna-site.org
 #
-#    Copyright (C) 2008-2014 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2017 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -44,6 +44,9 @@ class EDTestSuitePluginExecuteReadImageHeaderv10(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_Pilatus2M")
         self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_Pilatus2M_DLS")
         self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_Pilatus6M")
+        # self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_Eiger4M")
+        self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_Eiger9M")
+        self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_Eiger16M")
         self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_ADSC_waitFile")
         self.addTestCaseFromName("EDTestCasePluginExecutePluginControlReadImageHeaderv10_failure")
 

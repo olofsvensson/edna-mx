@@ -9,7 +9,7 @@
 #
 #    Principal author:       Karl Levik (karl.levik@diamond.ac.uk)
 #
-#    Contributing author:    Olof Svensson (svensson@esrf.fr) 
+#    Contributing author:    Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ class EDPluginControlCharForReorientInterfacev2_0(EDPluginControlInterfacev2_0):
     """
     This plugin is an extension of EDPluginControlInterfacev1_2 that uses a different characterisationPlugin
     """
-        
+
     def configure(self):
         """
         Gets the configuration parameters (if any). Use the Python name mangling rules for storing the parameters in 
@@ -47,19 +47,15 @@ class EDPluginControlCharForReorientInterfacev2_0(EDPluginControlInterfacev2_0):
         """
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlCharForReorientInterfacev2_0.configure")
-        pluginConfiguration = self.getConfiguration()
         strUseISPyBPlugin = "false"
 
-        if (pluginConfiguration is None):
-            self.DEBUG("No plugin configuration found for EDPluginControlCharForReorientInterfacev2_0.")
-        else:
-            if (self.getControlledPluginName("subWedgeAssemblePlugin") is not None):
-                self._EDPluginControlInterfacev2_0__strEDPluginControlSubWedgeAssembleName = self.getControlledPluginName("subWedgeAssemblePlugin")
-            if (self.getControlledPluginName("characterisationPlugin") is not None):
-                self._EDPluginControlInterfacev2_0__strEDPluginControlCharacterisationName = self.getControlledPluginName("characterisationPlugin")
-            if (self.getControlledPluginName("ispybPlugin") is not None):
-                self._EDPluginControlInterfacev2_0__strEDPluginControlISPyBName = self.getControlledPluginName("ispybPlugin")
-            strUseISPyBPlugin = EDConfiguration.getStringParamValue(pluginConfiguration, "useISPyBPlugin")
+        if (self.getControlledPluginName("subWedgeAssemblePlugin") is not None):
+            self._EDPluginControlInterfacev2_0__strEDPluginControlSubWedgeAssembleName = self.getControlledPluginName("subWedgeAssemblePlugin")
+        if (self.getControlledPluginName("characterisationPlugin") is not None):
+            self._EDPluginControlInterfacev2_0__strEDPluginControlCharacterisationName = self.getControlledPluginName("characterisationPlugin")
+        if (self.getControlledPluginName("ispybPlugin") is not None):
+            self._EDPluginControlInterfacev2_0__strEDPluginControlISPyBName = self.getControlledPluginName("ispybPlugin")
+        strUseISPyBPlugin = self.config.get("useISPyBPlugin", strUseISPyBPlugin)
 
         if (strUseISPyBPlugin.lower() != "true"):
             self._EDPluginControlInterfacev2_0__strEDPluginControlISPyBName = None

@@ -7,7 +7,7 @@
 #                            Grenoble, France
 #
 #    Principal authors: Marie-Francoise Incardona (incardon@esrf.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -20,7 +20,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -55,7 +55,6 @@ from EDUtilsTest           import EDUtilsTest
 from EDUtilsFile           import EDUtilsFile
 from EDConfigurationStatic import EDConfigurationStatic, EDConfiguration
 from EDFactoryPlugin       import EDFactoryPlugin
-from EDDecorator           import deprecated
 
 iMAX_DOWNLOAD_TIME = 60
 
@@ -110,22 +109,6 @@ class EDTestCasePlugin(EDTestCase):
         else:
             dictConfig = EDConfigurationStatic.get(strPluginName)
         return dictConfig
-
-    @deprecated
-    def getPluginConfiguration(self, _strPluginName=None):
-        # Load the configuration file if provided
-        xsConfiguration = None
-        if _strPluginName is None:
-            strPluginName = self.getPluginName()
-        else:
-            strPluginName = _strPluginName
-        if self._strConfigurationFile is not None:
-            edConfig = EDConfiguration(self._strConfigurationFile)
-            xsConfiguration = edConfig.getXSConfigurationItem(strPluginName)
-        else:
-            xsConfiguration = EDConfigurationStatic.getXSConfigurationItem(strPluginName)
-        return xsConfiguration
-
 
 
 

@@ -41,7 +41,6 @@ from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataTime
-from XSDataCommon import XSDataDouble
 
 from XSDataControlXia2DIALSv1_0 import XSDataInputControlXia2DIALS
 from XSDataControlXia2DIALSv1_0 import XSDataResultControlXia2DIALS
@@ -56,14 +55,10 @@ from XSDataISPyBv1_4 import AutoProcContainer
 from XSDataISPyBv1_4 import AutoProcProgramAttachment
 from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
-from XSDataISPyBv1_4 import XSDataResultStoreAutoProc
 
 
 edFactoryPlugin.loadModule("XSDataMXWaitFilev1_1")
 from XSDataMXWaitFilev1_1 import XSDataInputMXWaitFile
-
-edFactoryPlugin.loadModule("XSDataHTML2PDFv1_0")
-from XSDataHTML2PDFv1_0 import XSDataInputHTML2PDF
 
 class EDPluginControlXia2DIALSv1_0(EDPluginControl):
     """
@@ -74,7 +69,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
     def __init__(self):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataInputControlXia2DIALS)
-        self.dataOutput = XSDataResultStoreAutoProc()
+        self.dataOutput = XSDataResultControlXia2DIALS()
         self.doAnomAndNonanom = True
         self.pyarchPrefix = None
         self.resultsDirectory = None
@@ -138,7 +133,6 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         if self.dataInput.dataCollectionId is not None:
             # Recover the data collection from ISPyB
             xsDataInputRetrieveDataCollection = XSDataInputRetrieveDataCollection()
-            identifier = str(self.dataInput.dataCollectionId.value)
             xsDataInputRetrieveDataCollection.dataCollectionId = self.dataInput.dataCollectionId
             self.edPluginRetrieveDataCollection.dataInput = xsDataInputRetrieveDataCollection
             self.edPluginRetrieveDataCollection.executeSynchronous()
@@ -154,7 +148,6 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             pathToStartImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoEnd)
         else:
-            identifier = str(int(time.time()))
             directory = self.dataInput.dirN.value
             template = self.dataInput.templateN.value
             imageNoStart = self.dataInput.fromN.value
@@ -317,7 +310,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
             autoProcProgram = autoProcProgramContainer.AutoProcProgram
             autoProcProgram.processingPrograms = "XIA2_DIALS"
-            autoProcProgram.processingStatus = True
+            autoProcProgram.processingStatus = "SUCCESS"
             autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
             autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
             autoProcProgramContainer.AutoProcProgramAttachment = []
@@ -346,18 +339,9 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             # Create a pdf file of the html page
             if edPluginExecXia2DIALS.dataOutput.htmlFile is not None:
                 pathToHtmlFile = edPluginExecXia2DIALS.dataOutput.htmlFile.path.value
-                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.pdf"
-                # Convert the xia2.html to xia2.pdf
-                xsDataInputHTML2PDF = XSDataInputHTML2PDF()
-                xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(pathToHtmlFile)))
-                xsDataInputHTML2PDF.paperSize = XSDataString("A4")
-                xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
-                edPluginHTML2Pdf = self.loadPlugin("EDPluginHTML2PDFv1_0", "EDPluginHTML2PDFv1_0_{0}".format(anomString))
-                edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
-                edPluginHTML2Pdf.executeSynchronous()
-                pdfFile = edPluginHTML2Pdf.dataOutput.pdfFile.path.value
-                shutil.copy(pdfFile, os.path.join(self.pyarchDirectory, pyarchFileName))
-                shutil.copy(pdfFile, os.path.join(self.resultsDirectory, pyarchFileName))
+                pyarchFileName = self.pyarchPrefix + "_" + anomString + "_xia2.html"
+                shutil.copy(pathToHtmlFile, os.path.join(self.pyarchDirectory, pyarchFileName))
+                shutil.copy(pathToHtmlFile, os.path.join(self.resultsDirectory, pyarchFileName))
                 autoProcProgramAttachment = AutoProcProgramAttachment()
                 autoProcProgramAttachment.fileName = pyarchFileName
                 autoProcProgramAttachment.filePath = self.pyarchDirectory

@@ -55,6 +55,7 @@ class EDPluginXDSIndexingv1_0(EDPluginXDSv1_0):
     def __init__(self):
         EDPluginXDSv1_0.__init__(self)
         self.setXSDataInputClass(XSDataInputXDSIndexing)
+        self.dataOutput = XSDataResultXDSIndexing()
 
 
     def configure(self):
@@ -69,13 +70,16 @@ class EDPluginXDSIndexingv1_0(EDPluginXDSv1_0):
     def postProcess(self, _edObject=None):
         EDPluginXDSv1_0.postProcess(self)
         self.DEBUG("EDPluginXDSIndexingv1_0.postProcess")
-        xsDataResultXDSIndexing = self.readIdxrefLp(os.path.join(self.getWorkingDirectory(), "IDXREF.LP"))
-        self.dataOutput = xsDataResultXDSIndexing
+        pathToIdxrefLp = os.path.join(self.getWorkingDirectory(), "IDXREF.LP")
+        self.dataOutput = self.readIdxrefLp(pathToIdxrefLp, self.dataOutput)
 
 
-    def readIdxrefLp(self, _pathToIdxrefLp):
+    def readIdxrefLp(self, _pathToIdxrefLp, _xsDataResultXDSIndexing=None):
         self.DEBUG("EDPluginXDSIndexingv1_0.readIdxrefLp")
+        if _xsDataResultXDSIndexing is None:
         xsDataResultXDSIndexing = XSDataResultXDSIndexing()
+        else:
+            xsDataResultXDSIndexing = _xsDataResultXDSIndexing
         if os.path.exists(_pathToIdxrefLp):
             xsDataResultXDSIndexing.pathToLogFile = XSDataFile(XSDataString(_pathToIdxrefLp))
             with open(_pathToIdxrefLp) as f:
