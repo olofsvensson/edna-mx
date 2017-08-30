@@ -46,7 +46,7 @@ from XSDataCommon import XSDataFile
 
 from XSDataXDSv1_0 import XSDataCell
 from XSDataXDSv1_0 import XSDataInputXDSIntegration
-from XSDataXDSv1_0 import XSDataResultXDS
+from XSDataXDSv1_0 import XSDataResultXDSIntegration
 
 
 class EDPluginXDSIntegrationv1_0(EDPluginXDSv1_0):
@@ -55,7 +55,7 @@ class EDPluginXDSIntegrationv1_0(EDPluginXDSv1_0):
     def __init__(self):
         EDPluginXDSv1_0.__init__(self)
         self.setXSDataInputClass(XSDataInputXDSIntegration)
-
+        self.dataOutput = XSDataResultXDSIntegration()
 
     def configure(self):
         EDPluginXDSv1_0.configure(self)
@@ -68,4 +68,17 @@ class EDPluginXDSIntegrationv1_0(EDPluginXDSv1_0):
     def postProcess(self, _edObject=None):
         EDPluginXDSv1_0.postProcess(self)
         self.DEBUG("EDPluginXDSIntegrationv1_0.postProcess")
+
+        correctLp = os.path.join(self.getWorkingDirectory(), "CORRECT.LP")
+        if os.path.exists(correctLp):
+            self.dataOutput.correctLp = XSDataFile(XSDataString(correctLp))
+
+        bkgpixCbf = os.path.join(self.getWorkingDirectory(), "BKGPIX.cbf")
+        if os.path.exists(bkgpixCbf):
+            self.dataOutput.bkgpixCbf = XSDataFile(XSDataString(bkgpixCbf))
+
+        xdsAsciiHkl = os.path.join(self.getWorkingDirectory(), "XDS_ASCII.HKL")
+        if os.path.exists(xdsAsciiHkl):
+            self.dataOutput.xdsAsciiHkl = XSDataFile(XSDataString(xdsAsciiHkl))
+
 

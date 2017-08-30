@@ -34,8 +34,12 @@ __status__ = "production"
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 from EDUtilsPath import EDUtilsPath
 
+from XSDataCommon import XSDataString
+from XSDataCommon import XSDataFile
+
 from XSDataXDSv1_0 import XSDataInputXDS
 from XSDataXDSv1_0 import XSDataResultXDS
+from XSDataXDSv1_0 import XSDataXDSFilePaths
 
 import os
 import shutil
@@ -78,7 +82,34 @@ class EDPluginXDSv1_0(EDPluginExecProcessScript):
 
     def postProcess(self, _oedObject=None):
         EDPluginExecProcessScript.postProcess(self, _oedObject)
-        self.dataOutput = XSDataResultXDS()
+        # Fill in file paths
+        xsDataXDSFilePaths = XSDataXDSFilePaths()
+
+        xparmXds = os.path.join(self.getWorkingDirectory(), "XPARM.XDS")
+        if os.path.exists(xparmXds):
+            xsDataXDSFilePaths.xparmXds = XSDataFile(XSDataString(xparmXds))
+
+        xCorrectionsCbf = os.path.join(self.getWorkingDirectory(), "X-CORRECTIONS.cbf")
+        if os.path.exists(xCorrectionsCbf):
+            xsDataXDSFilePaths.xCorrectionsCbf = XSDataFile(XSDataString(xCorrectionsCbf))
+
+        yCorrectionsCbf = os.path.join(self.getWorkingDirectory(), "Y-CORRECTIONS.cbf")
+        if os.path.exists(yCorrectionsCbf):
+            xsDataXDSFilePaths.yCorrectionsCbf = XSDataFile(XSDataString(yCorrectionsCbf))
+
+        bkginitCbf = os.path.join(self.getWorkingDirectory(), "BKGINIT.cbf")
+        if os.path.exists(bkginitCbf):
+            xsDataXDSFilePaths.bkginitCbf = XSDataFile(XSDataString(bkginitCbf))
+
+        gainCbf = os.path.join(self.getWorkingDirectory(), "GAIN.cbf")
+        if os.path.exists(gainCbf):
+            xsDataXDSFilePaths.gainCbf = XSDataFile(XSDataString(gainCbf))
+
+        blankCbf = os.path.join(self.getWorkingDirectory(), "BLANK.cbf")
+        if os.path.exists(blankCbf):
+            xsDataXDSFilePaths.blankCbf = XSDataFile(XSDataString(blankCbf))
+
+        self.dataOutput.filePaths = xsDataXDSFilePaths
 
     def checkParameters(self):
         """

@@ -222,7 +222,7 @@ complex type XSDataInputXDSIntegration extends XSDataInputXDS {
 }
 
 complex type XSDataResultXDS extends XSDataResult {
-	pathToXparmXds: XSDataFile optional
+	filePaths : XSDataXDSFilePaths optional
 }
 
 complex type XSDataResultXDSIndexing extends XSDataResultXDS {
@@ -235,6 +235,12 @@ complex type XSDataResultXDSIndexing extends XSDataResultXDS {
 	distance : XSDataLength
 	mosaicity : XSDataAngle
 	pathToLogFile : XSDataFile
+}
+
+complex type XSDataResultXDSIntegration extends XSDataResultXDS {
+	correctLp : XSDataFile optional
+	bkgpixCbf : XSDataFile optional
+	xdsAsciiHkl : XSDataFile optional
 }
 
 complex type XSDataResultXDSGenerateBackgroundImage extends XSDataResultXDS {
