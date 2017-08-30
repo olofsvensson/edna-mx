@@ -37,7 +37,8 @@ from EDUtilsPath import EDUtilsPath
 from XSDataXDSv1_0 import XSDataInputXDS
 from XSDataXDSv1_0 import XSDataResultXDS
 
-import os as PyOs
+import os
+import shutil
 
 class EDPluginXDSv1_0(EDPluginExecProcessScript):
 
@@ -199,7 +200,7 @@ class EDPluginXDSv1_0(EDPluginExecProcessScript):
                                  xsDataXSDIntegerRangeSpot.getUpper().getValue()))
 
         pyStrTemplate = xsDataXDSImage.getName_template_of_data_frames().getValue()
-        pyStrTemplatePath = PyOs.path.join(self.__strImageLinkSubDirectory, pyStrTemplate)
+        pyStrTemplatePath = os.path.join(self.__strImageLinkSubDirectory, pyStrTemplate)
         self.addInputLine("NAME_TEMPLATE_OF_DATA_FRAMES= %s" % (pyStrTemplatePath))
 
         self.addInputLine("STARTING_FRAME= %d" % \
@@ -268,7 +269,34 @@ class EDPluginXDSv1_0(EDPluginExecProcessScript):
             self.addInputLine("SPACE_GROUP_NUMBER= 0")
             self.addInputLine("UNIT_CELL_CONSTANTS= 0 0 0 0 0 0")
 
+        # XDS file related input
 
+        xsDataXDSFilePaths = xsDataXDSInput.filePaths
+        if xsDataXDSFilePaths is not None:
+
+            if xsDataXDSFilePaths.xparmXds is not None:
+                shutil.copy(xsDataXDSFilePaths.xparmXds.path.value,
+                            os.path.join(self.getWorkingDirectory(), "XPARM.XDS"))
+
+            if xsDataXDSFilePaths.xCorrectionsCbf is not None:
+                shutil.copy(xsDataXDSFilePaths.xCorrectionsCbf.path.value,
+                            os.path.join(self.getWorkingDirectory(), "X-CORRECTIONS.cbf"))
+
+            if xsDataXDSFilePaths.yCorrectionsCbf is not None:
+                shutil.copy(xsDataXDSFilePaths.yCorrectionsCbf.path.value,
+                            os.path.join(self.getWorkingDirectory(), "Y-CORRECTIONS.cbf"))
+
+            if xsDataXDSFilePaths.bkginitCbf is not None:
+                shutil.copy(xsDataXDSFilePaths.bkginitCbf.path.value,
+                            os.path.join(self.getWorkingDirectory(), "BKGINIT.cbf"))
+
+            if xsDataXDSFilePaths.gainCbf is not None:
+                shutil.copy(xsDataXDSFilePaths.gainCbf.path.value,
+                            os.path.join(self.getWorkingDirectory(), "GAIN.cbf"))
+
+            if xsDataXDSFilePaths.blankCbf is not None:
+                shutil.copy(xsDataXDSFilePaths.blankCbf.path.value,
+                            os.path.join(self.getWorkingDirectory(), "BLANK.cbf"))
 
     def writeInputXDSFile(self):
         self.writeProcessFile("XDS.INP", self.__strXDSInput)
@@ -283,5 +311,5 @@ class EDPluginXDSv1_0(EDPluginExecProcessScript):
         for xsDataXDSImageLink in xsDataXDSImageLinkList:
             pyStrSourcePath = xsDataXDSImageLink.getSource().getPath().getValue()
             pyStrTarget = xsDataXDSImageLink.getTarget().getValue()
-            pyStrTargetPath = PyOs.path.join(self.__strImageLinkSubDirectory, pyStrTarget)
+            pyStrTargetPath = os.path.join(self.__strImageLinkSubDirectory, pyStrTarget)
             self.addListCommandPreExecution("ln -s %s %s" % (pyStrSourcePath, pyStrTargetPath))

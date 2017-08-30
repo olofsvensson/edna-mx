@@ -192,6 +192,16 @@ complex type XSDataXdsGenerateOutput extends XSDataResult {
 	gxparm : XSDataString
 }
 
+complex type XSDataXDSFilePaths extends XSDataInput {
+	xparmXds: XSDataFile optional	
+	xCorrectionsCbf: XSDataFile optional	
+	yCorrectionsCbf: XSDataFile optional	
+	bkginitCbf : XSDataFile optional
+	gainCbf : XSDataFile optional
+	blankCbf : XSDataFile optional
+}
+
+
 complex type XSDataInputXDS extends XSDataInput {
 	beam : XSDataXDSBeam
 	crystal : XSDataXDSCrystal optional
@@ -199,6 +209,7 @@ complex type XSDataInputXDS extends XSDataInput {
 	goniostat : XSDataXDSGoniostat
 	image : XSDataXDSImage
 	image_link : XSDataXDSImageLink []
+	filePaths : XSDataXDSFilePaths optional
 }
 
 complex type XSDataInputXDSGenerateBackgroundImage extends XSDataInputXDS {
@@ -207,7 +218,11 @@ complex type XSDataInputXDSGenerateBackgroundImage extends XSDataInputXDS {
 complex type XSDataInputXDSIndexing extends XSDataInputXDS {
 }
 
+complex type XSDataInputXDSIntegration extends XSDataInputXDS {
+}
+
 complex type XSDataResultXDS extends XSDataResult {
+	pathToXparmXds: XSDataFile optional
 }
 
 complex type XSDataResultXDSIndexing extends XSDataResultXDS {
