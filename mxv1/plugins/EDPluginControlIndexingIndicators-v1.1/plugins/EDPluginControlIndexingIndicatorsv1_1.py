@@ -159,8 +159,7 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         xsDataResultLabelitIndexing = _edPlugin.getDataOutput()
         from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
         xsDataIndexingResult = EDHandlerXSDataPhenixv1_1.generateXSDataIndexingResult(xsDataResultLabelitIndexing,
-                                                                                       self.xsDataExperimentalCondition,
-                                                                                       self.strSymopLib)
+                                                                                       self.xsDataExperimentalCondition)
         xsDataCollection = self.getDataInput("dataCollection")[0]
         xsDataListImage = self.generateImageList(xsDataCollection)
         xsDataIndexingResult.setImage(xsDataListImage)
