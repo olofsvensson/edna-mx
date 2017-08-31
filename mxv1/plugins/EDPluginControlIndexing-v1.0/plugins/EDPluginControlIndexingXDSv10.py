@@ -45,19 +45,7 @@ class EDPluginControlIndexingXDSv10(EDPluginControlIndexingv10):
         self.setPluginIndexingExecutiveSummaryName("XDS")
         self.setGeneratePredictionImage(True)
         self.__listXSDataImageReference = None
-        self.strCONF_SYMOP_HOME = "symopHome"
-        self.strSymopLib = None
 
-    def configure(self):
-        EDPluginControlIndexingv10.configure(self)
-        self.DEBUG("EDPluginControlIndexingXDSv10.configure")
-        strSymopHome = self.config.get(self.strCONF_SYMOP_HOME)
-        if strSymopHome is None:
-            strWarningMessage = "EDPluginControlIndexingXDSv10: Configuration parameter '%s' not found" % self.strCONF_SYMOP_HOME
-            self.warning(strWarningMessage)
-            self.addWarningMessage(strWarningMessage)
-        else:
-            self.strSymopLib = os.path.join(strSymopHome, "symop.lib")
 
     def loadPluginIndexingInputData(self):
         self.verboseDebug("EDPluginControlIndexingXDSv10.loadPluginIndexingInputData...")

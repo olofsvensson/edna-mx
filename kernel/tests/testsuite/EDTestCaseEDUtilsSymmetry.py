@@ -8,7 +8,7 @@
 #                            Grenoble, France
 #
 #    Principal authors: Marie-Francoise Incardona (incardon@esrf.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -50,21 +50,19 @@ class EDTestCaseEDUtilsSymmetry(EDTestCase):
             EDAssert.equal(listSpaceGroup[ iIndex ], EDUtilsSymmetry.getMinimumSymmetrySpaceGroupFromBravaisLattice(listBravaisLattice[ iIndex]))
 
     def testGetITNumberFromSpaceGroupName(self):
-        strSymopFileName = "/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/lib/data/symop.lib"
-        if os.path.exists(strSymopFileName):
-            EDAssert.equal(1, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P1", strSymopFileName), "ITNumber from space group P1")
-            EDAssert.equal(3, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P2", strSymopFileName), "ITNumber from space group P2")
-            EDAssert.equal(5, EDUtilsSymmetry.getITNumberFromSpaceGroupName("C2", strSymopFileName), "ITNumber from space group C2")
-            EDAssert.equal(16, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P222", strSymopFileName), "ITNumber from space group P222")
-            EDAssert.equal(21, EDUtilsSymmetry.getITNumberFromSpaceGroupName("C222", strSymopFileName), "ITNumber from space group C222")
-            EDAssert.equal(22, EDUtilsSymmetry.getITNumberFromSpaceGroupName("F222", strSymopFileName), "ITNumber from space group F222")
-            EDAssert.equal(75, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P4", strSymopFileName), "ITNumber from space group P4")
-            EDAssert.equal(79, EDUtilsSymmetry.getITNumberFromSpaceGroupName("I4", strSymopFileName), "ITNumber from space group I4")
-            EDAssert.equal(143, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P3", strSymopFileName), "ITNumber from space group P3")
-            EDAssert.equal(146, EDUtilsSymmetry.getITNumberFromSpaceGroupName("H3", strSymopFileName), "ITNumber from space group H3")
-            EDAssert.equal(195, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P23", strSymopFileName), "ITNumber from space group P23")
-            EDAssert.equal(196, EDUtilsSymmetry.getITNumberFromSpaceGroupName("F23", strSymopFileName), "ITNumber from space group F23")
-        
+        EDAssert.equal(1, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P1"), "ITNumber from space group P1")
+        EDAssert.equal(3, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P2"), "ITNumber from space group P2")
+        EDAssert.equal(5, EDUtilsSymmetry.getITNumberFromSpaceGroupName("C2"), "ITNumber from space group C2")
+        EDAssert.equal(16, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P222"), "ITNumber from space group P222")
+        EDAssert.equal(21, EDUtilsSymmetry.getITNumberFromSpaceGroupName("C222"), "ITNumber from space group C222")
+        EDAssert.equal(22, EDUtilsSymmetry.getITNumberFromSpaceGroupName("F222"), "ITNumber from space group F222")
+        EDAssert.equal(75, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P4"), "ITNumber from space group P4")
+        EDAssert.equal(79, EDUtilsSymmetry.getITNumberFromSpaceGroupName("I4"), "ITNumber from space group I4")
+        EDAssert.equal(143, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P3"), "ITNumber from space group P3")
+        EDAssert.equal(146, EDUtilsSymmetry.getITNumberFromSpaceGroupName("H3"), "ITNumber from space group H3")
+        EDAssert.equal(195, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P23"), "ITNumber from space group P23")
+        EDAssert.equal(196, EDUtilsSymmetry.getITNumberFromSpaceGroupName("F23"), "ITNumber from space group F23")
+
 
 
     def process(self):

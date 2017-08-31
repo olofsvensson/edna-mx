@@ -90,10 +90,6 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         # disable kappa by default
         self.KappaStrategy = 0
 
-        self.strCONF_SYMOP_HOME = "symopHome"
-        # Default value for the location of the symop table
-        self.strSymopHome = os.path.normpath("/opt/pxsoft/ccp4-6.0.2/lib/data")
-
         self.xsDataSampleCopy = None
 
         # For default chemical composition
@@ -101,14 +97,6 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
         self.fAverageCrystalSolventContent = 0.47
         self.fAverageSulfurContentPerAminoacid = 0.05
         self.fAverageSulfurConcentration = 314
-
-
-    def setSymopHome(self, _strSymopHome):
-        self.strSymopHome = _strSymopHome
-
-
-    def getSymopHome(self):
-        return self.strSymopHome
 
 
     def preProcess(self, _edObject=None):
@@ -144,8 +132,6 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
             if (self.edPluginRaddose is not None):
                 self.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: " + self.strPluginRaddoseName + " Found... setting Data Input")
 
-                strFileSymop = os.path.join(self.getSymopHome(), "symop.lib")
-
                 xsDataStringSpaceGroup = self.getDataInput("mxv1InputStrategy")[0].getDiffractionPlan().getForcedSpaceGroup()
                 # Space Group has been forced
                 # Prepare chemical composition calculation with the forced Space Group (Space Group Name)
@@ -155,7 +141,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
                     strSpaceGroup = xsDataStringSpaceGroup.getValue()
                     self.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: Forced Space Group Found: " + strSpaceGroup)
                     try:
-                        strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup, strFileSymop)
+                        strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup)
                     except Exception as detail:
                         strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', "Problem to calculate Number of symmetry operators", detail)
                         self.error(strErrorMessage)
@@ -169,7 +155,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
                         strSpaceGroup = self.xsDataSampleCopy.getCrystal().getSpaceGroup().getName().getValue()
                         self.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: Space Group IT Name found by indexing: " + strSpaceGroup)
                         try:
-                            strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup, strFileSymop)
+                            strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup)
                         except Exception as detail:
                             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', "Problem to calculate Number of symmetry operators", detail)
                             self.error(strErrorMessage)
@@ -180,7 +166,7 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
                         dSpaceGroupITNumber = self.xsDataSampleCopy.getCrystal().getSpaceGroup().getITNumber().getValue()
                         self.DEBUG("EDPluginControlKappaStrategyv2_0.preProcess: Space Group IT Number Found by indexing: %d" % dSpaceGroupITNumber)
                         try:
-                            strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupITNumber(str(dSpaceGroupITNumber), strFileSymop)
+                            strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupITNumber(str(dSpaceGroupITNumber))
                         except Exception as detail:
                             strErrorMessage = EDMessage.ERROR_EXECUTION_03 % ('EDPluginControlKappaStrategyv2_0.preProcess', "Problem to calculate Number of symmetry operators", detail)
                             self.error(strErrorMessage)
@@ -282,15 +268,6 @@ class EDPluginControlKappaStrategyv2_0(EDPluginControl):
     def configure(self):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlKappaStrategyv2_0.configure")
-        strSymopHome = self.config.get(self.strCONF_SYMOP_HOME)
-        if strSymopHome is None:
-            strWarningMessage = EDMessage.WARNING_NO_PARAM_CONFIGURATION_ITEM_FOUND_03 % ('EDPluginControlKappaStrategyv2_0.configure', self.strCONF_SYMOP_HOME, self.getPluginName())
-            self.warning(strWarningMessage)
-            self.addWarningMessage(strWarningMessage)
-        else:
-            strSymopHomeNorm = os.path.normpath(strSymopHome)
-            self.setSymopHome(strSymopHomeNorm)
-
         bKappaOn = self.config.get("KAPPA")
         if bKappaOn:
             # self.strPluginStrategyName = "EDPluginControlStrategyv10"

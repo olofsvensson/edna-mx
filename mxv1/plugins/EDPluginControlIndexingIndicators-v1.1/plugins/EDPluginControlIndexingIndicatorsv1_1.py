@@ -80,20 +80,11 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         self.strControlledIndicatorsPluginName = "EDPluginControlImageQualityIndicatorsv1_5"
         self.edPluginControlIndicators = None
         self.xsDataExperimentalCondition = None
-        self.strCONF_SYMOP_HOME = "symopHome"
-        self.strSymopLib = None
         self.bDoLabelitIndexing = True
 
     def configure(self):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.configure")
-        strSymopHome = self.config.get(self.strCONF_SYMOP_HOME)
-        if strSymopHome is None:
-            strWarningMessage = "EDPluginControlIndexingIndicatorsv1_1: Configuration parameter '%s' not found" % self.strCONF_SYMOP_HOME
-            self.warning(strWarningMessage)
-            self.addWarningMessage(strWarningMessage)
-        else:
-            self.strSymopLib = os.path.join(strSymopHome, "symop.lib")
         self.bDoLabelitIndexing = self.config.get("doLabelitIndexing", self.bDoLabelitIndexing)
 
     def checkParameters(self):

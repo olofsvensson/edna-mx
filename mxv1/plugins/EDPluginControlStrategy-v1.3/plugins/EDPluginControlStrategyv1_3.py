@@ -78,10 +78,6 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
         self._strPluginPlotGleName = "EDPluginExecPlotGlev1_1"
         self._edPluginPlotGle = None
 
-        self._strCONF_SYMOP_HOME = "symopHome"
-        # Default value for the location of the symop table
-        self._strSymopHome = None
-
         self._xsDataSampleCopy = None
 
         # For default chemical composition
@@ -95,14 +91,6 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
 
         # Raddose log file
         self.xsDataFileRaddoseLog = None
-
-
-    def setSymopHome(self, _strSymopHome):
-        self._strSymopHome = _strSymopHome
-
-
-    def getSymopHome(self):
-        return self._strSymopHome
 
 
     def preProcess(self, _edObject=None):
@@ -174,8 +162,6 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
             if (self._edPluginRaddose is not None):
                 self.DEBUG("EDPluginControlStrategyv1_3.preProcess: " + self._strPluginRaddoseName + " Found... setting Data Input")
 
-                strFileSymop = os.path.join(self.getSymopHome(), "symop.lib")
-
                 xsDataStringSpaceGroup = self.getDataInput().getDiffractionPlan().getForcedSpaceGroup()
                 # Space Group has been forced
                 # Prepare chemical composition calculation with the forced Space Group (Space Group Name)
@@ -185,7 +171,7 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                     if strSpaceGroup != "":
                         self.DEBUG("EDPluginControlStrategyv1_3.preProcess: Forced Space Group Found: " + strSpaceGroup)
                         try:
-                            strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup, strFileSymop)
+                            strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup)
                             bSpaceGroupForced = True
                         except Exception, detail:
                             strErrorMessage = "EDPluginControlStrategyv1_3: Problem to calculate Number of symmetry operators: {0}".format(detail)
@@ -200,7 +186,7 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                         strSpaceGroupName = self._xsDataSampleCopy.getCrystal().getSpaceGroup().getName().getValue()
                         self.DEBUG("EDPluginControlStrategyv1_3.preProcess: Space Group IT Name found by indexing: " + strSpaceGroupName)
                         try:
-                            strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroupName, strFileSymop)
+                            strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroupName)
                         except Exception, detail:
                             strErrorMessage = "EDPluginControlStrategyv1_3: Problem to calculate Number of symmetry operators: {0}".format(detail)
                             self.error(strErrorMessage)
@@ -211,7 +197,7 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                         iSpaceGroupITNumber = self._xsDataSampleCopy.getCrystal().getSpaceGroup().getITNumber().getValue()
                         self.DEBUG("EDPluginControlStrategyv1_3.preProcess: Space Group IT Number Found by indexing: %d" % iSpaceGroupITNumber)
                         try:
-                            strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupITNumber(str(iSpaceGroupITNumber), strFileSymop)
+                            strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupITNumber(str(iSpaceGroupITNumber))
                         except Exception, detail:
                             strErrorMessage = "EDPluginControlStrategyv1_3: Problem to calculate Number of symmetry operators: {0}".format(detail)
                             self.error(strErrorMessage)
@@ -265,16 +251,6 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
 
 
 
-    def configure(self):
-        EDPluginControl.configure(self)
-        self.DEBUG("EDPluginControlStrategyv1_3.configure")
-        strSymopHome = self.config.get(self._strCONF_SYMOP_HOME)
-        if strSymopHome is None:
-            strWarningMessage = EDMessage.WARNING_NO_PARAM_CONFIGURATION_ITEM_FOUND_03 % ('EDPluginControlStrategyv1_3.configure', self._strCONF_SYMOP_HOME, self.getPluginName())
-            self.warning(strWarningMessage)
-            self.addWarningMessage(strWarningMessage)
-        else:
-            self.setSymopHome(strSymopHome)
 
 
     def process(self, _edObject=None):
