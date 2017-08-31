@@ -280,20 +280,22 @@ class EDPluginXDSv1_0(EDPluginExecProcessScript):
         #    self.addInputLine( "FRIEDEL'S_LAW= %s" % ( xsDataStringFriedelsLaw.getValue() ) )
 
         if xsDataXDSCrystal:
-            self.addInputLine("SPACE_GROUP_NUMBER= %d" % (xsDataXDSCrystal.getSpace_group_number().getValue()))
+            if xsDataXDSCrystal.space_group_number:
+                self.addInputLine("SPACE_GROUP_NUMBER= %d" % (xsDataXDSCrystal.getSpace_group_number().getValue()))
 
             xsDataIntegerStrongPixel = xsDataXDSCrystal.getStrong_pixel()
             if (xsDataIntegerStrongPixel is not None):
                 self.addInputLine("STRONG_PIXEL= %s" % (xsDataIntegerStrongPixel.getValue()))
 
-            xsDataCell = xsDataXDSCrystal.getUnit_cell_constants()
-            self.addInputLine("UNIT_CELL_CONSTANTS= %8f %8f %8f %8f %8f %8f" % \
-                               (xsDataCell.getLength_a().getValue(),
-                                 xsDataCell.getLength_b().getValue(),
-                                 xsDataCell.getLength_c().getValue(),
-                                 xsDataCell.getAngle_alpha().getValue(),
-                                 xsDataCell.getAngle_beta().getValue(),
-                                 xsDataCell.getAngle_gamma().getValue()))
+            if xsDataXDSCrystal.unit_cell_constants:
+                xsDataCell = xsDataXDSCrystal.getUnit_cell_constants()
+                self.addInputLine("UNIT_CELL_CONSTANTS= %8f %8f %8f %8f %8f %8f" % \
+                                   (xsDataCell.getLength_a().getValue(),
+                                     xsDataCell.getLength_b().getValue(),
+                                     xsDataCell.getLength_c().getValue(),
+                                     xsDataCell.getAngle_alpha().getValue(),
+                                     xsDataCell.getAngle_beta().getValue(),
+                                     xsDataCell.getAngle_gamma().getValue()))
             if xsDataXDSCrystal.minimum_number_of_pixels_in_a_spot is not None:
                 self.addInputLine("MINIMUM_NUMBER_OF_PIXELS_IN_A_SPOT= {0}".format(xsDataXDSCrystal.minimum_number_of_pixels_in_a_spot.value))
         else:

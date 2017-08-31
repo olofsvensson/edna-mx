@@ -36,6 +36,7 @@ import pprint
 
 
 from EDPluginXDSv1_0 import EDPluginXDSv1_0
+from EDUtilsSymmetry import EDUtilsSymmetry
 
 from XSDataCommon import XSDataAngle
 from XSDataCommon import XSDataFloat
@@ -44,7 +45,7 @@ from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
 
-from XSDataXDSv1_0 import XSDataCell
+from XSDataXDSv1_0 import XSDataXDSCell
 from XSDataXDSv1_0 import XSDataInputXDSIndexing
 from XSDataXDSv1_0 import XSDataResultXDSIndexing
 
@@ -110,16 +111,21 @@ class EDPluginXDSIndexingv1_0(EDPluginXDSv1_0):
                     if listLines[indexLine].startswith(" * ") and not listLines[indexLine + 1].startswith(" * "):
                         listLine = listLines[indexLine].split()
                         xsDataResultXDSIndexing.latticeCharacter = XSDataInteger(int(listLine[1]))
-                        xsDataResultXDSIndexing.bravaisLattice = XSDataString(listLine[2])
+                        bravaisLattice = listLine[2]
+                        xsDataResultXDSIndexing.bravaisLattice = XSDataString(bravaisLattice)
+                        spaceGroup = EDUtilsSymmetry.getMinimumSymmetrySpaceGroupFromBravaisLattice(bravaisLattice)
+                        xsDataResultXDSIndexing.spaceGroup = XSDataString(spaceGroup)
+                        spaceGroupNumber = EDUtilsSymmetry.getITNumberFromSpaceGroupName(spaceGroup)
+                        xsDataResultXDSIndexing.spaceGroupNumber = XSDataInteger(spaceGroupNumber)
                         xsDataResultXDSIndexing.qualityOfFit = XSDataFloat(float(listLine[3]))
-                        xsDataCell = XSDataCell()
-                        xsDataCell.length_a = XSDataLength(float(listLine[4]))
-                        xsDataCell.length_b = XSDataLength(float(listLine[5]))
-                        xsDataCell.length_c = XSDataLength(float(listLine[6]))
-                        xsDataCell.angle_alpha = XSDataAngle(float(listLine[7]))
-                        xsDataCell.angle_beta = XSDataAngle(float(listLine[8]))
-                        xsDataCell.angle_gamma = XSDataAngle(float(listLine[9]))
-                        xsDataResultXDSIndexing.unitCell = xsDataCell
+                        xsDataXDSCell = XSDataXDSCell()
+                        xsDataXDSCell.length_a = XSDataLength(float(listLine[4]))
+                        xsDataXDSCell.length_b = XSDataLength(float(listLine[5]))
+                        xsDataXDSCell.length_c = XSDataLength(float(listLine[6]))
+                        xsDataXDSCell.angle_alpha = XSDataAngle(float(listLine[7]))
+                        xsDataXDSCell.angle_beta = XSDataAngle(float(listLine[8]))
+                        xsDataXDSCell.angle_gamma = XSDataAngle(float(listLine[9]))
+                        xsDataResultXDSIndexing.unitCell = xsDataXDSCell
                 indexLine += 1
         return xsDataResultXDSIndexing
 

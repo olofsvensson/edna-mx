@@ -53,6 +53,7 @@ from XSDataMXv1 import XSDataInputControlKappa
 EDFactoryPluginStatic.loadModule("XSDataMXThumbnailv1_1")
 from XSDataMXThumbnailv1_1 import XSDataInputMXThumbnail
 
+from EDHandlerXSDataXDSv1_0 import EDHandlerXSDataXDSv1_0
 
 class EDPluginControlCharacterisationv1_6(EDPluginControl):
     """
@@ -68,6 +69,9 @@ class EDPluginControlCharacterisationv1_6(EDPluginControl):
         self._listPluginGenerateThumbnail = []
         self._strCharacterisationShortSummary = ""
         self._strStatusMessage = ""
+        self._strIndexingPluginName = "EDPluginXDSIndexingv1_0"
+        self._strIntegrationPluginName = "EDPluginXDSIntegrationv1_0"
+        self._edPluginIndexing = None
 
 
     def checkParameters(self):
@@ -98,12 +102,12 @@ class EDPluginControlCharacterisationv1_6(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlCharacterisationv1_6.preProcess")
         self._xsDataResultCharacterisation = XSDataResultCharacterisation()
-        # Load the plugins
 
 
     def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlCharacterisationv1_6.process")
+        self.doXdsIndexingIntegration(self.dataInput.dataCollection)
 
 
     def finallyProcess(self, _edObject=None):
@@ -133,6 +137,37 @@ class EDPluginControlCharacterisationv1_6(EDPluginControl):
         if self.isFailure():
             self.sendMessageToMXCuBE("Ended with error messages", "error")
 
+
+
+    def doXdsIndexingIntegration(self, _xsDataCollection):
+        # Load the plugin
+        self._edPluginIndexing = self.loadPlugin(self._strIndexingPluginName, "Indexing")
+        # XDS Indexing
+        xsDataIndexingInput = XSDataIndexingInput()
+        xsDataIndexingInput.setDataCollection(_xsDataCollection)
+        self._edPluginIndexing.dataInput = EDHandlerXSDataXDSv1_0.generateXSDataInputXDSIndexing(xsDataIndexingInput)
+        self._edPluginIndexing.executeSynchronous()
+        xsDataResultXDSIndexing = self._edPluginIndexing.dataOutput
+        if xsDataResultXDSIndexing.spaceGroupNumber is not None:
+            spaceGroupNumber = xsDataResultXDSIndexing.spaceGroupNumber.value
+            unitCell = xsDataResultXDSIndexing.unitCell
+            filePaths = xsDataResultXDSIndexing.filePaths
+            index = 1
+            for subWedge in _xsDataCollection.subWedge:
+                xsDataCollection = XSDataCollection()
+                xsDataCollection.addSubWedge(subWedge)
+                xsDataIndexingInput = XSDataIndexingInput()
+                xsDataIndexingInput.setDataCollection(xsDataCollection)
+
+                xsDataInputXDSIntegration = EDHandlerXSDataXDSv1_0.generateXSDataInputXDSIntegration(xsDataIndexingInput,
+                                                                                                     spaceGroupNumber,
+                                                                                                     unitCell,
+                                                                                                     filePaths)
+                edPluginIntegration = self.loadPlugin(self._strIntegrationPluginName, "Integration_{0}".format(index))
+                edPluginIntegration.dataInput = xsDataInputXDSIntegration
+                edPluginIntegration.executeSynchronous()
+                # self._edPluginIntegration.dataInput = xsDataInputXDSIntegration
+                index += 1
 
 
 

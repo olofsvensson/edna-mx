@@ -47,6 +47,7 @@ from XSDataMXv1 import XSDataOrientation
 
 EDFactoryPluginStatic.loadModule("XSDataXDSv1_0")
 from XSDataXDSv1_0 import XSDataInputXDSIndexing
+from XSDataXDSv1_0 import XSDataInputXDSIntegration
 from XSDataXDSv1_0 import XSDataInputXDSGenerateBackgroundImage
 from XSDataXDSv1_0 import XSDataXDSDetector
 from XSDataXDSv1_0 import XSDataVectorDouble
@@ -121,11 +122,11 @@ class EDHandlerXSDataXDSv1_0:
 
         _xsDataInputXDS.setGoniostat(xsDataXDSGoniostat)
 
-#        # Then the Crystal
-#
-#        xsDataXDSCrystal = XSDataXDSCrystal()
-#
-#        xsDataXDSCrystal.setFriedels_law(XSDataString("FALSE"))
+        # Then the Crystal
+
+        xsDataXDSCrystal = XSDataXDSCrystal()
+
+        xsDataXDSCrystal.setFriedels_law(XSDataString("FALSE"))
 #
 # #        if ( xsDataCrystal is not None ):
 # #            xsDataSpaceGroup = xsDataCrystal.getSpaceGroup()
@@ -146,7 +147,9 @@ class EDHandlerXSDataXDSv1_0:
 #        xsDataCell.setAngle_gamma(XSDataAngle(0.0))
 #        xsDataXDSCrystal.setUnit_cell_constants(xsDataCell)
 #
-#        xsDataInputXDS.setCrystal(xsDataXDSCrystal)
+        xsDataXDSCrystal.minimum_number_of_pixels_in_a_spot = XSDataInteger(2)
+
+        _xsDataInputXDS.setCrystal(xsDataXDSCrystal)
 
         # Finaly the images
 
@@ -637,3 +640,12 @@ class EDHandlerXSDataXDSv1_0:
 #        xsDataExperimentalConditionRefined.setDetector(xsDataDetector)
 #        xsDataIndexingSolutionSelected.setExperimentalConditionRefined(xsDataExperimentalConditionRefined)
 
+    @staticmethod
+    def generateXSDataInputXDSIntegration(_xsDataIndexingInput, _spaceGroupNumber, _unitCell, _filePaths):
+        xsDataInputXDSIntegration = XSDataInputXDSIntegration()
+        xsDataCollection = _xsDataIndexingInput.dataCollection
+        xsDataInputXDSIntegration = EDHandlerXSDataXDSv1_0.generateXSDataInputXDS(xsDataInputXDSIntegration, xsDataCollection)
+        xsDataInputXDSIntegration.crystal.space_group_number = XSDataInteger(_spaceGroupNumber)
+        xsDataInputXDSIntegration.crystal.unit_cell_constants = _unitCell
+        xsDataInputXDSIntegration.filePaths = _filePaths
+        return xsDataInputXDSIntegration

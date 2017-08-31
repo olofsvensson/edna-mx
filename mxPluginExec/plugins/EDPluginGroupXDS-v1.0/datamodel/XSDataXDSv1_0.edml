@@ -226,14 +226,16 @@ complex type XSDataResultXDS extends XSDataResult {
 }
 
 complex type XSDataResultXDSIndexing extends XSDataResultXDS {
-	latticeCharacter : XSDataInteger
-	bravaisLattice : XSDataString
-	qualityOfFit : XSDataFloat
-	unitCell : XSDataCell
-	beamCentreX : XSDataFloat
-	beamCentreY : XSDataFloat
-	distance : XSDataLength
-	mosaicity : XSDataAngle
+	latticeCharacter : XSDataInteger optional
+	bravaisLattice : XSDataString optional
+	spaceGroup : XSDataString optional
+	spaceGroupNumber : XSDataInteger optional
+	qualityOfFit : XSDataFloat optional
+	unitCell : XSDataXDSCell optional
+	beamCentreX : XSDataFloat optional
+	beamCentreY : XSDataFloat optional
+	distance : XSDataLength optional
+	mosaicity : XSDataAngle optional
 	pathToLogFile : XSDataFile
 }
 
