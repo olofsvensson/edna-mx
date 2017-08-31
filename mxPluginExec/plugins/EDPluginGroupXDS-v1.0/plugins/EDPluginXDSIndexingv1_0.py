@@ -77,7 +77,7 @@ class EDPluginXDSIndexingv1_0(EDPluginXDSv1_0):
     def readIdxrefLp(self, _pathToIdxrefLp, _xsDataResultXDSIndexing=None):
         self.DEBUG("EDPluginXDSIndexingv1_0.readIdxrefLp")
         if _xsDataResultXDSIndexing is None:
-        xsDataResultXDSIndexing = XSDataResultXDSIndexing()
+            xsDataResultXDSIndexing = XSDataResultXDSIndexing()
         else:
             xsDataResultXDSIndexing = _xsDataResultXDSIndexing
         if os.path.exists(_pathToIdxrefLp):

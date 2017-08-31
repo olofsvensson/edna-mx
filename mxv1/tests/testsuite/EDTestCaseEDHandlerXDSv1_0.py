@@ -49,12 +49,9 @@ class EDTestCaseEDHandlerXDSv1_0(EDTestCase):
 
         from EDHandlerXSDataXDSv1_0 import EDHandlerXSDataXDSv1_0
         xsDataInputXDSIndexing = EDHandlerXSDataXDSv1_0.generateXSDataInputXDSIndexing(xsDataIndexingInput)
-        print(xsDataInputXDSIndexing.marshal())
-        # xsDataInputXDSIndexing.exportToFile("XSDataInputXDSIndexing_reference.xml")
 
         referenceFilename = "XSDataInputXDSIndexing_reference.xml"
         referencePath = os.path.join(self.dataPath, referenceFilename)
-#        xsDataInputXDSIndexing.exportToFile("XSDataInputXDSIndexing.xml")
         xmlInputXDSIndexingReference = EDUtilsTest.readAndParseFile(referencePath)
         EDAssert.equal(xmlInputXDSIndexingReference, xsDataInputXDSIndexing.marshal())
 
