@@ -5,7 +5,7 @@
 #    Copyright (C) 2008 EMBL-Grenoble, Grenoble, France
 #
 #    Principal authors: Sandor Brockhauser (brockhauser@embl-grenoble.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #                       Pierre Legrand (pierre.legrand@synchrotron-soleil.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -50,6 +50,7 @@ class EDPluginXDSGenerateBackgroundImagev1_0(EDPluginXDSv1_0):
     def __init__(self):
         EDPluginXDSv1_0.__init__(self)
         self.setXSDataInputClass(XSDataInputXDSGenerateBackgroundImage)
+        self.dataOutput = XSDataResultXDSGenerateBackgroundImage()
         self.addJob("XYCORR")
         self.addJob("INIT")
         self.addJob("COLSPOT")
