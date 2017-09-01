@@ -93,6 +93,10 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         self.strPathToBestParFile = None
         self.listFileBestHKL = []
 
+        self.strPathToCorrectLp = None
+        self.strPathToBkgpixCbf = None
+        self.strListFileXdsAsciiHkl = None
+
         self.bVersionHigherThan4_0 = False
 
 
@@ -107,14 +111,6 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
 
         self.checkImportantParameters(self.getDataInput().getCrystalAbsorbedDoseRate(), "crystalDoseRate - radiation damage will not be estimated")
         self.checkImportantParameters(self.getDataInput().getCrystalShape(), "crystalShape")
-
-
-    def getComplexity(self):
-        return self.strComplexity
-
-
-    def setComplexity(self, _strComplexity):
-        self.strComplexity = _strComplexity
 
 
     def getBestHome(self):
@@ -191,24 +187,31 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
 
         self.setScriptLogFileName("best.log")
 
-        self.setFileBestDat(os.path.join(self.getWorkingDirectory(), "bestfile.dat"))
-        self.setFileBestPar(os.path.join(self.getWorkingDirectory(), "bestfile.par"))
+        if self.dataInput.bestFileContentPar is not None:
+            self.setFileBestDat(os.path.join(self.getWorkingDirectory(), "bestfile.dat"))
+            self.setFileBestPar(os.path.join(self.getWorkingDirectory(), "bestfile.par"))
 
-        EDUtilsFile.writeFile(self.getFileBestDat(), self.getDataInput().getBestFileContentDat().getValue())
-        EDUtilsFile.writeFile(self.getFileBestPar(), self.getDataInput().getBestFileContentPar().getValue())
+            EDUtilsFile.writeFile(self.getFileBestDat(), self.dataInput.bestFileContentDat.value)
+            EDUtilsFile.writeFile(self.getFileBestPar(), self.dataInput.bestFileContentPar.value)
 
-        listBestFileContentHKL = self.getDataInput().getBestFileContentHKL()
+            listBestFileContentHKL = self.dataInput.bestFileContentHKL
 
-        iterator = 0
-        for bestFileContentHKL in listBestFileContentHKL:
-            iterator = iterator + 1
-            bestFileHKL = os.path.join(self.getWorkingDirectory(), "bestfile" + str(iterator) + ".hkl")
-            self.listFileBestHKL.append(bestFileHKL)
-            EDUtilsFile.writeFile(bestFileHKL, bestFileContentHKL.getValue())
+            iterator = 0
+            for bestFileContentHKL in listBestFileContentHKL:
+                iterator = iterator + 1
+                bestFileHKL = os.path.join(self.getWorkingDirectory(), "bestfile" + str(iterator) + ".hkl")
+                self.listFileBestHKL.append(bestFileHKL)
+                EDUtilsFile.writeFile(bestFileHKL, bestFileContentHKL.getValue())
 
+        elif self.dataInput.xdsCorrectLp is not None:
+            self.strPathToCorrectLp = self.dataInput.xdsCorrectLp.path.value
+            self.strPathToBkgpixCbf = self.dataInput.xdsBkgpixCbf.path.value
+            self.strListFileXdsAsciiHkl = ""
+            for xdsAsciiHkl in self.dataInput.xdsAsciiHkl:
+                self.strListFileXdsAsciiHkl += " " + xdsAsciiHkl.path.value
 
-        if(self.getDataInput().getComplexity() is not None):
-            self.setComplexity(self.getDataInput().getComplexity().getValue())
+        if self.dataInput.complexity is not None:
+            self.strComplexity = self.dataInput.complexity.value
 
         self.initializeCommands()
 
@@ -330,13 +333,16 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         self.strCommandBest = self.strCommandBest + "-T " + str(fMaxExposureTime) + " " + \
                                      "-dna " + self.getScriptBaseName() + "_dnaTables.xml" + " " + \
                                      "-o " + os.path.join(self.getWorkingDirectory(), self.getScriptBaseName() + "_plots.mtv ") + \
-                                     "-e " + self.getComplexity() + " "
+                                     "-e " + self.strComplexity + " "
 
-        if self.getDataInput().getXdsBackgroundImage():
+        if self.dataInput.xdsBackgroundImage is not None:
             strPathToXdsBackgroundImage = self.getDataInput().getXdsBackgroundImage().getPath().getValue()
             self.strCommandBest = self.strCommandBest + "-MXDS " + self.getFileBestPar() + " " + strPathToXdsBackgroundImage + " " + listFileBestHKLCommand
-        else:
+        elif self.dataInput.bestFileContentPar is not None:
             self.strCommandBest = self.strCommandBest + "-mos " + self.getFileBestDat() + " " + self.getFileBestPar() + " " + listFileBestHKLCommand
+        elif self.dataInput.xdsCorrectLp is not None:
+            self.strCommandBest = self.strCommandBest + "-xds " + self.strPathToCorrectLp + " " + self.strPathToBkgpixCbf + " " + self.strListFileXdsAsciiHkl
+
 
         self.setScriptCommandline(self.strCommandBest)
 

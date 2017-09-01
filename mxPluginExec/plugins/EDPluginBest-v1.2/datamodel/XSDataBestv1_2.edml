@@ -109,6 +109,9 @@ package XSDataBestv12 {
 		userDefinedRotationRange : XSDataAngle optional
 		userDefinedRotationStart : XSDataAngle optional
 		xdsBackgroundImage : XSDataFile optional
+		xdsCorrectLp : XSDataFile optional
+		xdsBkgpixCbf : XSDataFile optional
+		xdsAsciiHkl : XSDataFile [] optional
 	}
 
 	complex type XSDataResultBest extends XSDataResult {
