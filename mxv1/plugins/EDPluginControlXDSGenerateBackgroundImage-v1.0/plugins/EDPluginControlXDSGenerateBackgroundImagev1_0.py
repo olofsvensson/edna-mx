@@ -26,12 +26,15 @@ __copyright__ = "ESRF"
 
 from EDVerbose import EDVerbose
 from EDPluginControl import EDPluginControl
+from EDFactoryPluginStatic import EDFactoryPluginStatic
 
 from XSDataMXv1 import XSDataInputControlXDSGenerateBackgroundImage
 from XSDataMXv1 import XSDataResultControlXDSGenerateBackgroundImage
 
 from EDHandlerXSDataXDSv1_0 import EDHandlerXSDataXDSv1_0
 
+EDFactoryPluginStatic.loadModule("XSDataXDSv1_0")
+from XSDataXDSv1_0 import XSDataInputXDSGenerateBackgroundImage
 
 class EDPluginControlXDSGenerateBackgroundImagev1_0(EDPluginControl):
     """

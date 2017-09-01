@@ -106,8 +106,7 @@ class EDHandlerXSDataPhenixv1_1:
         xsDataCrystalSelected = XSDataCrystal()
         xsDataSpaceGroupSelected = XSDataSpaceGroup()
         xsDataSpaceGroupSelected.setName(XSDataString(edStringSelectedSpaceGroupName))
-        if not _strSymopFileName is None:
-            xsDataSpaceGroupSelected.setITNumber(XSDataInteger(EDUtilsSymmetry.getITNumberFromSpaceGroupName(edStringSelectedSpaceGroupName)))
+        xsDataSpaceGroupSelected.setITNumber(XSDataInteger(EDUtilsSymmetry.getITNumberFromSpaceGroupName(edStringSelectedSpaceGroupName)))
         xsDataCrystalSelected.setSpaceGroup(xsDataSpaceGroupSelected)
         xsDataCrystalSelected.setCell(xsDataCellSelected)
         xsDataCrystalSelected.setMosaicity(XSDataDouble(xsDataLabelitScreenOutput.getMosaicity().getValue()))
