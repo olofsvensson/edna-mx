@@ -106,12 +106,12 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         Checks the data input object
         """
         # Checks the mandatory parameters:
-        self.checkMandatoryParameters(self.getDataInput().getBeamExposureTime(), "beamExposureTime")
-        self.checkMandatoryParameters(self.getDataInput().getBeamMaxExposureTime(), "beamMaxExposureTime")
-        self.checkMandatoryParameters(self.getDataInput().getDetectorType(), "detectorType")
+        self.checkMandatoryParameters(self.dataInput.beamExposureTime, "beamExposureTime")
+        self.checkMandatoryParameters(self.dataInput.beamMaxExposureTime, "beamMaxExposureTime")
+        self.checkMandatoryParameters(self.dataInput.detectorType, "detectorType")
 
-        self.checkImportantParameters(self.getDataInput().getCrystalAbsorbedDoseRate(), "crystalDoseRate - radiation damage will not be estimated")
-        self.checkImportantParameters(self.getDataInput().getCrystalShape(), "crystalShape")
+        self.checkImportantParameters(self.dataInput.crystalAbsorbedDoseRate, "crystalDoseRate - radiation damage will not be estimated")
+        self.checkImportantParameters(self.dataInput.crystalShape, "crystalShape")
 
 
     def getBestHome(self):
@@ -202,7 +202,7 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
                 iterator = iterator + 1
                 bestFileHKL = os.path.join(self.getWorkingDirectory(), "bestfile" + str(iterator) + ".hkl")
                 self.listFileBestHKL.append(bestFileHKL)
-                EDUtilsFile.writeFile(bestFileHKL, bestFileContentHKL.getValue())
+                EDUtilsFile.writeFile(bestFileHKL, bestFileContentHKL.value)
 
         elif self.dataInput.xdsCorrectLp is not None:
             self.strPathToCorrectLp = os.path.join(self.getWorkingDirectory(), "CORRECT.LP")
@@ -234,9 +234,9 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         for fileBestHKL in listFileBestHKL:
             listFileBestHKLCommand = listFileBestHKLCommand + fileBestHKL + " "
 
-        strDetectorName = self.getDataInput().getDetectorType().getValue()
-        fExposureTime = self.getDataInput().getBeamExposureTime().getValue()
-        fMaxExposureTime = self.getDataInput().getBeamMaxExposureTime().getValue()
+        strDetectorName = self.dataInput.detectorType.value
+        fExposureTime = self.dataInput.beamExposureTime.value
+        fMaxExposureTime = self.dataInput.beamMaxExposureTime.value
 
         self.strCommandBest = "-f " + strDetectorName + " " + "-t " + str(fExposureTime) + " "
 
@@ -244,93 +244,93 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         if self.bVersionHigherThan4_0:
             self.strCommandBest = self.strCommandBest + "-g "
 
-        if(self.getDataInput().getBeamMinExposureTime() is not None):
-            strBeamMinExposureTime = str(self.getDataInput().getBeamMinExposureTime().getValue())
+        if self.dataInput.beamMinExposureTime is not None:
+            strBeamMinExposureTime = str(self.dataInput.beamMinExposureTime.value)
             self.strCommandBest = self.strCommandBest + "-M " + strBeamMinExposureTime + " "
 
-        if(self.getDataInput().getGoniostatMaxRotationSpeed() is not None):
-            strGoniostatMaxRotationSpeed = str(self.getDataInput().getGoniostatMaxRotationSpeed().getValue())
+        if self.dataInput.goniostatMaxRotationSpeed is not None:
+            strGoniostatMaxRotationSpeed = str(self.dataInput.goniostatMaxRotationSpeed.value)
             self.strCommandBest = self.strCommandBest + "-S " + strGoniostatMaxRotationSpeed + " "
 
-        if(self.getDataInput().getGoniostatMinRotationWidth() is not None):
-            strGoniostatMinRotationWidth = str(self.getDataInput().getGoniostatMinRotationWidth().getValue())
+        if self.dataInput.goniostatMinRotationWidth is not None:
+            strGoniostatMinRotationWidth = str(self.dataInput.goniostatMinRotationWidth.value)
             self.strCommandBest = self.strCommandBest + "-w " + strGoniostatMinRotationWidth + " "
 
-        if(self.getDataInput().getAimedResolution() is not None):
-            strAimedResolution = str(self.getDataInput().getAimedResolution().getValue())
+        if self.dataInput.aimedResolution is not None:
+            strAimedResolution = str(self.dataInput.aimedResolution.value)
             self.strCommandBest = self.strCommandBest + "-r " + strAimedResolution + " "
 
-        if(self.getDataInput().getAimedRedundancy() is not None):
-            strAimedRedundancy = str(self.getDataInput().getAimedRedundancy().getValue())
+        if self.dataInput.aimedRedundancy is not None:
+            strAimedRedundancy = str(self.dataInput.aimedRedundancy.value)
             self.strCommandBest = self.strCommandBest + "-R " + strAimedRedundancy + " "
 
-        if(self.getDataInput().getAimedCompleteness() is not None):
-            strAimedCompleteness = str(self.getDataInput().getAimedCompleteness().getValue())
+        if self.dataInput.aimedCompleteness is not None:
+            strAimedCompleteness = str(self.dataInput.aimedCompleteness.value)
             self.strCommandBest = self.strCommandBest + "-C " + strAimedCompleteness + " "
 
-        if(self.getDataInput().getAimedIOverSigma() is not None):
-            strAimedIOverSigma = str(self.getDataInput().getAimedIOverSigma().getValue())
+        if self.dataInput.aimedIOverSigma is not None:
+            strAimedIOverSigma = str(self.dataInput.aimedIOverSigma.value)
             self.strCommandBest = self.strCommandBest + "-i2s " + strAimedIOverSigma + " "
 
-        if(self.getDataInput().getCrystalAbsorbedDoseRate() is not None):
-            strCrystalAbsorbedDoseRate = str(self.getDataInput().getCrystalAbsorbedDoseRate().getValue())
+        if self.dataInput.crystalAbsorbedDoseRate is not None:
+            strCrystalAbsorbedDoseRate = str(self.dataInput.crystalAbsorbedDoseRate.value)
             self.strCommandBest = self.strCommandBest + "-GpS " + strCrystalAbsorbedDoseRate + " "
 
-        if(self.getDataInput().getCrystalShape() is not None):
-            strCrystalShape = str(self.getDataInput().getCrystalShape().getValue())
+        if self.dataInput.crystalShape is not None:
+            strCrystalShape = str(self.dataInput.crystalShape.value)
             self.strCommandBest = self.strCommandBest + "-sh " + strCrystalShape + " "
 
-        if(self.getDataInput().getCrystalSusceptibility() is not None):
-            strCrystalSusceptibility = str(self.getDataInput().getCrystalSusceptibility().getValue())
+        if self.dataInput.crystalSusceptibility is not None:
+            strCrystalSusceptibility = str(self.dataInput.crystalSusceptibility.value)
             self.strCommandBest = self.strCommandBest + "-su " + strCrystalSusceptibility + " "
 
-        if(self.getDataInput().getTransmission() is not None):
-            strTransmission = str(self.getDataInput().getTransmission().getValue())
+        if self.dataInput.transmission is not None:
+            strTransmission = str(self.dataInput.transmission.value)
             self.strCommandBest = self.strCommandBest + "-Trans " + strTransmission + " "
 
-        if(self.getDataInput().getMinTransmission() is not None):
-            strMinTransmission = str(self.getDataInput().getMinTransmission().getValue())
+        if self.dataInput.minTransmission is not None:
+            strMinTransmission = str(self.dataInput.minTransmission.value)
             self.strCommandBest = self.strCommandBest + "-TRmin " + strMinTransmission + " "
 
-        if(self.getDataInput().getNumberOfCrystalPositions() is not None):
-            iNumberOfCrystalPositions = str(self.getDataInput().getNumberOfCrystalPositions().getValue())
+        if self.dataInput.numberOfCrystalPositions is not None:
+            iNumberOfCrystalPositions = str(self.dataInput.numberOfCrystalPositions.value)
             self.strCommandBest = self.strCommandBest + "-Npos " + iNumberOfCrystalPositions + " "
 
 
-        if(self.getDataInput().getDetectorDistanceMin() is not None):
-            fDetectorDistanceMin = str(self.getDataInput().getDetectorDistanceMin().getValue())
+        if self.dataInput.detectorDistanceMin is not None:
+            fDetectorDistanceMin = str(self.dataInput.detectorDistanceMin.value)
             self.strCommandBest = self.strCommandBest + "-DIS_MIN " + fDetectorDistanceMin + " "
 
 
-        if(self.getDataInput().getDetectorDistanceMax() is not None):
-            fDetectorDistanceMax = str(self.getDataInput().getDetectorDistanceMax().getValue())
+        if self.dataInput.detectorDistanceMax is not None:
+            fDetectorDistanceMax = str(self.dataInput.detectorDistanceMax.value)
             self.strCommandBest = self.strCommandBest + "-DIS_MAX " + fDetectorDistanceMax + " "
 
 
-        if(self.getDataInput().getAnomalousData() is not None):
-            bAnomalousData = self.getDataInput().getAnomalousData().getValue()
-            if (bAnomalousData):
-                if(self.getDataInput().getCrystalAbsorbedDoseRate() is not None):
+        if self.dataInput.anomalousData is not None:
+            bAnomalousData = self.dataInput.anomalousData.value
+            if bAnomalousData:
+                if self.dataInput.crystalAbsorbedDoseRate is not None:
                     self.strCommandBest = self.strCommandBest + "-asad "
                 else:
                     self.strCommandBest = self.strCommandBest + "-a "
 
-        strStrategyOption = self.getDataInput().getStrategyOption()
-        if(strStrategyOption is not None):
-            self.strCommandBest = self.strCommandBest + "%s " % strStrategyOption.getValue()
+        strStrategyOption = self.dataInput.strategyOption
+        if strStrategyOption is not None:
+            self.strCommandBest = self.strCommandBest + "%s " % strStrategyOption.value
 
-        xsDataAngleUserDefinedRotationStart = self.getDataInput().getUserDefinedRotationStart()
-        xsDataAngleUserDefinedRotationRange = self.getDataInput().getUserDefinedRotationRange()
-        if(xsDataAngleUserDefinedRotationStart is not None):
+        xsDataAngleUserDefinedRotationStart = self.dataInput.getUserDefinedRotationStart()
+        xsDataAngleUserDefinedRotationRange = self.dataInput.getUserDefinedRotationRange()
+        if xsDataAngleUserDefinedRotationStart is not None:
             self.strCommandBest = self.strCommandBest + "-phi %f %f " % \
-              (xsDataAngleUserDefinedRotationStart.getValue(), xsDataAngleUserDefinedRotationRange.getValue())
+              (xsDataAngleUserDefinedRotationStart.value, xsDataAngleUserDefinedRotationRange.value)
 
-        if(self.getDataInput().getRadiationDamageModelBeta() is not None):
-            fRadiationDamageModelBeta = str(self.getDataInput().getRadiationDamageModelBeta().getValue())
+        if self.dataInput.getRadiationDamageModelBeta() is not None:
+            fRadiationDamageModelBeta = str(self.dataInput.getRadiationDamageModelBeta().value)
             self.strCommandBest = self.strCommandBest + "-beta " + fRadiationDamageModelBeta + " "
 
-        if(self.getDataInput().getRadiationDamageModelGamma() is not None):
-            fRadiationDamageModelGamma = str(self.getDataInput().getRadiationDamageModelGamma().getValue())
+        if self.dataInput.getRadiationDamageModelGamma() is not None:
+            fRadiationDamageModelGamma = str(self.dataInput.getRadiationDamageModelGamma().value)
             self.strCommandBest = self.strCommandBest + "-gama " + fRadiationDamageModelGamma + " "
 
         if self.dataInput.doseLimit is not None:
@@ -345,7 +345,7 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
                                      "-e " + self.strComplexity + " "
 
         if self.dataInput.xdsBackgroundImage is not None:
-            strPathToXdsBackgroundImage = self.getDataInput().getXdsBackgroundImage().getPath().getValue()
+            strPathToXdsBackgroundImage = self.dataInput.getXdsBackgroundImage().getPath().value
             self.strCommandBest = self.strCommandBest + "-MXDS " + self.getFileBestPar() + " " + strPathToXdsBackgroundImage + " " + listFileBestHKLCommand
         elif self.dataInput.bestFileContentPar is not None:
             self.strCommandBest = self.strCommandBest + "-mos " + self.getFileBestDat() + " " + self.getFileBestPar() + " " + listFileBestHKLCommand
@@ -363,7 +363,7 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         xsDataFilePathToLog = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), self.getScriptLogFileName())))
         xsDataResultBest.setPathToLogFile(xsDataFilePathToLog)
         strError = self.readProcessErrorLogFile()
-        if((strError is not None) and (strError != "")):
+        if (strError is not None) and (strError != ""):
             strErrorMessage = "Error when executing BEST: {0}".format(strError)
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
@@ -409,12 +409,12 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
 
             # Loop through all the tables and fill in the relevant parts of xsDataResultBest
             if not self.isFailure():
-                xsDataStringStrategyOption = self.getDataInput().getStrategyOption()
-                if (xsDataStringStrategyOption is not None):
-                    strStrategyOption = xsDataStringStrategyOption.getValue()
-                    if (strStrategyOption.find("-DamPar") != -1):
+                xsDataStringStrategyOption = self.dataInput.strategyOption
+                if xsDataStringStrategyOption is not None:
+                    strStrategyOption = xsDataStringStrategyOption.value
+                    if strStrategyOption.find("-DamPar") != -1:
                         xsDataResultBest = self.getDamParOutputFromDNATables(xsDataDnaTables)
-                    elif (strStrategyOption.find("-Bonly") != -1):
+                    elif strStrategyOption.find("-Bonly") != -1:
                         xsDataResultBest = self.getBonlyOutputFromDNATables(xsDataDnaTables)
                     else:
                         xsDataResultBest = self.getDataCollectionOutputDataFromDNATables(xsDataDnaTables)
@@ -521,7 +521,7 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
             # Satistics
             xsTablesStatisticalPrediction = EDUtilsTable.getTableListFromTables(_xsDataDnaTables, "statistical_prediction")
             for xsTableStatisticalPrediction in xsTablesStatisticalPrediction:
-                if(xsTableStatisticalPrediction.getIndex() == xsTableCollectionStrategy.getIndex()):
+                if xsTableStatisticalPrediction.getIndex() == xsTableCollectionStrategy.getIndex():
                     xsResolutionBinList = EDUtilsTable.getListsFromTable(xsTableStatisticalPrediction, "resolution_bin")
                     xsDataStatisticalPrediction = XSDataBestStatisticalPrediction()
                     for xsResolutionBinItemList in xsResolutionBinList:
@@ -536,16 +536,16 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
 
         # Fix the order of the collection plans - then low resolution pass should be the first one
         listCollectionPlan = xsDataResultBest.getCollectionPlan()
-        if (len(listCollectionPlan) > 1):
+        if len(listCollectionPlan) > 1:
             bIsModified = False
             for xsDataCollectionPlan in listCollectionPlan:
                 xsDataStrategySummary = xsDataCollectionPlan.getStrategySummary()
-                strReasoning = xsDataStrategySummary.getResolutionReasoning().getValue()
-                if ((strReasoning.find("Low-resolution") != -1) and xsDataCollectionPlan.getCollectionPlanNumber().getValue() != 1):
+                strReasoning = xsDataStrategySummary.getResolutionReasoning().value
+                if (strReasoning.find("Low-resolution") != -1) and xsDataCollectionPlan.getCollectionPlanNumber().value != 1:
                     listCollectionPlan.remove(xsDataCollectionPlan)
                     listCollectionPlan.insert(0, xsDataCollectionPlan)
                     bIsModified = True
-            if (bIsModified):
+            if bIsModified:
                 iCollectionPlanNumber = 1
                 for xsDataCollectionPlan in listCollectionPlan:
                     xsDataCollectionPlan.setCollectionPlanNumber(XSDataInteger(iCollectionPlanNumber))
@@ -574,7 +574,7 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         xsDataCollectionRun.setExposureTime(XSDataTime(fExposureTime))
 
         xsItemAction = EDUtilsTable.getItemFromList(_xsCollectionRunItemList, "action")
-        if (xsItemAction is not None):
+        if xsItemAction is not None:
             strAction = xsItemAction.getValueOf_()
             xsDataCollectionRun.setAction(XSDataString(strAction))
 
@@ -591,12 +591,12 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         xsDataCollectionRun.setPhiWidth(XSDataAngle(fPhiWidth))
 
         xsItemOverlaps = EDUtilsTable.getItemFromList(_xsCollectionRunItemList, "overlaps")
-        if (xsItemOverlaps is not None):
+        if xsItemOverlaps is not None:
             strOverlaps = xsItemOverlaps.getValueOf_()
             xsDataCollectionRun.setOverlaps(XSDataString(strOverlaps))
 
         xsItemTransmission = EDUtilsTable.getItemFromList(_xsCollectionRunItemList, "transmission")
-        if (xsItemTransmission is not None):
+        if xsItemTransmission is not None:
             fTransmission = float(xsItemTransmission.getValueOf_())
             xsDataCollectionRun.setTransmission(XSDataDouble(fTransmission))
 
@@ -680,7 +680,7 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         xsDataResolutionBin.setIOverSigma(XSDataDouble(fItem))
 
         strItem = EDUtilsTable.getItemFromList(_xsResolutionBinItemList, "average_i_over_average_sigma")
-        if (strItem is not None):
+        if strItem is not None:
             fItem = float(strItem.getValueOf_())
             xsDataResolutionBin.setAverageIntensityOverAverageSigma(XSDataDouble(fItem))
 
@@ -689,12 +689,12 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         xsDataResolutionBin.setRFactor(XSDataDouble(fItem))
 
         strItem = EDUtilsTable.getItemFromList(_xsResolutionBinItemList, "R_friedel")
-        if (strItem is not None):
+        if strItem is not None:
             fItem = float(strItem.getValueOf_())
             xsDataResolutionBin.setRFriedel(XSDataDouble(fItem))
 
 #        strItem = EDUtilsTable.getItemFromList(_xsResolutionBinItemList, "average_i_over_sigma_Chi**2")
-#        if (strItem is not None):
+#        if (strItem is not None:
 #            fItem = float(strItem.getValueOf_())
 #            xsDataResolutionBin.setIOverSigmaChi(XSDataDouble(fItem))
 
