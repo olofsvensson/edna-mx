@@ -32,6 +32,7 @@ __date__ = "20151118"
 __status__ = "production"
 
 import os
+import shutil
 
 
 from EDUtilsPath                     import EDUtilsPath
@@ -204,11 +205,19 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
                 EDUtilsFile.writeFile(bestFileHKL, bestFileContentHKL.getValue())
 
         elif self.dataInput.xdsCorrectLp is not None:
-            self.strPathToCorrectLp = self.dataInput.xdsCorrectLp.path.value
-            self.strPathToBkgpixCbf = self.dataInput.xdsBkgpixCbf.path.value
+            self.strPathToCorrectLp = os.path.join(self.getWorkingDirectory(), "CORRECT.LP")
+            shutil.copyFile(self.dataInput.xdsCorrectLp.path.value, self.strPathToCorrectLp)
+
+            self.strPathToBkgpixCbf = os.path.join(self.getWorkingDirectory(), "BKGPIX.cbf")
+            shutil.copyFile(self.dataInput.xdsBkgpixCbf.path.value, self.strPathToBkgpixCbf)
+
             self.strListFileXdsAsciiHkl = ""
+            index = 1
             for xdsAsciiHkl in self.dataInput.xdsAsciiHkl:
-                self.strListFileXdsAsciiHkl += " " + xdsAsciiHkl.path.value
+                strPathToXdsAsciiHkl = os.path.join(self.getWorkingDirectory(), "XDS_ASCII_{0}.HKL".format(index))
+                shutil.copyFile(xdsAsciiHkl.path.value, strPathToXdsAsciiHkl)
+                self.strListFileXdsAsciiHkl += " " + strPathToXdsAsciiHkl
+                index += 1
 
         if self.dataInput.complexity is not None:
             self.strComplexity = self.dataInput.complexity.value
