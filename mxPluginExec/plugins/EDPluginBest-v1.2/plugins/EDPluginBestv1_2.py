@@ -310,7 +310,9 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         if self.dataInput.anomalousData is not None:
             bAnomalousData = self.dataInput.anomalousData.value
             if bAnomalousData:
-                if self.dataInput.crystalAbsorbedDoseRate is not None:
+                if self.dataInput.numberOfCrystalPositions is not None:
+                    self.strCommandBest = self.strCommandBest + "-a -p 0 360 "
+                elif self.dataInput.crystalAbsorbedDoseRate is not None:
                     self.strCommandBest = self.strCommandBest + "-asad "
                 else:
                     self.strCommandBest = self.strCommandBest + "-a "
