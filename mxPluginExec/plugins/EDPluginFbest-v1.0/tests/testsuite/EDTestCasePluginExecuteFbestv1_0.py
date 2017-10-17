@@ -2,13 +2,10 @@
 #    Project: mxPluginExec
 #             http://www.edna-site.org
 #
-#    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
-#                            Grenoble, France
+#    Copyright (C) 2012 European Synchrotron Radiation Facility
+#                       Grenoble, France
 #
-#    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr)
-#
-#    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -25,25 +22,33 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
-__authors__ = [ "Olof Svensson", "Marie-Francoise Incardona", "Karl Levik" ]
+
+__authors__ = ["Olof Svensson"]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
+__date__ = "20171016"
+__status__ = "beta"
+
+import os
+
+from EDAssert                         import EDAssert
+from EDTestCasePluginExecute          import EDTestCasePluginExecute
 
 
-from EDTestSuite import EDTestSuite
+
+class EDTestCasePluginExecuteFbestv1_0(EDTestCasePluginExecute):
+
+    def __init__(self, _oalStringTestName=None):
+        EDTestCasePluginExecute.__init__(self, "EDPluginFbestv1_0")
+        self.setConfigurationFile(self.getRefConfigFile())
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputFbest_reference.xml"))
 
 
-class EDTestSuitePluginExecuteAllMXPluginExec(EDTestSuite):
+    def testExecute(self):
+        self.run()
 
 
     def process(self):
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteMOSFLMv10")
-        self.addTestSuiteFromName("EDTestSuitePluginExecutePhenixv1_1")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteRaddosev10")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteBestv1_2")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteXDSv1_0")
-        self.addTestSuiteFromName("EDTestSuitePluginFbestv1_0")
-
-
+        self.addTestMethod(self.testExecute)
 

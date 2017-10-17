@@ -327,6 +327,23 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
+			<name>EDPluginFbestv1_0</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/fbest</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>120</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginH5ToCBFv1_0</name>  
 			<XSParamList>
 				<XSParamItem>
@@ -369,7 +386,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/xds</value>
+					<value>/opt/pxsoft/bin/xds_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessWorkingDirectory</name>
@@ -398,7 +415,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/xds</value>
+					<value>/opt/pxsoft/bin/xds_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -423,7 +440,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/xds</value>
+					<value>/opt/pxsoft/bin/xds_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
