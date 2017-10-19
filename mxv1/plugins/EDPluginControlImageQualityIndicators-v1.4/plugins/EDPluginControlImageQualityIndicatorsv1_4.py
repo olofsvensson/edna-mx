@@ -408,6 +408,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         imageNumber = EDUtilsImage.getImageNumber(filePath)
         prefix = EDUtilsImage.getPrefix(filePath)
         if isFastMesh:
+            batchSize = 100
             h5ImageNumber = int((imageNumber - 1) / batchSize) + 1
             h5FileNumber = 1
         else:
