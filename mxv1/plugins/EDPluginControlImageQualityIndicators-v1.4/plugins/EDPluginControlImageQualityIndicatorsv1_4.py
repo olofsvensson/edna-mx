@@ -146,6 +146,10 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         if self.dataInput.doIndexing is not None:
             if self.dataInput.doIndexing.value:
                  bDoIndexing = True
+        # Check if fast mesh (for HDF5)
+        isFastMesh = False
+        if self.dataInput.fastMesh:
+            isFastMesh = self.dataInput.fastMesh.value
         # Loop through all the incoming reference images
         listXSDataImage = self.dataInput.image
         xsDataInputMXWaitFile = XSDataInputMXWaitFile()
@@ -160,7 +164,9 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
             strPathToImage = xsDataImage.path.value
             # If Eiger, just wait for the h5 file
             if "id30a3" in strPathToImage:
-                h5MasterFilePath, h5DataFilePath, hdf5ImageNumber = self.getH5FilePath(strPathToImage, batchSize)
+                h5MasterFilePath, h5DataFilePath, hdf5ImageNumber = self.getH5FilePath(strPathToImage,
+                                                                                       batchSize=batchSize,
+                                                                                       isFastMesh=isFastMesh)
 #                print(h5FilePath)
 #                print(hdf5ImageNumber)
                 if not h5DataFilePath in listH5FilePath:
@@ -398,14 +404,20 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
             if edPluginPluginExecImageQualityIndicator is not None:
                 self.appendExecutiveSummary(edPluginPluginExecImageQualityIndicator, "Distl.signal_strength : ", _bAddSeparator=False)
 
-    def getH5FilePath(self, filePath, batchSize=1):
+    def getH5FilePath(self, filePath, batchSize=1, isFastMesh=False):
         imageNumber = EDUtilsImage.getImageNumber(filePath)
         prefix = EDUtilsImage.getPrefix(filePath)
-        h5FileNumber = int((imageNumber - 1) / batchSize) * batchSize + 1
+        if isFastMesh:
+            h5ImageNumber = int((imageNumber - 1) / batchSize) + 1
+            h5FileNumber = 1
+        else:
+            h5ImageNumber = 1
+            h5FileNumber = int((imageNumber - 1) / batchSize) * batchSize + 1
         h5MasterFileName = "{prefix}_{h5FileNumber}_master.h5".format(prefix=prefix,
                                                                       h5FileNumber=h5FileNumber)
         h5MasterFilePath = os.path.join(os.path.dirname(filePath), h5MasterFileName)
-        h5DataFileName = "{prefix}_{h5FileNumber}_data_000001.h5".format(prefix=prefix,
-                                                                      h5FileNumber=h5FileNumber)
+        h5DataFileName = "{prefix}_{h5FileNumber}_data_{h5ImageNumber:06d}.h5".format(prefix=prefix,
+                                                                                      h5FileNumber=h5FileNumber,
+                                                                                      h5ImageNumber=h5ImageNumber)
         h5DataFilePath = os.path.join(os.path.dirname(filePath), h5DataFileName)
         return h5MasterFilePath, h5DataFilePath, h5FileNumber

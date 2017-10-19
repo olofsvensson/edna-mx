@@ -51,10 +51,22 @@ class EDTestCasePluginUnitControlImageQualityIndicatorsv1_4(EDTestCasePluginUnit
         print h5DataFilePath1Reference
         EDAssert.equal(h5MasterFilePath1, h5MasterFilePath1Reference, "masterPath1")
         EDAssert.equal(h5DataFilePath1, h5DataFilePath1Reference, "dataPath1")
-#        filePath2 = "/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/meshtest/XrayCentering_01/mesh-meshtest_1_00012.cbf"
-#        h5FilePath2 = edPlugin.getH5FilePath(filePath2, 9)
-#        h5FilePath2Reference = "/data/id30a3/inhouse/opid30a3/20160204/RAW_DATA/meshtest/XrayCentering_01/mesh-meshtest_1_10_master.h5"
-#        EDAssert.equal(h5FilePath2, h5FilePath2Reference, "path2")
+        # fast mesh
+        filePath2 = "/data/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_0021.cbf"
+        h5MasterFilePath2, h5DataFilePath2, h5FileNumber2 = edPlugin.getH5FilePath(filePath2, batchSize=100, isFastMesh=True)
+        print(h5MasterFilePath2, h5DataFilePath2, h5FileNumber2)
+        h5MasterFilePath2Reference = "/data/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_1_master.h5"
+        EDAssert.equal(h5MasterFilePath2, h5MasterFilePath2Reference, "master path2")
+        h5DataFilePath2Reference = "/data/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_1_data_000001.h5"
+        EDAssert.equal(h5DataFilePath2, h5DataFilePath2Reference, "data path2")
+        # fast mesh 2
+        filePath2 = "/data/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_0321.cbf"
+        h5MasterFilePath2, h5DataFilePath2, h5FileNumber2 = edPlugin.getH5FilePath(filePath2, batchSize=100, isFastMesh=True)
+        print(h5MasterFilePath2, h5DataFilePath2, h5FileNumber2)
+        h5MasterFilePath2Reference = "/data/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_1_master.h5"
+        EDAssert.equal(h5MasterFilePath2, h5MasterFilePath2Reference, "master path2")
+        h5DataFilePath2Reference = "/data/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_1_data_000004.h5"
+        EDAssert.equal(h5DataFilePath2, h5DataFilePath2Reference, "data path2")
 
 
 

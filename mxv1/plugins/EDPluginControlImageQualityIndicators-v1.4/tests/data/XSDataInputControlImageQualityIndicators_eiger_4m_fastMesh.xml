@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<XSDataInputControlImageQualityIndicators>
+    <doDistlSignalStrength>
+        <value>true</value>
+    </doDistlSignalStrength>
+    <doIndexing>
+        <value>false</value>
+    </doIndexing>
+    <doUploadToIspyb>
+        <value>false</value>
+    </doUploadToIspyb>
+    <image>
+        <path>
+            <value>/scisoft/pxsoft/data/WORKFLOW_TEST_DATA/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_0001.cbf</value>
+        </path>
+    </image>
+    <image>
+        <path>
+            <value>/scisoft/pxsoft/data/WORKFLOW_TEST_DATA/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_0101.cbf</value>
+        </path>
+    </image>
+    <image>
+        <path>
+            <value>/scisoft/pxsoft/data/WORKFLOW_TEST_DATA/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_0201.cbf</value>
+        </path>
+    </image>
+    <image>
+        <path>
+            <value>/scisoft/pxsoft/data/WORKFLOW_TEST_DATA/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_0301.cbf</value>
+        </path>
+    </image>
+    <batchSize>
+        <value>100</value>
+    </batchSize>
+    <fastMesh>
+        <value>true</value>
+    </fastMesh>
+</XSDataInputControlImageQualityIndicators>
