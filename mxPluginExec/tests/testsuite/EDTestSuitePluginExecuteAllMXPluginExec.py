@@ -43,7 +43,7 @@ class EDTestSuitePluginExecuteAllMXPluginExec(EDTestSuite):
         self.addTestSuiteFromName("EDTestSuitePluginExecuteRaddosev10")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteBestv1_2")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteXDSv1_0")
-        self.addTestSuiteFromName("EDTestSuitePluginFbestv1_0")
+        self.addTestCaseFromName("EDTestCasePluginExecuteFbestv1_0")
 
 
 

@@ -53,7 +53,7 @@ class EDTestCasePluginUnitControlImageQualityIndicatorsv1_4(EDTestCasePluginUnit
         EDAssert.equal(h5DataFilePath1, h5DataFilePath1Reference, "dataPath1")
         # fast mesh
         filePath2 = "/data/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_0021.cbf"
-        h5MasterFilePath2, h5DataFilePath2, h5FileNumber2 = edPlugin.getH5FilePath(filePath2, batchSize=100, isFastMesh=True)
+        h5MasterFilePath2, h5DataFilePath2, h5FileNumber2 = edPlugin.getH5FilePath(filePath2, batchSize=20, isFastMesh=True)
         print(h5MasterFilePath2, h5DataFilePath2, h5FileNumber2)
         h5MasterFilePath2Reference = "/data/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_1_master.h5"
         EDAssert.equal(h5MasterFilePath2, h5MasterFilePath2Reference, "master path2")
@@ -61,7 +61,7 @@ class EDTestCasePluginUnitControlImageQualityIndicatorsv1_4(EDTestCasePluginUnit
         EDAssert.equal(h5DataFilePath2, h5DataFilePath2Reference, "data path2")
         # fast mesh 2
         filePath2 = "/data/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_0321.cbf"
-        h5MasterFilePath2, h5DataFilePath2, h5FileNumber2 = edPlugin.getH5FilePath(filePath2, batchSize=100, isFastMesh=True)
+        h5MasterFilePath2, h5DataFilePath2, h5FileNumber2 = edPlugin.getH5FilePath(filePath2, batchSize=20, isFastMesh=True)
         print(h5MasterFilePath2, h5DataFilePath2, h5FileNumber2)
         h5MasterFilePath2Reference = "/data/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02/mesh-opid30a3_2_1_master.h5"
         EDAssert.equal(h5MasterFilePath2, h5MasterFilePath2Reference, "master path2")
