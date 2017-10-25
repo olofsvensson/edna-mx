@@ -27,7 +27,7 @@
     <sensitivity>
         <value>2.500000e+01</value>
     </sensitivity>
-    <minExosure>
+    <minExposure>
         <value>2.000000e-02</value>
-    </minExosure>
+    </minExposure>
 </XSDataResultFbest>

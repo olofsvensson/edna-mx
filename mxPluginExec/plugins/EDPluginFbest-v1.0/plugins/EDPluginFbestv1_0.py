@@ -189,7 +189,7 @@ class EDPluginFbestv1_0(EDPluginExecProcessScript):
                 elif label == "Sensitivity":
                     xsDataResultFbest.sensitivity = XSDataDouble(value)
                 elif label == "Min.Exposure":
-                    xsDataResultFbest.minExosure = XSDataDouble(value)
+                    xsDataResultFbest.minExposure = XSDataDouble(value)
 
         return xsDataResultFbest
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Oct 16 04:14::29 2017 by EDGenerateDS.
+# Generated Wed Oct 25 10:15::44 2017 by EDGenerateDS.
 #
 
 import os, sys
@@ -569,7 +569,7 @@ class XSDataInputFbest(XSDataInput):
 
 
 class XSDataResultFbest(XSDataResult):
-    def __init__(self, status=None, minExosure=None, sensitivity=None, doseRate=None, totalExposureTime=None, totalDose=None, resolution=None, rotationWidth=None, numberOfImages=None, transmission=None, exposureTimePerImage=None):
+    def __init__(self, status=None, minExposure=None, sensitivity=None, doseRate=None, totalExposureTime=None, totalDose=None, resolution=None, rotationWidth=None, numberOfImages=None, transmission=None, exposureTimePerImage=None):
         XSDataResult.__init__(self, status)
         if exposureTimePerImage is None:
             self._exposureTimePerImage = None
@@ -634,12 +634,12 @@ class XSDataResultFbest(XSDataResult):
         else:
             strMessage = "ERROR! XSDataResultFbest constructor argument 'sensitivity' is not XSDataDouble but %s" % self._sensitivity.__class__.__name__
             raise BaseException(strMessage)
-        if minExosure is None:
-            self._minExosure = None
-        elif minExosure.__class__.__name__ == "XSDataDouble":
-            self._minExosure = minExosure
+        if minExposure is None:
+            self._minExposure = None
+        elif minExposure.__class__.__name__ == "XSDataDouble":
+            self._minExposure = minExposure
         else:
-            strMessage = "ERROR! XSDataResultFbest constructor argument 'minExosure' is not XSDataDouble but %s" % self._minExosure.__class__.__name__
+            strMessage = "ERROR! XSDataResultFbest constructor argument 'minExposure' is not XSDataDouble but %s" % self._minExposure.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'exposureTimePerImage' attribute
     def getExposureTimePerImage(self): return self._exposureTimePerImage
@@ -749,18 +749,18 @@ class XSDataResultFbest(XSDataResult):
             raise BaseException(strMessage)
     def delSensitivity(self): self._sensitivity = None
     sensitivity = property(getSensitivity, setSensitivity, delSensitivity, "Property for sensitivity")
-    # Methods and properties for the 'minExosure' attribute
-    def getMinExosure(self): return self._minExosure
-    def setMinExosure(self, minExosure):
-        if minExosure is None:
-            self._minExosure = None
-        elif minExosure.__class__.__name__ == "XSDataDouble":
-            self._minExosure = minExosure
+    # Methods and properties for the 'minExposure' attribute
+    def getMinExposure(self): return self._minExposure
+    def setMinExposure(self, minExposure):
+        if minExposure is None:
+            self._minExposure = None
+        elif minExposure.__class__.__name__ == "XSDataDouble":
+            self._minExposure = minExposure
         else:
-            strMessage = "ERROR! XSDataResultFbest.setMinExosure argument is not XSDataDouble but %s" % minExosure.__class__.__name__
+            strMessage = "ERROR! XSDataResultFbest.setMinExposure argument is not XSDataDouble but %s" % minExposure.__class__.__name__
             raise BaseException(strMessage)
-    def delMinExosure(self): self._minExosure = None
-    minExosure = property(getMinExosure, setMinExosure, delMinExosure, "Property for minExosure")
+    def delMinExposure(self): self._minExposure = None
+    minExposure = property(getMinExposure, setMinExposure, delMinExposure, "Property for minExposure")
     def export(self, outfile, level, name_='XSDataResultFbest'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -787,8 +787,8 @@ class XSDataResultFbest(XSDataResult):
             self.doseRate.export(outfile, level, name_='doseRate')
         if self._sensitivity is not None:
             self.sensitivity.export(outfile, level, name_='sensitivity')
-        if self._minExosure is not None:
-            self.minExosure.export(outfile, level, name_='minExosure')
+        if self._minExposure is not None:
+            self.minExposure.export(outfile, level, name_='minExposure')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -840,10 +840,10 @@ class XSDataResultFbest(XSDataResult):
             obj_.build(child_)
             self.setSensitivity(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'minExosure':
+            nodeName_ == 'minExposure':
             obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setMinExosure(obj_)
+            self.setMinExposure(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
