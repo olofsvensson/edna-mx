@@ -44,7 +44,7 @@ class EDTestSuitePluginUnitMXPluginExec(EDTestSuite):
         self.addTestSuiteFromName("EDTestSuitePluginUnitSTACv2_0")
         self.addTestSuiteFromName("EDTestSuitePluginUnitXDSv1_0")
         self.addTestSuiteFromName("EDTestSuitePluginUnitXDSv1_1")
-        self.addTestSuiteFromName("EDTestCasePluginUnitFbestv1_0")
+        self.addTestCaseFromName("EDTestCasePluginUnitFbestv1_0")
 
 
 
