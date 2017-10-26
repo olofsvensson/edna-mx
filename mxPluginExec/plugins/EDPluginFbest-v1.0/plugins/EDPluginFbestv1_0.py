@@ -170,26 +170,29 @@ class EDPluginFbestv1_0(EDPluginExecProcessScript):
             if len(listLine) == 2:
                 label = listLine[0].strip()
                 value = listLine[1].strip()
-                if label == "Exposure time per image":
-                    xsDataResultFbest.exposureTimePerImage = XSDataDouble(value)
-                elif label == "Transmission":
-                    xsDataResultFbest.transmission = XSDataDouble(value)
-                elif label == "Number of images":
-                    xsDataResultFbest.numberOfImages = XSDataDouble(value)
-                elif label == "Rotation width":
-                    xsDataResultFbest.rotationWidth = XSDataDouble(value)
-                elif label == "Resolition":
-                    xsDataResultFbest.resolution = XSDataDouble(value)
-                elif label == "Total dose, MGy":
-                    xsDataResultFbest.totalDose = XSDataDouble(value)
-                elif label == "Total exposure time":
-                    xsDataResultFbest.totalExposureTime = XSDataDouble(value)
-                elif label == "Dose Rate MGy/s":
-                    xsDataResultFbest.doseRate = XSDataDouble(value)
-                elif label == "Sensitivity":
-                    xsDataResultFbest.sensitivity = XSDataDouble(value)
-                elif label == "Min.Exposure":
-                    xsDataResultFbest.minExposure = XSDataDouble(value)
+                try:
+                    if label == "Exposure time per image":
+                        xsDataResultFbest.exposureTimePerImage = XSDataDouble(value)
+                    elif label == "Transmission":
+                        xsDataResultFbest.transmission = XSDataDouble(value)
+                    elif label == "Number of images":
+                        xsDataResultFbest.numberOfImages = XSDataDouble(value)
+                    elif label == "Rotation width":
+                        xsDataResultFbest.rotationWidth = XSDataDouble(value)
+                    elif label == "Resolition":
+                        xsDataResultFbest.resolution = XSDataDouble(value)
+                    elif label == "Total dose, MGy":
+                        xsDataResultFbest.totalDose = XSDataDouble(value)
+                    elif label == "Total exposure time":
+                        xsDataResultFbest.totalExposureTime = XSDataDouble(value)
+                    elif label == "Dose Rate MGy/s":
+                        xsDataResultFbest.doseRate = XSDataDouble(value)
+                    elif label == "Sensitivity":
+                        xsDataResultFbest.sensitivity = XSDataDouble(value)
+                    elif label == "Min.Exposure":
+                        xsDataResultFbest.minExposure = XSDataDouble(value)
+                except:
+                    self.error("Cannot parse value for {0}!".format(label))
 
         return xsDataResultFbest
 
