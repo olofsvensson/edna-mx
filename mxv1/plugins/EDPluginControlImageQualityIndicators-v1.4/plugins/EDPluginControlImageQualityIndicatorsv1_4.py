@@ -33,6 +33,7 @@ import base64
 
 from EDVerbose import EDVerbose
 from EDUtilsParallel import EDUtilsParallel
+from EDUtilsPath import EDUtilsPath
 
 from EDPluginControl import EDPluginControl
 from EDFactoryPluginStatic import EDFactoryPluginStatic
@@ -44,6 +45,7 @@ from XSDataCommon import XSDataString
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataTime
 from XSDataCommon import XSDataImage
+from XSDataCommon import XSDataDouble
 
 from XSDataMXv1 import XSDataImageQualityIndicators
 from XSDataMXv1 import XSDataInputControlImageQualityIndicators
@@ -71,6 +73,10 @@ from XSDataControlDozorv1_0 import XSDataInputControlDozor
 
 EDFactoryPluginStatic.loadModule("XSDataControlH5ToCBFv1_1")
 from XSDataControlH5ToCBFv1_1 import XSDataInputControlH5ToCBF
+
+EDFactoryPluginStatic.loadModule('XSDataH5ToCBFv1_1')
+from XSDataH5ToCBFv1_1 import XSDataInputH5ToCBF
+
 
 class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
     """
@@ -103,14 +109,15 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         self.listPluginMOSFLM = []
         self.defaultMinImageSize = 1000000
         self.minImageSize = None
-
+        self.strEDPluginControlReadImageHeaderName = "EDPluginControlReadImageHeaderv10"
+        self.hasOverlap = False
 
     def checkParameters(self):
         """
         Checks the mandatory parameters
         """
         self.DEBUG("EDPluginControlImageQualityIndicatorsv1_4.checkParameters")
-        self.checkMandatoryParameters(self.getDataInput().getImage(), "Image")
+#        self.checkMandatoryParameters(self.getDataInput().getImage(), "Image")
 
 
     def configure(self, _edPlugin=None):
@@ -135,7 +142,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
             batchSize = 1
         else:
             batchSize = self.dataInput.batchSize.value
-        self.screen("Batch size: {0}".format(batchSize))
+        self.screen("Image quality indicators batch size: {0}".format(batchSize))
         # Check if we should do distlSignalStrength:
         bDoDistlSignalStrength = True
         if self.dataInput.doDistlSignalStrength is not None:
@@ -151,233 +158,258 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
         if self.dataInput.fastMesh:
             isFastMesh = self.dataInput.fastMesh.value
         # Loop through all the incoming reference images
-        listXSDataImage = self.dataInput.image
+        if len(self.dataInput.image) == 0:
+            directory = self.dataInput.directory.path.value
+            template = self.dataInput.template.value
+            startNo = self.dataInput.startNo.value
+            endNo = self.dataInput.endNo.value
+            listXSDataImage = []
+            for index in range(startNo, endNo + 1):
+                imageName = template.replace("####", "{0:04d}".format(index))
+                imagePath = os.path.join(directory, imageName)
+                xsDataImage = XSDataImage(path=XSDataString(imagePath), number=XSDataInteger(index))
+                listXSDataImage.append(xsDataImage)
+        else:
+            listXSDataImage = self.dataInput.image
         xsDataInputMXWaitFile = XSDataInputMXWaitFile()
         self.xsDataResultControlImageQualityIndicators = XSDataResultControlImageQualityIndicators()
         listPluginDistl = []
         listPluginDozor = []
-        listBatch = []
+        listOfImagesInBatch = []
+        listOfAllBatches = []
         indexBatch = 0
         listH5FilePath = []
-        ispybDataCollection = None
+        # Process data in batches
         for xsDataImage in listXSDataImage:
-            strPathToImage = xsDataImage.path.value
-            # If Eiger, just wait for the h5 file
-            if "id30a3" in strPathToImage:
-                h5MasterFilePath, h5DataFilePath, hdf5ImageNumber = self.getH5FilePath(strPathToImage,
-                                                                                       batchSize=batchSize,
-                                                                                       isFastMesh=isFastMesh)
-#                print(h5FilePath)
-#                print(hdf5ImageNumber)
-                if not h5DataFilePath in listH5FilePath:
-                    self.screen("ID30a3 Eiger data, waiting for master and data files...")
-                    listH5FilePath.append(h5DataFilePath)
-                    self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
-                    xsDataInputMXWaitFile.file = XSDataFile(XSDataString(h5DataFilePath))
-                    xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
-                    xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
-                    self.screen("Waiting for file {0}".format(h5DataFilePath))
-                    self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
-                    self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
-                    self.edPluginMXWaitFile.executeSynchronous()
-#                    hdf5FilePath = strPathToImage.replace(".cbf", ".h5")
-                    ispybDataCollection = None
-                    time.sleep(1)
-                indexLoop = 1
-                continueLoop = True
-                while continueLoop:
-                    xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
-                    xsDataInputControlH5ToCBF.hdf5File = XSDataFile(XSDataString(strPathToImage))
-                    imageNumber = EDUtilsImage.getImageNumber(strPathToImage)
-                    xsDataInputControlH5ToCBF.imageNumber = XSDataInteger(imageNumber)
-                    xsDataInputControlH5ToCBF.hdf5ImageNumber = XSDataInteger(hdf5ImageNumber)
-                    xsDataInputControlH5ToCBF.ispybDataCollection = ispybDataCollection
-                    edPluginControlH5ToCBF = self.loadPlugin(self.strPluginControlH5ToCBF, "ControlH5ToCBF_%04d_%02d" % (imageNumber, indexLoop))
-                    edPluginControlH5ToCBF.dataInput = xsDataInputControlH5ToCBF
-                    edPluginControlH5ToCBF.executeSynchronous()
-                    cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
-#                    print(cbfFile)
-#                    print(indexLoop)
-                    if cbfFile is not None:
-                        strPathToImage = cbfFile.path.value
-#                        print(cbfFile.path.value)
-                        if os.path.exists(strPathToImage):
-                            self.screen("Image has been converted to CBF file: {0}".format(strPathToImage))
-                            continueLoop = False
-#                    print(continueLoop)
-                    if continueLoop:
-                        self.screen("Still waiting for converting to CBF file: {0}".format(strPathToImage))
-                        indexLoop += 1
-                        time.sleep(5)
-                        if indexLoop > 10:
-                            continueLoop = False
+            listOfImagesInBatch.append(xsDataImage.copy())
+            if len(listOfImagesInBatch) == batchSize:
+                listOfAllBatches.append(listOfImagesInBatch)
+                listOfImagesInBatch = []
+        if len(listOfImagesInBatch) > 0:
+            listOfAllBatches.append(listOfImagesInBatch)
+            listOfImagesInBatch = []
+        # Loop over batches
+        for listOfImagesInBatch in listOfAllBatches:
+            # First wait for images
+            for image in listOfImagesInBatch:
+                strPathToImage = image.path.value
+                # If Eiger, just wait for the h5 file
+                if "id30a3" in strPathToImage:
+                    h5MasterFilePath, h5DataFilePath, hdf5ImageNumber = self.getH5FilePath(strPathToImage,
+                                                                                           batchSize=batchSize,
+                                                                                           isFastMesh=isFastMesh)
+    #                print(h5FilePath)
+    #                print(hdf5ImageNumber)
+                    if not h5DataFilePath in listH5FilePath:
+                        self.screen("ID30a3 Eiger data, waiting for master and data files...")
+                        listH5FilePath.append(h5DataFilePath)
+                        self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
+                        xsDataInputMXWaitFile.file = XSDataFile(XSDataString(h5DataFilePath))
+                        xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
+                        xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
+                        self.screen("Waiting for file {0}".format(h5DataFilePath))
+                        self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
+                        self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
+                        self.edPluginMXWaitFile.executeSynchronous()
+    #                    hdf5FilePath = strPathToImage.replace(".cbf", ".h5")
+                        time.sleep(1)
+                    if not os.path.exists(h5DataFilePath):
+                        strError = "Time-out while waiting for image %s" % h5DataFilePath
+                        self.error(strError)
+                        self.addErrorMessage(strError)
+                        self.setFailure()
+                else:
+                    if not os.path.exists(strPathToImage):
+                        # self.screen("Waiting for file {0}".format(strPathToImage))
+                        self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
+                        xsDataInputMXWaitFile.file = XSDataFile(XSDataString(strPathToImage))
+                        xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
+                        xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
+                        self.screen("Wait file timeOut set to %.0f s" % self.fMXWaitFileTimeOut)
+                        self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
+                        self.edPluginMXWaitFile.executeSynchronous()
+                    if not os.path.exists(strPathToImage):
+                        strError = "Time-out while waiting for image %s" % strPathToImage
+                        self.error(strError)
+                        self.addErrorMessage(strError)
+                        self.setFailure()
+            if not self.isFailure():
+                strPathToFirstImage = listOfImagesInBatch[0].path.value
+                if "id30a3" in strPathToImage:
+                    indexLoop = 1
+                    continueLoop = True
+                    while continueLoop:
+                        directory = os.path.dirname(strPathToFirstImage)
+                        firstImage = listOfImagesInBatch[0].number.value
+                        lastImage = listOfImagesInBatch[-1].number.value
+                        xsDataInputH5ToCBF = XSDataInputH5ToCBF()
+                        xsDataInputH5ToCBF.hdf5File = XSDataFile(listOfImagesInBatch[0].path)
+                        xsDataInputH5ToCBF.hdf5ImageNumber = XSDataInteger(1)
+                        xsDataInputH5ToCBF.startImageNumber = XSDataInteger(firstImage)
+                        xsDataInputH5ToCBF.endImageNumber = XSDataInteger(lastImage)
+                        xsDataInputH5ToCBF.forcedOutputDirectory = XSDataFile(XSDataString(directory))
+                        edPluginH5ToCBF = self.loadPlugin("EDPluginH5ToCBFv1_1")
+                        edPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
+                        edPluginH5ToCBF.execute()
+                        edPluginH5ToCBF.synchronize()
+                        outputCBFFileTemplate = edPluginH5ToCBF.dataOutput.outputCBFFileTemplate
+                        if outputCBFFileTemplate is not None:
+                            lastCbfFile = outputCBFFileTemplate.path.value.replace("######", "{0:06d}".format(listOfImagesInBatch[-1].number.value))
+                            strPathToImage = os.path.join(directory, lastCbfFile)
+    #                        print(cbfFile.path.value)
+                            if os.path.exists(strPathToImage):
+                                # Rename all images
+                                for image in listOfImagesInBatch:
+                                    imageNumber = image.number.value
+                                    oldPath = os.path.join(directory, outputCBFFileTemplate.path.value.replace("######", "{0:06d}".format(imageNumber)))
+                                    newPath = os.path.join(directory, outputCBFFileTemplate.path.value.replace("######", "{0:04d}".format(imageNumber)))
+                                    os.rename(oldPath, newPath)
+                                lastCbfFile = outputCBFFileTemplate.path.value.replace("######", "{0:04d}".format(listOfImagesInBatch[-1].number.value))
+                                strPathToImage = os.path.join(directory, lastCbfFile)
+                                self.screen("Image has been converted to CBF file: {0}".format(strPathToImage))
+                                continueLoop = False
+    #                    print(continueLoop)
+                        if continueLoop:
+                            self.screen("Still waiting for converting to CBF file: {0}".format(strPathToImage))
+                            indexLoop += 1
+                            time.sleep(5)
+                            if indexLoop > 10:
+                                continueLoop = False
 
-                ispybDataCollection = edPluginControlH5ToCBF.dataOutput.ispybDataCollection
+                for image in listOfImagesInBatch:
+                    strPathToImage = image.path.value
+                    # Check if we should run distl.signalStrength
+                    xsDataImageNew = XSDataImage(XSDataString(strPathToImage))
+                    xsDataImageNew.number = image.number
+                    edPluginPluginExecImageQualityIndicator = None
+                    if bDoDistlSignalStrength:
+                        if self.bUseThinClient:
+                            strPluginName = self.strPluginNameThinClient
+                        else:
+                            strPluginName = self.strPluginName
+                        edPluginPluginExecImageQualityIndicator = self.loadPlugin(strPluginName)
+                        self.listPluginExecImageQualityIndicator.append(edPluginPluginExecImageQualityIndicator)
+                        xsDataInputDistlSignalStrength = XSDataInputDistlSignalStrength()
+                        xsDataInputDistlSignalStrength.setReferenceImage(xsDataImageNew)
+                        edPluginPluginExecImageQualityIndicator.setDataInput(xsDataInputDistlSignalStrength)
+                        edPluginPluginExecImageQualityIndicator.execute()
+                    listPluginDistl.append((xsDataImageNew.copy(), edPluginPluginExecImageQualityIndicator))
 
+                edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor,
+                                                       "ControlDozor_{0}".format(os.path.splitext(os.path.basename(strPathToFirstImage))[0]))
+                xsDataInputControlDozor = XSDataInputControlDozor()
+                for image in listOfImagesInBatch:
+                    xsDataInputControlDozor.addImage(XSDataFile(image.path))
+                xsDataInputControlDozor.batchSize = XSDataInteger(len(listOfImagesInBatch))
+                edPluginControlDozor.dataInput = xsDataInputControlDozor
+                edPluginControlDozor.execute()
+                listPluginDozor.append((edPluginControlDozor, list(listOfImagesInBatch)))
 
-            elif not os.path.exists(strPathToImage):
-                self.screen("Waiting for file {0}".format(strPathToImage))
-                self.edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
-                xsDataInputMXWaitFile.file = XSDataFile(XSDataString(strPathToImage))
-                xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
-                xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
-                self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
-                self.edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
-                self.edPluginMXWaitFile.executeSynchronous()
-            if not os.path.exists(strPathToImage):
-                strError = "Time-out while waiting for image %s" % strPathToImage
-                self.error(strError)
-                self.addErrorMessage(strError)
-                self.setFailure()
-            else:
-                # Check if we should run distl.signalStrength
-                xsDataImageNew = XSDataImage(XSDataString(strPathToImage))
-                xsDataImageNew.number = xsDataImage.number
-                xsDataImageNew.date = xsDataImage.date
-                edPluginPluginExecImageQualityIndicator = None
-                if bDoDistlSignalStrength:
-                    if self.bUseThinClient:
-                        strPluginName = self.strPluginNameThinClient
-                    else:
-                        strPluginName = self.strPluginName
-                    edPluginPluginExecImageQualityIndicator = self.loadPlugin(strPluginName)
-                    self.listPluginExecImageQualityIndicator.append(edPluginPluginExecImageQualityIndicator)
-                    xsDataInputDistlSignalStrength = XSDataInputDistlSignalStrength()
-                    xsDataInputDistlSignalStrength.setReferenceImage(xsDataImageNew)
-                    edPluginPluginExecImageQualityIndicator.setDataInput(xsDataInputDistlSignalStrength)
-                    edPluginPluginExecImageQualityIndicator.execute()
-                listPluginDistl.append((xsDataImageNew.copy(), edPluginPluginExecImageQualityIndicator))
-                listBatch.append(xsDataImageNew.copy())
-                if len(listBatch) == batchSize:
+        if not self.isFailure():
+            listIndexing = []
+            # Synchronize all image quality indicator plugins and upload to ISPyB
+            xsDataInputStoreListOfImageQualityIndicators = XSDataInputStoreListOfImageQualityIndicators()
+
+            for (xsDataImage, edPluginPluginExecImageQualityIndicator) in listPluginDistl:
+                xsDataImageQualityIndicators = XSDataImageQualityIndicators()
+                xsDataImageQualityIndicators.image = xsDataImage.copy()
+                if edPluginPluginExecImageQualityIndicator is not None:
+                    edPluginPluginExecImageQualityIndicator.synchronize()
+                    if edPluginPluginExecImageQualityIndicator.dataOutput is not None:
+                        if edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators is not None:
+                            xsDataImageQualityIndicators = XSDataImageQualityIndicators.parseString(\
+                                    edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators.marshal())
+                self.xsDataResultControlImageQualityIndicators.addImageQualityIndicators(xsDataImageQualityIndicators)
+
+            for (edPluginControlDozor, listBatch) in listPluginDozor:
+                edPluginControlDozor.synchronize()
+                # Check that we got at least one result
+                if len(edPluginControlDozor.dataOutput.imageDozor) == 0:
+                    # Run the dozor plugin again, this time synchronously
                     firstImage = os.path.basename(listBatch[0].path.value)
-                    edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor,
-                                                           "ControlDozor_{0}".format(os.path.splitext(firstImage)[0]))
+                    lastImage = os.path.basename(listBatch[-1].path.value)
+                    self.screen("No dozor results! Re-executing Dozor for images {0} to {1}".format(firstImage, lastImage))
+                    time.sleep(5)
+                    edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor, "ControlDozor_reexecution_{0}".format(os.path.splitext(firstImage)[0]))
                     xsDataInputControlDozor = XSDataInputControlDozor()
                     for image in listBatch:
                         xsDataInputControlDozor.addImage(XSDataFile(image.path))
                     xsDataInputControlDozor.batchSize = XSDataInteger(batchSize)
                     edPluginControlDozor.dataInput = xsDataInputControlDozor
-                    edPluginControlDozor.execute()
-                    listPluginDozor.append((edPluginControlDozor, listBatch))
-                    listBatch = []
-        if len(listBatch) > 0:
-            # Process the remaining images...
-            edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor)
-            xsDataInputControlDozor = XSDataInputControlDozor()
-            for image in listBatch:
-                xsDataInputControlDozor.addImage(XSDataFile(image.path))
-            xsDataInputControlDozor.batchSize = XSDataInteger(batchSize)
-            edPluginControlDozor.dataInput = xsDataInputControlDozor
-            edPluginControlDozor.execute()
-            listPluginDozor.append([edPluginControlDozor, listBatch])
-        listIndexing = []
-        # Synchronize all image quality indicator plugins and upload to ISPyB
-        xsDataInputStoreListOfImageQualityIndicators = XSDataInputStoreListOfImageQualityIndicators()
-
-        for (xsDataImage, edPluginPluginExecImageQualityIndicator) in listPluginDistl:
-            xsDataImageQualityIndicators = XSDataImageQualityIndicators()
-            xsDataImageQualityIndicators.image = xsDataImage.copy()
-            if edPluginPluginExecImageQualityIndicator is not None:
-                edPluginPluginExecImageQualityIndicator.synchronize()
-                if edPluginPluginExecImageQualityIndicator.dataOutput is not None:
-                    if edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators is not None:
-                        xsDataImageQualityIndicators = XSDataImageQualityIndicators.parseString(\
-                                edPluginPluginExecImageQualityIndicator.dataOutput.imageQualityIndicators.marshal())
-            self.xsDataResultControlImageQualityIndicators.addImageQualityIndicators(xsDataImageQualityIndicators)
-
-        for (edPluginControlDozor, listBatch) in listPluginDozor:
-            edPluginControlDozor.synchronize()
-            # Check that we got at least one result
-            if len(edPluginControlDozor.dataOutput.imageDozor) == 0:
-                # Run the dozor plugin again, this time synchronously
-                firstImage = os.path.basename(listBatch[0].path.value)
-                lastImage = os.path.basename(listBatch[-1].path.value)
-                self.screen("No dozor results! Re-executing Dozor for images {0} to {1}".format(firstImage, lastImage))
-                time.sleep(5)
-                edPluginControlDozor = self.loadPlugin(self.strPluginNameControlDozor, "ControlDozor_reexecution_{0}".format(os.path.splitext(firstImage)[0]))
-                xsDataInputControlDozor = XSDataInputControlDozor()
-                for image in listBatch:
-                    xsDataInputControlDozor.addImage(XSDataFile(image.path))
-                xsDataInputControlDozor.batchSize = XSDataInteger(batchSize)
-                edPluginControlDozor.dataInput = xsDataInputControlDozor
-                edPluginControlDozor.executeSynchronous()
-            for imageDozor in edPluginControlDozor.dataOutput.imageDozor:
-                for xsDataImageQualityIndicators in self.xsDataResultControlImageQualityIndicators.imageQualityIndicators:
-                    if xsDataImageQualityIndicators.image.path.value == imageDozor.image.path.value:
-                        xsDataImageQualityIndicators.dozor_score = imageDozor.mainScore
-                        xsDataImageQualityIndicators.dozorSpotFile = imageDozor.spotFile
-                        if imageDozor.spotFile is not None:
-                            if os.path.exists(imageDozor.spotFile.path.value):
-                                numpyArray = numpy.loadtxt(imageDozor.spotFile.path.value, skiprows=3)
-                                xsDataImageQualityIndicators.dozorSpotList = XSDataString(base64.b64encode(numpyArray.tostring()))
-                                xsDataImageQualityIndicators.addDozorSpotListShape(XSDataInteger(numpyArray.shape[0]))
-                                if len(numpyArray.shape) > 1:
-                                    xsDataImageQualityIndicators.addDozorSpotListShape(XSDataInteger(numpyArray.shape[1]))
-                        xsDataImageQualityIndicators.dozorSpotsIntAver = imageDozor.spotsIntAver
-                        xsDataImageQualityIndicators.dozorSpotsResolution = imageDozor.spotsResolution
-                        xsDataImageQualityIndicators.dozorVisibleResolution = imageDozor.visibleResolution
-                        if self.xsDataResultControlImageQualityIndicators.inputDozor is None:
-                            if edPluginControlDozor.dataOutput.inputDozor is not None:
-                                self.xsDataResultControlImageQualityIndicators.inputDozor = XSDataDozorInput().parseString(
-                                               edPluginControlDozor.dataOutput.inputDozor.marshal())
+                    edPluginControlDozor.executeSynchronous()
+                for imageDozor in edPluginControlDozor.dataOutput.imageDozor:
+                    for xsDataImageQualityIndicators in self.xsDataResultControlImageQualityIndicators.imageQualityIndicators:
+                        if xsDataImageQualityIndicators.image.path.value == imageDozor.image.path.value:
+                            xsDataImageQualityIndicators.dozor_score = imageDozor.mainScore
+                            xsDataImageQualityIndicators.dozorSpotFile = imageDozor.spotFile
+                            if imageDozor.spotFile is not None:
+                                if os.path.exists(imageDozor.spotFile.path.value):
+                                    numpyArray = numpy.loadtxt(imageDozor.spotFile.path.value, skiprows=3)
+                                    xsDataImageQualityIndicators.dozorSpotList = XSDataString(base64.b64encode(numpyArray.tostring()))
+                                    xsDataImageQualityIndicators.addDozorSpotListShape(XSDataInteger(numpyArray.shape[0]))
+                                    if len(numpyArray.shape) > 1:
+                                        xsDataImageQualityIndicators.addDozorSpotListShape(XSDataInteger(numpyArray.shape[1]))
+                            xsDataImageQualityIndicators.dozorSpotsIntAver = imageDozor.spotsIntAver
+                            xsDataImageQualityIndicators.dozorSpotsResolution = imageDozor.spotsResolution
+                            xsDataImageQualityIndicators.dozorVisibleResolution = imageDozor.visibleResolution
+                            if self.xsDataResultControlImageQualityIndicators.inputDozor is None:
+                                if edPluginControlDozor.dataOutput.inputDozor is not None:
+                                    self.xsDataResultControlImageQualityIndicators.inputDozor = XSDataDozorInput().parseString(
+                                                   edPluginControlDozor.dataOutput.inputDozor.marshal())
+                if self.dataInput.doUploadToIspyb is not None and self.dataInput.doUploadToIspyb.value:
+                    xsDataISPyBImageQualityIndicators = \
+                        XSDataISPyBImageQualityIndicators.parseString(xsDataImageQualityIndicators.marshal())
+                    xsDataInputStoreListOfImageQualityIndicators.addImageQualityIndicators(xsDataISPyBImageQualityIndicators)
+    #        print xsDataInputStoreListOfImageQualityIndicators.marshal()
             if self.dataInput.doUploadToIspyb is not None and self.dataInput.doUploadToIspyb.value:
-                xsDataISPyBImageQualityIndicators = \
-                    XSDataISPyBImageQualityIndicators.parseString(xsDataImageQualityIndicators.marshal())
-                xsDataInputStoreListOfImageQualityIndicators.addImageQualityIndicators(xsDataISPyBImageQualityIndicators)
-#        print xsDataInputStoreListOfImageQualityIndicators.marshal()
-        if self.dataInput.doUploadToIspyb is not None and self.dataInput.doUploadToIspyb.value:
-            self.edPluginISPyB = self.loadPlugin(self.strISPyBPluginName)
-            self.edPluginISPyB.dataInput = xsDataInputStoreListOfImageQualityIndicators
-            self.edPluginISPyB.execute()
-        #
-        if bDoIndexing:
-            # Find the 5 most intensive images (TIS):
-            listImage = []
-            # Check that we have dozor_score from all images:
-            has_dozor_score = True
-            for imageQualityIndicators in self.xsDataResultControlImageQualityIndicators.imageQualityIndicators:
-                if imageQualityIndicators.dozor_score is None:
-                    has_dozor_score = False
-            if has_dozor_score:
-                listSorted = sorted(self.xsDataResultControlImageQualityIndicators.imageQualityIndicators,
-                                    key=lambda imageQualityIndicators: imageQualityIndicators.dozor_score.value)
-            else:
-                listSorted = sorted(self.xsDataResultControlImageQualityIndicators.imageQualityIndicators,
-                                    key=lambda imageQualityIndicators: imageQualityIndicators.totalIntegratedSignal.value)
-            for xsDataResultControlImageQualityIndicator in listSorted[-5:]:
-                if xsDataResultControlImageQualityIndicator.goodBraggCandidates.value > 30:
-                    xsDataInputReadImageHeader = XSDataInputReadImageHeader()
-                    xsDataInputReadImageHeader.image = XSDataFile(xsDataResultControlImageQualityIndicator.image.path)
-                    self.edPluginReadImageHeader = self.loadPlugin(self.strPluginReadImageHeaderName)
-                    self.edPluginReadImageHeader.dataInput = xsDataInputReadImageHeader
-                    self.edPluginReadImageHeader.executeSynchronous()
-                    xsDataResultReadImageHeader = self.edPluginReadImageHeader.dataOutput
-                    if xsDataResultReadImageHeader is not None:
-                        xsDataSubWedge = xsDataResultReadImageHeader.subWedge
-                        self.xsDataCollection = XSDataCollection()
-                        self.xsDataCollection.addSubWedge(xsDataSubWedge)
-                        xsDataIndexingInput = XSDataIndexingInput()
-                        xsDataIndexingInput.setDataCollection(self.xsDataCollection)
-                        xsDataMOSFLMIndexingInput = EDHandlerXSDataMOSFLMv10.generateXSDataMOSFLMInputIndexing(xsDataIndexingInput)
-                        edPluginMOSFLMIndexing = self.loadPlugin(self.strIndexingMOSFLMPluginName)
-                        self.listPluginMOSFLM.append([edPluginMOSFLMIndexing, xsDataResultControlImageQualityIndicator])
-                        edPluginMOSFLMIndexing.setDataInput(xsDataMOSFLMIndexingInput)
-                        edPluginMOSFLMIndexing.execute()
-            for tupleMOSFLM in self.listPluginMOSFLM:
-                edPluginMOSFLMIndexing = tupleMOSFLM[0]
-                xsDataResultControlImageQualityIndicator = tupleMOSFLM[1]
-                edPluginMOSFLMIndexing.synchronize()
-                if not edPluginMOSFLMIndexing.isFailure():
-                    xsDataMOSFLMOutput = edPluginMOSFLMIndexing.dataOutput
-                    xsDataIndexingResult = EDHandlerXSDataMOSFLMv10.generateXSDataIndexingResult(xsDataMOSFLMOutput)
-                    selectedSolution = xsDataIndexingResult.selectedSolution
-                    if selectedSolution is not None:
-                        xsDataResultControlImageQualityIndicator.selectedIndexingSolution = selectedSolution
+                self.edPluginISPyB = self.loadPlugin(self.strISPyBPluginName)
+                self.edPluginISPyB.dataInput = xsDataInputStoreListOfImageQualityIndicators
+                self.edPluginISPyB.execute()
+            #
+            if bDoIndexing:
+                # Find the 5 most intensive images (TIS):
+                listImage = []
+                # Check that we have dozor_score from all images:
+                has_dozor_score = True
+                for imageQualityIndicators in self.xsDataResultControlImageQualityIndicators.imageQualityIndicators:
+                    if imageQualityIndicators.dozor_score is None:
+                        has_dozor_score = False
+                if has_dozor_score:
+                    listSorted = sorted(self.xsDataResultControlImageQualityIndicators.imageQualityIndicators,
+                                        key=lambda imageQualityIndicators: imageQualityIndicators.dozor_score.value)
+                else:
+                    listSorted = sorted(self.xsDataResultControlImageQualityIndicators.imageQualityIndicators,
+                                        key=lambda imageQualityIndicators: imageQualityIndicators.totalIntegratedSignal.value)
+                for xsDataResultControlImageQualityIndicator in listSorted[-5:]:
+                    if xsDataResultControlImageQualityIndicator.dozor_score.value > 1:
+                        xsDataInputReadImageHeader = XSDataInputReadImageHeader()
+                        xsDataInputReadImageHeader.image = XSDataFile(xsDataResultControlImageQualityIndicator.image.path)
+                        self.edPluginReadImageHeader = self.loadPlugin(self.strPluginReadImageHeaderName)
+                        self.edPluginReadImageHeader.dataInput = xsDataInputReadImageHeader
+                        self.edPluginReadImageHeader.executeSynchronous()
+                        xsDataResultReadImageHeader = self.edPluginReadImageHeader.dataOutput
+                        if xsDataResultReadImageHeader is not None:
+                            xsDataSubWedge = xsDataResultReadImageHeader.subWedge
+                            self.xsDataCollection = XSDataCollection()
+                            self.xsDataCollection.addSubWedge(xsDataSubWedge)
+                            xsDataIndexingInput = XSDataIndexingInput()
+                            xsDataIndexingInput.setDataCollection(self.xsDataCollection)
+                            xsDataMOSFLMIndexingInput = EDHandlerXSDataMOSFLMv10.generateXSDataMOSFLMInputIndexing(xsDataIndexingInput)
+                            edPluginMOSFLMIndexing = self.loadPlugin(self.strIndexingMOSFLMPluginName)
+                            self.listPluginMOSFLM.append([edPluginMOSFLMIndexing, xsDataResultControlImageQualityIndicator])
+                            edPluginMOSFLMIndexing.setDataInput(xsDataMOSFLMIndexingInput)
+                            edPluginMOSFLMIndexing.execute()
+                for tupleMOSFLM in self.listPluginMOSFLM:
+                    edPluginMOSFLMIndexing = tupleMOSFLM[0]
+                    xsDataResultControlImageQualityIndicator = tupleMOSFLM[1]
+                    edPluginMOSFLMIndexing.synchronize()
+                    if not edPluginMOSFLMIndexing.isFailure():
+                        xsDataMOSFLMOutput = edPluginMOSFLMIndexing.dataOutput
+                        xsDataIndexingResult = EDHandlerXSDataMOSFLMv10.generateXSDataIndexingResult(xsDataMOSFLMOutput)
+                        selectedSolution = xsDataIndexingResult.selectedSolution
+                        if selectedSolution is not None:
+                            xsDataResultControlImageQualityIndicator.selectedIndexingSolution = selectedSolution
 
-#                print xsDataIndexingResult.marshal()
-#                xsDataResultISPyB = edPluginISPyB.dataOutput
-#                if xsDataResultISPyB is not None:
-                # print xsDataResultISPyB.marshal()
 
 
 

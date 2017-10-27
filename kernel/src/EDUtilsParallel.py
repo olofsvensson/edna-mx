@@ -19,7 +19,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 from __future__ import with_statement
@@ -62,7 +62,7 @@ class EDUtilsParallel(object):
             if cls._iActualNbCPU is not None:
                 return
             iNbCPU = None
-            #The best way: using python 2.6 or later
+            # The best way: using python 2.6 or later
             try:
                 import multiprocessing
                 iNbCPU = multiprocessing.cpu_count()
@@ -149,7 +149,7 @@ class EDUtilsParallel(object):
                 except OSError:
                     iNbCPU = None
 
-            #if nothing else works ...
+            # if nothing else works ...
             if iNbCPU is None:
                 iNbCPU = 1
 
@@ -206,7 +206,7 @@ class EDUtilsParallel(object):
                 cls._iNbThreads = _iNbThread
                 cls._semaphoreNbThreads = Semaphore(_iNbThread)
             else:
-                if cls._iNbThreads != _iNbThread:
+                if _iNbThread is not None and cls._iNbThreads != _iNbThread:
                     EDVerbose.WARNING("cls._semaphoreNbThreads was already initialized to %s, not changing to %s" % (cls._iNbThreads, _iNbThread))
 
 

@@ -24,12 +24,9 @@
 		<value>400</value>
 	</endNo>
     <batchSize>
-        <value>100</value>
+        <value>90</value>
     </batchSize>
     <fastMesh>
         <value>true</value>
     </fastMesh>
-    <doDistlSignalStrength>
-        <value>false</value>
-    </doDistlSignalStrength>
 </XSDataInputControlImageQualityIndicators>

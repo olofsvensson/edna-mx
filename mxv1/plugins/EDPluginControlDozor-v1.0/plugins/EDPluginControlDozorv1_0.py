@@ -155,7 +155,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             else:
                 batchSize = self.dataInput.batchSize.value
             dictImage = self.createImageDict(self.dataInput)
-        self.screen("Batch size: {0}".format(batchSize))
+        self.screen("Dozor batch size: {0}".format(batchSize))
         if self.dataInput.hdf5BatchSize is not None:
             self.hdf5BatchSize = self.dataInput.hdf5BatchSize.value
         listAllBatches = self.createListOfBatches(dictImage.keys(), batchSize)

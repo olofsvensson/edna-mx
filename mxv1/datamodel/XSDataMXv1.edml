@@ -84,9 +84,14 @@ package XSDataMXv1 {
 			doDistlSignalStrength : XSDataBoolean optional
 			doIndexing : XSDataBoolean optional
 			doUploadToIspyb : XSDataBoolean optional
-			image : XSDataImage []
+			image : XSDataImage [] optional
 			batchSize : XSDataInteger optional
 			fastMesh : XSDataBoolean optional
+			wedgeNumber : XSDataInteger optional
+			directory : XSDataFile optional
+			template : XSDataString optional
+			startNo : XSDataInteger optional
+			endNo : XSDataInteger optional
 		}
 
 		complex type XSDataInputControlXDSGenerateBackgroundImage extends XSDataInput {

@@ -31,6 +31,7 @@ __date__ = "20131129"
 __status__ = "beta"
 
 import os
+import tempfile
 
 from EDAssert                        import EDAssert
 from EDTestCasePluginUnit            import EDTestCasePluginUnit
@@ -59,6 +60,10 @@ class EDTestCasePluginUnitDozorv1_0(EDTestCasePluginUnit):
 
     def test_parseOutput(self):
         edPlugin = self.getPlugin()
+        edPlugin.startingAngle = 10.0
+        edPlugin.firstImageNumber = 1
+        edPlugin.oscillationRange = 0.1
+        edPlugin.overlap = 0.0
         xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "Dozorv1_0-138.log"))
         EDAssert.equal(100, len(xsDataResult.imageDozor), "Result from 100 images")
         EDAssert.equal(True, xsDataResult.halfDoseTime is not None, "Half dose time v1.3.8")
