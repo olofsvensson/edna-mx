@@ -240,8 +240,8 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                     continueLoop = True
                     while continueLoop:
                         directory = os.path.dirname(strPathToFirstImage)
-                        firstImage = listOfImagesInBatch[0].number.value
-                        lastImage = listOfImagesInBatch[-1].number.value
+                        firstImage = EDUtilsImage.getImageNumber(listOfImagesInBatch[0].path.value)
+                        lastImage = EDUtilsImage.getImageNumber(listOfImagesInBatch[-1].path.value)
                         xsDataInputH5ToCBF = XSDataInputH5ToCBF()
                         xsDataInputH5ToCBF.hdf5File = XSDataFile(listOfImagesInBatch[0].path)
                         xsDataInputH5ToCBF.hdf5ImageNumber = XSDataInteger(1)
@@ -254,17 +254,17 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                         edPluginH5ToCBF.synchronize()
                         outputCBFFileTemplate = edPluginH5ToCBF.dataOutput.outputCBFFileTemplate
                         if outputCBFFileTemplate is not None:
-                            lastCbfFile = outputCBFFileTemplate.path.value.replace("######", "{0:06d}".format(listOfImagesInBatch[-1].number.value))
+                            lastCbfFile = outputCBFFileTemplate.path.value.replace("######", "{0:06d}".format(EDUtilsImage.getImageNumber(listOfImagesInBatch[-1].path.value)))
                             strPathToImage = os.path.join(directory, lastCbfFile)
     #                        print(cbfFile.path.value)
                             if os.path.exists(strPathToImage):
                                 # Rename all images
                                 for image in listOfImagesInBatch:
-                                    imageNumber = image.number.value
+                                    imageNumber = EDUtilsImage.getImageNumber(image.path.value)
                                     oldPath = os.path.join(directory, outputCBFFileTemplate.path.value.replace("######", "{0:06d}".format(imageNumber)))
                                     newPath = os.path.join(directory, outputCBFFileTemplate.path.value.replace("######", "{0:04d}".format(imageNumber)))
                                     os.rename(oldPath, newPath)
-                                lastCbfFile = outputCBFFileTemplate.path.value.replace("######", "{0:04d}".format(listOfImagesInBatch[-1].number.value))
+                                lastCbfFile = outputCBFFileTemplate.path.value.replace("######", "{0:04d}".format(EDUtilsImage.getImageNumber(listOfImagesInBatch[-1].path.value)))
                                 strPathToImage = os.path.join(directory, lastCbfFile)
                                 self.screen("Image has been converted to CBF file: {0}".format(strPathToImage))
                                 continueLoop = False
@@ -280,7 +280,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                     strPathToImage = image.path.value
                     # Check if we should run distl.signalStrength
                     xsDataImageNew = XSDataImage(XSDataString(strPathToImage))
-                    xsDataImageNew.number = image.number
+                    xsDataImageNew.number = XSDataInteger(EDUtilsImage.getImageNumber(image.path.value))
                     edPluginPluginExecImageQualityIndicator = None
                     if bDoDistlSignalStrength:
                         if self.bUseThinClient:
