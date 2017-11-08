@@ -103,7 +103,7 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
         self.xsDataResultControlImageQualityIndicators = None
         self.edPluginMXWaitFile = None
         # Default time out for wait file
-        self.fMXWaitFileTimeOut = 30  # s
+        self.fMXWaitFileTimeOut = 120  # s
         # Flag for using the thin client - disabled as of 2016/07/20
         self.bUseThinClient = False
         self.edPluginISPyB = None
