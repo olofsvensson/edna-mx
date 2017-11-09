@@ -260,6 +260,7 @@ class EDPluginControlImageQualityIndicatorsv1_4(EDPluginControl):
                             if os.path.exists(strPathToImage):
                                 # Rename all images
                                 for image in listOfImagesInBatch:
+                                    image.path.value = image.path.value.replace(".h5", ".cbf")
                                     imageNumber = EDUtilsImage.getImageNumber(image.path.value)
                                     oldPath = os.path.join(directory, outputCBFFileTemplate.path.value.replace("######", "{0:06d}".format(imageNumber)))
                                     newPath = os.path.join(directory, outputCBFFileTemplate.path.value.replace("######", "{0:04d}".format(imageNumber)))
