@@ -195,7 +195,7 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
             for image in listOfImagesInBatch:
                 strPathToImage = image.path.value
                 # If Eiger, just wait for the h5 file
-                if "id30a3" in strPathToImage:
+                if strPathToImage.endswith(".h5"):
                     h5MasterFilePath, h5DataFilePath, hdf5ImageNumber = self.getH5FilePath(strPathToImage,
                                                                                            batchSize=batchSize,
                                                                                            isFastMesh=isFastMesh)
@@ -236,7 +236,7 @@ class EDPluginControlImageQualityIndicatorsv1_5(EDPluginControl):
                         self.setFailure()
             if not self.isFailure():
                 strPathToFirstImage = listOfImagesInBatch[0].path.value
-                if "id30a3" in strPathToImage:
+                if strPathToImage.endswith(".h5"):
                     indexLoop = 1
                     continueLoop = True
                     while continueLoop:
