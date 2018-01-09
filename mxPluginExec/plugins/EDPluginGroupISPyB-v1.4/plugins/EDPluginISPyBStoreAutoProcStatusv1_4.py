@@ -37,7 +37,7 @@ from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDPluginISPyBv1_4 import EDPluginISPyBv1_4
 
 from suds.client import Client
-from suds.transport.http import HttpAuthenticated
+from suds.transport.https import HttpAuthenticated
 from suds.sax.date import DateTime
 
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProcStatus

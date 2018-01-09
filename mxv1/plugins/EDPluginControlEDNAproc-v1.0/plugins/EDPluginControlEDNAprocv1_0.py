@@ -26,7 +26,7 @@ __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
 
-WS_URL = 'http://ispyb.esrf.fr:8080/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl'
+WS_URL = 'https://ispyb.esrf.fr/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl'
 
 import os
 import os.path
