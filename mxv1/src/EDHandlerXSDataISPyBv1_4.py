@@ -452,7 +452,7 @@ class EDHandlerXSDataISPyBv1_4(object):
         integration = AutoProcIntegration()
         if integrationId is not None:
             integration.autoProcIntegrationId = integrationId
-            integration.anomalous = isAnomalous
+        integration.anomalous = isAnomalous
         integrationContainer.AutoProcIntegration = integration
         image = Image()
         image.dataCollectionId = dataCollectionId
@@ -467,3 +467,36 @@ class EDHandlerXSDataISPyBv1_4(object):
         inputStoreAutoProc = XSDataInputStoreAutoProc()
         inputStoreAutoProc.AutoProcContainer = autoProcContainer
         return inputStoreAutoProc
+
+    @staticmethod
+    def setIspybToRunning(parent, dataCollectionId=None, processingCommandLine=None, processingPrograms=None, isAnom=False, timeStart=None):
+        if isAnom:
+            anomString = "anom"
+        else:
+            anomString = "noanom"
+        inputStoreAutoProcAnom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
+                dataCollectionId, None, isAnomalous=isAnom,
+                programId=None, status="RUNNING", timeStart=timeStart,
+                processingCommandLine=processingCommandLine, processingPrograms=processingPrograms)
+        edPluginStoreAutoproc = parent.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}_started".format(anomString))
+        edPluginStoreAutoproc.dataInput = inputStoreAutoProcAnom
+        edPluginStoreAutoproc.executeSynchronous()
+        autoProcIntegrationId = edPluginStoreAutoproc.dataOutput.autoProcIntegrationId.value
+        autoProcProgramId = edPluginStoreAutoproc.dataOutput.autoProcProgramId.value
+        return autoProcIntegrationId, autoProcProgramId
+
+    @staticmethod
+    def setIspybToFailed(parent, dataCollectionId=None, autoProcIntegrationId=None, autoProcProgramId=None,
+                         processingCommandLine=None, processingPrograms=None,
+                         isAnom=False, timeStart=None, timeEnd=None):
+        if isAnom:
+            anomString = "anom"
+        else:
+            anomString = "noanom"
+        inputStoreAutoProcAnom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
+                dataCollectionId, autoProcIntegrationId, isAnomalous=isAnom,
+                programId=autoProcProgramId, status="FAILED", timeStart=timeStart, timeEnd=timeEnd,
+                processingCommandLine=processingCommandLine, processingPrograms=processingPrograms)
+        edPluginStoreAutoproc = parent.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}_failed".format(anomString))
+        edPluginStoreAutoproc.dataInput = inputStoreAutoProcAnom
+        edPluginStoreAutoproc.executeSynchronous()
