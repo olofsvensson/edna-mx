@@ -293,9 +293,8 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         if self.dataInput.dataCollectionId is not None:
             # Set ISPyB to started
             self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom = \
-              EDHandlerXSDataISPyBv1_4.setIspybToRunning(dataCollectionId=self.dataInput.dataCollectionId.value,
-                                                         processingPrograms=self.processingPrograms,
-                                                         isAnom=True,
+              EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                                                         processingPrograms=self.processingPrograms, isAnom=True,
                                                          timeStart=self.timeStart)
 
         if self.doAnomAndNonanom:
@@ -304,10 +303,9 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             if self.dataInput.dataCollectionId is not None:
                 # Set ISPyB to started
                 self.autoProcIntegrationIdNoanom, self.autoProcProgramIdNoanom = \
-                    EDHandlerXSDataISPyBv1_4.setIspybToRunning(dataCollectionId=self.dataInput.dataCollectionId.value,
-                                                             processingPrograms=self.processingPrograms,
-                                                             isAnom=False,
-                                                             timeStart=self.timeStart)
+                    EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                                                               processingPrograms=self.processingPrograms, isAnom=False,
+                                                               timeStart=self.timeStart)
         self.edPluginExecXDSAPPAnom.synchronize()
         xsDataResultXDSAPPAnom = self.edPluginExecXDSAPPAnom.dataOutput
         # Run XSCALE even if XSCALE.LP is present
