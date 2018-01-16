@@ -49,6 +49,7 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         self.setXSDataInputClass(XSDataInputXia2DIALS)
         self.setDataOutput(XSDataResultXia2DIALS())
         self.maxNoProcessors = None
+        self.goniometerAxes = None
 
     def checkParameters(self):
         """
@@ -62,6 +63,7 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginExecXia2DIALSv1_0.configure")
         self.maxNoProcessors = self.config.get("maxNoProcessors", self.maxNoProcessors)
+        self.goniometerAxes = self.config.get("goniometerAxes", self.goniometerAxes)
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
@@ -104,6 +106,8 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         if self.maxNoProcessors is not None:
             strCommandText += " multiprocessing.nproc={0}".format(self.maxNoProcessors)
 
+        if self.goniometerAxes is not None:
+            strCommandText += " goniometer.axes={0}".format(self.goniometerAxes)
 
         return strCommandText
 
