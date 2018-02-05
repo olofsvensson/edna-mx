@@ -23,35 +23,34 @@
 #
 
 
-__authors__ = [ "Olof Svensson" ]
+__authors__ = ["Olof Svensson"]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os
 
-
-from EDUtilsFile import EDUtilsFile
-from EDAssert                        import EDAssert
-from EDTestCasePluginUnit            import EDTestCasePluginUnit
-
-from XSDataAutoPROCv1_0 import XSDataInputAutoPROC
-
-class EDTestCasePluginUnitAutoPROCv1_0(EDTestCasePluginUnit):
+from EDAssert                         import EDAssert
+from EDTestCasePluginExecute          import EDTestCasePluginExecute
 
 
-    def __init__(self, _strTestName=None):
-        EDTestCasePluginUnit.__init__(self, "EDPluginExecAutoPROCv1_0")
-        self.strDataPath = self.getPluginTestsDataHome()
 
-    def test_generateCommandLine(self):
-        edPlugin = self.getPlugin()
-        strInputXML = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataInputAutoPROC_reference.xml"))
-        xsDataInput = XSDataInputAutoPROC.parseString(strInputXML)
-        strCommandLine = edPlugin.generateCommandLine(xsDataInput)
-        # print(strCommandLine)
-        EDAssert.equal("-B -xml -nthreads 12 autoPROC_ScaleWithXscale='yes' -Id 1088454A,/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5,xtal5w1_1_####.cbf,1,50 -R 5.0 2.0", strCommandLine, "Reference data input")
+class EDTestCasePluginExecuteAutoPROCv1_0_symm(EDTestCasePluginExecute):
+
+    def __init__(self, _oalStringTestName=None):
+        EDTestCasePluginExecute.__init__(self, "EDPluginExecAutoPROCv1_0")
+        self.setConfigurationFile(self.getRefConfigFile())
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputAutoPROC_symm.xml"))
+#        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataResultDozor_reference.xml"))
+
+    def preProcess(self):
+        EDTestCasePluginExecute.preProcess(self)
+#        self.loadTestImage([ "thermn_2_7_0001.cbf", "thermn_2_7_0002.cbf" ])
+
+    def testExecute(self):
+        self.run()
 
 
     def process(self):
-        self.addTestMethod(self.test_generateCommandLine)
+        self.addTestMethod(self.testExecute)
+

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Mar 14 04:23::56 2016 by EDGenerateDS.
+# Generated Mon Feb 5 08:45::17 2018 by EDGenerateDS.
 #
 
 import os, sys
@@ -330,7 +330,7 @@ class XSDataAutoPROCIdentifier(XSData):
 
 
 class XSDataInputAutoPROC(XSDataInput):
-    def __init__(self, configuration=None, masterH5=None, refMTZ=None, anomalous=None, highResolutionLimit=None, lowResolutionLimit=None, identifier=None):
+    def __init__(self, configuration=None, cell=None, symm=None, masterH5=None, refMTZ=None, anomalous=None, highResolutionLimit=None, lowResolutionLimit=None, identifier=None):
         XSDataInput.__init__(self, configuration)
         if identifier is None:
             self._identifier = []
@@ -373,6 +373,20 @@ class XSDataInputAutoPROC(XSDataInput):
             self._masterH5 = masterH5
         else:
             strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'masterH5' is not XSDataFile but %s" % self._masterH5.__class__.__name__
+            raise BaseException(strMessage)
+        if symm is None:
+            self._symm = None
+        elif symm.__class__.__name__ == "XSDataString":
+            self._symm = symm
+        else:
+            strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'symm' is not XSDataString but %s" % self._symm.__class__.__name__
+            raise BaseException(strMessage)
+        if cell is None:
+            self._cell = None
+        elif cell.__class__.__name__ == "XSDataString":
+            self._cell = cell
+        else:
+            strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'cell' is not XSDataString but %s" % self._cell.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'identifier' attribute
     def getIdentifier(self): return self._identifier
@@ -467,6 +481,30 @@ class XSDataInputAutoPROC(XSDataInput):
             raise BaseException(strMessage)
     def delMasterH5(self): self._masterH5 = None
     masterH5 = property(getMasterH5, setMasterH5, delMasterH5, "Property for masterH5")
+    # Methods and properties for the 'symm' attribute
+    def getSymm(self): return self._symm
+    def setSymm(self, symm):
+        if symm is None:
+            self._symm = None
+        elif symm.__class__.__name__ == "XSDataString":
+            self._symm = symm
+        else:
+            strMessage = "ERROR! XSDataInputAutoPROC.setSymm argument is not XSDataString but %s" % symm.__class__.__name__
+            raise BaseException(strMessage)
+    def delSymm(self): self._symm = None
+    symm = property(getSymm, setSymm, delSymm, "Property for symm")
+    # Methods and properties for the 'cell' attribute
+    def getCell(self): return self._cell
+    def setCell(self, cell):
+        if cell is None:
+            self._cell = None
+        elif cell.__class__.__name__ == "XSDataString":
+            self._cell = cell
+        else:
+            strMessage = "ERROR! XSDataInputAutoPROC.setCell argument is not XSDataString but %s" % cell.__class__.__name__
+            raise BaseException(strMessage)
+    def delCell(self): self._cell = None
+    cell = property(getCell, setCell, delCell, "Property for cell")
     def export(self, outfile, level, name_='XSDataInputAutoPROC'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -489,6 +527,10 @@ class XSDataInputAutoPROC(XSDataInput):
             self.refMTZ.export(outfile, level, name_='refMTZ')
         if self._masterH5 is not None:
             self.masterH5.export(outfile, level, name_='masterH5')
+        if self._symm is not None:
+            self.symm.export(outfile, level, name_='symm')
+        if self._cell is not None:
+            self.cell.export(outfile, level, name_='cell')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -524,6 +566,16 @@ class XSDataInputAutoPROC(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setMasterH5(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'symm':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setSymm(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cell':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setCell(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

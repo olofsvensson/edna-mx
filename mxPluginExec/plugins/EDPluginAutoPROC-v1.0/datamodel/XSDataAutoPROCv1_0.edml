@@ -25,6 +25,8 @@ complex type XSDataInputAutoPROC extends XSDataInput {
 	anomalous : XSDataBoolean optional
 	refMTZ : XSDataFile optional
 	masterH5 : XSDataFile optional
+	symm : XSDataString optional
+	cell : XSDataString optional
 }
 
 complex type XSDataResultAutoPROC extends XSDataResult {

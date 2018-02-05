@@ -147,5 +147,11 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         refMTZ = _xsDataInputAutoPROC.refMTZ
         if refMTZ is not None:
             strCommandText += " -ref {0}".format(refMTZ.path.value)
+        # Forced space group
+        if _xsDataInputAutoPROC.symm is not None:
+            strCommandText += " symm=\"{0}\"".format(_xsDataInputAutoPROC.symm.value)
+        # Forced cell
+        if _xsDataInputAutoPROC.cell is not None:
+            strCommandText += " cell=\"{0}\"".format(_xsDataInputAutoPROC.cell.value)
 
         return strCommandText
