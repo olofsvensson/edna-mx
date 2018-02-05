@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<XSDataInputControlAutoPROC>
+	<idN>
+	  <value>1088454A</value>
+	</idN>
+	<dirN>
+	  <path>
+	    <value>/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5</value>
+	  </path>
+	</dirN>
+	<templateN>
+	  <value>xtal5w1_1_####.cbf</value>
+	</templateN>
+	<fromN>
+	  <value>1</value>
+	</fromN>
+	<toN>
+	  <value>50</value>
+	</toN>
+</XSDataInputControlAutoPROC>

@@ -17,6 +17,8 @@ complex type XSDataInputControlAutoPROC extends XSDataInput {
 	toN : XSDataInteger optional
 	processDirectory : XSDataFile optional
 	doAnomAndNonanom : XSDataBoolean optional
+	symm : XSDataString optional
+	cell : XSDataString optional
 }
 
 complex type XSDataResultControlAutoPROC extends XSDataResult {
