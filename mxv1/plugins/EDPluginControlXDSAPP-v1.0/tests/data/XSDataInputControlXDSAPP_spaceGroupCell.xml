@@ -3,4 +3,10 @@
   <dataCollectionId>
   	<value>2179444</value>
   </dataCollectionId>
+  <spaceGroup>
+  	<value>P1</value>
+  </spaceGroup>
+  <unitCell>
+  	<value>68.70 69.01 71.01 105.21 105.91 107.88</value>
+  </unitCell>
 </XSDataInputControlXia2DIALS>

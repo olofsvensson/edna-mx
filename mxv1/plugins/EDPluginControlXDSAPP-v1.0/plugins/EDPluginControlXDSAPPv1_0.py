@@ -39,6 +39,7 @@ from EDPluginControl import EDPluginControl
 from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
 from EDUtilsPath import EDUtilsPath
 from EDUtilsFile import EDUtilsFile
+from EDUtilsSymmetry import EDUtilsSymmetry
 
 from EDFactoryPlugin import edFactoryPlugin
 
@@ -104,6 +105,7 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.autoProcProgramIdAnom = None
         self.autoProcIntegrationIdNoanom = None
         self.autoProcProgramIdNoanom = None
+        self.xdsAppSpacegroup = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -146,6 +148,17 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.edPluginExecXDSAPPAnom = self.loadPlugin("EDPluginExecXDSAPPv1_0", "EDPluginExecXDSAPPv1_0_anom")
         if self.doAnomAndNonanom:
             self.edPluginExecXDSAPPNoanom = self.loadPlugin("EDPluginExecXDSAPPv1_0", "EDPluginExecXDSAPPv1_0_noanom")
+
+        # Check for space group and cell
+        if self.dataInput.spaceGroup is not None and self.dataInput.unitCell is not None:
+            spaceGroup = self.dataInput.spaceGroup.value
+            spaceGroupNumber = EDUtilsSymmetry.getITNumberFromSpaceGroupName(spaceGroup)
+            self.screen("Forcing space group {0} number {1}".format(spaceGroup, spaceGroupNumber))
+            unitCell = self.dataInput.unitCell.value
+            self.screen("Forcing unit cell {0}".format(unitCell))
+            self.xdsAppSpacegroup = "{0} {1}".format(spaceGroupNumber, unitCell)
+
+
 
 
     def process(self, _edObject=None):
@@ -273,10 +286,14 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         xsDataInputXDSAPPAnom = XSDataInputXDSAPP()
         xsDataInputXDSAPPAnom.anomalous = XSDataBoolean(True)
         xsDataInputXDSAPPAnom.image = XSDataFile(XSDataString(pathToStartImage))
+        if self.xdsAppSpacegroup is not None:
+            xsDataInputXDSAPPAnom.spacegroup = XSDataString(self.xdsAppSpacegroup)
         if self.doAnomAndNonanom:
             xsDataInputXDSAPPNoanom = XSDataInputXDSAPP()
             xsDataInputXDSAPPNoanom.anomalous = XSDataBoolean(False)
             xsDataInputXDSAPPNoanom.image = XSDataFile(XSDataString(pathToStartImage))
+            if self.xdsAppSpacegroup is not None:
+                xsDataInputXDSAPPNoanom.spacegroup = XSDataString(self.xdsAppSpacegroup)
 #        if isH5:
 #            masterFilePath = os.path.join(directory,
 #                                          self.eiger_template_to_master(template))

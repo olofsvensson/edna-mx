@@ -15,6 +15,7 @@ complex type XSDataInputXDSAPP extends XSDataInput {
 	startImageNumber : XSDataInteger optional
 	endImageNumber : XSDataInteger optional
 	anomalous : XSDataBoolean optional
+	spacegroup : XSDataString optional
 }
 
 complex type XSDataResultXDSAPP extends XSDataResult {

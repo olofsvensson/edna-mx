@@ -116,7 +116,11 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
             strCommandText += " --range=\"{0} {1}\"".format(_xsDataInputXDSAPP.startImageNumber.value,
                                                             _xsDataInputXDSAPP.endImageNumber.value)
 
+        if _xsDataInputXDSAPP.spacegroup is not None:
+            strCommandText += " --spacegroup=\"{0}\"".format(_xsDataInputXDSAPP.spacegroup.value)
+
         return strCommandText
+
 
     def parseOutputDirectory(self, _workingDirectory, _prefixRunNumber):
         xsDataResultXDSAPP = XSDataResultXDSAPP()

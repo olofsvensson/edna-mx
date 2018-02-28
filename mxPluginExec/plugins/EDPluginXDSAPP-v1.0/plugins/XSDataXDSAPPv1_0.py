@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Mar 3 02:29::49 2017 by EDGenerateDS.
+# Generated Fri Feb 23 04:47::19 2018 by EDGenerateDS.
 #
 
 import os, sys
@@ -17,6 +17,7 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
@@ -25,6 +26,7 @@ try:
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataResult
+    from XSDataCommon import XSDataString
 except ImportError as error:
     if strEdnaHome is not None:
         for strXsdName in dictLocation:
@@ -40,6 +42,7 @@ from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataResult
+from XSDataCommon import XSDataString
 
 
 
@@ -120,7 +123,7 @@ class MixedContainer(object):
 
 
 class XSDataInputXDSAPP(XSDataInput):
-    def __init__(self, configuration=None, anomalous=None, endImageNumber=None, startImageNumber=None, image=None):
+    def __init__(self, configuration=None, spacegroup=None, anomalous=None, endImageNumber=None, startImageNumber=None, image=None):
         XSDataInput.__init__(self, configuration)
         if image is None:
             self._image = None
@@ -149,6 +152,13 @@ class XSDataInputXDSAPP(XSDataInput):
             self._anomalous = anomalous
         else:
             strMessage = "ERROR! XSDataInputXDSAPP constructor argument 'anomalous' is not XSDataBoolean but %s" % self._anomalous.__class__.__name__
+            raise BaseException(strMessage)
+        if spacegroup is None:
+            self._spacegroup = None
+        elif spacegroup.__class__.__name__ == "XSDataString":
+            self._spacegroup = spacegroup
+        else:
+            strMessage = "ERROR! XSDataInputXDSAPP constructor argument 'spacegroup' is not XSDataString but %s" % self._spacegroup.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
@@ -198,6 +208,18 @@ class XSDataInputXDSAPP(XSDataInput):
             raise BaseException(strMessage)
     def delAnomalous(self): self._anomalous = None
     anomalous = property(getAnomalous, setAnomalous, delAnomalous, "Property for anomalous")
+    # Methods and properties for the 'spacegroup' attribute
+    def getSpacegroup(self): return self._spacegroup
+    def setSpacegroup(self, spacegroup):
+        if spacegroup is None:
+            self._spacegroup = None
+        elif spacegroup.__class__.__name__ == "XSDataString":
+            self._spacegroup = spacegroup
+        else:
+            strMessage = "ERROR! XSDataInputXDSAPP.setSpacegroup argument is not XSDataString but %s" % spacegroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpacegroup(self): self._spacegroup = None
+    spacegroup = property(getSpacegroup, setSpacegroup, delSpacegroup, "Property for spacegroup")
     def export(self, outfile, level, name_='XSDataInputXDSAPP'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -216,6 +238,8 @@ class XSDataInputXDSAPP(XSDataInput):
             self.endImageNumber.export(outfile, level, name_='endImageNumber')
         if self._anomalous is not None:
             self.anomalous.export(outfile, level, name_='anomalous')
+        if self._spacegroup is not None:
+            self.spacegroup.export(outfile, level, name_='spacegroup')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -241,6 +265,11 @@ class XSDataInputXDSAPP(XSDataInput):
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setAnomalous(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spacegroup':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setSpacegroup(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
