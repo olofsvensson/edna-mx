@@ -132,6 +132,16 @@ class EDUtilsSymmetry:
         return iITNumber
 
     @staticmethod
+    def getSpaceGroupNameFromITNumber(_iITNumber):
+        strSpaceGroupName = None
+        for strLine in EDUtilsSymmetry.getSymOpLib().splitlines():
+            listItems = strLine.split(" ")
+            if len(listItems) > 3:
+                if _iITNumber == int(listItems[0]):
+                    strSpaceGroupName = listItems[3]
+        return strSpaceGroupName
+
+    @staticmethod
     def getSymOpLib():
         """
         ccp4/lib/data/symop.lib file as of 20170831 

@@ -63,11 +63,25 @@ class EDTestCaseEDUtilsSymmetry(EDTestCase):
         EDAssert.equal(195, EDUtilsSymmetry.getITNumberFromSpaceGroupName("P23"), "ITNumber from space group P23")
         EDAssert.equal(196, EDUtilsSymmetry.getITNumberFromSpaceGroupName("F23"), "ITNumber from space group F23")
 
+    def testGetSpaceGroupNameFromITNumber(self):
+        EDAssert.equal("P1", EDUtilsSymmetry.getSpaceGroupNameFromITNumber(1), "Space group from from it number 1")
+        EDAssert.equal("P2", EDUtilsSymmetry.getSpaceGroupNameFromITNumber(3), "Space group from from it number 3")
+        EDAssert.equal("C2", EDUtilsSymmetry.getSpaceGroupNameFromITNumber(5), "Space group from from it number 5")
+        EDAssert.equal("P222", EDUtilsSymmetry.getSpaceGroupNameFromITNumber(16), "Space group from from it number 16")
+        EDAssert.equal("C222", EDUtilsSymmetry.getSpaceGroupNameFromITNumber(21), "Space group from from it number 21")
+        EDAssert.equal("F222", EDUtilsSymmetry.getSpaceGroupNameFromITNumber(22), "Space group from from it number 22")
+        EDAssert.equal("P4", EDUtilsSymmetry.getSpaceGroupNameFromITNumber(75), "Space group from from it number 75")
+        EDAssert.equal("I4", EDUtilsSymmetry.getSpaceGroupNameFromITNumber(79), "Space group from from it number 79")
+        EDAssert.equal("P3", EDUtilsSymmetry.getSpaceGroupNameFromITNumber(143), "Space group from from it number 143")
+        EDAssert.equal("H3", EDUtilsSymmetry.getSpaceGroupNameFromITNumber(146), "Space group from from it number 146")
+        EDAssert.equal("P23", EDUtilsSymmetry.getSpaceGroupNameFromITNumber(195), "Space group from from it number 195")
+        EDAssert.equal("F23", EDUtilsSymmetry.getSpaceGroupNameFromITNumber(196), "Space group from from it number 196")
 
 
     def process(self):
         self.addTestMethod(self.testGetMinimumSymmetrySpaceGroupFromBravaisLattice)
         self.addTestMethod(self.testGetITNumberFromSpaceGroupName)
+        self.addTestMethod(self.testGetSpaceGroupNameFromITNumber)
 
 
 if __name__ == '__main__':
