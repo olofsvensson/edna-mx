@@ -605,7 +605,7 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         dictLog = {}
         strLog = EDUtilsFile.readFile(_logFile)
         for strLine in strLog.split("\n"):
-            if "Selected space group" in strLine and not "spaceGroup" in dictLog:
+            if ("Selected space group" in strLine or "Space group number given by user" in strLine) and not "spaceGroup" in dictLog:
                 listLine = strLine.split()
                 dictLog["spaceGroup"] = " ".join(listLine[3:-1])
                 dictLog["spaceGroupNumber"] = int(listLine[-1].replace("(", "").replace(")", ""))
