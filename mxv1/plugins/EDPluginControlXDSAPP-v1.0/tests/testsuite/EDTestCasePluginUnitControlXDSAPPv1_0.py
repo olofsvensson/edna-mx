@@ -51,8 +51,18 @@ class EDTestCasePluginUnitControlXDSAPPv1_0(EDTestCasePluginUnit):
         self.strDataPath = self.getPluginTestsDataHome()
 
     def test_parseLogFile(self):
+        # Not forced space group
         edPlugin = self.getPlugin()
         logFile = os.path.join(self.strDataPath, "results_xtal5w1_1.txt")
+        dictLog = edPlugin.parseLogFile(logFile)
+        # pprint.pprint(dictLog)
+        for item in ["spaceGroup", "spaceGroupNumber",
+                     "cellA", "cellB", "cellC",
+                     "cellAlpha", "cellBeta", "cellGamma"]:
+            EDAssert.equal(True, item in dictLog, item)
+        # Forced space group
+        edPlugin = self.getPlugin()
+        logFile = os.path.join(self.strDataPath, "results_t1_1.txt")
         dictLog = edPlugin.parseLogFile(logFile)
         # pprint.pprint(dictLog)
         for item in ["spaceGroup", "spaceGroupNumber",

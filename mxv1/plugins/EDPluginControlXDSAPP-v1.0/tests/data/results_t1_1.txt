@@ -1,0 +1,89 @@
+
+-------------------------------------------------------------------
+
+Processing summary for data set t1_1
+ 2018-02-28 09:55:31
+-------------------------------------------------------------------
+
+Things you may want to check:
+
+ SG_no set manually
+ Incomplete data
+ Indexing (large integer offset)
+
+
+Images in /mntdirect/_data_visitor/mx415/id30a2/20180228/RAW_DATA/t1
+
+
+Table 1 like summary 
+-------------------------------------------------------------------
+
+    Space group                            P1 (1)                                
+    Unit cell parameters [A]               68.36 68.74 68.66 109.24 109.64 109.45
+    Resolution limit [A]                   32.41-1.43 (1.52-1.43)                
+    No. of reflections                     19998                                 
+    No. of uniques                         19998                                 
+    Multiplicity                           1.0                                   
+    I/sigI                                 0.00 (0.00)                           
+    R_meas [%]                             -99.9 (-99.9)                         
+    Completeness [%]                       5.6 (0.6)                             
+    B(Wilson) [A^2]                        24.28                                 
+    Mosaicity [deg]                        0.519                                 
+    CC(1/2)                                0.0 (0.0)                             
+    ISa                                    50.00                                 
+
+
+Result files generated for CCP4, CNS, SHELX
+-------------------------------------------------------------------
+                                                                                 
+    t1_1_F.mtz                                                                   
+    t1_1_I.mtz                                                                   
+    t1_1_F_plus_F_minus.mtz                                                      
+    t1_1.hkl                                                                     
+    t1_1.cv                                                                      
+
+
+Intensity checks
+-------------------------------------------------------------------
+
+    SFCHECK                                                                      
+     Perfect twinning test                 2.2031                                
+     Pseudo translation                    not detected                          
+    Phenix.xtriage                                                               
+     <I^2>/<I>                             -                                     
+     <F>^2/<F^2>                           -                                     
+     <|E^2-1|>                             -                                     
+    Pointless                                                                    
+     |L|-test                                                                    
+     L^2-test                                                                    
+
+
+Indexing summary
+-------------------------------------------------------------------
+
+    No. of subtrees                        51                                    
+    No of strong spots in root subtree     1267                                  
+    No. of strong spots in subtree 2       2                                     
+    Quality value                          1.9                                   
+    Delta                                  0.2                                   
+    DH, DK, DL                             0.19, 0.15, 0.20                      
+    Selected origin                        0 0 0                                 
+    Computed (given) beam position         751.4, 848.8 (750.19, 853.83)         
+    Std. of spot position (refined)        0.47 (0.33)                           
+    Std. of spindle position (refined)     0.32 (0.27)                           
+    Detector distance (refined)            229.262 (228.42)                      
+    No. of spots indexed (total)           1261 (1319) (=95.6 %)                 
+
+
+Experimental settings
+-------------------------------------------------------------------
+
+    Space group number given by user:      1                                     
+    Detector used                          PILATUS MINIMUM_VALID_PIXEL_VALUE=0 OVERLOAD= 1048576 !PILATUS
+    Images processed                       1-100                                 
+    Detector distance [mm]                 229.262                               
+    Oscillation increment [deg]            0.2                                   
+    Wavelength [A]                         0.966                                 
+    Friedels law                           FALSE                                 
+
+
