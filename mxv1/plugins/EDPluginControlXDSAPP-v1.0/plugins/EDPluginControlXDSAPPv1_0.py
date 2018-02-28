@@ -604,17 +604,20 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
     def parseLogFile(self, _logFile):
         dictLog = {}
         strLog = EDUtilsFile.readFile(_logFile)
+        bSGNoSetManually = False
         for strLine in strLog.split("\n"):
-            if "Selected space group" in strLine and not "spaceGroup" in dictLog:
-                listLine = strLine.split()
-                dictLog["spaceGroup"] = " ".join(listLine[3:-1])
-                dictLog["spaceGroupNumber"] = int(listLine[-1].replace("(", "").replace(")", ""))
-            elif "Space group number given by user" in strLine and not "spaceGroup" in dictLog:
-                listLine = strLine.split()
-                itNumber = int(listLine[-1])
-                dictLog["spaceGroupNumber"] = itNumber
-                dictLog["spaceGroup"] = EDUtilsSymmetry.getSpaceGroupNameFromITNumber(itNumber)
-            elif "Unit cell parameters" in strLine:
+            if "SG_no set manually" in strLine:
+                bSGNoSetManually = True
+            if not "spaceGroup" in dictLog:
+                if "Selected space group" in strLine:
+                    listLine = strLine.split()
+                    dictLog["spaceGroup"] = " ".join(listLine[3:-1])
+                    dictLog["spaceGroupNumber"] = int(listLine[-1].replace("(", "").replace(")", ""))
+                elif bSGNoSetManually and "Space group" in strLine:
+                    listLine = strLine.split()
+                    dictLog["spaceGroup"] = " ".join(listLine[2:-1])
+                    dictLog["spaceGroupNumber"] = int(listLine[-1].replace("(", "").replace(")", ""))
+            if "Unit cell parameters" in strLine:
                 listLine = strLine.split()
                 dictLog["cellA"] = float(listLine[4])
                 dictLog["cellB"] = float(listLine[5])
