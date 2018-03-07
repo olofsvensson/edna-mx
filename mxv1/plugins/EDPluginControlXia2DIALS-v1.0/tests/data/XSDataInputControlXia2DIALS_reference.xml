@@ -8,4 +8,10 @@
             <value>/data/visitor/mx415/id30b/20170310/PROCESSED_DATA/LYS/LYS-CD015034_08/autoprocessing_LYS-CD015034_08_run4_1/XIA2_DIALS</value>
         </path>
     </processDirectory>
+  <startFrame>
+  	<value>1</value>
+  </startFrame>
+  <endFrame>
+  	<value>100</value>
+  </endFrame>
 </XSDataInputControlXia2DIALS>

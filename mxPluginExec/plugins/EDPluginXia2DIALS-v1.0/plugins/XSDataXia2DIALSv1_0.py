@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue May 31 01:47::14 2016 by EDGenerateDS.
+# Generated Wed Mar 7 10:35::49 2018 by EDGenerateDS.
 #
 
 import os, sys
@@ -16,12 +16,16 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
     from XSDataCommon import XSDataBoolean
+    from XSDataCommon import XSDataString
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
+    from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataResult
 except ImportError as error:
     if strEdnaHome is not None:
@@ -34,8 +38,10 @@ except ImportError as error:
     else:
         raise error
 from XSDataCommon import XSDataBoolean
+from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
+from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataResult
 
 
@@ -117,7 +123,7 @@ class MixedContainer(object):
 
 
 class XSDataInputXia2DIALS(XSDataInput):
-    def __init__(self, configuration=None, anomalous=None, image=None):
+    def __init__(self, configuration=None, endFrame=None, startFrame=None, unitCell=None, spaceGroup=None, anomalous=None, image=None):
         XSDataInput.__init__(self, configuration)
         if image is None:
             self._image = []
@@ -132,6 +138,34 @@ class XSDataInputXia2DIALS(XSDataInput):
             self._anomalous = anomalous
         else:
             strMessage = "ERROR! XSDataInputXia2DIALS constructor argument 'anomalous' is not XSDataBoolean but %s" % self._anomalous.__class__.__name__
+            raise BaseException(strMessage)
+        if spaceGroup is None:
+            self._spaceGroup = None
+        elif spaceGroup.__class__.__name__ == "XSDataString":
+            self._spaceGroup = spaceGroup
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS constructor argument 'spaceGroup' is not XSDataString but %s" % self._spaceGroup.__class__.__name__
+            raise BaseException(strMessage)
+        if unitCell is None:
+            self._unitCell = None
+        elif unitCell.__class__.__name__ == "XSDataString":
+            self._unitCell = unitCell
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS constructor argument 'unitCell' is not XSDataString but %s" % self._unitCell.__class__.__name__
+            raise BaseException(strMessage)
+        if startFrame is None:
+            self._startFrame = None
+        elif startFrame.__class__.__name__ == "XSDataInteger":
+            self._startFrame = startFrame
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS constructor argument 'startFrame' is not XSDataInteger but %s" % self._startFrame.__class__.__name__
+            raise BaseException(strMessage)
+        if endFrame is None:
+            self._endFrame = None
+        elif endFrame.__class__.__name__ == "XSDataInteger":
+            self._endFrame = endFrame
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS constructor argument 'endFrame' is not XSDataInteger but %s" % self._endFrame.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
@@ -178,6 +212,54 @@ class XSDataInputXia2DIALS(XSDataInput):
             raise BaseException(strMessage)
     def delAnomalous(self): self._anomalous = None
     anomalous = property(getAnomalous, setAnomalous, delAnomalous, "Property for anomalous")
+    # Methods and properties for the 'spaceGroup' attribute
+    def getSpaceGroup(self): return self._spaceGroup
+    def setSpaceGroup(self, spaceGroup):
+        if spaceGroup is None:
+            self._spaceGroup = None
+        elif spaceGroup.__class__.__name__ == "XSDataString":
+            self._spaceGroup = spaceGroup
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS.setSpaceGroup argument is not XSDataString but %s" % spaceGroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpaceGroup(self): self._spaceGroup = None
+    spaceGroup = property(getSpaceGroup, setSpaceGroup, delSpaceGroup, "Property for spaceGroup")
+    # Methods and properties for the 'unitCell' attribute
+    def getUnitCell(self): return self._unitCell
+    def setUnitCell(self, unitCell):
+        if unitCell is None:
+            self._unitCell = None
+        elif unitCell.__class__.__name__ == "XSDataString":
+            self._unitCell = unitCell
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS.setUnitCell argument is not XSDataString but %s" % unitCell.__class__.__name__
+            raise BaseException(strMessage)
+    def delUnitCell(self): self._unitCell = None
+    unitCell = property(getUnitCell, setUnitCell, delUnitCell, "Property for unitCell")
+    # Methods and properties for the 'startFrame' attribute
+    def getStartFrame(self): return self._startFrame
+    def setStartFrame(self, startFrame):
+        if startFrame is None:
+            self._startFrame = None
+        elif startFrame.__class__.__name__ == "XSDataInteger":
+            self._startFrame = startFrame
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS.setStartFrame argument is not XSDataInteger but %s" % startFrame.__class__.__name__
+            raise BaseException(strMessage)
+    def delStartFrame(self): self._startFrame = None
+    startFrame = property(getStartFrame, setStartFrame, delStartFrame, "Property for startFrame")
+    # Methods and properties for the 'endFrame' attribute
+    def getEndFrame(self): return self._endFrame
+    def setEndFrame(self, endFrame):
+        if endFrame is None:
+            self._endFrame = None
+        elif endFrame.__class__.__name__ == "XSDataInteger":
+            self._endFrame = endFrame
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS.setEndFrame argument is not XSDataInteger but %s" % endFrame.__class__.__name__
+            raise BaseException(strMessage)
+    def delEndFrame(self): self._endFrame = None
+    endFrame = property(getEndFrame, setEndFrame, delEndFrame, "Property for endFrame")
     def export(self, outfile, level, name_='XSDataInputXia2DIALS'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -192,6 +274,14 @@ class XSDataInputXia2DIALS(XSDataInput):
             warnEmptyAttribute("image", "XSDataFile")
         if self._anomalous is not None:
             self.anomalous.export(outfile, level, name_='anomalous')
+        if self._spaceGroup is not None:
+            self.spaceGroup.export(outfile, level, name_='spaceGroup')
+        if self._unitCell is not None:
+            self.unitCell.export(outfile, level, name_='unitCell')
+        if self._startFrame is not None:
+            self.startFrame.export(outfile, level, name_='startFrame')
+        if self._endFrame is not None:
+            self.endFrame.export(outfile, level, name_='endFrame')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -207,6 +297,26 @@ class XSDataInputXia2DIALS(XSDataInput):
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setAnomalous(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spaceGroup':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setSpaceGroup(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'unitCell':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setUnitCell(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'startFrame':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setStartFrame(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'endFrame':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setEndFrame(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

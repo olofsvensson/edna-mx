@@ -146,22 +146,28 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             ispybDataCollection = self.edPluginRetrieveDataCollection.dataOutput.dataCollection
             directory = ispybDataCollection.imageDirectory
             template = ispybDataCollection.fileTemplate.replace("%04d", "####")
-            imageNoStart = ispybDataCollection.startImageNumber
-            imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
+            if self.dataInput.startFrame is None:
+                imageNoStart = ispybDataCollection.startImageNumber
+            else:
+                imageNoStart = self.dataInput.startFrame.value
+            if self.dataInput.startFrame is None:
+                imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
+            else:
+                imageNoEnd = self.dataInput.endFrame.value
 
 #            # DEBUG we set the end image to 20 in order to speed up things
 #            self.warning("End image set to 20 (was {0})".format(imageNoEnd))
 #            imageNoEnd = 20
             pathToStartImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoEnd)
-        else:
-            directory = self.dataInput.dirN.value
-            template = self.dataInput.templateN.value
-            imageNoStart = self.dataInput.fromN.value
-            imageNoEnd = self.dataInput.toN.value
-            fileTemplate = template.replace("####", "%04d")
-            pathToStartImage = os.path.join(directory, fileTemplate % imageNoStart)
-            pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
+#        else:
+#            directory = self.dataInput.dirN.value
+#            template = self.dataInput.templateN.value
+#            imageNoStart = self.dataInput.fromN.value
+#            imageNoEnd = self.dataInput.toN.value
+#            fileTemplate = template.replace("####", "%04d")
+#            pathToStartImage = os.path.join(directory, fileTemplate % imageNoStart)
+#            pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
 
         # Try to get proposal from path
         if EDUtilsPath.isESRF():
@@ -257,9 +263,21 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         # Prepare input to execution plugin
         xsDataInputXia2DIALSAnom = XSDataInputXia2DIALS()
         xsDataInputXia2DIALSAnom.anomalous = XSDataBoolean(True)
+        xsDataInputXia2DIALSAnom.spaceGroup = self.dataInput.spaceGroup
+        xsDataInputXia2DIALSAnom.unitCell = self.dataInput.unitCell
+        if imageNoStart is not None:
+            xsDataInputXia2DIALSAnom.startFrame = XSDataInteger(imageNoStart)
+        if imageNoEnd is not None:
+            xsDataInputXia2DIALSAnom.endFrame = XSDataInteger(imageNoEnd)
         if self.doAnomAndNonanom:
             xsDataInputXia2DIALSNoanom = XSDataInputXia2DIALS()
             xsDataInputXia2DIALSNoanom.anomalous = XSDataBoolean(False)
+            xsDataInputXia2DIALSNoanom.spaceGroup = self.dataInput.spaceGroup
+            xsDataInputXia2DIALSNoanom.unitCell = self.dataInput.unitCell
+            if imageNoStart is not None:
+                xsDataInputXia2DIALSNoanom.startFrame = XSDataInteger(imageNoStart)
+            if imageNoEnd is not None:
+                xsDataInputXia2DIALSNoanom.endFrame = XSDataInteger(imageNoEnd)
         if isH5:
             masterFilePath = os.path.join(directory,
                                           self.eiger_template_to_master(template))
