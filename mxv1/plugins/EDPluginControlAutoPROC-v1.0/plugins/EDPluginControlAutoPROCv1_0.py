@@ -400,6 +400,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             autoProcProgram.processingPrograms = "autoPROC"
             autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
             autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
+            autoProcProgram.processingStatus = "SUCCESS"
             if isAnom:
                 autoProcProgram.autoProcProgramId = self.autoProcProgramIdAnom
             else:
