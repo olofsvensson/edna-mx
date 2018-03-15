@@ -1247,7 +1247,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 self.store_autoproc_anom.executeSynchronous()
 
                 if self.store_autoproc_anom.isFailure():
-                    self.ERROR('Could not send anom results to ispyb!')
+                    self.ERROR("Could not upload anom results to ispyb!")
                 else:
                     self.hasUploadedAnomResultsToISPyB = True
                     self.screen("Anom results uploaded to ISPyB")
@@ -1280,7 +1280,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 autoProcProgramId = self.store_autoproc_noanom.dataOutput.autoProcProgramId.value
 
                 if self.store_autoproc_noanom.isFailure():
-                    self.ERROR('Could not send anom results to ISPyB!')
+                    self.ERROR("Could not upload noanom results to ISPyB!")
                 else:
                     self.hasUploadedNoanomResultsToISPyB = True
                     self.screen("Noanom results uploaded to ISPyB")

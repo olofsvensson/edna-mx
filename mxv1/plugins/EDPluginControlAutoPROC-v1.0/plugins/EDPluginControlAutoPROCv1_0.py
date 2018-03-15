@@ -26,6 +26,7 @@ __license__ = "GPLv2+"
 __copyright__ = "ESRF"
 
 import os
+import sys
 import gzip
 import time
 import shutil
@@ -34,6 +35,7 @@ import socket
 from EDPluginControl import EDPluginControl
 from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
 from EDUtilsPath import EDUtilsPath
+from EDHandlerXSDataISPyBv1_4 import EDHandlerXSDataISPyBv1_4
 
 from EDFactoryPlugin import edFactoryPlugin
 
@@ -81,6 +83,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         self.pyarchPrefix = None
         self.resultsDirectory = None
         self.pyarchDirectory = None
+        self.hasUploadedAnomResultsToISPyB = False
+        self.hasUploadedNoanomResultsToISPyB = False
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -98,6 +102,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlAutoPROCv1_0.preProcess")
         self.screen("autoPROC processing started")
+
+        self.processingCommandLine = ' '.join(sys.argv)
+        self.processingPrograms = "autoPROC"
 
         if self.dataInput.doAnomAndNonanom is not None:
             if self.dataInput.doAnomAndNonanom.value:
@@ -257,6 +264,22 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             self.ERROR(strErrorMessage)
             self.setFailure()
 
+        self.timeStart = time.localtime()
+        if self.dataInput.dataCollectionId is not None:
+            # Set ISPyB to running
+            self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom = \
+              EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                                                         processingCommandLine=self.processingCommandLine,
+                                                         processingPrograms=self.processingPrograms,
+                                                         isAnom=True,
+                                                         timeStart=self.timeStart)
+            if self.doAnomAndNonanom:
+                self.autoProcIntegrationIdNoanom, self.autoProcProgramIdNoanom = \
+                  EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                                                             processingCommandLine=self.processingCommandLine,
+                                                             processingPrograms=self.processingPrograms,
+                                                             isAnom=False,
+                                                             timeStart=self.timeStart)
 
 
         # Prepare input to execution plugin
@@ -299,6 +322,48 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         self.uploadToISPyB(self.edPluginExecAutoPROCAnom, True, proposal, timeStart, timeEnd)
         if self.doAnomAndNonanom:
             self.uploadToISPyB(self.edPluginExecAutoPROCNoanom, False, proposal, timeStart, timeEnd)
+
+
+    def finallyProcess(self, _edObject=None):
+        EDPluginControl.finallyProcess(self)
+        self.edPluginExecAutoPROCAnom.synchronize()
+        self.edPluginExecAutoPROCNoanom.synchronize()
+        strMessage = ""
+        if self.getListOfWarningMessages() != []:
+            strMessage += "Warning messages: \n\n"
+            for strWarningMessage in self.getListOfWarningMessages():
+                strMessage += strWarningMessage + "\n\n"
+        if self.getListOfErrorMessages() != []:
+            strMessage += "Error messages: \n\n"
+            for strErrorMessage in self.getListOfErrorMessages():
+                strMessage += strErrorMessage + "\n\n"
+        if self.isFailure():
+            self.timeEnd = time.localtime()
+            if self.dataInput.dataCollectionId is not None:
+                # Upload program status to ISPyB
+                # anom
+                if not self.hasUploadedAnomResultsToISPyB:
+                    EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                         autoProcIntegrationId=self.autoProcIntegrationIdAnom,
+                         autoProcProgramId=self.autoProcProgramIdAnom,
+                         processingCommandLine=self.processingCommandLine,
+                         processingPrograms=self.processingPrograms,
+                         isAnom=True,
+                         timeStart=self.timeStart,
+                         timeEnd=self.timeEnd)
+
+                if self.doAnomAndNonanom:
+                    # noanom
+                    if not self.hasUploadedNoanomResultsToISPyB:
+                        EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                             autoProcIntegrationId=self.autoProcIntegrationIdNoanom,
+                             autoProcProgramId=self.autoProcProgramIdNoanom,
+                             processingCommandLine=self.processingCommandLine,
+                             processingPrograms=self.processingPrograms,
+                             isAnom=False,
+                             timeStart=self.timeStart,
+                             timeEnd=self.timeEnd)
+
 
 
     def uploadToISPyB(self, edPluginExecAutoPROC, isAnom, proposal, timeStart, timeEnd):
@@ -425,9 +490,13 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             if isAnom:
                 self.edPluginStoreAutoprocAnom.dataInput = xsDataInputStoreAutoProc
                 self.edPluginStoreAutoprocAnom.executeSynchronous()
+                isSuccess = not self.edPluginStoreAutoprocAnom.isFailure()
+                self.hasUploadedAnomResultsToISPyB = isSuccess
             else:
                 self.edPluginStoreAutoprocNoanom.dataInput = xsDataInputStoreAutoProc
                 self.edPluginStoreAutoprocNoanom.executeSynchronous()
+                isSuccess = not self.edPluginStoreAutoprocNoanom.isFailure()
+                self.hasUploadedNoanomResultsToISPyB = isSuccess
 
 
     def eiger_template_to_image(self, fmt, num):

@@ -106,6 +106,8 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.autoProcIntegrationIdNoanom = None
         self.autoProcProgramIdNoanom = None
         self.xdsAppSpacegroup = None
+        self.hasUploadedAnomResultsToISPyB = False
+        self.hasUploadedNoanomResultsToISPyB = False
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -334,15 +336,26 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.timeEnd = time.localtime()
         # Upload to ISPyB
         if self.dataInput.dataCollectionId is not None:
-            self.uploadToISPyB(xsDataResultXDSAPPAnom, processDirectory, template,
+            self.hasUploadedAnomResultsToISPyB = self.uploadToISPyB(xsDataResultXDSAPPAnom, processDirectory, template,
                                strPathXscaleLpAnom, True, proposal, self.timeStart, self.timeEnd,
                                self.dataInput.dataCollectionId.value,
                                self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom)
+            if self.hasUploadedAnomResultsToISPyB:
+                self.screen("Anom results uploaded to ISPyB")
+            else:
+                self.ERROR("Could not upload anom results to ISPyB!")
+
+
+
             if self.doAnomAndNonanom:
-                self.uploadToISPyB(xsDataResultXDSAPPNoanom, processDirectory, template,
+                self.hasUploadedNoanomResultsToISPyB = self.uploadToISPyB(xsDataResultXDSAPPNoanom, processDirectory, template,
                                    strPathXscaleLpNoanom, False, proposal, self.timeStart, self.timeEnd,
                                    self.dataInput.dataCollectionId.value,
                                    self.autoProcIntegrationIdNoanom, self.autoProcProgramIdNoanom)
+                if self.hasUploadedNoanomResultsToISPyB:
+                    self.screen("Noanom results uploaded to ISPyB")
+                else:
+                    self.ERROR("Could not upload noanom results to ISPyB!")
 
 
     def finallyProcess(self, _edObject=None):
@@ -363,25 +376,28 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             if self.dataInput.dataCollectionId is not None:
                 # Upload program status to ISPyB
                 # anom
-                EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                         autoProcIntegrationId=self.autoProcIntegrationIdAnom,
-                         autoProcProgramId=self.autoProcProgramIdAnom,
-                         processingCommandLine=self.processingCommandLine,
-                         processingPrograms=self.processingPrograms,
-                         isAnom=True,
-                         timeStart=self.timeStart,
-                         timeEnd=self.timeEnd)
+                if not self.hasUploadedAnomResultsToISPyB:
+                    EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                             autoProcIntegrationId=self.autoProcIntegrationIdAnom,
+                             autoProcProgramId=self.autoProcProgramIdAnom,
+                             processingCommandLine=self.processingCommandLine,
+                             processingPrograms=self.processingPrograms,
+                             isAnom=True,
+                             timeStart=self.timeStart,
+                             timeEnd=self.timeEnd)
 
                 if self.doAnomAndNonanom:
                     # noanom
-                    EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                             autoProcIntegrationId=self.autoProcIntegrationIdNoanom,
-                             autoProcProgramId=self.autoProcProgramIdNoanom,
-                             processingCommandLine=self.processingCommandLine,
-                             processingPrograms=self.processingPrograms,
-                             isAnom=False,
-                             timeStart=self.timeStart,
-                             timeEnd=self.timeEnd)
+                    if not self.hasUploadedNoanomResultsToISPyB:
+                        EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                                 autoProcIntegrationId=self.autoProcIntegrationIdNoanom,
+                                 autoProcProgramId=self.autoProcProgramIdNoanom,
+                                 processingCommandLine=self.processingCommandLine,
+                                 processingPrograms=self.processingPrograms,
+                                 isAnom=False,
+                                 timeStart=self.timeStart,
+                                 timeEnd=self.timeEnd)
+
 
     def createXSDataInputStoreAutoProc(self, xsDataResultXDSAPP, processDirectory, template,
                                        strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId,
@@ -538,6 +554,8 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}".format(anomString))
         edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
         edPluginStoreAutoproc.executeSynchronous()
+        successUpload = not edPluginStoreAutoproc.isFailure()
+        return successUpload
 
 #    def setIspybToRunning(self, isAnom=False, timeStart=None):
 #        if isAnom:

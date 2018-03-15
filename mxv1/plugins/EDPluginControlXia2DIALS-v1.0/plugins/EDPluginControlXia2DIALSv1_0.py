@@ -78,6 +78,8 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         self.pyarchDirectory = None
         self.processingCommandLine = None
         self.processingPrograms = None
+        self.hasUploadedAnomResultsToISPyB = False
+        self.hasUploadedNoanomResultsToISPyB = False
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -317,11 +319,19 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         self.timeEnd = time.localtime()
 
         # Upload to ISPyB
-        self.uploadToISPyB(self.edPluginExecXia2DIALSAnom, True, proposal,
+        self.hasUploadedAnomResultsToISPyB = self.uploadToISPyB(self.edPluginExecXia2DIALSAnom, True, proposal,
                            self.autoProcProgramIdAnom, self.autoProcIntegrationIdAnom)
+        if self.hasUploadedAnomResultsToISPyB:
+            self.screen("Anom results uploaded to ISPyB")
+        else:
+            self.ERROR("Could not upload anom results to ISPyB!")
         if self.doAnomAndNonanom:
-            self.uploadToISPyB(self.edPluginExecXia2DIALSNoanom, False, proposal,
+            self.hasUploadedNoanomResultsToISPyB = self.uploadToISPyB(self.edPluginExecXia2DIALSNoanom, False, proposal,
                                self.autoProcProgramIdNoanom, self.autoProcIntegrationIdNoanom)
+            if self.hasUploadedNoanomResultsToISPyB:
+                self.screen("Noanom results uploaded to ISPyB")
+            else:
+                self.ERROR("Could not upload noanom results to ISPyB!")
 
     def finallyProcess(self, _edObject=None):
         EDPluginControl.finallyProcess(self)
@@ -341,7 +351,8 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             if self.dataInput.dataCollectionId is not None:
                 # Upload program status to ISPyB
                 # anom
-                EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                if not self.hasUploadedAnomResultsToISPyB:
+                    EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
                          autoProcIntegrationId=self.autoProcIntegrationIdAnom,
                          autoProcProgramId=self.autoProcProgramIdAnom,
                          processingCommandLine=self.processingCommandLine,
@@ -352,7 +363,8 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
                 if self.doAnomAndNonanom:
                     # noanom
-                    EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                    if not self.hasUploadedNoanomResultsToISPyB:
+                        EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
                              autoProcIntegrationId=self.autoProcIntegrationIdNoanom,
                              autoProcProgramId=self.autoProcProgramIdNoanom,
                              processingCommandLine=self.processingCommandLine,
@@ -362,6 +374,8 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                              timeEnd=self.timeEnd)
 
     def uploadToISPyB(self, edPluginExecXia2DIALS, isAnom, proposal, programId, integrationId):
+        successUpload = False
+
         if isAnom:
             anomString = "anom"
         else:
@@ -460,12 +474,14 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}".format(anomString))
             edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
             edPluginStoreAutoproc.executeSynchronous()
+            successUpload = not edPluginStoreAutoproc.isFailure()
         else:
             # Copy dataFiles to results directory
             for dataFile in edPluginExecXia2DIALS.dataOutput.dataFiles:
                 trunc, suffix = os.path.splitext(dataFile.path.value)
                 newFileName = os.path.basename(trunc) + "_" + anomString + suffix
                 shutil.copy(dataFile.path.value, os.path.join(self.resultsDirectory, newFileName))
+        return successUpload
 
     def eiger_template_to_image(self, fmt, num):
         fileNumber = int(num / 100)
