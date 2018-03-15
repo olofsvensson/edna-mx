@@ -391,13 +391,19 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
             if isAnom:
                 autoProcIntegration.anomalous = True
+                autoProcIntegration.autoProcIntegrationId = self.autoProcIntegrationIdAnom
             else:
                 autoProcIntegration.anomalous = False
+                autoProcIntegration.autoProcIntegrationId = self.autoProcIntegrationIdNoanom
             autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
             autoProcProgram = autoProcProgramContainer.AutoProcProgram
             autoProcProgram.processingPrograms = "autoPROC"
             autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
             autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
+            if isAnom:
+                autoProcProgram.autoProcProgramId = self.autoProcProgramIdAnom
+            else:
+                autoProcProgram.autoProcProgramId = self.autoProcProgramIdNoanom
             for autoProcProgramAttachment in autoProcProgramContainer.AutoProcProgramAttachment:
                 if autoProcProgramAttachment.fileName == "summary.html":
                     summaryHtmlPath = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
@@ -492,11 +498,19 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 self.edPluginStoreAutoprocAnom.executeSynchronous()
                 isSuccess = not self.edPluginStoreAutoprocAnom.isFailure()
                 self.hasUploadedAnomResultsToISPyB = isSuccess
+                if self.hasUploadedAnomResultsToISPyB:
+                    self.screen("Anom results uploaded to ISPyB")
+                else:
+                    self.ERROR("Could not upload anom results to ISPyB!")
             else:
                 self.edPluginStoreAutoprocNoanom.dataInput = xsDataInputStoreAutoProc
                 self.edPluginStoreAutoprocNoanom.executeSynchronous()
                 isSuccess = not self.edPluginStoreAutoprocNoanom.isFailure()
                 self.hasUploadedNoanomResultsToISPyB = isSuccess
+                if self.hasUploadedNoanomResultsToISPyB:
+                    self.screen("Noanom results uploaded to ISPyB")
+                else:
+                    self.ERROR("Could not upload noanom results to ISPyB!")
 
 
     def eiger_template_to_image(self, fmt, num):
