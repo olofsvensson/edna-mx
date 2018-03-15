@@ -152,7 +152,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                 imageNoStart = ispybDataCollection.startImageNumber
             else:
                 imageNoStart = self.dataInput.startFrame.value
-            if self.dataInput.startFrame is None:
+            if self.dataInput.endFrame is None:
                 imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
             else:
                 imageNoEnd = self.dataInput.endFrame.value
@@ -347,11 +347,16 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             for strErrorMessage in self.getListOfErrorMessages():
                 strMessage += strErrorMessage + "\n\n"
         if self.isFailure():
+            self.screen("XIA2_DIALS processing ended with errors!")
+            if strMessage != "":
+                self.screen("Warning and/or error messages: \n{0}.".format(strMessage))
             self.timeEnd = time.localtime()
             if self.dataInput.dataCollectionId is not None:
-                # Upload program status to ISPyB
+                # Upload program failure status to ISPyB
                 # anom
+                self.screen("Setting anom program status to failed in ISPyB.")
                 if not self.hasUploadedAnomResultsToISPyB:
+                    self.screen("Setting anom program status to failed in ISPyB.")
                     EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
                          autoProcIntegrationId=self.autoProcIntegrationIdAnom,
                          autoProcProgramId=self.autoProcProgramIdAnom,
@@ -364,6 +369,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                 if self.doAnomAndNonanom:
                     # noanom
                     if not self.hasUploadedNoanomResultsToISPyB:
+                        self.screen("Setting noanom program status to failed in ISPyB.")
                         EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
                              autoProcIntegrationId=self.autoProcIntegrationIdNoanom,
                              autoProcProgramId=self.autoProcProgramIdNoanom,
