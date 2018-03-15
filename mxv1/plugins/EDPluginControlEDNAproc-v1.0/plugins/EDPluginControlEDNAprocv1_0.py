@@ -154,6 +154,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.timeStart = None
         self.timeEnd = None
         self.processingCommandLine = ' '.join(sys.argv)
+        self.hasUploadedAnomResultsToISPyB = False
+        self.hasUploadedNoanomResultsToISPyB = False
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -1238,19 +1240,23 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 with open(self.dataInput.output_file.path.value, 'w') as f:
                     f.write(ispyb_input.marshal())
 
-            # store results in ispyb
-            self.store_autoproc_anom.dataInput = ispyb_input
-            t0 = time.time()
-            self.store_autoproc_anom.executeSynchronous()
-            self.retrieveFailureMessages(self.store_autoproc_anom, "Store EDNAproc anom")
-            self.stats['ispyb_upload'] = time.time() - t0
+            if self.dataInput.data_collection_id is not None:
+                # store results in ispyb
+                self.store_autoproc_anom.dataInput = ispyb_input
+                t0 = time.time()
+                self.store_autoproc_anom.executeSynchronous()
 
-            if self.store_autoproc_anom.isFailure():
-                self.ERROR('could not send results to ispyb')
-            else:
-                # store the EDNAproc ID as a filename in the
-                # fastproc_integration_ids directory
-                os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_anom)), 0o755)
+                if self.store_autoproc_anom.isFailure():
+                    self.ERROR('Could not send anom results to ispyb!')
+                else:
+                    self.hasUploadedAnomResultsToISPyB = True
+                    self.screen("Anom results uploaded to ISPyB")
+                    # store the EDNAproc ID as a filename in the
+                    # fastproc_integration_ids directory
+                    os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_anom)), 0o755)
+
+                self.retrieveFailureMessages(self.store_autoproc_anom, "Store EDNAproc anom")
+                self.stats['ispyb_upload'] = time.time() - t0
 
             # then noanom stats
 
@@ -1272,14 +1278,17 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 t0 = time.time()
                 self.store_autoproc_noanom.executeSynchronous()
                 autoProcProgramId = self.store_autoproc_noanom.dataOutput.autoProcProgramId.value
-                self.retrieveFailureMessages(self.store_autoproc_noanom, "Store EDNAproc noanom")
-                self.stats['ispyb_upload'] = time.time() - t0
 
                 if self.store_autoproc_noanom.isFailure():
-                    self.ERROR('could not send results to ispyb')
+                    self.ERROR('Could not send anom results to ISPyB!')
                 else:
+                    self.hasUploadedNoanomResultsToISPyB = True
+                    self.screen("Noanom results uploaded to ISPyB")
                     # store the EDNAproc id
                     os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0o755)
+
+                self.retrieveFailureMessages(self.store_autoproc_noanom, "Store EDNAproc noanom")
+                self.stats['ispyb_upload'] = time.time() - t0
 
             # Finally run dimple if executed at the ESRF
             if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():
@@ -1327,22 +1336,24 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if self.isFailure():
             strStatus = "FAILURE"
             if self.dataInput.data_collection_id is not None:
-                # Upload program status to ISPyB
-                # anom
-                inputStoreAutoProcAnom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
-                        self.dataInput.data_collection_id.value, self.integration_id_anom, isAnomalous=True,
-                        programId=self.program_id_anom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
-                        processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
-                self.store_autoproc_anom.dataInput = inputStoreAutoProcAnom
-                self.store_autoproc_anom.executeSynchronous()
+                if not self.hasUploadedAnomResultsToISPyB:
+                    # Upload program status to ISPyB
+                    # anom
+                    inputStoreAutoProcAnom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
+                            self.dataInput.data_collection_id.value, self.integration_id_anom, isAnomalous=True,
+                            programId=self.program_id_anom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                            processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
+                    self.store_autoproc_anom.dataInput = inputStoreAutoProcAnom
+                    self.store_autoproc_anom.executeSynchronous()
 
-                # noanom
-                inputStoreAutoProcNoanom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
-                        self.dataInput.data_collection_id.value, self.integration_id_noanom, isAnomalous=False,
-                        programId=self.program_id_noanom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
-                        processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
-                self.store_autoproc_noanom.dataInput = inputStoreAutoProcNoanom
-                self.store_autoproc_noanom.executeSynchronous()
+                if not self.hasUploadedNoanomResultsToISPyB:
+                    # noanom
+                    inputStoreAutoProcNoanom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
+                            self.dataInput.data_collection_id.value, self.integration_id_noanom, isAnomalous=False,
+                            programId=self.program_id_noanom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                            processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
+                    self.store_autoproc_noanom.dataInput = inputStoreAutoProcNoanom
+                    self.store_autoproc_noanom.executeSynchronous()
 
         else:
             strStatus = "SUCCESS"
