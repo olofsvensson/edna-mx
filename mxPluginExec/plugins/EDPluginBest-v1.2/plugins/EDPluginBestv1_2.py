@@ -260,7 +260,13 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
             strAimedResolution = str(self.dataInput.aimedResolution.value)
             self.strCommandBest = self.strCommandBest + "-r " + strAimedResolution + " "
 
-        if self.dataInput.aimedRedundancy is not None:
+        if (self.dataInput.userDefinedRotationStart is not None) and \
+           (self.dataInput.userDefinedRotationRange is not None):
+            self.strCommandBest += " -phi {0} {1} ".format(self.dataInput.userDefinedRotationStart.value,
+                                                          self.dataInput.userDefinedRotationRange.value)
+            if self.dataInput.aimedRedundancy is not None:
+                self.warning("Aimed redundancy of {0} igored as the oscillation range has been specified.".format(self.dataInput.aimedRedundancy.value))
+        elif self.dataInput.aimedRedundancy is not None:
             strAimedRedundancy = str(self.dataInput.aimedRedundancy.value)
             self.strCommandBest = self.strCommandBest + "-R " + strAimedRedundancy + " "
 
@@ -321,12 +327,6 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         if strStrategyOption is not None:
             self.strCommandBest = self.strCommandBest + "%s " % strStrategyOption.value
 
-        xsDataAngleUserDefinedRotationStart = self.dataInput.getUserDefinedRotationStart()
-        xsDataAngleUserDefinedRotationRange = self.dataInput.getUserDefinedRotationRange()
-        if xsDataAngleUserDefinedRotationStart is not None:
-            self.strCommandBest = self.strCommandBest + "-phi %f %f " % \
-              (xsDataAngleUserDefinedRotationStart.value, xsDataAngleUserDefinedRotationRange.value)
-
         if self.dataInput.getRadiationDamageModelBeta() is not None:
             fRadiationDamageModelBeta = str(self.dataInput.getRadiationDamageModelBeta().value)
             self.strCommandBest = self.strCommandBest + "-beta " + fRadiationDamageModelBeta + " "
@@ -340,10 +340,6 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
 
         if self.dataInput.rFriedel is not None:
             self.strCommandBest += " -Rf {0} ".format(self.dataInput.rFriedel.value)
-
-        if self.dataInput.axisStart is not None and self.dataInput.axisRange is not None:
-            self.strCommandBest += " -phi {0} {1} ".format(self.dataInput.axisStart.value,
-                                                          self.dataInput.axisRange.value)
 
         self.strCommandBest = self.strCommandBest + "-T " + str(fMaxExposureTime) + " " + \
                                      "-dna " + self.getScriptBaseName() + "_dnaTables.xml" + " " + \

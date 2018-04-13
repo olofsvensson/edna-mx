@@ -49,7 +49,6 @@ class EDTestSuitePluginExecuteBestv1_2(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_2_withUserDefinedRotationRange")
         self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_2_withRadiationDamageModelBetaGamma")
         self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_2_withRFriedelAndDoseLimit")
-        self.addTestCaseFromName("EDTestCasePluginExecuteBestv1_2_withPhiStartRange")
 
 
 if __name__ == '__main__':
