@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Aug 31 04:38::05 2017 by EDGenerateDS.
+# Generated Fri Apr 13 01:51::37 2018 by EDGenerateDS.
 #
 
 import os, sys
@@ -872,121 +872,6 @@ class XSDataBestStrategySummary(object):
 # end class XSDataBestStrategySummary
 
 
-class XSDataCrystalScale(object):
-    def __init__(self, scale=None, bFactor=None):
-        if bFactor is None:
-            self._bFactor = None
-        elif bFactor.__class__.__name__ == "XSDataDouble":
-            self._bFactor = bFactor
-        else:
-            strMessage = "ERROR! XSDataCrystalScale constructor argument 'bFactor' is not XSDataDouble but %s" % self._bFactor.__class__.__name__
-            raise BaseException(strMessage)
-        if scale is None:
-            self._scale = None
-        elif scale.__class__.__name__ == "XSDataDouble":
-            self._scale = scale
-        else:
-            strMessage = "ERROR! XSDataCrystalScale constructor argument 'scale' is not XSDataDouble but %s" % self._scale.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'bFactor' attribute
-    def getBFactor(self): return self._bFactor
-    def setBFactor(self, bFactor):
-        if bFactor is None:
-            self._bFactor = None
-        elif bFactor.__class__.__name__ == "XSDataDouble":
-            self._bFactor = bFactor
-        else:
-            strMessage = "ERROR! XSDataCrystalScale.setBFactor argument is not XSDataDouble but %s" % bFactor.__class__.__name__
-            raise BaseException(strMessage)
-    def delBFactor(self): self._bFactor = None
-    bFactor = property(getBFactor, setBFactor, delBFactor, "Property for bFactor")
-    # Methods and properties for the 'scale' attribute
-    def getScale(self): return self._scale
-    def setScale(self, scale):
-        if scale is None:
-            self._scale = None
-        elif scale.__class__.__name__ == "XSDataDouble":
-            self._scale = scale
-        else:
-            strMessage = "ERROR! XSDataCrystalScale.setScale argument is not XSDataDouble but %s" % scale.__class__.__name__
-            raise BaseException(strMessage)
-    def delScale(self): self._scale = None
-    scale = property(getScale, setScale, delScale, "Property for scale")
-    def export(self, outfile, level, name_='XSDataCrystalScale'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataCrystalScale'):
-        pass
-        if self._bFactor is not None:
-            self.bFactor.export(outfile, level, name_='bFactor')
-        else:
-            warnEmptyAttribute("bFactor", "XSDataDouble")
-        if self._scale is not None:
-            self.scale.export(outfile, level, name_='scale')
-        else:
-            warnEmptyAttribute("scale", "XSDataDouble")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'bFactor':
-            obj_ = XSDataDouble()
-            obj_.build(child_)
-            self.setBFactor(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'scale':
-            obj_ = XSDataDouble()
-            obj_.build(child_)
-            self.setScale(obj_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataCrystalScale" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataCrystalScale' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataCrystalScale is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataCrystalScale.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataCrystalScale()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataCrystalScale" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataCrystalScale()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataCrystalScale
-
-
 class XSDataBestCollectionPlan(object):
     def __init__(self, strategySummary=None, statisticalPrediction=None, crystalScale=None, comment=None, collectionRun=None, collectionPlanNumber=None):
         if collectionPlanNumber is None:
@@ -1701,6 +1586,121 @@ class XSDataBestResolutionBin(object):
 # end class XSDataBestResolutionBin
 
 
+class XSDataCrystalScale(object):
+    def __init__(self, scale=None, bFactor=None):
+        if bFactor is None:
+            self._bFactor = None
+        elif bFactor.__class__.__name__ == "XSDataDouble":
+            self._bFactor = bFactor
+        else:
+            strMessage = "ERROR! XSDataCrystalScale constructor argument 'bFactor' is not XSDataDouble but %s" % self._bFactor.__class__.__name__
+            raise BaseException(strMessage)
+        if scale is None:
+            self._scale = None
+        elif scale.__class__.__name__ == "XSDataDouble":
+            self._scale = scale
+        else:
+            strMessage = "ERROR! XSDataCrystalScale constructor argument 'scale' is not XSDataDouble but %s" % self._scale.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'bFactor' attribute
+    def getBFactor(self): return self._bFactor
+    def setBFactor(self, bFactor):
+        if bFactor is None:
+            self._bFactor = None
+        elif bFactor.__class__.__name__ == "XSDataDouble":
+            self._bFactor = bFactor
+        else:
+            strMessage = "ERROR! XSDataCrystalScale.setBFactor argument is not XSDataDouble but %s" % bFactor.__class__.__name__
+            raise BaseException(strMessage)
+    def delBFactor(self): self._bFactor = None
+    bFactor = property(getBFactor, setBFactor, delBFactor, "Property for bFactor")
+    # Methods and properties for the 'scale' attribute
+    def getScale(self): return self._scale
+    def setScale(self, scale):
+        if scale is None:
+            self._scale = None
+        elif scale.__class__.__name__ == "XSDataDouble":
+            self._scale = scale
+        else:
+            strMessage = "ERROR! XSDataCrystalScale.setScale argument is not XSDataDouble but %s" % scale.__class__.__name__
+            raise BaseException(strMessage)
+    def delScale(self): self._scale = None
+    scale = property(getScale, setScale, delScale, "Property for scale")
+    def export(self, outfile, level, name_='XSDataCrystalScale'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataCrystalScale'):
+        pass
+        if self._bFactor is not None:
+            self.bFactor.export(outfile, level, name_='bFactor')
+        else:
+            warnEmptyAttribute("bFactor", "XSDataDouble")
+        if self._scale is not None:
+            self.scale.export(outfile, level, name_='scale')
+        else:
+            warnEmptyAttribute("scale", "XSDataDouble")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'bFactor':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setBFactor(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'scale':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setScale(obj_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataCrystalScale" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataCrystalScale' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataCrystalScale is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataCrystalScale.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataCrystalScale()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataCrystalScale" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataCrystalScale()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataCrystalScale
+
+
 class XSDataInputBest(XSDataInput):
     """- anomalousData is deprecated, please use strategyOption instead.
 
@@ -1710,7 +1710,7 @@ class XSDataInputBest(XSDataInput):
 
 - detectorDistanceMin and detectorDistanceMax (in mm) will work only with version v3.4.3 or higher of Best
 """
-    def __init__(self, configuration=None, xdsAsciiHkl=None, xdsBkgpixCbf=None, xdsCorrectLp=None, xdsBackgroundImage=None, userDefinedRotationStart=None, userDefinedRotationRange=None, transmission=None, strategyOption=None, rFriedel=None, radiationDamageModelGamma=None, radiationDamageModelBeta=None, numberOfCrystalPositions=None, minTransmission=None, goniostatMinRotationWidth=None, goniostatMaxRotationSpeed=None, doseLimit=None, detectorType=None, detectorDistanceMin=None, detectorDistanceMax=None, crystalSusceptibility=None, crystalShape=None, crystalAbsorbedDoseRate=None, complexity=None, bestFileContentPar=None, bestFileContentHKL=None, bestFileContentDat=None, beamMinExposureTime=None, beamMaxExposureTime=None, beamExposureTime=None, anomalousData=None, aimedResolution=None, aimedRedundancy=None, aimedIOverSigma=None, aimedCompleteness=None):
+    def __init__(self, configuration=None, xdsAsciiHkl=None, xdsBkgpixCbf=None, xdsCorrectLp=None, xdsBackgroundImage=None, userDefinedRotationStart=None, userDefinedRotationRange=None, transmission=None, strategyOption=None, rFriedel=None, radiationDamageModelGamma=None, radiationDamageModelBeta=None, numberOfCrystalPositions=None, minTransmission=None, goniostatMinRotationWidth=None, goniostatMaxRotationSpeed=None, doseLimit=None, detectorType=None, detectorDistanceMin=None, detectorDistanceMax=None, crystalSusceptibility=None, crystalShape=None, crystalAbsorbedDoseRate=None, complexity=None, bestFileContentPar=None, bestFileContentHKL=None, bestFileContentDat=None, beamMinExposureTime=None, beamMaxExposureTime=None, beamExposureTime=None, axisRange=None, axisStart=None, anomalousData=None, aimedResolution=None, aimedRedundancy=None, aimedIOverSigma=None, aimedCompleteness=None):
         XSDataInput.__init__(self, configuration)
         if aimedCompleteness is None:
             self._aimedCompleteness = None
@@ -1746,6 +1746,20 @@ class XSDataInputBest(XSDataInput):
             self._anomalousData = anomalousData
         else:
             strMessage = "ERROR! XSDataInputBest constructor argument 'anomalousData' is not XSDataBoolean but %s" % self._anomalousData.__class__.__name__
+            raise BaseException(strMessage)
+        if axisStart is None:
+            self._axisStart = None
+        elif axisStart.__class__.__name__ == "XSDataDouble":
+            self._axisStart = axisStart
+        else:
+            strMessage = "ERROR! XSDataInputBest constructor argument 'axisStart' is not XSDataDouble but %s" % self._axisStart.__class__.__name__
+            raise BaseException(strMessage)
+        if axisRange is None:
+            self._axisRange = None
+        elif axisRange.__class__.__name__ == "XSDataDouble":
+            self._axisRange = axisRange
+        else:
+            strMessage = "ERROR! XSDataInputBest constructor argument 'axisRange' is not XSDataDouble but %s" % self._axisRange.__class__.__name__
             raise BaseException(strMessage)
         if beamExposureTime is None:
             self._beamExposureTime = None
@@ -2010,6 +2024,30 @@ class XSDataInputBest(XSDataInput):
             raise BaseException(strMessage)
     def delAnomalousData(self): self._anomalousData = None
     anomalousData = property(getAnomalousData, setAnomalousData, delAnomalousData, "Property for anomalousData")
+    # Methods and properties for the 'axisStart' attribute
+    def getAxisStart(self): return self._axisStart
+    def setAxisStart(self, axisStart):
+        if axisStart is None:
+            self._axisStart = None
+        elif axisStart.__class__.__name__ == "XSDataDouble":
+            self._axisStart = axisStart
+        else:
+            strMessage = "ERROR! XSDataInputBest.setAxisStart argument is not XSDataDouble but %s" % axisStart.__class__.__name__
+            raise BaseException(strMessage)
+    def delAxisStart(self): self._axisStart = None
+    axisStart = property(getAxisStart, setAxisStart, delAxisStart, "Property for axisStart")
+    # Methods and properties for the 'axisRange' attribute
+    def getAxisRange(self): return self._axisRange
+    def setAxisRange(self, axisRange):
+        if axisRange is None:
+            self._axisRange = None
+        elif axisRange.__class__.__name__ == "XSDataDouble":
+            self._axisRange = axisRange
+        else:
+            strMessage = "ERROR! XSDataInputBest.setAxisRange argument is not XSDataDouble but %s" % axisRange.__class__.__name__
+            raise BaseException(strMessage)
+    def delAxisRange(self): self._axisRange = None
+    axisRange = property(getAxisRange, setAxisRange, delAxisRange, "Property for axisRange")
     # Methods and properties for the 'beamExposureTime' attribute
     def getBeamExposureTime(self): return self._beamExposureTime
     def setBeamExposureTime(self, beamExposureTime):
@@ -2418,6 +2456,10 @@ class XSDataInputBest(XSDataInput):
             self.aimedResolution.export(outfile, level, name_='aimedResolution')
         if self._anomalousData is not None:
             self.anomalousData.export(outfile, level, name_='anomalousData')
+        if self._axisStart is not None:
+            self.axisStart.export(outfile, level, name_='axisStart')
+        if self._axisRange is not None:
+            self.axisRange.export(outfile, level, name_='axisRange')
         if self._beamExposureTime is not None:
             self.beamExposureTime.export(outfile, level, name_='beamExposureTime')
         else:
@@ -2516,6 +2558,16 @@ class XSDataInputBest(XSDataInput):
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setAnomalousData(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'axisStart':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setAxisStart(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'axisRange':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setAxisRange(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'beamExposureTime':
             obj_ = XSDataTime()

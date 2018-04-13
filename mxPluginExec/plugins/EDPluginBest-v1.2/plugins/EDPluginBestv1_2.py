@@ -341,6 +341,10 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
         if self.dataInput.rFriedel is not None:
             self.strCommandBest += " -Rf {0} ".format(self.dataInput.rFriedel.value)
 
+        if self.dataInput.axisStart is not None and self.dataInput.axisRange is not None:
+            self.strCommandBest += " -phi {0} {1} ".format(self.dataInput.axisStart.value,
+                                                          self.dataInput.axisRange.value)
+
         self.strCommandBest = self.strCommandBest + "-T " + str(fMaxExposureTime) + " " + \
                                      "-dna " + self.getScriptBaseName() + "_dnaTables.xml" + " " + \
                                      "-o " + os.path.join(self.getWorkingDirectory(), self.getScriptBaseName() + "_plots.mtv ") + \
