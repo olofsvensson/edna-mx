@@ -149,14 +149,14 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         # Retrieve the image quality indicators
         if not self.edPluginControlIndicators.isFailure():
             if self.edPluginControlIndicators.hasDataOutput():
-                for xsDataImageQualityIndicators in self.edPluginControlIndicators.getDataOutput().getImageQualityIndicators():
+                for xsDataImageQualityIndicators in self.edPluginControlIndicators.dataOutput.getImageQualityIndicators():
                     self.setDataOutput(xsDataImageQualityIndicators, "imageQualityIndicators")
 
 
     def doSuccessLabelitIndexing(self, _edPlugin=None):
         self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.doSuccessLabelitIndexing")
         self.synchronizeOn()
-        xsDataResultLabelitIndexing = _edPlugin.getDataOutput()
+        xsDataResultLabelitIndexing = _edPlugin.dataOutput
         from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
         xsDataIndexingResult = EDHandlerXSDataPhenixv1_1.generateXSDataIndexingResult(xsDataResultLabelitIndexing,
                                                                                        self.xsDataExperimentalCondition)
@@ -287,28 +287,32 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         """
         strIndicatorsShortSummary = ""
         if _edPlugin.hasDataOutput():
-            for xsDataQualityIndicators in _edPlugin.getDataOutput().getImageQualityIndicators():
-                strImageName = os.path.basename(xsDataQualityIndicators.getImage().getPath().getValue())
-                strIndicatorsShortSummary += "ImageQualityIndicators: %s: " % strImageName
-                iNoGoodBraggCandidates = xsDataQualityIndicators.getGoodBraggCandidates().getValue()
-                strIndicatorsShortSummary += "good bragg %d, " % iNoGoodBraggCandidates
-                fResMethod1 = xsDataQualityIndicators.getMethod1Res().getValue()
-                strIndicatorsShortSummary += "r1 %.1f [A], " % fResMethod1
-#                if xsDataQualityIndicators.getMethod2Res() is not None:
-#                    fResMethod2 = xsDataQualityIndicators.getMethod2Res().getValue()
-#                    strIndicatorsShortSummary += "r2 %.1f [A], " % fResMethod2
-                if xsDataQualityIndicators.getMaxUnitCell() is not None:
-                    fMaxCell = xsDataQualityIndicators.getMaxUnitCell().getValue()
+            for xsDataQualityIndicators in _edPlugin.dataOutput.imageQualityIndicators:
+                if xsDataQualityIndicators.image is not None:
+                    strImageName = os.path.basename(xsDataQualityIndicators.image.path.value)
+                    strIndicatorsShortSummary += "ImageQualityIndicators: %s: " % strImageName
+                if xsDataQualityIndicators.goodBraggCandidates is not None:
+                    iNoGoodBraggCandidates = xsDataQualityIndicators.goodBraggCandidates.value
+                    strIndicatorsShortSummary += "good bragg %d, " % iNoGoodBraggCandidates
+                if  xsDataQualityIndicators.method1Res:
+                    fResMethod1 = xsDataQualityIndicators.method1Res.value
+                    strIndicatorsShortSummary += "r1 %.1f [A], " % fResMethod1
+    #                if xsDataQualityIndicators.getMethod2Res() is not None:
+    #                    fResMethod2 = xsDataQualityIndicators.getMethod2Res().getValue()
+    #                    strIndicatorsShortSummary += "r2 %.1f [A], " % fResMethod2
+                if xsDataQualityIndicators.maxUnitCell is not None:
+                    fMaxCell = xsDataQualityIndicators.maxUnitCell.value
                     strIndicatorsShortSummary += "max cell %.1f [A], " % fMaxCell
-                iIceRings = xsDataQualityIndicators.getIceRings().getValue()
-                strIndicatorsShortSummary += "ice rings %d" % iIceRings
-                if xsDataQualityIndicators.getTotalIntegratedSignal() is not None:
-                    fTotalIntegratedSignal = xsDataQualityIndicators.getTotalIntegratedSignal().getValue()
+                if xsDataQualityIndicators.iceRings is not None:
+                    iIceRings = xsDataQualityIndicators.iceRings.value
+                    strIndicatorsShortSummary += "ice rings %d" % iIceRings
+                if xsDataQualityIndicators.totalIntegratedSignal is not None:
+                    fTotalIntegratedSignal = xsDataQualityIndicators.totalIntegratedSignal.value
                     strIndicatorsShortSummary += ", TIS %.0f" % fTotalIntegratedSignal
-                if xsDataQualityIndicators.getDozor_score() is None:
+                if xsDataQualityIndicators.dozor_score is None:
                     strIndicatorsShortSummary += "\n"
                 else:
-                    fDozorScore = xsDataQualityIndicators.getDozor_score().getValue()
+                    fDozorScore = xsDataQualityIndicators.dozor_score.value
                     if fDozorScore > 1.0:
                         strIndicatorsShortSummary += ", Dozor %.1f\n" % fDozorScore
                     else:
