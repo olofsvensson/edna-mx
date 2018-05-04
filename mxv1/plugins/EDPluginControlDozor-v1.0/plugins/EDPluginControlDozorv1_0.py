@@ -95,6 +95,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self._strMxCuBE_URI = None
         self._oServerProxy = None
         self.doRadiationDamage = False
+        self.gnuplot = "gnuplot"
 
 
     def checkParameters(self):
@@ -113,6 +114,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         if self._strMxCuBE_URI is not None:
             self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
             self._oServerProxy = xmlrpclib.ServerProxy(self._strMxCuBE_URI)
+
+        self.gnuplot = self.config.get("gnuplot", self.gnuplot)
 
 
     def preProcess(self, _edObject=None):
@@ -418,7 +421,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             data_file.close()
             oldCwd = os.getcwd()
             os.chdir(self.getWorkingDirectory())
-            os.system("gnuplot %s" % pathGnuplotScript)
+            os.system("{0} {1}".format(self.gnuplot, pathGnuplotScript))
             os.chdir(oldCwd)
 
             self.dataOutput.dozorPlot = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), dozorPlotFileName)))

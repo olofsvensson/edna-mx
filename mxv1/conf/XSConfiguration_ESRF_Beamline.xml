@@ -169,6 +169,10 @@
 					<name>hdf5BatchSize</name>
 					<value>100</value>
 				</XSParamItem>
+				<XSParamItem>
+					<name>gnuplot</name>
+					<value>/opt/pxsoft/tools/gnuplot/v4.6.6/debian80-x86_64/gnuplot</value>
+				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 	</XSPluginList> 
