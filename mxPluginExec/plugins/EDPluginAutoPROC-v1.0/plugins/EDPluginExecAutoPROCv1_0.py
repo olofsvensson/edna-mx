@@ -50,7 +50,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         self.setDataOutput(XSDataResultAutoPROC())
         self.maxNoProcessors = 12
         self.pathToNeggiaPlugin = None
-        self.doScaleWithXscale = True
+        self.doScaleWithXscale = False
         self.rotationAxis = None
 
     def checkParameters(self):
@@ -82,10 +82,22 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         strWorkingDir = self.getWorkingDirectory()
         # Log file
         self.dataOutput.logFile = XSDataFile(XSDataString(os.path.join(strWorkingDir, self.getScriptLogFileName())))
-        # ISPyB XML file
+        # ISPyB XML files
         ispybXML = os.path.join(strWorkingDir, "autoPROC.xml")
         if os.path.exists(ispybXML):
             self.dataOutput.ispybXML = XSDataFile(XSDataString(ispybXML))
+        ispybXML_staraniso = os.path.join(strWorkingDir, "autoPROC_staraniso.xml")
+        if os.path.exists(ispybXML_staraniso):
+            self.dataOutput.ispybXML_staraniso = XSDataFile(XSDataString(ispybXML_staraniso))
+        # Report PDFs
+        reportPdf = os.path.join(strWorkingDir, "report.pdf")
+        if os.path.exists(reportPdf):
+            self.dataOutput.reportPdf = XSDataFile(XSDataString(reportPdf))
+        reportPdf_staraniso = os.path.join(strWorkingDir, "report_staraniso.pdf")
+        if os.path.exists(reportPdf_staraniso):
+            self.dataOutput.reportPdf_staraniso = XSDataFile(XSDataString(reportPdf_staraniso))
+        # Working directory
+        self.dataOutput.workingDirectory = XSDataFile(XSDataString(strWorkingDir))
         # processDirectory
         if self.dataInput.masterH5:
             processDirectory = os.path.join(strWorkingDir, "HDF5_1")
@@ -103,7 +115,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         This method creates the input command line for autoPROC
         """
         self.DEBUG("EDPluginExecAutoPROCv1_0.generateCommands")
-        strCommandText = "-B -xml -nthreads {0}".format(self.maxNoProcessors)
+        strCommandText = "-B -xml -nthreads {0} -M ReportingInlined".format(self.maxNoProcessors)
 
         if self.doScaleWithXscale:
             strCommandText += " autoPROC_ScaleWithXscale='yes'"

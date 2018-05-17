@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Feb 5 08:45::17 2018 by EDGenerateDS.
+# Generated Thu May 17 11:11::09 2018 by EDGenerateDS.
 #
 
 import os, sys
@@ -622,7 +622,7 @@ class XSDataInputAutoPROC(XSDataInput):
 
 
 class XSDataResultAutoPROC(XSDataResult):
-    def __init__(self, status=None, ispybXML=None, processDirectory=None, logFile=None):
+    def __init__(self, status=None, reportPdf_staraniso=None, reportPdf=None, ispybXML_staraniso=None, ispybXML=None, processDirectory=None, workingDirectory=None, logFile=None):
         XSDataResult.__init__(self, status)
         if logFile is None:
             self._logFile = None
@@ -630,6 +630,13 @@ class XSDataResultAutoPROC(XSDataResult):
             self._logFile = logFile
         else:
             strMessage = "ERROR! XSDataResultAutoPROC constructor argument 'logFile' is not XSDataFile but %s" % self._logFile.__class__.__name__
+            raise BaseException(strMessage)
+        if workingDirectory is None:
+            self._workingDirectory = None
+        elif workingDirectory.__class__.__name__ == "XSDataFile":
+            self._workingDirectory = workingDirectory
+        else:
+            strMessage = "ERROR! XSDataResultAutoPROC constructor argument 'workingDirectory' is not XSDataFile but %s" % self._workingDirectory.__class__.__name__
             raise BaseException(strMessage)
         if processDirectory is None:
             self._processDirectory = []
@@ -645,6 +652,27 @@ class XSDataResultAutoPROC(XSDataResult):
         else:
             strMessage = "ERROR! XSDataResultAutoPROC constructor argument 'ispybXML' is not XSDataFile but %s" % self._ispybXML.__class__.__name__
             raise BaseException(strMessage)
+        if ispybXML_staraniso is None:
+            self._ispybXML_staraniso = None
+        elif ispybXML_staraniso.__class__.__name__ == "XSDataFile":
+            self._ispybXML_staraniso = ispybXML_staraniso
+        else:
+            strMessage = "ERROR! XSDataResultAutoPROC constructor argument 'ispybXML_staraniso' is not XSDataFile but %s" % self._ispybXML_staraniso.__class__.__name__
+            raise BaseException(strMessage)
+        if reportPdf is None:
+            self._reportPdf = None
+        elif reportPdf.__class__.__name__ == "XSDataFile":
+            self._reportPdf = reportPdf
+        else:
+            strMessage = "ERROR! XSDataResultAutoPROC constructor argument 'reportPdf' is not XSDataFile but %s" % self._reportPdf.__class__.__name__
+            raise BaseException(strMessage)
+        if reportPdf_staraniso is None:
+            self._reportPdf_staraniso = None
+        elif reportPdf_staraniso.__class__.__name__ == "XSDataFile":
+            self._reportPdf_staraniso = reportPdf_staraniso
+        else:
+            strMessage = "ERROR! XSDataResultAutoPROC constructor argument 'reportPdf_staraniso' is not XSDataFile but %s" % self._reportPdf_staraniso.__class__.__name__
+            raise BaseException(strMessage)
     # Methods and properties for the 'logFile' attribute
     def getLogFile(self): return self._logFile
     def setLogFile(self, logFile):
@@ -657,6 +685,18 @@ class XSDataResultAutoPROC(XSDataResult):
             raise BaseException(strMessage)
     def delLogFile(self): self._logFile = None
     logFile = property(getLogFile, setLogFile, delLogFile, "Property for logFile")
+    # Methods and properties for the 'workingDirectory' attribute
+    def getWorkingDirectory(self): return self._workingDirectory
+    def setWorkingDirectory(self, workingDirectory):
+        if workingDirectory is None:
+            self._workingDirectory = None
+        elif workingDirectory.__class__.__name__ == "XSDataFile":
+            self._workingDirectory = workingDirectory
+        else:
+            strMessage = "ERROR! XSDataResultAutoPROC.setWorkingDirectory argument is not XSDataFile but %s" % workingDirectory.__class__.__name__
+            raise BaseException(strMessage)
+    def delWorkingDirectory(self): self._workingDirectory = None
+    workingDirectory = property(getWorkingDirectory, setWorkingDirectory, delWorkingDirectory, "Property for workingDirectory")
     # Methods and properties for the 'processDirectory' attribute
     def getProcessDirectory(self): return self._processDirectory
     def setProcessDirectory(self, processDirectory):
@@ -702,6 +742,42 @@ class XSDataResultAutoPROC(XSDataResult):
             raise BaseException(strMessage)
     def delIspybXML(self): self._ispybXML = None
     ispybXML = property(getIspybXML, setIspybXML, delIspybXML, "Property for ispybXML")
+    # Methods and properties for the 'ispybXML_staraniso' attribute
+    def getIspybXML_staraniso(self): return self._ispybXML_staraniso
+    def setIspybXML_staraniso(self, ispybXML_staraniso):
+        if ispybXML_staraniso is None:
+            self._ispybXML_staraniso = None
+        elif ispybXML_staraniso.__class__.__name__ == "XSDataFile":
+            self._ispybXML_staraniso = ispybXML_staraniso
+        else:
+            strMessage = "ERROR! XSDataResultAutoPROC.setIspybXML_staraniso argument is not XSDataFile but %s" % ispybXML_staraniso.__class__.__name__
+            raise BaseException(strMessage)
+    def delIspybXML_staraniso(self): self._ispybXML_staraniso = None
+    ispybXML_staraniso = property(getIspybXML_staraniso, setIspybXML_staraniso, delIspybXML_staraniso, "Property for ispybXML_staraniso")
+    # Methods and properties for the 'reportPdf' attribute
+    def getReportPdf(self): return self._reportPdf
+    def setReportPdf(self, reportPdf):
+        if reportPdf is None:
+            self._reportPdf = None
+        elif reportPdf.__class__.__name__ == "XSDataFile":
+            self._reportPdf = reportPdf
+        else:
+            strMessage = "ERROR! XSDataResultAutoPROC.setReportPdf argument is not XSDataFile but %s" % reportPdf.__class__.__name__
+            raise BaseException(strMessage)
+    def delReportPdf(self): self._reportPdf = None
+    reportPdf = property(getReportPdf, setReportPdf, delReportPdf, "Property for reportPdf")
+    # Methods and properties for the 'reportPdf_staraniso' attribute
+    def getReportPdf_staraniso(self): return self._reportPdf_staraniso
+    def setReportPdf_staraniso(self, reportPdf_staraniso):
+        if reportPdf_staraniso is None:
+            self._reportPdf_staraniso = None
+        elif reportPdf_staraniso.__class__.__name__ == "XSDataFile":
+            self._reportPdf_staraniso = reportPdf_staraniso
+        else:
+            strMessage = "ERROR! XSDataResultAutoPROC.setReportPdf_staraniso argument is not XSDataFile but %s" % reportPdf_staraniso.__class__.__name__
+            raise BaseException(strMessage)
+    def delReportPdf_staraniso(self): self._reportPdf_staraniso = None
+    reportPdf_staraniso = property(getReportPdf_staraniso, setReportPdf_staraniso, delReportPdf_staraniso, "Property for reportPdf_staraniso")
     def export(self, outfile, level, name_='XSDataResultAutoPROC'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -714,14 +790,22 @@ class XSDataResultAutoPROC(XSDataResult):
             self.logFile.export(outfile, level, name_='logFile')
         else:
             warnEmptyAttribute("logFile", "XSDataFile")
+        if self._workingDirectory is not None:
+            self.workingDirectory.export(outfile, level, name_='workingDirectory')
+        else:
+            warnEmptyAttribute("workingDirectory", "XSDataFile")
         for processDirectory_ in self.getProcessDirectory():
             processDirectory_.export(outfile, level, name_='processDirectory')
         if self.getProcessDirectory() == []:
             warnEmptyAttribute("processDirectory", "XSDataFile")
         if self._ispybXML is not None:
             self.ispybXML.export(outfile, level, name_='ispybXML')
-        else:
-            warnEmptyAttribute("ispybXML", "XSDataFile")
+        if self._ispybXML_staraniso is not None:
+            self.ispybXML_staraniso.export(outfile, level, name_='ispybXML_staraniso')
+        if self._reportPdf is not None:
+            self.reportPdf.export(outfile, level, name_='reportPdf')
+        if self._reportPdf_staraniso is not None:
+            self.reportPdf_staraniso.export(outfile, level, name_='reportPdf_staraniso')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -733,6 +817,11 @@ class XSDataResultAutoPROC(XSDataResult):
             obj_.build(child_)
             self.setLogFile(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'workingDirectory':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setWorkingDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'processDirectory':
             obj_ = XSDataFile()
             obj_.build(child_)
@@ -742,6 +831,21 @@ class XSDataResultAutoPROC(XSDataResult):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setIspybXML(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'ispybXML_staraniso':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setIspybXML_staraniso(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'reportPdf':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setReportPdf(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'reportPdf_staraniso':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setReportPdf_staraniso(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

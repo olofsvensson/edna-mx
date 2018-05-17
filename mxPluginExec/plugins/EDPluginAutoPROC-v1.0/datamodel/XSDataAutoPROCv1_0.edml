@@ -31,6 +31,10 @@ complex type XSDataInputAutoPROC extends XSDataInput {
 
 complex type XSDataResultAutoPROC extends XSDataResult {
 	logFile : XSDataFile
+	workingDirectory : XSDataFile
 	processDirectory : XSDataFile []
-	ispybXML : XSDataFile
+	ispybXML : XSDataFile optional
+	ispybXML_staraniso : XSDataFile optional
+	reportPdf : XSDataFile optional
+	reportPdf_staraniso : XSDataFile optional
 }

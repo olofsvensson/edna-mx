@@ -85,6 +85,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         self.pyarchDirectory = None
         self.hasUploadedAnomResultsToISPyB = False
         self.hasUploadedNoanomResultsToISPyB = False
+        self.hasUploadedAnomStaranisoResultsToISPyB = False
+        self.hasUploadedNoanomStaranisoResultsToISPyB = False
+        self.listPyarchFile = []
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -104,7 +107,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         self.screen("autoPROC processing started")
 
         self.processingCommandLine = ' '.join(sys.argv)
-        self.processingPrograms = "autoPROC"
+        self.processingProgram = "autoPROC"
+        self.processingProgramStaraniso = "autoPROC_staraniso"
 
         if self.dataInput.doAnomAndNonanom is not None:
             if self.dataInput.doAnomAndNonanom.value:
@@ -127,8 +131,6 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         self.edPluginExecAutoPROCAnom = self.loadPlugin("EDPluginExecAutoPROCv1_0", "EDPluginExecAutoPROCv1_0_anom")
         if self.doAnomAndNonanom:
             self.edPluginExecAutoPROCNoanom = self.loadPlugin("EDPluginExecAutoPROCv1_0", "EDPluginExecAutoPROCv1_0_noanom")
-        self.edPluginStoreAutoprocAnom = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_anom")
-        self.edPluginStoreAutoprocNoanom = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_noanom")
 
 
 
@@ -270,14 +272,26 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom = \
               EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
                                                          processingCommandLine=self.processingCommandLine,
-                                                         processingPrograms=self.processingPrograms,
+                                                         processingPrograms=self.processingProgram,
+                                                         isAnom=True,
+                                                         timeStart=self.timeStart)
+            self.autoProcIntegrationIdAnomStaraniso, self.autoProcProgramIdAnomStaraniso = \
+              EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                                                         processingCommandLine=self.processingCommandLine,
+                                                         processingPrograms=self.processingProgramStaraniso,
                                                          isAnom=True,
                                                          timeStart=self.timeStart)
             if self.doAnomAndNonanom:
                 self.autoProcIntegrationIdNoanom, self.autoProcProgramIdNoanom = \
                   EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
                                                              processingCommandLine=self.processingCommandLine,
-                                                             processingPrograms=self.processingPrograms,
+                                                             processingPrograms=self.processingProgram,
+                                                             isAnom=False,
+                                                             timeStart=self.timeStart)
+                self.autoProcIntegrationIdNoanomStaraniso, self.autoProcProgramIdNoanomStaraniso = \
+                  EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                                                             processingCommandLine=self.processingCommandLine,
+                                                             processingPrograms=self.processingProgramStaraniso,
                                                              isAnom=False,
                                                              timeStart=self.timeStart)
 
@@ -319,9 +333,11 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         timeEnd = time.localtime()
 
         # Upload to ISPyB
-        self.uploadToISPyB(self.edPluginExecAutoPROCAnom, True, proposal, timeStart, timeEnd)
+        self.uploadToISPyB(self.edPluginExecAutoPROCAnom, True, False, proposal, timeStart, timeEnd)
+        self.uploadToISPyB(self.edPluginExecAutoPROCAnom, True, True, proposal, timeStart, timeEnd)
         if self.doAnomAndNonanom:
-            self.uploadToISPyB(self.edPluginExecAutoPROCNoanom, False, proposal, timeStart, timeEnd)
+            self.uploadToISPyB(self.edPluginExecAutoPROCNoanom, False, False, proposal, timeStart, timeEnd)
+            self.uploadToISPyB(self.edPluginExecAutoPROCNoanom, False, True, proposal, timeStart, timeEnd)
 
 
     def finallyProcess(self, _edObject=None):
@@ -347,7 +363,16 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                          autoProcIntegrationId=self.autoProcIntegrationIdAnom,
                          autoProcProgramId=self.autoProcProgramIdAnom,
                          processingCommandLine=self.processingCommandLine,
-                         processingPrograms=self.processingPrograms,
+                         processingPrograms=self.processingProgram,
+                         isAnom=True,
+                         timeStart=self.timeStart,
+                         timeEnd=self.timeEnd)
+                if not self.hasUploadedAnomStaranisoResultsToISPyB:
+                    EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                         autoProcIntegrationId=self.autoProcIntegrationIdAnom,
+                         autoProcProgramId=self.autoProcProgramIdAnom,
+                         processingCommandLine=self.processingCommandLine,
+                         processingPrograms=self.processingProgramStaraniso,
                          isAnom=True,
                          timeStart=self.timeStart,
                          timeEnd=self.timeEnd)
@@ -359,22 +384,40 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                              autoProcIntegrationId=self.autoProcIntegrationIdNoanom,
                              autoProcProgramId=self.autoProcProgramIdNoanom,
                              processingCommandLine=self.processingCommandLine,
-                             processingPrograms=self.processingPrograms,
+                             processingPrograms=self.processingProgram,
+                             isAnom=False,
+                             timeStart=self.timeStart,
+                             timeEnd=self.timeEnd)
+                    if not self.hasUploadedNoanomStaranisoResultsToISPyB:
+                        EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                             autoProcIntegrationId=self.autoProcIntegrationIdNoanom,
+                             autoProcProgramId=self.autoProcProgramIdNoanom,
+                             processingCommandLine=self.processingCommandLine,
+                             processingPrograms=self.processingProgramStaraniso,
                              isAnom=False,
                              timeStart=self.timeStart,
                              timeEnd=self.timeEnd)
 
 
 
-    def uploadToISPyB(self, edPluginExecAutoPROC, isAnom, proposal, timeStart, timeEnd):
+    def uploadToISPyB(self, edPluginExecAutoPROC, isAnom, isStaraniso, proposal, timeStart, timeEnd):
         if isAnom:
             anomString = "anom"
         else:
             anomString = "noanom"
-        # Read the generated ISPyB xml file - if any
-        if edPluginExecAutoPROC.dataOutput.ispybXML is not None:
-            autoProcContainer = AutoProcContainer.parseFile(edPluginExecAutoPROC.dataOutput.ispybXML.path.value)
-
+        if isStaraniso:
+            staranisoString = "_staraniso"
+        else:
+            staranisoString = ""
+        # Read the generated ISPyB xml file
+        pathToISPyBXML = None
+        if isStaraniso:
+            if edPluginExecAutoPROC.dataOutput.ispybXML_staraniso is not None:
+                pathToISPyBXML = edPluginExecAutoPROC.dataOutput.ispybXML_staraniso.path.value
+        elif edPluginExecAutoPROC.dataOutput.ispybXML is not None:
+            pathToISPyBXML = edPluginExecAutoPROC.dataOutput.ispybXML.path.value
+        if pathToISPyBXML is not None:
+            autoProcContainer = AutoProcContainer.parseFile(pathToISPyBXML)
             # "Fix" certain entries in the ISPyB xml file
             autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
             for autoProcScalingStatistics in autoProcScalingContainer.AutoProcScalingStatistics:
@@ -389,47 +432,76 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             if self.dataInput.dataCollectionId is not None:
                 image.dataCollectionId = self.dataInput.dataCollectionId.value
             autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
-            if isAnom:
-                autoProcIntegration.anomalous = True
-                autoProcIntegration.autoProcIntegrationId = self.autoProcIntegrationIdAnom
-            else:
-                autoProcIntegration.anomalous = False
-                autoProcIntegration.autoProcIntegrationId = self.autoProcIntegrationIdNoanom
             autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
             autoProcProgram = autoProcProgramContainer.AutoProcProgram
-            autoProcProgram.processingPrograms = "autoPROC"
+            if isAnom:
+                autoProcIntegration.anomalous = True
+                if isStaraniso:
+                    autoProcIntegration.autoProcIntegrationId = self.autoProcIntegrationIdAnomStaraniso
+                    autoProcProgram.autoProcProgramId = self.autoProcProgramIdAnomStaraniso
+                else:
+                    autoProcIntegration.autoProcIntegrationId = self.autoProcIntegrationIdAnom
+                    autoProcProgram.autoProcProgramId = self.autoProcProgramIdAnom
+            else:
+                autoProcIntegration.anomalous = False
+                if isStaraniso:
+                    autoProcIntegration.autoProcIntegrationId = self.autoProcIntegrationIdNoanomStaraniso
+                    autoProcProgram.autoProcProgramId = self.autoProcProgramIdNoanomStaraniso
+                else:
+                    autoProcIntegration.autoProcIntegrationId = self.autoProcIntegrationIdNoanom
+                    autoProcProgram.autoProcProgramId = self.autoProcProgramIdNoanom
+            autoProcProgram.processingPrograms = "autoPROC" + staranisoString
             autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
             autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
             autoProcProgram.processingStatus = "SUCCESS"
-            if isAnom:
-                autoProcProgram.autoProcProgramId = self.autoProcProgramIdAnom
-            else:
-                autoProcProgram.autoProcProgramId = self.autoProcProgramIdNoanom
             for autoProcProgramAttachment in autoProcProgramContainer.AutoProcProgramAttachment:
                 if autoProcProgramAttachment.fileName == "summary.html":
-                    summaryHtmlPath = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
+                    # Check if summary_inlined.html exists
+                    summaryInlinedHtmlPath = os.path.join(autoProcProgramAttachment.filePath, "summary_inlined.html")
+                    if os.path.exists(summaryInlinedHtmlPath):
+                        summaryName = "summary_inlined"
+                        summaryHtmlPath = summaryInlinedHtmlPath
+                    else:
+                        summaryName = "summary"
+                        summaryHtmlPath = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
                     # Replace opidXX with user name
                     htmlSummary = open(summaryHtmlPath).read()
                     userString1 = "User      : {0} (".format(os.environ["USER"])
                     userString2 = "User      : {0} (".format(proposal)
                     htmlSummary = htmlSummary.replace(userString1, userString2)
                     open(summaryHtmlPath, "w").write(htmlSummary)
-                    # Convert the summary.html to summary.pdf
-                    xsDataInputHTML2PDF = XSDataInputHTML2PDF()
-                    xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(summaryHtmlPath)))
-                    xsDataInputHTML2PDF.paperSize = XSDataString("A3")
-                    xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
-                    edPluginHTML2Pdf = self.loadPlugin("EDPluginHTML2PDFv1_0", "EDPluginHTML2PDFv1_0_{0}".format(anomString))
-                    edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
-                    edPluginHTML2Pdf.executeSynchronous()
-                    pdfFile = edPluginHTML2Pdf.dataOutput.pdfFile.path.value
-                    pyarchPdfFile = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pdfFile)
-                    # Copy file to results directory and pyarch
-                    shutil.copy(pdfFile, os.path.join(self.resultsDirectory, pyarchPdfFile))
+                    # Upload summary.html
+                    pathtoFile = summaryHtmlPath
+                    pyarchFile = self.pyarchPrefix + "_{0}_{1}.html".format(anomString, summaryName)
+                    if not pyarchFile in self.listPyarchFile:
+                        shutil.copy(pathtoFile, os.path.join(self.resultsDirectory, pyarchFile))
+                        self.listPyarchFile.append(pyarchFile)
                     if self.pyarchDirectory is not None:
-                        shutil.copy(pdfFile, os.path.join(self.pyarchDirectory, pyarchPdfFile))
-                        autoProcProgramAttachment.fileName = pyarchPdfFile
+                        shutil.copy(pathtoFile, os.path.join(self.pyarchDirectory, pyarchFile))
+                        autoProcProgramAttachment.fileName = os.path.basename(pyarchFile)
                         autoProcProgramAttachment.filePath = self.pyarchDirectory
+                        autoProcProgramAttachment.fileType = "Result"
+
+                    if summaryName == "summary":
+                        # Convert the summary.html to summary.pdf
+                        xsDataInputHTML2PDF = XSDataInputHTML2PDF()
+                        xsDataInputHTML2PDF.addHtmlFile(XSDataFile(XSDataString(summaryHtmlPath)))
+                        xsDataInputHTML2PDF.paperSize = XSDataString("A3")
+                        xsDataInputHTML2PDF.lowQuality = XSDataBoolean(True)
+                        edPluginHTML2Pdf = self.loadPlugin("EDPluginHTML2PDFv1_0", "EDPluginHTML2PDFv1_0_{0}".format(anomString))
+                        edPluginHTML2Pdf.dataInput = xsDataInputHTML2PDF
+                        edPluginHTML2Pdf.executeSynchronous()
+                        pdfFile = edPluginHTML2Pdf.dataOutput.pdfFile.path.value
+                        pyarchPdfFile = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pdfFile)
+                        # Copy file to results directory and pyarch
+                        shutil.copy(pdfFile, os.path.join(self.resultsDirectory, pyarchPdfFile))
+                        if self.pyarchDirectory is not None:
+                            shutil.copy(pdfFile, os.path.join(self.pyarchDirectory, pyarchPdfFile))
+                            autoProcProgramAttachmentPdf = AutoProcProgramAttachment()
+                            autoProcProgramAttachmentPdf.fileName = pyarchPdfFile
+                            autoProcProgramAttachmentPdf.filePath = self.pyarchDirectory
+                            autoProcProgramAttachmentPdf.fileType = "Result"
+                            autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachmentPdf)
                 elif autoProcProgramAttachment.fileName == "truncate-unique.mtz":
                     pathtoFile = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
                     pyarchFile = self.pyarchPrefix + "_{0}_truncate.mtz".format(anomString)
@@ -448,7 +520,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                         autoProcProgramAttachment.filePath = self.pyarchDirectory
             # Add XSCALE.LP file if present
             processDirectory = edPluginExecAutoPROC.dataOutput.processDirectory[0].path.value
-            pathToXSCALELog = os.path.join(processDirectory, "xscale_XSCALE.LP")
+            pathToXSCALELog = os.path.join(processDirectory, "XSCALE.LP")
             if os.path.exists(pathToXSCALELog):
                 pyarchXSCALELog = self.pyarchPrefix + "_merged_{0}_XSCALE.LP".format(anomString)
                 shutil.copy(pathToXSCALELog, os.path.join(self.resultsDirectory, pyarchXSCALELog))
@@ -490,28 +562,44 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 autoProcProgramAttachment.filePath = self.pyarchDirectory
                 autoProcProgramAttachment.fileType = "Log"
                 autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
+            # Add report.pdf
+            pathToRepordPdf = None
+            if isStaraniso and edPluginExecAutoPROC.dataOutput.reportPdf_staraniso is not None:
+                pathToRepordPdf = edPluginExecAutoPROC.dataOutput.reportPdf_staraniso.path.value
+            elif edPluginExecAutoPROC.dataOutput.reportPdf is not None:
+                pathToRepordPdf = edPluginExecAutoPROC.dataOutput.reportPdf.path.value
+            if pathToRepordPdf is not None:
+                pyarchReportFile = self.pyarchPrefix + "_{0}_{1}".format(anomString, os.path.basename(pathToRepordPdf))
+                shutil.copy(pathToRepordPdf, os.path.join(self.resultsDirectory, pyarchReportFile))
+                if self.pyarchDirectory is not None:
+                    shutil.copy(pyarchReportFile, os.path.join(self.pyarchDirectory, pyarchReportFile))
+                    autoProcProgramAttachment = AutoProcProgramAttachment()
+                    autoProcProgramAttachment.fileName = pyarchReportFile
+                    autoProcProgramAttachment.filePath = self.pyarchDirectory
+                    autoProcProgramAttachment.fileType = "Result"
+                    autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
 
             # Upload the xml to ISPyB
             xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
             xsDataInputStoreAutoProc.AutoProcContainer = autoProcContainer
-            if isAnom:
-                self.edPluginStoreAutoprocAnom.dataInput = xsDataInputStoreAutoProc
-                self.edPluginStoreAutoprocAnom.executeSynchronous()
-                isSuccess = not self.edPluginStoreAutoprocAnom.isFailure()
-                self.hasUploadedAnomResultsToISPyB = isSuccess
-                if self.hasUploadedAnomResultsToISPyB:
-                    self.screen("Anom results uploaded to ISPyB")
+            edPluginStoreAutoprocAnom = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}{1}".format(anomString, staranisoString))
+            edPluginStoreAutoprocAnom.dataInput = xsDataInputStoreAutoProc
+            edPluginStoreAutoprocAnom.executeSynchronous()
+            isSuccess = not edPluginStoreAutoprocAnom.isFailure()
+            if isSuccess:
+                self.screen("{0}{1} results uploaded to ISPyB".format(anomString, staranisoString))
+                if isAnom:
+                    if isStaraniso:
+                        self.hasUploadedAnomStaranisoResultsToISPyB = True
+                    else:
+                        self.hasUploadedAnomResultsToISPyB = True
                 else:
-                    self.ERROR("Could not upload anom results to ISPyB!")
+                    if isStaraniso:
+                        self.hasUploadedNoanomStaranisoResultsToISPyB = True
+                    else:
+                        self.hasUploadedNoanomResultsToISPyB = True
             else:
-                self.edPluginStoreAutoprocNoanom.dataInput = xsDataInputStoreAutoProc
-                self.edPluginStoreAutoprocNoanom.executeSynchronous()
-                isSuccess = not self.edPluginStoreAutoprocNoanom.isFailure()
-                self.hasUploadedNoanomResultsToISPyB = isSuccess
-                if self.hasUploadedNoanomResultsToISPyB:
-                    self.screen("Noanom results uploaded to ISPyB")
-                else:
-                    self.ERROR("Could not upload noanom results to ISPyB!")
+                self.screen("Could not upload {0}{1} results to ISPyB".format(anomString, staranisoString))
 
 
     def eiger_template_to_image(self, fmt, num):

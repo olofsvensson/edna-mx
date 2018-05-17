@@ -478,7 +478,7 @@ class EDHandlerXSDataISPyBv1_4(object):
                 dataCollectionId, None, isAnomalous=isAnom,
                 programId=None, status="RUNNING", timeStart=timeStart,
                 processingCommandLine=processingCommandLine, processingPrograms=processingPrograms)
-        edPluginStoreAutoproc = parent.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}_started".format(anomString))
+        edPluginStoreAutoproc = parent.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}_{1}_started".format(processingPrograms, anomString))
         edPluginStoreAutoproc.dataInput = inputStoreAutoProcAnom
         edPluginStoreAutoproc.executeSynchronous()
         autoProcIntegrationId = edPluginStoreAutoproc.dataOutput.autoProcIntegrationId.value
