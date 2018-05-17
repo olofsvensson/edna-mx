@@ -572,7 +572,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 pyarchReportFile = self.pyarchPrefix + "_{0}_{1}".format(anomString, os.path.basename(pathToRepordPdf))
                 shutil.copy(pathToRepordPdf, os.path.join(self.resultsDirectory, pyarchReportFile))
                 if self.pyarchDirectory is not None:
-                    shutil.copy(pyarchReportFile, os.path.join(self.pyarchDirectory, pyarchReportFile))
+                    shutil.copy(pathToRepordPdf, os.path.join(self.pyarchDirectory, pyarchReportFile))
                     autoProcProgramAttachment = AutoProcProgramAttachment()
                     autoProcProgramAttachment.fileName = pyarchReportFile
                     autoProcProgramAttachment.filePath = self.pyarchDirectory
