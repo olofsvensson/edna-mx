@@ -480,7 +480,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                         shutil.copy(pathtoFile, os.path.join(self.pyarchDirectory, pyarchFile))
                         autoProcProgramAttachment.fileName = os.path.basename(pyarchFile)
                         autoProcProgramAttachment.filePath = self.pyarchDirectory
-                        autoProcProgramAttachment.fileType = "Result"
+                        autoProcProgramAttachment.fileType = "Log"
 
                     if summaryName == "summary":
                         # Convert the summary.html to summary.pdf
@@ -500,7 +500,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                             autoProcProgramAttachmentPdf = AutoProcProgramAttachment()
                             autoProcProgramAttachmentPdf.fileName = pyarchPdfFile
                             autoProcProgramAttachmentPdf.filePath = self.pyarchDirectory
-                            autoProcProgramAttachmentPdf.fileType = "Result"
+                            autoProcProgramAttachmentPdf.fileType = "Log"
                             autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachmentPdf)
                 elif autoProcProgramAttachment.fileName == "truncate-unique.mtz":
                     pathtoFile = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
@@ -576,7 +576,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                     autoProcProgramAttachment = AutoProcProgramAttachment()
                     autoProcProgramAttachment.fileName = pyarchReportFile
                     autoProcProgramAttachment.filePath = self.pyarchDirectory
-                    autoProcProgramAttachment.fileType = "Result"
+                    autoProcProgramAttachment.fileType = "Log"
                     autoProcProgramContainer.addAutoProcProgramAttachment(autoProcProgramAttachment)
 
             # Upload the xml to ISPyB
