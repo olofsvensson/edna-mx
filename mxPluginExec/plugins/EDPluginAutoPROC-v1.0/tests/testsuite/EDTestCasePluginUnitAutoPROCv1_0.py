@@ -46,16 +46,20 @@ class EDTestCasePluginUnitAutoPROCv1_0(EDTestCasePluginUnit):
 
     def test_generateCommandLine(self):
         edPlugin = self.getPlugin()
-        strInputXML = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataInputAutoPROC_reference.xml"))
-        xsDataInput = XSDataInputAutoPROC.parseString(strInputXML)
-        strCommandLine = edPlugin.generateCommandLine(xsDataInput)
+        strInputXML1 = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataInputAutoPROC_reference.xml"))
+        xsDataInput1 = XSDataInputAutoPROC.parseString(strInputXML1)
+        strCommandLine1 = edPlugin.generateCommandLine(xsDataInput1)
+        referenceCommandLine1 = "-B -xml -nthreads 12 -M ReportingInlined -Id 1088454A,/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5,xtal5w1_1_####.cbf,1,50 -R 5.0 2.0"
         # print(strCommandLine)
-        EDAssert.equal("-B -xml -nthreads 12 autoPROC_ScaleWithXscale='yes' -Id 1088454A,/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5,xtal5w1_1_####.cbf,1,50 -R 5.0 2.0", strCommandLine, "Reference data input")
+        EDAssert.equal(referenceCommandLine1, strCommandLine1, "Reference data input")
         # Symmetry input
-        strInputXML = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataInputAutoPROC_symm.xml"))
-        xsDataInput = XSDataInputAutoPROC.parseString(strInputXML)
-        strCommandLine = edPlugin.generateCommandLine(xsDataInput)
-        EDAssert.equal("-B -xml -nthreads 12 autoPROC_ScaleWithXscale='yes' -Id 1088454A,/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5,xtal5w1_1_####.cbf,1,50 -R 5.0 2.0 symm=\"P1\" cell=\"52.4 78.7 79.4 90.0 89.8 109.4\"", strCommandLine, "Reference data input")
+        strInputXML2 = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataInputAutoPROC_symm.xml"))
+        xsDataInput2 = XSDataInputAutoPROC.parseString(strInputXML2)
+        strCommandLine2 = edPlugin.generateCommandLine(xsDataInput2)
+        # print(strCommandLine)
+        referenceCommandLine2 = "-B -xml -nthreads 12 -M ReportingInlined -Id 1088454A,/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5,xtal5w1_1_####.cbf,1,50 -R 5.0 2.0 symm=\"P1\" cell=\"52.4 78.7 79.4 90.0 89.8 109.4\""
+        # print(referenceCommandLine)
+        EDAssert.equal(referenceCommandLine2, strCommandLine2, "Reference data input")
 
 
 
