@@ -57,13 +57,10 @@ class EDTestCasePluginExecuteISPyBGetSampleInformationv1_4(EDTestCasePluginExecu
         # Check that the id extists in the results
         edPlugin = self.getPlugin()
         xsDataResult = edPlugin.getDataOutput()
+#        print(xsDataResult.marshal())
         EDAssert.equal(xsDataResult.proteinAcronym is None, False, "Attribute proteinAcronym is not None")
-        EDAssert.equal(xsDataResult.proteinAcronym.value, "toto", "Attribute proteinAcronym is 'toto'")
+        EDAssert.equal(xsDataResult.proteinAcronym.value, "2dCD4", "Attribute proteinAcronym is '2dCD4'")
         EDAssert.equal(xsDataResult.diffractionPlan is None, False, "Attribute diffractionPlan is not None")
-        EDAssert.equal(xsDataResult.diffractionPlan.axisRange is None, False, "Attribute axisRange is not None")
-        EDAssert.equal(xsDataResult.diffractionPlan.axisRange.value, 360, "Attribute axisRange is 360")
-#        EDAssert.equal(xsDataResult.diffractionPlan.experimentKind is None, False, "Attribute diffractionPlan.experimentKind is not None")
-#        EDAssert.equal(xsDataResult.diffractionPlan.experimentKind.value, "Default", "Attribute diffractionPlan.experimentKind is 'Default'")
 
 
     def process(self):
