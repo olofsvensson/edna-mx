@@ -454,6 +454,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
             autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
             autoProcProgram.processingStatus = "SUCCESS"
+            # EDNA-245 - remove "truncate_{early,late}-unique.mtz" from autoProcProgramContainer.AutoProcProgramAttachment
+            autoProcProgramContainer.AutoProcProgramAttachment[:] = [x for x in autoProcProgramContainer.AutoProcProgramAttachment if not self.matchesTruncateEarlyLate(x.fileName) ]
             for autoProcProgramAttachment in autoProcProgramContainer.AutoProcProgramAttachment:
                 if autoProcProgramAttachment.fileName == "summary.html":
                     # Check if summary_inlined.html exists
@@ -582,7 +584,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             # Upload the xml to ISPyB
             xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
             xsDataInputStoreAutoProc.AutoProcContainer = autoProcContainer
-            edPluginStoreAutoprocAnom = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}{1}".format(anomString, staranisoString))
+            edPluginStoreAutoprocAnom = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "ISPyBStoreAutoProcv1_4_{0}{1}".format(anomString, staranisoString))
             edPluginStoreAutoprocAnom.dataInput = xsDataInputStoreAutoProc
             edPluginStoreAutoprocAnom.executeSynchronous()
             isSuccess = not edPluginStoreAutoprocAnom.isFailure()
@@ -612,3 +614,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
     def eiger_template_to_master(self, fmt):
         fmt_string = fmt.replace("####", "1_master")
         return fmt_string
+
+    def matchesTruncateEarlyLate(self, fileName):
+        value = False
+        if fileName == "truncate_early-unique.mtz" or fileName == "truncate_late-unique.mtz":
+            value = True
+        return value

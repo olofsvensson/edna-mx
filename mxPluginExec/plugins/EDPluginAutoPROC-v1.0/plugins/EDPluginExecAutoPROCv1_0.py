@@ -115,7 +115,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         This method creates the input command line for autoPROC
         """
         self.DEBUG("EDPluginExecAutoPROCv1_0.generateCommands")
-        strCommandText = "-B -xml -nthreads {0} -M ReportingInlined".format(self.maxNoProcessors)
+        strCommandText = "-B -xml -nthreads {0} -M ReportingInlined autoPROC_HIGHLIGHT=\"no\"".format(self.maxNoProcessors)
 
         if self.doScaleWithXscale:
             strCommandText += " autoPROC_ScaleWithXscale='yes'"
