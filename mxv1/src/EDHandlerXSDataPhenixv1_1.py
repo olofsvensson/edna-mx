@@ -72,7 +72,7 @@ class EDHandlerXSDataPhenixv1_1:
     generateXSDataInputLabelitIndexing = staticmethod(generateXSDataInputLabelitIndexing)
 
 
-    def generateXSDataIndexingResult(_xsDataResultLabelitIndexing, _xsDataExperimentalCondition=None, _strSymopFileName=None):
+    def generateXSDataIndexingResult(_xsDataResultLabelitIndexing, _xsDataExperimentalCondition=None):
         EDVerbose.DEBUG("EDHandlerXSDataLabelitv1_1.generateXSDataIndexingOutput")
 
         xsDataLabelitScreenOutput = _xsDataResultLabelitIndexing.screenOutput
@@ -106,8 +106,7 @@ class EDHandlerXSDataPhenixv1_1:
         xsDataCrystalSelected = XSDataCrystal()
         xsDataSpaceGroupSelected = XSDataSpaceGroup()
         xsDataSpaceGroupSelected.setName(XSDataString(edStringSelectedSpaceGroupName))
-        if not _strSymopFileName is None:
-            xsDataSpaceGroupSelected.setITNumber(XSDataInteger(EDUtilsSymmetry.getITNumberFromSpaceGroupName(edStringSelectedSpaceGroupName, _strSymopFileName)))
+        xsDataSpaceGroupSelected.setITNumber(XSDataInteger(EDUtilsSymmetry.getITNumberFromSpaceGroupName(edStringSelectedSpaceGroupName)))
         xsDataCrystalSelected.setSpaceGroup(xsDataSpaceGroupSelected)
         xsDataCrystalSelected.setCell(xsDataCellSelected)
         xsDataCrystalSelected.setMosaicity(XSDataDouble(xsDataLabelitScreenOutput.getMosaicity().getValue()))

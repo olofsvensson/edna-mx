@@ -5,10 +5,6 @@
 			<name>EDPluginControlKappaStrategyv2_0</name>  
 			<XSParamList>
 				<XSParamItem>
-					<name>symopHome</name>
-					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/lib/data</value>
-				</XSParamItem>
-				<XSParamItem>
 					<name>KAPPA</name>
 					<value>ON</value>
 				</XSParamItem>
@@ -17,10 +13,6 @@
 		<XSPluginItem>
 			<name>EDPluginControlKappaReorientationStrategyv2_0</name>  
 			<XSParamList>
-				<XSParamItem>
-					<name>symopHome</name>
-					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/lib/data</value>
-				</XSParamItem>
 				<XSParamItem>
 					<name>KAPPA</name>
 					<value>ON</value>

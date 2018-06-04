@@ -13,5 +13,6 @@
 <path>/edna-mx/mxPluginExec/plugins/EDPluginXia2DIALS-v1.0/plugins</path>
 <path>/edna-mx/mxPluginExec/plugins/EDPluginMXWaitFile-v1.1/plugins</path>
 <path>/edna-mx/mxPluginExec/plugins/EDPluginHTML2PDF-v1.0/plugins</path>
+<path>/edna-mx/mxv1/plugins/EDPluginControlCharacterisation-v1.6/plugins</path>
 </pydev_pathproperty>
 </pydev_project>

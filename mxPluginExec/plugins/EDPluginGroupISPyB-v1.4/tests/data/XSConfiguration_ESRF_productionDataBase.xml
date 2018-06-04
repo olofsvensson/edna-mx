@@ -14,11 +14,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForCollectionWebServiceWsdl</name>
-					<value>http://ispyb.esrf.fr:8080/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
+					<value>https://ispyb.esrf.fr/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForAutoprocessingWebServiceWsdl</name>
-					<value>http://ispyb.esrf.fr:8080/ispyb-ws/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
+					<value>https://ispyb.esrf.fr/ispyb-ws/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>autoProcProgramId</name>
@@ -39,7 +39,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForAutoprocessingWebServiceWsdl</name>
-					<value>http://ispyb.esrf.fr:8080/ispyb-ws/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
+					<value>https://ispyb.esrf.fr/ispyb-ws/ispybWS/ToolsForAutoprocessingWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -56,11 +56,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForBLSampleWebServiceWsdl</name>
-					<value>http://ispyb.esrf.fr:8080/ispyb-ws/ispybWS/ToolsForBLSampleWebService?wsdl</value>
+					<value>https://ispyb.esrf.fr/ispyb-ws/ispybWS/ToolsForBLSampleWebService?wsdl</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>toolsForScreeningEDNAWebServiceWsdl</name>
-					<value>http://ispyb.esrf.fr:8080/ispyb-ws/ispybWS/ToolsForScreeningEDNAWebService?wsdl</value>
+					<value>https://ispyb.esrf.fr/ispyb-ws/ispybWS/ToolsForScreeningEDNAWebService?wsdl</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>

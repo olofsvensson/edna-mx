@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<XSDataInputAutoPROC>
+  <identifier>
+	  <idN>
+	    <value>1088454A</value>
+	  </idN>
+	  <dirN>
+	    <path>
+	      <value>/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5</value>
+	    </path>
+	  </dirN>
+	  <templateN>
+	    <value>xtal5w1_1_####.cbf</value>
+	  </templateN>
+	  <fromN>
+	    <value>1</value>
+	  </fromN>
+	  <toN>
+	    <value>50</value>
+	  </toN>
+  </identifier>
+  <lowResolutionLimit>
+    <value>5.0</value>
+  </lowResolutionLimit>
+  <highResolutionLimit>
+    <value>2.0</value>
+  </highResolutionLimit>
+  <symm>
+  	<value>P1</value>
+  </symm>
+  <cell>
+  	<value>52.4 78.7 79.4 90.0 89.8 109.4</value>  
+  </cell>
+</XSDataInputAutoPROC>

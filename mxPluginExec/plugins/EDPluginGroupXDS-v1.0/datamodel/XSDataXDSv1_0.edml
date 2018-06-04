@@ -192,6 +192,16 @@ complex type XSDataXdsGenerateOutput extends XSDataResult {
 	gxparm : XSDataString
 }
 
+complex type XSDataXDSFilePaths extends XSDataInput {
+	xparmXds: XSDataFile optional	
+	xCorrectionsCbf: XSDataFile optional	
+	yCorrectionsCbf: XSDataFile optional	
+	bkginitCbf : XSDataFile optional
+	gainCbf : XSDataFile optional
+	blankCbf : XSDataFile optional
+}
+
+
 complex type XSDataInputXDS extends XSDataInput {
 	beam : XSDataXDSBeam
 	crystal : XSDataXDSCrystal optional
@@ -199,6 +209,7 @@ complex type XSDataInputXDS extends XSDataInput {
 	goniostat : XSDataXDSGoniostat
 	image : XSDataXDSImage
 	image_link : XSDataXDSImageLink []
+	filePaths : XSDataXDSFilePaths optional
 }
 
 complex type XSDataInputXDSGenerateBackgroundImage extends XSDataInputXDS {
@@ -207,19 +218,31 @@ complex type XSDataInputXDSGenerateBackgroundImage extends XSDataInputXDS {
 complex type XSDataInputXDSIndexing extends XSDataInputXDS {
 }
 
+complex type XSDataInputXDSIntegration extends XSDataInputXDS {
+}
+
 complex type XSDataResultXDS extends XSDataResult {
+	filePaths : XSDataXDSFilePaths optional
 }
 
 complex type XSDataResultXDSIndexing extends XSDataResultXDS {
-	latticeCharacter : XSDataInteger
-	bravaisLattice : XSDataString
-	qualityOfFit : XSDataFloat
-	unitCell : XSDataCell
-	beamCentreX : XSDataFloat
-	beamCentreY : XSDataFloat
-	distance : XSDataLength
-	mosaicity : XSDataAngle
+	latticeCharacter : XSDataInteger optional
+	bravaisLattice : XSDataString optional
+	spaceGroup : XSDataString optional
+	spaceGroupNumber : XSDataInteger optional
+	qualityOfFit : XSDataFloat optional
+	unitCell : XSDataXDSCell optional
+	beamCentreX : XSDataFloat optional
+	beamCentreY : XSDataFloat optional
+	distance : XSDataLength optional
+	mosaicity : XSDataAngle optional
 	pathToLogFile : XSDataFile
+}
+
+complex type XSDataResultXDSIntegration extends XSDataResultXDS {
+	correctLp : XSDataFile optional
+	bkgpixCbf : XSDataFile optional
+	xdsAsciiHkl : XSDataFile optional
 }
 
 complex type XSDataResultXDSGenerateBackgroundImage extends XSDataResultXDS {
@@ -247,6 +270,7 @@ complex type XSDataXDSCrystal extends XSData {
 	space_group_number : XSDataInteger
 	strong_pixel : XSDataInteger
 	unit_cell_constants : XSDataXDSCell
+	minimum_number_of_pixels_in_a_spot : XSDataInteger
 }
 
 complex type XSDataXDSDetector extends XSData {

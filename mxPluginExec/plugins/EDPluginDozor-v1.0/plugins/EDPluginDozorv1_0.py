@@ -160,7 +160,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 self.iyMax = self.iyMaxEiger4m
         if _xsDataInputDozor is not None:
             self.setProcessInfo("name template: %s, first image no: %d, no images: %d" % (
-                _xsDataInputDozor.nameTemplateImage.value,
+                os.path.basename(_xsDataInputDozor.nameTemplateImage.value),
                 _xsDataInputDozor.firstImageNumber.value,
                 _xsDataInputDozor.numberImages.value))
             strCommandText = "!\n"
@@ -213,6 +213,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         strOutput = EDUtilsFile.readFile(_strFileName)
         # Skip the four first lines
         listOutput = strOutput.split("\n")[6:]
+        strWorkingDir = os.path.dirname(_strFileName)
 
         for strLine in listOutput:
             # Remove "|"
@@ -223,10 +224,10 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 angle = self.startingAngle + (imageNumber - self.firstImageNumber) * (self.oscillationRange - self.overlap) + self.oscillationRange / 2.0
                 xsDataImageDozor.number = XSDataInteger(imageNumber)
                 xsDataImageDozor.angle = XSDataAngle(angle)
-              
+
                 xsDataImageDozor.spotScore = self.parseDouble(0)
                 xsDataImageDozor.visibleResolution = self.parseDouble(0)
-                try: 
+                try:
                     if listLine[4].startswith("-") or len(listLine) < 11:
                         xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
                         xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
@@ -249,9 +250,8 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 except:
                     pass
                 # Dozor spot file
-                strWorkingDir = self.getWorkingDirectory()
                 if strWorkingDir is not None:
-                    strSpotFile = os.path.join(self.getWorkingDirectory(), "%05d.spot" % xsDataImageDozor.number.value)
+                    strSpotFile = os.path.join(strWorkingDir, "%05d.spot" % xsDataImageDozor.number.value)
                     if os.path.exists(strSpotFile):
                         xsDataImageDozor.spotFile = XSDataFile(XSDataString(strSpotFile))
 #                #print xsDataImageDozor.marshal()
@@ -261,10 +261,10 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
 
         # Check if mtv plot file exists
         mtvFileName = "dozor_rd.mtv"
-        mtvFilePath = os.path.join(self.getWorkingDirectory(), mtvFileName)
+        mtvFilePath = os.path.join(strWorkingDir, mtvFileName)
         if os.path.exists(mtvFilePath):
             xsDataResultDozor.plotmtvFile = XSDataFile(XSDataString(mtvFilePath))
-            xsDataResultDozor.pngPlots = self.generatePngPlots(mtvFilePath, self.getWorkingDirectory())
+            xsDataResultDozor.pngPlots = self.generatePngPlots(mtvFilePath, strWorkingDir)
 
         return xsDataResultDozor
 

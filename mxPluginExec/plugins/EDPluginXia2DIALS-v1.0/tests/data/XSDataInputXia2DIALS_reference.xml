@@ -5,4 +5,10 @@
       <value>/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5/xtal5w1_1_0001.cbf</value>
     </path>
   </image>
+  <startFrame>
+  	<value>1</value>
+  </startFrame>
+  <endFrame>
+  	<value>100</value>
+  </endFrame>
 </XSDataInputXIA2>

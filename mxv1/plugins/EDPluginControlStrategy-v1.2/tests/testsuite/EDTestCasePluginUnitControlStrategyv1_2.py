@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -83,7 +83,6 @@ class EDTestCasePluginUnitControlStrategyv1_2(EDTestCasePluginUnit):
         dictItem = edConfiguration.get(edPluginStrategy.getPluginName())
         edPluginStrategy.setConfig(dictItem)
         edPluginStrategy.configure()
-        EDAssert.equal("/opt/pxsoft/ccp4-6.0.2/lib/data", edPluginStrategy.getSymopHome())
 
 
     def testSetDataModelInput(self):

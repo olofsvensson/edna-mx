@@ -94,6 +94,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.hdf5BatchSize = None
         self._strMxCuBE_URI = None
         self._oServerProxy = None
+        self.doRadiationDamage = False
+        self.gnuplot = "gnuplot"
 
 
     def checkParameters(self):
@@ -113,6 +115,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
             self._oServerProxy = xmlrpclib.ServerProxy(self._strMxCuBE_URI)
 
+        self.gnuplot = self.config.get("gnuplot", self.gnuplot)
+
 
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
@@ -120,6 +124,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.edPluginControlReadImageHeader = self.loadPlugin(self.strEDPluginControlReadImageHeaderName, "SubWedgeAssemble")
         if self.dataInput.batchSize is not None:
             self.batchSize = self.dataInput.batchSize.value
+        if self.dataInput.radiationDamage is not None:
+            self.doRadiationDamage = self.dataInput.radiationDamage.value
 
 
 
@@ -155,17 +161,19 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             else:
                 batchSize = self.dataInput.batchSize.value
             dictImage = self.createImageDict(self.dataInput)
-        self.screen("Batch size: {0}".format(batchSize))
+        self.screen("Dozor batch size: {0}".format(batchSize))
         if self.dataInput.hdf5BatchSize is not None:
             self.hdf5BatchSize = self.dataInput.hdf5BatchSize.value
         listAllBatches = self.createListOfBatches(dictImage.keys(), batchSize)
         if dictImage[listAllBatches[0][0]].path.value.endswith("h5"):
             # Convert HDF5 images to CBF
-            if self.hdf5BatchSize is not None:
-                self.screen("HDF5 converter batch size: {0}".format(self.hdf5BatchSize))
-            self.cbfTempDir = tempfile.mkdtemp(prefix="CbfTemp_")
-            listHdf5Batches = self.createListOfBatches(dictImage.keys(), self.hdf5BatchSize)
-            dictImage, self.hasHdf5Prefix = self.convertToCBF(dictImage, listHdf5Batches)
+            self.screen("HDF5 converter batch size: {0}".format(self.batchSize))
+            if self.doRadiationDamage:
+                self.cbfTempDir = None
+            else:
+                self.cbfTempDir = tempfile.mkdtemp(prefix="CbfTemp_")
+            listHdf5Batches = self.createListOfBatches(dictImage.keys(), self.batchSize)
+            dictImage, self.hasHdf5Prefix = self.convertToCBF(dictImage, listHdf5Batches, self.doRadiationDamage)
         for listBatch in listAllBatches:
             # Read the header from the first image in the batch
             xsDataFile = dictImage[listBatch[0]]
@@ -413,7 +421,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             data_file.close()
             oldCwd = os.getcwd()
             os.chdir(self.getWorkingDirectory())
-            os.system("gnuplot %s" % pathGnuplotScript)
+            os.system("{0} {1}".format(self.gnuplot, pathGnuplotScript))
             os.chdir(oldCwd)
 
             self.dataOutput.dozorPlot = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), dozorPlotFileName)))
@@ -533,7 +541,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             listAllBatches.append(listImagesInBatch)
         return listAllBatches
 
-    def convertToCBF(self, dictImage, listAllBatches):
+    def convertToCBF(self, dictImage, listAllBatches, doRadiationDamage=False):
         # Find start and end image number
         startImage = None
         endImage = None
@@ -560,17 +568,36 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 newDict[image] = edPluginH5ToCBF.dataOutput.outputCBFFile
         else:
             listPluginH5ToCBF = []
+            directory = os.path.dirname(dictImage[listAllBatches[0][0]].path.value)
             for batch in listAllBatches:
                 xsDataInputH5ToCBF = XSDataInputH5ToCBF()
-                xsDataInputH5ToCBF.hdf5File = dictImage[startImage]
-                xsDataInputH5ToCBF.hdf5ImageNumber = XSDataInteger(1)
-                xsDataInputH5ToCBF.startImageNumber = XSDataInteger(batch[0])
-                xsDataInputH5ToCBF.endImageNumber = XSDataInteger(batch[-1])
-                xsDataInputH5ToCBF.forcedOutputDirectory = XSDataFile(XSDataString(self.cbfTempDir))
+                if doRadiationDamage:
+                    xsDataInputH5ToCBF.hdf5File = dictImage[batch[0]]
+                    xsDataInputH5ToCBF.hdf5ImageNumber = XSDataInteger(batch[0])
+                    xsDataInputH5ToCBF.startImageNumber = XSDataInteger(listAllBatches[0][0])
+                    xsDataInputH5ToCBF.endImageNumber = XSDataInteger(listAllBatches[0][-1])
+                else:
+                    xsDataInputH5ToCBF.hdf5File = dictImage[startImage]
+                    xsDataInputH5ToCBF.hdf5ImageNumber = XSDataInteger(1)
+                    xsDataInputH5ToCBF.startImageNumber = XSDataInteger(batch[0])
+                    xsDataInputH5ToCBF.endImageNumber = XSDataInteger(batch[-1])
+                    xsDataInputH5ToCBF.forcedOutputDirectory = XSDataFile(XSDataString(self.cbfTempDir))
                 edPluginH5ToCBF = self.loadPlugin("EDPluginH5ToCBFv1_1")
                 edPluginH5ToCBF.dataInput = xsDataInputH5ToCBF
-                edPluginH5ToCBF.execute()
-                listPluginH5ToCBF.append(edPluginH5ToCBF)
+                if doRadiationDamage:
+                    edPluginH5ToCBF.executeSynchronous()
+                    if edPluginH5ToCBF.dataOutput is not None and edPluginH5ToCBF.dataOutput.outputCBFFileTemplate is not None:
+                        outputCBFFileTemplate = edPluginH5ToCBF.dataOutput.outputCBFFileTemplate
+                        for newImageNumber in batch:
+                            oldImageNumber = newImageNumber - batch[0] + 1
+                            oldPath = os.path.join(directory, outputCBFFileTemplate.path.value.replace("######", "{0:06d}".format(oldImageNumber)))
+                            newPath = os.path.join(directory, outputCBFFileTemplate.path.value.replace("######", "{0:04d}".format(newImageNumber)))
+                            os.rename(oldPath, newPath)
+                            newDict[newImageNumber] = XSDataFile(XSDataString(newPath))
+                    hasHdf5Prefix = False
+                else:
+                    edPluginH5ToCBF.execute()
+                    listPluginH5ToCBF.append(edPluginH5ToCBF)
             for edPluginH5ToCBF in listPluginH5ToCBF:
                 edPluginH5ToCBF.synchronize()
                 if edPluginH5ToCBF.dataOutput is not None and edPluginH5ToCBF.dataOutput.outputCBFFileTemplate is not None:

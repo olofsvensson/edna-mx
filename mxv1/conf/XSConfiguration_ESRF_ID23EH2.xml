@@ -67,10 +67,6 @@
 		<XSPluginItem>
 			<name>EDPluginControlIndexingIndicatorsv1_1</name>  
 			<XSParamList>
-				<XSParamItem>
-					<name>symopHome</name>
-					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/lib/data</value>
-				</XSParamItem>
     			<XSParamItem>
 					<name>doLabelitIndexing</name>
 					<value>false</value>

@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<XSDataInputXIA2>
+  <image>
+    <path>
+      <value>/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5/xtal5w1_1_0001.cbf</value>
+    </path>
+  </image>
+  <spaceGroup>
+  	<value>P1</value>
+  </spaceGroup>
+  <unitCell>
+  	<value>52.69,148.94,79.68,90.00,90.00,90.00</value>
+  </unitCell>
+  <startFrame>
+  	<value>1</value>
+  </startFrame>
+  <endFrame>
+  	<value>50</value>
+  </endFrame>
+</XSDataInputXIA2>

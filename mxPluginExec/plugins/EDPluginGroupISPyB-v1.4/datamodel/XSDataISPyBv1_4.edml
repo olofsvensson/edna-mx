@@ -301,6 +301,8 @@ complex type XSDataISPyBDiffractionPlan extends XSData {
 	aimedMultiplicity : XSDataDouble optional
 	aimedResolution : XSDataDouble optional
 	anomalousData : XSDataBoolean optional
+	axisRange : XSDataDouble optional
+	axisStart : XSDataDouble optional
 	comments : XSDataString optional
 	complexity : XSDataString optional
 	diffractionPlanId : XSDataInteger optional

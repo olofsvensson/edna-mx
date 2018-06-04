@@ -1,0 +1,37 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+
+complex type XSDataInputFbest extends XSDataInput {
+	flux : XSDataDouble
+	resolution : XSDataDouble
+	beamH : XSDataDouble optional
+	beamV : XSDataDouble optional
+	wavelength : XSDataDouble optional
+	aperture : XSDataDouble optional
+	slitX : XSDataDouble optional
+	slitY : XSDataDouble optional
+	rotationRange : XSDataDouble optional
+	rotationWidth : XSDataDouble optional
+	minExposureTime : XSDataDouble optional
+	doseLimit : XSDataDouble optional
+	doseRate : XSDataDouble optional
+	sensitivity : XSDataDouble optional
+	crystalSize : XSDataDouble optional
+}
+
+complex type XSDataResultFbest extends XSDataResult {
+	exposureTimePerImage : XSDataDouble optional
+	transmission : XSDataDouble optional
+	numberOfImages : XSDataDouble optional
+	rotationWidth : XSDataDouble optional
+	resolution : XSDataDouble optional
+	totalDose : XSDataDouble optional
+	totalExposureTime : XSDataDouble optional
+	doseRate : XSDataDouble optional
+	sensitivity : XSDataDouble optional
+	minExposure : XSDataDouble optional
+}

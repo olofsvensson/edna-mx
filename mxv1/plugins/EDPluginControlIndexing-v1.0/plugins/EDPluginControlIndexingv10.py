@@ -8,7 +8,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -61,8 +61,8 @@ class EDPluginControlIndexingv10(EDPluginControl):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataIndexingInput)
         self.strPluginIndexingName = "EDPluginControlIndexingMOSFLMv10"
-        #self.strPluginIndexingName = "EDPluginControlIndexingLabelitv10"
-        #self.strPluginIndexingName = "EDPluginControlIndexingParallelv10"
+        # self.strPluginIndexingName = "EDPluginControlIndexingLabelitv10"
+        # self.strPluginIndexingName = "EDPluginControlIndexingParallelv10"
         self.edPluginIndexing = None
         self.strPluginGeneratePredictionName = "EDPluginControlGeneratePredictionv10"
         self.edPluginGeneratePrediction = None
@@ -269,12 +269,14 @@ class EDPluginControlIndexingv10(EDPluginControl):
             strSpaceGroup = xsDataCrystal.getSpaceGroup().getName().getValue()
             # Spot deviation
             xsDataStatisticsIndexing = xsDataSelectedSolution.getStatistics()
-            fSpotDeviationPositional = xsDataStatisticsIndexing.getSpotDeviationPositional().getValue()
             strIndexingShortSummary += "Indexing: laue/space group %s, mosaicity %.2f [degree], " % (strSpaceGroup, fEstimatedMosaicity)
-            strIndexingShortSummary += "RMS dev pos %.2f [mm]" % fSpotDeviationPositional
-            if xsDataStatisticsIndexing.getSpotDeviationAngular() is not None:
-                fSpotDeviationAngular = xsDataStatisticsIndexing.getSpotDeviationAngular().getValue()
-                strIndexingShortSummary += " ang %.2f [degree]" % fSpotDeviationAngular
+            if xsDataStatisticsIndexing is not None:
+                if xsDataStatisticsIndexing.getSpotDeviationPositional() is not None:
+                    fSpotDeviationPositional = xsDataStatisticsIndexing.getSpotDeviationPositional().getValue()
+                    strIndexingShortSummary += "RMS dev pos %.2f [mm]" % fSpotDeviationPositional
+                if xsDataStatisticsIndexing.getSpotDeviationAngular() is not None:
+                    fSpotDeviationAngular = xsDataStatisticsIndexing.getSpotDeviationAngular().getValue()
+                    strIndexingShortSummary += " ang %.2f [degree]" % fSpotDeviationAngular
             strIndexingShortSummary += "\n"
             strIndexingShortSummary += "Indexing: refined Cell %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f\n" % (fA, fB, fC, fAlpha, fBeta, fGamma)
         else:

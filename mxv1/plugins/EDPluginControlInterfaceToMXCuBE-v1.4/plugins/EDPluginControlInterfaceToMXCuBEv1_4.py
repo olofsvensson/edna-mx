@@ -225,7 +225,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                 self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
                 edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
                 edPluginMXWaitFile.executeSynchronous()
-                if edPluginMXWaitFile.dataOutput.timedOut:
+                if edPluginMXWaitFile.dataOutput.timedOut.value:
                     errorMessage = "ERROR! File {0} does not exist on disk.".format(imagePath)
                     self.ERROR(errorMessage)
                     self.sendMessageToMXCuBE(errorMessage, "error")

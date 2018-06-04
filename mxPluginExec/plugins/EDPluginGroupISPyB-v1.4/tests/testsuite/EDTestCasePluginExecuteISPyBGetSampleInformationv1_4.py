@@ -5,7 +5,7 @@
 #    Copyright (C) 2011-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
-#    Principal authors:      Olof Svensson (svensson@esrf.fr) 
+#    Principal authors:      Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -18,7 +18,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -53,15 +53,14 @@ class EDTestCasePluginExecuteISPyBGetSampleInformationv1_4(EDTestCasePluginExecu
         Runs the plugin and then compares expected output with obtained output to verify that it executed correctly. 
         """
         self.run()
-        
+
         # Check that the id extists in the results
         edPlugin = self.getPlugin()
         xsDataResult = edPlugin.getDataOutput()
+#        print(xsDataResult.marshal())
         EDAssert.equal(xsDataResult.proteinAcronym is None, False, "Attribute proteinAcronym is not None")
-        EDAssert.equal(xsDataResult.proteinAcronym.value, "100016", "Attribute proteinAcronym is '100016'")
+        EDAssert.equal(xsDataResult.proteinAcronym.value, "2dCD4", "Attribute proteinAcronym is '2dCD4'")
         EDAssert.equal(xsDataResult.diffractionPlan is None, False, "Attribute diffractionPlan is not None")
-#        EDAssert.equal(xsDataResult.diffractionPlan.experimentKind is None, False, "Attribute diffractionPlan.experimentKind is not None")
-#        EDAssert.equal(xsDataResult.diffractionPlan.experimentKind.value, "Default", "Attribute diffractionPlan.experimentKind is 'Default'")
 
 
     def process(self):

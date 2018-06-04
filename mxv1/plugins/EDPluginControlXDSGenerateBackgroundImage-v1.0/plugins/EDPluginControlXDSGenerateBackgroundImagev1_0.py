@@ -26,12 +26,15 @@ __copyright__ = "ESRF"
 
 from EDVerbose import EDVerbose
 from EDPluginControl import EDPluginControl
+from EDFactoryPluginStatic import EDFactoryPluginStatic
 
 from XSDataMXv1 import XSDataInputControlXDSGenerateBackgroundImage
 from XSDataMXv1 import XSDataResultControlXDSGenerateBackgroundImage
 
 from EDHandlerXSDataXDSv1_0 import EDHandlerXSDataXDSv1_0
 
+EDFactoryPluginStatic.loadModule("XSDataXDSv1_0")
+from XSDataXDSv1_0 import XSDataInputXDSGenerateBackgroundImage
 
 class EDPluginControlXDSGenerateBackgroundImagev1_0(EDPluginControl):
     """
@@ -60,8 +63,9 @@ class EDPluginControlXDSGenerateBackgroundImagev1_0(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlXDSGenerateBackgroundImagev1_0.preProcess")
         # Input data
+        xsDataInputXDS = XSDataInputXDSGenerateBackgroundImage()
         xsDataCollection = self.getDataInput().getDataCollection()
-        xsDataInputXDS = EDHandlerXSDataXDSv1_0.generateXSDataInputXDS(xsDataCollection)
+        xsDataInputXDS = EDHandlerXSDataXDSv1_0.generateXSDataInputXDS(xsDataInputXDS, xsDataCollection)
         # Load the execution plugin
         self.__edPluginXDSGenerateBackgroundImage = self.loadPlugin(self.__strXDSGenerateBackgroundImagePluginName)
         self.__edPluginXDSGenerateBackgroundImage.setDataInput(xsDataInputXDS)

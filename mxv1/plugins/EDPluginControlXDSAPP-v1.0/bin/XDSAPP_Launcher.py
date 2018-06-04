@@ -100,9 +100,9 @@ logger.debug("Proposal: {0}".format(proposal))
 # Check if we have less than 8 images
 transport = HttpAuthenticated(username=ispybUserName, password=ispybPassword)
 if beamline == "id30a2":
-    wdslRoot = "http://ispyvalid.esrf.fr:8080/ispyb/ispyb-ws/ispybWS"
+    wdslRoot = "https://ispyb-valid.esrf.fr/ispyb/ispyb-ws/ispybWS"
 else:
-    wdslRoot = "http://ispyb.esrf.fr:8080/ispyb/ispyb-ws/ispybWS"
+    wdslRoot = "https://ispyb.esrf.fr/ispyb/ispyb-ws/ispybWS"
 collectionWdsl = os.path.join(wdslRoot, "ToolsForCollectionWebService?wsdl")
 collectionWSClient = Client(collectionWdsl, transport=transport)
 collect_params = collectionWSClient.service.findDataCollection(dataCollectionId)

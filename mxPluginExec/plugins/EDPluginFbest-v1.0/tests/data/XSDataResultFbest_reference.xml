@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<XSDataResultFbest>
+    <exposureTimePerImage>
+        <value>2.000000e-02</value>
+    </exposureTimePerImage>
+    <transmission>
+        <value>2.100000e-01</value>
+    </transmission>
+    <numberOfImages>
+        <value>9.500000e+02</value>
+    </numberOfImages>
+    <rotationWidth>
+        <value>2.000000e-01</value>
+    </rotationWidth>
+    <resolution>
+        <value>2.000000e+00</value>
+    </resolution>
+    <totalDose>
+        <value>3.900000e-01</value>
+    </totalDose>
+    <totalExposureTime>
+        <value>1.900000e+01</value>
+    </totalExposureTime>
+    <doseRate>
+        <value>1.000000e+01</value>
+    </doseRate>
+    <sensitivity>
+        <value>2.500000e+01</value>
+    </sensitivity>
+    <minExposure>
+        <value>2.000000e-02</value>
+    </minExposure>
+</XSDataResultFbest>

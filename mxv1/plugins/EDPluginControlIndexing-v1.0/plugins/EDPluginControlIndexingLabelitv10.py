@@ -46,19 +46,6 @@ class EDPluginControlIndexingLabelitv10(EDPluginControlIndexingv10):
         self.setPluginIndexingExecutiveSummaryName("Labelit")
         self.setGeneratePredictionImage(True)
         self.__listXSDataImageReference = None
-        self.strCONF_SYMOP_HOME = "symopHome"
-        self.strSymopLib = None
-
-    def configure(self):
-        EDPluginControlIndexingv10.configure(self)
-        self.DEBUG("EDPluginControlIndexingLabelitv10.configure")
-        strSymopHome = self.config.get(self.strCONF_SYMOP_HOME)
-        if strSymopHome is None:
-            strWarningMessage = "EDPluginControlIndexingLabelitv10: Configuration parameter '%s' not found" % self.strCONF_SYMOP_HOME
-            self.warning(strWarningMessage)
-            self.addWarningMessage(strWarningMessage)
-        else:
-            self.strSymopLib = os.path.join(strSymopHome, "symop.lib")
 
     def loadPluginIndexingInputData(self):
         self.verboseDebug("EDPluginControlIndexingLabelitv10.loadPluginIndexingInputData...")
@@ -75,7 +62,6 @@ class EDPluginControlIndexingLabelitv10(EDPluginControlIndexingv10):
         xsDataResultLabelitIndexing = _edPlugin.dataOutput
         from EDHandlerXSDataPhenixv1_1 import EDHandlerXSDataPhenixv1_1
         xsDataIndexingResult = EDHandlerXSDataPhenixv1_1.generateXSDataIndexingResult(xsDataResultLabelitIndexing,
-                                                                                       self.getExperimentalCondition(),
-                                                                                       self.strSymopLib)
+                                                                                       self.getExperimentalCondition())
         xsDataIndexingResult.setLabelitIndexing(XSDataBoolean(True))
         return xsDataIndexingResult

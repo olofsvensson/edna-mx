@@ -39,13 +39,11 @@ class EDTestSuitePluginExecuteAllMXPluginExec(EDTestSuite):
 
     def process(self):
         self.addTestSuiteFromName("EDTestSuitePluginExecuteMOSFLMv10")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteLabelitv10")
         self.addTestSuiteFromName("EDTestSuitePluginExecutePhenixv1_1")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteRaddosev10")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteBestv10")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteBestv1_1")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteBestv1_2")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteXDSv1_0.py")
+        self.addTestSuiteFromName("EDTestSuitePluginExecuteXDSv1_0")
+        self.addTestCaseFromName("EDTestCasePluginExecuteFbestv1_0")
 
 
 

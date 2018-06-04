@@ -84,8 +84,14 @@ package XSDataMXv1 {
 			doDistlSignalStrength : XSDataBoolean optional
 			doIndexing : XSDataBoolean optional
 			doUploadToIspyb : XSDataBoolean optional
-			image : XSDataImage []
+			image : XSDataImage [] optional
 			batchSize : XSDataInteger optional
+			fastMesh : XSDataBoolean optional
+			wedgeNumber : XSDataInteger optional
+			directory : XSDataFile optional
+			template : XSDataString optional
+			startNo : XSDataInteger optional
+			endNo : XSDataInteger optional
 		}
 
 		complex type XSDataInputControlXDSGenerateBackgroundImage extends XSDataInput {
@@ -554,7 +560,7 @@ package XSDataMXv1 {
 		}
 
 		complex type XSDataStrategySummary extends XSData {
-			"OBS! The attribute \"attenuation\" in XSDataStrategySummary is deprecated, see bug #379. Please use instead \"transmission\" in XSDataBeam."
+			"The attribute \"attenuation\" in XSDataStrategySummary is deprecated, see bug #379. Please use instead \"transmission\" in XSDataBeam."
 			attenuation : XSDataDouble optional
 			completeness : XSDataDouble
 			iSigma : XSDataDouble

@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<XSDataInputXDSAPP>
+  <image>
+    <path>
+      <value>/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5/xtal5w1_1_0001.cbf</value>
+    </path>
+  </image>
+  <startImageNumber>
+  	<value>1</value>
+  </startImageNumber>
+  <endImageNumber>
+  	<value>50</value>
+  </endImageNumber>
+  <spacegroup>
+  	<value>1 52.57 148.82 79.70 90.0 90.0 90.0</value>
+  </spacegroup>
+</XSDataInputXDSAPP>

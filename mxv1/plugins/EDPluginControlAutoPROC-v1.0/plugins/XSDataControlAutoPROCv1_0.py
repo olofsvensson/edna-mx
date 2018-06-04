@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue Jun 21 03:27::59 2016 by EDGenerateDS.
+# Generated Mon Feb 5 08:54::10 2018 by EDGenerateDS.
 #
 
 import os, sys
@@ -123,7 +123,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlAutoPROC(XSDataInput):
-    def __init__(self, configuration=None, doAnomAndNonanom=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, dataCollectionId=None):
+    def __init__(self, configuration=None, cell=None, symm=None, doAnomAndNonanom=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -173,6 +173,20 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self._doAnomAndNonanom = doAnomAndNonanom
         else:
             strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'doAnomAndNonanom' is not XSDataBoolean but %s" % self._doAnomAndNonanom.__class__.__name__
+            raise BaseException(strMessage)
+        if symm is None:
+            self._symm = None
+        elif symm.__class__.__name__ == "XSDataString":
+            self._symm = symm
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'symm' is not XSDataString but %s" % self._symm.__class__.__name__
+            raise BaseException(strMessage)
+        if cell is None:
+            self._cell = None
+        elif cell.__class__.__name__ == "XSDataString":
+            self._cell = cell
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'cell' is not XSDataString but %s" % self._cell.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -258,6 +272,30 @@ class XSDataInputControlAutoPROC(XSDataInput):
             raise BaseException(strMessage)
     def delDoAnomAndNonanom(self): self._doAnomAndNonanom = None
     doAnomAndNonanom = property(getDoAnomAndNonanom, setDoAnomAndNonanom, delDoAnomAndNonanom, "Property for doAnomAndNonanom")
+    # Methods and properties for the 'symm' attribute
+    def getSymm(self): return self._symm
+    def setSymm(self, symm):
+        if symm is None:
+            self._symm = None
+        elif symm.__class__.__name__ == "XSDataString":
+            self._symm = symm
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.setSymm argument is not XSDataString but %s" % symm.__class__.__name__
+            raise BaseException(strMessage)
+    def delSymm(self): self._symm = None
+    symm = property(getSymm, setSymm, delSymm, "Property for symm")
+    # Methods and properties for the 'cell' attribute
+    def getCell(self): return self._cell
+    def setCell(self, cell):
+        if cell is None:
+            self._cell = None
+        elif cell.__class__.__name__ == "XSDataString":
+            self._cell = cell
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.setCell argument is not XSDataString but %s" % cell.__class__.__name__
+            raise BaseException(strMessage)
+    def delCell(self): self._cell = None
+    cell = property(getCell, setCell, delCell, "Property for cell")
     def export(self, outfile, level, name_='XSDataInputControlAutoPROC'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -280,6 +318,10 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self.processDirectory.export(outfile, level, name_='processDirectory')
         if self._doAnomAndNonanom is not None:
             self.doAnomAndNonanom.export(outfile, level, name_='doAnomAndNonanom')
+        if self._symm is not None:
+            self.symm.export(outfile, level, name_='symm')
+        if self._cell is not None:
+            self.cell.export(outfile, level, name_='cell')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -320,6 +362,16 @@ class XSDataInputControlAutoPROC(XSDataInput):
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setDoAnomAndNonanom(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'symm':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setSymm(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cell':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setCell(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

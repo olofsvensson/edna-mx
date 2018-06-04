@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue Jun 21 04:32::06 2016 by EDGenerateDS.
+# Generated Wed Mar 7 10:47::18 2018 by EDGenerateDS.
 #
 
 import os, sys
@@ -17,6 +17,7 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
@@ -25,6 +26,7 @@ try:
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataResult
+    from XSDataCommon import XSDataString
 except ImportError as error:
     if strEdnaHome is not None:
         for strXsdName in dictLocation:
@@ -40,6 +42,7 @@ from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataResult
+from XSDataCommon import XSDataString
 
 
 
@@ -120,7 +123,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlXia2DIALS(XSDataInput):
-    def __init__(self, configuration=None, doAnomAndNonanom=None, processDirectory=None, dataCollectionId=None):
+    def __init__(self, configuration=None, endFrame=None, startFrame=None, unitCell=None, spaceGroup=None, doAnomAndNonanom=None, processDirectory=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -142,6 +145,34 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             self._doAnomAndNonanom = doAnomAndNonanom
         else:
             strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'doAnomAndNonanom' is not XSDataBoolean but %s" % self._doAnomAndNonanom.__class__.__name__
+            raise BaseException(strMessage)
+        if spaceGroup is None:
+            self._spaceGroup = None
+        elif spaceGroup.__class__.__name__ == "XSDataString":
+            self._spaceGroup = spaceGroup
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'spaceGroup' is not XSDataString but %s" % self._spaceGroup.__class__.__name__
+            raise BaseException(strMessage)
+        if unitCell is None:
+            self._unitCell = None
+        elif unitCell.__class__.__name__ == "XSDataString":
+            self._unitCell = unitCell
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'unitCell' is not XSDataString but %s" % self._unitCell.__class__.__name__
+            raise BaseException(strMessage)
+        if startFrame is None:
+            self._startFrame = None
+        elif startFrame.__class__.__name__ == "XSDataInteger":
+            self._startFrame = startFrame
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'startFrame' is not XSDataInteger but %s" % self._startFrame.__class__.__name__
+            raise BaseException(strMessage)
+        if endFrame is None:
+            self._endFrame = None
+        elif endFrame.__class__.__name__ == "XSDataInteger":
+            self._endFrame = endFrame
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'endFrame' is not XSDataInteger but %s" % self._endFrame.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -179,6 +210,54 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             raise BaseException(strMessage)
     def delDoAnomAndNonanom(self): self._doAnomAndNonanom = None
     doAnomAndNonanom = property(getDoAnomAndNonanom, setDoAnomAndNonanom, delDoAnomAndNonanom, "Property for doAnomAndNonanom")
+    # Methods and properties for the 'spaceGroup' attribute
+    def getSpaceGroup(self): return self._spaceGroup
+    def setSpaceGroup(self, spaceGroup):
+        if spaceGroup is None:
+            self._spaceGroup = None
+        elif spaceGroup.__class__.__name__ == "XSDataString":
+            self._spaceGroup = spaceGroup
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.setSpaceGroup argument is not XSDataString but %s" % spaceGroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpaceGroup(self): self._spaceGroup = None
+    spaceGroup = property(getSpaceGroup, setSpaceGroup, delSpaceGroup, "Property for spaceGroup")
+    # Methods and properties for the 'unitCell' attribute
+    def getUnitCell(self): return self._unitCell
+    def setUnitCell(self, unitCell):
+        if unitCell is None:
+            self._unitCell = None
+        elif unitCell.__class__.__name__ == "XSDataString":
+            self._unitCell = unitCell
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.setUnitCell argument is not XSDataString but %s" % unitCell.__class__.__name__
+            raise BaseException(strMessage)
+    def delUnitCell(self): self._unitCell = None
+    unitCell = property(getUnitCell, setUnitCell, delUnitCell, "Property for unitCell")
+    # Methods and properties for the 'startFrame' attribute
+    def getStartFrame(self): return self._startFrame
+    def setStartFrame(self, startFrame):
+        if startFrame is None:
+            self._startFrame = None
+        elif startFrame.__class__.__name__ == "XSDataInteger":
+            self._startFrame = startFrame
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.setStartFrame argument is not XSDataInteger but %s" % startFrame.__class__.__name__
+            raise BaseException(strMessage)
+    def delStartFrame(self): self._startFrame = None
+    startFrame = property(getStartFrame, setStartFrame, delStartFrame, "Property for startFrame")
+    # Methods and properties for the 'endFrame' attribute
+    def getEndFrame(self): return self._endFrame
+    def setEndFrame(self, endFrame):
+        if endFrame is None:
+            self._endFrame = None
+        elif endFrame.__class__.__name__ == "XSDataInteger":
+            self._endFrame = endFrame
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.setEndFrame argument is not XSDataInteger but %s" % endFrame.__class__.__name__
+            raise BaseException(strMessage)
+    def delEndFrame(self): self._endFrame = None
+    endFrame = property(getEndFrame, setEndFrame, delEndFrame, "Property for endFrame")
     def export(self, outfile, level, name_='XSDataInputControlXia2DIALS'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -193,6 +272,14 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             self.processDirectory.export(outfile, level, name_='processDirectory')
         if self._doAnomAndNonanom is not None:
             self.doAnomAndNonanom.export(outfile, level, name_='doAnomAndNonanom')
+        if self._spaceGroup is not None:
+            self.spaceGroup.export(outfile, level, name_='spaceGroup')
+        if self._unitCell is not None:
+            self.unitCell.export(outfile, level, name_='unitCell')
+        if self._startFrame is not None:
+            self.startFrame.export(outfile, level, name_='startFrame')
+        if self._endFrame is not None:
+            self.endFrame.export(outfile, level, name_='endFrame')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -213,6 +300,26 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setDoAnomAndNonanom(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spaceGroup':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setSpaceGroup(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'unitCell':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setUnitCell(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'startFrame':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setStartFrame(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'endFrame':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setEndFrame(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

@@ -130,6 +130,10 @@ class EDPluginISPyBGetSampleInformationv1_4(EDPluginISPyBv1_4):
                     xsDataISPyBDiffractionPlan.aimedResolution = XSDataDouble(sampleInfo.diffractionPlan.aimedResolution)
                 if "anomalousData" in sampleInfo.diffractionPlan:
                     xsDataISPyBDiffractionPlan.anomalousData = XSDataBoolean(sampleInfo.diffractionPlan.anomalousData)
+                if "axisRange" in sampleInfo.diffractionPlan:
+                    xsDataISPyBDiffractionPlan.axisRange = XSDataDouble(sampleInfo.diffractionPlan.axisRange)
+                if "axisStart" in sampleInfo.diffractionPlan:
+                    xsDataISPyBDiffractionPlan.axisStart = XSDataBoolean(sampleInfo.diffractionPlan.axisStart)
                 if "comments" in sampleInfo.diffractionPlan:
                     xsDataISPyBDiffractionPlan.comments = XSDataString(sampleInfo.diffractionPlan.comments)
                 if "complexity" in sampleInfo.diffractionPlan:

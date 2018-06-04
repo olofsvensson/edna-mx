@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<XSDataInputControlImageQualityIndicators>
+    <doDistlSignalStrength>
+        <value>false</value>
+    </doDistlSignalStrength>
+    <doIndexing>
+        <value>false</value>
+    </doIndexing>
+    <doUploadToIspyb>
+        <value>false</value>
+    </doUploadToIspyb>
+    <directory>
+        <path>
+            <value>/scisoft/pxsoft/data/WORKFLOW_TEST_DATA/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02</value>
+        </path>    
+    </directory>
+	<template>
+		<value>mesh-opid30a3_2_####.cbf</value>
+	</template>
+	<startNo>
+		<value>1</value>
+	</startNo>
+	<endNo>
+		<value>400</value>
+	</endNo>
+    <batchSize>
+        <value>100</value>
+    </batchSize>
+    <fastMesh>
+        <value>true</value>
+    </fastMesh>
+    <doDistlSignalStrength>
+        <value>false</value>
+    </doDistlSignalStrength>
+</XSDataInputControlImageQualityIndicators>

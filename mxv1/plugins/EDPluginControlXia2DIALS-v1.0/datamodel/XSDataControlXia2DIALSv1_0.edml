@@ -13,6 +13,10 @@ complex type XSDataInputControlXia2DIALS extends XSDataInput {
 	dataCollectionId : XSDataInteger optional
 	processDirectory : XSDataFile optional
 	doAnomAndNonanom : XSDataBoolean optional
+	spaceGroup : XSDataString optional
+	unitCell : XSDataString optional
+	startFrame : XSDataInteger optional
+	endFrame : XSDataInteger optional
 }
 
 complex type XSDataResultControlXia2DIALS extends XSDataResult {

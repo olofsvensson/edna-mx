@@ -49,6 +49,7 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         self.setXSDataInputClass(XSDataInputXia2DIALS)
         self.setDataOutput(XSDataResultXia2DIALS())
         self.maxNoProcessors = None
+        self.goniometerAxes = None
 
     def checkParameters(self):
         """
@@ -62,6 +63,7 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginExecXia2DIALSv1_0.configure")
         self.maxNoProcessors = self.config.get("maxNoProcessors", self.maxNoProcessors)
+        self.goniometerAxes = self.config.get("goniometerAxes", self.goniometerAxes)
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
@@ -98,12 +100,29 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         if anomalous:
             strCommandText += " atom=X"
 
-        for image in _xsDataInputXia2DIALS.image:
-            strCommandText += " image={0}".format(image.path.value)
+        if _xsDataInputXia2DIALS.startFrame is not None and _xsDataInputXia2DIALS.endFrame is not None:
+            startFrame = _xsDataInputXia2DIALS.startFrame.value
+            endFrame = _xsDataInputXia2DIALS.endFrame.value
+            for image in _xsDataInputXia2DIALS.image:
+                strCommandText += " image={0}:{1}:{2}".format(image.path.value, startFrame, endFrame)
+        else:
+            for image in _xsDataInputXia2DIALS.image:
+                strCommandText += " image={0}".format(image.path.value)
 
         if self.maxNoProcessors is not None:
             strCommandText += " multiprocessing.nproc={0}".format(self.maxNoProcessors)
 
+        if self.goniometerAxes is not None:
+            strCommandText += " goniometer.axes={0}".format(self.goniometerAxes)
+
+        if _xsDataInputXia2DIALS.spaceGroup is not None:
+            strCommandText += " xia2.settings.space_group={0}".format(_xsDataInputXia2DIALS.spaceGroup.value)
+
+        if _xsDataInputXia2DIALS.unitCell is not None:
+            unitCell = _xsDataInputXia2DIALS.unitCell.value
+            if not "," in unitCell:
+                unitCell.replace(" ", ",")
+            strCommandText += " xia2.settings.unit_cell={0}".format(unitCell)
 
         return strCommandText
 

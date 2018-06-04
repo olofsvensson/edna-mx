@@ -8,7 +8,7 @@
 #                            Grenoble, France
 #
 #    Principal authors: Marie-Francoise Incardona (incardon@esrf.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -184,7 +184,7 @@ class EDPluginControl(EDPlugin):
             self.__listOfLoadedPlugins.append(edPlugin)
         edPlugin.setBaseDirectory(self.getWorkingDirectory())
         if (_strBaseName is None):
-            # Check if base name exists. OBS! Not thread safe so please set explicitly
+            # Check if base name exists. Not thread safe so please set explicitly
             # _strBaseName for multi-threaded code
             strRenamedPlugin = self.compactPluginName(strPluginName)
             strNewWorkingDirectory = os.path.join(self.getWorkingDirectory(), strRenamedPlugin)

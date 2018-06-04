@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <XSDataInputControlDozor>
 	<dataCollectionId>
-		<value>1946473</value>
+		<value>2179751</value>
 	</dataCollectionId>
 	<processDirectory>
 		<path>
-			<value>/data/visitor/mx415/id30a2/20161209/PROCESSED_DATA/t2/autoprocessing_t2_run2_1/dozor</value>
+			<value>/data/visitor/mx415/id30a2/20180502/PROCESSED_DATA/t1/autoprocessing_t1_run1_1/dozor</value>
 		</path>
 	</processDirectory>
 	<keepCbfTmpDirectory>

@@ -1,11 +1,17 @@
 <?xml version="1.0" ?>
 <XSDataInputControlXia2DIALS>
   <dataCollectionId>
-  	<value>1994726</value>
+  	<value>2179473</value>
   </dataCollectionId>
     <processDirectory>
         <path>
-            <value>/data/visitor/mx415/id30b/20170310/PROCESSED_DATA/LYS/LYS-CD015034_08/autoprocessing_LYS-CD015034_08_run4_1/XIA2_DIALS</value>
+            <value>/data/visitor/mx415/id30a2/20180315/PROCESSED_DATA/t1/autoprocessing_t1_run2_1/XIA2_DIALS</value>
         </path>
     </processDirectory>
+  <startFrame>
+  	<value>1</value>
+  </startFrame>
+  <endFrame>
+  	<value>100</value>
+  </endFrame>
 </XSDataInputControlXia2DIALS>

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Dec 19 11:21::43 2016 by EDGenerateDS.
+# Generated Tue Feb 27 09:01::21 2018 by EDGenerateDS.
 #
 
 import os, sys
@@ -17,6 +17,7 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
@@ -25,6 +26,7 @@ try:
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataInteger
     from XSDataCommon import XSDataResult
+    from XSDataCommon import XSDataString
 except ImportError as error:
     if strEdnaHome is not None:
         for strXsdName in dictLocation:
@@ -40,6 +42,7 @@ from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataResult
+from XSDataCommon import XSDataString
 
 
 
@@ -120,7 +123,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlXDSAPP(XSDataInput):
-    def __init__(self, configuration=None, hdf5ToCbfDirectory=None, doAnomAndNonanom=None, processDirectory=None, dataCollectionId=None):
+    def __init__(self, configuration=None, unitCell=None, spaceGroup=None, hdf5ToCbfDirectory=None, doAnomAndNonanom=None, processDirectory=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -149,6 +152,20 @@ class XSDataInputControlXDSAPP(XSDataInput):
             self._hdf5ToCbfDirectory = hdf5ToCbfDirectory
         else:
             strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'hdf5ToCbfDirectory' is not XSDataFile but %s" % self._hdf5ToCbfDirectory.__class__.__name__
+            raise BaseException(strMessage)
+        if spaceGroup is None:
+            self._spaceGroup = None
+        elif spaceGroup.__class__.__name__ == "XSDataString":
+            self._spaceGroup = spaceGroup
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'spaceGroup' is not XSDataString but %s" % self._spaceGroup.__class__.__name__
+            raise BaseException(strMessage)
+        if unitCell is None:
+            self._unitCell = None
+        elif unitCell.__class__.__name__ == "XSDataString":
+            self._unitCell = unitCell
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'unitCell' is not XSDataString but %s" % self._unitCell.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -198,6 +215,30 @@ class XSDataInputControlXDSAPP(XSDataInput):
             raise BaseException(strMessage)
     def delHdf5ToCbfDirectory(self): self._hdf5ToCbfDirectory = None
     hdf5ToCbfDirectory = property(getHdf5ToCbfDirectory, setHdf5ToCbfDirectory, delHdf5ToCbfDirectory, "Property for hdf5ToCbfDirectory")
+    # Methods and properties for the 'spaceGroup' attribute
+    def getSpaceGroup(self): return self._spaceGroup
+    def setSpaceGroup(self, spaceGroup):
+        if spaceGroup is None:
+            self._spaceGroup = None
+        elif spaceGroup.__class__.__name__ == "XSDataString":
+            self._spaceGroup = spaceGroup
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP.setSpaceGroup argument is not XSDataString but %s" % spaceGroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpaceGroup(self): self._spaceGroup = None
+    spaceGroup = property(getSpaceGroup, setSpaceGroup, delSpaceGroup, "Property for spaceGroup")
+    # Methods and properties for the 'unitCell' attribute
+    def getUnitCell(self): return self._unitCell
+    def setUnitCell(self, unitCell):
+        if unitCell is None:
+            self._unitCell = None
+        elif unitCell.__class__.__name__ == "XSDataString":
+            self._unitCell = unitCell
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP.setUnitCell argument is not XSDataString but %s" % unitCell.__class__.__name__
+            raise BaseException(strMessage)
+    def delUnitCell(self): self._unitCell = None
+    unitCell = property(getUnitCell, setUnitCell, delUnitCell, "Property for unitCell")
     def export(self, outfile, level, name_='XSDataInputControlXDSAPP'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -214,6 +255,10 @@ class XSDataInputControlXDSAPP(XSDataInput):
             self.doAnomAndNonanom.export(outfile, level, name_='doAnomAndNonanom')
         if self._hdf5ToCbfDirectory is not None:
             self.hdf5ToCbfDirectory.export(outfile, level, name_='hdf5ToCbfDirectory')
+        if self._spaceGroup is not None:
+            self.spaceGroup.export(outfile, level, name_='spaceGroup')
+        if self._unitCell is not None:
+            self.unitCell.export(outfile, level, name_='unitCell')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -239,6 +284,16 @@ class XSDataInputControlXDSAPP(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setHdf5ToCbfDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spaceGroup':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setSpaceGroup(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'unitCell':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setUnitCell(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
