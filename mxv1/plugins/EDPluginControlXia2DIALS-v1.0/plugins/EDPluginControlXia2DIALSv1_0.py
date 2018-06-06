@@ -26,7 +26,6 @@ __license__ = "GPLv2+"
 __copyright__ = "ESRF"
 
 import os
-import sys
 import time
 import shutil
 import socket
@@ -34,7 +33,6 @@ import socket
 from EDPluginControl import EDPluginControl
 from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
 from EDUtilsPath import EDUtilsPath
-from EDHandlerXSDataISPyBv1_4 import EDHandlerXSDataISPyBv1_4
 
 from EDFactoryPlugin import edFactoryPlugin
 
@@ -76,10 +74,6 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         self.pyarchPrefix = None
         self.resultsDirectory = None
         self.pyarchDirectory = None
-        self.processingCommandLine = None
-        self.processingPrograms = None
-        self.hasUploadedAnomResultsToISPyB = False
-        self.hasUploadedNoanomResultsToISPyB = False
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -97,9 +91,6 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlXia2DIALSv1_0.preProcess")
         self.screen("Xia2DIALS processing started")
-
-        self.processingCommandLine = ' '.join(sys.argv)
-        self.processingPrograms = "XIA2_DIALS"
 
         if self.dataInput.doAnomAndNonanom is not None:
             if self.dataInput.doAnomAndNonanom.value:
@@ -147,29 +138,23 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             self.edPluginRetrieveDataCollection.executeSynchronous()
             ispybDataCollection = self.edPluginRetrieveDataCollection.dataOutput.dataCollection
             directory = ispybDataCollection.imageDirectory
-            template = ispybDataCollection.fileTemplate.replace("%04d", "####")
-            if self.dataInput.startFrame is None:
-                imageNoStart = ispybDataCollection.startImageNumber
-            else:
-                imageNoStart = self.dataInput.startFrame.value
-            if self.dataInput.endFrame is None:
-                imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
-            else:
-                imageNoEnd = self.dataInput.endFrame.value
+            template = ispybDataCollection.fileTemplate.replace("%05d", "#####")
+            imageNoStart = ispybDataCollection.startImageNumber
+            imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
 
 #            # DEBUG we set the end image to 20 in order to speed up things
 #            self.warning("End image set to 20 (was {0})".format(imageNoEnd))
 #            imageNoEnd = 20
             pathToStartImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoEnd)
-#        else:
-#            directory = self.dataInput.dirN.value
-#            template = self.dataInput.templateN.value
-#            imageNoStart = self.dataInput.fromN.value
-#            imageNoEnd = self.dataInput.toN.value
-#            fileTemplate = template.replace("####", "%04d")
-#            pathToStartImage = os.path.join(directory, fileTemplate % imageNoStart)
-#            pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
+        else:
+            directory = self.dataInput.dirN.value
+            template = self.dataInput.templateN.value
+            imageNoStart = self.dataInput.fromN.value
+            imageNoEnd = self.dataInput.toN.value
+            fileTemplate = template.replace("####", "%04d")
+            pathToStartImage = os.path.join(directory, fileTemplate % imageNoStart)
+            pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
 
         # Try to get proposal from path
         if EDUtilsPath.isESRF():
@@ -235,7 +220,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             minSizeFirst = 1000000
             minSizeLast = 1000000
 
-        fWaitFileTimeout = 3600  # s
+        fWaitFileTimeout = 60  # s
 
         xsDataInputMXWaitFileFirst = XSDataInputMXWaitFile()
         xsDataInputMXWaitFileFirst.file = XSDataFile(XSDataString(pathToStartImage))
@@ -265,21 +250,9 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         # Prepare input to execution plugin
         xsDataInputXia2DIALSAnom = XSDataInputXia2DIALS()
         xsDataInputXia2DIALSAnom.anomalous = XSDataBoolean(True)
-        xsDataInputXia2DIALSAnom.spaceGroup = self.dataInput.spaceGroup
-        xsDataInputXia2DIALSAnom.unitCell = self.dataInput.unitCell
-        if imageNoStart is not None:
-            xsDataInputXia2DIALSAnom.startFrame = XSDataInteger(imageNoStart)
-        if imageNoEnd is not None:
-            xsDataInputXia2DIALSAnom.endFrame = XSDataInteger(imageNoEnd)
         if self.doAnomAndNonanom:
             xsDataInputXia2DIALSNoanom = XSDataInputXia2DIALS()
             xsDataInputXia2DIALSNoanom.anomalous = XSDataBoolean(False)
-            xsDataInputXia2DIALSNoanom.spaceGroup = self.dataInput.spaceGroup
-            xsDataInputXia2DIALSNoanom.unitCell = self.dataInput.unitCell
-            if imageNoStart is not None:
-                xsDataInputXia2DIALSNoanom.startFrame = XSDataInteger(imageNoStart)
-            if imageNoEnd is not None:
-                xsDataInputXia2DIALSNoanom.endFrame = XSDataInteger(imageNoEnd)
         if isH5:
             masterFilePath = os.path.join(directory,
                                           self.eiger_template_to_master(template))
@@ -290,24 +263,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             xsDataInputXia2DIALSAnom.addImage(XSDataFile(XSDataString(pathToStartImage)))
             if self.doAnomAndNonanom:
                 xsDataInputXia2DIALSNoanom.addImage(XSDataFile(XSDataString(pathToStartImage)))
-        self.timeStart = time.localtime()
-
-        if self.dataInput.dataCollectionId is not None:
-            # Set ISPyB to running
-            self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom = \
-              EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                                                         processingCommandLine=self.processingCommandLine,
-                                                         processingPrograms=self.processingPrograms,
-                                                         isAnom=True,
-                                                         timeStart=self.timeStart)
-            if self.doAnomAndNonanom:
-                self.autoProcIntegrationIdNoanom, self.autoProcProgramIdNoanom = \
-                  EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                                                             processingCommandLine=self.processingCommandLine,
-                                                             processingPrograms=self.processingPrograms,
-                                                             isAnom=False,
-                                                             timeStart=self.timeStart)
-
+        timeStart = time.localtime()
         self.edPluginExecXia2DIALSAnom.dataInput = xsDataInputXia2DIALSAnom
         self.edPluginExecXia2DIALSAnom.execute()
         if self.doAnomAndNonanom:
@@ -316,72 +272,15 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         self.edPluginExecXia2DIALSAnom.synchronize()
         if self.doAnomAndNonanom:
             self.edPluginExecXia2DIALSNoanom.synchronize()
-        self.timeEnd = time.localtime()
+        timeEnd = time.localtime()
 
         # Upload to ISPyB
-        self.hasUploadedAnomResultsToISPyB = self.uploadToISPyB(self.edPluginExecXia2DIALSAnom, True, proposal,
-                           self.autoProcProgramIdAnom, self.autoProcIntegrationIdAnom)
-        if self.hasUploadedAnomResultsToISPyB:
-            self.screen("Anom results uploaded to ISPyB")
-        else:
-            self.ERROR("Could not upload anom results to ISPyB!")
+        self.uploadToISPyB(self.edPluginExecXia2DIALSAnom, True, proposal, timeStart, timeEnd)
         if self.doAnomAndNonanom:
-            self.hasUploadedNoanomResultsToISPyB = self.uploadToISPyB(self.edPluginExecXia2DIALSNoanom, False, proposal,
-                               self.autoProcProgramIdNoanom, self.autoProcIntegrationIdNoanom)
-            if self.hasUploadedNoanomResultsToISPyB:
-                self.screen("Noanom results uploaded to ISPyB")
-            else:
-                self.ERROR("Could not upload noanom results to ISPyB!")
+            self.uploadToISPyB(self.edPluginExecXia2DIALSNoanom, False, proposal, timeStart, timeEnd)
 
-    def finallyProcess(self, _edObject=None):
-        EDPluginControl.finallyProcess(self)
-        self.edPluginExecXia2DIALSAnom.synchronize()
-        self.edPluginExecXia2DIALSNoanom.synchronize()
-        strMessage = ""
-        if self.getListOfWarningMessages() != []:
-            strMessage += "Warning messages: \n\n"
-            for strWarningMessage in self.getListOfWarningMessages():
-                strMessage += strWarningMessage + "\n\n"
-        if self.getListOfErrorMessages() != []:
-            strMessage += "Error messages: \n\n"
-            for strErrorMessage in self.getListOfErrorMessages():
-                strMessage += strErrorMessage + "\n\n"
-        if self.isFailure():
-            self.screen("XIA2_DIALS processing ended with errors!")
-            if strMessage != "":
-                self.screen("Warning and/or error messages: \n{0}.".format(strMessage))
-            self.timeEnd = time.localtime()
-            if self.dataInput.dataCollectionId is not None:
-                # Upload program failure status to ISPyB
-                # anom
-                self.screen("Setting anom program status to failed in ISPyB.")
-                if not self.hasUploadedAnomResultsToISPyB:
-                    self.screen("Setting anom program status to failed in ISPyB.")
-                    EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                         autoProcIntegrationId=self.autoProcIntegrationIdAnom,
-                         autoProcProgramId=self.autoProcProgramIdAnom,
-                         processingCommandLine=self.processingCommandLine,
-                         processingPrograms=self.processingPrograms,
-                         isAnom=True,
-                         timeStart=self.timeStart,
-                         timeEnd=self.timeEnd)
 
-                if self.doAnomAndNonanom:
-                    # noanom
-                    if not self.hasUploadedNoanomResultsToISPyB:
-                        self.screen("Setting noanom program status to failed in ISPyB.")
-                        EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                             autoProcIntegrationId=self.autoProcIntegrationIdNoanom,
-                             autoProcProgramId=self.autoProcProgramIdNoanom,
-                             processingCommandLine=self.processingCommandLine,
-                             processingPrograms=self.processingPrograms,
-                             isAnom=False,
-                             timeStart=self.timeStart,
-                             timeEnd=self.timeEnd)
-
-    def uploadToISPyB(self, edPluginExecXia2DIALS, isAnom, proposal, programId, integrationId):
-        successUpload = False
-
+    def uploadToISPyB(self, edPluginExecXia2DIALS, isAnom, proposal, timeStart, timeEnd):
         if isAnom:
             anomString = "anom"
         else:
@@ -399,10 +298,12 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                 else:
                     autoProcScalingStatistics.anomalous = False
                 # Convert from fraction to %
-                autoProcScalingStatistics.rMerge *= 100.0
+                if autoProcScalingStatistics.rMerge:
+                    autoProcScalingStatistics.rMerge *= 100.0
+                else:
+                    print "No rMerge detected!!!"
             autoProcIntegrationContainer = autoProcScalingContainer.AutoProcIntegrationContainer
             autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
-            autoProcIntegration.autoProcIntegrationId = integrationId
             if isAnom:
                 autoProcIntegration.anomalous = True
             else:
@@ -410,10 +311,11 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             image = autoProcIntegrationContainer.Image
             image.dataCollectionId = self.dataInput.dataCollectionId.value
             autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
-            autoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
-                    programId=programId, status="SUCCESS", timeStart=self.timeStart, timeEnd=self.timeEnd,
-                    processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
-            autoProcProgramContainer.AutoProcProgram = autoProcProgram
+            autoProcProgram = autoProcProgramContainer.AutoProcProgram
+            autoProcProgram.processingPrograms = "XIA2_DIALS"
+            autoProcProgram.processingStatus = "SUCCESS"
+            autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)
+            autoProcProgram.processingEndTime = time.strftime("%a %b %d %H:%M:%S %Y", timeEnd)
             autoProcProgramContainer.AutoProcProgramAttachment = []
             # Upload the log file to ISPyB
             if edPluginExecXia2DIALS.dataOutput.logFile is not None:
@@ -480,14 +382,12 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             edPluginStoreAutoproc = self.loadPlugin("EDPluginISPyBStoreAutoProcv1_4", "EDPluginISPyBStoreAutoProcv1_4_{0}".format(anomString))
             edPluginStoreAutoproc.dataInput = xsDataInputStoreAutoProc
             edPluginStoreAutoproc.executeSynchronous()
-            successUpload = not edPluginStoreAutoproc.isFailure()
         else:
             # Copy dataFiles to results directory
             for dataFile in edPluginExecXia2DIALS.dataOutput.dataFiles:
                 trunc, suffix = os.path.splitext(dataFile.path.value)
                 newFileName = os.path.basename(trunc) + "_" + anomString + suffix
                 shutil.copy(dataFile.path.value, os.path.join(self.resultsDirectory, newFileName))
-        return successUpload
 
     def eiger_template_to_image(self, fmt, num):
         fileNumber = int(num / 100)

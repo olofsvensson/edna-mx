@@ -29,6 +29,8 @@ import os
 import glob
 import subprocess
 
+from EDUtilsPath import EDUtilsPath
+
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
 from XSDataCommon import XSDataFile
@@ -78,7 +80,10 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         # Run xia2.ispyb_xml
         currentDir = os.getcwd()
         os.chdir(self.getWorkingDirectory())
-        subprocess.call("/opt/pxsoft/bin/xia2.ispyb_xml")
+        if EDUtilsPath.isEMBL(): 
+            subprocess.call("/mx-beta/dials-v1-5-1/build/bin/xia2.ispyb_xml")
+        else:
+            subprocess.call("/opt/pxsoft/bin/xia2.ispyb_xml")
         os.chdir(currentDir)
         # Populate the results
         xsDataResultXia2DIALS = self.parseOutputDirectory(self.getWorkingDirectory())
@@ -90,7 +95,10 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         This method creates the input command line for Xia2DIALS
         """
         self.DEBUG("EDPluginExecXia2DIALSv1_0.generateCommands")
-        strCommandText = "pipeline=dials"
+        if EDUtilsPath.isEMBL():
+            strCommandText = "pipeline=dials ispyb_xml_out ispyb.xml"
+        else:
+            strCommandText = "pipeline=dials"
 
         anomalous = True
         if _xsDataInputXia2DIALS.anomalous is not None:
