@@ -6,7 +6,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>pathToLabelitSetpathScript</name>
-					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/phenix_env.sh</value>
+					<value>/mx-beta/bin-trs/phenix-1.11.1-2575/phenix-1.11.1-2575/phenix_env.sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
@@ -14,11 +14,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/labelit.screen</value>
+					<value>/mx-beta/bin-trs/phenix-1.11.1-2575/phenix-1.11.1-2575/build/intel-linux-2.6-x86_64/bin/labelit.screen</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -35,7 +35,7 @@
                         <XSParamList>
                                 <XSParamItem>
                                         <name>pathToLabelitSetpathScript</name>
-                                        <value>/mx-beta/bin-trs/phenix-1.8.2-1309/phenix_env.sh</value>
+                                        <value>/mx-beta/bin-trs/phenix-1.11.1-2575/phenix-1.11.1-2575/phenix_env.sh</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>execProcessScriptShell</name>
@@ -43,11 +43,11 @@
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>execProcessScriptExecutable</name>
-                                        <value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/labelit.screen</value>
+                                        <value>/mx-beta/bin-trs/phenix-1.11.1-2575/phenix-1.11.1-2575/build/intel-linux-2.6-x86_64/bin/labelit.screen</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>execProcessScriptSetupCCP4</name>
-                                        <value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+                                        <value>/mx-beta/bin-trs/ccp4-7.0/bin/ccp4.setup-sh</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>execProcessScriptVersionString</name>
@@ -64,7 +64,7 @@
                         <XSParamList>
                                 <XSParamItem>
                                         <name>pathToLabelitSetpathScript</name>
-                                        <value>/mx-beta/bin-trs/phenix-1.8.2-1309/phenix_env.sh</value>
+                                        <value>/mx-beta/bin-trs/phenix-1.11.1-2575/phenix-1.11.1-2575/phenix_env.sh</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>execProcessScriptShell</name>
@@ -72,11 +72,11 @@
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>execProcessScriptExecutable</name>
-                                        <value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/labelit.screen</value>
+                                        <value>/mx-beta/bin-trs/phenix-1.11.1-2575/phenix-1.11.1-2575/build/intel-linux-2.6-x86_64/bin/labelit.screen</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>execProcessScriptSetupCCP4</name>
-                                        <value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+                                        <value>/mx-beta/bin-trs/ccp4-7.0/bin/ccp4.setup-sh</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>timeOut</name>
@@ -91,7 +91,7 @@
                         <XSParamList>
                                 <XSParamItem>
                                         <name>symopHome</name>
-                                        <value>/mx-beta/bin-trs/ccp4-6.4.0.1/lib/data</value>
+                                        <value>/mx-beta/bin-trs/ccp4-7.0/lib/data</value>
                                 </XSParamItem>
                         </XSParamList>
                 </XSPluginItem>
@@ -101,7 +101,7 @@
                         <XSParamList>
                                 <XSParamItem>
                                         <name>symopHome</name>
-                                        <value>/mx-beta/bin-trs/ccp4-6.4.0.1/lib/data</value>
+                                        <value>/mx-beta/bin-trs/ccp4-7.0/lib/data</value>
                                 </XSParamItem>
                         </XSParamList>
                 </XSPluginItem>
@@ -110,7 +110,7 @@
                         <XSParamList>
                                 <XSParamItem>
                                         <name>symopHome</name>
-                                        <value>/mx-beta/bin-trs/ccp4-6.4.0.1/lib/data</value>
+                                        <value>/mx-beta/bin-trs/ccp4-7.0/lib/data</value>
                                 </XSParamItem>
                         </XSParamList>
                 </XSPluginItem>
@@ -123,7 +123,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/distl.signal_strength</value>
+					<value>/mx-beta/bin-trs/phenix-1.11.1-2575/phenix-1.11.1-2575/build/intel-linux-2.6-x86_64/bin/distl.signal_strength</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -140,7 +140,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/distl.thin_client</value>
+					<value>/mx-beta/bin-trs/phenix-1.11.1-2575/phenix-1.11.1-2575/build/intel-linux-2.6-x86_64/bin/distl.thin_client</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -156,7 +156,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>pathToDistlServer</name>
-					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/distl.mp_spotfinder_server_read_file</value>
+					<value>/mx-beta/bin-trs/phenix-1.11.1-2575/phenix-1.11.1-2575/build/intel-linux-2.6-x86_64/bin/distl.mp_spotfinder_server_read_file</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem> 
@@ -165,7 +165,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>pathToLabelitSetpathScript</name>
-					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/phenix_env.sh</value>
+					<value>/mx-beta/bin-trs/phenix-1.11.1-2575/phenix-1.11.1-2575/phenix_env.sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
@@ -173,11 +173,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/labelit.distl</value>
+					<value>/mx-beta/bin-trs/phenix-1.11.1-2575/phenix-1.11.1-2575/build/intel-linux-2.6-x86_64/bin/labelit.distl</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -198,11 +198,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ipmosflm</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -235,11 +235,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ipmosflm</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -272,11 +272,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ipmosflm</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -313,7 +313,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -342,7 +342,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -367,7 +367,7 @@
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>execProcessScriptSetupCCP4</name>
-                                        <value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
+                                        <value>/mx-beta/bin-trs/ccp4-7.0/bin/ccp4.setup-sh</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>execProcessScriptVersionString</name>
@@ -418,7 +418,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/mtz2various</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/mtz2various</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -426,17 +426,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/ccp4.setup-sh</value>
-				</XSParamItem>
-			</XSParamList>
-		</XSPluginItem>
-
-		<XSPluginItem>
-			<name>EDPluginControlRunXdsFastProc</name>
-			<XSParamList>
-				<XSParamItem>
-					<name>timeOut</name>
-					<value>1800</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -450,7 +440,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/pointless</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/pointless</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -464,11 +454,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/aimless</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/aimless</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>symdb_path</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/lib/data/syminfo.lib</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/lib/data/syminfo.lib</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -481,7 +471,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/bin/truncate</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/bin/truncate</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -494,7 +484,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mx-beta/bin-trs/ccp4-6.4.0.1/etc/uniqueify</value>
+					<value>/mx-beta/bin-trs/ccp4-7.0/etc/uniqueify</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -507,7 +497,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/usr/local/bin/xds_par</value>
+					<value>/mx-beta/bin/xds_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -534,7 +524,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/usr/local/bin/xscale_par</value>
+					<value>/mx-beta/bin/xscale_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -560,7 +550,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/usr/local/bin/xds</value>
+					<value>/mx-beta/bin/xds</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessWorkingDirectory</name>
@@ -640,7 +630,7 @@
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>execProcessScriptExecutable</name>
-                                        <value>/mx-beta/bin-trs/phenix-1.8.2-1309/build/intel-linux-2.6-x86_64/bin/phenix.xtriage</value>
+                                        <value>/mx-beta/bin-trs/phenix-1.11.1-2575/phenix-1.11.1-2575/build/bin/phenix.xtriage</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>timeOut</name>
@@ -683,15 +673,6 @@
                         </XSParamList>
                 </XSPluginItem>
                 <XSPluginItem>
-                        <name>EDPluginControlEDNAprocv1_0</name>
-                        <XSParamList>
-                                 <XSParamItem>
-                                          <name>timeOut</name>
-                                          <value>3600</value>
-                                 </XSParamItem>
-                        </XSParamList>
-                </XSPluginItem>
-                <XSPluginItem>
                         <name>EDPluginExecXia2DIALSv1_0</name>
                         <XSParamList>
                                 <XSParamItem>
@@ -700,11 +681,11 @@
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>execProcessScriptExecutable</name>
-                                        <value>/mx-beta/dials-new/dials-v1-3-5/build/bin/xia2</value>
+                                        <value>/mx-beta/dials-v1-5-1/build/bin/xia2</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>timeOut</name>
-                                        <value>7200</value>
+                                        <value>3590</value>
                                 </XSParamItem>
                         </XSParamList>
                 </XSPluginItem>
@@ -713,7 +694,7 @@
                         <XSParamList>
                                 <XSParamItem>
                                         <name>timeOut</name>
-                                        <value>7200</value>
+                                        <value>3700</value>
                                 </XSParamItem>
                         </XSParamList>
                 </XSPluginItem>
@@ -726,15 +707,16 @@
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>execProcessScriptExecutable</name>
-                                        <value>/mx-beta/GPhL/autoPROC_snapshot_20160923/autoPROC/bin/linux64/process</value>
+                                        <!-- <value>/mx-beta/GPhL/autoPROC_snapshot_20160923/autoPROC/bin/linux64/process</value> -->
+                                        <value>/mx-beta/GPhL/autoPROC_snapshot_20170920/autoPROC/bin/linux64/process</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>timeOut</name>
-                                        <value>3600</value>
+                                        <value>3700</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>maxNoProcessors</name>
-                                        <value>12</value>
+                                        <value>20</value>
                                 </XSParamItem>
                         </XSParamList>
                 </XSPluginItem>
@@ -776,5 +758,36 @@
                                  </XSParamItem>
                         </XSParamList>
                 </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginControlXDSAPPv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>7200</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginExecXDSAPPv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>execProcessScriptShell</name>
+                                        <value>/bin/bash</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>execProcessScriptExecutable</name>
+                                        <value>/mx-beta/xdsapp/xdsapp2.0/xdsit.py</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>7200</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>maxNoProcessors</name>
+                                        <value>6</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+
 	</XSPluginList>
 </XSConfiguration> 
