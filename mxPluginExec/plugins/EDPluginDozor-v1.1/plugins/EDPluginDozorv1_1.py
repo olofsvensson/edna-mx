@@ -266,7 +266,7 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
                 xsDataResultDozor.halfDoseTime = XSDataDouble(strLine.split("=")[1].split()[0])
 
         # Check if mtv plot file exists
-        mtvFileName = "dozor_average.mtv"
+        mtvFileName = "dozor_rd.mtv"
         mtvFilePath = os.path.join(strWorkingDir, mtvFileName)
         if os.path.exists(mtvFilePath):
             xsDataResultDozor.plotmtvFile = XSDataFile(XSDataString(mtvFilePath))
