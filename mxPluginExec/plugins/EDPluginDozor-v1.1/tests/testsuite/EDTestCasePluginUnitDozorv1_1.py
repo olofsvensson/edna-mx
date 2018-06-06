@@ -66,7 +66,6 @@ class EDTestCasePluginUnitDozorv1_1(EDTestCasePluginUnit):
         edPlugin.overlap = 0.0
         xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "dozor.log"))
         EDAssert.equal(100, len(xsDataResult.imageDozor), "Result from 100 images")
-        # EDAssert.equal(True, xsDataResult.halfDoseTime is not None, "Half dose time v1.3.8")
 
     def test_parseOutput2(self):
         edPlugin = self.getPlugin()
@@ -76,7 +75,16 @@ class EDTestCasePluginUnitDozorv1_1(EDTestCasePluginUnit):
         edPlugin.overlap = 0.0
         xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "Dozor_00001.log"))
         EDAssert.equal(18, len(xsDataResult.imageDozor), "Result from 18 images")
-        # EDAssert.equal(True, xsDataResult.halfDoseTime is not None, "Half dose time v1.3.8")
+
+    def test_parseOutput2(self):
+        edPlugin = self.getPlugin()
+        edPlugin.startingAngle = 10.0
+        edPlugin.firstImageNumber = 1
+        edPlugin.oscillationRange = 0.1
+        edPlugin.overlap = 0.0
+        xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "Dozor_raddam.log"))
+        EDAssert.equal(200, len(xsDataResult.imageDozor), "Result from 200 images")
+        EDAssert.equal(True, xsDataResult.halfDoseTime is not None, "Half dose time v2.0.0")
 
     def test_parseDouble(self):
         edPlugin = self.getPlugin()

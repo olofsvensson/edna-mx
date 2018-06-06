@@ -238,7 +238,7 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
         for strLine in listOutput:
             # Remove "|"
             listLine = shlex.split(strLine.replace("|", " "))
-            if listLine != [] and not strLine.startswith("-") and not strLine.startswith("h"):
+            if len(listLine) > 0 and listLine[0].isdigit():
                 xsDataImageDozor = XSDataImageDozor()
                 imageNumber = int(listLine[0])
                 angle = self.startingAngle + (imageNumber - self.firstImageNumber) * (self.oscillationRange - self.overlap) + self.oscillationRange / 2.0
@@ -262,7 +262,7 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
                         xsDataImageDozor.spotFile = XSDataFile(XSDataString(strSpotFile))
 #                #print xsDataImageDozor.marshal()
                 xsDataResultDozor.addImageDozor(xsDataImageDozor)
-            elif strLine.startswith("h"):
+            elif strLine.startswith("Rad.Damage"):
                 xsDataResultDozor.halfDoseTime = XSDataDouble(strLine.split("=")[1].split()[0])
 
         # Check if mtv plot file exists
