@@ -724,6 +724,23 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem> 
+			<name>EDPluginDozorv1_1</name>  
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/dozor__v2.0.0</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>7200</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem> 
 			<name>EDPluginPhenixXtriagev1_1</name>  
 			<XSParamList>
 				<XSParamItem>

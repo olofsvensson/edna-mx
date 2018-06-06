@@ -1,0 +1,55 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataString
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataBoolean
+import XSDataCommon.XSDataAngle
+
+
+complex type XSDataImageDozor {
+	number : XSDataInteger
+	spotsNumOf : XSDataInteger
+	spotsIntAver : XSDataDouble 
+	spotsResolution : XSDataDouble optional
+	powderWilsonScale : XSDataDouble optional
+	powderWilsonBfactor : XSDataDouble optional
+	powderWilsonResolution : XSDataDouble optional
+	powderWilsonCorrelation : XSDataDouble optional
+	powderWilsonRfactor : XSDataDouble optional
+	mainScore : XSDataDouble optional
+	spotScore : XSDataDouble optional
+	visibleResolution : XSDataDouble optional
+	spotFile : XSDataFile optional
+	angle : XSDataAngle optional
+}
+
+complex type XSDataInputDozor extends XSDataInput {
+	detectorType : XSDataString
+	exposureTime : XSDataDouble
+	spotSize : XSDataInteger
+	detectorDistance : XSDataDouble
+	wavelength : XSDataDouble
+	fractionPolarization : XSDataDouble optional
+	orgx : XSDataDouble
+	orgy : XSDataDouble
+	oscillationRange : XSDataDouble
+	imageStep : XSDataDouble optional
+	startingAngle : XSDataDouble optional
+	firstImageNumber : XSDataInteger
+	numberImages : XSDataInteger
+	nameTemplateImage : XSDataString
+	wedgeNumber : XSDataInteger optional
+	radiationDamage : XSDataBoolean optional
+	overlap : XSDataAngle optional
+}
+
+complex type XSDataResultDozor extends XSDataResult {
+	imageDozor : XSDataImageDozor [] optional
+	halfDoseTime : XSDataDouble optional
+	plotmtvFile : XSDataFile optional
+	pngPlots : XSDataFile [] optional
+}

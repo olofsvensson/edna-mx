@@ -48,8 +48,8 @@ from XSDataCommon import XSDataImage
 from XSDataCommon import XSDataAngle
 
 from EDFactoryPluginStatic import EDFactoryPluginStatic
-EDFactoryPluginStatic.loadModule("XSDataDozorv1_0")
-from XSDataDozorv1_0 import XSDataInputDozor
+EDFactoryPluginStatic.loadModule("XSDataDozorv1_1")
+from XSDataDozorv1_1 import XSDataInputDozor
 
 from XSDataMXv1 import XSDataInputReadImageHeader
 
@@ -80,7 +80,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self.setDataOutput(XSDataResultControlDozor())
         self.strEDPluginControlReadImageHeaderName = "EDPluginControlReadImageHeaderv10"
         self.edPluginControlReadImageHeader = None
-        self.strEDPluginDozorName = "EDPluginDozorv1_0"
+        self.strEDPluginDozorName = "EDPluginDozorv1_1"
         self.edPluginDozor = None
         self.xsDataControlDozorInput = None
         self.directory = None
@@ -264,8 +264,6 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                                   "dozorSpotFile": spotFile,
                                   "dozorSpotList" : dozorSpotList,
                                   "dozorSpotListShape": dozorSpotListShape,
-                                  "dozorSpotsIntAver": xsDataControlImageDozor.spotsIntAver.value,
-                                  "dozorSpotsResolution": xsDataControlImageDozor.spotsResolution.value
                                   }
                 imageDozorBatchList.append(imageDozorDict)
 

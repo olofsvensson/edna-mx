@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<XSDataInputDozor>
+    <detectorType>
+		<value>pilatus6m</value>
+	</detectorType>
+	<exposureTime>
+		<value>0.1</value>
+	</exposureTime>
+	<spotSize>
+		<value>3</value>
+	</spotSize>
+	<detectorDistance>
+		<value>269.60</value>
+	</detectorDistance>
+	<wavelength>
+		<value>0.976254</value>
+	</wavelength>
+	<fractionPolatization>
+		<value>0.99</value>
+	</fractionPolatization>
+	<orgx>
+		<value>1216.90</value>
+	</orgx>
+	<orgy>
+		<value>1259.98</value>
+	</orgy>
+	<oscillationRange>
+		<value>0.2</value>
+	</oscillationRange>
+	<imageStep>
+		<value>0.2</value>
+	</imageStep>
+	<startingAngle>
+		<value>92.1515</value>
+	</startingAngle>
+	<firstImageNumber>
+		<value>1</value>
+	</firstImageNumber>
+	<numberImages>
+		<value>100</value>
+	</numberImages>
+	<nameTemplateImage>
+		<value>/scisoft/pxsoft/data/DOZOR/id23eh1/20160229/x_1_????.cbf</value>
+	</nameTemplateImage>
+</XSDataInputDozor>

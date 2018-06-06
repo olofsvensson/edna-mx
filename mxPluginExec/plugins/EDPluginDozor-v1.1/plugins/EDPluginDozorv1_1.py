@@ -52,11 +52,11 @@ from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
 
-from XSDataDozorv1_0 import XSDataInputDozor
-from XSDataDozorv1_0 import XSDataResultDozor
-from XSDataDozorv1_0 import XSDataImageDozor
+from XSDataDozorv1_1 import XSDataInputDozor
+from XSDataDozorv1_1 import XSDataResultDozor
+from XSDataDozorv1_1 import XSDataImageDozor
 
-class EDPluginDozorv1_0(EDPluginExecProcessScript):
+class EDPluginDozorv1_1(EDPluginExecProcessScript):
     """
     This plugin runs the Dozor program written by Sasha Popov
     """
@@ -82,16 +82,25 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.ixMaxPilatus6m = 1270
         self.iyMinPilatus6m = 1190
         self.iyMaxPilatus6m = 1310
+        self.inxPilatus6m = 2463
+        self.inyPilatus6m = 2527
+        self.iPixelSizePilatus6m = 0.172
         # Default values for ESRF Pilatus2M
         self.ixMinPilatus2m = 1
         self.ixMaxPilatus2m = 840
         self.iyMinPilatus2m = 776
         self.iyMaxPilatus2m = 852
+        self.inxPilatus2m = 1475
+        self.inyPilatus2m = 1679
+        self.iPixelSizePilatus2m = 0.172
         # Default values for ESRF Eiger4M
         self.ixMinEiger4m = 1
         self.ixMaxEiger4m = 1067
         self.iyMinEiger4m = 1029
         self.iyMaxEiger4m = 1108
+        self.inxEiger4m = 2070
+        self.inyEiger4m = 2167
+        self.iPixelSizeEiger4m = 0.075
         # Bad zones
         self.strBad_zona = None
 
@@ -120,9 +129,9 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         # Eventual bad zones
         self.strBad_zona = self.config.get("bad_zona")
         if xsDataInputDozor.radiationDamage is not None and xsDataInputDozor.radiationDamage.value:
-            self.setScriptCommandline("-rd dozor.dat")
+            self.setScriptCommandline("-wg -rd dozor.dat")
         else:
-            self.setScriptCommandline("-p dozor.dat")
+            self.setScriptCommandline("-wg -p dozor.dat")
         strCommands = self.generateCommands(xsDataInputDozor)
         EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), "dozor.dat"), strCommands)
 
@@ -148,23 +157,34 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 self.ixMax = self.ixMaxPilatus2m
                 self.iyMin = self.iyMinPilatus2m
                 self.iyMax = self.iyMaxPilatus2m
+                self.inx = self.inxPilatus2m
+                self.iny = self.inyPilatus2m
+                self.iPixelSize = self.iPixelSizePilatus2m
             elif _xsDataInputDozor.detectorType.value == "pilatus6m":
                 self.ixMin = self.ixMinPilatus6m
                 self.ixMax = self.ixMaxPilatus6m
                 self.iyMin = self.iyMinPilatus6m
                 self.iyMax = self.iyMaxPilatus6m
+                self.inx = self.inxPilatus6m
+                self.iny = self.inyPilatus6m
+                self.iPixelSize = self.iPixelSizePilatus6m
             elif _xsDataInputDozor.detectorType.value == "eiger4m":
                 self.ixMin = self.ixMinEiger4m
                 self.ixMax = self.ixMaxEiger4m
                 self.iyMin = self.iyMinEiger4m
                 self.iyMax = self.iyMaxEiger4m
+                self.inx = self.inxEiger4m
+                self.iny = self.inyEiger4m
+                self.iPixelSize = self.iPixelSizeEiger4m
         if _xsDataInputDozor is not None:
             self.setProcessInfo("name template: %s, first image no: %d, no images: %d" % (
                 os.path.basename(_xsDataInputDozor.nameTemplateImage.value),
                 _xsDataInputDozor.firstImageNumber.value,
                 _xsDataInputDozor.numberImages.value))
             strCommandText = "!\n"
-            strCommandText += "detector %s\n" % _xsDataInputDozor.detectorType.value
+            strCommandText += "nx %s\n" % self.inx
+            strCommandText += "ny %s\n" % self.iny
+            strCommandText += "pixel %s\n" % self.iPixelSize
             strCommandText += "exposure %.3f\n" % _xsDataInputDozor.exposureTime.value
             strCommandText += "spot_size %d\n" % _xsDataInputDozor.spotSize.value
             strCommandText += "detector_distance %.3f\n" % _xsDataInputDozor.detectorDistance.value
@@ -225,30 +245,16 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 xsDataImageDozor.number = XSDataInteger(imageNumber)
                 xsDataImageDozor.angle = XSDataAngle(angle)
 
-                xsDataImageDozor.spotScore = self.parseDouble(0)
-                xsDataImageDozor.visibleResolution = self.parseDouble(0)
+                xsDataImageDozor.spotsNumOf = XSDataInteger(0)
+                xsDataImageDozor.mainScore = XSDataDouble(0)
+                xsDataImageDozor.visibleResolution = XSDataDouble(40)
                 try:
-                    if listLine[4].startswith("-") or len(listLine) < 11:
-                        xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
-                        xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
-                        xsDataImageDozor.spotsResolution = self.parseDouble(listLine[3])
-                        xsDataImageDozor.mainScore = self.parseDouble(listLine[7])
-                        xsDataImageDozor.spotScore = self.parseDouble(listLine[8])
-                        xsDataImageDozor.visibleResolution = self.parseDouble(listLine[9])
-                    else:
-                        xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
-                        xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
-                        xsDataImageDozor.spotsResolution = self.parseDouble(listLine[3])
-                        xsDataImageDozor.powderWilsonScale = self.parseDouble(listLine[4])
-                        xsDataImageDozor.powderWilsonBfactor = self.parseDouble(listLine[5])
-                        xsDataImageDozor.powderWilsonResolution = self.parseDouble(listLine[6])
-                        xsDataImageDozor.powderWilsonCorrelation = self.parseDouble(listLine[7])
-                        xsDataImageDozor.powderWilsonRfactor = self.parseDouble(listLine[8])
-                        xsDataImageDozor.mainScore = self.parseDouble(listLine[9])
-                        xsDataImageDozor.spotScore = self.parseDouble(listLine[10])
-                        xsDataImageDozor.visibleResolution = self.parseDouble(listLine[11])
+                    xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
+                    xsDataImageDozor.mainScore = self.parseDouble(listLine[2])
+                    if len(listLine) > 3:
+                        xsDataImageDozor.visibleResolution = self.parseDouble(listLine[3])
                 except:
-                    pass
+                    raise
                 # Dozor spot file
                 if strWorkingDir is not None:
                     strSpotFile = os.path.join(strWorkingDir, "%05d.spot" % xsDataImageDozor.number.value)
@@ -260,7 +266,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 xsDataResultDozor.halfDoseTime = XSDataDouble(strLine.split("=")[1].split()[0])
 
         # Check if mtv plot file exists
-        mtvFileName = "dozor_rd.mtv"
+        mtvFileName = "dozor_average.mtv"
         mtvFilePath = os.path.join(strWorkingDir, mtvFileName)
         if os.path.exists(mtvFilePath):
             xsDataResultDozor.plotmtvFile = XSDataFile(XSDataString(mtvFilePath))
