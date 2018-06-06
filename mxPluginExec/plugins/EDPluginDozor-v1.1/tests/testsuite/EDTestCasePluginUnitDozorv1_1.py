@@ -85,6 +85,8 @@ class EDTestCasePluginUnitDozorv1_1(EDTestCasePluginUnit):
         xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "Dozor_raddam.log"))
         EDAssert.equal(200, len(xsDataResult.imageDozor), "Result from 200 images")
         EDAssert.equal(True, xsDataResult.halfDoseTime is not None, "Half dose time v2.0.0")
+        EDAssert.equal(True, xsDataResult.halfDoseTimeSigma is not None, "Half dose time sigma v2.0.0")
+        self.unitTest(xsDataResult.halfDoseTimeSigma.value)
 
     def test_parseDouble(self):
         edPlugin = self.getPlugin()

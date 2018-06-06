@@ -268,6 +268,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 imageDozorBatchList.append(imageDozorDict)
 
             xsDataResultControlDozor.halfDoseTime = edPluginDozor.dataOutput.halfDoseTime
+            xsDataResultControlDozor.halfDoseTimeSigma = edPluginDozor.dataOutput.halfDoseTimeSigma
             xsDataResultControlDozor.pngPlots = edPluginDozor.dataOutput.pngPlots
 
             self.sendResultToMXCuBE(imageDozorBatchList)

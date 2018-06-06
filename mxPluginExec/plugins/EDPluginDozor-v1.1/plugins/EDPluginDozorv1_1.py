@@ -264,6 +264,8 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
                 xsDataResultDozor.addImageDozor(xsDataImageDozor)
             elif strLine.startswith("Rad.Damage"):
                 xsDataResultDozor.halfDoseTime = XSDataDouble(strLine.split("=")[1].split()[0])
+            elif "Sigma" in strLine:
+                xsDataResultDozor.halfDoseTimeSigma = XSDataDouble(strLine.split("=")[1].split()[0])
 
         # Check if mtv plot file exists
         mtvFileName = "dozor_rd.mtv"

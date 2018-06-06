@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Jun 6 11:02::41 2018 by EDGenerateDS.
+# Generated Wed Jun 6 04:22::26 2018 by EDGenerateDS.
 #
 
 import os, sys
@@ -1083,7 +1083,7 @@ class XSDataInputDozor(XSDataInput):
 
 
 class XSDataResultDozor(XSDataResult):
-    def __init__(self, status=None, pngPlots=None, plotmtvFile=None, halfDoseTime=None, imageDozor=None):
+    def __init__(self, status=None, pngPlots=None, plotmtvFile=None, halfDoseTimeSigma=None, halfDoseTime=None, imageDozor=None):
         XSDataResult.__init__(self, status)
         if imageDozor is None:
             self._imageDozor = []
@@ -1098,6 +1098,13 @@ class XSDataResultDozor(XSDataResult):
             self._halfDoseTime = halfDoseTime
         else:
             strMessage = "ERROR! XSDataResultDozor constructor argument 'halfDoseTime' is not XSDataDouble but %s" % self._halfDoseTime.__class__.__name__
+            raise BaseException(strMessage)
+        if halfDoseTimeSigma is None:
+            self._halfDoseTimeSigma = None
+        elif halfDoseTimeSigma.__class__.__name__ == "XSDataDouble":
+            self._halfDoseTimeSigma = halfDoseTimeSigma
+        else:
+            strMessage = "ERROR! XSDataResultDozor constructor argument 'halfDoseTimeSigma' is not XSDataDouble but %s" % self._halfDoseTimeSigma.__class__.__name__
             raise BaseException(strMessage)
         if plotmtvFile is None:
             self._plotmtvFile = None
@@ -1158,6 +1165,18 @@ class XSDataResultDozor(XSDataResult):
             raise BaseException(strMessage)
     def delHalfDoseTime(self): self._halfDoseTime = None
     halfDoseTime = property(getHalfDoseTime, setHalfDoseTime, delHalfDoseTime, "Property for halfDoseTime")
+    # Methods and properties for the 'halfDoseTimeSigma' attribute
+    def getHalfDoseTimeSigma(self): return self._halfDoseTimeSigma
+    def setHalfDoseTimeSigma(self, halfDoseTimeSigma):
+        if halfDoseTimeSigma is None:
+            self._halfDoseTimeSigma = None
+        elif halfDoseTimeSigma.__class__.__name__ == "XSDataDouble":
+            self._halfDoseTimeSigma = halfDoseTimeSigma
+        else:
+            strMessage = "ERROR! XSDataResultDozor.setHalfDoseTimeSigma argument is not XSDataDouble but %s" % halfDoseTimeSigma.__class__.__name__
+            raise BaseException(strMessage)
+    def delHalfDoseTimeSigma(self): self._halfDoseTimeSigma = None
+    halfDoseTimeSigma = property(getHalfDoseTimeSigma, setHalfDoseTimeSigma, delHalfDoseTimeSigma, "Property for halfDoseTimeSigma")
     # Methods and properties for the 'plotmtvFile' attribute
     def getPlotmtvFile(self): return self._plotmtvFile
     def setPlotmtvFile(self, plotmtvFile):
@@ -1215,6 +1234,8 @@ class XSDataResultDozor(XSDataResult):
             imageDozor_.export(outfile, level, name_='imageDozor')
         if self._halfDoseTime is not None:
             self.halfDoseTime.export(outfile, level, name_='halfDoseTime')
+        if self._halfDoseTimeSigma is not None:
+            self.halfDoseTimeSigma.export(outfile, level, name_='halfDoseTimeSigma')
         if self._plotmtvFile is not None:
             self.plotmtvFile.export(outfile, level, name_='plotmtvFile')
         for pngPlots_ in self.getPngPlots():
@@ -1234,6 +1255,11 @@ class XSDataResultDozor(XSDataResult):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setHalfDoseTime(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'halfDoseTimeSigma':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setHalfDoseTimeSigma(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'plotmtvFile':
             obj_ = XSDataFile()
