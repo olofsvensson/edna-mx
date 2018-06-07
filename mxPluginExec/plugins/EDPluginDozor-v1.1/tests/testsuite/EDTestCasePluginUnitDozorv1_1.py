@@ -58,7 +58,7 @@ class EDTestCasePluginUnitDozorv1_1(EDTestCasePluginUnit):
         strCommandText = edPlugin.generateCommands(xsDataInput)
         print strCommandText
 
-    def test_parseOutput(self):
+    def test_parseOutput1(self):
         edPlugin = self.getPlugin()
         edPlugin.startingAngle = 10.0
         edPlugin.firstImageNumber = 1
@@ -74,16 +74,17 @@ class EDTestCasePluginUnitDozorv1_1(EDTestCasePluginUnit):
         edPlugin.oscillationRange = 0.1
         edPlugin.overlap = 0.0
         xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "Dozor_00001.log"))
+        self.unitTest(xsDataResult.marshal())
         EDAssert.equal(18, len(xsDataResult.imageDozor), "Result from 18 images")
 
-    def test_parseOutput2(self):
+    def test_parseOutput3(self):
         edPlugin = self.getPlugin()
         edPlugin.startingAngle = 10.0
         edPlugin.firstImageNumber = 1
         edPlugin.oscillationRange = 0.1
         edPlugin.overlap = 0.0
         xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "Dozor_raddam.log"))
-        EDAssert.equal(200, len(xsDataResult.imageDozor), "Result from 200 images")
+        EDAssert.equal(100, len(xsDataResult.imageDozor), "Result from 100 images")
         EDAssert.equal(True, xsDataResult.halfDoseTime is not None, "Half dose time v2.0.0")
         EDAssert.equal(True, xsDataResult.halfDoseTimeSigma is not None, "Half dose time sigma v2.0.0")
         self.unitTest(xsDataResult.halfDoseTimeSigma.value)
@@ -103,7 +104,8 @@ class EDTestCasePluginUnitDozorv1_1(EDTestCasePluginUnit):
 
     def process(self):
         self.addTestMethod(self.test_generateCommands)
-        self.addTestMethod(self.test_parseOutput)
+        self.addTestMethod(self.test_parseOutput1)
         self.addTestMethod(self.test_parseOutput2)
+        self.addTestMethod(self.test_parseOutput3)
         self.addTestMethod(self.test_parseDouble)
         self.addTestMethod(self.test_generatePngPlots)

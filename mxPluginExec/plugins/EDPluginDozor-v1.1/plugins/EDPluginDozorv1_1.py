@@ -129,9 +129,9 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
         # Eventual bad zones
         self.strBad_zona = self.config.get("bad_zona")
         if xsDataInputDozor.radiationDamage is not None and xsDataInputDozor.radiationDamage.value:
-            self.setScriptCommandline("-wg -rd dozor.dat")
+            self.setScriptCommandline("-wg -pall -rd dozor.dat")
         else:
-            self.setScriptCommandline("-wg -p dozor.dat")
+            self.setScriptCommandline("-wg -pall dozor.dat")
         strCommands = self.generateCommands(xsDataInputDozor)
         EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), "dozor.dat"), strCommands)
 
@@ -246,15 +246,33 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
                 xsDataImageDozor.angle = XSDataAngle(angle)
 
                 xsDataImageDozor.spotsNumOf = XSDataInteger(0)
+                xsDataImageDozor.spotsIntAver = XSDataDouble(0)
+                xsDataImageDozor.spotsResolution = XSDataDouble(0)
                 xsDataImageDozor.mainScore = XSDataDouble(0)
+                xsDataImageDozor.spotScore = XSDataDouble(0)
                 xsDataImageDozor.visibleResolution = XSDataDouble(40)
                 try:
-                    xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
-                    xsDataImageDozor.mainScore = self.parseDouble(listLine[2])
-                    if len(listLine) > 3:
-                        xsDataImageDozor.visibleResolution = self.parseDouble(listLine[3])
+                    if listLine[5].startswith("-") or len(listLine) < 11:
+                        xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
+                        xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
+                        xsDataImageDozor.spotsResolution = self.parseDouble(listLine[3])
+                        xsDataImageDozor.mainScore = self.parseDouble(listLine[8])
+                        xsDataImageDozor.spotScore = self.parseDouble(listLine[9])
+                        xsDataImageDozor.visibleResolution = self.parseDouble(listLine[10])
+                    else:
+                        xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
+                        xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
+                        xsDataImageDozor.spotsResolution = self.parseDouble(listLine[3])
+                        xsDataImageDozor.powderWilsonScale = self.parseDouble(listLine[5])
+                        xsDataImageDozor.powderWilsonBfactor = self.parseDouble(listLine[6])
+                        xsDataImageDozor.powderWilsonResolution = self.parseDouble(listLine[7])
+                        xsDataImageDozor.powderWilsonCorrelation = self.parseDouble(listLine[8])
+                        xsDataImageDozor.powderWilsonRfactor = self.parseDouble(listLine[9])
+                        xsDataImageDozor.mainScore = self.parseDouble(listLine[10])
+                        xsDataImageDozor.spotScore = self.parseDouble(listLine[11])
+                        xsDataImageDozor.visibleResolution = self.parseDouble(listLine[12])
                 except:
-                    raise
+                    pass
                 # Dozor spot file
                 if strWorkingDir is not None:
                     strSpotFile = os.path.join(strWorkingDir, "%05d.spot" % xsDataImageDozor.number.value)

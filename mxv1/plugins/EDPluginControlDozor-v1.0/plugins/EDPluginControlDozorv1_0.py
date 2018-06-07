@@ -264,6 +264,8 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                                   "dozorSpotFile": spotFile,
                                   "dozorSpotList" : dozorSpotList,
                                   "dozorSpotListShape": dozorSpotListShape,
+                                  "dozorSpotsIntAver": xsDataControlImageDozor.spotsIntAver.value,
+                                  "dozorSpotsResolution": xsDataControlImageDozor.spotsResolution.value
                                   }
                 imageDozorBatchList.append(imageDozorDict)
 
