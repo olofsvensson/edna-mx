@@ -77,7 +77,9 @@ class EDPluginISPyBUpdateDataCollectionGroupWorkflowIdv1_4(EDPluginISPyBv1_4):
         xsDataInput = self.getDataInput()
 #        print xsDataInput.marshal()
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         self.iDataCollectionGroupId = clientToolsForCollectionWebService.service.updateDataCollectionGroupWorkflowId(\
                 fileLocation=self.getXSValue(xsDataInput.fileLocation), \
                 fileName=self.getXSValue(xsDataInput.fileName), \

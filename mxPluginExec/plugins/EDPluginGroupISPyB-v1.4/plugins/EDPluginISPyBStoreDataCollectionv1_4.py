@@ -72,7 +72,9 @@ class EDPluginISPyBStoreDataCollectionv1_4(EDPluginISPyBv1_4):
         self.DEBUG("EDPluginISPyBStoreDataCollectionv1_4.process")
         xsDataInputStoreDataCollection = self.getDataInput()
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
 
         # DataCollectionProgram
         self.iDataCollectionId = self.storeDataCollectionProgram(clientToolsForCollectionWebService, xsDataInputStoreDataCollection)

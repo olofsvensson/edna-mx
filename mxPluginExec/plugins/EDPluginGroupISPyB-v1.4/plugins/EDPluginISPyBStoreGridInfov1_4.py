@@ -77,7 +77,9 @@ class EDPluginISPyBStoreGridInfov1_4(EDPluginISPyBv1_4):
         xsDataInputGridInfo = self.getDataInput()
 
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         gridInfoWS3VO = clientToolsForCollectionWebService.factory.create('gridInfoWS3VO')
         gridInfoWS3VO.gridInfoId = self.getXSValue(xsDataInputGridInfo.gridInfoId)
         gridInfoWS3VO.workflowMeshId = self.getXSValue(xsDataInputGridInfo.workflowMeshId)

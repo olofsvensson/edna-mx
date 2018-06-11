@@ -77,7 +77,9 @@ class EDPluginISPyBSetImagesPositionsv1_4(EDPluginISPyBv1_4):
         EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBSetImagesPositionsv1_4.process")
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         # Loop over all positions
         listImagePosition = []
         for xsDataImagePosition in self.dataInput.imagePosition:

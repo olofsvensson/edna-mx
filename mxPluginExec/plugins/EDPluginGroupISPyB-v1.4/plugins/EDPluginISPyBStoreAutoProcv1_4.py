@@ -86,7 +86,9 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         xsDataInputStoreAutoProc = self.getDataInput()
         xsDataAutoProcContainer = xsDataInputStoreAutoProc.getAutoProcContainer()
         httpAuthenticatedToolsForAutoprocessingWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForAutoprocessingWebService = Client(self.strToolsForAutoprocessingWebServiceWsdl, transport=httpAuthenticatedToolsForAutoprocessingWebService)
+        clientToolsForAutoprocessingWebService = Client(self.strToolsForAutoprocessingWebServiceWsdl,
+                                                        transport=httpAuthenticatedToolsForAutoprocessingWebService,
+                                                        cache=None)
         xsDataAutoProcScalingContainer = xsDataAutoProcContainer.getAutoProcScalingContainer()
         xsDataAutoProcProgram = xsDataAutoProcContainer.getAutoProcProgramContainer().getAutoProcProgram()
         # AutoProcProgram

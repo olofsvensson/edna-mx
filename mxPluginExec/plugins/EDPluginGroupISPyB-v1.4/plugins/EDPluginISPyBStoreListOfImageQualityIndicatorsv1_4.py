@@ -81,7 +81,9 @@ class EDPluginISPyBStoreListOfImageQualityIndicatorsv1_4(EDPluginISPyBv1_4):
         EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBStoreListOfImageQualityIndicatorsv1_4.process")
         httpAuthenticatedToolsForAutoprocessingWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForAutoprocessingWebService = Client(self.strToolsForAutoprocessingWebServiceWsdl, transport=httpAuthenticatedToolsForAutoprocessingWebService)
+        clientToolsForAutoprocessingWebService = Client(self.strToolsForAutoprocessingWebServiceWsdl,
+                                                        transport=httpAuthenticatedToolsForAutoprocessingWebService,
+                                                        cache=None)
         # Loop over all input image quality indicators:
         listImageQualityIndicatorsForWS = []
         for xsDataImageQualityIndicators in self.dataInput.imageQualityIndicators:

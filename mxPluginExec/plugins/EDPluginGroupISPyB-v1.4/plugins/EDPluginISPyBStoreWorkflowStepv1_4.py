@@ -78,7 +78,9 @@ class EDPluginISPyBStoreWorkflowStepv1_4(EDPluginISPyBv1_4):
         self.DEBUG("EDPluginISPyBStoreWorkflowStepv1_4.process")
         # First get the image ID
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         dictWorkflowStep = {
             "workflowId"                  : self.getXSValue(self.dataInput.workflowId),
             "workflowStepType"            : self.getXSValue(self.dataInput.workflowStepType),
