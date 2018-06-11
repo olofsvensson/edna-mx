@@ -78,7 +78,9 @@ class EDPluginISPyBStoreWorkflowv1_4(EDPluginISPyBv1_4):
         xsDataWorkflow = self.getDataInput().getWorkflow()
 
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         workflow3VO = clientToolsForCollectionWebService.factory.create('workflow3VO')
         workflow3VO.comments = self.getXSValue(xsDataWorkflow.comments)
         workflow3VO.logFilePath = self.getXSValue(xsDataWorkflow.logFilePath)

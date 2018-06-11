@@ -79,7 +79,9 @@ class EDPluginISPyBUpdateWorkflowStatusv1_4(EDPluginISPyBv1_4):
         iWorkflowId = self.dataInput.workflowId.value
         strStatus = self.dataInput.newStatus.value
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         self.iWorkflowId = clientToolsForCollectionWebService.service.updateWorkflowStatus(iWorkflowId, strStatus)
         self.DEBUG("EDPluginISPyBUpdateWorkflowStatusv1_4.process: WorkflowId=%d" % self.iWorkflowId)
 

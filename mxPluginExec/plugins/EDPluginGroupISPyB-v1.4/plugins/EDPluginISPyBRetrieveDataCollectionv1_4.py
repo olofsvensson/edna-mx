@@ -74,8 +74,9 @@ class EDPluginISPyBRetrieveDataCollectionv1_4(EDPluginISPyBv1_4):
         self.DEBUG("EDPluginISPyBRetrieveDataCollectionv1_4.process")
         infile = self.getDataInput()
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
-
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         self.collectParameters = None
         if infile.image is not None:
             inpath = infile.image.path.value

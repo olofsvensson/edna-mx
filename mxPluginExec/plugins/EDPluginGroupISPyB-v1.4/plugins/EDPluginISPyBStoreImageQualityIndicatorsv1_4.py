@@ -93,7 +93,9 @@ class EDPluginISPyBStoreImageQualityIndicatorsv1_4(EDPluginISPyBv1_4):
         strDirName = os.path.dirname(strPathToImage)
         strFileName = os.path.basename(strPathToImage)
         httpAuthenticatedToolsForAutoprocessingWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForAutoprocessingWebService = Client(self.strToolsForAutoprocessingWebServiceWsdl, transport=httpAuthenticatedToolsForAutoprocessingWebService)
+        clientToolsForAutoprocessingWebService = Client(self.strToolsForAutoprocessingWebServiceWsdl,
+                                                        transport=httpAuthenticatedToolsForAutoprocessingWebService,
+                                                        cache=None)
         iImageId = 0
         iAutoProcProgramId = self.iAutoProcProgramId
         iSpotTotal = self.getXSValue(xsDataImageQualityIndicators.spotTotal)

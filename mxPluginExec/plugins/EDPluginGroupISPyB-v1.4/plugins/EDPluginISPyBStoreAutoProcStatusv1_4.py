@@ -77,7 +77,9 @@ class EDPluginISPyBStoreAutoProcStatusv1_4(EDPluginISPyBv1_4):
         iDataCollectionId = None
         self.DEBUG("EDPluginISPyBStoreAutoProcStatusv1_4.process")
         httpAuthenticatedToolsForAutoprocessingWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForAutoprocessingWebService = Client(self.strToolsForAutoprocessingWebServiceWsdl, transport=httpAuthenticatedToolsForAutoprocessingWebService)
+        clientToolsForAutoprocessingWebService = Client(self.strToolsForAutoprocessingWebServiceWsdl,
+                                                        transport=httpAuthenticatedToolsForAutoprocessingWebService,
+                                                        cache=None)
         xsDataInputStoreAutoProcStatus = self.getDataInput()
         if xsDataInputStoreAutoProcStatus.dataCollectionId is not None:
             iDataCollectionId = xsDataInputStoreAutoProcStatus.dataCollectionId

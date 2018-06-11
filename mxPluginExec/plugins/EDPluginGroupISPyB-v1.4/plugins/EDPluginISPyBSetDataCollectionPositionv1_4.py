@@ -78,7 +78,9 @@ class EDPluginISPyBSetDataCollectionPositionv1_4(EDPluginISPyBv1_4):
         xsDataStartPosition = self.dataInput.startPosition
         xsDataEndPosition = self.dataInput.endPosition
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         startMotorPosition3VO = self.createMotorPosition3VO(clientToolsForCollectionWebService, xsDataStartPosition)
         if xsDataEndPosition is not None:
             endMotorPosition3VO = self.createMotorPosition3VO(clientToolsForCollectionWebService, xsDataEndPosition)
