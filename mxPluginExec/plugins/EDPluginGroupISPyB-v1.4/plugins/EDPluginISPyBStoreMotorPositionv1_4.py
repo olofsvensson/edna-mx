@@ -74,7 +74,9 @@ class EDPluginISPyBStoreMotorPositionv1_4(EDPluginISPyBv1_4):
         EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBStoreMotorPositionv1_4.process")
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         # Loop over all positions
         motorPosition = self.createMotorPosition3VO(clientToolsForCollectionWebService, self.dataInput.motorPosition)
         self.motorPositionId = clientToolsForCollectionWebService.service.storeOrUpdateMotorPosition(

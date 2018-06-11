@@ -74,7 +74,9 @@ class EDPluginISPyBSetDataCollectionsPositionsv1_4(EDPluginISPyBv1_4):
         EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBSetDataCollectionsPositionsv1_4.process")
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         # Loop over all positions
         listDataCollectionPosition = []
         for xsDataDataCollectionPosition in self.dataInput.dataCollectionPosition:

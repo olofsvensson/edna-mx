@@ -74,7 +74,9 @@ class EDPluginISPyBSetImageQualityIndicatorsPlotv1_4(EDPluginISPyBv1_4):
         EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBSetImageQualityIndicatorsPlotv1_4.process")
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         # Loop over all positions
         xsDataInputISPyBSetImageQualityIndicatorsPlot = self.getDataInput()
         iDataCollectionId = self.getXSValue(xsDataInputISPyBSetImageQualityIndicatorsPlot.dataCollectionId)

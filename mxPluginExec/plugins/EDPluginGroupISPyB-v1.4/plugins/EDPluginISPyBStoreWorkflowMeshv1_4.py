@@ -78,7 +78,9 @@ class EDPluginISPyBStoreWorkflowMeshv1_4(EDPluginISPyBv1_4):
         xsDataInputWorkflowMesh = self.getDataInput()
 
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         workflowMeshWS3VO = clientToolsForCollectionWebService.factory.create('workflowMeshWS3VO')
         workflowMeshWS3VO.workflowId = self.getXSValue(xsDataInputWorkflowMesh.workflowId)
         workflowMeshWS3VO.bestPositionId = self.getXSValue(xsDataInputWorkflowMesh.bestPositionId)

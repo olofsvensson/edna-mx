@@ -78,7 +78,9 @@ class EDPluginISPyBUpdateDataCollectionGroupCommentv1_4(EDPluginISPyBv1_4):
         newComment = xsDataInput.newComment.value
 #        print xsDataInput.marshal()
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         if xsDataInput.dataCollectionId is None:
             self.ERROR("No input data collection id")
             self.setFailure()

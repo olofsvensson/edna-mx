@@ -82,7 +82,9 @@ class EDPluginISPyBGroupDataCollectionsv1_4(EDPluginISPyBv1_4):
             arrayOfFileLocation.append(os.path.dirname(strFilePath))
             arrayOfFileName.append(os.path.basename(strFilePath))
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                    transport=httpAuthenticatedToolsForCollectionWebService,
+                                                    cache=None)
         self.listDataCollectionIds = clientToolsForCollectionWebService.service.groupDataCollections(\
                 dataCollectionGroupId=self.getXSValue(xsDataInput.dataCollectionGroupId), \
                 arrayOfFileLocation=arrayOfFileLocation, \

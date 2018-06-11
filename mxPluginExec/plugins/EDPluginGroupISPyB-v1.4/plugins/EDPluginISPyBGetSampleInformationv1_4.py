@@ -81,7 +81,9 @@ class EDPluginISPyBGetSampleInformationv1_4(EDPluginISPyBv1_4):
         # First get the image ID
         xsDataInputGetSampleInformation = self.getDataInput()
         httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForBLSampleWebServiceWsdl = Client(self.strToolsForBLSampleWebServiceWsdl, transport=httpAuthenticatedToolsForCollectionWebService)
+        clientToolsForBLSampleWebServiceWsdl = Client(self.strToolsForBLSampleWebServiceWsdl,
+                                                      transport=httpAuthenticatedToolsForCollectionWebService,
+                                                      cache=None)
         iSampleId = self.getXSValue(xsDataInputGetSampleInformation.sampleId)
         sampleInfo = clientToolsForBLSampleWebServiceWsdl.service.getSampleInformation(iSampleId)
         self.DEBUG("Sample info from ISPyB: %r" % sampleInfo)

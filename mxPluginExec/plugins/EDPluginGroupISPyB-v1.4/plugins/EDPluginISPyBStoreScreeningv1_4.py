@@ -82,16 +82,22 @@ class EDPluginISPyBStoreScreeningv1_4(EDPluginISPyBv1_4):
         self.DEBUG("EDPluginISPyBStoreScreeningv1_4.process")
         xsDataInputISPyBStoreScreening = self.getDataInput()
         httpAuthenticatedToolsForAutoprocessingWebService1 = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForBLSampleWebServiceWsdl = Client(self.strToolsForBLSampleWebServiceWsdl, transport=httpAuthenticatedToolsForAutoprocessingWebService1)
+        clientToolsForBLSampleWebServiceWsdl = Client(self.strToolsForBLSampleWebServiceWsdl,
+                                                      transport=httpAuthenticatedToolsForAutoprocessingWebService1,
+                                                      cache=None)
         httpAuthenticatedToolsForAutoprocessingWebService2 = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForScreeningEDNAWebServiceWsdl = Client(self.strToolsForScreeningEDNAWebServiceWsdl, transport=httpAuthenticatedToolsForAutoprocessingWebService2)
+        clientToolsForScreeningEDNAWebServiceWsdl = Client(self.strToolsForScreeningEDNAWebServiceWsdl,
+                                                           transport=httpAuthenticatedToolsForAutoprocessingWebService2,
+                                                           cache=None)
         self.bContinue = True
         # Data collection Id
         if xsDataInputISPyBStoreScreening.screening.dataCollectionGroupId is None:
             xsDataISPyBImage = xsDataInputISPyBStoreScreening.image
             if xsDataISPyBImage is not None:
                 httpAuthenticatedToolsForAutoprocessingWebService3 = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-                clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl, transport=httpAuthenticatedToolsForAutoprocessingWebService3)
+                clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
+                                                            transport=httpAuthenticatedToolsForAutoprocessingWebService3,
+                                                            cache=None)
                 self.iDataCollectionGroupId = self.findDataCollectionFromFileLocationAndFileName(clientToolsForCollectionWebService, xsDataISPyBImage.fileLocation.value, xsDataISPyBImage.fileName.value)
                 if self.iDataCollectionGroupId is None:
                     self.ERROR("Couldn't obtain data collection id!")

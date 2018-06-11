@@ -76,7 +76,9 @@ class EDPluginISPyBStoreAutoProcProgramAttachmentv1_4(EDPluginISPyBv1_4):
         self.DEBUG("EDPluginISPyBStoreAutoProcProgramAttachmentv1_4.process")
         xsDataInputStoreAutoProcProgramAttachment = self.getDataInput()
         httpAuthenticatedToolsForAutoprocessingWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForAutoprocessingWebService = Client(self.strToolsForAutoprocessingWebServiceWsdl, transport=httpAuthenticatedToolsForAutoprocessingWebService)
+        clientToolsForAutoprocessingWebService = Client(self.strToolsForAutoprocessingWebServiceWsdl,
+                                                        transport=httpAuthenticatedToolsForAutoprocessingWebService,
+                                                        cache=None)
         # AutoProcProgramAttachment
         listAutoProcProgramAttachment = xsDataInputStoreAutoProcProgramAttachment.getAutoProcProgramAttachment()
         for xsDataAutoProcProgramAttachment in listAutoProcProgramAttachment:
