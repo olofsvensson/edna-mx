@@ -88,8 +88,8 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
         # Default values for ESRF Pilatus2M
         self.ixMinPilatus2m = 1
         self.ixMaxPilatus2m = 840
-        self.iyMinPilatus2m = 776
-        self.iyMaxPilatus2m = 852
+        self.iyMinPilatus2m = 830
+        self.iyMaxPilatus2m = 875
         self.inxPilatus2m = 1475
         self.inyPilatus2m = 1679
         self.iPixelSizePilatus2m = 0.172
