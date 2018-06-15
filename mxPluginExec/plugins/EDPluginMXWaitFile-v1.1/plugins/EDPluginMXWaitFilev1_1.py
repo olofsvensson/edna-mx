@@ -88,6 +88,13 @@ class EDPluginMXWaitFilev1_1(EDPluginExec):
         hasTimedOut = False
         shouldContinue = True
         fileDir = os.path.dirname(self.strFilePath)
+        if os.path.exists(fileDir):
+            # Patch provided by Sebastien 2018/02/09 for forcing NFS cache:
+            self.DEBUG("NFS cache clear, doing os.fstat on directory {0}".format(fileDir))
+            d = os.open(fileDir, os.O_DIRECTORY)
+            statResult = os.fstat(d)
+            self.DEBUG("Results of os.fstat: {0}".format(statResult))
+        # Check if file is there
         if os.path.exists(self.strFilePath):
             fileSize = os.path.getsize(self.strFilePath)
             if self.expectedSize is not None:
@@ -102,9 +109,15 @@ class EDPluginMXWaitFilev1_1(EDPluginExec):
             while shouldContinue and not hasTimedOut:
                 # Sleep 1 s
                 time.sleep(1)
-                # Try to execute a "ls" on the file directory - this sometimes speed up NFS
                 if os.path.exists(fileDir):
-                    os.system("ls %s > /dev/null" % fileDir)
+                    # Patch provided by Sebastien 2018/02/09 for forcing NFS cache:
+                    self.DEBUG("NFS cache clear, doing os.fstat on directory {0}".format(fileDir))
+                    d = os.open(fileDir, os.O_DIRECTORY)
+                    statResult = os.fstat(d)
+                    self.DEBUG("Results of os.fstat: {0}".format(statResult))
+                # Try to execute a "ls" on the file directory - this sometimes speed up NFS
+                #if os.path.exists(fileDir):
+                #    os.system("ls %s > /dev/null" % fileDir)
                 timeElapsed = time.time() - timeStart
                 # Check if time out
                 if timeElapsed > self.timeOut:
