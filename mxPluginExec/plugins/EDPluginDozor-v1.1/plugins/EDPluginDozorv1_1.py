@@ -77,27 +77,27 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
         self.iyMin = None
         self.ixMax = None
         self.iyMax = None
-        # Default values for ESRF Pilatus6M
+        # Default values for ESRF Pilatus6M id23eh1: 1,1230; 1228,1298
         self.ixMinPilatus6m = 1
-        self.ixMaxPilatus6m = 1270
-        self.iyMinPilatus6m = 1190
-        self.iyMaxPilatus6m = 1310
+        self.ixMaxPilatus6m = 1230
+        self.iyMinPilatus6m = 1228
+        self.iyMaxPilatus6m = 1298
         self.inxPilatus6m = 2463
         self.inyPilatus6m = 2527
         self.iPixelSizePilatus6m = 0.172
-        # Default values for ESRF Pilatus2M
+        # Default values for ESRF Pilatus2M : ID30a1: 1,776; 826,894 
         self.ixMinPilatus2m = 1
-        self.ixMaxPilatus2m = 840
-        self.iyMinPilatus2m = 830
-        self.iyMaxPilatus2m = 875
+        self.ixMaxPilatus2m = 776
+        self.iyMinPilatus2m = 826
+        self.iyMaxPilatus2m = 894
         self.inxPilatus2m = 1475
         self.inyPilatus2m = 1679
         self.iPixelSizePilatus2m = 0.172
-        # Default values for ESRF Eiger4M
+        # Default values for ESRF Eiger4M : ID30a3: 1,1120; 1025,1140 
         self.ixMinEiger4m = 1
-        self.ixMaxEiger4m = 1067
-        self.iyMinEiger4m = 1029
-        self.iyMaxEiger4m = 1108
+        self.ixMaxEiger4m = 1120
+        self.iyMinEiger4m = 1025
+        self.iyMaxEiger4m = 1140
         self.inxEiger4m = 2070
         self.inyEiger4m = 2167
         self.iPixelSizeEiger4m = 0.075
