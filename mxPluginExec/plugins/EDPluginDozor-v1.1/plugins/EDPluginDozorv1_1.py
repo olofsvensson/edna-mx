@@ -85,7 +85,7 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
         self.inxPilatus6m = 2463
         self.inyPilatus6m = 2527
         self.iPixelSizePilatus6m = 0.172
-        # Default values for ESRF Pilatus2M : ID30a1: 1,776; 826,894 
+        # Default values for ESRF Pilatus2M : ID30a1: 1,776; 826,894
         self.ixMinPilatus2m = 1
         self.ixMaxPilatus2m = 776
         self.iyMinPilatus2m = 826
@@ -93,7 +93,7 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
         self.inxPilatus2m = 1475
         self.inyPilatus2m = 1679
         self.iPixelSizePilatus2m = 0.172
-        # Default values for ESRF Eiger4M : ID30a3: 1,1120; 1025,1140 
+        # Default values for ESRF Eiger4M : ID30a3: 1,1120; 1025,1140
         self.ixMinEiger4m = 1
         self.ixMaxEiger4m = 1120
         self.iyMinEiger4m = 1025
@@ -111,6 +111,16 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
         self.DEBUG("EDPluginDozorv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
+    def configure(self):
+        EDPluginExecProcessScript.configure(self)
+        self.DEBUG("EDPluginXOalignv1_0.configure")
+        self.ixMin = self.config.get("ix_min", None)
+        self.iyMin = self.config.get("iy_min", None)
+        self.ixMax = self.config.get("ix_max", None)
+        self.iyMax = self.config.get("iy_max", None)
+        # Eventual bad zones
+        self.strBad_zona = self.config.get("bad_zona", None)
+
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
@@ -121,13 +131,6 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
         self.oscillationRange = xsDataInputDozor.oscillationRange.value
         if xsDataInputDozor.overlap is not None:
             self.overlap = xsDataInputDozor.overlap.value
-        # Retrieve config (if any)
-        self.ixMin = self.config.get("ixMin")
-        self.ixMax = self.config.get("ixMax")
-        self.iyMin = self.config.get("iyMin")
-        self.iyMax = self.config.get("iyMax")
-        # Eventual bad zones
-        self.strBad_zona = self.config.get("bad_zona")
         if xsDataInputDozor.radiationDamage is not None and xsDataInputDozor.radiationDamage.value:
             self.setScriptCommandline("-wg -pall -rd dozor.dat")
         else:
@@ -150,32 +153,33 @@ class EDPluginDozorv1_1(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginDozorv1_0.generateCommands")
         strCommandText = None
-        if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
-            # One configuration value is missing - use default values
-            if _xsDataInputDozor.detectorType.value == "pilatus2m":
+        if _xsDataInputDozor.detectorType.value == "pilatus2m":
+            if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
                 self.ixMin = self.ixMinPilatus2m
                 self.ixMax = self.ixMaxPilatus2m
                 self.iyMin = self.iyMinPilatus2m
                 self.iyMax = self.iyMaxPilatus2m
-                self.inx = self.inxPilatus2m
-                self.iny = self.inyPilatus2m
-                self.iPixelSize = self.iPixelSizePilatus2m
-            elif _xsDataInputDozor.detectorType.value == "pilatus6m":
+            self.inx = self.inxPilatus2m
+            self.iny = self.inyPilatus2m
+            self.iPixelSize = self.iPixelSizePilatus2m
+        elif _xsDataInputDozor.detectorType.value == "pilatus6m":
+            if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
                 self.ixMin = self.ixMinPilatus6m
                 self.ixMax = self.ixMaxPilatus6m
                 self.iyMin = self.iyMinPilatus6m
                 self.iyMax = self.iyMaxPilatus6m
-                self.inx = self.inxPilatus6m
-                self.iny = self.inyPilatus6m
-                self.iPixelSize = self.iPixelSizePilatus6m
-            elif _xsDataInputDozor.detectorType.value == "eiger4m":
+            self.inx = self.inxPilatus6m
+            self.iny = self.inyPilatus6m
+            self.iPixelSize = self.iPixelSizePilatus6m
+        elif _xsDataInputDozor.detectorType.value == "eiger4m":
+            if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
                 self.ixMin = self.ixMinEiger4m
                 self.ixMax = self.ixMaxEiger4m
                 self.iyMin = self.iyMinEiger4m
                 self.iyMax = self.iyMaxEiger4m
-                self.inx = self.inxEiger4m
-                self.iny = self.inyEiger4m
-                self.iPixelSize = self.iPixelSizeEiger4m
+            self.inx = self.inxEiger4m
+            self.iny = self.inyEiger4m
+            self.iPixelSize = self.iPixelSizeEiger4m
         if _xsDataInputDozor is not None:
             self.setProcessInfo("name template: %s, first image no: %d, no images: %d" % (
                 os.path.basename(_xsDataInputDozor.nameTemplateImage.value),

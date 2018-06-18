@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<XSDataInputDozor>
+    <detectorType>
+        <value>pilatus6m</value>
+    </detectorType>
+    <exposureTime>
+        <value>1.000000e-01</value>
+    </exposureTime>
+    <spotSize>
+        <value>3</value>
+    </spotSize>
+    <detectorDistance>
+        <value>2.175620e+02</value>
+    </detectorDistance>
+    <wavelength>
+        <value>9.724220e-01</value>
+    </wavelength>
+    <orgx>
+        <value>1.217980e+03</value>
+    </orgx>
+    <orgy>
+        <value>1.265760e+03</value>
+    </orgy>
+    <oscillationRange>
+        <value>1.000000e+00</value>
+    </oscillationRange>
+    <startingAngle>
+        <value>-3.000000e+02</value>
+    </startingAngle>
+    <firstImageNumber>
+        <value>1</value>
+    </firstImageNumber>
+    <numberImages>
+        <value>1</value>
+    </numberImages>
+    <nameTemplateImage>
+        <value>/data/visitor/mx1979/id23eh1/20180615/RAW_DATA/PPTase/PPTase-pptab-B02-B10/ref-PPTase-pptab-B02-B10_1_????.cbf</value>
+    </nameTemplateImage>
+</XSDataInputDozor>
