@@ -77,21 +77,21 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.iyMin = None
         self.ixMax = None
         self.iyMax = None
-        # Default values for ESRF Pilatus6M
+        # Default values for ESRF Pilatus6M id23eh1: 1,1230; 1228,1298
         self.ixMinPilatus6m = 1
-        self.ixMaxPilatus6m = 1270
-        self.iyMinPilatus6m = 1190
-        self.iyMaxPilatus6m = 1310
-        # Default values for ESRF Pilatus2M
+        self.ixMaxPilatus6m = 1230
+        self.iyMinPilatus6m = 1228
+        self.iyMaxPilatus6m = 1298
+        # Default values for ESRF Pilatus2M : ID30a1: 1,776; 826,894
         self.ixMinPilatus2m = 1
-        self.ixMaxPilatus2m = 840
-        self.iyMinPilatus2m = 776
-        self.iyMaxPilatus2m = 852
-        # Default values for ESRF Eiger4M
+        self.ixMaxPilatus2m = 776
+        self.iyMinPilatus2m = 826
+        self.iyMaxPilatus2m = 894
+        # Default values for ESRF Eiger4M : ID30a3: 1,1120; 1025,1140
         self.ixMinEiger4m = 1
-        self.ixMaxEiger4m = 1067
-        self.iyMinEiger4m = 1029
-        self.iyMaxEiger4m = 1108
+        self.ixMaxEiger4m = 1120
+        self.iyMinEiger4m = 1025
+        self.iyMaxEiger4m = 1140
         # Bad zones
         self.strBad_zona = None
 
@@ -101,6 +101,16 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginDozorv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
+
+    def configure(self):
+        EDPluginExecProcessScript.configure(self)
+        self.DEBUG("EDPluginXOalignv1_0.configure")
+        self.ixMin = self.config.get("ix_min", None)
+        self.iyMin = self.config.get("iy_min", None)
+        self.ixMax = self.config.get("ix_max", None)
+        self.iyMax = self.config.get("iy_max", None)
+        # Eventual bad zones
+        self.strBad_zona = self.config.get("bad_zona", None)
 
 
     def preProcess(self, _edObject=None):
@@ -112,13 +122,6 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.oscillationRange = xsDataInputDozor.oscillationRange.value
         if xsDataInputDozor.overlap is not None:
             self.overlap = xsDataInputDozor.overlap.value
-        # Retrieve config (if any)
-        self.ixMin = self.config.get("ixMin")
-        self.ixMax = self.config.get("ixMax")
-        self.iyMin = self.config.get("iyMin")
-        self.iyMax = self.config.get("iyMax")
-        # Eventual bad zones
-        self.strBad_zona = self.config.get("bad_zona")
         if xsDataInputDozor.radiationDamage is not None and xsDataInputDozor.radiationDamage.value:
             self.setScriptCommandline("-rd dozor.dat")
         else:
@@ -141,19 +144,20 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginDozorv1_0.generateCommands")
         strCommandText = None
-        if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
-            # One configuration value is missing - use default values
-            if _xsDataInputDozor.detectorType.value == "pilatus2m":
+        if _xsDataInputDozor.detectorType.value == "pilatus2m":
+            if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
                 self.ixMin = self.ixMinPilatus2m
                 self.ixMax = self.ixMaxPilatus2m
                 self.iyMin = self.iyMinPilatus2m
                 self.iyMax = self.iyMaxPilatus2m
-            elif _xsDataInputDozor.detectorType.value == "pilatus6m":
+        elif _xsDataInputDozor.detectorType.value == "pilatus6m":
+            if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
                 self.ixMin = self.ixMinPilatus6m
                 self.ixMax = self.ixMaxPilatus6m
                 self.iyMin = self.iyMinPilatus6m
                 self.iyMax = self.iyMaxPilatus6m
-            elif _xsDataInputDozor.detectorType.value == "eiger4m":
+        elif _xsDataInputDozor.detectorType.value == "eiger4m":
+            if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
                 self.ixMin = self.ixMinEiger4m
                 self.ixMax = self.ixMaxEiger4m
                 self.iyMin = self.iyMinEiger4m
@@ -218,15 +222,19 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         for strLine in listOutput:
             # Remove "|"
             listLine = shlex.split(strLine.replace("|", " "))
-            if listLine != [] and not strLine.startswith("-") and not strLine.startswith("h"):
+            if len(listLine) > 0 and listLine[0].isdigit():
                 xsDataImageDozor = XSDataImageDozor()
                 imageNumber = int(listLine[0])
                 angle = self.startingAngle + (imageNumber - self.firstImageNumber) * (self.oscillationRange - self.overlap) + self.oscillationRange / 2.0
                 xsDataImageDozor.number = XSDataInteger(imageNumber)
                 xsDataImageDozor.angle = XSDataAngle(angle)
 
-                xsDataImageDozor.spotScore = self.parseDouble(0)
-                xsDataImageDozor.visibleResolution = self.parseDouble(0)
+                xsDataImageDozor.spotsNumOf = XSDataInteger(0)
+                xsDataImageDozor.spotsIntAver = XSDataDouble(0)
+                xsDataImageDozor.spotsResolution = XSDataDouble(0)
+                xsDataImageDozor.mainScore = XSDataDouble(0)
+                xsDataImageDozor.spotScore = XSDataDouble(0)
+                xsDataImageDozor.visibleResolution = XSDataDouble(40)
                 try:
                     if listLine[4].startswith("-") or len(listLine) < 11:
                         xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
@@ -362,7 +370,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             if "xmin" in mtvplot:
                 xmin = float(mtvplot["xmin"])
             if "ymin" in mtvplot:
-                ymin = float(mtvplot["xmin"])
+                ymin = float(mtvplot["ymin"])
             plt.xlim(xmin, xmax)
             plt.ylim(ymin, ymax)
             plt.xlabel(mtvplot["xlabel"])
