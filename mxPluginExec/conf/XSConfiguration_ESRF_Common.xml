@@ -719,7 +719,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>7200</value>
+					<value>600</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
