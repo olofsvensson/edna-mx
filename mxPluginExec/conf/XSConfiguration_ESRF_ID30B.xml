@@ -57,28 +57,28 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/dozor</value>
+					<value>/opt/pxsoft/bin/dozor__v1.3.8</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>600</value>
+					<value>120</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>ixMin</name>
-					<value>1194</value>
+					<name>ix_min</name>
+					<value>1208</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>ixMax</name>
-					<value>1250</value>
+					<name>ix_max</name>
+					<value>1255</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>iyMin</name>
-					<value>1224</value>
+					<name>iy_min</name>
+					<value>1264</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>iyMax</name>
-					<value>2524</value>
-				</XSParamItem>
+					<name>iy_max</name>
+					<value>2520</value>
+				</XSParamItem>				
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem> 
