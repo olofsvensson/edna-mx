@@ -57,39 +57,6 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/dozor</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>timeOut</name>
-					<value>600</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>ixMin</name>
-					<value>1194</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>ixMax</name>
-					<value>1250</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>iyMin</name>
-					<value>1224</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>iyMax</name>
-					<value>2524</value>
-				</XSParamItem>
-			</XSParamList>
-		</XSPluginItem>
-		<XSPluginItem> 
-			<name>EDPluginDozorv1_0</name>  
-			<XSParamList>
-				<XSParamItem>
-					<name>execProcessScriptShell</name>
-					<value>/bin/bash</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptExecutable</name>
 					<value>/opt/pxsoft/bin/dozor__v1.3.8</value>
 				</XSParamItem>
 				<XSParamItem>
