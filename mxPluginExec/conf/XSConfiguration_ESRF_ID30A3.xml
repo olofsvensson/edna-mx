@@ -7,19 +7,6 @@
 		<name>XSConfiguration_ESRF_ISPyB_Common</name>
 	</XSImportConfiguration>
 	<XSPluginList>
-		<XSPluginItem> 
-			<name>EDPluginDozorv1_0</name>  
-			<XSParamList>
-				<XSParamItem>
-					<name>execProcessScriptShell</name>
-					<value>/bin/bash</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/dozor</value>
-				</XSParamItem>
-			</XSParamList>
-		</XSPluginItem>
 		<XSPluginItem>
 			<name>EDPluginExecMinimalXdsv1_0</name>
 			<XSParamList>
@@ -58,7 +45,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>120</value>
+					<value>1200</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>ix_min</name>
