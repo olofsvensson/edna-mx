@@ -78,7 +78,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>120</value>
+					<value>1200</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>ix_min</name>
