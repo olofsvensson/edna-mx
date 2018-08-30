@@ -673,44 +673,44 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
-		<!--<XSPluginItem> -->
-			<!--<name>EDPluginHTML2PDFv1_0</name>  -->
-			<!--<XSParamList>-->
-				<!--<XSParamItem>-->
-					<!--<name>execProcessScriptShell</name>-->
-					<!--<value>/bin/bash</value>-->
-				<!--</XSParamItem>-->
-				<!--<XSParamItem>-->
-					<!--<name>execProcessScriptExecutable</name>-->
-					<!--<value>/opt/pxsoft/bin/wkhtmltopdf</value>-->
-				<!--</XSParamItem>-->
-				<!--<XSParamItem>-->
-					<!--<name>timeOut</name>-->
-					<!--<value>30</value>-->
-				<!--</XSParamItem>-->
-			<!--</XSParamList>-->
-		<!--</XSPluginItem>-->
-		<!--<XSPluginItem> -->
-			<!--<name>EDPluginExecAutoPROCv1_0</name>  -->
-			<!--<XSParamList>-->
-				<!--<XSParamItem>-->
-					<!--<name>execProcessScriptShell</name>-->
-					<!--<value>/bin/bash</value>-->
-				<!--</XSParamItem>-->
-				<!--<XSParamItem>-->
-					<!--<name>execProcessScriptExecutable</name>-->
-					<!--<value>/opt/pxsoft/bin/process</value>-->
-				<!--</XSParamItem>-->
-				<!--<XSParamItem>-->
-					<!--<name>timeOut</name>-->
-					<!--<value>3600</value>-->
-				<!--</XSParamItem>-->
-				<!--<XSParamItem>-->
-					<!--<name>maxNoProcessors</name>-->
-					<!--<value>6</value>-->
-				<!--</XSParamItem>-->
-			<!--</XSParamList>-->
-		<!--</XSPluginItem>-->
+		<XSPluginItem>
+			<name>EDPluginHTML2PDFv1_0</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/mnt/hpcsoftware/bl13/wkhtmltox-0.12.4_linux-generic-amd64/bin/wkhtmltopdf</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>30</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginExecAutoPROCv1_0</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/mnt/hpcsoftware/share/GPhL/autoPROC_snapshot_20170508/autoPROC/bin/linux64/process</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>3600</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>maxNoProcessors</name>
+					<value>8</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
 		<XSPluginItem> 
 			<name>EDPluginExecXia2DIALSv1_0</name>  
 			<XSParamList>
