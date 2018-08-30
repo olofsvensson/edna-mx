@@ -44,3 +44,9 @@ pip-log.txt
 .settings
 .project
 .pydevproject
+
+# JetBrains specific
+.idea
+
+# Backup files
+*.bkp
