@@ -207,7 +207,7 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
 
         self.uniqueify.dataInput = uniqueify_in
 
-        if EDUtilsPath.isEMBL():
+        if EDUtilsPath.isEMBL() or EDUtilsPath.isALBA():
            #GB: skipping misteriously failing uniqueify run - 
            #    which is useless anyway.
            #    copying temp truncate output to results directly

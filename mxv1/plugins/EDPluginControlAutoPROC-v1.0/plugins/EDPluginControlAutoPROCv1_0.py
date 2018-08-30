@@ -207,9 +207,16 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             processDirectory = directory.replace("RAW_DATA", "PROCESSED_DATA")
 
         # Make results directory
-        self.resultsDirectory = os.path.join(processDirectory, "results")
-        if not os.path.exists(self.resultsDirectory):
-            os.makedirs(self.resultsDirectory, 0o755)
+        if EDUtilsPath.isALBA():
+            _processDirectory = "_".join(pathToStartImage.split('_')[:-1])
+            from datetime import datetime
+            _id = datetime.now().strftime('%Y%m%d_%H%M%S')
+            self.resultsDirectory = os.path.join(_processDirectory, "autoPROC_%s" % _id)
+        else:
+            self.resultsDirectory = os.path.join(processDirectory, "results")
+            if not os.path.exists(self.resultsDirectory):
+                os.makedirs(self.resultsDirectory, 0o755)
+
 
         # Create path to pyarch
         self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
@@ -219,8 +226,13 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 os.makedirs(self.pyarchDirectory, 0o755)
 
         # Determine pyarch prefix
-        listPrefix = template.split("_")
-        self.pyarchPrefix = "ap_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
+        if EDUtilsPath.isALBA():
+            listPrefix = template.split("_")
+            self.pyarchPrefix = "ap_{0}_{1}".format("_".join(listPrefix[:-2]),
+                                                       listPrefix[-2])
+        else:
+            listPrefix = template.split("_")
+            self.pyarchPrefix = "ap_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
 
         isH5 = False
         if any(beamline in pathToStartImage for beamline in ["id23eh1", "id29"]):
@@ -476,8 +488,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                     pathtoFile = summaryHtmlPath
                     pyarchFile = self.pyarchPrefix + "_{0}_{1}.html".format(anomString, summaryName)
                     if not pyarchFile in self.listPyarchFile:
-                        shutil.copy(pathtoFile, os.path.join(self.resultsDirectory, pyarchFile))
-                        self.listPyarchFile.append(pyarchFile)
+                        if self.resultsDirectory:
+                            shutil.copy(pathtoFile, os.path.join(self.resultsDirectory, pyarchFile))
+                            self.listPyarchFile.append(pyarchFile)
                     if self.pyarchDirectory is not None:
                         shutil.copy(pathtoFile, os.path.join(self.pyarchDirectory, pyarchFile))
                         autoProcProgramAttachment.fileName = os.path.basename(pyarchFile)
@@ -496,7 +509,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                         pdfFile = edPluginHTML2Pdf.dataOutput.pdfFile.path.value
                         pyarchPdfFile = self.pyarchPrefix + "_" + anomString + "_" + os.path.basename(pdfFile)
                         # Copy file to results directory and pyarch
-                        shutil.copy(pdfFile, os.path.join(self.resultsDirectory, pyarchPdfFile))
+                        if self.resultsDirectory:
+                            shutil.copy(pdfFile, os.path.join(self.resultsDirectory, pyarchPdfFile))
                         if self.pyarchDirectory is not None:
                             shutil.copy(pdfFile, os.path.join(self.pyarchDirectory, pyarchPdfFile))
                             autoProcProgramAttachmentPdf = AutoProcProgramAttachment()
@@ -507,7 +521,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 elif autoProcProgramAttachment.fileName == "truncate-unique.mtz":
                     pathtoFile = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
                     pyarchFile = self.pyarchPrefix + "_{0}_truncate.mtz".format(anomString)
-                    shutil.copy(pathtoFile, os.path.join(self.resultsDirectory, pyarchFile))
+                    if self.resultsDirectory:
+                        shutil.copy(pathtoFile, os.path.join(self.resultsDirectory, pyarchFile))
                     if self.pyarchDirectory is not None:
                         shutil.copy(pathtoFile, os.path.join(self.pyarchDirectory, pyarchFile))
                         autoProcProgramAttachment.fileName = pyarchFile
@@ -515,7 +530,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 else:
                     pathtoFile = os.path.join(autoProcProgramAttachment.filePath, autoProcProgramAttachment.fileName)
                     pyarchFile = self.pyarchPrefix + "_" + anomString + "_" + autoProcProgramAttachment.fileName
-                    shutil.copy(pathtoFile, os.path.join(self.resultsDirectory, pyarchFile))
+                    if self.resultsDirectory:
+                        shutil.copy(pathtoFile, os.path.join(self.resultsDirectory, pyarchFile))
                     if self.pyarchDirectory is not None:
                         shutil.copy(pathtoFile, os.path.join(self.pyarchDirectory, pyarchFile))
                         autoProcProgramAttachment.fileName = pyarchFile
@@ -525,7 +541,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             pathToXSCALELog = os.path.join(processDirectory, "XSCALE.LP")
             if os.path.exists(pathToXSCALELog):
                 pyarchXSCALELog = self.pyarchPrefix + "_merged_{0}_XSCALE.LP".format(anomString)
-                shutil.copy(pathToXSCALELog, os.path.join(self.resultsDirectory, pyarchXSCALELog))
+                if self.resultsDirectory:
+                    shutil.copy(pathToXSCALELog, os.path.join(self.resultsDirectory, pyarchXSCALELog))
                 if self.pyarchDirectory is not None:
                     shutil.copy(pathToXSCALELog, os.path.join(self.pyarchDirectory, pyarchXSCALELog))
                     autoProcProgramAttachment = AutoProcProgramAttachment()
@@ -542,7 +559,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 f_out.writelines(f_in)
                 f_out.close()
                 f_in.close()
-                shutil.copy(os.path.join(self.pyarchDirectory, pyarchXdsAsciiHkl), os.path.join(self.resultsDirectory, pyarchXdsAsciiHkl))
+                if self.resultsDirectory:
+                    shutil.copy(os.path.join(self.pyarchDirectory, pyarchXdsAsciiHkl), os.path.join(self.resultsDirectory, pyarchXdsAsciiHkl))
                 autoProcProgramAttachment = AutoProcProgramAttachment()
                 autoProcProgramAttachment.fileName = pyarchXdsAsciiHkl
                 autoProcProgramAttachment.filePath = self.pyarchDirectory
@@ -556,7 +574,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             autoPROClog = autoPROClog.replace(userString1, userString2)
             open(pathToLogFile, "w").write(autoPROClog)
             pyarchLogFile = self.pyarchPrefix + "_{0}_autoPROC.log".format(anomString)
-            shutil.copy(pathToLogFile, os.path.join(self.resultsDirectory, pyarchLogFile))
+            if self.resultsDirectory:
+                shutil.copy(pathToLogFile, os.path.join(self.resultsDirectory, pyarchLogFile))
             if self.pyarchDirectory is not None:
                 shutil.copy(pathToLogFile, os.path.join(self.pyarchDirectory, pyarchLogFile))
                 autoProcProgramAttachment = AutoProcProgramAttachment()
@@ -572,7 +591,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 pathToRepordPdf = edPluginExecAutoPROC.dataOutput.reportPdf.path.value
             if pathToRepordPdf is not None:
                 pyarchReportFile = self.pyarchPrefix + "_{0}_{1}".format(anomString, os.path.basename(pathToRepordPdf))
-                shutil.copy(pathToRepordPdf, os.path.join(self.resultsDirectory, pyarchReportFile))
+                if self.resultsDirectory:
+                    shutil.copy(pathToRepordPdf, os.path.join(self.resultsDirectory, pyarchReportFile))
                 if self.pyarchDirectory is not None:
                     shutil.copy(pathToRepordPdf, os.path.join(self.pyarchDirectory, pyarchReportFile))
                     autoProcProgramAttachment = AutoProcProgramAttachment()

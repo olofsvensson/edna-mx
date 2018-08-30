@@ -129,7 +129,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
             # Identifier(s)
             for identifier in _xsDataInputAutoPROC.identifier:
 
-                if EDUtilsPath.isEMBL():
+                if EDUtilsPath.isEMBL() or EDUtilsPath.isALBA():
                     identifier.templateN.value = identifier.templateN.value.replace(\
                                     '%' + '05' + 'd', 5 * '#')
                 strCommandText += " -Id {idN},{dirN},{templateN},{fromN},{toN}".format(

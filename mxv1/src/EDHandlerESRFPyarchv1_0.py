@@ -45,6 +45,9 @@ class EDHandlerESRFPyarchv1_0:
         strPyarchDNAFilePath = None
         listOfDirectories = _strESRFPath.split(os.sep)
 
+        if EDUtilsPath.isALBA():
+            return EDHandlerESRFPyarchv1_0.translateToIspybALBAPath(_strESRFPath)
+
         if EDUtilsPath.isEMBL():
             if 'p14' in listOfDirectories[0:3] or 'P14' in listOfDirectories[0:3]:
                  strBeamline = 'p14'
@@ -152,3 +155,14 @@ class EDHandlerESRFPyarchv1_0:
             except Exception as e:
                 EDVerbose.ERROR("EDHandlerESRFPyarchv1_0.copyHTMLFilesAndDir: Exception caught: %r" % e)
 
+
+    @staticmethod
+    def translateToIspybALBAPath(path):
+        listOfDirectories = path.split(os.sep)
+        listOfDirectories.pop(4) # removes 'projects'
+        listOfDirectories.pop(3) # removes 'cycle'
+        listOfDirectories.insert(2, u'ispyb')
+        listOfDirectories.pop(6) # Removes RAW data
+        _path = os.path.join(os.sep, *listOfDirectories)
+        EDVerbose.DEBUG("ALBA strPyarchDNAFilePath: %s" % _path)
+        return _path

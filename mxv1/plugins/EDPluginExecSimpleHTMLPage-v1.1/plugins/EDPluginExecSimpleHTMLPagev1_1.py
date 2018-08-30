@@ -132,7 +132,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
         pathToIndexFile = self.workflowStepReport.renderHtml(self.getWorkingDirectory(), nameOfIndexFile=self.strHtmlFileName)
         pathToJsonFile = self.workflowStepReport.renderJson(self.getWorkingDirectory())
         # Store in Pyarch
-        if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():
+        if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL() or EDUtilsPath.isALBA:
             strPyarchPath = None
             if self.xsDataResultCharacterisation is not None:
                 strPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchHtmlDirectoryPath(self.xsDataResultCharacterisation.getDataCollection())
