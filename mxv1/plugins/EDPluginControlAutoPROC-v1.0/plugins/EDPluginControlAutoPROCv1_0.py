@@ -225,6 +225,10 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             if not os.path.exists(self.pyarchDirectory):
                 os.makedirs(self.pyarchDirectory, 0o755)
 
+        # The resultsDirectory is not used at ALBA (only pyarchDirectory)
+        if EDUtilsPath.isALBA():
+            self.resultsDirectory = None
+
         # Determine pyarch prefix
         if EDUtilsPath.isALBA():
             listPrefix = template.split("_")
