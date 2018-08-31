@@ -601,7 +601,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>maxNoProcessors</name>
-					<value>10</value>
+					<value>14</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -699,7 +699,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/mnt/hpcsoftware/share/GPhL/autoPROC_snapshot_20170508/autoPROC/bin/linux64/process</value>
+					<value>/mnt/hpcsoftware/share/GPhL/autoPROC_snapshot_20180515/autoPROC/bin/linux64/process</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -707,7 +707,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>maxNoProcessors</name>
-					<value>8</value>
+					<value>14</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -728,7 +728,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>maxNoProcessors</name>
-					<value>6</value>
+					<value>14</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
