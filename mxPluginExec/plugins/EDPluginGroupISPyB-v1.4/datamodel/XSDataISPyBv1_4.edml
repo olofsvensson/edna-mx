@@ -91,6 +91,18 @@ complex type AutoProcScalingContainer {
 complex type AutoProcScaling {
 	autoProcScalingId : integer optional
 	recordTimeStamp : string
+	resolutionEllipsoidAxis11 : float
+	resolutionEllipsoidAxis12 : float
+	resolutionEllipsoidAxis13 : float
+	resolutionEllipsoidAxis21 : float
+	resolutionEllipsoidAxis22 : float
+	resolutionEllipsoidAxis23 : float
+	resolutionEllipsoidAxis31 : float
+	resolutionEllipsoidAxis32 : float
+	resolutionEllipsoidAxis33 : float
+	resolutionEllipsoidValue1 : float
+	resolutionEllipsoidValue2 : float
+	resolutionEllipsoidValue3 : float
 }
 
 complex type AutoProcScalingStatistics {
@@ -114,10 +126,15 @@ complex type AutoProcScalingStatistics {
 	anomalousMultiplicity : float
 	recordTimeStamp : string
 	anomalous : boolean
+	autoProcScalingId : integer
 	ccHalf : float
 	ccAno : float
 	sigAno : float
 	isa : float
+	completenessSpherical : float
+	anomalousCompletenessSpherical : float
+	completenessEllipsoidal : float
+	anomalousCompletenessEllipsoidal : float
 }
 
 complex type Image {

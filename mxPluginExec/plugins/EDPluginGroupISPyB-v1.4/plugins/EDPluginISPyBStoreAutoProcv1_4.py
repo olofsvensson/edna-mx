@@ -178,14 +178,14 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         strProcessingEnvironment = self.getXSValue(_xsDataAutoProcProgram.getProcessingEnvironment())
         recordTimeStamp = self.getDateValue(None, "%a %b %d %H:%M:%S %Y", DateTime(datetime.datetime.now()))
         iAutoProcProgramId = _clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcProgram(
-                arg0=iAutoProcProgramId, \
-                processingCommandLine=strProcessingCommandLine, \
-                processingPrograms=strProcessingPrograms, \
-                processingStatus=strProcessingStatus, \
-                processingMessage=strProcessingMessage, \
-                processingStartTime=processingStartTime, \
-                processingEndTime=processingEndTime, \
-                processingEnvironment=strProcessingEnvironment, \
+                arg0=iAutoProcProgramId,
+                processingCommandLine=strProcessingCommandLine,
+                processingPrograms=strProcessingPrograms,
+                processingStatus=strProcessingStatus,
+                processingMessage=strProcessingMessage,
+                processingStartTime=processingStartTime,
+                processingEndTime=processingEndTime,
+                processingEnvironment=strProcessingEnvironment,
                 recordTimeStamp=recordTimeStamp
                 )
         self.DEBUG("AutoProcProgramId: %r" % iAutoProcProgramId)
@@ -201,11 +201,11 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         recordTimeStamp = DateTime(datetime.datetime.now())
         iAutoProcProgramId = self.iAutoProcProgramId
         iAutoProcProgramAttachmentId = _clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcProgramAttachment(
-                arg0=iAutoProcProgramAttachmentId, \
-                fileType=strFileType, \
-                fileName=strFileName, \
-                filePath=strFilePath, \
-                recordTimeStamp=recordTimeStamp, \
+                arg0=iAutoProcProgramAttachmentId,
+                fileType=strFileType,
+                fileName=strFileName,
+                filePath=strFilePath,
+                recordTimeStamp=recordTimeStamp,
                 autoProcProgramId=iAutoProcProgramId
                 )
         self.DEBUG("AutoProcProgramAttachmentId: %r" % iAutoProcProgramAttachmentId)
@@ -238,28 +238,28 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         iDataCollectionId = _xsDataAutoProcIntegrationContainer.getImage().getDataCollectionId()
         recordTimeStamp = DateTime(datetime.datetime.now())
         iAutoProcIntegrationId = _clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcIntegration(
-                arg0=iAutoProcIntegrationId, \
-                autoProcProgramId=iAutoProcProgramId, \
-                startImageNumber=iStartImageNumber, \
-                endImageNumber=iEndImageNumber, \
-                refinedDetectorDistance=fRefinedDetectorDistance, \
-                refinedXbeam=fRefinedXbeam, \
-                refinedYbeam=fRefinedYbeam, \
-                rotationAxisX=fRotationAxisX, \
-                rotationAxisY=fRotationAxisY, \
-                rotationAxisZ=fRotationAxisZ, \
-                beamVectorX=fBeamVectorX, \
-                beamVectorY=fBeamVectorY, \
-                beamVectorZ=fBeamVectorZ, \
-                cellA=fCellA, \
-                cellB=fCellB, \
-                cellC=fCellC, \
-                cellAlpha=fCellAlpha, \
-                cellBeta=fCellBeta, \
-                cellGamma=fCellGamma, \
-                recordTimeStamp=recordTimeStamp, \
-                anomalous=bAnomalous, \
-                dataCollectionId=iDataCollectionId \
+                arg0=iAutoProcIntegrationId,
+                autoProcProgramId=iAutoProcProgramId,
+                startImageNumber=iStartImageNumber,
+                endImageNumber=iEndImageNumber,
+                refinedDetectorDistance=fRefinedDetectorDistance,
+                refinedXbeam=fRefinedXbeam,
+                refinedYbeam=fRefinedYbeam,
+                rotationAxisX=fRotationAxisX,
+                rotationAxisY=fRotationAxisY,
+                rotationAxisZ=fRotationAxisZ,
+                beamVectorX=fBeamVectorX,
+                beamVectorY=fBeamVectorY,
+                beamVectorZ=fBeamVectorZ,
+                cellA=fCellA,
+                cellB=fCellB,
+                cellC=fCellC,
+                cellAlpha=fCellAlpha,
+                cellBeta=fCellBeta,
+                cellGamma=fCellGamma,
+                recordTimeStamp=recordTimeStamp,
+                anomalous=bAnomalous,
+                dataCollectionId=iDataCollectionId
                 )
         self.DEBUG("AutoProcProgramIntegrationId: %r" % iAutoProcIntegrationId)
         return iAutoProcIntegrationId
@@ -278,16 +278,16 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         fRefinedCellGamma = self.getXSValue(_xsDataAutoProc.getRefinedCell_gamma())
         recordTimeStamp = DateTime(datetime.datetime.now())
         iAutoProcId = _clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProc(
-                arg0=iAutoProcId, \
-                autoProcProgramId=iAutoProcProgramId, \
-                spaceGroup=strSpaceGroup, \
-                refinedCellA=fRefinedCellA, \
-                refinedCellB=fRefinedCellB, \
-                refinedCellC=fRefinedCellC, \
-                refinedCellAlpha=fRefinedCellAlpha, \
-                refinedCellBeta=fRefinedCellBeta, \
-                refinedCellGamma=fRefinedCellGamma, \
-                recordTimeStamp=recordTimeStamp \
+                arg0=iAutoProcId,
+                autoProcProgramId=iAutoProcProgramId,
+                spaceGroup=strSpaceGroup,
+                refinedCellA=fRefinedCellA,
+                refinedCellB=fRefinedCellB,
+                refinedCellC=fRefinedCellC,
+                refinedCellAlpha=fRefinedCellAlpha,
+                refinedCellBeta=fRefinedCellBeta,
+                refinedCellGamma=fRefinedCellGamma,
+                recordTimeStamp=recordTimeStamp
                 )
         self.DEBUG("AutoProcId: %r" % iAutoProcId)
         return iAutoProcId
@@ -298,10 +298,34 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         iAutoProcScalingId = self.getXSValue(_xsDataAutoProcScaling.getAutoProcScalingId())
         iAutoProcId = self.iAutoProcId
         recordTimeStamp = self.getDateValue(_xsDataAutoProcScaling.getRecordTimeStamp(), "%Y-%m-%d %H:%M:%S", DateTime(datetime.datetime.now()))
+        iResolutionEllipsoidAxis11 = self.getXSValue(_xsDataAutoProcScaling.getResolutionEllipsoidAxis11())
+        iResolutionEllipsoidAxis12 = self.getXSValue(_xsDataAutoProcScaling.getResolutionEllipsoidAxis12())
+        iResolutionEllipsoidAxis13 = self.getXSValue(_xsDataAutoProcScaling.getResolutionEllipsoidAxis13())
+        iResolutionEllipsoidAxis21 = self.getXSValue(_xsDataAutoProcScaling.getResolutionEllipsoidAxis21())
+        iResolutionEllipsoidAxis22 = self.getXSValue(_xsDataAutoProcScaling.getResolutionEllipsoidAxis22())
+        iResolutionEllipsoidAxis23 = self.getXSValue(_xsDataAutoProcScaling.getResolutionEllipsoidAxis23())
+        iResolutionEllipsoidAxis31 = self.getXSValue(_xsDataAutoProcScaling.getResolutionEllipsoidAxis31())
+        iResolutionEllipsoidAxis32 = self.getXSValue(_xsDataAutoProcScaling.getResolutionEllipsoidAxis32())
+        iResolutionEllipsoidAxis33 = self.getXSValue(_xsDataAutoProcScaling.getResolutionEllipsoidAxis33())
+        iResolutionEllipsoidValue1 = self.getXSValue(_xsDataAutoProcScaling.getResolutionEllipsoidValue1())
+        iResolutionEllipsoidValue2 = self.getXSValue(_xsDataAutoProcScaling.getResolutionEllipsoidValue2())
+        iResolutionEllipsoidValue3 = self.getXSValue(_xsDataAutoProcScaling.getResolutionEllipsoidValue3())
         iAutoProcScalingId = _clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcScaling(
-                arg0=iAutoProcScalingId, \
-                autoProcId=iAutoProcId, \
-                recordTimeStamp=recordTimeStamp \
+                arg0=iAutoProcScalingId,
+                autoProcId=iAutoProcId,
+                recordTimeStamp=recordTimeStamp,
+                resolutionEllipsoidAxis11=iResolutionEllipsoidAxis11,
+                resolutionEllipsoidAxis12=iResolutionEllipsoidAxis12,
+                resolutionEllipsoidAxis13=iResolutionEllipsoidAxis13,
+                resolutionEllipsoidAxis21=iResolutionEllipsoidAxis21,
+                resolutionEllipsoidAxis22=iResolutionEllipsoidAxis22,
+                resolutionEllipsoidAxis23=iResolutionEllipsoidAxis23,
+                resolutionEllipsoidAxis31=iResolutionEllipsoidAxis31,
+                resolutionEllipsoidAxis32=iResolutionEllipsoidAxis32,
+                resolutionEllipsoidAxis33=iResolutionEllipsoidAxis33,
+                resolutionEllipsoidValue1=iResolutionEllipsoidValue1,
+                resolutionEllipsoidValue2=iResolutionEllipsoidValue2,
+                resolutionEllipsoidValue3=iResolutionEllipsoidValue3,
                 )
         self.DEBUG("AutoProcScalingId: %r" % iAutoProcScalingId)
         return iAutoProcScalingId
@@ -335,32 +359,40 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         fCcAno = self.getXSValue(_xsDataAutoProcScalingStatistics.getCcAno())
         fSigAno = self.getXSValue(_xsDataAutoProcScalingStatistics.getSigAno())
         fIsa = self.getXSValue(_xsDataAutoProcScalingStatistics.getIsa())
+        fCompletenessSpherical = self.getXSValue(_xsDataAutoProcScalingStatistics.getCompletenessSpherical())
+        fAnomalousCompletenessSpherical = self.getXSValue(_xsDataAutoProcScalingStatistics.getAnomalousCompletenessSpherical())
+        fCompletenessEllipsoidal = self.getXSValue(_xsDataAutoProcScalingStatistics.getCompletenessEllipsoidal())
+        fAnomalousCompletenessEllipsoidal = self.getXSValue(_xsDataAutoProcScalingStatistics.getAnomalousCompletenessEllipsoidal())
         iAutoProcScalingStatisticsId = _clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcScalingStatistics(
-                arg0=iAutoProcScalingStatisticsId, \
-                scalingStatisticsType=strScalingStatisticsType, \
-                comments=strComments, \
-                resolutionLimitLow=fResolutionLimitLow, \
-                resolutionLimitHigh=fResolutionLimitHigh, \
-                rmerge=fRmerge, \
-                rmeasWithinIplusIminus=fRmeasWithinIplusIminus, \
-                rmeasAllIplusIminus=fRmeasAllIplusIminus, \
-                rpimWithinIplusIminus=fRpimWithinIplusIminus, \
-                rpimAllIplusIminus=fRpimAllIplusIminus, \
-                fractionalPartialBias=fFractionalPartialBias, \
-                nTotalObservations=iNtotalObservations, \
-                nTotalUniqueObservations=iNtotalUniqueObservations, \
-                meanIoverSigI=fMeanIoverSigI, \
-                completeness=fCompleteness, \
-                multiplicity=fMultiplicity, \
-                anomalousCompleteness=fAnomalousCompleteness, \
-                anomalousMultiplicity=fAnomalousMultiplicity, \
-                recordTimeStamp=recordTimeStamp, \
-                anomalous=bAnomalous, \
-                autoProcScalingId=iAutoProcScalingId, \
-                ccHalf=fCcHalf, \
-                ccAno=fCcAno, \
-                sigAno=fSigAno, \
-                isa=fIsa, \
+                arg0=iAutoProcScalingStatisticsId,
+                scalingStatisticsType=strScalingStatisticsType,
+                comments=strComments,
+                resolutionLimitLow=fResolutionLimitLow,
+                resolutionLimitHigh=fResolutionLimitHigh,
+                rmerge=fRmerge,
+                rmeasWithinIplusIminus=fRmeasWithinIplusIminus,
+                rmeasAllIplusIminus=fRmeasAllIplusIminus,
+                rpimWithinIplusIminus=fRpimWithinIplusIminus,
+                rpimAllIplusIminus=fRpimAllIplusIminus,
+                fractionalPartialBias=fFractionalPartialBias,
+                nTotalObservations=iNtotalObservations,
+                nTotalUniqueObservations=iNtotalUniqueObservations,
+                meanIoverSigI=fMeanIoverSigI,
+                completeness=fCompleteness,
+                multiplicity=fMultiplicity,
+                anomalousCompleteness=fAnomalousCompleteness,
+                anomalousMultiplicity=fAnomalousMultiplicity,
+                recordTimeStamp=recordTimeStamp,
+                anomalous=bAnomalous,
+                autoProcScalingId=iAutoProcScalingId,
+                ccHalf=fCcHalf,
+                ccAno=fCcAno,
+                sigAno=fSigAno,
+                isa=fIsa,
+                completenessSpherical=fCompletenessSpherical,
+                anomalousCompletenessSpherical=fAnomalousCompletenessSpherical,
+                completenessEllipsoidal=fCompletenessEllipsoidal,
+                anomalousCompletenessEllipsoidal=fAnomalousCompletenessEllipsoidal,
                 )
         self.DEBUG("AutoProcScalingStatisticsId: %r" % iAutoProcScalingStatisticsId)
         return iAutoProcScalingStatisticsId
@@ -372,10 +404,10 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         iAutoProcScalingId = self.iAutoProcScalingId
         recordTimeStamp = DateTime(datetime.datetime.now())
         iAutoProcScalingHasIntId = _clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcScalingHasInt(
-                arg0=None, \
-                autoProcIntegrationId=iAutoProcIntegrationId, \
-                autoProcScalingId=iAutoProcScalingId, \
-                recordTimeStamp=recordTimeStamp \
+                arg0=None,
+                autoProcIntegrationId=iAutoProcIntegrationId,
+                autoProcScalingId=iAutoProcScalingId,
+                recordTimeStamp=recordTimeStamp
                 )
         self.DEBUG("AutoProcScalingHasIntId: %r" % iAutoProcScalingHasIntId)
         return iAutoProcScalingHasIntId
