@@ -13,6 +13,24 @@
 		<AutoProcScalingContainer>
 			<AutoProcScaling>
 				<recordTimeStamp>2011-04-20 11:36:46</recordTimeStamp>
+				<StaranisoEllipsoid>
+					<StaranisoEllipsoidRotationMatrix>
+						<StaranisoEllipsoidRotationMatrix11>11</StaranisoEllipsoidRotationMatrix11>
+						<StaranisoEllipsoidRotationMatrix12>12</StaranisoEllipsoidRotationMatrix12>
+						<StaranisoEllipsoidRotationMatrix13>13</StaranisoEllipsoidRotationMatrix13>
+						<StaranisoEllipsoidRotationMatrix21>21</StaranisoEllipsoidRotationMatrix21>
+						<StaranisoEllipsoidRotationMatrix22>22</StaranisoEllipsoidRotationMatrix22>
+						<StaranisoEllipsoidRotationMatrix23>23</StaranisoEllipsoidRotationMatrix23>
+						<StaranisoEllipsoidRotationMatrix31>31</StaranisoEllipsoidRotationMatrix31>
+						<StaranisoEllipsoidRotationMatrix32>32</StaranisoEllipsoidRotationMatrix32>
+						<StaranisoEllipsoidRotationMatrix33>33</StaranisoEllipsoidRotationMatrix33>
+					</StaranisoEllipsoidRotationMatrix>
+					<StaranisoEllipsoidEigenvalues>
+						<StaranisoEllipsoidEigenvalue1>1</StaranisoEllipsoidEigenvalue1>
+						<StaranisoEllipsoidEigenvalue2>2</StaranisoEllipsoidEigenvalue2>
+						<StaranisoEllipsoidEigenvalue3>3</StaranisoEllipsoidEigenvalue3>
+					</StaranisoEllipsoidEigenvalues>
+				</StaranisoEllipsoid>
 			</AutoProcScaling>
 	
 			<AutoProcScalingStatistics>
@@ -39,6 +57,10 @@
 				<ccAno>12</ccAno>
 				<sigAno>23</sigAno>
 				<isa>34</isa>
+				<completenessSpherical>19</completenessSpherical>
+				<completenessEllipsoidal>20</completenessEllipsoidal>
+				<anomalousCompletenessSpherical>21</anomalousCompletenessSpherical>
+				<anomalousCompletenessEllipsoidal>22</anomalousCompletenessEllipsoidal>
 			</AutoProcScalingStatistics>
 	
 			<AutoProcScalingStatistics>
@@ -63,6 +85,10 @@
 				<ccHalf>18</ccHalf>
 				<ccAno>34</ccAno>
 				<sigAno>45</sigAno>
+				<completenessSpherical>19</completenessSpherical>
+				<completenessEllipsoidal>20</completenessEllipsoidal>
+				<anomalousCompletenessSpherical>21</anomalousCompletenessSpherical>
+				<anomalousCompletenessEllipsoidal>22</anomalousCompletenessEllipsoidal>
 			</AutoProcScalingStatistics>
 	
 			<AutoProcScalingStatistics>
@@ -87,6 +113,10 @@
 				<ccHalf>18</ccHalf>
 				<ccAno>56</ccAno>
 				<sigAno>67</sigAno>
+				<completenessSpherical>19</completenessSpherical>
+				<completenessEllipsoidal>20</completenessEllipsoidal>
+				<anomalousCompletenessSpherical>21</anomalousCompletenessSpherical>
+				<anomalousCompletenessEllipsoidal>22</anomalousCompletenessEllipsoidal>
 			</AutoProcScalingStatistics>
 	
 			<AutoProcIntegrationContainer>

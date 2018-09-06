@@ -88,21 +88,33 @@ complex type AutoProcScalingContainer {
 	AutoProcIntegrationContainer : AutoProcIntegrationContainer
 }
 
+complex type StaranisoEllipsoid {
+	StaranisoEllipsoidRotationMatrix : StaranisoEllipsoidRotationMatrix
+	StaranisoEllipsoidEigenvalues : StaranisoEllipsoidEigenvalues
+}
+
+complex type StaranisoEllipsoidRotationMatrix {
+	StaranisoEllipsoidRotationMatrix11 : float
+	StaranisoEllipsoidRotationMatrix12 : float
+	StaranisoEllipsoidRotationMatrix13 : float
+	StaranisoEllipsoidRotationMatrix21 : float
+	StaranisoEllipsoidRotationMatrix22 : float
+	StaranisoEllipsoidRotationMatrix23 : float
+	StaranisoEllipsoidRotationMatrix31 : float
+	StaranisoEllipsoidRotationMatrix32 : float
+	StaranisoEllipsoidRotationMatrix33 : float
+}
+
+complex type StaranisoEllipsoidEigenvalues {
+	StaranisoEllipsoidEigenvalue1 : float
+	StaranisoEllipsoidEigenvalue2 : float
+	StaranisoEllipsoidEigenvalue3 : float
+}
+
 complex type AutoProcScaling {
 	autoProcScalingId : integer optional
 	recordTimeStamp : string
-	resolutionEllipsoidAxis11 : float
-	resolutionEllipsoidAxis12 : float
-	resolutionEllipsoidAxis13 : float
-	resolutionEllipsoidAxis21 : float
-	resolutionEllipsoidAxis22 : float
-	resolutionEllipsoidAxis23 : float
-	resolutionEllipsoidAxis31 : float
-	resolutionEllipsoidAxis32 : float
-	resolutionEllipsoidAxis33 : float
-	resolutionEllipsoidValue1 : float
-	resolutionEllipsoidValue2 : float
-	resolutionEllipsoidValue3 : float
+	StaranisoEllipsoid : StaranisoEllipsoid optional
 }
 
 complex type AutoProcScalingStatistics {
