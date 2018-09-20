@@ -1,5 +1,5 @@
 # GONIO Calibration Settings
-OmegaRot 0.00229 -0.00299 0.99999
+OmegaRot 0.00229 -0.00299 -0.99999
 KappaRot -0.00164 0.40565 -0.91403
 PhiRot 0.00816 0.00847 -0.99993
 KappaTrans 0.27755 0.80315 2.5094
