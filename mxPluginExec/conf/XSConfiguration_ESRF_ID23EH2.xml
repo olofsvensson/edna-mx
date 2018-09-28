@@ -165,7 +165,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>maxNoProcessors</name>
-					<value>6</value>
+					<value>4</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>goniometerAxes</name>
