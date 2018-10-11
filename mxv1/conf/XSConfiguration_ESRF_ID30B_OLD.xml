@@ -9,7 +9,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
- 					<value>http://id30bcontrol.esrf.fr:7171</value>
+ 					<value>http://bacon.esrf.fr:7171</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -18,7 +18,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
-					<value>http://id30bcontrol.esrf.fr:7171</value>
+					<value>http://bacon.esrf.fr:7171</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>runKappa</name>
