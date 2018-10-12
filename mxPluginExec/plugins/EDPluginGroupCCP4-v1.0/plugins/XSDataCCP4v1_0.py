@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Tue Sep 1 01:24::34 2015 by EDGenerateDS.
+# Generated Fri Oct 12 08:51::32 2018 by EDGenerateDS.
 #
 
 import os, sys
@@ -648,6 +648,95 @@ class XSDataAimless(XSDataInput):
 # end class XSDataAimless
 
 
+class XSDataInputAimlessLog2Csv(XSDataInput):
+    def __init__(self, configuration=None, aimlessLogPath=None):
+        XSDataInput.__init__(self, configuration)
+        if aimlessLogPath is None:
+            self._aimlessLogPath = None
+        elif aimlessLogPath.__class__.__name__ == "XSDataFile":
+            self._aimlessLogPath = aimlessLogPath
+        else:
+            strMessage = "ERROR! XSDataInputAimlessLog2Csv constructor argument 'aimlessLogPath' is not XSDataFile but %s" % self._aimlessLogPath.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'aimlessLogPath' attribute
+    def getAimlessLogPath(self): return self._aimlessLogPath
+    def setAimlessLogPath(self, aimlessLogPath):
+        if aimlessLogPath is None:
+            self._aimlessLogPath = None
+        elif aimlessLogPath.__class__.__name__ == "XSDataFile":
+            self._aimlessLogPath = aimlessLogPath
+        else:
+            strMessage = "ERROR! XSDataInputAimlessLog2Csv.setAimlessLogPath argument is not XSDataFile but %s" % aimlessLogPath.__class__.__name__
+            raise BaseException(strMessage)
+    def delAimlessLogPath(self): self._aimlessLogPath = None
+    aimlessLogPath = property(getAimlessLogPath, setAimlessLogPath, delAimlessLogPath, "Property for aimlessLogPath")
+    def export(self, outfile, level, name_='XSDataInputAimlessLog2Csv'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataInputAimlessLog2Csv'):
+        XSDataInput.exportChildren(self, outfile, level, name_)
+        if self._aimlessLogPath is not None:
+            self.aimlessLogPath.export(outfile, level, name_='aimlessLogPath')
+        else:
+            warnEmptyAttribute("aimlessLogPath", "XSDataFile")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'aimlessLogPath':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setAimlessLogPath(obj_)
+        XSDataInput.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataInputAimlessLog2Csv" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataInputAimlessLog2Csv' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataInputAimlessLog2Csv is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataInputAimlessLog2Csv.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataInputAimlessLog2Csv()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataInputAimlessLog2Csv" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataInputAimlessLog2Csv()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataInputAimlessLog2Csv
+
+
 class XSDataInputDimple(XSDataInput):
     def __init__(self, configuration=None, pdb=None, mtz=None):
         XSDataInput.__init__(self, configuration)
@@ -1235,6 +1324,93 @@ class XSDataPointlessOut(XSDataResult):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataPointlessOut
+
+
+class XSDataResultAimlessLog2Csv(XSDataInput):
+    def __init__(self, configuration=None, csvPath=None):
+        XSDataInput.__init__(self, configuration)
+        if csvPath is None:
+            self._csvPath = None
+        elif csvPath.__class__.__name__ == "XSDataFile":
+            self._csvPath = csvPath
+        else:
+            strMessage = "ERROR! XSDataResultAimlessLog2Csv constructor argument 'csvPath' is not XSDataFile but %s" % self._csvPath.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'csvPath' attribute
+    def getCsvPath(self): return self._csvPath
+    def setCsvPath(self, csvPath):
+        if csvPath is None:
+            self._csvPath = None
+        elif csvPath.__class__.__name__ == "XSDataFile":
+            self._csvPath = csvPath
+        else:
+            strMessage = "ERROR! XSDataResultAimlessLog2Csv.setCsvPath argument is not XSDataFile but %s" % csvPath.__class__.__name__
+            raise BaseException(strMessage)
+    def delCsvPath(self): self._csvPath = None
+    csvPath = property(getCsvPath, setCsvPath, delCsvPath, "Property for csvPath")
+    def export(self, outfile, level, name_='XSDataResultAimlessLog2Csv'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataResultAimlessLog2Csv'):
+        XSDataInput.exportChildren(self, outfile, level, name_)
+        if self._csvPath is not None:
+            self.csvPath.export(outfile, level, name_='csvPath')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'csvPath':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setCsvPath(obj_)
+        XSDataInput.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataResultAimlessLog2Csv" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataResultAimlessLog2Csv' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataResultAimlessLog2Csv is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataResultAimlessLog2Csv.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultAimlessLog2Csv()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataResultAimlessLog2Csv" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataResultAimlessLog2Csv()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataResultAimlessLog2Csv
 
 
 class XSDataResultDimple(XSDataResult):

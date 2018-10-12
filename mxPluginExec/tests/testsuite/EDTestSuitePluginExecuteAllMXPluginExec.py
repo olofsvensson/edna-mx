@@ -44,6 +44,7 @@ class EDTestSuitePluginExecuteAllMXPluginExec(EDTestSuite):
         self.addTestSuiteFromName("EDTestSuitePluginExecuteBestv1_2")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteXDSv1_0")
         self.addTestCaseFromName("EDTestCasePluginExecuteFbestv1_0")
+        self.addTestCaseFromName("EDTestSuitePluginExecCCP4v1_0")
 
 
 

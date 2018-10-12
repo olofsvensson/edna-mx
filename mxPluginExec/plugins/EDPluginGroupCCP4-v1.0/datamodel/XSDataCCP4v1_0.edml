@@ -82,3 +82,10 @@ complex type XSDataUniqueify  extends XSDataInput {
         output_file : XSDataString
 }
 
+complex type XSDataInputAimlessLog2Csv extends XSDataInput {
+	aimlessLogPath : XSDataFile
+}
+
+complex type XSDataResultAimlessLog2Csv extends XSDataInput {
+	csvPath : XSDataFile optional
+}
