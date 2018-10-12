@@ -25,7 +25,7 @@ from __future__ import with_statement
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__author__="Thomas Boeglin"
+__author__ = "Thomas Boeglin"
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
@@ -54,7 +54,8 @@ class EDPluginControlEDNAprocImportv1_0(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG('Import : preprocess')
         self.anom = self.loadPlugin('EDPluginControlFileConversionv1_0')
-        self.noanom = self.loadPlugin('EDPluginControlFileConversionv1_0')
+        if self.dataInput.input_noanom:
+            self.noanom = self.loadPlugin('EDPluginControlFileConversionv1_0')
         tocopy = ['dataCollectionID', 'start_image', 'end_image',
                   'res', 'nres', 'image_prefix']
 
@@ -72,14 +73,16 @@ class EDPluginControlEDNAprocImportv1_0(EDPluginControl):
         anom_in.output_file = XSDataString(os.path.join(self.outdir, OUTFILE_TEMPLATE.format('anom')))
         self.anom.dataInput = anom_in
 
-        noanom_in.anom = XSDataBoolean(False)
-        noanom_in.input_file = self.dataInput.input_noanom
-        noanom_in.output_file = XSDataString(os.path.join(self.outdir, OUTFILE_TEMPLATE.format('noanom')))
-        self.noanom.dataInput = noanom_in
-        
+        if self.dataInput.input_noanom:
+            noanom_in.anom = XSDataBoolean(False)
+            noanom_in.input_file = self.dataInput.input_noanom
+            noanom_in.output_file = XSDataString(os.path.join(self.outdir, OUTFILE_TEMPLATE.format('noanom')))
+            self.noanom.dataInput = noanom_in
+
         if self.dataInput.choose_spacegroup is not None:
             anom_in.choose_spacegroup = self.dataInput.choose_spacegroup
-            noanom_in.choose_spacegroup = self.dataInput.choose_spacegroup
+            if self.dataInput.input_noanom:
+                noanom_in.choose_spacegroup = self.dataInput.choose_spacegroup
 
     def checkParameters(self):
         # NB. we'll only check for the output directory existence for
@@ -87,7 +90,7 @@ class EDPluginControlEDNAprocImportv1_0(EDPluginControl):
         self.DEBUG('Import: checkParameters')
         outdir = self.dataInput.output_directory
         if outdir is None:
-            strErrorMessage = "File Import: output directory not specified: aborting" 
+            strErrorMessage = "File Import: output directory not specified: aborting"
             self.ERROR(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             self.setFailure()
@@ -119,17 +122,30 @@ class EDPluginControlEDNAprocImportv1_0(EDPluginControl):
         res = XSDataEDNAprocImportOut()
         status = XSDataStatus()
         res.status = status
-        all_good = not self.anom.isFailure() and not self.noanom.isFailure()
+        if self.dataInput.input_noanom:
+            all_good = not self.anom.isFailure() and not self.noanom.isFailure()
+        else:
+            all_good = not self.anom.isFailure()
         status.isSuccess = XSDataBoolean(all_good)
         files = list()
-        for p in [self.anom, self.noanom]:
-            if not p.isFailure():
-                files.append(p.dataInput.output_file)
+        if not self.anom.isFailure():
+            files.append(self.anom.dataInput.output_file)
+        if self.dataInput.input_noanom and not self.noanom.isFailure():
+            files.append(self.noanom.dataInput.output_file)
         res.files = files
 
-        res.pointless_sgnumber = self.noanom.dataOutput.pointless_sgnumber
-        res.pointless_sgstring = self.noanom.dataOutput.pointless_sgstring
-        res.pointless_cell = self.noanom.dataOutput.pointless_cell
+        if self.dataInput.input_noanom:
+            res.pointless_sgnumber = self.noanom.dataOutput.pointless_sgnumber
+            res.pointless_sgstring = self.noanom.dataOutput.pointless_sgstring
+            res.pointless_cell = self.noanom.dataOutput.pointless_cell
+        else:
+            res.pointless_sgnumber = self.anom.dataOutput.pointless_sgnumber
+            res.pointless_sgstring = self.anom.dataOutput.pointless_sgstring
+            res.pointless_cell = self.anom.dataOutput.pointless_cell
+
         res.aimless_log_anom = self.anom.dataOutput.aimless_log
-        res.aimless_log_noanom = self.noanom.dataOutput.aimless_log
+
+        if self.dataInput.input_noanom:
+            res.aimless_log_noanom = self.noanom.dataOutput.aimless_log
+
         self.dataOutput = res

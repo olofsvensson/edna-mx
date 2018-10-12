@@ -108,6 +108,7 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.xdsAppSpacegroup = None
         self.hasUploadedAnomResultsToISPyB = False
         self.hasUploadedNoanomResultsToISPyB = False
+        self.useXdsAsciiToXml = True
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -129,7 +130,9 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.processingCommandLine = ' '.join(sys.argv)
         self.processingPrograms = "XDSAPP"
 
-        if self.dataInput.doAnomAndNonanom is not None:
+        if self.useXdsAsciiToXml:
+            self.doAnomAndNonanom = False
+        elif self.dataInput.doAnomAndNonanom is not None:
             if self.dataInput.doAnomAndNonanom.value:
                 self.doAnomAndNonanom = True
             else:
@@ -235,6 +238,11 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         else:
             processDirectory = directory.replace("RAW_DATA", "PROCESSED_DATA")
 
+        # Make results directory
+        self.resultsDirectory = os.path.join(processDirectory, "results")
+        if not os.path.exists(self.resultsDirectory):
+            os.makedirs(self.resultsDirectory, 0o755)
+
         isH5 = False
         if any(beamline in pathToStartImage for beamline in ["id23eh1", "id29"]):
             minSizeFirst = 6000000
@@ -336,32 +344,40 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.timeEnd = time.localtime()
         # Upload to ISPyB
         if self.dataInput.dataCollectionId is not None:
-            self.hasUploadedAnomResultsToISPyB = self.uploadToISPyB(xsDataResultXDSAPPAnom, processDirectory, template,
-                               strPathXscaleLpAnom, True, proposal, self.timeStart, self.timeEnd,
-                               self.dataInput.dataCollectionId.value,
-                               self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom)
-            if self.hasUploadedAnomResultsToISPyB:
-                self.screen("Anom results uploaded to ISPyB")
+            # Check if we should use XDS_ASCII_to_XML.pl
+            if self.useXdsAsciiToXml:
+                # Only for anom runs
+                self.runXdsAsciiToXml(xsDataResultXDSAPPAnom,
+                                      self.dataInput.dataCollectionId.value,
+                                      self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom)
             else:
-                self.ERROR("Could not upload anom results to ISPyB!")
-
-
-
-            if self.doAnomAndNonanom:
-                self.hasUploadedNoanomResultsToISPyB = self.uploadToISPyB(xsDataResultXDSAPPNoanom, processDirectory, template,
-                                   strPathXscaleLpNoanom, False, proposal, self.timeStart, self.timeEnd,
+                self.hasUploadedAnomResultsToISPyB = self.uploadToISPyB(xsDataResultXDSAPPAnom, processDirectory, template,
+                                   strPathXscaleLpAnom, True, proposal, self.timeStart, self.timeEnd,
                                    self.dataInput.dataCollectionId.value,
-                                   self.autoProcIntegrationIdNoanom, self.autoProcProgramIdNoanom)
-                if self.hasUploadedNoanomResultsToISPyB:
-                    self.screen("Noanom results uploaded to ISPyB")
+                                   self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom)
+                if self.hasUploadedAnomResultsToISPyB:
+                    self.screen("Anom results uploaded to ISPyB")
                 else:
-                    self.ERROR("Could not upload noanom results to ISPyB!")
+                    self.ERROR("Could not upload anom results to ISPyB!")
+
+
+
+                if self.doAnomAndNonanom:
+                    self.hasUploadedNoanomResultsToISPyB = self.uploadToISPyB(xsDataResultXDSAPPNoanom, processDirectory, template,
+                                       strPathXscaleLpNoanom, False, proposal, self.timeStart, self.timeEnd,
+                                       self.dataInput.dataCollectionId.value,
+                                       self.autoProcIntegrationIdNoanom, self.autoProcProgramIdNoanom)
+                    if self.hasUploadedNoanomResultsToISPyB:
+                        self.screen("Noanom results uploaded to ISPyB")
+                    else:
+                        self.ERROR("Could not upload noanom results to ISPyB!")
 
 
     def finallyProcess(self, _edObject=None):
         EDPluginControl.finallyProcess(self)
         self.edPluginExecXDSAPPAnom.synchronize()
-        self.edPluginExecXDSAPPNoanom.synchronize()
+        if self.doAnomAndNonanom:
+            self.edPluginExecXDSAPPNoanom.synchronize()
         strMessage = ""
         if self.getListOfWarningMessages() != []:
             strMessage += "Warning messages: \n\n"
@@ -407,13 +423,8 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         dictLog = self.parseLogFile(xsDataResultXDSAPP.logFile.path.value)
         dictXscale = self.parseXscaleLp(strPathXscaleLp)
 
-        # Make results directory
-        resultsDirectory = os.path.join(processDirectory, "results")
-        if not os.path.exists(resultsDirectory):
-            os.makedirs(resultsDirectory, 0o755)
-
         # Create path to pyarch
-        self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(resultsDirectory)
+        self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
         self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
         if self.pyarchDirectory is not None and not os.path.exists(self.pyarchDirectory):
             os.makedirs(self.pyarchDirectory, 0o755)
@@ -421,11 +432,6 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         # Determine pyarch prefix
         listPrefix = template.split("_")
         self.pyarchPrefix = "xa_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
-
-        # Result file directory
-        self.strResultPath = os.path.join(processDirectory, "results")
-        if not os.path.exists(self.strResultPath):
-            os.makedirs(self.strResultPath, 0o755)
 
 
         xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
@@ -589,7 +595,7 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         else:
             mergeString = ""
         pyarchFileName = self.pyarchPrefix + mergeString + anomString + "_{0}.{1}".format(name, suffix)
-        shutil.copy(strPath, os.path.join(self.strResultPath, pyarchFileName))
+        shutil.copy(strPath, os.path.join(self.resultsDirectory, pyarchFileName))
         if doGzip:
             pyarchFileName += ".gz"
             f_in = open(strPath)
@@ -745,4 +751,51 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             index += 1
         return isa
 
+    def copyToResultsDir(self, strPath):
+        fileName = os.path.basename(strPath)
+        resultsDirPath = os.path.join(self.resultsDirectory, fileName)
+        shutil.copy(strPath, resultsDirPath)
+        return resultsDirPath
 
+    def runXdsAsciiToXml(self, xsDataResultXDSAPP, dataCollectionId, integrationId, programId):
+        listProgramAttachment = []
+        pathToXdsAscii = None
+        # XDSAPP log and result files
+        if xsDataResultXDSAPP.logFile is not None:
+            listProgramAttachment.append(self.copyToResultsDir(xsDataResultXDSAPP.logFile.path.value))
+        if xsDataResultXDSAPP.pointlessLog is not None:
+            listProgramAttachment.append(self.copyToResultsDir(xsDataResultXDSAPP.pointlessLog.path.value))
+        if xsDataResultXDSAPP.phenixXtriageLog is not None:
+            listProgramAttachment.append(self.copyToResultsDir(xsDataResultXDSAPP.phenixXtriageLog.path.value))
+        if xsDataResultXDSAPP.correctLP is not None:
+            listProgramAttachment.append(self.copyToResultsDir(xsDataResultXDSAPP.correctLP.path.value))
+        if xsDataResultXDSAPP.XDS_ASCII_HKL is not None:
+            pathToXdsAscii = xsDataResultXDSAPP.XDS_ASCII_HKL.path.value
+            listProgramAttachment.append(self.copyToResultsDir(pathToXdsAscii))
+        for mtz_F in xsDataResultXDSAPP.mtz_F:
+            basenameMtz_F = os.path.splitext(os.path.basename(mtz_F.path.value))[0]
+            listProgramAttachment.append(self.copyToResultsDir(mtz_F.path.value))
+        for mtz_F_plus_F_minus in xsDataResultXDSAPP.mtz_F_plus_F_minus:
+            basenameMtz_F_plus_F_minus = os.path.splitext(os.path.basename(mtz_F_plus_F_minus.path.value))[0]
+            listProgramAttachment.append(self.copyToResultsDir(mtz_F_plus_F_minus.path.value))
+        # Create command line
+        commandLine = "/opt/pxsoft/bin/XDS_ASCII_to_XML.pl"
+        commandLine += " --status SUCCESS"
+        commandLine += " --dcol {0}".format(dataCollectionId)
+        commandLine += " --col XDSAPP"
+        commandLine += " --xds_ascii {0}".format(pathToXdsAscii)
+        commandLine += " --program_name XDSAPP"
+        commandLine += " --integrationId {0}".format(integrationId)
+        commandLine += " --programId {0}".format(programId)
+        for prograAttachmentPath in listProgramAttachment:
+            commandLine += " --attach {0}".format(prograAttachmentPath)
+        self.screen("Command line for XDS_ASCII_to_XML.pl:")
+        self.screen(commandLine)
+        workingDir = os.path.join(self.resultsDirectory, "XDS_ASCII_to_XML")
+        if not os.path.exists(workingDir):
+            os.makedirs(workingDir, 0o755)
+        self.screen("Working dir: {0}".format(workingDir))
+        pipe = subprocess.Popen(commandLine, shell=True, stdout=subprocess.PIPE, close_fds=True, cwd=workingDir)
+        stream = pipe.communicate()[0]
+        self.screen(stream)
+        self.hasUploadedAnomResultsToISPyB = True

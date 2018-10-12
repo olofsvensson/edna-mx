@@ -156,6 +156,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.processingCommandLine = ' '.join(sys.argv)
         self.hasUploadedAnomResultsToISPyB = False
         self.hasUploadedNoanomResultsToISPyB = False
+        self.doAnomAndNonanom = True
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -229,6 +230,11 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 data_in.input_file.path = XSDataString(newpath)
 
 
+        if self.dataInput.doAnomAndNonanom is not None:
+            if self.dataInput.doAnomAndNonanom.value:
+                self.doAnomAndNonanom = True
+            else:
+                self.doAnomAndNonanom = False
 
 
         if EDUtilsPath.isESRF():
@@ -427,15 +433,18 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         self.first_res_cutoff = self.loadPlugin("EDPluginResCutoffv1_0")
         self.res_cutoff_anom = self.loadPlugin("EDPluginResCutoffv1_0")
-        self.res_cutoff_noanom = self.loadPlugin("EDPluginResCutoffv1_0")
+        if self.doAnomAndNonanom:
+            self.res_cutoff_noanom = self.loadPlugin("EDPluginResCutoffv1_0")
 
         self.parse_xds_anom = self.loadPlugin("EDPluginParseXdsOutputv1_0")
-        self.parse_xds_noanom = self.loadPlugin("EDPluginParseXdsOutputv1_0")
+        if self.doAnomAndNonanom:
+            self.parse_xds_noanom = self.loadPlugin("EDPluginParseXdsOutputv1_0")
 
         self.xscale_generate = self.loadPlugin("EDPluginControlXscaleGeneratev1_0")
 
         self.store_autoproc_anom = self.loadPlugin('EDPluginISPyBStoreAutoProcv1_4')
-        self.store_autoproc_noanom = self.loadPlugin('EDPluginISPyBStoreAutoProcv1_4')
+        if self.doAnomAndNonanom:
+            self.store_autoproc_noanom = self.loadPlugin('EDPluginISPyBStoreAutoProcv1_4')
 
         self.file_conversion = self.loadPlugin('EDPluginControlEDNAprocImportv1_0')
 
@@ -499,21 +508,23 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.process_start = time.time()
 
 
-        self.integration_id_noanom = None
-        self.program_id_noanom = None
         self.integration_id_anom = None
         self.program_id_anom = None
+        if self.doAnomAndNonanom:
+            self.integration_id_noanom = None
+            self.program_id_noanom = None
         if self.dataInput.data_collection_id is not None:
-            # get our two integration IDs
-            try:
-                self.integration_id_noanom, self.program_id_noanom = self.create_integration_id(self.dataInput.data_collection_id.value,
-                                                                        "Creating non-anomalous integration ID",
-                                                                        isAnom=False)
-            except Exception as e:
-                strErrorMessage = "Could not get non-anom integration ID: \n{0}".format(traceback.format_exc(e))
-                self.addErrorMessage(strErrorMessage)
-                self.ERROR(strErrorMessage)
-                self.integration_id_noanom = None
+
+            if self.doAnomAndNonanom:
+                try:
+                    self.integration_id_noanom, self.program_id_noanom = self.create_integration_id(self.dataInput.data_collection_id.value,
+                                                                            "Creating non-anomalous integration ID",
+                                                                            isAnom=False)
+                except Exception as e:
+                    strErrorMessage = "Could not get non-anom integration ID: \n{0}".format(traceback.format_exc(e))
+                    self.addErrorMessage(strErrorMessage)
+                    self.ERROR(strErrorMessage)
+                    self.integration_id_noanom = None
 
             try:
                 self.integration_id_anom, self.program_id_anom = self.create_integration_id(self.dataInput.data_collection_id.value,
@@ -527,7 +538,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         # first XDS plugin run with supplied XDS file
         self.screen('Starting first XDS run...')
-        self.log_to_ispyb(self.integration_id_noanom,
+        self.log_to_ispyb(self.integration_id_anom,
                      'Indexing', 'Launched', 'XDS started')
 
         t0 = time.time()
@@ -539,14 +550,14 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if self.xds_first.isFailure():
             self.ERROR('first XDS run failed')
             self.setFailure()
-            self.log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Indexing',
                          'Failed',
                          'XDS failed after {0:.1f}s'.format(self.stats['first_xds']))
             return
         else:
             self.screen('FINISHED first XDS run')
-            self.log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Indexing',
                          'Successful',
                          'XDS finished after {0:.1f}s'.format(self.stats['first_xds']))
@@ -571,7 +582,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             self.ERROR(strErrorMessage)
 
 
-        self.log_to_ispyb(self.integration_id_noanom,
+        self.log_to_ispyb(self.integration_id_anom,
                      'Indexing', 'Launched', 'Start of resolution cutoff')
 
         # apply the first res cutoff with the res extracted from the first XDS run
@@ -608,7 +619,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         if self.first_res_cutoff.isFailure():
             self.ERROR("res cutoff failed")
-            self.log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Indexing',
                          'Failed',
                          'Resolution cutoff failed after {0:.1f}s'.format(self.stats['first_res_cutoff']))
@@ -616,7 +627,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             return
         else:
             self.screen('FINISHED first resolution cutoff')
-            self.log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Indexing',
                          'Successful',
                          'Resolution cutoff finished')
@@ -630,9 +641,13 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         generate_input = XSDataXdsGenerateInput()
         generate_input.resolution = resolution
         generate_input.previous_run_dir = XSDataString(xds_run_directory)
+        if self.doAnomAndNonanom:
+            generate_input.doAnomAndNonanom = XSDataBoolean(True)
+        else:
+            generate_input.doAnomAndNonanom = XSDataBoolean(False)
         self.generate.dataInput = generate_input
 
-        self.log_to_ispyb(self.integration_id_noanom,
+        self.log_to_ispyb(self.integration_id_anom,
                      'Scaling', 'Launched', 'Start of scaling')
 
         self.DEBUG('STARTING anom/noanom generation')
@@ -647,14 +662,14 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if self.generate.isFailure():
             self.ERROR('generating w/ and w/out anom failed')
             self.setFailure()
-            self.log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Scaling',
                          'Failed',
                          'Scaling failed after {0:.1}s'.format(self.stats['anom/noanom_generation']))
             return
         else:
             self.screen('generating w/ and w/out anom finished')
-            self.log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Scaling',
                          'Successful',
                          'Scaling finished in {0:.1f}s'.format(self.stats['anom/noanom_generation']))
@@ -689,33 +704,35 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             self.setFailure()
             return
 
-        # now the other one w/out anom
-        parse_noanom_input = XSDataXdsOutputFile()
-        parse_noanom_input.correct_lp = XSDataFile()
-        parse_noanom_input.correct_lp.path = self.generate.dataOutput.correct_lp_no_anom
+        if self.doAnomAndNonanom:
+            # now the other one w/out anom
+            parse_noanom_input = XSDataXdsOutputFile()
+            parse_noanom_input.correct_lp = XSDataFile()
+            parse_noanom_input.correct_lp.path = self.generate.dataOutput.correct_lp_no_anom
 
-        gxparm_file_noanom = XSDataFile()
-        gxparm_file_noanom.path = self.generate.dataOutput.gxparm
-        parse_noanom_input.gxparm = gxparm_file_noanom
+            gxparm_file_noanom = XSDataFile()
+            gxparm_file_noanom.path = self.generate.dataOutput.gxparm
+            parse_noanom_input.gxparm = gxparm_file_noanom
 
-        self.parse_xds_noanom.dataInput = parse_noanom_input
-        self.parse_xds_noanom.executeSynchronous()
-        self.retrieveFailureMessages(self.parse_xds_noanom, "Parse xds noanom")
+            self.parse_xds_noanom.dataInput = parse_noanom_input
+            self.parse_xds_noanom.executeSynchronous()
+            self.retrieveFailureMessages(self.parse_xds_noanom, "Parse xds noanom")
 
-        if self.parse_xds_noanom.isFailure():
-            strErrorMessage = "Parsing the xds generated w/ no anom failed"
-            self.addErrorMessage(strErrorMessage)
-            self.ERROR(strErrorMessage)
-            self.setFailure()
-            return
+            if self.parse_xds_noanom.isFailure():
+                strErrorMessage = "Parsing the xds generated w/ no anom failed"
+                self.addErrorMessage(strErrorMessage)
+                self.ERROR(strErrorMessage)
+                self.setFailure()
+                return
 
         # we now can apply the res cutoff on the anom and no anom
         # outputs. Note that this is not done in parallel, like the
         # xds parsing
 
 
-        self.log_to_ispyb(self.integration_id_noanom,
-                     'Scaling', 'Launched', 'Start of non-anomalous resolution cutoffs')
+        if self.doAnomAndNonanom:
+            self.log_to_ispyb(self.integration_id_noanom,
+                         'Scaling', 'Launched', 'Start of non-anomalous resolution cutoffs')
         self.log_to_ispyb(self.integration_id_anom,
                      'Scaling', 'Launched', 'Start of anomalous resolution cutoffs')
 
@@ -757,45 +774,47 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         self.DEBUG('FINISHED anom res cutoff')
 
-        # same for non anom
-        res_cutoff_noanom_in = XSDataResCutoff()
-        res_cutoff_noanom_in.detector_max_res = self.dataInput.detector_max_res
-        res_cutoff_noanom_in.xds_res = self.parse_xds_noanom.dataOutput
-        res_cutoff_noanom_in.completeness_entries = self.parse_xds_noanom.dataOutput.completeness_entries
-        res_cutoff_noanom_in.total_completeness = self.parse_xds_noanom.dataOutput.total_completeness
-        # pass in global cutoffs
-        res_cutoff_noanom_in.completeness_cutoff = self.dataInput.completeness_cutoff
-        res_cutoff_noanom_in.isig_cutoff = XSDataDouble(1.0)
-        # res_cutoff_noanom_in.isig_cutoff = self.dataInput.isig_cutoff
-        res_cutoff_noanom_in.r_value_cutoff = self.dataInput.r_value_cutoff
-        res_cutoff_noanom_in.cc_half_cutoff = self.dataInput.cc_half_cutoff
-        self.res_cutoff_noanom.dataInput = res_cutoff_noanom_in
+        if self.doAnomAndNonanom:
+            # same for non anom
+            res_cutoff_noanom_in = XSDataResCutoff()
+            res_cutoff_noanom_in.detector_max_res = self.dataInput.detector_max_res
+            res_cutoff_noanom_in.xds_res = self.parse_xds_noanom.dataOutput
+            res_cutoff_noanom_in.completeness_entries = self.parse_xds_noanom.dataOutput.completeness_entries
+            res_cutoff_noanom_in.total_completeness = self.parse_xds_noanom.dataOutput.total_completeness
+            # pass in global cutoffs
+            res_cutoff_noanom_in.completeness_cutoff = self.dataInput.completeness_cutoff
+            res_cutoff_noanom_in.isig_cutoff = XSDataDouble(1.0)
+            # res_cutoff_noanom_in.isig_cutoff = self.dataInput.isig_cutoff
+            res_cutoff_noanom_in.r_value_cutoff = self.dataInput.r_value_cutoff
+            res_cutoff_noanom_in.cc_half_cutoff = self.dataInput.cc_half_cutoff
+            self.res_cutoff_noanom.dataInput = res_cutoff_noanom_in
 
-        self.DEBUG('STARTING noanom res cutoff')
-        t0 = time.time()
-        self.res_cutoff_noanom.executeSynchronous()
-        self.retrieveFailureMessages(self.res_cutoff_anom, "Res cut noanom")
-        self.stats['res_cutoff_noanom'] = time.time() - t0
+            self.DEBUG('STARTING noanom res cutoff')
+            t0 = time.time()
+            self.res_cutoff_noanom.executeSynchronous()
+            self.retrieveFailureMessages(self.res_cutoff_anom, "Res cut noanom")
+            self.stats['res_cutoff_noanom'] = time.time() - t0
 
-        if self.res_cutoff_noanom.isFailure():
-            self.ERROR('res cutoff for non anom data failed')
-            self.setFailure()
-            self.log_to_ispyb(self.integration_id_noanom,
-                         'Scaling',
-                         'Failed',
-                         'Non-anomalous resolution cutoffs failed in {0:.1f}s'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_noanom']))
-            return
-        else:
-            self.screen('FINISHED noanom res cutoff')
-            self.log_to_ispyb(self.integration_id_noanom,
-                         'Scaling',
-                         'Successful',
-                         'Non-anomalous resolution cutoffs finished'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_noanom']))
+            if self.res_cutoff_noanom.isFailure():
+                self.ERROR('res cutoff for non anom data failed')
+                self.setFailure()
+                self.log_to_ispyb(self.integration_id_noanom,
+                             'Scaling',
+                             'Failed',
+                             'Non-anomalous resolution cutoffs failed in {0:.1f}s'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_noanom']))
+                return
+            else:
+                self.screen('FINISHED noanom res cutoff')
+                self.log_to_ispyb(self.integration_id_noanom,
+                             'Scaling',
+                             'Successful',
+                             'Non-anomalous resolution cutoffs finished'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_noanom']))
 
 
         import_in = XSDataEDNAprocImport()
         import_in.input_anom = self.generate.dataOutput.hkl_anom
-        import_in.input_noanom = self.generate.dataOutput.hkl_no_anom
+        if self.doAnomAndNonanom:
+            import_in.input_noanom = self.generate.dataOutput.hkl_no_anom
         import_in.dataCollectionID = self.dataInput.data_collection_id
         import_in.start_image = XSDataInteger(self.data_range[0])
         import_in.end_image = XSDataInteger(self.data_range[1])
@@ -866,7 +885,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         input_file = XSDataXscaleInputFile()
         input_file.path_anom = self.generate_xscale.dataOutput.hkl_anom
-        input_file.path_noanom = self.generate_xscale.dataOutput.hkl_no_anom
+        if self.doAnomAndNonanom:
+            input_file.path_noanom = self.generate_xscale.dataOutput.hkl_no_anom
         input_file.res = self.res_cutoff_anom.dataOutput.res
 
         xscale_generate_in.xds_files = [input_file]
@@ -877,7 +897,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         self.xscale_generate.dataInput = xscale_generate_in
         self.DEBUG('STARTING xscale generation')
-        self.log_to_ispyb(self.integration_id_noanom,
+        self.log_to_ispyb(self.integration_id_anom,
                      'Scaling', 'Launched', 'Start of XSCALE')
 
         t0 = time.time()
@@ -889,21 +909,24 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             strErrorMessage = "Xscale generation failed"
             self.addErrorMessage(strErrorMessage)
             self.ERROR(strErrorMessage)
-            self.log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Scaling',
                          'Failed',
                          'XSCALE failed after {0:.1f}s'.format(self.stats['xscale_generate']))
             return
         else:
             self.screen('xscale anom/merge generation finished')
-            self.log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Scaling',
                          'Successful',
                          'XSCALE finished in {0:.1f}s'.format(self.stats['xscale_generate']))
 
         # Copy the generated files to the results dir
-        attrs = ['lp_anom_merged', 'lp_noanom_merged',
-                 'lp_anom_unmerged', 'lp_noanom_unmerged']
+        if self.doAnomAndNonanom:
+            attrs = ['lp_anom_merged', 'lp_noanom_merged',
+                     'lp_anom_unmerged', 'lp_noanom_unmerged']
+        else:
+            attrs = ['lp_anom_merged', 'lp_anom_unmerged']
         xscale_logs = [getattr(self.xscale_generate.dataOutput, attr)
                        for attr in attrs]
         xscale_logs = [log.value for log in xscale_logs if log is not None]
@@ -923,11 +946,11 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         # Run phenix.xtriage
         xsDataInputPhenixXtriage = XSDataInputPhenixXtriage()
         xsDataInputPhenixXtriage.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value,
-                                                                                "ep_{0}_unmerged_noanom_pointless_multirecord.mtz.gz".format(self.image_prefix))))
+                                                                                "ep_{0}_unmerged_anom_pointless_multirecord.mtz.gz".format(self.image_prefix))))
         self.phenixXtriage.dataInput = xsDataInputPhenixXtriage
         self.phenixXtriage.executeSynchronous()
         if self.phenixXtriage.isFailure():
-            self.log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Scaling',
                          'Failed',
                          "phenix.xtriage failed")
@@ -936,7 +959,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
             shutil.copy(xsDataResultPhenixXtriage.logFile.path.value,
                         os.path.join(self.file_conversion.dataInput.output_directory.value,
-                                     "ep_{0}_phenix_xtriage_noanom.log".format(self.image_prefix)))
+                                     "ep_{0}_phenix_xtriage_anom.log".format(self.image_prefix)))
 
             if xsDataResultPhenixXtriage.pseudotranslation.value:
                 strMessage = "Pseudotranslation detected by phenix.xtriage!"
@@ -945,7 +968,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 strMessage = "No pseudotranslation detected by phenix.xtriage."
                 bPseudotranslation = False
             self.screen(strMessage)
-            self.log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Scaling',
                          'Successful',
                          strMessage)
@@ -957,7 +980,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 strMessage = "No twinning detected by phenix.xtriage."
                 bTwinning = False
             self.screen(strMessage)
-            self.log_to_ispyb(self.integration_id_noanom,
+            self.log_to_ispyb(self.integration_id_anom,
                          'Scaling',
                          'Successful',
                          strMessage)
@@ -1015,62 +1038,63 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
             output.AutoProc = autoproc
 
-            # NOANOM PATH
+            if self.doAnomAndNonanom:
+                # NOANOM PATH
 
-            # scaling container and all the things that go in
-            scaling_container_noanom = AutoProcScalingContainer()
-            scaling = AutoProcScaling()
-            scaling.recordTimeStamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                # scaling container and all the things that go in
+                scaling_container_noanom = AutoProcScalingContainer()
+                scaling = AutoProcScaling()
+                scaling.recordTimeStamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-            scaling_container_noanom.AutoProcScaling = scaling
+                scaling_container_noanom.AutoProcScaling = scaling
 
-            inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_noanom.value)
+                inner, outer, overall, unit_cell = self.parse_aimless(self.file_conversion.dataOutput.aimless_log_noanom.value)
 
-            autoproc.refinedCell_a = str(unit_cell[0])
-            autoproc.refinedCell_b = str(unit_cell[1])
-            autoproc.refinedCell_c = str(unit_cell[2])
-            autoproc.refinedCell_alpha = str(unit_cell[3])
-            autoproc.refinedCell_beta = str(unit_cell[4])
-            autoproc.refinedCell_gamma = str(unit_cell[5])
+                autoproc.refinedCell_a = str(unit_cell[0])
+                autoproc.refinedCell_b = str(unit_cell[1])
+                autoproc.refinedCell_c = str(unit_cell[2])
+                autoproc.refinedCell_alpha = str(unit_cell[3])
+                autoproc.refinedCell_beta = str(unit_cell[4])
+                autoproc.refinedCell_gamma = str(unit_cell[5])
 
-            inner_stats = AutoProcScalingStatistics()
-            for k, v in inner.items():
-                setattr(inner_stats, k, v)
-            inner_stats.anomalous = False
-            scaling_container_noanom.AutoProcScalingStatistics.append(inner_stats)
+                inner_stats = AutoProcScalingStatistics()
+                for k, v in inner.items():
+                    setattr(inner_stats, k, v)
+                inner_stats.anomalous = False
+                scaling_container_noanom.AutoProcScalingStatistics.append(inner_stats)
 
-            outer_stats = AutoProcScalingStatistics()
-            for k, v in outer.items():
-                setattr(outer_stats, k, v)
-            outer_stats.anomalous = False
-            scaling_container_noanom.AutoProcScalingStatistics.append(outer_stats)
+                outer_stats = AutoProcScalingStatistics()
+                for k, v in outer.items():
+                    setattr(outer_stats, k, v)
+                outer_stats.anomalous = False
+                scaling_container_noanom.AutoProcScalingStatistics.append(outer_stats)
 
-            overall_stats = AutoProcScalingStatistics()
-            for k, v in overall.items():
-                setattr(overall_stats, k, v)
-            overall_stats.anomalous = False
-            scaling_container_noanom.AutoProcScalingStatistics.append(overall_stats)
+                overall_stats = AutoProcScalingStatistics()
+                for k, v in overall.items():
+                    setattr(overall_stats, k, v)
+                overall_stats.anomalous = False
+                scaling_container_noanom.AutoProcScalingStatistics.append(overall_stats)
 
-            integration_container_noanom = AutoProcIntegrationContainer()
-            image = Image()
-            if self.dataInput.data_collection_id is not None:
-                image.dataCollectionId = self.dataInput.data_collection_id.value
-            integration_container_noanom.Image = image
+                integration_container_noanom = AutoProcIntegrationContainer()
+                image = Image()
+                if self.dataInput.data_collection_id is not None:
+                    image.dataCollectionId = self.dataInput.data_collection_id.value
+                integration_container_noanom.Image = image
 
-            integration_noanom = AutoProcIntegration()
-            if self.integration_id_noanom is not None:
-                integration_noanom.autoProcIntegrationId = self.integration_id_noanom
-            integration_noanom.cell_a = unit_cell[0]
-            integration_noanom.cell_b = unit_cell[1]
-            integration_noanom.cell_c = unit_cell[2]
-            integration_noanom.cell_alpha = unit_cell[3]
-            integration_noanom.cell_beta = unit_cell[4]
-            integration_noanom.cell_gamma = unit_cell[5]
-            integration_noanom.anomalous = 0
+                integration_noanom = AutoProcIntegration()
+                if self.integration_id_noanom is not None:
+                    integration_noanom.autoProcIntegrationId = self.integration_id_noanom
+                integration_noanom.cell_a = unit_cell[0]
+                integration_noanom.cell_b = unit_cell[1]
+                integration_noanom.cell_c = unit_cell[2]
+                integration_noanom.cell_alpha = unit_cell[3]
+                integration_noanom.cell_beta = unit_cell[4]
+                integration_noanom.cell_gamma = unit_cell[5]
+                integration_noanom.anomalous = 0
 
-            # done with the integration
-            integration_container_noanom.AutoProcIntegration = integration_noanom
-            scaling_container_noanom.AutoProcIntegrationContainer = integration_container_noanom
+                # done with the integration
+                integration_container_noanom.AutoProcIntegration = integration_noanom
+                scaling_container_noanom.AutoProcIntegrationContainer = integration_container_noanom
 
             # ANOM PATH
             scaling_container_anom = AutoProcScalingContainer()
@@ -1134,10 +1158,11 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 programId=self.program_id_anom, status="SUCCESS", timeStart=self.timeStart, timeEnd=self.timeEnd,
                 processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
 
-            program_container_noanom = AutoProcProgramContainer()
-            program_container_noanom.AutoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
-                programId=self.program_id_noanom, status="SUCCESS", timeStart=self.timeStart, timeEnd=self.timeEnd,
-                processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
+            if self.doAnomAndNonanom:
+                program_container_noanom = AutoProcProgramContainer()
+                program_container_noanom.AutoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
+                    programId=self.program_id_noanom, status="SUCCESS", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                    processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
 
             # now for the generated files. There's some magic to do with
             # their paths to determine where to put them on pyarch
@@ -1215,16 +1240,17 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                     attach_anom = AutoProcProgramAttachment()
                     attach_anom.fileType = "Result"
                     attach_anom.fileName = filename
-                    attach_noanom = AutoProcProgramAttachment()
-                    attach_noanom.fileType = "Result"
-                    attach_noanom.fileName = filename
                     attach_anom.filePath = dirname
-                    attach_noanom.filePath = dirname
+                    if self.doAnomAndNonanom:
+                        attach_noanom = AutoProcProgramAttachment()
+                        attach_noanom.fileType = "Result"
+                        attach_noanom.fileName = filename
+                        attach_noanom.filePath = dirname
                     if "_anom" in filename:
                         program_container_anom.AutoProcProgramAttachment.append(attach_anom)
-                    elif "_noanom" in filename:
+                    elif self.doAnomAndNonanom and "_noanom" in filename:
                         program_container_noanom.AutoProcProgramAttachment.append(attach_noanom)
-                    else:
+                    elif self.doAnomAndNonanom:
                         program_container_noanom.AutoProcProgramAttachment.append(attach_anom)
                         program_container_anom.AutoProcProgramAttachment.append(attach_noanom)
 
@@ -1240,11 +1266,13 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 with open(self.dataInput.output_file.path.value, 'w') as f:
                     f.write(ispyb_input.marshal())
 
+            autoProcProgramId = None
             if self.dataInput.data_collection_id is not None:
                 # store results in ispyb
                 self.store_autoproc_anom.dataInput = ispyb_input
                 t0 = time.time()
                 self.store_autoproc_anom.executeSynchronous()
+                autoProcProgramId = self.store_autoproc_anom.dataOutput.autoProcProgramId.value
 
                 if self.store_autoproc_anom.isFailure():
                     self.ERROR("Could not upload anom results to ispyb!")
@@ -1258,43 +1286,43 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 self.retrieveFailureMessages(self.store_autoproc_anom, "Store EDNAproc anom")
                 self.stats['ispyb_upload'] = time.time() - t0
 
-            # then noanom stats
+            if self.doAnomAndNonanom:
+                # then noanom stats
 
-            output.AutoProcProgramContainer = program_container_noanom
-            output.AutoProcScalingContainer = scaling_container_noanom
+                output.AutoProcProgramContainer = program_container_noanom
+                output.AutoProcScalingContainer = scaling_container_noanom
 
-            ispyb_input = XSDataInputStoreAutoProc()
-            ispyb_input.AutoProcContainer = output
+                ispyb_input = XSDataInputStoreAutoProc()
+                ispyb_input.AutoProcContainer = output
 
 
-            if self.dataInput.output_file is not None:
-                with open(self.dataInput.output_file.path.value, 'w') as f:
-                    f.write(ispyb_input.marshal())
+                if self.dataInput.output_file is not None:
+                    with open(self.dataInput.output_file.path.value, 'w') as f:
+                        f.write(ispyb_input.marshal())
 
-            autoProcProgramId = None
-            if self.dataInput.data_collection_id is not None:
-                # store results in ispyb
-                self.store_autoproc_noanom.dataInput = ispyb_input
-                t0 = time.time()
-                self.store_autoproc_noanom.executeSynchronous()
-                autoProcProgramId = self.store_autoproc_noanom.dataOutput.autoProcProgramId.value
+                if self.dataInput.data_collection_id is not None:
+                    # store results in ispyb
+                    self.store_autoproc_noanom.dataInput = ispyb_input
+                    t0 = time.time()
+                    self.store_autoproc_noanom.executeSynchronous()
+                    autoProcProgramId = self.store_autoproc_noanom.dataOutput.autoProcProgramId.value
 
-                if self.store_autoproc_noanom.isFailure():
-                    self.ERROR("Could not upload noanom results to ISPyB!")
-                else:
-                    self.hasUploadedNoanomResultsToISPyB = True
-                    self.screen("Noanom results uploaded to ISPyB")
-                    # store the EDNAproc id
-                    os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0o755)
+                    if self.store_autoproc_noanom.isFailure():
+                        self.ERROR("Could not upload noanom results to ISPyB!")
+                    else:
+                        self.hasUploadedNoanomResultsToISPyB = True
+                        self.screen("Noanom results uploaded to ISPyB")
+                        # store the EDNAproc id
+                        os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_noanom)), 0o755)
 
-                self.retrieveFailureMessages(self.store_autoproc_noanom, "Store EDNAproc noanom")
-                self.stats['ispyb_upload'] = time.time() - t0
+                    self.retrieveFailureMessages(self.store_autoproc_noanom, "Store EDNAproc noanom")
+                    self.stats['ispyb_upload'] = time.time() - t0
 
             # Finally run dimple if executed at the ESRF
             if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():
                 xsDataInputControlDimple = XSDataInputControlDimple()
                 xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
-                xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "ep_{0}_noanom_aimless.mtz".format(self.image_prefix))))
+                xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "ep_{0}_anom_aimless.mtz".format(self.image_prefix))))
                 xsDataInputControlDimple.imagePrefix = XSDataString(self.image_prefix)
                 xsDataInputControlDimple.proposal = XSDataString(self.strProposal)
                 xsDataInputControlDimple.sessionDate = XSDataString(self.strSessionDate)
@@ -1346,7 +1374,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                     self.store_autoproc_anom.dataInput = inputStoreAutoProcAnom
                     self.store_autoproc_anom.executeSynchronous()
 
-                if not self.hasUploadedNoanomResultsToISPyB:
+                if self.doAnomAndNonanom and not self.hasUploadedNoanomResultsToISPyB:
                     # noanom
                     inputStoreAutoProcNoanom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
                             self.dataInput.data_collection_id.value, self.integration_id_noanom, isAnomalous=False,

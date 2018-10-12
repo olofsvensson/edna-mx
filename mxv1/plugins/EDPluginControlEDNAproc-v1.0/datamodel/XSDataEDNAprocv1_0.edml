@@ -32,6 +32,8 @@ complex type XSDataEDNAprocInput extends XSDataInput {
 	end_image : XSDataInteger optional
 	
 	reprocess : XSDataBoolean optional
+
+	doAnomAndNonanom : XSDataBoolean optional
 }
 
 // these are use by the subplugins of the general file conversion

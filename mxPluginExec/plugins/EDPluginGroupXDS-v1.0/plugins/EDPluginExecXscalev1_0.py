@@ -83,9 +83,14 @@ class EDPluginExecXscalev1_0(EDPluginExecProcessScript):
             self.setFailure()
         # check existence of the input files
         for f in self.dataInput.xds_files:
+            path = None
             # check which of the anom or noanom file we have to use
-            path = f.path_anom.value if self.dataInput.friedels_law.value else f.path_noanom.value
-            if not os.path.isfile(path):
+            if self.dataInput.friedels_law.value and f.path_noanom is not None:
+                path = f.path_noanom.value
+            else:
+                path = f.path_anom.value
+
+            if not os.path.exists(path):
                 strErrorMessage = "Input file {0} does not exist".format(path)
                 self.ERROR(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
@@ -108,10 +113,10 @@ class EDPluginExecXscalev1_0(EDPluginExecProcessScript):
             inputfile.write("OUTPUT_FILE= {0}\n".format(self.hkl_file))
             inputfile.write("MERGE= {0}\n".format("TRUE" if merged else "FALSE"))
             for xds_file in self.dataInput.xds_files:
-                if self.dataInput.friedels_law.value:
-                    path = os.path.abspath(xds_file.path_anom.value)
-                else:
+                if self.dataInput.friedels_law.value and xds_file.path_noanom is not None:
                     path = os.path.abspath(xds_file.path_noanom.value)
+                else:
+                    path = os.path.abspath(xds_file.path_anom.value)
                 # make a symlink so we do not hit the 50char limit
                 sympath = os.path.abspath(os.path.join(self.getWorkingDirectory(),
                                                        os.path.basename(path)))

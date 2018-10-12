@@ -60,7 +60,7 @@ class EDPluginResCutoffv1_0(EDPlugin):
         """
         Checks the mandatory parameters.
         """
-        self.DEBUG("EDPluginParseXdsOutputv1_0.checkParameters")
+        self.DEBUG("EDPluginResCutoffv1_0.checkParameters")
 
         data_input = self.dataInput
         self.checkMandatoryParameters(data_input.completeness_entries,
@@ -157,7 +157,7 @@ class EDPluginResCutoffv1_0(EDPlugin):
 
     def postProcess(self, _edObject=None):
         EDPlugin.postProcess(self)
-        self.DEBUG("EDPluginParseXdsOutputv1_0.postProcess")
+        self.DEBUG("EDPluginResCutoffv1_0.postProcess")
 
 
 # straight port of max's code, reusing the same var names (pythonized)
