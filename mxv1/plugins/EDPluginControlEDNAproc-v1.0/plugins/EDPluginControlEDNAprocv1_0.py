@@ -570,16 +570,17 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         shutil.copy(os.path.join(self.xds_first.dataOutput.xds_run_directory.value, 'XDS.INP'),
                     tmppath)
 
-        # Copy the INTEGRATE.LP file as well
-        integrate_path = os.path.join(self.results_dir, 'ep_' + self.image_prefix + '_INTEGRATE.LP')
-        try:
-            shutil.copy(os.path.join(self.xds_first.dataOutput.xds_run_directory.value,
-                                     'INTEGRATE.LP'),
-                        integrate_path)
-        except (IOError, OSError):
-            strErrorMessage = "Failed to copy INTEGRATE.LP file ({0}) to the results dir".format(integrate_path)
-            self.addErrorMessage(strErrorMessage)
-            self.ERROR(strErrorMessage)
+        # Copy the CORRECT.LP and INTEGRATE.LP files as well
+        for fileName in ["CORRECT.LP", "INTEGRATE.LP"]:
+            filePath = os.path.join(self.results_dir, 'ep_' + self.image_prefix + '_' + fileName)
+            try:
+                shutil.copy(os.path.join(self.xds_first.dataOutput.xds_run_directory.value, fileName),
+                            filePath)
+            except (IOError, OSError):
+                strErrorMessage = "Failed to copy {0} file ({1}) to the results dir".format(fileName, filePath)
+                self.addErrorMessage(strErrorMessage)
+                self.ERROR(strErrorMessage)
+
 
 
         self.log_to_ispyb(self.integration_id_anom,
@@ -1231,6 +1232,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                     if not os.path.splitext(current)[1].lower() in ISPYB_UPLOAD_EXTENSIONS:
                         continue
                     new_path = os.path.join(pyarch_path, f)
+                    self.screen('Uploading {0} to ISPyB'.format(f))
                     file_list.append(new_path)
                     shutil.copyfile(current,
                                     new_path)
@@ -1250,6 +1252,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                         program_container_anom.AutoProcProgramAttachment.append(attach_anom)
                     elif self.doAnomAndNonanom and "_noanom" in filename:
                         program_container_noanom.AutoProcProgramAttachment.append(attach_noanom)
+                    elif not self.doAnomAndNonanom and not "_noanom" in filename:
+                        program_container_anom.AutoProcProgramAttachment.append(attach_anom)
                     elif self.doAnomAndNonanom:
                         program_container_noanom.AutoProcProgramAttachment.append(attach_anom)
                         program_container_anom.AutoProcProgramAttachment.append(attach_noanom)

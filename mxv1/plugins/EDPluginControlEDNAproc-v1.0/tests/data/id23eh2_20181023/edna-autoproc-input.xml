@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<XSDataEDNAprocInput>
+    <input_file>
+        <path>
+            <value>${EDNA_PLUGIN_TESTS_DATA_HOME}/id23eh2_20181023/XDS.INP</value>
+        </path>
+    </input_file>
+    <data_collection_id>
+        <value>2180495</value>
+    </data_collection_id>
+    <nres>
+        <value>2.000000e+02</value>
+    </nres>
+    <unit_cell>
+        <value>0,0,0,0,0,0</value>
+    </unit_cell>
+    <output_file>
+        <path>
+            <value>/data/id30a2/inhouse/opid30a2/20181022/PROCESSED_DATA/t1/autoprocessing_t1_run1_1/EDNA_proc/EDNA_proc_ispyb.xml</value>
+        </path>
+    </output_file>
+</XSDataEDNAprocInput>

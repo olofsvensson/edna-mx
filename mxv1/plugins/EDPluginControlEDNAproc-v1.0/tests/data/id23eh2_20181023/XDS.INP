@@ -1,0 +1,110 @@
+! ispyb web service request time: 0.40s
+! generated Mon, 22 Oct 2018 16:57:27
+! params: raw_data=True, basedir=../links, request_basedir=../links
+! xds_dectris_pilatus3_2m.inp
+!
+!
+!
+!
+!
+!__/\\\\\\\\\\\__/\\\\\\\\\\\\_______/\\\\\\\\\_________/\\\\\\\\\\___________________/\\\\\\\\\_____
+! _\/////\\\///__\/\\\////////\\\___/\\\///////\\\_____/\\\///////\\\________________/\\\///////\\\___
+!  _____\/\\\_____\/\\\______\//\\\_\///______\//\\\___\///______/\\\________________\///______\//\\\__
+!   _____\/\\\_____\/\\\_______\/\\\___________/\\\/___________/\\\//____/\\\\\\\\\\\___________/\\\/___
+!    _____\/\\\_____\/\\\_______\/\\\________/\\\//____________\////\\\__\///////////_________/\\\//_____
+!     _____\/\\\_____\/\\\_______\/\\\_____/\\\//__________________\//\\\___________________/\\\//________
+!      _____\/\\\_____\/\\\_______/\\\____/\\\/____________/\\\______/\\\__________________/\\\/___________
+!       __/\\\\\\\\\\\_\/\\\\\\\\\\\\/____/\\\\\\\\\\\\\\\_\///\\\\\\\\\/__________________/\\\\\\\\\\\\\\\_
+!        _\///////////__\////////////_____\///////////////____\/////////___________________\///////////////__
+!
+!
+
+JOB= ALL !XYCORR INIT COLSPOT IDXREF DEFPIX XPLAN INTEGRATE CORRECT
+   !JOB= DEFPIX XPLAN INTEGRATE CORRECT
+   DATA_RANGE= 1 500
+   
+   SPOT_RANGE= 1 40
+   
+   SPOT_RANGE= 250 289
+   
+   SPOT_RANGE= 460 500
+   
+   
+   BACKGROUND_RANGE= 1 4
+   
+
+   !masking non sensitive area of Pilatus
+   UNTRUSTED_RECTANGLE= 487  495    0 1680
+   UNTRUSTED_RECTANGLE= 981  989    0 1680
+   UNTRUSTED_RECTANGLE=   0 1476  195  213
+   UNTRUSTED_RECTANGLE=   0 1476  407  425
+   UNTRUSTED_RECTANGLE=   0 1476  619  637
+   UNTRUSTED_RECTANGLE=   0 1476  831  849
+   UNTRUSTED_RECTANGLE=   0 1476 1043 1061
+   UNTRUSTED_RECTANGLE=   0 1476 1255 1273
+   UNTRUSTED_RECTANGLE=   0 1476 1467 1485
+   TRUSTED_REGION=0.0 1.41 !Relative radii limiting trusted detector region
+
+   !correction tables to compensate the misorientations of the modules
+
+   X-GEO_CORR= /data/id30a2/inhouse/opid30a2/x_geo_corr.cbf
+   Y-GEO_CORR= /data/id30a2/inhouse/opid30a2/y_geo_corr.cbf
+
+
+   MINIMUM_NUMBER_OF_PIXELS_IN_A_SPOT= 2
+
+   !STRONG_PIXEL= 3.0
+
+   OSCILLATION_RANGE= 0.25
+   STARTING_ANGLE= 0.0
+   STARTING_FRAME= 1
+   X-RAY_WAVELENGTH=  0.87310
+   NAME_TEMPLATE_OF_DATA_FRAMES= /data/id30a2/inhouse/opid30a2/20181022/RAW_DATA/t1/t1_1_????.cbf !CBF
+
+   !STARTING_ANGLES_OF_SPINDLE_ROTATION= 0 180 10
+   !TOTAL_SPINDLE_ROTATION_RANGES= 60 180 10
+
+   DETECTOR_DISTANCE= 338.00
+   DETECTOR=PILATUS         MINIMUM_VALID_PIXEL_VALUE=0  OVERLOAD=1048500
+
+
+   SENSOR_THICKNESS=0.45
+   ORGX= 755.29 ORGY= 828.43
+   NX=1475   NY=1679
+   QX= 0.1720  QY= 0.1720
+   VALUE_RANGE_FOR_TRUSTED_DETECTOR_PIXELS= 7000 30000
+
+   DIRECTION_OF_DETECTOR_X-AXIS= 1.0 0.0 0.0
+   DIRECTION_OF_DETECTOR_Y-AXIS= 0.0 1.0 0.0
+   ROTATION_AXIS= 0.0 -1.0 0.0                             ! maybe make negative?
+   INCIDENT_BEAM_DIRECTION= 0.0 0.0 1.0
+   FRACTION_OF_POLARIZATION= 1.00
+   POLARIZATION_PLANE_NORMAL= 0.0 1.0 0.0
+
+   SPACE_GROUP_NUMBER= 0
+   UNIT_CELL_CONSTANTS= 0 0 0 0 0 0
+   INCLUDE_RESOLUTION_RANGE= 50.0 0.0
+   !RESOLUTION_SHELLS= 15.0 8.0 4.0 2.8 2.4
+   !FRIEDEL'S_LAW= FALSE !default is TRUE
+   !STRICT_ABSORPTION_CORRECTION=TRUE
+
+   REFINE(INTEGRATE)= BEAM ORIENTATION CELL 
+   !== Default value recommended
+!   SEPMIN= 3
+!   CLUSTER_RADIUS= 1
+!   DELPHI=1
+!   NBATCH=2.77222222222
+
+   MAXIMUM_NUMBER_OF_PROCESSORS= 16
+   MAXIMUM_NUMBER_OF_JOBS= 1
+
+
+FRIEDEL'S_LAW=TRUE
+SPOT_RANGE=351 361
+
+SPOT_RANGE=171 181
+
+SPOT_RANGE=351 361
+
+SPOT_RANGE=171 181
+
