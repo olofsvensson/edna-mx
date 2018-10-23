@@ -799,7 +799,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>maxNoProcessors</name>
-					<value>4</value>
+					<value>10</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
