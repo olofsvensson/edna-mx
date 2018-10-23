@@ -108,7 +108,7 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.xdsAppSpacegroup = None
         self.hasUploadedAnomResultsToISPyB = False
         self.hasUploadedNoanomResultsToISPyB = False
-        self.useXdsAsciiToXml = True
+        self.useXdsAsciiToXml = False
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -518,6 +518,9 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         if xsDataResultXDSAPP.XDS_ASCII_HKL is not None:
             self.addAttachment(autoProcProgramContainer, xsDataResultXDSAPP.XDS_ASCII_HKL.path.value,
                                "XDS_ASCII", "HKL", isAnom, attachmentType="Result", doGzip=True)
+        if xsDataResultXDSAPP.XDS_INP is not None:
+            self.addAttachment(autoProcProgramContainer, xsDataResultXDSAPP.XDS_INP.path.value,
+                               "XDS", "INP", isAnom, attachmentType="Result", doGzip=False, noMergedString=True)
         for mtz_F in xsDataResultXDSAPP.mtz_F:
             basenameMtz_F = os.path.splitext(os.path.basename(mtz_F.path.value))[0]
             self.addAttachment(autoProcProgramContainer, mtz_F.path.value,
@@ -582,19 +585,22 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
 
 
     def addAttachment(self, autoProcProgramContainer, strPath, name, suffix, isAnom=True,
-                      isMerged=None, attachmentType="Log", doGzip=False):
+                      isMerged=None, attachmentType="Log", doGzip=False, noMergedString=False):
         if isAnom:
             anomString = "_anom"
         else:
             anomString = "_noanom"
-        if isMerged is not None:
-            if isMerged:
-                mergeString = "_merged"
-            else:
-                mergeString = "_unmerged"
+        if noMergedString:
+            pyarchFileName = self.pyarchPrefix + anomString + "_{0}.{1}".format(name, suffix)
         else:
-            mergeString = ""
-        pyarchFileName = self.pyarchPrefix + mergeString + anomString + "_{0}.{1}".format(name, suffix)
+            if isMerged is not None:
+                if isMerged:
+                    mergeString = "_merged"
+                else:
+                    mergeString = "_unmerged"
+            else:
+                mergeString = ""
+            pyarchFileName = self.pyarchPrefix + mergeString + anomString + "_{0}.{1}".format(name, suffix)
         shutil.copy(strPath, os.path.join(self.resultsDirectory, pyarchFileName))
         if doGzip:
             pyarchFileName += ".gz"
@@ -772,6 +778,8 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         if xsDataResultXDSAPP.XDS_ASCII_HKL is not None:
             pathToXdsAscii = xsDataResultXDSAPP.XDS_ASCII_HKL.path.value
             listProgramAttachment.append(self.copyToResultsDir(pathToXdsAscii))
+        if xsDataResultXDSAPP.XDS_INP is not None:
+            listProgramAttachment.append(self.copyToResultsDir(xsDataResultXDSAPP.XDS_INP.path.value))
         for mtz_F in xsDataResultXDSAPP.mtz_F:
             basenameMtz_F = os.path.splitext(os.path.basename(mtz_F.path.value))[0]
             listProgramAttachment.append(self.copyToResultsDir(mtz_F.path.value))

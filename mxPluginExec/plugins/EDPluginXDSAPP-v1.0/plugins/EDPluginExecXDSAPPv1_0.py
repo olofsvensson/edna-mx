@@ -145,6 +145,9 @@ class EDPluginExecXDSAPPv1_0(EDPluginExecProcessScript):
         # XSCALE.LP
         if os.path.exists(os.path.join(_workingDirectory, "XSCALE.LP")):
             xsDataResultXDSAPP.XSCALE_LP = XSDataFile(XSDataString(os.path.join(_workingDirectory, "XSCALE.LP")))
+        # XDS.INP
+        if os.path.exists(os.path.join(_workingDirectory, "XDS.INP")):
+            xsDataResultXDSAPP.XDS_INP = XSDataFile(XSDataString(os.path.join(_workingDirectory, "XDS.INP")))
         # Result files
         for mtz_F in glob.glob(os.path.join(_workingDirectory, "{0}*_F.mtz".format(_prefixRunNumber))):
             xsDataResultXDSAPP.addMtz_F(XSDataFile(XSDataString(mtz_F)))

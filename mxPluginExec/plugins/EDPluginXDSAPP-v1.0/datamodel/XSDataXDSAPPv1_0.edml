@@ -26,6 +26,7 @@ complex type XSDataResultXDSAPP extends XSDataResult {
 	XDS_ASCII_HKL: XSDataFile optional
 	XDS_ASCII_HKL_1 : XSDataFile optional
 	XSCALE_LP : XSDataFile optional
+	XDS_INP : XSDataFile optional
 	mtz_F : XSDataFile [] optional
 	mtz_I : XSDataFile [] optional
     mtz_F_plus_F_minus : XSDataFile [] optional
