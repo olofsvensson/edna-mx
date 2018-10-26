@@ -93,6 +93,8 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         reportPdf = os.path.join(strWorkingDir, "report.pdf")
         if os.path.exists(reportPdf):
             self.dataOutput.reportPdf = XSDataFile(XSDataString(reportPdf))
+        else:
+            self.dataOutput.reportPdf = None
         reportPdf_staraniso = os.path.join(strWorkingDir, "report_staraniso.pdf")
         if os.path.exists(reportPdf_staraniso):
             self.dataOutput.reportPdf_staraniso = XSDataFile(XSDataString(reportPdf_staraniso))

@@ -158,7 +158,10 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             self.edPluginRetrieveDataCollection.executeSynchronous()
             ispybDataCollection = self.edPluginRetrieveDataCollection.dataOutput.dataCollection
             directory = ispybDataCollection.imageDirectory
-            template = ispybDataCollection.fileTemplate.replace("%04d", "####")
+            if EDUtilsPath.isEMBL(): 
+                template = ispybDataCollection.fileTemplate.replace("%05d", "#" * 5)
+            else:
+                template = ispybDataCollection.fileTemplate.replace("%04d", "####")
             imageNoStart = ispybDataCollection.startImageNumber
             imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
 
@@ -173,7 +176,10 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             template = self.dataInput.templateN.value
             imageNoStart = self.dataInput.fromN.value
             imageNoEnd = self.dataInput.toN.value
-            fileTemplate = template.replace("####", "%04d")
+            if EDUtilsPath.isEMBL():
+                fileTemplate = template.replace("#####", "%05d")
+            else: 
+                fileTemplate = template.replace("####", "%04d")
             pathToStartImage = os.path.join(directory, fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
 
@@ -241,7 +247,10 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             minSizeFirst = 1000000
             minSizeLast = 1000000
 
-        fWaitFileTimeout = 3600  # s
+        if EDUtilsPath.isEMBL():
+            fWaitFileTimeout = 60  # s
+        else:
+            fWaitFileTimeout = 3600  # s
 
         xsDataInputMXWaitFileFirst = XSDataInputMXWaitFile()
         xsDataInputMXWaitFileFirst.file = XSDataFile(XSDataString(pathToStartImage))
