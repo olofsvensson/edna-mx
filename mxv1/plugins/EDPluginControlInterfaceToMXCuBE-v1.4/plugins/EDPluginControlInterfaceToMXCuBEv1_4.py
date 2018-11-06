@@ -389,6 +389,10 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                 xsDataISPyBWorkflow = XSDataISPyBWorkflow()
                 xsDataISPyBWorkflow.workflowType = XSDataString("Characterisation")
                 xsDataISPyBWorkflow.workflowTitle = XSDataString("Characterisation")
+                # Try to get the path tp the executeive log file from xsDataDictionaryLogFile
+                for xsDataKeyValuePair in xsDataDictionaryLogFile.keyValuePair:
+                    if xsDataKeyValuePair.key.value == "executiveSummary":
+                        xsDataISPyBWorkflow.workflowTitle.logFilePath = XSDataFile(xsDataKeyValuePair.value.value)
                 xsDataISPyBWorkflow.status = XSDataString("Success")
                 xsDataInputISPyBStoreWorkflow = XSDataInputISPyBStoreWorkflow()
                 xsDataInputISPyBStoreWorkflow.workflow = xsDataISPyBWorkflow
