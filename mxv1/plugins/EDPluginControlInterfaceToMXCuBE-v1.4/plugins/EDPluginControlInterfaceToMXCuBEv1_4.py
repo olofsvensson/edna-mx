@@ -392,7 +392,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                 # Try to get the path tp the executeive log file from xsDataDictionaryLogFile
                 for xsDataKeyValuePair in xsDataDictionaryLogFile.keyValuePair:
                     if xsDataKeyValuePair.key.value == "executiveSummary":
-                        xsDataISPyBWorkflow.workflowTitle.logFilePath = XSDataFile(xsDataKeyValuePair.value.value)
+                        xsDataISPyBWorkflow.logFilePath = xsDataKeyValuePair.value
                 xsDataISPyBWorkflow.status = XSDataString("Success")
                 xsDataInputISPyBStoreWorkflow = XSDataInputISPyBStoreWorkflow()
                 xsDataInputISPyBStoreWorkflow.workflow = xsDataISPyBWorkflow
@@ -555,7 +555,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataDictionaryLogFile.addKeyValuePair(xsDataKeyValuePair)
         # Best log file
         strPathToBESTLogFile = None
-        strPathToExecutiveSummary = None
+        strPathToExecutiveSummary = self.getLogFileName()
         if _xsDataResultCharacterisation.getStrategyResult() is not None:
             if _xsDataResultCharacterisation.getStrategyResult().getBestLogFile() != None:
                 strPathToBESTLogFile = _xsDataResultCharacterisation.getStrategyResult().getBestLogFile().getPath().getValue()
