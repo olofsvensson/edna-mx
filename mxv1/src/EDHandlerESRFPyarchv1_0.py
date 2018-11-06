@@ -46,16 +46,12 @@ class EDHandlerESRFPyarchv1_0:
         listOfDirectories = _strESRFPath.split(os.sep)
 
         if EDUtilsPath.isEMBL():
-            if 'p14' in listOfDirectories[0:3] or 'P14' in listOfDirectories[0:3]:
-                 strBeamline = 'p14'
-            elif 'p13' in listOfDirectories[0:3] or 'P13' in listOfDirectories[0:3]:
-                 strBeamline = 'p13'
+            if 'p13' in listOfDirectories[0:3] or 'P13' in listOfDirectories[0:3]:
+                strPyarchDNAFilePath = os.path.join('/data/ispyb/p13',
+                                                    *listOfDirectories[4:])
             else:
-                 strBeamline = ''
-            strPyarchDNAFilePath = os.path.join(os.sep, "data")
-            strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, "ispyb")
-            strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, strBeamline)
-            strPyarchDNAFilePath = os.path.join(strPyarchDNAFilePath, *listOfDirectories[4:])
+                strPyarchDNAFilePath = os.path.join('/data/ispyb/p14',
+                                                    *listOfDirectories[4:])
             return strPyarchDNAFilePath
 
 

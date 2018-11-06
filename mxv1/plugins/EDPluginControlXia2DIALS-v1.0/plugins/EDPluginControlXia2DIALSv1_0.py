@@ -147,7 +147,10 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             self.edPluginRetrieveDataCollection.executeSynchronous()
             ispybDataCollection = self.edPluginRetrieveDataCollection.dataOutput.dataCollection
             directory = ispybDataCollection.imageDirectory
-            template = ispybDataCollection.fileTemplate.replace("%04d", "####")
+            if EDUtilsPath.isEMBL():
+                template = ispybDataCollection.fileTemplate.replace("%05d", "####")
+            else:
+                template = ispybDataCollection.fileTemplate.replace("%04d", "####")
             if self.dataInput.startFrame is None:
                 imageNoStart = ispybDataCollection.startImageNumber
             else:
@@ -235,7 +238,10 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             minSizeFirst = 1000000
             minSizeLast = 1000000
 
-        fWaitFileTimeout = 3600  # s
+        if EDUtilsPath.isEMBL():
+            fWaitFileTimeout = 60
+        else: 
+            fWaitFileTimeout = 3600  # s
 
         xsDataInputMXWaitFileFirst = XSDataInputMXWaitFile()
         xsDataInputMXWaitFileFirst.file = XSDataFile(XSDataString(pathToStartImage))
