@@ -103,7 +103,7 @@ class EDPluginMXWaitFilev1_1(EDPluginExec):
                     shouldContinue = False
             finalSize = fileSize
         if shouldContinue:
-            self.screen("Waiting for file %s" % self.strFilePath)
+            self.screen("Waiting %d seconds for file %s" % (self.timeOut, self.strFilePath))
             #
             timeStart = time.time()
             while shouldContinue and not hasTimedOut:

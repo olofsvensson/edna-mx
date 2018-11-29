@@ -1179,9 +1179,10 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             if EDUtilsPath.isEMBL():
                 tokens = [elem for elem in self.first_image.split(os.path.sep)
                           if len(elem) > 0]
-                if 'p14' in tokens[0:2] or 'P14' in tokens[0:2]:
+                print tokens
+                if 'p14' in tokens[0:3] or 'P14' in tokens[0:3]:
                      strBeamline = 'p14'
-                elif 'p13' in tokens[0:2] or 'P13' in tokens[0:2]:
+                elif 'p13' in tokens[0:3] or 'P13' in tokens[0:3]:
                     strBeamline = 'p13'
                 else:
                      strBeamline = ''
