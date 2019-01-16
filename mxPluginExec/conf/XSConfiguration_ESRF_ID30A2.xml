@@ -4,7 +4,7 @@
 		<name>XSConfiguration_ESRF_Common</name>
 	</XSImportConfiguration>
 	<XSImportConfiguration>
-		<name>XSConfiguration_ESRF_ISPyBTest_Common</name>
+		<name>XSConfiguration_ESRF_ISPyB_Common</name>
 	</XSImportConfiguration>
 	<XSPluginList>
 		<XSPluginItem> 
