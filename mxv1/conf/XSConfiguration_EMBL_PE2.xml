@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<XSConfiguration> 
+  <XSImportConfiguration>
+  	<name>XSConfiguration_EMBL_PE2_specific</name>
+  </XSImportConfiguration>	
+ <XSImportConfiguration>
+        <name>XSConfiguration_EMBL_Common</name>
+  </XSImportConfiguration>
+  <XSImportConfiguration>
+  	<name>XSConfiguration_EMBL_ISPyB_Common</name>
+  </XSImportConfiguration>
+</XSConfiguration> 

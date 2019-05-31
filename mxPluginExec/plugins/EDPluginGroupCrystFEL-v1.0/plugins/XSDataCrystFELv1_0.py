@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Nov 29 11:05::48 2018 by EDGenerateDS.
+# Generated Fri May 31 01:58::52 2019 by EDGenerateDS.
 #
 
 import os, sys
@@ -117,15 +117,8 @@ class MixedContainer(object):
 
 
 class XSDataInputCrystFEL(XSDataInput):
-    def __init__(self, configuration=None, mergeResultFile=None, indexResultFile=None, cellFile=None, geomFile=None, indexFile=None):
+    def __init__(self, configuration=None, imagesFullPathFile=None, cellFile=None, geomFile=None):
         XSDataInput.__init__(self, configuration)
-        if indexFile is None:
-            self._indexFile = None
-        elif indexFile.__class__.__name__ == "XSDataString":
-            self._indexFile = indexFile
-        else:
-            strMessage = "ERROR! XSDataInputCrystFEL constructor argument 'indexFile' is not XSDataString but %s" % self._indexFile.__class__.__name__
-            raise BaseException(strMessage)
         if geomFile is None:
             self._geomFile = None
         elif geomFile.__class__.__name__ == "XSDataString":
@@ -140,32 +133,13 @@ class XSDataInputCrystFEL(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputCrystFEL constructor argument 'cellFile' is not XSDataString but %s" % self._cellFile.__class__.__name__
             raise BaseException(strMessage)
-        if indexResultFile is None:
-            self._indexResultFile = None
-        elif indexResultFile.__class__.__name__ == "XSDataString":
-            self._indexResultFile = indexResultFile
+        if imagesFullPathFile is None:
+            self._imagesFullPathFile = None
+        elif imagesFullPathFile.__class__.__name__ == "XSDataString":
+            self._imagesFullPathFile = imagesFullPathFile
         else:
-            strMessage = "ERROR! XSDataInputCrystFEL constructor argument 'indexResultFile' is not XSDataString but %s" % self._indexResultFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputCrystFEL constructor argument 'imagesFullPathFile' is not XSDataString but %s" % self._imagesFullPathFile.__class__.__name__
             raise BaseException(strMessage)
-        if mergeResultFile is None:
-            self._mergeResultFile = None
-        elif mergeResultFile.__class__.__name__ == "XSDataString":
-            self._mergeResultFile = mergeResultFile
-        else:
-            strMessage = "ERROR! XSDataInputCrystFEL constructor argument 'mergeResultFile' is not XSDataString but %s" % self._mergeResultFile.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'indexFile' attribute
-    def getIndexFile(self): return self._indexFile
-    def setIndexFile(self, indexFile):
-        if indexFile is None:
-            self._indexFile = None
-        elif indexFile.__class__.__name__ == "XSDataString":
-            self._indexFile = indexFile
-        else:
-            strMessage = "ERROR! XSDataInputCrystFEL.setIndexFile argument is not XSDataString but %s" % indexFile.__class__.__name__
-            raise BaseException(strMessage)
-    def delIndexFile(self): self._indexFile = None
-    indexFile = property(getIndexFile, setIndexFile, delIndexFile, "Property for indexFile")
     # Methods and properties for the 'geomFile' attribute
     def getGeomFile(self): return self._geomFile
     def setGeomFile(self, geomFile):
@@ -190,30 +164,18 @@ class XSDataInputCrystFEL(XSDataInput):
             raise BaseException(strMessage)
     def delCellFile(self): self._cellFile = None
     cellFile = property(getCellFile, setCellFile, delCellFile, "Property for cellFile")
-    # Methods and properties for the 'indexResultFile' attribute
-    def getIndexResultFile(self): return self._indexResultFile
-    def setIndexResultFile(self, indexResultFile):
-        if indexResultFile is None:
-            self._indexResultFile = None
-        elif indexResultFile.__class__.__name__ == "XSDataString":
-            self._indexResultFile = indexResultFile
+    # Methods and properties for the 'imagesFullPathFile' attribute
+    def getImagesFullPathFile(self): return self._imagesFullPathFile
+    def setImagesFullPathFile(self, imagesFullPathFile):
+        if imagesFullPathFile is None:
+            self._imagesFullPathFile = None
+        elif imagesFullPathFile.__class__.__name__ == "XSDataString":
+            self._imagesFullPathFile = imagesFullPathFile
         else:
-            strMessage = "ERROR! XSDataInputCrystFEL.setIndexResultFile argument is not XSDataString but %s" % indexResultFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputCrystFEL.setImagesFullPathFile argument is not XSDataString but %s" % imagesFullPathFile.__class__.__name__
             raise BaseException(strMessage)
-    def delIndexResultFile(self): self._indexResultFile = None
-    indexResultFile = property(getIndexResultFile, setIndexResultFile, delIndexResultFile, "Property for indexResultFile")
-    # Methods and properties for the 'mergeResultFile' attribute
-    def getMergeResultFile(self): return self._mergeResultFile
-    def setMergeResultFile(self, mergeResultFile):
-        if mergeResultFile is None:
-            self._mergeResultFile = None
-        elif mergeResultFile.__class__.__name__ == "XSDataString":
-            self._mergeResultFile = mergeResultFile
-        else:
-            strMessage = "ERROR! XSDataInputCrystFEL.setMergeResultFile argument is not XSDataString but %s" % mergeResultFile.__class__.__name__
-            raise BaseException(strMessage)
-    def delMergeResultFile(self): self._mergeResultFile = None
-    mergeResultFile = property(getMergeResultFile, setMergeResultFile, delMergeResultFile, "Property for mergeResultFile")
+    def delImagesFullPathFile(self): self._imagesFullPathFile = None
+    imagesFullPathFile = property(getImagesFullPathFile, setImagesFullPathFile, delImagesFullPathFile, "Property for imagesFullPathFile")
     def export(self, outfile, level, name_='XSDataInputCrystFEL'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -222,10 +184,6 @@ class XSDataInputCrystFEL(XSDataInput):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataInputCrystFEL'):
         XSDataInput.exportChildren(self, outfile, level, name_)
-        if self._indexFile is not None:
-            self.indexFile.export(outfile, level, name_='indexFile')
-        else:
-            warnEmptyAttribute("indexFile", "XSDataString")
         if self._geomFile is not None:
             self.geomFile.export(outfile, level, name_='geomFile')
         else:
@@ -234,25 +192,16 @@ class XSDataInputCrystFEL(XSDataInput):
             self.cellFile.export(outfile, level, name_='cellFile')
         else:
             warnEmptyAttribute("cellFile", "XSDataString")
-        if self._indexResultFile is not None:
-            self.indexResultFile.export(outfile, level, name_='indexResultFile')
+        if self._imagesFullPathFile is not None:
+            self.imagesFullPathFile.export(outfile, level, name_='imagesFullPathFile')
         else:
-            warnEmptyAttribute("indexResultFile", "XSDataString")
-        if self._mergeResultFile is not None:
-            self.mergeResultFile.export(outfile, level, name_='mergeResultFile')
-        else:
-            warnEmptyAttribute("mergeResultFile", "XSDataString")
+            warnEmptyAttribute("imagesFullPathFile", "XSDataString")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'indexFile':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setIndexFile(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'geomFile':
             obj_ = XSDataString()
             obj_.build(child_)
@@ -263,15 +212,10 @@ class XSDataInputCrystFEL(XSDataInput):
             obj_.build(child_)
             self.setCellFile(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'indexResultFile':
+            nodeName_ == 'imagesFullPathFile':
             obj_ = XSDataString()
             obj_.build(child_)
-            self.setIndexResultFile(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'mergeResultFile':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setMergeResultFile(obj_)
+            self.setImagesFullPathFile(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

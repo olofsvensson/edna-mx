@@ -41,7 +41,7 @@ from XSDataCrystFELv1_0 import XSDataInputCrystFEL
 from XSDataCrystFELv1_0 import XSDataResultCrystFEL
 
 
-class EDPluginExecCrystFELIndexv1_0(EDPluginExecProcessScript):
+class EDPluginExecCrystFELPartialatorv1_0(EDPluginExecProcessScript):
     """
     This plugin runs the CrystFEL program
     """
@@ -52,41 +52,49 @@ class EDPluginExecCrystFELIndexv1_0(EDPluginExecProcessScript):
         self.setXSDataInputClass(XSDataInputCrystFEL)
         self.setDataOutput(XSDataResultCrystFEL())
 
+        #TODO move to input file
+        self.partialator_options = "--max-adu=65000 --iterations=1 --model=unity -j 60"
+
     def checkParameters(self):
-        self.DEBUG("EDPluginExecCrystFELIndexv1_0.checkParameters")
+        """
+        Checks the mandatory parameters.
+        """
+        self.DEBUG("EDPluginExecCrystFELPartialatorv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
 
     def configure(self):
         EDPluginExecProcessScript.configure(self)
-        self.DEBUG("EDPluginExecCrystFELIndexv1_0.configure")
+        self.DEBUG("EDPluginExecCrystFELPartialatorv1_0.configure")
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
-        self.DEBUG("EDPluginExecCrystFELIndexv1_0.preProcess")
+        self.DEBUG("EDPluginExecCrystFELPartialatorv1_0.preProcess")
         strCommandLine = self.generateCommandLine(self.dataInput)
         self.setScriptCommandline(strCommandLine)
 
 
     def postProcess(self, _edObject=None):
         EDPluginExecProcessScript.postProcess(self)
-        self.DEBUG("EDPluginExecCrystFELIndexv1_0.postProcess")
+        self.DEBUG("EDPluginExecCrystFELPartialatorv1_0.postProcess")
         # Populate the results
         xsDataResultCrystFEL = self.parseOutputDirectory(self.getWorkingDirectory())
         self.dataOutput = xsDataResultCrystFEL
 
 
     def generateCommandLine(self, _xsDataInputCrystFEL):
-        self.DEBUG("EDPluginExecCrystFELIndexv1_0.generateCommands")
-
-        strCommandText = "-i %s " % _xsDataInputCrystFEL.imagesFullPath.value
-        strCommandText += "-g %s " % _xsDataInputCrystFEL.geomFile.value
-        strCommandText += "--peaks=zaef --threshold=40 --min-gradient=100 --min-snr=5 " 
-        strCommandText += "--no-cell-combinations --indexing=xgandalf " 
-        strCommandText += "--int-radius=3,4,5 --wait-for-file=300 "
-        strCommandText += "-o %s " % _xsDataInputCrystFEL.streamFile.value
-        strCommandText += "-p %s -j 60" % _xsDataInputCrystFEL.cellFile.value
-        
+        """
+        This method creates the input command line for CrystFEL
+        """
+        self.DEBUG("EDPluginExecCrystFELPartialatorv1_0.generateCommands")
+     
+        pointGroup = "222"
+        strCommandText = "-i %s -o %s_partialator -y %s %s" % (
+            _xsDataInputCrystFEL.streamFile.value,
+            _xsDataInputCrystFEL.hklFile.value,
+            pointGroup,
+            self.partialator_options
+        )
         return  strCommandText
 
     def parseOutputDirectory(self, _workingDirectory):

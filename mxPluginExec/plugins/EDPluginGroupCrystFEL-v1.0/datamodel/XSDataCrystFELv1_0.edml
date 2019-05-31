@@ -11,12 +11,9 @@ import XSDataCommon.XSDataInteger
 
 
 complex type XSDataInputCrystFEL extends XSDataInput {
-        indexFile : XSDataString
         geomFile : XSDataString
         cellFile : XSDataString
-
-        indexResultFile : XSDataString
-        mergeResultFile : XSDataString
+        imagesFullPathFile: XSDataString
 }
 
 complex type XSDataResultCrystFEL extends XSDataResult {
