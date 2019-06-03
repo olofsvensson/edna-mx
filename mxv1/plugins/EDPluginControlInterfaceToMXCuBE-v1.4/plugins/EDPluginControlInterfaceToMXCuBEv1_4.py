@@ -381,7 +381,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                             edPluginSetBestWilsonPlotPath.dataInput = xsDataInputISPyBSetBestWilsonPlotPath
                             edPluginSetBestWilsonPlotPath.executeSynchronous()
             # Only for the ESRF:
-            if EDUtilsPath.isESRF():
+            if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():
                 # For EXI: create workflow entry with one workflow step
                 self.edPluginStoreWorkflow = self.loadPlugin(self.strPluginStoreWorkflow)
                 self.edPluginStoreWorkflowStep = self.loadPlugin(self.strPluginStoreWorkflowStep)
@@ -421,9 +421,6 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                          xsDataInputISPyBStoreWorkflowStep.resultFilePath = XSDataString(strResultFilePath)
                     self.edPluginStoreWorkflowStep.dataInput = xsDataInputISPyBStoreWorkflowStep
                     self.edPluginStoreWorkflowStep.executeSynchronous()
-
-
-
 
 
     def doSuccessActionISPyB(self, _edPlugin):

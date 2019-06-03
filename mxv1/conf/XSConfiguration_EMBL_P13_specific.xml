@@ -98,7 +98,11 @@
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>hdf5BatchSize</name>
-                                        <value>100</value>
+                                        <value>200</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>batchSize</name>
+                                        <value>200</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                          <name>mxCuBE_URI</name>
@@ -117,6 +121,32 @@
                                          <name>mxCuBE_URI</name>
                                          <value>http://p13ui01:8011</value>
                                  </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginControlXia2DIALSv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>3700</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                         <name>mxCuBE_URI</name>
+                                         <value>http://p13ui01:8011</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginControlAutoPROCv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>3700</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                         <name>mxCuBE_URI</name>
+                                         <value>http://p13ui01:8011</value>
+                                </XSParamItem>
                         </XSParamList>
                 </XSPluginItem>
 	</XSPluginList>
