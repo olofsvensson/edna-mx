@@ -26,16 +26,8 @@ __license__ = "GPLv3+"
 __copyright__ = "EMBL Hamburg"
 
 import os
-import glob
-import subprocess
-import multiprocessing
-
-from EDUtilsPath import EDUtilsPath
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
-
-from XSDataCommon import XSDataFile
-from XSDataCommon import XSDataString
 
 from XSDataCrystFELv1_0 import XSDataInputCrystFEL
 from XSDataCrystFELv1_0 import XSDataResultCrystFEL
@@ -84,7 +76,7 @@ class EDPluginExecCrystFELIndexv1_0(EDPluginExecProcessScript):
         strCommandText += "--peaks=zaef --threshold=40 --min-gradient=100 --min-snr=5 " 
         strCommandText += "--no-cell-combinations --indexing=xgandalf " 
         strCommandText += "--int-radius=3,4,5 --wait-for-file=300 "
-        strCommandText += "-o %s " % _xsDataInputCrystFEL.streamFile.value
+        strCommandText += "-o %s.stream " % _xsDataInputCrystFEL.baseFileName.value
         strCommandText += "-p %s -j 60" % _xsDataInputCrystFEL.cellFile.value
         
         return  strCommandText

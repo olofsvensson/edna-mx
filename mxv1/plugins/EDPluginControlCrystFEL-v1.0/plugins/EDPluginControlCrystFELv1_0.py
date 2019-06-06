@@ -29,7 +29,6 @@ import os
 import sys
 import time
 import socket
-import shutil
 
 from EDPluginControl import EDPluginControl
 from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
@@ -39,11 +38,7 @@ from EDHandlerXSDataISPyBv1_4 import EDHandlerXSDataISPyBv1_4
 from EDFactoryPlugin import edFactoryPlugin
 from EDUtilsMessenger import EDUtilsMessenger
 
-from XSDataCommon import XSDataFile
-from XSDataCommon import XSDataBoolean
-from XSDataCommon import XSDataString
-from XSDataCommon import XSDataInteger
-from XSDataCommon import XSDataTime
+from XSDataCommon import XSDataString, XSDataDouble
 
 from XSDataControlCrystFELv1_0 import XSDataInputControlCrystFEL
 from XSDataControlCrystFELv1_0 import XSDataResultControlCrystFEL
@@ -51,13 +46,19 @@ from XSDataControlCrystFELv1_0 import XSDataResultControlCrystFEL
 edFactoryPlugin.loadModule('XSDataCrystFELv1_0')
 
 from XSDataCrystFELv1_0 import XSDataInputCrystFEL
+from XSDataCrystFELv1_0 import XSDataResultCrystFEL
 
 edFactoryPlugin.loadModule('XSDataISPyBv1_4')
-# plugin input/output
-from XSDataISPyBv1_4 import AutoProcContainer
-from XSDataISPyBv1_4 import AutoProcProgramAttachment
+
+from XSDataISPyBv1_4 import AutoProcContainer, AutoProc
+from XSDataISPyBv1_4 import AutoProcProgram, AutoProcProgramContainer, AutoProcStatus, AutoProcProgramAttachment
+from XSDataISPyBv1_4 import AutoProcScaling, AutoProcScalingContainer, AutoProcScalingStatistics
+from XSDataISPyBv1_4 import AutoProcIntegrationContainer, AutoProcIntegration
+from XSDataISPyBv1_4 import XSDataInputStoreAutoProc, XSDataInputStoreAutoProcStatus
 from XSDataISPyBv1_4 import XSDataInputRetrieveDataCollection
-from XSDataISPyBv1_4 import XSDataInputStoreAutoProc
+from XSDataISPyBv1_4 import XSDataInputISPyBUpdateDataCollectionGroupComment
+from XSDataISPyBv1_4 import Image
+
 
 
 edFactoryPlugin.loadModule("XSDataMXWaitFilev1_1")
@@ -82,7 +83,7 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
         self.hasUploadedNoanomResultsToISPyB = False
 
         self.baseName = None
-        self.streamFilename = None
+        self.timeEnd = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -104,7 +105,7 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
         self.screen("CrystFEL processing started")
 
         self.processingCommandLine = ' '.join(sys.argv)
-        self.processingPrograms = ""
+        self.processingPrograms = "CrystFEL"
 
         self.strHost = socket.gethostname()
         self.screen("Running on {0}".format(self.strHost))
@@ -114,7 +115,6 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
         except OSError:
             pass
 
-        self.wait_first_image_plugin = self.loadPlugin("EDPluginMXWaitFilev1_1", "wait_first")
         self.ispyb_retrieve_dc_plugin = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4", "ispyb_retrieve_dc")
         self.index_plugin = self.loadPlugin("EDPluginExecCrystFELIndexv1_0", "indexamajig")
 
@@ -125,6 +125,9 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
 
         self.post_process_plugin = self.loadPlugin("EDPluginExecCrystFELPostprocessv1_0", "post_process")
 
+        self.store_autoproc_plugin = self.loadPlugin('EDPluginISPyBStoreAutoProcv1_4', "ispyb_store_autoproc")
+        self.store_dc_comment_plugin = self.loadPlugin("EDPluginISPyBUpdateDataCollectionGroupCommentv1_4", "ispyb_store_dc_comment")
+
     def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG('EDPluginControlCrystFELv1_0.process starting')
@@ -133,13 +136,8 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
         template = None
         imageNoStart = None
         imageNoEnd = None
-        pathToStartImage = None
-        pathToEndImage = None
         userName = os.environ["USER"]
-        beamline = "unknown"
-        proposal = "unknown"
 
-        # If we have a data collection id, use it
         if self.dataInput.dataCollectionId is not None:
             # Recover the data collection from ISPyB
             #self.messenger.sendProcessingStatus(self.dataInput.dataCollectionId.value,
@@ -160,72 +158,41 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
             imageNoStart = ispybDataCollection.startImageNumber
             imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
 
-            pathToStartImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoStart)
-            pathToEndImage = os.path.join(directory, ispybDataCollection.fileTemplate % imageNoEnd)
-
         # Process directory
         if self.dataInput.processDirectory is not None:
             processDirectory = self.dataInput.processDirectory.path.value
         else:
             processDirectory = directory.replace("RAW_DATA", "PROCESSED_DATA")
 
+        dir_parts = processDirectory.split("/")
+        processDirectory = "/data/users/%s" % os.path.join(*dir_parts[5:])
+
         # Make results directory
-        self.resultsDirectory = os.path.join(processDirectory, "results")
+        self.resultsDirectory = os.path.join(processDirectory, "crystfel_results")
         try:
             if not os.path.exists(self.resultsDirectory):
-                os.makedirs(self.resultsDirectory, 755) 
+                os.makedirs(self.resultsDirectory) 
         except Exception as ex:
             print ex 
 
-        # Create path to pyarch
-        self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
+        self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(directory)
 
         #TODO: enable when ready
         """
         if self.pyarchDirectory is not None:
             self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
             if not os.path.exists(self.pyarchDirectory):
-                os.makedirs(self.pyarchDirectory, 755)
+                os.makedirs(self.pyarchDirectory)
         """
 
-        # Determine pyarch prefix
-        listPrefix = template.split("_")
-        self.pyarchPrefix = "di_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
-
-        isH5 = False
-
-        minSizeFirst = 1000000
-        minSizeLast = 1000000
-        fWaitFileTimeout = 60
-
-        xsDataInputMXWaitFileFirst = XSDataInputMXWaitFile()
-        xsDataInputMXWaitFileFirst.file = XSDataFile(XSDataString(pathToStartImage))
-        xsDataInputMXWaitFileFirst.timeOut = XSDataTime(fWaitFileTimeout)
-        self.wait_first_image_plugin.size = XSDataInteger(minSizeFirst)
-        self.wait_first_image_plugin.dataInput = xsDataInputMXWaitFileFirst
-        self.wait_first_image_plugin.executeSynchronous()
-        if self.wait_first_image_plugin.dataOutput.timedOut.value:
-            strWarningMessage = "Timeout after %d seconds waiting for the first image %s!" % (fWaitFileTimeout, pathToStartImage)
-            self.addWarningMessage(strWarningMessage)
-            self.WARNING(strWarningMessage)
-
-        self.baseName = "%s/crystfel_xgandalf" % self.resultsDirectory
-
-        self.streamFilename = "%s_%d.stream" % (
-            self.baseName,
-            self.dataInput.dataCollectionId.value
-        )
-        self.hklFilename = "%s_%d.hkl" % (
-            self.baseName,
-            self.dataInput.dataCollectionId.value
-        )
-        self.mtzFilename = "%s_%d.mtz" % (
-            self.baseName,
+        self.baseFileName = "%s/crystfel_xgandalf_%d" % (
+            self.resultsDirectory,
             self.dataInput.dataCollectionId.value
         )
 
-        # Prepare input to execution plugin
         xsDataInputCrystFEL = XSDataInputCrystFEL()
+        
+
         # Check if imagesFullPath exists. If not then generate one
         if self.dataInput.imagesFullPath is None:
             imagesFullPath = "%s_images_fullpath.lst" % self.baseName
@@ -240,44 +207,40 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
 
         xsDataInputCrystFEL.geomFile = self.dataInput.geomFile
         xsDataInputCrystFEL.cellFile = self.dataInput.cellFile
+        xsDataInputCrystFEL.pointGroup = self.dataInput.pointGroup
+        xsDataInputCrystFEL.spaceGroup = self.dataInput.spaceGroup
+        xsDataInputCrystFEL.resCutOff= self.dataInput.resCutOff
+        xsDataInputCrystFEL.baseFileName = XSDataString(self.baseFileName)
 
-        #TODO EDNA can generate the imagesFull path if id do not exist
-        xsDataInputCrystFEL.imagesFullPath = self.dataInput.imagesFullPath
-        xsDataInputCrystFEL.streamFile = XSDataString(self.streamFilename)
-        xsDataInputCrystFEL.hklFile = XSDataString(self.hklFilename)
-        xsDataInputCrystFEL.mtzFile = XSDataString(self.mtzFilename)
-
+        
         self.timeStart = time.localtime()
 
-        """
-        if self.dataInput.dataCollectionId is not None:
-            # Set ISPyB to running
-            self.autoProcIntegrationId, self.autoProcProgramId = \
-              EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                                                         processingCommandLine=self.processingCommandLine,
-                                                         processingPrograms=self.processingPrograms,
-                                                         isAnom=True,
-                                                         timeStart=self.timeStart)
-        """
-        self.index_plugin.dataInput = xsDataInputCrystFEL
-        self.index_plugin.executeSynchronous()
+        self.integration_id, self.program_id = self.create_integration_id(
+            self.dataInput.dataCollectionId.value,
+            "Creating integration ID")
 
+        self.index_plugin.dataInput = xsDataInputCrystFEL
+        self.process_hkl_plugin.dataInput = xsDataInputCrystFEL
+        self.process_hkl_plugin_odd.dataInput = xsDataInputCrystFEL
+        self.process_hkl_plugin_even.dataInput = xsDataInputCrystFEL
+        self.partialator_plugin.dataInput = xsDataInputCrystFEL
+        self.post_process_plugin.dataInput = xsDataInputCrystFEL
+        self.post_process_plugin.dataOutput = XSDataResultCrystFEL
+
+        self.process_hkl_plugin_odd.process_hkl_options += " --odd-only"
+        self.process_hkl_plugin_odd.process_hkl_type = "o"
+        self.process_hkl_plugin_even.process_hkl_options += " --even-only"
+        self.process_hkl_plugin_even.process_hkl_type = "e"
+
+
+        """
+        self.index_plugin.executeSynchronous()
         if self.index_plugin.isFailure():
             self.ERROR('indexamajig: Failed')
             self.setFailure()
             return
         else:
             self.screen('indexamajig: Finished')
-
-        self.process_hkl_plugin.dataInput = xsDataInputCrystFEL
-        self.process_hkl_plugin_odd.dataInput = xsDataInputCrystFEL
-        self.process_hkl_plugin_even.dataInput = xsDataInputCrystFEL
-        self.partialator_plugin.dataInput = xsDataInputCrystFEL
-        self.post_process_plugin.dataInput = xsDataInputCrystFEL
-
-        self.process_hkl_plugin_odd.process_hkl_options += " --odd-only"
-        self.process_hkl_plugin_even.process_hkl_options += " --even-only"
-
 
         self.process_hkl_plugin.executeSynchronous()
         if self.process_hkl_plugin.isFailure():
@@ -287,8 +250,6 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
         else:
             self.screen('process_hkl: Finished') 
 
-
-        self.process_hkl_plugin_odd.dataInput.hklFile = XSDataString(self.hklFilename + "_o")
         self.process_hkl_plugin_odd.executeSynchronous()
         if self.process_hkl_plugin_odd.isFailure():
             self.ERROR('process_hkl_odd: Failed')
@@ -297,8 +258,6 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
         else:
             self.screen('process_hkl_odd: Finished')
 
-
-        self.process_hkl_plugin_even.dataInput.hklFile = XSDataString(self.hklFilename + "_e")
         self.process_hkl_plugin_even.executeSynchronous()
         if self.process_hkl_plugin_even.isFailure():
             self.ERROR('process_hkl_even: Failed')
@@ -307,7 +266,6 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
         else:
             self.screen('process_hkl_even: Finished') 
 
-      
         self.partialator_plugin.executeSynchronous()
         if self.partialator_plugin.isFailure():
             self.ERROR('partialator: Failed')
@@ -315,6 +273,7 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
             return
         else:
             self.screen('partialator: Finished')
+        """
 
         self.post_process_plugin.executeSynchronous()
         if self.post_process_plugin.isFailure():
@@ -324,99 +283,183 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
         else:
             self.screen('post_process: Finished')
  
-        """ 
-        self.edPluginExecCrystFELScale.dataInput = xsDataInputCrystFEL
-        self.edPluginExecCrystFELScale.executeSynchronous()
-
-        if self.edPluginExecCrystFELScale.isFailure():
-            self.ERROR('CrystFELScalev1_0: Failed')
-            self.setFailure()
-            return
-        else:
-            self.screen('CrystFELScalev1_0: Finished')
-
         self.timeEnd = time.localtime()
+
+    def postProcess(self, _edObject=None):
+        EDPluginControl.postProcess(self)
+        self.DEBUG("EDPluginControlCrystFELv1_0.postProcess")
+
+        """
+        autoProcScalingStatisticsId : integer optional
+        scalingStatisticsType : string
+        comments : string
+        resolutionLimitLow : float
+        resolutionLimitHigh : float
+        rMerge : float
+        rmeasWithinIplusIminus : float
+        rmeasAllIplusIminus : float
+        rpimWithinIplusIminus : float
+        rpimAllIplusIminus : float
+        fractionalPartialBias : float
+        nTotalObservations : integer
+        ntotalUniqueObservations : integer
+        meanIOverSigI : float
+        completeness : float
+        multiplicity : float
+        anomalousCompleteness : float
+        anomalousMultiplicity : float
+        recordTimeStamp : string
+        anomalous : boolean
+        autoProcScalingId : integer
+        ccHalf : float
+        ccAno : float
+        sigAno : float
+        isa : float
+        completenessSpherical : float
+        anomalousCompletenessSpherical : float
+        completenessEllipsoidal : float
+        anomalousCompletenessEllipsoidal : float
         """
 
-        # Upload to ISPyB
         """
-        self.hasUploadedResultsToISPyB = self.uploadToISPyB(self.index_plugin, True, proposal,
-                           self.autoProcProgramId, self.autoProcIntegrationId)
-        if self.hasUploadedResultsToISPyB:
-            self.screen("results uploaded to ISPyB")
+        overallCompl : XSDataDouble
+        overallRed : XSDataDouble
+        overallSnr : XSDataDouble
+        overallRsplit : XSDataDouble
+        overallCC
+        """
+
+        output = AutoProcContainer()
+        autoproc = AutoProc()
+        autoproc.spaceGroup = str(self.dataInput.spaceGroup.value)
+        output.AutoProc = autoproc
+
+        scaling_container = AutoProcScalingContainer()
+        scaling = AutoProcScaling()
+        scaling.recordTimeStamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        scaling_container.AutoProcScaling = scaling
+
+        #Open the cell file and get the cell parameters
+
+        cell_file = open(self.dataInput.cellFile.value, "r")
+        cell_params = {}
+        for line in cell_file.readlines():
+            if line.startswith("a ="):
+                cell_params["a"] = float(line[4:9])
+            elif line.startswith("b ="):
+                cell_params["b"] = float(line[4:9])
+            elif line.startswith("c ="):
+                cell_params["c"] = float(line[4:9])
+            elif line.startswith("al ="):
+                cell_params["alpha"] = float(line[4:9])
+            elif line.startswith("be ="):
+                cell_params["beta"] = float(line[4:9])
+            elif line.startswith("ga ="):
+                cell_params["gamma"] = float(line[4:9])
+        cell_file.close()
+
+        autoproc.refinedCell_a = cell_params["a"]
+        autoproc.refinedCell_b = cell_params["b"]
+        autoproc.refinedCell_c = cell_params["c"]
+        autoproc.refinedCell_alpha = cell_params["alpha"]
+        autoproc.refinedCell_beta = cell_params["beta"]
+        autoproc.refinedCell_gamma = cell_params["gamma"]
+
+        overall_stats = AutoProcScalingStatistics()
+        overall_stats.scalingStatisticsType = "innerShell"
+        overall_stats.ccHalf = float(self.post_process_plugin.dataOutput.overallCC.value)
+        overall_stats.resolutionLimitLow = float(self.post_process_plugin.dataOutput.resolutionLimitLow.value)
+        overall_stats.resolutionLimitHigh = float(self.post_process_plugin.dataOutput.resolutionLimitHigh.value)
+        overall_stats.completeness = float(self.post_process_plugin.dataOutput.overallCompl.value)
+        #TODO get rMerge: otherwise results are not displayed in EXI
+        overall_stats.rMerge = 0
+
+        scaling_container.AutoProcScalingStatistics.append(overall_stats)
+
+        integration_container = AutoProcIntegrationContainer()
+        image = Image()
+        image.dataCollectionId = self.dataInput.dataCollectionId.value
+        integration_container.Image = image
+ 
+        integration = AutoProcIntegration()
+        if self.integration_id is not None:
+            integration.autoProcIntegrationId = self.integration_id
+            integration.cell_a = cell_params["a"]
+            integration.cell_b = cell_params["b"]
+            integration.cell_c = cell_params["c"]
+            integration.cell_alpha = cell_params["alpha"]
+            integration.cell_beta = cell_params["beta"]
+            integration.cell_gamma = cell_params["gamma"]
+            integration.anomalous = 0
+
+        # done with the integration
+        integration_container.AutoProcIntegration = integration
+        scaling_container.AutoProcIntegrationContainer = integration_container
+
+        program_container = AutoProcProgramContainer()
+        program_container.AutoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
+             programId=self.program_id, status="SUCCESS", timeStart=self.timeStart, timeEnd=self.timeEnd,
+             processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
+
+
+        output.AutoProcProgramContainer = program_container
+        output.AutoProcScalingContainer = scaling_container
+
+        ispyb_input = XSDataInputStoreAutoProc()
+        ispyb_input.AutoProcContainer = output
+
+        autoProcProgramId = None
+        self.store_autoproc_plugin.dataInput = ispyb_input
+        t0 = time.time()
+        self.store_autoproc_plugin.executeSynchronous()
+        autoProcProgramId = self.store_autoproc_plugin.dataOutput.autoProcProgramId.value
+
+        if self.store_autoproc_plugin.isFailure():
+            self.ERROR("Could not upload anom results to ispyb!")
         else:
-            self.messenger.sendProcessingStatus(self.dataInput.dataCollectionId.value,
-                                                "",
-                                                "failed")
+            self.hasUploadedAnomResultsToISPyB = True
+            self.screen("Results uploaded to ISPyB")
 
-            EDHandlerXSDataISPyBv1_4.setIspybToFailed(self,
-                         dataCollectionId=self.dataInput.dataCollectionId.value,
-                         autoProcIntegrationId=self.autoProcIntegrationId,
-                         autoProcProgramId=self.autoProcProgramId,
-                         processingCommandLine=self.processingCommandLine,
-                         processingPrograms=self.processingPrograms,
-                         isAnom=True,
-                         timeStart=self.timeStart,
-                         timeEnd=self.timeEnd)
-            self.ERROR("Could not upload results to ISPyB!")
-        """
+        xsDataInput = XSDataInputISPyBUpdateDataCollectionGroupComment()
+        xsDataInput.newComment = XSDataString(self.post_process_plugin.dataOutput.comment.value)
+        xsDataInput.dataCollectionId = self.dataInput.dataCollectionId
+        self.store_dc_comment_plugin.dataInput = xsDataInput
+        self.executePluginSynchronous(self.store_dc_comment_plugin)
 
-    def finallyProcess(self, _edObject=None):
-        EDPluginControl.finallyProcess(self)
-        self.index_plugin.synchronize()
-        strMessage = ""
-        if self.getListOfWarningMessages() != []:
-            strMessage += "Warning messages: \n\n"
-            for strWarningMessage in self.getListOfWarningMessages():
-                strMessage += strWarningMessage + "\n\n"
-        if self.getListOfErrorMessages() != []:
-            strMessage += "Error messages: \n\n"
-            for strErrorMessage in self.getListOfErrorMessages():
-                strMessage += strErrorMessage + "\n\n"
-        if self.isFailure():
-            self.screen(" processing ended with errors!")
-            #self.messenger.sendProcessingStatus(self.dataInput.dataCollectionId.value,
-            #                                    "",
-            #                                    "failed")
-
-            if strMessage != "":
-                self.screen("Warning and/or error messages: \n{0}.".format(strMessage))
-            self.timeEnd = time.localtime()
-            if self.dataInput.dataCollectionId is not None:
-                # Upload program failure status to ISPyB
-                # anom
-                pass 
-                #self.screen("Setting program status to failed in ISPyB.")
-                """
-                if not self.hasUploadedResultsToISPyB:
-                    self.screen("Setting program status to failed in ISPyB.")
-                    EDHandlerXSDataISPyBv1_4.setIspybToFailed(self,
-                         dataCollectionId=self.dataInput.dataCollectionId.value,
-                         autoProcIntegrationId=self.autoProcIntegrationId,
-                         autoProcProgramId=self.autoProcProgramId,
-                         processingCommandLine=self.processingCommandLine,
-                         processingPrograms=self.processingPrograms,
-                         isAnom=True,
-                         timeStart=self.timeStart,
-                         timeEnd=self.timeEnd)
-                 """
-
-        #else:
-        #   self.messenger.sendProcessingStatus(self.dataInput.dataCollectionId.value,
-        #                                       "cysFEL",
-        #                                       "success")
-
-    def uploadToISPyB(self, edPluginExecCrystFEL, isAnom, proposal, programId, integrationId):
-        successUpload = False
+    def uploadToISPyB(self, postProcessPlugin, programId, integrationId):
+        successUpload = True
+        for log_file in postProcessPlugin.dataOutput.logFiles:
+            pathToLogFile = log_file.path.value
+            pyarchFileName = os.path.join(self.pyarchDirectory, os.path.basename(pathToLogFile))
+            #shutil.copy(pathToLogFile, os.path.join(self.resultsDirectory, pyarchFileName))
+        for data_file in postProcessPlugin.dataOutput.dataFiles:
+            pathToDataFile = data_file.path.value
+            pyarchFileName = os.path.join(self.pyarchDirectory, os.path.basename(pathToDataFile))
+            #shutil.copy(pathToLogFile, os.path.join(self.resultsDirectory, pyarchFileName))
         return successUpload
 
-    def eiger_template_to_image(self, fmt, num):
-        fileNumber = int(num / 100)
-        if fileNumber == 0:
-            fileNumber = 1
-        fmt_string = fmt.replace("####", "1_data_%06d" % fileNumber)
-        return fmt_string.format(num)
 
-    def eiger_template_to_master(self, fmt):
-        fmt_string = fmt.replace("####", "1_master")
-        return fmt_string
+    def create_integration_id(self, datacollect_id, comments):
+        autoproc_status = edFactoryPlugin.loadPlugin('EDPluginISPyBStoreAutoProcStatusv1_4')
+        status_input = XSDataInputStoreAutoProcStatus()
+        status_input.dataCollectionId = datacollect_id
+        status_input.anomalous = True
+
+        # needed even if we only want to get an integration ID?
+        status_data = AutoProcStatus()
+        status_data.step = "Indexing"
+        status_data.status = "Launched"
+        status_data.comments = comments
+
+        # Program
+        autoProcProgram = EDHandlerXSDataISPyBv1_4.createAutoProcProgram(
+                    programId=None, status="RUNNING", timeStart=self.timeStart, timeEnd=self.timeEnd,
+                    processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
+
+        status_input.AutoProcProgram = autoProcProgram
+        status_input.AutoProcStatus = status_data
+
+        autoproc_status.dataInput = status_input
+        # get our EDNAproc status id
+        autoproc_status.executeSynchronous()
+        return (autoproc_status.dataOutput.autoProcIntegrationId, autoproc_status.dataOutput.autoProcProgramId)

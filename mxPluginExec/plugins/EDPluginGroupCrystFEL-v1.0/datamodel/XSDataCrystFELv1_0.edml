@@ -13,15 +13,25 @@ import XSDataCommon.XSDataInteger
 complex type XSDataInputCrystFEL extends XSDataInput {
         geomFile : XSDataString
         cellFile : XSDataString
-        imagesFullPathFile: XSDataString
+        imagesFullPath: XSDataString
+        pointGroup: XSDataString
+        spaceGroup: XSDataString
+        resCutOff: XSDataString
+        baseFileName: XSDataString
 }
 
 complex type XSDataResultCrystFEL extends XSDataResult {
-        logFile : XSDataFile
-        htmlFile : XSDataFile
+        overallCompl : XSDataDouble
+        overallRed : XSDataDouble
+        overallSnr : XSDataDouble
+        overallRsplit : XSDataDouble
+        overallCC : XSDataDouble
+        resolutionLimitLow : XSDataDouble
+        resolutionLimitHigh : XSDataDouble
+        comment : XSDataString
+
         dataFiles : XSDataFile []
-        ispybXML : XSDataFile
-        summary : XSDataFile
+        summaryFile : XSDataFile
         logFiles : XSDataFile []
 }
 
