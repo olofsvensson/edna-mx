@@ -80,7 +80,6 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
         self.processingCommandLine = None
         self.processingPrograms = None
         self.hasUploadedResultsToISPyB = False
-        self.hasUploadedNoanomResultsToISPyB = False
 
         self.baseName = None
         self.timeEnd = None
@@ -401,21 +400,42 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
              programId=self.program_id, status="SUCCESS", timeStart=self.timeStart, timeEnd=self.timeEnd,
              processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
 
-
         output.AutoProcProgramContainer = program_container
         output.AutoProcScalingContainer = scaling_container
+
+        for log_file in self.post_process_plugin.dataOutput.logFiles:
+            pathToLogFile = log_file.path.value
+            pyarchFileName = os.path.join(self.pyarchDirectory, os.path.basename(pathToLogFile))
+            #shutil.copy(pathToLogFile, os.path.join(self.resultsDirectory, pyarchFileName))
+
+            autoproc_program_attachment = AutoProcProgramAttachment()
+            autoproc_program_attachment.fileName = os.path.basename(pyarchFileName)
+            autoproc_program_attachment.filePath = os.path.dirname(pyarchFileName)
+            autoproc_program_attachment.fileType = "Log"
+            program_container.addAutoProcProgramAttachment(autoproc_program_attachment)
+            self.screen("Result file %s uploaded to ISPyB" % os.path.basename(pyarchFileName))
+
+        for data_file in self.post_process_plugin.dataOutput.dataFiles:
+            pathToDataFile = data_file.path.value
+            pyarchFileName = os.path.join(self.pyarchDirectory, os.path.basename(pathToDataFile))
+            #shutil.copy(pathToLogFile, os.path.join(self.resultsDirectory, pyarchFileName))
+
+            autoproc_program_attachment = AutoProcProgramAttachment()
+            autoproc_program_attachment.fileName = os.path.basename(pyarchFileName)
+            autoproc_program_attachment.filePath = os.path.dirname(pyarchFileName)
+            autoproc_program_attachment.fileType = "Result"
+            program_container.addAutoProcProgramAttachment(autoproc_program_attachment)
+            self.screen("Result file %s uploaded to ISPyB" % os.path.basename(pyarchFileName))
 
         ispyb_input = XSDataInputStoreAutoProc()
         ispyb_input.AutoProcContainer = output
 
-        autoProcProgramId = None
         self.store_autoproc_plugin.dataInput = ispyb_input
-        t0 = time.time()
         self.store_autoproc_plugin.executeSynchronous()
-        autoProcProgramId = self.store_autoproc_plugin.dataOutput.autoProcProgramId.value
+
 
         if self.store_autoproc_plugin.isFailure():
-            self.ERROR("Could not upload anom results to ispyb!")
+            self.ERROR("Could not upload results to ispyb!")
         else:
             self.hasUploadedAnomResultsToISPyB = True
             self.screen("Results uploaded to ISPyB")
@@ -425,19 +445,6 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
         xsDataInput.dataCollectionId = self.dataInput.dataCollectionId
         self.store_dc_comment_plugin.dataInput = xsDataInput
         self.executePluginSynchronous(self.store_dc_comment_plugin)
-
-    def uploadToISPyB(self, postProcessPlugin, programId, integrationId):
-        successUpload = True
-        for log_file in postProcessPlugin.dataOutput.logFiles:
-            pathToLogFile = log_file.path.value
-            pyarchFileName = os.path.join(self.pyarchDirectory, os.path.basename(pathToLogFile))
-            #shutil.copy(pathToLogFile, os.path.join(self.resultsDirectory, pyarchFileName))
-        for data_file in postProcessPlugin.dataOutput.dataFiles:
-            pathToDataFile = data_file.path.value
-            pyarchFileName = os.path.join(self.pyarchDirectory, os.path.basename(pathToDataFile))
-            #shutil.copy(pathToLogFile, os.path.join(self.resultsDirectory, pyarchFileName))
-        return successUpload
-
 
     def create_integration_id(self, datacollect_id, comments):
         autoproc_status = edFactoryPlugin.loadPlugin('EDPluginISPyBStoreAutoProcStatusv1_4')
