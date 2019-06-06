@@ -232,7 +232,6 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
         self.process_hkl_plugin_even.process_hkl_type = "e"
 
 
-        """
         self.index_plugin.executeSynchronous()
         if self.index_plugin.isFailure():
             self.ERROR('indexamajig: Failed')
@@ -272,7 +271,6 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
             return
         else:
             self.screen('partialator: Finished')
-        """
 
         self.post_process_plugin.executeSynchronous()
         if self.post_process_plugin.isFailure():
