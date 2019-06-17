@@ -26,16 +26,8 @@ __license__ = "GPLv3+"
 __copyright__ = "EMBL Hamburg"
 
 import os
-import glob
-import subprocess
-import multiprocessing
-
-from EDUtilsPath import EDUtilsPath
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
-
-from XSDataCommon import XSDataFile
-from XSDataCommon import XSDataString
 
 from XSDataCrystFELv1_0 import XSDataInputCrystFEL
 from XSDataCrystFELv1_0 import XSDataResultCrystFEL
@@ -88,11 +80,11 @@ class EDPluginExecCrystFELPartialatorv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginExecCrystFELPartialatorv1_0.generateCommands")
      
-        pointGroup = "222"
-        strCommandText = "-i %s -o %s_partialator -y %s %s" % (
-            _xsDataInputCrystFEL.streamFile.value,
-            _xsDataInputCrystFEL.hklFile.value,
-            pointGroup,
+        strCommandText = "-i %s.stream -o %s_partialator_%s.hkl -y %s %s" % (
+            _xsDataInputCrystFEL.baseFileName.value,
+            _xsDataInputCrystFEL.baseFileName.value,
+            _xsDataInputCrystFEL.pointGroup.value,
+            _xsDataInputCrystFEL.pointGroup.value,
             self.partialator_options
         )
         return  strCommandText

@@ -26,16 +26,10 @@ __license__ = "GPLv3+"
 __copyright__ = "EMBL Hamburg"
 
 import os
-import glob
-import subprocess
-import multiprocessing
-
-from EDUtilsPath import EDUtilsPath
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
 
-from XSDataCommon import XSDataFile
-from XSDataCommon import XSDataString
+from XSDataCommon import XSDataDouble, XSDataString, XSDataFile
 
 from XSDataCrystFELv1_0 import XSDataInputCrystFEL
 from XSDataCrystFELv1_0 import XSDataResultCrystFEL
@@ -54,6 +48,7 @@ class EDPluginExecCrystFELPostprocessv1_0(EDPluginExecProcessScript):
 
         #TODO move to input file
         self.partialator_options = "--max-adu=65000 --iterations=1 --model=unity -j 60"
+        self.mtz_filename = None
 
     def checkParameters(self):
         """
@@ -70,6 +65,12 @@ class EDPluginExecCrystFELPostprocessv1_0(EDPluginExecProcessScript):
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginExecCrystFELPostprocessv1_0.preProcess")
+
+        self.mtz_filename = "%s_partialator_%s.mtz" % (
+            self.dataInput.baseFileName.value,
+            self.dataInput.pointGroup.value
+        )
+
         strCommandLine = self.generateCommandLine(self.dataInput)
         self.setScriptCommandline(strCommandLine)
 
@@ -81,12 +82,56 @@ class EDPluginExecCrystFELPostprocessv1_0(EDPluginExecProcessScript):
         xsDataResultCrystFEL = self.parseOutputDirectory(self.getWorkingDirectory())
         self.dataOutput = xsDataResultCrystFEL
 
-        if not os.path.exists(self.dataInput.mtzFile.value):
-            strErrorMessage = "EDPluginExecCrystFELProcesshklv1_0.postProcess: No mtz file %s generated" % self.dataInput.mtzFile.value
+        strErrorMessage = "EDPluginExecCrystFELPostprocessv1_0.postProcess: "
+        if not os.path.exists(self.mtz_filename):
+            strErrorMessage += "No mtz file %s generated" % self.mtz_filename
             self.ERROR(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             self.setFailure()
+        else:
+            #Parse results
+            #We find the *stasummary*.dat file
+            #TODO open file directly
+            stats_summary_filename = None
+            for filename in os.listdir(os.path.dirname(self.mtz_filename)):
+                full_path = os.path.join(os.path.dirname(self.mtz_filename), filename)
+                if "statsummary" in filename and filename.endswith("dat"):
+                    stats_summary_filename = full_path
+                file_ext = os.path.splitext(filename)[1][1:]
+                if file_ext in ("log"):
+                    self.dataOutput.addLogFiles(XSDataFile(XSDataString(full_path)))
+                if file_ext in ("hkl", "mtz", "dat"):
+                    self.dataOutput.addDataFiles(XSDataFile(XSDataString(full_path)))
 
+            if not stats_summary_filename:
+                strErrorMessage += "Unable to find summary stats file"
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
+                self.setFailure()
+            else:
+                self.dataOutput.summaryFile = XSDataFile(XSDataString(stats_summary_filename))
+                stats_summary_file = open(stats_summary_filename)
+                comment = "CrystFEL: "
+
+                for row, line in enumerate(stats_summary_file.readlines()):
+                    if row < 2:
+                        comment += line
+                    if line.startswith("overall Compl"):
+                        self.dataOutput.overallCompl = XSDataDouble(float(line[17:22]))
+                    elif line.startswith("overall Red"):
+                        self.dataOutput.overallRed = XSDataDouble(float(line[17:22]))
+                    elif line.startswith("overall <snr>"):
+                        self.dataOutput.overallSnr = XSDataDouble(float(line[17:22]))
+                    elif line.startswith("overall Rsplit"):
+                        self.dataOutput.overallRsplit = XSDataDouble(float(line[17:22]))
+                    elif line.startswith("overall CC"):
+                        self.dataOutput.overallCC = XSDataDouble(float(line[17:22]))
+                    if row == 13:
+                        self.dataOutput.resolutionLimitLow = XSDataDouble(float(line[:7]))
+                    elif row == 22:
+                        self.dataOutput.resolutionLimitHigh = XSDataDouble(float(line[:7]))
+                stats_summary_file.close
+                self.dataOutput.comment = XSDataString(comment.replace("  ", " ").replace("\n", " "))
 
     def generateCommandLine(self, _xsDataInputCrystFEL):
         """
@@ -94,16 +139,12 @@ class EDPluginExecCrystFELPostprocessv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginExecCrystFELPostprocessv1_0.generateCommands")
      
-        pointGroup = "222"
-        spaceGrop = "P212121"
-        resCutOff = "1.9"
-
-        strCommandText = "%s %s %s %s %s -partialator -onlystats" % (
-            _xsDataInputCrystFEL.streamFile.value,
+        strCommandText = "%s.stream %s %s %s %s -partialator -onlystats" % (
+            _xsDataInputCrystFEL.baseFileName.value,
             _xsDataInputCrystFEL.cellFile.value,
-            pointGroup,
-            spaceGrop,
-            resCutOff
+            _xsDataInputCrystFEL.pointGroup.value,
+            _xsDataInputCrystFEL.spaceGroup.value,
+            _xsDataInputCrystFEL.resCutOff.value
         )
         return  strCommandText
 

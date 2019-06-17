@@ -26,16 +26,8 @@ __license__ = "GPLv3+"
 __copyright__ = "EMBL Hamburg"
 
 import os
-import glob
-import subprocess
-import multiprocessing
-
-from EDUtilsPath import EDUtilsPath
 
 from EDPluginExecProcessScript import EDPluginExecProcessScript
-
-from XSDataCommon import XSDataFile
-from XSDataCommon import XSDataString
 
 from XSDataCrystFELv1_0 import XSDataInputCrystFEL
 from XSDataCrystFELv1_0 import XSDataResultCrystFEL
@@ -53,6 +45,7 @@ class EDPluginExecCrystFELProcesshklv1_0(EDPluginExecProcessScript):
         self.setDataOutput(XSDataResultCrystFEL())
 
         self.process_hkl_options = "--max-adu=65000 --scale"
+        self.process_hkl_type = None
 
     def checkParameters(self):
         """
@@ -86,11 +79,18 @@ class EDPluginExecCrystFELProcesshklv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginExecCrystFELProcesshklv1_0.generateCommands")
      
-        pointGroup = "222"
-        strCommandText = "-i %s -o %s -y %s %s" % (
-            _xsDataInputCrystFEL.streamFile.value,
-            _xsDataInputCrystFEL.hklFile.value,
-            pointGroup,
+        if self.process_hkl_type:
+            hklOutputFilename = "%s_%s.hkl" % (
+                self.process_hkl_type,
+                _xsDataInputCrystFEL.baseFileName.value,
+            )
+        else:
+            hklOutputFilename = "%s.hkl" % _xsDataInputCrystFEL.baseFileName.value    
+ 
+        strCommandText = "-i %s.stream -o %s -y %s %s" % (
+            _xsDataInputCrystFEL.baseFileName.value,
+            hklOutputFilename,
+            _xsDataInputCrystFEL.pointGroup.value,
             self.process_hkl_options
         )
 

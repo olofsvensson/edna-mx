@@ -6,19 +6,18 @@ import XSDataCommon.XSDataResult
 import XSDataCommon.XSDataInteger
 import XSDataCommon.XSDataFile
 import XSDataCommon.XSDataString
-import XSDataCommon.XSDataBoolean
 
 
 complex type XSDataInputControlCrystFEL extends XSDataInput {
-	dataCollectionId : XSDataInteger optional
+	dataCollectionId : XSDataInteger
 	processDirectory : XSDataFile optional
+        imagesFullPath: XSDataString optional
         geomFile : XSDataString
         cellFile : XSDataString
-        imagesFullPath: XSDataString
-
-        streamFile: XSDataString
-        hklFile: XSDataString
-        mtzFile: XSDataString
+        pointGroup: XSDataString
+        spaceGroup: XSDataString
+        resCutOff: XSDataString
+        baseFileName: XSDataString
 }
 
 complex type XSDataResultControlCrystFEL extends XSDataResult {

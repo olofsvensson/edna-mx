@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri May 31 01:58::52 2019 by EDGenerateDS.
+# Generated Thu Jun 6 11:26::40 2019 by EDGenerateDS.
 #
 
 import os, sys
@@ -16,9 +16,11 @@ dictLocation = { \
  "XSDataCommon": "mxPluginExec/plugins/EDPluginGroupCrystFEL-v1.0/datamodel/../../../../kernel/datamodel", \
  "XSDataCommon": "mxPluginExec/plugins/EDPluginGroupCrystFEL-v1.0/datamodel/../../../../kernel/datamodel", \
  "XSDataCommon": "mxPluginExec/plugins/EDPluginGroupCrystFEL-v1.0/datamodel/../../../../kernel/datamodel", \
+ "XSDataCommon": "mxPluginExec/plugins/EDPluginGroupCrystFEL-v1.0/datamodel/../../../../kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSDataDouble
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataResult
@@ -33,6 +35,7 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataResult
@@ -117,7 +120,7 @@ class MixedContainer(object):
 
 
 class XSDataInputCrystFEL(XSDataInput):
-    def __init__(self, configuration=None, imagesFullPathFile=None, cellFile=None, geomFile=None):
+    def __init__(self, configuration=None, baseFileName=None, resCutOff=None, spaceGroup=None, pointGroup=None, imagesFullPath=None, cellFile=None, geomFile=None):
         XSDataInput.__init__(self, configuration)
         if geomFile is None:
             self._geomFile = None
@@ -133,12 +136,40 @@ class XSDataInputCrystFEL(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputCrystFEL constructor argument 'cellFile' is not XSDataString but %s" % self._cellFile.__class__.__name__
             raise BaseException(strMessage)
-        if imagesFullPathFile is None:
-            self._imagesFullPathFile = None
-        elif imagesFullPathFile.__class__.__name__ == "XSDataString":
-            self._imagesFullPathFile = imagesFullPathFile
+        if imagesFullPath is None:
+            self._imagesFullPath = None
+        elif imagesFullPath.__class__.__name__ == "XSDataString":
+            self._imagesFullPath = imagesFullPath
         else:
-            strMessage = "ERROR! XSDataInputCrystFEL constructor argument 'imagesFullPathFile' is not XSDataString but %s" % self._imagesFullPathFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputCrystFEL constructor argument 'imagesFullPath' is not XSDataString but %s" % self._imagesFullPath.__class__.__name__
+            raise BaseException(strMessage)
+        if pointGroup is None:
+            self._pointGroup = None
+        elif pointGroup.__class__.__name__ == "XSDataString":
+            self._pointGroup = pointGroup
+        else:
+            strMessage = "ERROR! XSDataInputCrystFEL constructor argument 'pointGroup' is not XSDataString but %s" % self._pointGroup.__class__.__name__
+            raise BaseException(strMessage)
+        if spaceGroup is None:
+            self._spaceGroup = None
+        elif spaceGroup.__class__.__name__ == "XSDataString":
+            self._spaceGroup = spaceGroup
+        else:
+            strMessage = "ERROR! XSDataInputCrystFEL constructor argument 'spaceGroup' is not XSDataString but %s" % self._spaceGroup.__class__.__name__
+            raise BaseException(strMessage)
+        if resCutOff is None:
+            self._resCutOff = None
+        elif resCutOff.__class__.__name__ == "XSDataString":
+            self._resCutOff = resCutOff
+        else:
+            strMessage = "ERROR! XSDataInputCrystFEL constructor argument 'resCutOff' is not XSDataString but %s" % self._resCutOff.__class__.__name__
+            raise BaseException(strMessage)
+        if baseFileName is None:
+            self._baseFileName = None
+        elif baseFileName.__class__.__name__ == "XSDataString":
+            self._baseFileName = baseFileName
+        else:
+            strMessage = "ERROR! XSDataInputCrystFEL constructor argument 'baseFileName' is not XSDataString but %s" % self._baseFileName.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'geomFile' attribute
     def getGeomFile(self): return self._geomFile
@@ -164,18 +195,66 @@ class XSDataInputCrystFEL(XSDataInput):
             raise BaseException(strMessage)
     def delCellFile(self): self._cellFile = None
     cellFile = property(getCellFile, setCellFile, delCellFile, "Property for cellFile")
-    # Methods and properties for the 'imagesFullPathFile' attribute
-    def getImagesFullPathFile(self): return self._imagesFullPathFile
-    def setImagesFullPathFile(self, imagesFullPathFile):
-        if imagesFullPathFile is None:
-            self._imagesFullPathFile = None
-        elif imagesFullPathFile.__class__.__name__ == "XSDataString":
-            self._imagesFullPathFile = imagesFullPathFile
+    # Methods and properties for the 'imagesFullPath' attribute
+    def getImagesFullPath(self): return self._imagesFullPath
+    def setImagesFullPath(self, imagesFullPath):
+        if imagesFullPath is None:
+            self._imagesFullPath = None
+        elif imagesFullPath.__class__.__name__ == "XSDataString":
+            self._imagesFullPath = imagesFullPath
         else:
-            strMessage = "ERROR! XSDataInputCrystFEL.setImagesFullPathFile argument is not XSDataString but %s" % imagesFullPathFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputCrystFEL.setImagesFullPath argument is not XSDataString but %s" % imagesFullPath.__class__.__name__
             raise BaseException(strMessage)
-    def delImagesFullPathFile(self): self._imagesFullPathFile = None
-    imagesFullPathFile = property(getImagesFullPathFile, setImagesFullPathFile, delImagesFullPathFile, "Property for imagesFullPathFile")
+    def delImagesFullPath(self): self._imagesFullPath = None
+    imagesFullPath = property(getImagesFullPath, setImagesFullPath, delImagesFullPath, "Property for imagesFullPath")
+    # Methods and properties for the 'pointGroup' attribute
+    def getPointGroup(self): return self._pointGroup
+    def setPointGroup(self, pointGroup):
+        if pointGroup is None:
+            self._pointGroup = None
+        elif pointGroup.__class__.__name__ == "XSDataString":
+            self._pointGroup = pointGroup
+        else:
+            strMessage = "ERROR! XSDataInputCrystFEL.setPointGroup argument is not XSDataString but %s" % pointGroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delPointGroup(self): self._pointGroup = None
+    pointGroup = property(getPointGroup, setPointGroup, delPointGroup, "Property for pointGroup")
+    # Methods and properties for the 'spaceGroup' attribute
+    def getSpaceGroup(self): return self._spaceGroup
+    def setSpaceGroup(self, spaceGroup):
+        if spaceGroup is None:
+            self._spaceGroup = None
+        elif spaceGroup.__class__.__name__ == "XSDataString":
+            self._spaceGroup = spaceGroup
+        else:
+            strMessage = "ERROR! XSDataInputCrystFEL.setSpaceGroup argument is not XSDataString but %s" % spaceGroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpaceGroup(self): self._spaceGroup = None
+    spaceGroup = property(getSpaceGroup, setSpaceGroup, delSpaceGroup, "Property for spaceGroup")
+    # Methods and properties for the 'resCutOff' attribute
+    def getResCutOff(self): return self._resCutOff
+    def setResCutOff(self, resCutOff):
+        if resCutOff is None:
+            self._resCutOff = None
+        elif resCutOff.__class__.__name__ == "XSDataString":
+            self._resCutOff = resCutOff
+        else:
+            strMessage = "ERROR! XSDataInputCrystFEL.setResCutOff argument is not XSDataString but %s" % resCutOff.__class__.__name__
+            raise BaseException(strMessage)
+    def delResCutOff(self): self._resCutOff = None
+    resCutOff = property(getResCutOff, setResCutOff, delResCutOff, "Property for resCutOff")
+    # Methods and properties for the 'baseFileName' attribute
+    def getBaseFileName(self): return self._baseFileName
+    def setBaseFileName(self, baseFileName):
+        if baseFileName is None:
+            self._baseFileName = None
+        elif baseFileName.__class__.__name__ == "XSDataString":
+            self._baseFileName = baseFileName
+        else:
+            strMessage = "ERROR! XSDataInputCrystFEL.setBaseFileName argument is not XSDataString but %s" % baseFileName.__class__.__name__
+            raise BaseException(strMessage)
+    def delBaseFileName(self): self._baseFileName = None
+    baseFileName = property(getBaseFileName, setBaseFileName, delBaseFileName, "Property for baseFileName")
     def export(self, outfile, level, name_='XSDataInputCrystFEL'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -192,10 +271,26 @@ class XSDataInputCrystFEL(XSDataInput):
             self.cellFile.export(outfile, level, name_='cellFile')
         else:
             warnEmptyAttribute("cellFile", "XSDataString")
-        if self._imagesFullPathFile is not None:
-            self.imagesFullPathFile.export(outfile, level, name_='imagesFullPathFile')
+        if self._imagesFullPath is not None:
+            self.imagesFullPath.export(outfile, level, name_='imagesFullPath')
         else:
-            warnEmptyAttribute("imagesFullPathFile", "XSDataString")
+            warnEmptyAttribute("imagesFullPath", "XSDataString")
+        if self._pointGroup is not None:
+            self.pointGroup.export(outfile, level, name_='pointGroup')
+        else:
+            warnEmptyAttribute("pointGroup", "XSDataString")
+        if self._spaceGroup is not None:
+            self.spaceGroup.export(outfile, level, name_='spaceGroup')
+        else:
+            warnEmptyAttribute("spaceGroup", "XSDataString")
+        if self._resCutOff is not None:
+            self.resCutOff.export(outfile, level, name_='resCutOff')
+        else:
+            warnEmptyAttribute("resCutOff", "XSDataString")
+        if self._baseFileName is not None:
+            self.baseFileName.export(outfile, level, name_='baseFileName')
+        else:
+            warnEmptyAttribute("baseFileName", "XSDataString")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -212,10 +307,30 @@ class XSDataInputCrystFEL(XSDataInput):
             obj_.build(child_)
             self.setCellFile(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'imagesFullPathFile':
+            nodeName_ == 'imagesFullPath':
             obj_ = XSDataString()
             obj_.build(child_)
-            self.setImagesFullPathFile(obj_)
+            self.setImagesFullPath(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pointGroup':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setPointGroup(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spaceGroup':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setSpaceGroup(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'resCutOff':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setResCutOff(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'baseFileName':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setBaseFileName(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -262,21 +377,63 @@ class XSDataInputCrystFEL(XSDataInput):
 
 
 class XSDataResultCrystFEL(XSDataResult):
-    def __init__(self, status=None, logFiles=None, summary=None, ispybXML=None, dataFiles=None, htmlFile=None, logFile=None):
+    def __init__(self, status=None, logFiles=None, summaryFile=None, dataFiles=None, comment=None, resolutionLimitHigh=None, resolutionLimitLow=None, overallCC=None, overallRsplit=None, overallSnr=None, overallRed=None, overallCompl=None):
         XSDataResult.__init__(self, status)
-        if logFile is None:
-            self._logFile = None
-        elif logFile.__class__.__name__ == "XSDataFile":
-            self._logFile = logFile
+        if overallCompl is None:
+            self._overallCompl = None
+        elif overallCompl.__class__.__name__ == "XSDataDouble":
+            self._overallCompl = overallCompl
         else:
-            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'logFile' is not XSDataFile but %s" % self._logFile.__class__.__name__
+            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'overallCompl' is not XSDataDouble but %s" % self._overallCompl.__class__.__name__
             raise BaseException(strMessage)
-        if htmlFile is None:
-            self._htmlFile = None
-        elif htmlFile.__class__.__name__ == "XSDataFile":
-            self._htmlFile = htmlFile
+        if overallRed is None:
+            self._overallRed = None
+        elif overallRed.__class__.__name__ == "XSDataDouble":
+            self._overallRed = overallRed
         else:
-            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'htmlFile' is not XSDataFile but %s" % self._htmlFile.__class__.__name__
+            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'overallRed' is not XSDataDouble but %s" % self._overallRed.__class__.__name__
+            raise BaseException(strMessage)
+        if overallSnr is None:
+            self._overallSnr = None
+        elif overallSnr.__class__.__name__ == "XSDataDouble":
+            self._overallSnr = overallSnr
+        else:
+            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'overallSnr' is not XSDataDouble but %s" % self._overallSnr.__class__.__name__
+            raise BaseException(strMessage)
+        if overallRsplit is None:
+            self._overallRsplit = None
+        elif overallRsplit.__class__.__name__ == "XSDataDouble":
+            self._overallRsplit = overallRsplit
+        else:
+            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'overallRsplit' is not XSDataDouble but %s" % self._overallRsplit.__class__.__name__
+            raise BaseException(strMessage)
+        if overallCC is None:
+            self._overallCC = None
+        elif overallCC.__class__.__name__ == "XSDataDouble":
+            self._overallCC = overallCC
+        else:
+            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'overallCC' is not XSDataDouble but %s" % self._overallCC.__class__.__name__
+            raise BaseException(strMessage)
+        if resolutionLimitLow is None:
+            self._resolutionLimitLow = None
+        elif resolutionLimitLow.__class__.__name__ == "XSDataDouble":
+            self._resolutionLimitLow = resolutionLimitLow
+        else:
+            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'resolutionLimitLow' is not XSDataDouble but %s" % self._resolutionLimitLow.__class__.__name__
+            raise BaseException(strMessage)
+        if resolutionLimitHigh is None:
+            self._resolutionLimitHigh = None
+        elif resolutionLimitHigh.__class__.__name__ == "XSDataDouble":
+            self._resolutionLimitHigh = resolutionLimitHigh
+        else:
+            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'resolutionLimitHigh' is not XSDataDouble but %s" % self._resolutionLimitHigh.__class__.__name__
+            raise BaseException(strMessage)
+        if comment is None:
+            self._comment = None
+        elif comment.__class__.__name__ == "XSDataString":
+            self._comment = comment
+        else:
+            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'comment' is not XSDataString but %s" % self._comment.__class__.__name__
             raise BaseException(strMessage)
         if dataFiles is None:
             self._dataFiles = []
@@ -285,19 +442,12 @@ class XSDataResultCrystFEL(XSDataResult):
         else:
             strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'dataFiles' is not list but %s" % self._dataFiles.__class__.__name__
             raise BaseException(strMessage)
-        if ispybXML is None:
-            self._ispybXML = None
-        elif ispybXML.__class__.__name__ == "XSDataFile":
-            self._ispybXML = ispybXML
+        if summaryFile is None:
+            self._summaryFile = None
+        elif summaryFile.__class__.__name__ == "XSDataFile":
+            self._summaryFile = summaryFile
         else:
-            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'ispybXML' is not XSDataFile but %s" % self._ispybXML.__class__.__name__
-            raise BaseException(strMessage)
-        if summary is None:
-            self._summary = None
-        elif summary.__class__.__name__ == "XSDataFile":
-            self._summary = summary
-        else:
-            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'summary' is not XSDataFile but %s" % self._summary.__class__.__name__
+            strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'summaryFile' is not XSDataFile but %s" % self._summaryFile.__class__.__name__
             raise BaseException(strMessage)
         if logFiles is None:
             self._logFiles = []
@@ -306,30 +456,102 @@ class XSDataResultCrystFEL(XSDataResult):
         else:
             strMessage = "ERROR! XSDataResultCrystFEL constructor argument 'logFiles' is not list but %s" % self._logFiles.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'logFile' attribute
-    def getLogFile(self): return self._logFile
-    def setLogFile(self, logFile):
-        if logFile is None:
-            self._logFile = None
-        elif logFile.__class__.__name__ == "XSDataFile":
-            self._logFile = logFile
+    # Methods and properties for the 'overallCompl' attribute
+    def getOverallCompl(self): return self._overallCompl
+    def setOverallCompl(self, overallCompl):
+        if overallCompl is None:
+            self._overallCompl = None
+        elif overallCompl.__class__.__name__ == "XSDataDouble":
+            self._overallCompl = overallCompl
         else:
-            strMessage = "ERROR! XSDataResultCrystFEL.setLogFile argument is not XSDataFile but %s" % logFile.__class__.__name__
+            strMessage = "ERROR! XSDataResultCrystFEL.setOverallCompl argument is not XSDataDouble but %s" % overallCompl.__class__.__name__
             raise BaseException(strMessage)
-    def delLogFile(self): self._logFile = None
-    logFile = property(getLogFile, setLogFile, delLogFile, "Property for logFile")
-    # Methods and properties for the 'htmlFile' attribute
-    def getHtmlFile(self): return self._htmlFile
-    def setHtmlFile(self, htmlFile):
-        if htmlFile is None:
-            self._htmlFile = None
-        elif htmlFile.__class__.__name__ == "XSDataFile":
-            self._htmlFile = htmlFile
+    def delOverallCompl(self): self._overallCompl = None
+    overallCompl = property(getOverallCompl, setOverallCompl, delOverallCompl, "Property for overallCompl")
+    # Methods and properties for the 'overallRed' attribute
+    def getOverallRed(self): return self._overallRed
+    def setOverallRed(self, overallRed):
+        if overallRed is None:
+            self._overallRed = None
+        elif overallRed.__class__.__name__ == "XSDataDouble":
+            self._overallRed = overallRed
         else:
-            strMessage = "ERROR! XSDataResultCrystFEL.setHtmlFile argument is not XSDataFile but %s" % htmlFile.__class__.__name__
+            strMessage = "ERROR! XSDataResultCrystFEL.setOverallRed argument is not XSDataDouble but %s" % overallRed.__class__.__name__
             raise BaseException(strMessage)
-    def delHtmlFile(self): self._htmlFile = None
-    htmlFile = property(getHtmlFile, setHtmlFile, delHtmlFile, "Property for htmlFile")
+    def delOverallRed(self): self._overallRed = None
+    overallRed = property(getOverallRed, setOverallRed, delOverallRed, "Property for overallRed")
+    # Methods and properties for the 'overallSnr' attribute
+    def getOverallSnr(self): return self._overallSnr
+    def setOverallSnr(self, overallSnr):
+        if overallSnr is None:
+            self._overallSnr = None
+        elif overallSnr.__class__.__name__ == "XSDataDouble":
+            self._overallSnr = overallSnr
+        else:
+            strMessage = "ERROR! XSDataResultCrystFEL.setOverallSnr argument is not XSDataDouble but %s" % overallSnr.__class__.__name__
+            raise BaseException(strMessage)
+    def delOverallSnr(self): self._overallSnr = None
+    overallSnr = property(getOverallSnr, setOverallSnr, delOverallSnr, "Property for overallSnr")
+    # Methods and properties for the 'overallRsplit' attribute
+    def getOverallRsplit(self): return self._overallRsplit
+    def setOverallRsplit(self, overallRsplit):
+        if overallRsplit is None:
+            self._overallRsplit = None
+        elif overallRsplit.__class__.__name__ == "XSDataDouble":
+            self._overallRsplit = overallRsplit
+        else:
+            strMessage = "ERROR! XSDataResultCrystFEL.setOverallRsplit argument is not XSDataDouble but %s" % overallRsplit.__class__.__name__
+            raise BaseException(strMessage)
+    def delOverallRsplit(self): self._overallRsplit = None
+    overallRsplit = property(getOverallRsplit, setOverallRsplit, delOverallRsplit, "Property for overallRsplit")
+    # Methods and properties for the 'overallCC' attribute
+    def getOverallCC(self): return self._overallCC
+    def setOverallCC(self, overallCC):
+        if overallCC is None:
+            self._overallCC = None
+        elif overallCC.__class__.__name__ == "XSDataDouble":
+            self._overallCC = overallCC
+        else:
+            strMessage = "ERROR! XSDataResultCrystFEL.setOverallCC argument is not XSDataDouble but %s" % overallCC.__class__.__name__
+            raise BaseException(strMessage)
+    def delOverallCC(self): self._overallCC = None
+    overallCC = property(getOverallCC, setOverallCC, delOverallCC, "Property for overallCC")
+    # Methods and properties for the 'resolutionLimitLow' attribute
+    def getResolutionLimitLow(self): return self._resolutionLimitLow
+    def setResolutionLimitLow(self, resolutionLimitLow):
+        if resolutionLimitLow is None:
+            self._resolutionLimitLow = None
+        elif resolutionLimitLow.__class__.__name__ == "XSDataDouble":
+            self._resolutionLimitLow = resolutionLimitLow
+        else:
+            strMessage = "ERROR! XSDataResultCrystFEL.setResolutionLimitLow argument is not XSDataDouble but %s" % resolutionLimitLow.__class__.__name__
+            raise BaseException(strMessage)
+    def delResolutionLimitLow(self): self._resolutionLimitLow = None
+    resolutionLimitLow = property(getResolutionLimitLow, setResolutionLimitLow, delResolutionLimitLow, "Property for resolutionLimitLow")
+    # Methods and properties for the 'resolutionLimitHigh' attribute
+    def getResolutionLimitHigh(self): return self._resolutionLimitHigh
+    def setResolutionLimitHigh(self, resolutionLimitHigh):
+        if resolutionLimitHigh is None:
+            self._resolutionLimitHigh = None
+        elif resolutionLimitHigh.__class__.__name__ == "XSDataDouble":
+            self._resolutionLimitHigh = resolutionLimitHigh
+        else:
+            strMessage = "ERROR! XSDataResultCrystFEL.setResolutionLimitHigh argument is not XSDataDouble but %s" % resolutionLimitHigh.__class__.__name__
+            raise BaseException(strMessage)
+    def delResolutionLimitHigh(self): self._resolutionLimitHigh = None
+    resolutionLimitHigh = property(getResolutionLimitHigh, setResolutionLimitHigh, delResolutionLimitHigh, "Property for resolutionLimitHigh")
+    # Methods and properties for the 'comment' attribute
+    def getComment(self): return self._comment
+    def setComment(self, comment):
+        if comment is None:
+            self._comment = None
+        elif comment.__class__.__name__ == "XSDataString":
+            self._comment = comment
+        else:
+            strMessage = "ERROR! XSDataResultCrystFEL.setComment argument is not XSDataString but %s" % comment.__class__.__name__
+            raise BaseException(strMessage)
+    def delComment(self): self._comment = None
+    comment = property(getComment, setComment, delComment, "Property for comment")
     # Methods and properties for the 'dataFiles' attribute
     def getDataFiles(self): return self._dataFiles
     def setDataFiles(self, dataFiles):
@@ -363,30 +585,18 @@ class XSDataResultCrystFEL(XSDataResult):
         else:
             strMessage = "ERROR! XSDataResultCrystFEL.addDataFiles argument is not XSDataFile but %s" % value.__class__.__name__
             raise BaseException(strMessage)
-    # Methods and properties for the 'ispybXML' attribute
-    def getIspybXML(self): return self._ispybXML
-    def setIspybXML(self, ispybXML):
-        if ispybXML is None:
-            self._ispybXML = None
-        elif ispybXML.__class__.__name__ == "XSDataFile":
-            self._ispybXML = ispybXML
+    # Methods and properties for the 'summaryFile' attribute
+    def getSummaryFile(self): return self._summaryFile
+    def setSummaryFile(self, summaryFile):
+        if summaryFile is None:
+            self._summaryFile = None
+        elif summaryFile.__class__.__name__ == "XSDataFile":
+            self._summaryFile = summaryFile
         else:
-            strMessage = "ERROR! XSDataResultCrystFEL.setIspybXML argument is not XSDataFile but %s" % ispybXML.__class__.__name__
+            strMessage = "ERROR! XSDataResultCrystFEL.setSummaryFile argument is not XSDataFile but %s" % summaryFile.__class__.__name__
             raise BaseException(strMessage)
-    def delIspybXML(self): self._ispybXML = None
-    ispybXML = property(getIspybXML, setIspybXML, delIspybXML, "Property for ispybXML")
-    # Methods and properties for the 'summary' attribute
-    def getSummary(self): return self._summary
-    def setSummary(self, summary):
-        if summary is None:
-            self._summary = None
-        elif summary.__class__.__name__ == "XSDataFile":
-            self._summary = summary
-        else:
-            strMessage = "ERROR! XSDataResultCrystFEL.setSummary argument is not XSDataFile but %s" % summary.__class__.__name__
-            raise BaseException(strMessage)
-    def delSummary(self): self._summary = None
-    summary = property(getSummary, setSummary, delSummary, "Property for summary")
+    def delSummaryFile(self): self._summaryFile = None
+    summaryFile = property(getSummaryFile, setSummaryFile, delSummaryFile, "Property for summaryFile")
     # Methods and properties for the 'logFiles' attribute
     def getLogFiles(self): return self._logFiles
     def setLogFiles(self, logFiles):
@@ -428,26 +638,46 @@ class XSDataResultCrystFEL(XSDataResult):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataResultCrystFEL'):
         XSDataResult.exportChildren(self, outfile, level, name_)
-        if self._logFile is not None:
-            self.logFile.export(outfile, level, name_='logFile')
+        if self._overallCompl is not None:
+            self.overallCompl.export(outfile, level, name_='overallCompl')
         else:
-            warnEmptyAttribute("logFile", "XSDataFile")
-        if self._htmlFile is not None:
-            self.htmlFile.export(outfile, level, name_='htmlFile')
+            warnEmptyAttribute("overallCompl", "XSDataDouble")
+        if self._overallRed is not None:
+            self.overallRed.export(outfile, level, name_='overallRed')
         else:
-            warnEmptyAttribute("htmlFile", "XSDataFile")
+            warnEmptyAttribute("overallRed", "XSDataDouble")
+        if self._overallSnr is not None:
+            self.overallSnr.export(outfile, level, name_='overallSnr')
+        else:
+            warnEmptyAttribute("overallSnr", "XSDataDouble")
+        if self._overallRsplit is not None:
+            self.overallRsplit.export(outfile, level, name_='overallRsplit')
+        else:
+            warnEmptyAttribute("overallRsplit", "XSDataDouble")
+        if self._overallCC is not None:
+            self.overallCC.export(outfile, level, name_='overallCC')
+        else:
+            warnEmptyAttribute("overallCC", "XSDataDouble")
+        if self._resolutionLimitLow is not None:
+            self.resolutionLimitLow.export(outfile, level, name_='resolutionLimitLow')
+        else:
+            warnEmptyAttribute("resolutionLimitLow", "XSDataDouble")
+        if self._resolutionLimitHigh is not None:
+            self.resolutionLimitHigh.export(outfile, level, name_='resolutionLimitHigh')
+        else:
+            warnEmptyAttribute("resolutionLimitHigh", "XSDataDouble")
+        if self._comment is not None:
+            self.comment.export(outfile, level, name_='comment')
+        else:
+            warnEmptyAttribute("comment", "XSDataString")
         for dataFiles_ in self.getDataFiles():
             dataFiles_.export(outfile, level, name_='dataFiles')
         if self.getDataFiles() == []:
             warnEmptyAttribute("dataFiles", "XSDataFile")
-        if self._ispybXML is not None:
-            self.ispybXML.export(outfile, level, name_='ispybXML')
+        if self._summaryFile is not None:
+            self.summaryFile.export(outfile, level, name_='summaryFile')
         else:
-            warnEmptyAttribute("ispybXML", "XSDataFile")
-        if self._summary is not None:
-            self.summary.export(outfile, level, name_='summary')
-        else:
-            warnEmptyAttribute("summary", "XSDataFile")
+            warnEmptyAttribute("summaryFile", "XSDataFile")
         for logFiles_ in self.getLogFiles():
             logFiles_.export(outfile, level, name_='logFiles')
         if self.getLogFiles() == []:
@@ -458,30 +688,55 @@ class XSDataResultCrystFEL(XSDataResult):
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'logFile':
-            obj_ = XSDataFile()
+            nodeName_ == 'overallCompl':
+            obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setLogFile(obj_)
+            self.setOverallCompl(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'htmlFile':
-            obj_ = XSDataFile()
+            nodeName_ == 'overallRed':
+            obj_ = XSDataDouble()
             obj_.build(child_)
-            self.setHtmlFile(obj_)
+            self.setOverallRed(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'overallSnr':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setOverallSnr(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'overallRsplit':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setOverallRsplit(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'overallCC':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setOverallCC(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'resolutionLimitLow':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setResolutionLimitLow(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'resolutionLimitHigh':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setResolutionLimitHigh(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'comment':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setComment(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'dataFiles':
             obj_ = XSDataFile()
             obj_.build(child_)
             self.dataFiles.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'ispybXML':
+            nodeName_ == 'summaryFile':
             obj_ = XSDataFile()
             obj_.build(child_)
-            self.setIspybXML(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'summary':
-            obj_ = XSDataFile()
-            obj_.build(child_)
-            self.setSummary(obj_)
+            self.setSummaryFile(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'logFiles':
             obj_ = XSDataFile()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri May 31 03:13::11 2019 by EDGenerateDS.
+# Generated Wed Jun 5 01:24::10 2019 by EDGenerateDS.
 #
 
 import os, sys
@@ -120,7 +120,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlCrystFEL(XSDataInput):
-    def __init__(self, configuration=None, mtzFile=None, hklFile=None, streamFile=None, imagesFullPath=None, cellFile=None, geomFile=None, processDirectory=None, dataCollectionId=None):
+    def __init__(self, configuration=None, baseFileName=None, resCutOff=None, spaceGroup=None, pointGroup=None, cellFile=None, geomFile=None, imagesFullPath=None, processDirectory=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -136,6 +136,13 @@ class XSDataInputControlCrystFEL(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
             raise BaseException(strMessage)
+        if imagesFullPath is None:
+            self._imagesFullPath = None
+        elif imagesFullPath.__class__.__name__ == "XSDataString":
+            self._imagesFullPath = imagesFullPath
+        else:
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'imagesFullPath' is not XSDataString but %s" % self._imagesFullPath.__class__.__name__
+            raise BaseException(strMessage)
         if geomFile is None:
             self._geomFile = None
         elif geomFile.__class__.__name__ == "XSDataString":
@@ -150,33 +157,33 @@ class XSDataInputControlCrystFEL(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'cellFile' is not XSDataString but %s" % self._cellFile.__class__.__name__
             raise BaseException(strMessage)
-        if imagesFullPath is None:
-            self._imagesFullPath = None
-        elif imagesFullPath.__class__.__name__ == "XSDataString":
-            self._imagesFullPath = imagesFullPath
+        if pointGroup is None:
+            self._pointGroup = None
+        elif pointGroup.__class__.__name__ == "XSDataString":
+            self._pointGroup = pointGroup
         else:
-            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'imagesFullPath' is not XSDataString but %s" % self._imagesFullPath.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'pointGroup' is not XSDataString but %s" % self._pointGroup.__class__.__name__
             raise BaseException(strMessage)
-        if streamFile is None:
-            self._streamFile = None
-        elif streamFile.__class__.__name__ == "XSDataString":
-            self._streamFile = streamFile
+        if spaceGroup is None:
+            self._spaceGroup = None
+        elif spaceGroup.__class__.__name__ == "XSDataString":
+            self._spaceGroup = spaceGroup
         else:
-            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'streamFile' is not XSDataString but %s" % self._streamFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'spaceGroup' is not XSDataString but %s" % self._spaceGroup.__class__.__name__
             raise BaseException(strMessage)
-        if hklFile is None:
-            self._hklFile = None
-        elif hklFile.__class__.__name__ == "XSDataString":
-            self._hklFile = hklFile
+        if resCutOff is None:
+            self._resCutOff = None
+        elif resCutOff.__class__.__name__ == "XSDataString":
+            self._resCutOff = resCutOff
         else:
-            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'hklFile' is not XSDataString but %s" % self._hklFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'resCutOff' is not XSDataString but %s" % self._resCutOff.__class__.__name__
             raise BaseException(strMessage)
-        if mtzFile is None:
-            self._mtzFile = None
-        elif mtzFile.__class__.__name__ == "XSDataString":
-            self._mtzFile = mtzFile
+        if baseFileName is None:
+            self._baseFileName = None
+        elif baseFileName.__class__.__name__ == "XSDataString":
+            self._baseFileName = baseFileName
         else:
-            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'mtzFile' is not XSDataString but %s" % self._mtzFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'baseFileName' is not XSDataString but %s" % self._baseFileName.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -202,6 +209,18 @@ class XSDataInputControlCrystFEL(XSDataInput):
             raise BaseException(strMessage)
     def delProcessDirectory(self): self._processDirectory = None
     processDirectory = property(getProcessDirectory, setProcessDirectory, delProcessDirectory, "Property for processDirectory")
+    # Methods and properties for the 'imagesFullPath' attribute
+    def getImagesFullPath(self): return self._imagesFullPath
+    def setImagesFullPath(self, imagesFullPath):
+        if imagesFullPath is None:
+            self._imagesFullPath = None
+        elif imagesFullPath.__class__.__name__ == "XSDataString":
+            self._imagesFullPath = imagesFullPath
+        else:
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setImagesFullPath argument is not XSDataString but %s" % imagesFullPath.__class__.__name__
+            raise BaseException(strMessage)
+    def delImagesFullPath(self): self._imagesFullPath = None
+    imagesFullPath = property(getImagesFullPath, setImagesFullPath, delImagesFullPath, "Property for imagesFullPath")
     # Methods and properties for the 'geomFile' attribute
     def getGeomFile(self): return self._geomFile
     def setGeomFile(self, geomFile):
@@ -226,54 +245,54 @@ class XSDataInputControlCrystFEL(XSDataInput):
             raise BaseException(strMessage)
     def delCellFile(self): self._cellFile = None
     cellFile = property(getCellFile, setCellFile, delCellFile, "Property for cellFile")
-    # Methods and properties for the 'imagesFullPath' attribute
-    def getImagesFullPath(self): return self._imagesFullPath
-    def setImagesFullPath(self, imagesFullPath):
-        if imagesFullPath is None:
-            self._imagesFullPath = None
-        elif imagesFullPath.__class__.__name__ == "XSDataString":
-            self._imagesFullPath = imagesFullPath
+    # Methods and properties for the 'pointGroup' attribute
+    def getPointGroup(self): return self._pointGroup
+    def setPointGroup(self, pointGroup):
+        if pointGroup is None:
+            self._pointGroup = None
+        elif pointGroup.__class__.__name__ == "XSDataString":
+            self._pointGroup = pointGroup
         else:
-            strMessage = "ERROR! XSDataInputControlCrystFEL.setImagesFullPath argument is not XSDataString but %s" % imagesFullPath.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setPointGroup argument is not XSDataString but %s" % pointGroup.__class__.__name__
             raise BaseException(strMessage)
-    def delImagesFullPath(self): self._imagesFullPath = None
-    imagesFullPath = property(getImagesFullPath, setImagesFullPath, delImagesFullPath, "Property for imagesFullPath")
-    # Methods and properties for the 'streamFile' attribute
-    def getStreamFile(self): return self._streamFile
-    def setStreamFile(self, streamFile):
-        if streamFile is None:
-            self._streamFile = None
-        elif streamFile.__class__.__name__ == "XSDataString":
-            self._streamFile = streamFile
+    def delPointGroup(self): self._pointGroup = None
+    pointGroup = property(getPointGroup, setPointGroup, delPointGroup, "Property for pointGroup")
+    # Methods and properties for the 'spaceGroup' attribute
+    def getSpaceGroup(self): return self._spaceGroup
+    def setSpaceGroup(self, spaceGroup):
+        if spaceGroup is None:
+            self._spaceGroup = None
+        elif spaceGroup.__class__.__name__ == "XSDataString":
+            self._spaceGroup = spaceGroup
         else:
-            strMessage = "ERROR! XSDataInputControlCrystFEL.setStreamFile argument is not XSDataString but %s" % streamFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setSpaceGroup argument is not XSDataString but %s" % spaceGroup.__class__.__name__
             raise BaseException(strMessage)
-    def delStreamFile(self): self._streamFile = None
-    streamFile = property(getStreamFile, setStreamFile, delStreamFile, "Property for streamFile")
-    # Methods and properties for the 'hklFile' attribute
-    def getHklFile(self): return self._hklFile
-    def setHklFile(self, hklFile):
-        if hklFile is None:
-            self._hklFile = None
-        elif hklFile.__class__.__name__ == "XSDataString":
-            self._hklFile = hklFile
+    def delSpaceGroup(self): self._spaceGroup = None
+    spaceGroup = property(getSpaceGroup, setSpaceGroup, delSpaceGroup, "Property for spaceGroup")
+    # Methods and properties for the 'resCutOff' attribute
+    def getResCutOff(self): return self._resCutOff
+    def setResCutOff(self, resCutOff):
+        if resCutOff is None:
+            self._resCutOff = None
+        elif resCutOff.__class__.__name__ == "XSDataString":
+            self._resCutOff = resCutOff
         else:
-            strMessage = "ERROR! XSDataInputControlCrystFEL.setHklFile argument is not XSDataString but %s" % hklFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setResCutOff argument is not XSDataString but %s" % resCutOff.__class__.__name__
             raise BaseException(strMessage)
-    def delHklFile(self): self._hklFile = None
-    hklFile = property(getHklFile, setHklFile, delHklFile, "Property for hklFile")
-    # Methods and properties for the 'mtzFile' attribute
-    def getMtzFile(self): return self._mtzFile
-    def setMtzFile(self, mtzFile):
-        if mtzFile is None:
-            self._mtzFile = None
-        elif mtzFile.__class__.__name__ == "XSDataString":
-            self._mtzFile = mtzFile
+    def delResCutOff(self): self._resCutOff = None
+    resCutOff = property(getResCutOff, setResCutOff, delResCutOff, "Property for resCutOff")
+    # Methods and properties for the 'baseFileName' attribute
+    def getBaseFileName(self): return self._baseFileName
+    def setBaseFileName(self, baseFileName):
+        if baseFileName is None:
+            self._baseFileName = None
+        elif baseFileName.__class__.__name__ == "XSDataString":
+            self._baseFileName = baseFileName
         else:
-            strMessage = "ERROR! XSDataInputControlCrystFEL.setMtzFile argument is not XSDataString but %s" % mtzFile.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setBaseFileName argument is not XSDataString but %s" % baseFileName.__class__.__name__
             raise BaseException(strMessage)
-    def delMtzFile(self): self._mtzFile = None
-    mtzFile = property(getMtzFile, setMtzFile, delMtzFile, "Property for mtzFile")
+    def delBaseFileName(self): self._baseFileName = None
+    baseFileName = property(getBaseFileName, setBaseFileName, delBaseFileName, "Property for baseFileName")
     def export(self, outfile, level, name_='XSDataInputControlCrystFEL'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -284,8 +303,12 @@ class XSDataInputControlCrystFEL(XSDataInput):
         XSDataInput.exportChildren(self, outfile, level, name_)
         if self._dataCollectionId is not None:
             self.dataCollectionId.export(outfile, level, name_='dataCollectionId')
+        else:
+            warnEmptyAttribute("dataCollectionId", "XSDataInteger")
         if self._processDirectory is not None:
             self.processDirectory.export(outfile, level, name_='processDirectory')
+        if self._imagesFullPath is not None:
+            self.imagesFullPath.export(outfile, level, name_='imagesFullPath')
         if self._geomFile is not None:
             self.geomFile.export(outfile, level, name_='geomFile')
         else:
@@ -294,22 +317,22 @@ class XSDataInputControlCrystFEL(XSDataInput):
             self.cellFile.export(outfile, level, name_='cellFile')
         else:
             warnEmptyAttribute("cellFile", "XSDataString")
-        if self._imagesFullPath is not None:
-            self.imagesFullPath.export(outfile, level, name_='imagesFullPath')
+        if self._pointGroup is not None:
+            self.pointGroup.export(outfile, level, name_='pointGroup')
         else:
-            warnEmptyAttribute("imagesFullPath", "XSDataString")
-        if self._streamFile is not None:
-            self.streamFile.export(outfile, level, name_='streamFile')
+            warnEmptyAttribute("pointGroup", "XSDataString")
+        if self._spaceGroup is not None:
+            self.spaceGroup.export(outfile, level, name_='spaceGroup')
         else:
-            warnEmptyAttribute("streamFile", "XSDataString")
-        if self._hklFile is not None:
-            self.hklFile.export(outfile, level, name_='hklFile')
+            warnEmptyAttribute("spaceGroup", "XSDataString")
+        if self._resCutOff is not None:
+            self.resCutOff.export(outfile, level, name_='resCutOff')
         else:
-            warnEmptyAttribute("hklFile", "XSDataString")
-        if self._mtzFile is not None:
-            self.mtzFile.export(outfile, level, name_='mtzFile')
+            warnEmptyAttribute("resCutOff", "XSDataString")
+        if self._baseFileName is not None:
+            self.baseFileName.export(outfile, level, name_='baseFileName')
         else:
-            warnEmptyAttribute("mtzFile", "XSDataString")
+            warnEmptyAttribute("baseFileName", "XSDataString")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -326,6 +349,11 @@ class XSDataInputControlCrystFEL(XSDataInput):
             obj_.build(child_)
             self.setProcessDirectory(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'imagesFullPath':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setImagesFullPath(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'geomFile':
             obj_ = XSDataString()
             obj_.build(child_)
@@ -336,25 +364,25 @@ class XSDataInputControlCrystFEL(XSDataInput):
             obj_.build(child_)
             self.setCellFile(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'imagesFullPath':
+            nodeName_ == 'pointGroup':
             obj_ = XSDataString()
             obj_.build(child_)
-            self.setImagesFullPath(obj_)
+            self.setPointGroup(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'streamFile':
+            nodeName_ == 'spaceGroup':
             obj_ = XSDataString()
             obj_.build(child_)
-            self.setStreamFile(obj_)
+            self.setSpaceGroup(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'hklFile':
+            nodeName_ == 'resCutOff':
             obj_ = XSDataString()
             obj_.build(child_)
-            self.setHklFile(obj_)
+            self.setResCutOff(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'mtzFile':
+            nodeName_ == 'baseFileName':
             obj_ = XSDataString()
             obj_.build(child_)
-            self.setMtzFile(obj_)
+            self.setBaseFileName(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
