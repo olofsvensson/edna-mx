@@ -149,6 +149,16 @@ class EDUtilsPath:
     EDNA_SITE = classproperty(getEdnaSite, setEdnaSite)
 
     @classmethod
+    def isALBA(cls):
+        """
+        Returns true if ALBA config
+        """
+        if cls._EDNA_SITE is None:
+            return False
+        else:
+            return cls._EDNA_SITE.startswith('ALBA')
+
+    @classmethod
     def isEMBL(cls):
         """
         Returns true if EMBL config

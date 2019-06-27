@@ -130,6 +130,10 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.processingCommandLine = ' '.join(sys.argv)
         self.processingPrograms = "XDSAPP"
 
+        if self.dataInput.useXdsAsciiToXml is not None:
+            if self.dataInput.useXdsAsciiToXml.value:
+                self.useXdsAsciiToXml = True
+
         if self.useXdsAsciiToXml:
             self.doAnomAndNonanom = False
         elif self.dataInput.doAnomAndNonanom is not None:

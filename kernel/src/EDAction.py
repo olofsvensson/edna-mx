@@ -79,7 +79,7 @@ class EDAction(EDLogging, Thread):
         self.__bIsFailure = False
         self.__bIsTimeOut = False
         self.__fTimeOutInSeconds = None
-        if EDUtilsPath.isEMBL():
+        if EDUtilsPath.isEMBL() or EDUtilsPath.isALBA():
             self.__fDefaultTimeOutInSeconds = 3600.0
         else:
             self.__fDefaultTimeOutInSeconds = 600.0

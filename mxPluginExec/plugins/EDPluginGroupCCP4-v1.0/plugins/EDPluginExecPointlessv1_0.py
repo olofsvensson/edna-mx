@@ -55,7 +55,7 @@ class EDPluginExecPointlessv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG('Pointless: preprocess')
         if self.output_file is not None and self.input_file is not None:
-            if EDUtilsPath.isEMBL():
+            if EDUtilsPath.isEMBL() or EDUtilsPath.isALBA():
                 options = '''-c xdsin {0} hklout {1}'''.format(self.input_file,
                                                                self.output_file)
             else:

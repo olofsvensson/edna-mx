@@ -16,6 +16,7 @@ complex type XSDataInputControlXDSAPP extends XSDataInput {
 	hdf5ToCbfDirectory : XSDataFile optional
 	spaceGroup : XSDataString optional
 	unitCell : XSDataString optional // space separated numerical values
+	useXdsAsciiToXml : XSDataBoolean optional
 }
 
 complex type XSDataResultControlXDSAPP extends XSDataResult {

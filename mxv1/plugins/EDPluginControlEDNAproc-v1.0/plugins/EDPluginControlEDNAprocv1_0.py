@@ -50,6 +50,8 @@ from EDUtilsPath import EDUtilsPath
 
 from EDHandlerXSDataISPyBv1_4 import EDHandlerXSDataISPyBv1_4
 
+from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
+
 # try the suds from the system
 try:
     import suds
@@ -1175,13 +1177,21 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             # files_dir, _ = os.path.split(original_files_dir)
             files_dir = original_files_dir
 
+            if EDUtilsPath.isALBA():
+                _pyarch_path = EDHandlerESRFPyarchv1_0.translateToIspybALBAPath(self.first_image)
+                pyarch_path = "_".join(_pyarch_path.split('_')[:-1])
+                from datetime import datetime
+                _id = datetime.now().strftime('%Y%m%d_%H%M%S')
+                pyarch_path = os.path.join(pyarch_path, "ednaPROC_%s" % _id)
+
             # the whole transformation is fragile!
             if EDUtilsPath.isEMBL():
                 tokens = [elem for elem in self.first_image.split(os.path.sep)
                           if len(elem) > 0]
-                if 'p14' in tokens[0:2] or 'P14' in tokens[0:2]:
+                print tokens
+                if 'p14' in tokens[0:3] or 'P14' in tokens[0:3]:
                      strBeamline = 'p14'
-                elif 'p13' in tokens[0:2] or 'P13' in tokens[0:2]:
+                elif 'p13' in tokens[0:3] or 'P13' in tokens[0:3]:
                     strBeamline = 'p13'
                 else:
                      strBeamline = ''
@@ -1323,7 +1333,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                     self.stats['ispyb_upload'] = time.time() - t0
 
             # Finally run dimple if executed at the ESRF
-            if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL():
+            if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL() or EDUtilsPath.isALBA():
                 xsDataInputControlDimple = XSDataInputControlDimple()
                 xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
                 xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "ep_{0}_anom_aimless.mtz".format(self.image_prefix))))

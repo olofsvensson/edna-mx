@@ -28,6 +28,7 @@ __copyright__ = "ESRF"
 import os
 import glob
 import subprocess
+import multiprocessing
 
 from EDUtilsPath import EDUtilsPath
 
@@ -65,6 +66,8 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginExecXia2DIALSv1_0.configure")
         self.maxNoProcessors = self.config.get("maxNoProcessors", self.maxNoProcessors)
+        if EDUtilsPath.isEMBL():
+            self.maxNoProcessors = multiprocessing.cpu_count() / 2
         self.goniometerAxes = self.config.get("goniometerAxes", self.goniometerAxes)
 
     def preProcess(self, _edObject=None):
@@ -81,7 +84,7 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         currentDir = os.getcwd()
         os.chdir(self.getWorkingDirectory())
         if EDUtilsPath.isEMBL(): 
-            subprocess.call("/mx-beta/dials-v1-5-1/build/bin/xia2.ispyb_xml")
+            subprocess.call("/mx-beta/dials/dials-v1-10-0/build/bin/xia2.ispyb_xml")
         else:
             subprocess.call("/opt/pxsoft/bin/xia2.ispyb_xml")
         os.chdir(currentDir)

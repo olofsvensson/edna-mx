@@ -3,4 +3,7 @@
   <XSImportConfiguration>
   	<name>XSConfiguration_ALBA_Common</name>
   </XSImportConfiguration>
+  <XSImportConfiguration>
+  	<name>XSConfiguration_ALBA_ISPyB_Common</name>
+  </XSImportConfiguration>
 </XSConfiguration>

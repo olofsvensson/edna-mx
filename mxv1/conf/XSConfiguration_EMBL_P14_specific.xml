@@ -172,8 +172,34 @@
                                  </XSParamItem>
                                  <XSParamItem>
                                          <name>mxCuBE_URI</name>
-                                         <value>http://p14ui01:8011</value>
+                                         <value>http://p14ui01.embl-hamburg.de:8011</value>
                                  </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginControlXia2DIALSv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>3700</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                         <name>mxCuBE_URI</name>
+                                         <value>http://p14ui01:8011</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginControlAutoProcv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>3700</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                         <name>mxCuBE_URI</name>
+                                         <value>http://p14ui01:8011</value>
+                                </XSParamItem>
                         </XSParamList>
                 </XSPluginItem>
 	</XSPluginList>

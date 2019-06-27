@@ -230,8 +230,9 @@ class EDPluginControlInterfaceToMXCuBEv1_3(EDPluginControl):
             # For the moment, create "DNA" style output directory
             strPathToDNAFileDirectory = self.createDNAFileDirectoryPath(xsDataResultCharacterisation)
             xsDataDictionaryLogFile = None
-            if (self.createDNAFileDirectory(strPathToDNAFileDirectory)):
-                xsDataDictionaryLogFile = self.createOutputFileDictionary(xsDataResultCharacterisation, strPathToDNAFileDirectory)
+            if not EDUtilsPath.isALBA:
+                if (self.createDNAFileDirectory(strPathToDNAFileDirectory)):
+                    xsDataDictionaryLogFile = self.createOutputFileDictionary(xsDataResultCharacterisation, strPathToDNAFileDirectory)
             strPyArchPathToDNAFileDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(strPathToDNAFileDirectory)
             if (self.createDNAFileDirectory(strPyArchPathToDNAFileDirectory)):
                 xsDataDictionaryLogFile = self.createOutputFileDictionary(xsDataResultCharacterisation, strPyArchPathToDNAFileDirectory)

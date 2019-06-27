@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Jun 27 11:59::11 2019 by EDGenerateDS.
+# Generated Wed Jun 5 01:24::10 2019 by EDGenerateDS.
 #
 
 import os, sys
@@ -12,16 +12,14 @@ from xml.dom import Node
 strEdnaHome = os.environ.get("EDNA_HOME", None)
 
 dictLocation = { \
- "XSDataCommon": "kernel/datamodel", \
- "XSDataCommon": "kernel/datamodel", \
- "XSDataCommon": "kernel/datamodel", \
- "XSDataCommon": "kernel/datamodel", \
- "XSDataCommon": "kernel/datamodel", \
- "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "mxv1/plugins/EDPluginControlCrystFEL-v1.0/datamodel/../../../../kernel/datamodel", \
+ "XSDataCommon": "mxv1/plugins/EDPluginControlCrystFEL-v1.0/datamodel/../../../../kernel/datamodel", \
+ "XSDataCommon": "mxv1/plugins/EDPluginControlCrystFEL-v1.0/datamodel/../../../../kernel/datamodel", \
+ "XSDataCommon": "mxv1/plugins/EDPluginControlCrystFEL-v1.0/datamodel/../../../../kernel/datamodel", \
+ "XSDataCommon": "mxv1/plugins/EDPluginControlCrystFEL-v1.0/datamodel/../../../../kernel/datamodel", \
 }
 
 try:
-    from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataInteger
@@ -37,7 +35,6 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
-from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
@@ -122,57 +119,71 @@ class MixedContainer(object):
 
 
 
-class XSDataInputControlXDSAPP(XSDataInput):
-    def __init__(self, configuration=None, useXdsAsciiToXml=None, unitCell=None, spaceGroup=None, hdf5ToCbfDirectory=None, doAnomAndNonanom=None, processDirectory=None, dataCollectionId=None):
+class XSDataInputControlCrystFEL(XSDataInput):
+    def __init__(self, configuration=None, baseFileName=None, resCutOff=None, spaceGroup=None, pointGroup=None, cellFile=None, geomFile=None, imagesFullPath=None, processDirectory=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
         elif dataCollectionId.__class__.__name__ == "XSDataInteger":
             self._dataCollectionId = dataCollectionId
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'dataCollectionId' is not XSDataInteger but %s" % self._dataCollectionId.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'dataCollectionId' is not XSDataInteger but %s" % self._dataCollectionId.__class__.__name__
             raise BaseException(strMessage)
         if processDirectory is None:
             self._processDirectory = None
         elif processDirectory.__class__.__name__ == "XSDataFile":
             self._processDirectory = processDirectory
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
             raise BaseException(strMessage)
-        if doAnomAndNonanom is None:
-            self._doAnomAndNonanom = None
-        elif doAnomAndNonanom.__class__.__name__ == "XSDataBoolean":
-            self._doAnomAndNonanom = doAnomAndNonanom
+        if imagesFullPath is None:
+            self._imagesFullPath = None
+        elif imagesFullPath.__class__.__name__ == "XSDataString":
+            self._imagesFullPath = imagesFullPath
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'doAnomAndNonanom' is not XSDataBoolean but %s" % self._doAnomAndNonanom.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'imagesFullPath' is not XSDataString but %s" % self._imagesFullPath.__class__.__name__
             raise BaseException(strMessage)
-        if hdf5ToCbfDirectory is None:
-            self._hdf5ToCbfDirectory = None
-        elif hdf5ToCbfDirectory.__class__.__name__ == "XSDataFile":
-            self._hdf5ToCbfDirectory = hdf5ToCbfDirectory
+        if geomFile is None:
+            self._geomFile = None
+        elif geomFile.__class__.__name__ == "XSDataString":
+            self._geomFile = geomFile
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'hdf5ToCbfDirectory' is not XSDataFile but %s" % self._hdf5ToCbfDirectory.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'geomFile' is not XSDataString but %s" % self._geomFile.__class__.__name__
+            raise BaseException(strMessage)
+        if cellFile is None:
+            self._cellFile = None
+        elif cellFile.__class__.__name__ == "XSDataString":
+            self._cellFile = cellFile
+        else:
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'cellFile' is not XSDataString but %s" % self._cellFile.__class__.__name__
+            raise BaseException(strMessage)
+        if pointGroup is None:
+            self._pointGroup = None
+        elif pointGroup.__class__.__name__ == "XSDataString":
+            self._pointGroup = pointGroup
+        else:
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'pointGroup' is not XSDataString but %s" % self._pointGroup.__class__.__name__
             raise BaseException(strMessage)
         if spaceGroup is None:
             self._spaceGroup = None
         elif spaceGroup.__class__.__name__ == "XSDataString":
             self._spaceGroup = spaceGroup
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'spaceGroup' is not XSDataString but %s" % self._spaceGroup.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'spaceGroup' is not XSDataString but %s" % self._spaceGroup.__class__.__name__
             raise BaseException(strMessage)
-        if unitCell is None:
-            self._unitCell = None
-        elif unitCell.__class__.__name__ == "XSDataString":
-            self._unitCell = unitCell
+        if resCutOff is None:
+            self._resCutOff = None
+        elif resCutOff.__class__.__name__ == "XSDataString":
+            self._resCutOff = resCutOff
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'unitCell' is not XSDataString but %s" % self._unitCell.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'resCutOff' is not XSDataString but %s" % self._resCutOff.__class__.__name__
             raise BaseException(strMessage)
-        if useXdsAsciiToXml is None:
-            self._useXdsAsciiToXml = None
-        elif useXdsAsciiToXml.__class__.__name__ == "XSDataBoolean":
-            self._useXdsAsciiToXml = useXdsAsciiToXml
+        if baseFileName is None:
+            self._baseFileName = None
+        elif baseFileName.__class__.__name__ == "XSDataString":
+            self._baseFileName = baseFileName
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'useXdsAsciiToXml' is not XSDataBoolean but %s" % self._useXdsAsciiToXml.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL constructor argument 'baseFileName' is not XSDataString but %s" % self._baseFileName.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -182,7 +193,7 @@ class XSDataInputControlXDSAPP(XSDataInput):
         elif dataCollectionId.__class__.__name__ == "XSDataInteger":
             self._dataCollectionId = dataCollectionId
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP.setDataCollectionId argument is not XSDataInteger but %s" % dataCollectionId.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setDataCollectionId argument is not XSDataInteger but %s" % dataCollectionId.__class__.__name__
             raise BaseException(strMessage)
     def delDataCollectionId(self): self._dataCollectionId = None
     dataCollectionId = property(getDataCollectionId, setDataCollectionId, delDataCollectionId, "Property for dataCollectionId")
@@ -194,34 +205,58 @@ class XSDataInputControlXDSAPP(XSDataInput):
         elif processDirectory.__class__.__name__ == "XSDataFile":
             self._processDirectory = processDirectory
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP.setProcessDirectory argument is not XSDataFile but %s" % processDirectory.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setProcessDirectory argument is not XSDataFile but %s" % processDirectory.__class__.__name__
             raise BaseException(strMessage)
     def delProcessDirectory(self): self._processDirectory = None
     processDirectory = property(getProcessDirectory, setProcessDirectory, delProcessDirectory, "Property for processDirectory")
-    # Methods and properties for the 'doAnomAndNonanom' attribute
-    def getDoAnomAndNonanom(self): return self._doAnomAndNonanom
-    def setDoAnomAndNonanom(self, doAnomAndNonanom):
-        if doAnomAndNonanom is None:
-            self._doAnomAndNonanom = None
-        elif doAnomAndNonanom.__class__.__name__ == "XSDataBoolean":
-            self._doAnomAndNonanom = doAnomAndNonanom
+    # Methods and properties for the 'imagesFullPath' attribute
+    def getImagesFullPath(self): return self._imagesFullPath
+    def setImagesFullPath(self, imagesFullPath):
+        if imagesFullPath is None:
+            self._imagesFullPath = None
+        elif imagesFullPath.__class__.__name__ == "XSDataString":
+            self._imagesFullPath = imagesFullPath
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP.setDoAnomAndNonanom argument is not XSDataBoolean but %s" % doAnomAndNonanom.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setImagesFullPath argument is not XSDataString but %s" % imagesFullPath.__class__.__name__
             raise BaseException(strMessage)
-    def delDoAnomAndNonanom(self): self._doAnomAndNonanom = None
-    doAnomAndNonanom = property(getDoAnomAndNonanom, setDoAnomAndNonanom, delDoAnomAndNonanom, "Property for doAnomAndNonanom")
-    # Methods and properties for the 'hdf5ToCbfDirectory' attribute
-    def getHdf5ToCbfDirectory(self): return self._hdf5ToCbfDirectory
-    def setHdf5ToCbfDirectory(self, hdf5ToCbfDirectory):
-        if hdf5ToCbfDirectory is None:
-            self._hdf5ToCbfDirectory = None
-        elif hdf5ToCbfDirectory.__class__.__name__ == "XSDataFile":
-            self._hdf5ToCbfDirectory = hdf5ToCbfDirectory
+    def delImagesFullPath(self): self._imagesFullPath = None
+    imagesFullPath = property(getImagesFullPath, setImagesFullPath, delImagesFullPath, "Property for imagesFullPath")
+    # Methods and properties for the 'geomFile' attribute
+    def getGeomFile(self): return self._geomFile
+    def setGeomFile(self, geomFile):
+        if geomFile is None:
+            self._geomFile = None
+        elif geomFile.__class__.__name__ == "XSDataString":
+            self._geomFile = geomFile
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP.setHdf5ToCbfDirectory argument is not XSDataFile but %s" % hdf5ToCbfDirectory.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setGeomFile argument is not XSDataString but %s" % geomFile.__class__.__name__
             raise BaseException(strMessage)
-    def delHdf5ToCbfDirectory(self): self._hdf5ToCbfDirectory = None
-    hdf5ToCbfDirectory = property(getHdf5ToCbfDirectory, setHdf5ToCbfDirectory, delHdf5ToCbfDirectory, "Property for hdf5ToCbfDirectory")
+    def delGeomFile(self): self._geomFile = None
+    geomFile = property(getGeomFile, setGeomFile, delGeomFile, "Property for geomFile")
+    # Methods and properties for the 'cellFile' attribute
+    def getCellFile(self): return self._cellFile
+    def setCellFile(self, cellFile):
+        if cellFile is None:
+            self._cellFile = None
+        elif cellFile.__class__.__name__ == "XSDataString":
+            self._cellFile = cellFile
+        else:
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setCellFile argument is not XSDataString but %s" % cellFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delCellFile(self): self._cellFile = None
+    cellFile = property(getCellFile, setCellFile, delCellFile, "Property for cellFile")
+    # Methods and properties for the 'pointGroup' attribute
+    def getPointGroup(self): return self._pointGroup
+    def setPointGroup(self, pointGroup):
+        if pointGroup is None:
+            self._pointGroup = None
+        elif pointGroup.__class__.__name__ == "XSDataString":
+            self._pointGroup = pointGroup
+        else:
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setPointGroup argument is not XSDataString but %s" % pointGroup.__class__.__name__
+            raise BaseException(strMessage)
+    def delPointGroup(self): self._pointGroup = None
+    pointGroup = property(getPointGroup, setPointGroup, delPointGroup, "Property for pointGroup")
     # Methods and properties for the 'spaceGroup' attribute
     def getSpaceGroup(self): return self._spaceGroup
     def setSpaceGroup(self, spaceGroup):
@@ -230,56 +265,74 @@ class XSDataInputControlXDSAPP(XSDataInput):
         elif spaceGroup.__class__.__name__ == "XSDataString":
             self._spaceGroup = spaceGroup
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP.setSpaceGroup argument is not XSDataString but %s" % spaceGroup.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setSpaceGroup argument is not XSDataString but %s" % spaceGroup.__class__.__name__
             raise BaseException(strMessage)
     def delSpaceGroup(self): self._spaceGroup = None
     spaceGroup = property(getSpaceGroup, setSpaceGroup, delSpaceGroup, "Property for spaceGroup")
-    # Methods and properties for the 'unitCell' attribute
-    def getUnitCell(self): return self._unitCell
-    def setUnitCell(self, unitCell):
-        if unitCell is None:
-            self._unitCell = None
-        elif unitCell.__class__.__name__ == "XSDataString":
-            self._unitCell = unitCell
+    # Methods and properties for the 'resCutOff' attribute
+    def getResCutOff(self): return self._resCutOff
+    def setResCutOff(self, resCutOff):
+        if resCutOff is None:
+            self._resCutOff = None
+        elif resCutOff.__class__.__name__ == "XSDataString":
+            self._resCutOff = resCutOff
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP.setUnitCell argument is not XSDataString but %s" % unitCell.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setResCutOff argument is not XSDataString but %s" % resCutOff.__class__.__name__
             raise BaseException(strMessage)
-    def delUnitCell(self): self._unitCell = None
-    unitCell = property(getUnitCell, setUnitCell, delUnitCell, "Property for unitCell")
-    # Methods and properties for the 'useXdsAsciiToXml' attribute
-    def getUseXdsAsciiToXml(self): return self._useXdsAsciiToXml
-    def setUseXdsAsciiToXml(self, useXdsAsciiToXml):
-        if useXdsAsciiToXml is None:
-            self._useXdsAsciiToXml = None
-        elif useXdsAsciiToXml.__class__.__name__ == "XSDataBoolean":
-            self._useXdsAsciiToXml = useXdsAsciiToXml
+    def delResCutOff(self): self._resCutOff = None
+    resCutOff = property(getResCutOff, setResCutOff, delResCutOff, "Property for resCutOff")
+    # Methods and properties for the 'baseFileName' attribute
+    def getBaseFileName(self): return self._baseFileName
+    def setBaseFileName(self, baseFileName):
+        if baseFileName is None:
+            self._baseFileName = None
+        elif baseFileName.__class__.__name__ == "XSDataString":
+            self._baseFileName = baseFileName
         else:
-            strMessage = "ERROR! XSDataInputControlXDSAPP.setUseXdsAsciiToXml argument is not XSDataBoolean but %s" % useXdsAsciiToXml.__class__.__name__
+            strMessage = "ERROR! XSDataInputControlCrystFEL.setBaseFileName argument is not XSDataString but %s" % baseFileName.__class__.__name__
             raise BaseException(strMessage)
-    def delUseXdsAsciiToXml(self): self._useXdsAsciiToXml = None
-    useXdsAsciiToXml = property(getUseXdsAsciiToXml, setUseXdsAsciiToXml, delUseXdsAsciiToXml, "Property for useXdsAsciiToXml")
-    def export(self, outfile, level, name_='XSDataInputControlXDSAPP'):
+    def delBaseFileName(self): self._baseFileName = None
+    baseFileName = property(getBaseFileName, setBaseFileName, delBaseFileName, "Property for baseFileName")
+    def export(self, outfile, level, name_='XSDataInputControlCrystFEL'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
         self.exportChildren(outfile, level + 1, name_)
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataInputControlXDSAPP'):
+    def exportChildren(self, outfile, level, name_='XSDataInputControlCrystFEL'):
         XSDataInput.exportChildren(self, outfile, level, name_)
         if self._dataCollectionId is not None:
             self.dataCollectionId.export(outfile, level, name_='dataCollectionId')
+        else:
+            warnEmptyAttribute("dataCollectionId", "XSDataInteger")
         if self._processDirectory is not None:
             self.processDirectory.export(outfile, level, name_='processDirectory')
-        if self._doAnomAndNonanom is not None:
-            self.doAnomAndNonanom.export(outfile, level, name_='doAnomAndNonanom')
-        if self._hdf5ToCbfDirectory is not None:
-            self.hdf5ToCbfDirectory.export(outfile, level, name_='hdf5ToCbfDirectory')
+        if self._imagesFullPath is not None:
+            self.imagesFullPath.export(outfile, level, name_='imagesFullPath')
+        if self._geomFile is not None:
+            self.geomFile.export(outfile, level, name_='geomFile')
+        else:
+            warnEmptyAttribute("geomFile", "XSDataString")
+        if self._cellFile is not None:
+            self.cellFile.export(outfile, level, name_='cellFile')
+        else:
+            warnEmptyAttribute("cellFile", "XSDataString")
+        if self._pointGroup is not None:
+            self.pointGroup.export(outfile, level, name_='pointGroup')
+        else:
+            warnEmptyAttribute("pointGroup", "XSDataString")
         if self._spaceGroup is not None:
             self.spaceGroup.export(outfile, level, name_='spaceGroup')
-        if self._unitCell is not None:
-            self.unitCell.export(outfile, level, name_='unitCell')
-        if self._useXdsAsciiToXml is not None:
-            self.useXdsAsciiToXml.export(outfile, level, name_='useXdsAsciiToXml')
+        else:
+            warnEmptyAttribute("spaceGroup", "XSDataString")
+        if self._resCutOff is not None:
+            self.resCutOff.export(outfile, level, name_='resCutOff')
+        else:
+            warnEmptyAttribute("resCutOff", "XSDataString")
+        if self._baseFileName is not None:
+            self.baseFileName.export(outfile, level, name_='baseFileName')
+        else:
+            warnEmptyAttribute("baseFileName", "XSDataString")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -296,36 +349,46 @@ class XSDataInputControlXDSAPP(XSDataInput):
             obj_.build(child_)
             self.setProcessDirectory(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'doAnomAndNonanom':
-            obj_ = XSDataBoolean()
+            nodeName_ == 'imagesFullPath':
+            obj_ = XSDataString()
             obj_.build(child_)
-            self.setDoAnomAndNonanom(obj_)
+            self.setImagesFullPath(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'hdf5ToCbfDirectory':
-            obj_ = XSDataFile()
+            nodeName_ == 'geomFile':
+            obj_ = XSDataString()
             obj_.build(child_)
-            self.setHdf5ToCbfDirectory(obj_)
+            self.setGeomFile(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'cellFile':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setCellFile(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'pointGroup':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setPointGroup(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'spaceGroup':
             obj_ = XSDataString()
             obj_.build(child_)
             self.setSpaceGroup(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'unitCell':
+            nodeName_ == 'resCutOff':
             obj_ = XSDataString()
             obj_.build(child_)
-            self.setUnitCell(obj_)
+            self.setResCutOff(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'useXdsAsciiToXml':
-            obj_ = XSDataBoolean()
+            nodeName_ == 'baseFileName':
+            obj_ = XSDataString()
             obj_.build(child_)
-            self.setUseXdsAsciiToXml(obj_)
+            self.setBaseFileName(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()
         oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataInputControlXDSAPP" )
+        self.export( oStreamString, 0, name_="XSDataInputControlCrystFEL" )
         oStringXML = oStreamString.getvalue()
         oStreamString.close()
         return oStringXML
@@ -333,24 +396,24 @@ class XSDataInputControlXDSAPP(XSDataInput):
     def exportToFile( self, _outfileName ):
         outfile = open( _outfileName, "w" )
         outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataInputControlXDSAPP' )
+        self.export( outfile, 0, name_='XSDataInputControlCrystFEL' )
         outfile.close()
     #Deprecated method, replaced by exportToFile
     def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataInputControlXDSAPP is deprecated, please use instead exportToFile!")
+        print("WARNING: Method outputFile in class XSDataInputControlCrystFEL is deprecated, please use instead exportToFile!")
         self.exportToFile(_outfileName)
     #Method for making a copy in a new instance
     def copy( self ):
-        return XSDataInputControlXDSAPP.parseString(self.marshal())
+        return XSDataInputControlCrystFEL.parseString(self.marshal())
     #Static method for parsing a string
     def parseString( _inString ):
         doc = minidom.parseString(_inString)
         rootNode = doc.documentElement
-        rootObj = XSDataInputControlXDSAPP()
+        rootObj = XSDataInputControlCrystFEL()
         rootObj.build(rootNode)
         # Check that all minOccurs are obeyed by marshalling the created object
         oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataInputControlXDSAPP" )
+        rootObj.export( oStreamString, 0, name_="XSDataInputControlCrystFEL" )
         oStreamString.close()
         return rootObj
     parseString = staticmethod( parseString )
@@ -358,23 +421,23 @@ class XSDataInputControlXDSAPP(XSDataInput):
     def parseFile( _inFilePath ):
         doc = minidom.parse(_inFilePath)
         rootNode = doc.documentElement
-        rootObj = XSDataInputControlXDSAPP()
+        rootObj = XSDataInputControlCrystFEL()
         rootObj.build(rootNode)
         return rootObj
     parseFile = staticmethod( parseFile )
-# end class XSDataInputControlXDSAPP
+# end class XSDataInputControlCrystFEL
 
 
-class XSDataResultControlXDSAPP(XSDataResult):
+class XSDataResultControlCrystFEL(XSDataResult):
     def __init__(self, status=None):
         XSDataResult.__init__(self, status)
-    def export(self, outfile, level, name_='XSDataResultControlXDSAPP'):
+    def export(self, outfile, level, name_='XSDataResultControlCrystFEL'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
         self.exportChildren(outfile, level + 1, name_)
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataResultControlXDSAPP'):
+    def exportChildren(self, outfile, level, name_='XSDataResultControlCrystFEL'):
         XSDataResult.exportChildren(self, outfile, level, name_)
     def build(self, node_):
         for child_ in node_.childNodes:
@@ -387,7 +450,7 @@ class XSDataResultControlXDSAPP(XSDataResult):
     def marshal( self ):
         oStreamString = StringIO()
         oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataResultControlXDSAPP" )
+        self.export( oStreamString, 0, name_="XSDataResultControlCrystFEL" )
         oStringXML = oStreamString.getvalue()
         oStreamString.close()
         return oStringXML
@@ -395,24 +458,24 @@ class XSDataResultControlXDSAPP(XSDataResult):
     def exportToFile( self, _outfileName ):
         outfile = open( _outfileName, "w" )
         outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataResultControlXDSAPP' )
+        self.export( outfile, 0, name_='XSDataResultControlCrystFEL' )
         outfile.close()
     #Deprecated method, replaced by exportToFile
     def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataResultControlXDSAPP is deprecated, please use instead exportToFile!")
+        print("WARNING: Method outputFile in class XSDataResultControlCrystFEL is deprecated, please use instead exportToFile!")
         self.exportToFile(_outfileName)
     #Method for making a copy in a new instance
     def copy( self ):
-        return XSDataResultControlXDSAPP.parseString(self.marshal())
+        return XSDataResultControlCrystFEL.parseString(self.marshal())
     #Static method for parsing a string
     def parseString( _inString ):
         doc = minidom.parseString(_inString)
         rootNode = doc.documentElement
-        rootObj = XSDataResultControlXDSAPP()
+        rootObj = XSDataResultControlCrystFEL()
         rootObj.build(rootNode)
         # Check that all minOccurs are obeyed by marshalling the created object
         oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataResultControlXDSAPP" )
+        rootObj.export( oStreamString, 0, name_="XSDataResultControlCrystFEL" )
         oStreamString.close()
         return rootObj
     parseString = staticmethod( parseString )
@@ -420,11 +483,11 @@ class XSDataResultControlXDSAPP(XSDataResult):
     def parseFile( _inFilePath ):
         doc = minidom.parse(_inFilePath)
         rootNode = doc.documentElement
-        rootObj = XSDataResultControlXDSAPP()
+        rootObj = XSDataResultControlCrystFEL()
         rootObj.build(rootNode)
         return rootObj
     parseFile = staticmethod( parseFile )
-# end class XSDataResultControlXDSAPP
+# end class XSDataResultControlCrystFEL
 
 
 

@@ -1,0 +1,37 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSData
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataBoolean
+import XSDataCommon.XSDataString
+import XSDataCommon.XSDataInteger
+
+
+complex type XSDataInputCrystFEL extends XSDataInput {
+        geomFile : XSDataString
+        cellFile : XSDataString
+        imagesFullPath: XSDataString
+        pointGroup: XSDataString
+        spaceGroup: XSDataString
+        resCutOff: XSDataString
+        baseFileName: XSDataString
+}
+
+complex type XSDataResultCrystFEL extends XSDataResult {
+        overallCompl : XSDataDouble
+        overallRed : XSDataDouble
+        overallSnr : XSDataDouble
+        overallRsplit : XSDataDouble
+        overallCC : XSDataDouble
+        resolutionLimitLow : XSDataDouble
+        resolutionLimitHigh : XSDataDouble
+        comment : XSDataString
+
+        dataFiles : XSDataFile []
+        summaryFile : XSDataFile
+        logFiles : XSDataFile []
+}
+
