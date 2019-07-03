@@ -141,7 +141,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         self.edPluginRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
         if self.doAnom:
             self.edPluginExecAutoPROCAnom = self.loadPlugin("EDPluginExecAutoPROCv1_0", "EDPluginExecAutoPROCv1_0_anom")
-        if self.doNonanom:
+        if self.doNoanom:
             self.edPluginExecAutoPROCNoanom = self.loadPlugin("EDPluginExecAutoPROCv1_0", "EDPluginExecAutoPROCv1_0_noanom")
 
 
