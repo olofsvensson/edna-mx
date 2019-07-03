@@ -148,8 +148,17 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         # Resolution
         lowResolutionLimit = _xsDataInputAutoPROC.lowResolutionLimit
         highResolutionLimit = _xsDataInputAutoPROC.highResolutionLimit
-        if lowResolutionLimit is not None and highResolutionLimit is not None:
-            strCommandText += " -R {0} {1}".format(lowResolutionLimit.value, highResolutionLimit.value)
+        if lowResolutionLimit is not None or highResolutionLimit is not None:
+            # See https://www.globalphasing.com/autoproc/manual/autoPROC4.html#processcli
+            if lowResolutionLimit is None:
+                low = 1000.0  # autoPROC default value
+            else:
+                low = lowResolutionLimit.value
+            if highResolutionLimit is None:
+                high = 0.1  # autoPROC default value
+            else:
+                high = highResolutionLimit.value
+            strCommandText += " -R {0} {1}".format(low, high)
         # Anomalous
         anomalous = _xsDataInputAutoPROC.anomalous
         if anomalous is not None:
