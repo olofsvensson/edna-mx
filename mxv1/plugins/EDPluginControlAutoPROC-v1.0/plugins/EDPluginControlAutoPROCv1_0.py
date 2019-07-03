@@ -158,13 +158,18 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             self.edPluginRetrieveDataCollection.executeSynchronous()
             ispybDataCollection = self.edPluginRetrieveDataCollection.dataOutput.dataCollection
             directory = ispybDataCollection.imageDirectory
-            if EDUtilsPath.isEMBL(): 
+            if EDUtilsPath.isEMBL():
                 template = ispybDataCollection.fileTemplate.replace("%05d", "#" * 5)
             else:
                 template = ispybDataCollection.fileTemplate.replace("%04d", "####")
-            imageNoStart = ispybDataCollection.startImageNumber
-            imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
-
+            if self.dataInput.fromN is None:
+                imageNoStart = ispybDataCollection.startImageNumber
+            else:
+                imageNoStart = self.dataInput.fromN.value
+            if self.dataInput.endN is None:
+                imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
+            else:
+                imageNoEnd = self.dataInput.toN.value
 #            # DEBUG we set the end image to 20 in order to speed up things
 #            self.warning("End image set to 20 (was {0})".format(imageNoEnd))
 #            imageNoEnd = 20
@@ -178,7 +183,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             imageNoEnd = self.dataInput.toN.value
             if EDUtilsPath.isEMBL():
                 fileTemplate = template.replace("#####", "%05d")
-            else: 
+            else:
                 fileTemplate = template.replace("####", "%04d")
             pathToStartImage = os.path.join(directory, fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
