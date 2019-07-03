@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Feb 5 08:54::10 2018 by EDGenerateDS.
+# Generated Wed Jul 3 04:27::33 2019 by EDGenerateDS.
 #
 
 import os, sys
@@ -18,10 +18,12 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
     from XSDataCommon import XSDataBoolean
+    from XSDataCommon import XSDataDouble
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataInteger
@@ -38,6 +40,7 @@ except ImportError as error:
     else:
         raise error
 from XSDataCommon import XSDataBoolean
+from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
@@ -123,7 +126,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlAutoPROC(XSDataInput):
-    def __init__(self, configuration=None, cell=None, symm=None, doAnomAndNonanom=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, dataCollectionId=None):
+    def __init__(self, configuration=None, highResolutionLimit=None, lowResolutionLimit=None, reprocess=None, cell=None, symm=None, doAnomAndNonanom=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -187,6 +190,27 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self._cell = cell
         else:
             strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'cell' is not XSDataString but %s" % self._cell.__class__.__name__
+            raise BaseException(strMessage)
+        if reprocess is None:
+            self._reprocess = None
+        elif reprocess.__class__.__name__ == "XSDataBoolean":
+            self._reprocess = reprocess
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'reprocess' is not XSDataBoolean but %s" % self._reprocess.__class__.__name__
+            raise BaseException(strMessage)
+        if lowResolutionLimit is None:
+            self._lowResolutionLimit = None
+        elif lowResolutionLimit.__class__.__name__ == "XSDataDouble":
+            self._lowResolutionLimit = lowResolutionLimit
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'lowResolutionLimit' is not XSDataDouble but %s" % self._lowResolutionLimit.__class__.__name__
+            raise BaseException(strMessage)
+        if highResolutionLimit is None:
+            self._highResolutionLimit = None
+        elif highResolutionLimit.__class__.__name__ == "XSDataDouble":
+            self._highResolutionLimit = highResolutionLimit
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'highResolutionLimit' is not XSDataDouble but %s" % self._highResolutionLimit.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -296,6 +320,42 @@ class XSDataInputControlAutoPROC(XSDataInput):
             raise BaseException(strMessage)
     def delCell(self): self._cell = None
     cell = property(getCell, setCell, delCell, "Property for cell")
+    # Methods and properties for the 'reprocess' attribute
+    def getReprocess(self): return self._reprocess
+    def setReprocess(self, reprocess):
+        if reprocess is None:
+            self._reprocess = None
+        elif reprocess.__class__.__name__ == "XSDataBoolean":
+            self._reprocess = reprocess
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.setReprocess argument is not XSDataBoolean but %s" % reprocess.__class__.__name__
+            raise BaseException(strMessage)
+    def delReprocess(self): self._reprocess = None
+    reprocess = property(getReprocess, setReprocess, delReprocess, "Property for reprocess")
+    # Methods and properties for the 'lowResolutionLimit' attribute
+    def getLowResolutionLimit(self): return self._lowResolutionLimit
+    def setLowResolutionLimit(self, lowResolutionLimit):
+        if lowResolutionLimit is None:
+            self._lowResolutionLimit = None
+        elif lowResolutionLimit.__class__.__name__ == "XSDataDouble":
+            self._lowResolutionLimit = lowResolutionLimit
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.setLowResolutionLimit argument is not XSDataDouble but %s" % lowResolutionLimit.__class__.__name__
+            raise BaseException(strMessage)
+    def delLowResolutionLimit(self): self._lowResolutionLimit = None
+    lowResolutionLimit = property(getLowResolutionLimit, setLowResolutionLimit, delLowResolutionLimit, "Property for lowResolutionLimit")
+    # Methods and properties for the 'highResolutionLimit' attribute
+    def getHighResolutionLimit(self): return self._highResolutionLimit
+    def setHighResolutionLimit(self, highResolutionLimit):
+        if highResolutionLimit is None:
+            self._highResolutionLimit = None
+        elif highResolutionLimit.__class__.__name__ == "XSDataDouble":
+            self._highResolutionLimit = highResolutionLimit
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.setHighResolutionLimit argument is not XSDataDouble but %s" % highResolutionLimit.__class__.__name__
+            raise BaseException(strMessage)
+    def delHighResolutionLimit(self): self._highResolutionLimit = None
+    highResolutionLimit = property(getHighResolutionLimit, setHighResolutionLimit, delHighResolutionLimit, "Property for highResolutionLimit")
     def export(self, outfile, level, name_='XSDataInputControlAutoPROC'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -322,6 +382,12 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self.symm.export(outfile, level, name_='symm')
         if self._cell is not None:
             self.cell.export(outfile, level, name_='cell')
+        if self._reprocess is not None:
+            self.reprocess.export(outfile, level, name_='reprocess')
+        if self._lowResolutionLimit is not None:
+            self.lowResolutionLimit.export(outfile, level, name_='lowResolutionLimit')
+        if self._highResolutionLimit is not None:
+            self.highResolutionLimit.export(outfile, level, name_='highResolutionLimit')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -372,6 +438,21 @@ class XSDataInputControlAutoPROC(XSDataInput):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setCell(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'reprocess':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setReprocess(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'lowResolutionLimit':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setLowResolutionLimit(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'highResolutionLimit':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setHighResolutionLimit(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
