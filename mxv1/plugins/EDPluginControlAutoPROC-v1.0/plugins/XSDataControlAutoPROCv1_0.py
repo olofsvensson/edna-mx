@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Jul 3 04:27::33 2019 by EDGenerateDS.
+# Generated Wed Jul 3 05:01::57 2019 by EDGenerateDS.
 #
 
 import os, sys
@@ -126,7 +126,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlAutoPROC(XSDataInput):
-    def __init__(self, configuration=None, highResolutionLimit=None, lowResolutionLimit=None, reprocess=None, cell=None, symm=None, doAnomAndNonanom=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, dataCollectionId=None):
+    def __init__(self, configuration=None, highResolutionLimit=None, lowResolutionLimit=None, reprocess=None, cell=None, symm=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -169,6 +169,13 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self._processDirectory = processDirectory
         else:
             strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
+            raise BaseException(strMessage)
+        if doAnom is None:
+            self._doAnom = None
+        elif doAnom.__class__.__name__ == "XSDataBoolean":
+            self._doAnom = doAnom
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'doAnom' is not XSDataBoolean but %s" % self._doAnom.__class__.__name__
             raise BaseException(strMessage)
         if doAnomAndNonanom is None:
             self._doAnomAndNonanom = None
@@ -284,6 +291,18 @@ class XSDataInputControlAutoPROC(XSDataInput):
             raise BaseException(strMessage)
     def delProcessDirectory(self): self._processDirectory = None
     processDirectory = property(getProcessDirectory, setProcessDirectory, delProcessDirectory, "Property for processDirectory")
+    # Methods and properties for the 'doAnom' attribute
+    def getDoAnom(self): return self._doAnom
+    def setDoAnom(self, doAnom):
+        if doAnom is None:
+            self._doAnom = None
+        elif doAnom.__class__.__name__ == "XSDataBoolean":
+            self._doAnom = doAnom
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.setDoAnom argument is not XSDataBoolean but %s" % doAnom.__class__.__name__
+            raise BaseException(strMessage)
+    def delDoAnom(self): self._doAnom = None
+    doAnom = property(getDoAnom, setDoAnom, delDoAnom, "Property for doAnom")
     # Methods and properties for the 'doAnomAndNonanom' attribute
     def getDoAnomAndNonanom(self): return self._doAnomAndNonanom
     def setDoAnomAndNonanom(self, doAnomAndNonanom):
@@ -376,6 +395,8 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self.toN.export(outfile, level, name_='toN')
         if self._processDirectory is not None:
             self.processDirectory.export(outfile, level, name_='processDirectory')
+        if self._doAnom is not None:
+            self.doAnom.export(outfile, level, name_='doAnom')
         if self._doAnomAndNonanom is not None:
             self.doAnomAndNonanom.export(outfile, level, name_='doAnomAndNonanom')
         if self._symm is not None:
@@ -423,6 +444,11 @@ class XSDataInputControlAutoPROC(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setProcessDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'doAnom':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setDoAnom(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'doAnomAndNonanom':
             obj_ = XSDataBoolean()
