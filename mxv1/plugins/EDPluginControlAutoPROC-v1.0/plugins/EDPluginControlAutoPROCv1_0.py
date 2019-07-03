@@ -166,7 +166,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 imageNoStart = ispybDataCollection.startImageNumber
             else:
                 imageNoStart = self.dataInput.fromN.value
-            if self.dataInput.endN is None:
+            if self.dataInput.toN is None:
                 imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
             else:
                 imageNoEnd = self.dataInput.toN.value
