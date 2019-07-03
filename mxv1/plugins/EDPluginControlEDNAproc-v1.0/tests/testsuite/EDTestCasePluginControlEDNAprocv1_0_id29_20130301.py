@@ -61,8 +61,8 @@ class EDTestCasePluginControlEDNAprocv1_0_id29_20130301(EDTestCasePluginExecute)
     def testExecute(self):
         self.run()
         # Remove files from this run
-        if os.path.exists(os.path.join(self.strTestDir, "results")):
-            shutil.rmtree(os.path.join(self.strTestDir, "results"))
+        # if os.path.exists(os.path.join(self.strTestDir, "results")):
+        #     shutil.rmtree(os.path.join(self.strTestDir, "results"))
 
     def process(self):
         self.addTestMethod(self.testExecute)
