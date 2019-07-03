@@ -79,7 +79,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataInputControlAutoPROC)
         self.dataOutput = XSDataResultStoreAutoProc()
-        self.doAnomAndNonanom = True
+        self.doAnom = True
+        self.doNoanom = False
+        self.doAnomAndNonanom = False
         self.pyarchPrefix = None
         self.resultsDirectory = None
         self.pyarchDirectory = None
@@ -114,6 +116,14 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         if self.dataInput.doAnomAndNonanom is not None:
             self.doAnomAndNonanom = self.dataInput.doAnomAndNonanom.value
 
+        if self.doAnomAndNonanom:
+            self.doAnom = True
+            self.doNoanom = True
+        else:
+            if self.dataInput.doAnom is not None:
+                self.doAnom = self.dataInput.doAnom.value
+            self.doNoanom = not self.doAnom
+
         if self.dataInput.reprocess is not None:
             self.reprocess = self.dataInput.reprocess.value
 
@@ -129,8 +139,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         self.edPluginWaitFileLast = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileLast")
 
         self.edPluginRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
-        self.edPluginExecAutoPROCAnom = self.loadPlugin("EDPluginExecAutoPROCv1_0", "EDPluginExecAutoPROCv1_0_anom")
-        if self.doAnomAndNonanom:
+        if self.doAnom:
+            self.edPluginExecAutoPROCAnom = self.loadPlugin("EDPluginExecAutoPROCv1_0", "EDPluginExecAutoPROCv1_0_anom")
+        if self.doNonanom:
             self.edPluginExecAutoPROCNoanom = self.loadPlugin("EDPluginExecAutoPROCv1_0", "EDPluginExecAutoPROCv1_0_noanom")
 
 
@@ -300,19 +311,20 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         self.timeStart = time.localtime()
         if self.dataInput.dataCollectionId is not None:
             # Set ISPyB to running
-            self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom = \
-              EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                                                         processingCommandLine=self.processingCommandLine,
-                                                         processingPrograms=self.processingProgram,
-                                                         isAnom=True,
-                                                         timeStart=self.timeStart)
-            self.autoProcIntegrationIdAnomStaraniso, self.autoProcProgramIdAnomStaraniso = \
-              EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                                                         processingCommandLine=self.processingCommandLine,
-                                                         processingPrograms=self.processingProgramStaraniso,
-                                                         isAnom=True,
-                                                         timeStart=self.timeStart)
-            if self.doAnomAndNonanom:
+            if self.doAnom:
+                self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom = \
+                  EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                                                             processingCommandLine=self.processingCommandLine,
+                                                             processingPrograms=self.processingProgram,
+                                                             isAnom=True,
+                                                             timeStart=self.timeStart)
+                self.autoProcIntegrationIdAnomStaraniso, self.autoProcProgramIdAnomStaraniso = \
+                  EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                                                             processingCommandLine=self.processingCommandLine,
+                                                             processingPrograms=self.processingProgramStaraniso,
+                                                             isAnom=True,
+                                                             timeStart=self.timeStart)
+            if self.doNoanom:
                 self.autoProcIntegrationIdNoanom, self.autoProcProgramIdNoanom = \
                   EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
                                                              processingCommandLine=self.processingCommandLine,
@@ -328,47 +340,55 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
 
 
         # Prepare input to execution plugin
-        xsDataInputAutoPROCAnom = XSDataInputAutoPROC()
-        xsDataInputAutoPROCAnom.anomalous = XSDataBoolean(True)
-        xsDataInputAutoPROCAnom.symm = self.dataInput.symm
-        xsDataInputAutoPROCAnom.cell = self.dataInput.cell
-        xsDataInputAutoPROCAnom.lowResolutionLimit = self.dataInput.lowResolutionLimit
-        xsDataInputAutoPROCAnom.highResolutionLimit = self.dataInput.highResolutionLimit
-        if self.doAnomAndNonanom:
+        if self.doAnom:
+            xsDataInputAutoPROCAnom = XSDataInputAutoPROC()
+            xsDataInputAutoPROCAnom.anomalous = XSDataBoolean(True)
+            xsDataInputAutoPROCAnom.symm = self.dataInput.symm
+            xsDataInputAutoPROCAnom.cell = self.dataInput.cell
+            xsDataInputAutoPROCAnom.lowResolutionLimit = self.dataInput.lowResolutionLimit
+            xsDataInputAutoPROCAnom.highResolutionLimit = self.dataInput.highResolutionLimit
+        if self.doNoanom:
             xsDataInputAutoPROCNoanom = XSDataInputAutoPROC()
             xsDataInputAutoPROCNoanom.anomalous = XSDataBoolean(False)
             xsDataInputAutoPROCNoanom.symm = self.dataInput.symm
             xsDataInputAutoPROCNoanom.cell = self.dataInput.cell
+            xsDataInputAutoPROCNoanom.lowResolutionLimit = self.dataInput.lowResolutionLimit
+            xsDataInputAutoPROCNoanom.highResolutionLimit = self.dataInput.highResolutionLimit
         xsDataAutoPROCIdentifier = XSDataAutoPROCIdentifier()
         xsDataAutoPROCIdentifier.idN = XSDataString(identifier)
         xsDataAutoPROCIdentifier.dirN = XSDataFile(XSDataString(directory))
         xsDataAutoPROCIdentifier.templateN = XSDataString(template)
         xsDataAutoPROCIdentifier.fromN = XSDataInteger(imageNoStart)
         xsDataAutoPROCIdentifier.toN = XSDataInteger(imageNoEnd)
-        xsDataInputAutoPROCAnom.addIdentifier(xsDataAutoPROCIdentifier)
-        if self.doAnomAndNonanom:
+        if self.doAnom:
+            xsDataInputAutoPROCAnom.addIdentifier(xsDataAutoPROCIdentifier)
+        if self.doNoanom:
             xsDataInputAutoPROCNoanom.addIdentifier(xsDataAutoPROCIdentifier.copy())
         if isH5:
             masterFilePath = os.path.join(directory,
                                           self.eiger_template_to_master(template))
-            xsDataInputAutoPROCAnom.masterH5 = XSDataFile(XSDataString(masterFilePath))
-            if self.doAnomAndNonanom:
+            if self.doAnom:
+                xsDataInputAutoPROCAnom.masterH5 = XSDataFile(XSDataString(masterFilePath))
+            if self.doNoanom:
                 xsDataInputAutoPROCNoanom.masterH5 = XSDataFile(XSDataString(masterFilePath))
         timeStart = time.localtime()
-        self.edPluginExecAutoPROCAnom.dataInput = xsDataInputAutoPROCAnom
-        self.edPluginExecAutoPROCAnom.execute()
-        if self.doAnomAndNonanom:
+        if self.doAnom:
+            self.edPluginExecAutoPROCAnom.dataInput = xsDataInputAutoPROCAnom
+            self.edPluginExecAutoPROCAnom.execute()
+        if self.doNoanom:
             self.edPluginExecAutoPROCNoanom.dataInput = xsDataInputAutoPROCNoanom
             self.edPluginExecAutoPROCNoanom.execute()
-        self.edPluginExecAutoPROCAnom.synchronize()
-        if self.doAnomAndNonanom:
+        if self.doAnom:
+            self.edPluginExecAutoPROCAnom.synchronize()
+        if self.doNoanom:
             self.edPluginExecAutoPROCNoanom.synchronize()
         timeEnd = time.localtime()
 
         # Upload to ISPyB
-        self.uploadToISPyB(self.edPluginExecAutoPROCAnom, True, False, proposal, timeStart, timeEnd)
-        self.uploadToISPyB(self.edPluginExecAutoPROCAnom, True, True, proposal, timeStart, timeEnd)
-        if self.doAnomAndNonanom:
+        if self.doAnom:
+            self.uploadToISPyB(self.edPluginExecAutoPROCAnom, True, False, proposal, timeStart, timeEnd)
+            self.uploadToISPyB(self.edPluginExecAutoPROCAnom, True, True, proposal, timeStart, timeEnd)
+        if self.doNoanom:
             self.uploadToISPyB(self.edPluginExecAutoPROCNoanom, False, False, proposal, timeStart, timeEnd)
             self.uploadToISPyB(self.edPluginExecAutoPROCNoanom, False, True, proposal, timeStart, timeEnd)
 
@@ -391,26 +411,27 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             if self.dataInput.dataCollectionId is not None:
                 # Upload program status to ISPyB
                 # anom
-                if not self.hasUploadedAnomResultsToISPyB:
-                    EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                         autoProcIntegrationId=self.autoProcIntegrationIdAnom,
-                         autoProcProgramId=self.autoProcProgramIdAnom,
-                         processingCommandLine=self.processingCommandLine,
-                         processingPrograms=self.processingProgram,
-                         isAnom=True,
-                         timeStart=self.timeStart,
-                         timeEnd=self.timeEnd)
-                if not self.hasUploadedAnomStaranisoResultsToISPyB:
-                    EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                         autoProcIntegrationId=self.autoProcIntegrationIdAnom,
-                         autoProcProgramId=self.autoProcProgramIdAnom,
-                         processingCommandLine=self.processingCommandLine,
-                         processingPrograms=self.processingProgramStaraniso,
-                         isAnom=True,
-                         timeStart=self.timeStart,
-                         timeEnd=self.timeEnd)
+                if self.doAnom:
+                    if not self.hasUploadedAnomResultsToISPyB:
+                        EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                             autoProcIntegrationId=self.autoProcIntegrationIdAnom,
+                             autoProcProgramId=self.autoProcProgramIdAnom,
+                             processingCommandLine=self.processingCommandLine,
+                             processingPrograms=self.processingProgram,
+                             isAnom=True,
+                             timeStart=self.timeStart,
+                             timeEnd=self.timeEnd)
+                    if not self.hasUploadedAnomStaranisoResultsToISPyB:
+                        EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                             autoProcIntegrationId=self.autoProcIntegrationIdAnom,
+                             autoProcProgramId=self.autoProcProgramIdAnom,
+                             processingCommandLine=self.processingCommandLine,
+                             processingPrograms=self.processingProgramStaraniso,
+                             isAnom=True,
+                             timeStart=self.timeStart,
+                             timeEnd=self.timeEnd)
 
-                if self.doAnomAndNonanom:
+                if self.doNoanom:
                     # noanom
                     if not self.hasUploadedNoanomResultsToISPyB:
                         EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
@@ -484,7 +505,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                     autoProcIntegration.autoProcIntegrationId = self.autoProcIntegrationIdNoanom
                     autoProcProgram.autoProcProgramId = self.autoProcProgramIdNoanom
             if self.reprocess:
-                autoProcProgram.processingPrograms = "autoPROC" + staranisoString + "reprocess"
+                autoProcProgram.processingPrograms = "autoPROC" + staranisoString + " reprocess"
             else:
                 autoProcProgram.processingPrograms = "autoPROC" + staranisoString
             autoProcProgram.processingStartTime = time.strftime("%a %b %d %H:%M:%S %Y", timeStart)

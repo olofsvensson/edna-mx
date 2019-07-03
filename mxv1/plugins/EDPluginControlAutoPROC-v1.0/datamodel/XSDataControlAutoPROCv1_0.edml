@@ -17,6 +17,7 @@ complex type XSDataInputControlAutoPROC extends XSDataInput {
 	fromN : XSDataInteger optional
 	toN : XSDataInteger optional
 	processDirectory : XSDataFile optional
+	doAnom : XSDataBoolean optional
 	doAnomAndNonanom : XSDataBoolean optional
 	symm : XSDataString optional
 	cell : XSDataString optional
