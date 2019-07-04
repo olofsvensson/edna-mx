@@ -514,12 +514,10 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.timeStart = time.localtime()
         self.process_start = time.time()
         self.integration_id = None
-        if self.doAnom:
-            self.integration_id_anom = None
-            self.program_id_anom = None
-        if self.doNoanom:
-            self.integration_id_noanom = None
-            self.program_id_noanom = None
+        self.integration_id_anom = None
+        self.program_id_anom = None
+        self.integration_id_noanom = None
+        self.program_id_noanom = None
         if self.dataInput.data_collection_id is not None:
 
             if self.doAnom:
