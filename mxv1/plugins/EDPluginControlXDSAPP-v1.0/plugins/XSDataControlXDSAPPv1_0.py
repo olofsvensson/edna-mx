@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Jun 27 11:59::11 2019 by EDGenerateDS.
+# Generated Thu Jul 4 02:44::24 2019 by EDGenerateDS.
 #
 
 import os, sys
@@ -123,8 +123,22 @@ class MixedContainer(object):
 
 
 class XSDataInputControlXDSAPP(XSDataInput):
-    def __init__(self, configuration=None, useXdsAsciiToXml=None, unitCell=None, spaceGroup=None, hdf5ToCbfDirectory=None, doAnomAndNonanom=None, processDirectory=None, dataCollectionId=None):
+    def __init__(self, configuration=None, reprocess=None, useXdsAsciiToXml=None, unitCell=None, spaceGroup=None, hdf5ToCbfDirectory=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, dataCollectionId=None, endImageNumber=None, startImageNumber=None):
         XSDataInput.__init__(self, configuration)
+        if startImageNumber is None:
+            self._startImageNumber = None
+        elif startImageNumber.__class__.__name__ == "XSDataInteger":
+            self._startImageNumber = startImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'startImageNumber' is not XSDataInteger but %s" % self._startImageNumber.__class__.__name__
+            raise BaseException(strMessage)
+        if endImageNumber is None:
+            self._endImageNumber = None
+        elif endImageNumber.__class__.__name__ == "XSDataInteger":
+            self._endImageNumber = endImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'endImageNumber' is not XSDataInteger but %s" % self._endImageNumber.__class__.__name__
+            raise BaseException(strMessage)
         if dataCollectionId is None:
             self._dataCollectionId = None
         elif dataCollectionId.__class__.__name__ == "XSDataInteger":
@@ -138,6 +152,13 @@ class XSDataInputControlXDSAPP(XSDataInput):
             self._processDirectory = processDirectory
         else:
             strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
+            raise BaseException(strMessage)
+        if doAnom is None:
+            self._doAnom = None
+        elif doAnom.__class__.__name__ == "XSDataBoolean":
+            self._doAnom = doAnom
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'doAnom' is not XSDataBoolean but %s" % self._doAnom.__class__.__name__
             raise BaseException(strMessage)
         if doAnomAndNonanom is None:
             self._doAnomAndNonanom = None
@@ -174,6 +195,37 @@ class XSDataInputControlXDSAPP(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'useXdsAsciiToXml' is not XSDataBoolean but %s" % self._useXdsAsciiToXml.__class__.__name__
             raise BaseException(strMessage)
+        if reprocess is None:
+            self._reprocess = None
+        elif reprocess.__class__.__name__ == "XSDataBoolean":
+            self._reprocess = reprocess
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'reprocess' is not XSDataBoolean but %s" % self._reprocess.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'startImageNumber' attribute
+    def getStartImageNumber(self): return self._startImageNumber
+    def setStartImageNumber(self, startImageNumber):
+        if startImageNumber is None:
+            self._startImageNumber = None
+        elif startImageNumber.__class__.__name__ == "XSDataInteger":
+            self._startImageNumber = startImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP.setStartImageNumber argument is not XSDataInteger but %s" % startImageNumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delStartImageNumber(self): self._startImageNumber = None
+    startImageNumber = property(getStartImageNumber, setStartImageNumber, delStartImageNumber, "Property for startImageNumber")
+    # Methods and properties for the 'endImageNumber' attribute
+    def getEndImageNumber(self): return self._endImageNumber
+    def setEndImageNumber(self, endImageNumber):
+        if endImageNumber is None:
+            self._endImageNumber = None
+        elif endImageNumber.__class__.__name__ == "XSDataInteger":
+            self._endImageNumber = endImageNumber
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP.setEndImageNumber argument is not XSDataInteger but %s" % endImageNumber.__class__.__name__
+            raise BaseException(strMessage)
+    def delEndImageNumber(self): self._endImageNumber = None
+    endImageNumber = property(getEndImageNumber, setEndImageNumber, delEndImageNumber, "Property for endImageNumber")
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
     def setDataCollectionId(self, dataCollectionId):
@@ -198,6 +250,18 @@ class XSDataInputControlXDSAPP(XSDataInput):
             raise BaseException(strMessage)
     def delProcessDirectory(self): self._processDirectory = None
     processDirectory = property(getProcessDirectory, setProcessDirectory, delProcessDirectory, "Property for processDirectory")
+    # Methods and properties for the 'doAnom' attribute
+    def getDoAnom(self): return self._doAnom
+    def setDoAnom(self, doAnom):
+        if doAnom is None:
+            self._doAnom = None
+        elif doAnom.__class__.__name__ == "XSDataBoolean":
+            self._doAnom = doAnom
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP.setDoAnom argument is not XSDataBoolean but %s" % doAnom.__class__.__name__
+            raise BaseException(strMessage)
+    def delDoAnom(self): self._doAnom = None
+    doAnom = property(getDoAnom, setDoAnom, delDoAnom, "Property for doAnom")
     # Methods and properties for the 'doAnomAndNonanom' attribute
     def getDoAnomAndNonanom(self): return self._doAnomAndNonanom
     def setDoAnomAndNonanom(self, doAnomAndNonanom):
@@ -258,6 +322,18 @@ class XSDataInputControlXDSAPP(XSDataInput):
             raise BaseException(strMessage)
     def delUseXdsAsciiToXml(self): self._useXdsAsciiToXml = None
     useXdsAsciiToXml = property(getUseXdsAsciiToXml, setUseXdsAsciiToXml, delUseXdsAsciiToXml, "Property for useXdsAsciiToXml")
+    # Methods and properties for the 'reprocess' attribute
+    def getReprocess(self): return self._reprocess
+    def setReprocess(self, reprocess):
+        if reprocess is None:
+            self._reprocess = None
+        elif reprocess.__class__.__name__ == "XSDataBoolean":
+            self._reprocess = reprocess
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP.setReprocess argument is not XSDataBoolean but %s" % reprocess.__class__.__name__
+            raise BaseException(strMessage)
+    def delReprocess(self): self._reprocess = None
+    reprocess = property(getReprocess, setReprocess, delReprocess, "Property for reprocess")
     def export(self, outfile, level, name_='XSDataInputControlXDSAPP'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -266,10 +342,16 @@ class XSDataInputControlXDSAPP(XSDataInput):
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataInputControlXDSAPP'):
         XSDataInput.exportChildren(self, outfile, level, name_)
+        if self._startImageNumber is not None:
+            self.startImageNumber.export(outfile, level, name_='startImageNumber')
+        if self._endImageNumber is not None:
+            self.endImageNumber.export(outfile, level, name_='endImageNumber')
         if self._dataCollectionId is not None:
             self.dataCollectionId.export(outfile, level, name_='dataCollectionId')
         if self._processDirectory is not None:
             self.processDirectory.export(outfile, level, name_='processDirectory')
+        if self._doAnom is not None:
+            self.doAnom.export(outfile, level, name_='doAnom')
         if self._doAnomAndNonanom is not None:
             self.doAnomAndNonanom.export(outfile, level, name_='doAnomAndNonanom')
         if self._hdf5ToCbfDirectory is not None:
@@ -280,12 +362,24 @@ class XSDataInputControlXDSAPP(XSDataInput):
             self.unitCell.export(outfile, level, name_='unitCell')
         if self._useXdsAsciiToXml is not None:
             self.useXdsAsciiToXml.export(outfile, level, name_='useXdsAsciiToXml')
+        if self._reprocess is not None:
+            self.reprocess.export(outfile, level, name_='reprocess')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'startImageNumber':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setStartImageNumber(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'endImageNumber':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setEndImageNumber(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'dataCollectionId':
             obj_ = XSDataInteger()
             obj_.build(child_)
@@ -295,6 +389,11 @@ class XSDataInputControlXDSAPP(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setProcessDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'doAnom':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setDoAnom(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'doAnomAndNonanom':
             obj_ = XSDataBoolean()
@@ -320,6 +419,11 @@ class XSDataInputControlXDSAPP(XSDataInput):
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setUseXdsAsciiToXml(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'reprocess':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setReprocess(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

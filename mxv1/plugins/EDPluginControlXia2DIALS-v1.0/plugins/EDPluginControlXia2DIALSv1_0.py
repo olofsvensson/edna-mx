@@ -72,7 +72,9 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataInputControlXia2DIALS)
         self.dataOutput = XSDataResultControlXia2DIALS()
-        self.doAnomAndNonanom = True
+        self.doAnom = True
+        self.doNoanom = False
+        self.doAnomAndNonanom = False
         self.pyarchPrefix = None
         self.resultsDirectory = None
         self.pyarchDirectory = None
@@ -80,6 +82,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         self.processingPrograms = None
         self.hasUploadedAnomResultsToISPyB = False
         self.hasUploadedNoanomResultsToISPyB = False
+        self.reprocess = False
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -100,12 +103,22 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
         self.processingCommandLine = ' '.join(sys.argv)
         self.processingPrograms = "XIA2_DIALS"
+        if self.reprocess:
+            self.processingPrograms += " reprocess"
 
         if self.dataInput.doAnomAndNonanom is not None:
-            if self.dataInput.doAnomAndNonanom.value:
-                self.doAnomAndNonanom = True
-            else:
-                self.doAnomAndNonanom = False
+            self.doAnomAndNonanom = self.dataInput.doAnomAndNonanom.value
+
+        if self.doAnomAndNonanom:
+            self.doAnom = True
+            self.doNoanom = True
+        else:
+            if self.dataInput.doAnom is not None:
+                self.doAnom = self.dataInput.doAnom.value
+            self.doNoanom = not self.doAnom
+
+        if self.dataInput.reprocess is not None:
+            self.reprocess = self.dataInput.reprocess.value
 
         self.strHost = socket.gethostname()
         self.screen("Running on {0}".format(self.strHost))
@@ -119,8 +132,9 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         self.edPluginWaitFileLast = self.loadPlugin("EDPluginMXWaitFilev1_1", "MXWaitFileLast")
 
         self.edPluginRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
-        self.edPluginExecXia2DIALSAnom = self.loadPlugin("EDPluginExecXia2DIALSv1_0", "EDPluginExecXia2DIALSv1_0_anom")
-        if self.doAnomAndNonanom:
+        if self.doAnom:
+            self.edPluginExecXia2DIALSAnom = self.loadPlugin("EDPluginExecXia2DIALSv1_0", "EDPluginExecXia2DIALSv1_0_anom")
+        if self.doNoanom:
             self.edPluginExecXia2DIALSNoanom = self.loadPlugin("EDPluginExecXia2DIALSv1_0", "EDPluginExecXia2DIALSv1_0_noanom")
 
 
@@ -240,7 +254,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
         if EDUtilsPath.isEMBL():
             fWaitFileTimeout = 60
-        else: 
+        else:
             fWaitFileTimeout = 3600  # s
 
         xsDataInputMXWaitFileFirst = XSDataInputMXWaitFile()
@@ -269,15 +283,16 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
 
         # Prepare input to execution plugin
-        xsDataInputXia2DIALSAnom = XSDataInputXia2DIALS()
-        xsDataInputXia2DIALSAnom.anomalous = XSDataBoolean(True)
-        xsDataInputXia2DIALSAnom.spaceGroup = self.dataInput.spaceGroup
-        xsDataInputXia2DIALSAnom.unitCell = self.dataInput.unitCell
-        if imageNoStart is not None:
-            xsDataInputXia2DIALSAnom.startFrame = XSDataInteger(imageNoStart)
-        if imageNoEnd is not None:
-            xsDataInputXia2DIALSAnom.endFrame = XSDataInteger(imageNoEnd)
-        if self.doAnomAndNonanom:
+        if self.doAnom:
+            xsDataInputXia2DIALSAnom = XSDataInputXia2DIALS()
+            xsDataInputXia2DIALSAnom.anomalous = XSDataBoolean(True)
+            xsDataInputXia2DIALSAnom.spaceGroup = self.dataInput.spaceGroup
+            xsDataInputXia2DIALSAnom.unitCell = self.dataInput.unitCell
+            if imageNoStart is not None:
+                xsDataInputXia2DIALSAnom.startFrame = XSDataInteger(imageNoStart)
+            if imageNoEnd is not None:
+                xsDataInputXia2DIALSAnom.endFrame = XSDataInteger(imageNoEnd)
+        if self.doNoanom:
             xsDataInputXia2DIALSNoanom = XSDataInputXia2DIALS()
             xsDataInputXia2DIALSNoanom.anomalous = XSDataBoolean(False)
             xsDataInputXia2DIALSNoanom.spaceGroup = self.dataInput.spaceGroup
@@ -289,23 +304,26 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         if isH5:
             masterFilePath = os.path.join(directory,
                                           self.eiger_template_to_master(template))
-            xsDataInputXia2DIALSAnom.addImage(XSDataFile(XSDataString(masterFilePath)))
-            if self.doAnomAndNonanom:
+            if self.doAnom:
+                xsDataInputXia2DIALSAnom.addImage(XSDataFile(XSDataString(masterFilePath)))
+            if self.doNoanom:
                 xsDataInputXia2DIALSNoanom.addImage(XSDataFile(XSDataString(masterFilePath)))
         else:
-            xsDataInputXia2DIALSAnom.addImage(XSDataFile(XSDataString(pathToStartImage)))
-            if self.doAnomAndNonanom:
+            if self.doAnom:
+                xsDataInputXia2DIALSAnom.addImage(XSDataFile(XSDataString(pathToStartImage)))
+            if self.doNoanom:
                 xsDataInputXia2DIALSNoanom.addImage(XSDataFile(XSDataString(pathToStartImage)))
         self.timeStart = time.localtime()
 
         if self.dataInput.dataCollectionId is not None:
             # Set ISPyB to running
-            self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom = \
-              EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                                                         processingCommandLine=self.processingCommandLine,
-                                                         processingPrograms=self.processingPrograms,
-                                                         isAnom=True,
-                                                         timeStart=self.timeStart)
+            if self.doAnom:
+                self.autoProcIntegrationIdAnom, self.autoProcProgramIdAnom = \
+                  EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                                                             processingCommandLine=self.processingCommandLine,
+                                                             processingPrograms=self.processingPrograms,
+                                                             isAnom=True,
+                                                             timeStart=self.timeStart)
             if self.doAnomAndNonanom:
                 self.autoProcIntegrationIdNoanom, self.autoProcProgramIdNoanom = \
                   EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
@@ -314,24 +332,27 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                                                              isAnom=False,
                                                              timeStart=self.timeStart)
 
-        self.edPluginExecXia2DIALSAnom.dataInput = xsDataInputXia2DIALSAnom
-        self.edPluginExecXia2DIALSAnom.execute()
-        if self.doAnomAndNonanom:
+        if self.doAnom:
+            self.edPluginExecXia2DIALSAnom.dataInput = xsDataInputXia2DIALSAnom
+            self.edPluginExecXia2DIALSAnom.execute()
+        if self.doNoanom:
             self.edPluginExecXia2DIALSNoanom.dataInput = xsDataInputXia2DIALSNoanom
             self.edPluginExecXia2DIALSNoanom.execute()
-        self.edPluginExecXia2DIALSAnom.synchronize()
-        if self.doAnomAndNonanom:
+        if self.doAnom:
+            self.edPluginExecXia2DIALSAnom.synchronize()
+        if self.doNoanom:
             self.edPluginExecXia2DIALSNoanom.synchronize()
         self.timeEnd = time.localtime()
 
         # Upload to ISPyB
-        self.hasUploadedAnomResultsToISPyB = self.uploadToISPyB(self.edPluginExecXia2DIALSAnom, True, proposal,
-                           self.autoProcProgramIdAnom, self.autoProcIntegrationIdAnom)
-        if self.hasUploadedAnomResultsToISPyB:
-            self.screen("Anom results uploaded to ISPyB")
-        else:
-            self.ERROR("Could not upload anom results to ISPyB!")
-        if self.doAnomAndNonanom:
+        if self.doAnom:
+            self.hasUploadedAnomResultsToISPyB = self.uploadToISPyB(self.edPluginExecXia2DIALSAnom, True, proposal,
+                               self.autoProcProgramIdAnom, self.autoProcIntegrationIdAnom)
+            if self.hasUploadedAnomResultsToISPyB:
+                self.screen("Anom results uploaded to ISPyB")
+            else:
+                self.ERROR("Could not upload anom results to ISPyB!")
+        if self.doNoanom:
             self.hasUploadedNoanomResultsToISPyB = self.uploadToISPyB(self.edPluginExecXia2DIALSNoanom, False, proposal,
                                self.autoProcProgramIdNoanom, self.autoProcIntegrationIdNoanom)
             if self.hasUploadedNoanomResultsToISPyB:
@@ -341,8 +362,10 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
     def finallyProcess(self, _edObject=None):
         EDPluginControl.finallyProcess(self)
-        self.edPluginExecXia2DIALSAnom.synchronize()
-        self.edPluginExecXia2DIALSNoanom.synchronize()
+        if self.doAnom:
+            self.edPluginExecXia2DIALSAnom.synchronize()
+        if self.doNoanom:
+            self.edPluginExecXia2DIALSNoanom.synchronize()
         strMessage = ""
         if self.getListOfWarningMessages() != []:
             strMessage += "Warning messages: \n\n"
@@ -361,7 +384,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                 # Upload program failure status to ISPyB
                 # anom
                 self.screen("Setting anom program status to failed in ISPyB.")
-                if not self.hasUploadedAnomResultsToISPyB:
+                if self.doAnom and not self.hasUploadedAnomResultsToISPyB:
                     self.screen("Setting anom program status to failed in ISPyB.")
                     EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
                          autoProcIntegrationId=self.autoProcIntegrationIdAnom,
@@ -372,18 +395,16 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                          timeStart=self.timeStart,
                          timeEnd=self.timeEnd)
 
-                if self.doAnomAndNonanom:
-                    # noanom
-                    if not self.hasUploadedNoanomResultsToISPyB:
-                        self.screen("Setting noanom program status to failed in ISPyB.")
-                        EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
-                             autoProcIntegrationId=self.autoProcIntegrationIdNoanom,
-                             autoProcProgramId=self.autoProcProgramIdNoanom,
-                             processingCommandLine=self.processingCommandLine,
-                             processingPrograms=self.processingPrograms,
-                             isAnom=False,
-                             timeStart=self.timeStart,
-                             timeEnd=self.timeEnd)
+                if self.doNoanom and not self.hasUploadedNoanomResultsToISPyB:
+                    self.screen("Setting noanom program status to failed in ISPyB.")
+                    EDHandlerXSDataISPyBv1_4.setIspybToFailed(self, dataCollectionId=self.dataInput.dataCollectionId.value,
+                         autoProcIntegrationId=self.autoProcIntegrationIdNoanom,
+                         autoProcProgramId=self.autoProcProgramIdNoanom,
+                         processingCommandLine=self.processingCommandLine,
+                         processingPrograms=self.processingPrograms,
+                         isAnom=False,
+                         timeStart=self.timeStart,
+                         timeEnd=self.timeEnd)
 
     def uploadToISPyB(self, edPluginExecXia2DIALS, isAnom, proposal, programId, integrationId):
         successUpload = False

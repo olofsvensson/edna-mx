@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Mar 7 10:47::18 2018 by EDGenerateDS.
+# Generated Thu Jul 4 03:38::47 2019 by EDGenerateDS.
 #
 
 import os, sys
@@ -123,7 +123,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlXia2DIALS(XSDataInput):
-    def __init__(self, configuration=None, endFrame=None, startFrame=None, unitCell=None, spaceGroup=None, doAnomAndNonanom=None, processDirectory=None, dataCollectionId=None):
+    def __init__(self, configuration=None, reprocess=None, endFrame=None, startFrame=None, unitCell=None, spaceGroup=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -138,6 +138,13 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             self._processDirectory = processDirectory
         else:
             strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'processDirectory' is not XSDataFile but %s" % self._processDirectory.__class__.__name__
+            raise BaseException(strMessage)
+        if doAnom is None:
+            self._doAnom = None
+        elif doAnom.__class__.__name__ == "XSDataBoolean":
+            self._doAnom = doAnom
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'doAnom' is not XSDataBoolean but %s" % self._doAnom.__class__.__name__
             raise BaseException(strMessage)
         if doAnomAndNonanom is None:
             self._doAnomAndNonanom = None
@@ -174,6 +181,13 @@ class XSDataInputControlXia2DIALS(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'endFrame' is not XSDataInteger but %s" % self._endFrame.__class__.__name__
             raise BaseException(strMessage)
+        if reprocess is None:
+            self._reprocess = None
+        elif reprocess.__class__.__name__ == "XSDataBoolean":
+            self._reprocess = reprocess
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'reprocess' is not XSDataBoolean but %s" % self._reprocess.__class__.__name__
+            raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
     def setDataCollectionId(self, dataCollectionId):
@@ -198,6 +212,18 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             raise BaseException(strMessage)
     def delProcessDirectory(self): self._processDirectory = None
     processDirectory = property(getProcessDirectory, setProcessDirectory, delProcessDirectory, "Property for processDirectory")
+    # Methods and properties for the 'doAnom' attribute
+    def getDoAnom(self): return self._doAnom
+    def setDoAnom(self, doAnom):
+        if doAnom is None:
+            self._doAnom = None
+        elif doAnom.__class__.__name__ == "XSDataBoolean":
+            self._doAnom = doAnom
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.setDoAnom argument is not XSDataBoolean but %s" % doAnom.__class__.__name__
+            raise BaseException(strMessage)
+    def delDoAnom(self): self._doAnom = None
+    doAnom = property(getDoAnom, setDoAnom, delDoAnom, "Property for doAnom")
     # Methods and properties for the 'doAnomAndNonanom' attribute
     def getDoAnomAndNonanom(self): return self._doAnomAndNonanom
     def setDoAnomAndNonanom(self, doAnomAndNonanom):
@@ -258,6 +284,18 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             raise BaseException(strMessage)
     def delEndFrame(self): self._endFrame = None
     endFrame = property(getEndFrame, setEndFrame, delEndFrame, "Property for endFrame")
+    # Methods and properties for the 'reprocess' attribute
+    def getReprocess(self): return self._reprocess
+    def setReprocess(self, reprocess):
+        if reprocess is None:
+            self._reprocess = None
+        elif reprocess.__class__.__name__ == "XSDataBoolean":
+            self._reprocess = reprocess
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.setReprocess argument is not XSDataBoolean but %s" % reprocess.__class__.__name__
+            raise BaseException(strMessage)
+    def delReprocess(self): self._reprocess = None
+    reprocess = property(getReprocess, setReprocess, delReprocess, "Property for reprocess")
     def export(self, outfile, level, name_='XSDataInputControlXia2DIALS'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -270,6 +308,8 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             self.dataCollectionId.export(outfile, level, name_='dataCollectionId')
         if self._processDirectory is not None:
             self.processDirectory.export(outfile, level, name_='processDirectory')
+        if self._doAnom is not None:
+            self.doAnom.export(outfile, level, name_='doAnom')
         if self._doAnomAndNonanom is not None:
             self.doAnomAndNonanom.export(outfile, level, name_='doAnomAndNonanom')
         if self._spaceGroup is not None:
@@ -280,6 +320,8 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             self.startFrame.export(outfile, level, name_='startFrame')
         if self._endFrame is not None:
             self.endFrame.export(outfile, level, name_='endFrame')
+        if self._reprocess is not None:
+            self.reprocess.export(outfile, level, name_='reprocess')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -295,6 +337,11 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setProcessDirectory(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'doAnom':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setDoAnom(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'doAnomAndNonanom':
             obj_ = XSDataBoolean()
@@ -320,6 +367,11 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setEndFrame(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'reprocess':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setReprocess(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
