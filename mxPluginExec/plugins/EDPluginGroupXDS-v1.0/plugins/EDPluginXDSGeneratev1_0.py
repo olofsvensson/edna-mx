@@ -191,9 +191,9 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
                 return
             self.screen('XDS generate run noanom done')
 
+        mydir = os.path.abspath(self.getWorkingDirectory())
         if self.doAnom:
             # Now backup the file
-            mydir = os.path.abspath(self.getWorkingDirectory())
             xds_run_directory = self.xds_anom.getWorkingDirectory()
             xds_output = os.path.join(xds_run_directory, 'XDS_ASCII.HKL')
             output_anom = os.path.join(mydir, 'XDS_ANOM.HKL')
