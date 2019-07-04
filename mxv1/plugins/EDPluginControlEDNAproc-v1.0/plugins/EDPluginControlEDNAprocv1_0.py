@@ -814,7 +814,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             self.DEBUG('STARTING noanom res cutoff')
             t0 = time.time()
             self.res_cutoff_noanom.executeSynchronous()
-            self.retrieveFailureMessages(self.res_cutoff_anom, "Res cut noanom")
+            self.retrieveFailureMessages(self.res_cutoff_noanom, "Res cut noanom")
             self.stats['res_cutoff_noanom'] = time.time() - t0
 
             if self.res_cutoff_noanom.isFailure():
