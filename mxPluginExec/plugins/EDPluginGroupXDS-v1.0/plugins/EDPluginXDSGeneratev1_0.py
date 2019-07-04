@@ -52,7 +52,8 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataXdsGenerateInput)
         self.setDataOutput(XSDataXdsGenerateOutput())
-        self.doAnomAndNonanom = True
+        self.doAnom = True
+        self.doNoanom = False
 
     def checkParameters(self):
         """
@@ -97,14 +98,15 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginXDSGeneratev1_0.preProcess")
 
-        if self.dataInput.doAnomAndNonanom is not None:
-            if self.dataInput.doAnomAndNonanom.value:
-                self.doAnomAndNonanom = True
-            else:
-                self.doAnomAndNonanom = False
+        if self.dataInput.doAnom is not None:
+            self.doAnom = self.dataInput.doAnom.value
 
-        self.xds_anom = self.loadPlugin('EDPluginExecMinimalXdsv1_0')
-        if self.doAnomAndNonanom:
+        if self.dataInput.doNoanom is not None:
+            self.doNoanom = self.dataInput.doNoanom.value
+
+        if self.doAnom:
+            self.xds_anom = self.loadPlugin('EDPluginExecMinimalXdsv1_0')
+        if self.doNoanom:
             self.xds_noanom = self.loadPlugin('EDPluginExecMinimalXdsv1_0')
 
         path = os.path.abspath(self.dataInput.previous_run_dir.value)
@@ -125,18 +127,19 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         dump_xds_file(new_xdsinp, parsed_config)
 
         # create the data inputs now we know the files are here
-        input_anom = XSDataMinimalXdsIn()
-        input_anom.input_file = XSDataString(new_xdsinp)
-        input_anom.friedels_law = XSDataBoolean(False)
-        input_anom.job = XSDataString('CORRECT')
-        input_anom.resolution = self.dataInput.resolution
-        input_anom.resolution_range = [XSDataDouble(60), self.dataInput.resolution]
-        input_anom.spacegroup = self.dataInput.spacegroup
-        input_anom.unit_cell = self.dataInput.unit_cell
-        self.xds_anom.dataInput = input_anom
-        xds_anom_dir = os.path.abspath(self.xds_anom.getWorkingDirectory())
+        if self.doAnom:
+            input_anom = XSDataMinimalXdsIn()
+            input_anom.input_file = XSDataString(new_xdsinp)
+            input_anom.friedels_law = XSDataBoolean(False)
+            input_anom.job = XSDataString('CORRECT')
+            input_anom.resolution = self.dataInput.resolution
+            input_anom.resolution_range = [XSDataDouble(60), self.dataInput.resolution]
+            input_anom.spacegroup = self.dataInput.spacegroup
+            input_anom.unit_cell = self.dataInput.unit_cell
+            self.xds_anom.dataInput = input_anom
+            xds_anom_dir = os.path.abspath(self.xds_anom.getWorkingDirectory())
 
-        if self.doAnomAndNonanom:
+        if self.doNoanom:
             input_noanom = XSDataMinimalXdsIn()
             input_noanom.input_file = XSDataString(new_xdsinp)
             input_noanom.friedels_law = XSDataBoolean(True)
@@ -150,8 +153,9 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
 
         # let's make some links!
         for f in self._to_link:
-            os.symlink(f, os.path.join(xds_anom_dir, os.path.basename(f)))
-            if self.doAnomAndNonanom:
+            if self.doAnom:
+                os.symlink(f, os.path.join(xds_anom_dir, os.path.basename(f)))
+            if self.doNoanom:
                 os.symlink(f, os.path.join(xds_noanom_dir, os.path.basename(f)))
 
 
@@ -159,23 +163,25 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginXDSGeneratev1_0.process")
 
-        self.xds_anom.execute()
-        self.screen('XDS generate run anom started')
+        if self.doAnom:
+            self.xds_anom.execute()
+            self.screen('XDS generate run anom started')
 
-        if self.doAnomAndNonanom:
+        if self.doNoanom:
             self.xds_noanom.execute()
             self.screen('XDS generate run noanom started')
 
-        self.xds_anom.synchronize()
-        if self.xds_anom.isFailure():
-            strErrorMessage = "xds failed when generating with anom"
-            self.ERROR(strErrorMessage)
-            self.addErrorMessage(strErrorMessage)
-            self.setFailure()
-            return
-        self.screen('XDS generate run anom done')
+        if self.doAnom:
+            self.xds_anom.synchronize()
+            if self.xds_anom.isFailure():
+                strErrorMessage = "xds failed when generating with anom"
+                self.ERROR(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
+                self.setFailure()
+                return
+            self.screen('XDS generate run anom done')
 
-        if self.doAnomAndNonanom:
+        if self.doNoanom:
             self.xds_noanom.synchronize()
             if self.xds_noanom.isFailure():
                 strErrorMessage = "xds failed when generating without anom"
@@ -185,25 +191,26 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
                 return
             self.screen('XDS generate run noanom done')
 
-        # Now backup the file
-        mydir = os.path.abspath(self.getWorkingDirectory())
-        xds_run_directory = self.xds_anom.getWorkingDirectory()
-        xds_output = os.path.join(xds_run_directory, 'XDS_ASCII.HKL')
-        output_anom = os.path.join(mydir, 'XDS_ANOM.HKL')
-        copyfile(xds_output, output_anom)
+        if self.doAnom:
+            # Now backup the file
+            mydir = os.path.abspath(self.getWorkingDirectory())
+            xds_run_directory = self.xds_anom.getWorkingDirectory()
+            xds_output = os.path.join(xds_run_directory, 'XDS_ASCII.HKL')
+            output_anom = os.path.join(mydir, 'XDS_ANOM.HKL')
+            copyfile(xds_output, output_anom)
 
-        # since the original get_xds_stats uses the CORRECT.LP file we
-        # need to backup it as well
-        correct_lp = os.path.join(xds_run_directory, 'CORRECT.LP')
-        correct_lp_anom = os.path.join(mydir, 'CORRECT_ANOM.LP')
-        copyfile(correct_lp, correct_lp_anom)
+            # since the original get_xds_stats uses the CORRECT.LP file we
+            # need to backup it as well
+            correct_lp = os.path.join(xds_run_directory, 'CORRECT.LP')
+            correct_lp_anom = os.path.join(mydir, 'CORRECT_ANOM.LP')
+            copyfile(correct_lp, correct_lp_anom)
 
-        # Integrate.HKL as well
-        integrate_hkl = os.path.join(xds_run_directory, 'INTEGRATE.HKL')
-        integrate_hkl_anom = os.path.join(mydir, 'INTEGRATE_ANOM.HKL')
-        copyfile(integrate_hkl, integrate_hkl_anom)
+            # Integrate.HKL as well
+            integrate_hkl = os.path.join(xds_run_directory, 'INTEGRATE.HKL')
+            integrate_hkl_anom = os.path.join(mydir, 'INTEGRATE_ANOM.HKL')
+            copyfile(integrate_hkl, integrate_hkl_anom)
 
-        if self.doAnomAndNonanom:
+        if self.doNoanom:
             # Now backup the file
             xds_run_directory = self.xds_noanom.getWorkingDirectory()
             xds_output = os.path.join(xds_run_directory, 'XDS_ASCII.HKL')
@@ -225,10 +232,11 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
 
         # everything went fine
         data_output = XSDataXdsGenerateOutput()
-        data_output.hkl_anom = XSDataString(output_anom)
-        data_output.integrate_anom = XSDataString(integrate_hkl_anom)
-        data_output.correct_lp_anom = XSDataString(correct_lp_anom)
-        if self.doAnomAndNonanom:
+        if self.doAnom:
+            data_output.hkl_anom = XSDataString(output_anom)
+            data_output.integrate_anom = XSDataString(integrate_hkl_anom)
+            data_output.correct_lp_anom = XSDataString(correct_lp_anom)
+        if self.doNoanom:
             data_output.correct_lp_no_anom = XSDataString(correct_lp_noanom)
             data_output.hkl_no_anom = XSDataString(output_noanom)
             data_output.integrate_noanom = XSDataString(integrate_hkl_noanom)

@@ -179,7 +179,8 @@ complex type XSDataXdsGenerateInput extends XSDataInput {
 	resolution : XSDataDouble
 	spacegroup : XSDataInteger optional
 	unit_cell : XSDataString optional
-	doAnomAndNonanom : XSDataBoolean optional	
+	doAnom : XSDataBoolean optional
+	doNoanom : XSDataBoolean optional	
 }
 
 // we are only interested in that one file

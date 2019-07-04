@@ -33,6 +33,7 @@ complex type XSDataEDNAprocInput extends XSDataInput {
 	
 	reprocess : XSDataBoolean optional
 
+	doAnom : XSDataBoolean optional
 	doAnomAndNonanom : XSDataBoolean optional
 }
 
