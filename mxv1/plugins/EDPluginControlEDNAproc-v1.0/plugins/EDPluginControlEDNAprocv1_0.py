@@ -513,7 +513,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         self.timeStart = time.localtime()
         self.process_start = time.time()
-
+        self.integration_id = None
         if self.doAnom:
             self.integration_id_anom = None
             self.program_id_anom = None
@@ -543,11 +543,22 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                     self.addErrorMessage(strErrorMessage)
                     self.ERROR(strErrorMessage)
                     self.integration_id_noanom = None
+        # Choose integration_id_anom is present, otherwise integration_id_anom
+        if self.integration_id_anom is not None:
+            self.integration_id = self.integration_id_anom
+        elif self.integration_id_noanom is not None:
+            self.integration_id = self.integration_id_noanom
+
+
 
         # first XDS plugin run with supplied XDS file
         self.screen('Starting first XDS run...')
-        self.log_to_ispyb(self.integration_id_anom,
-                     'Indexing', 'Launched', 'XDS started')
+        if self.doAnom:
+            self.log_to_ispyb(self.integration_id,
+                              'Indexing', 'Launched', 'XDS started')
+        else:
+            self.log_to_ispyb(self.integration_id_noanom,
+                              'Indexing', 'Launched', 'XDS started')
 
         t0 = time.time()
         self.xds_first.executeSynchronous()
@@ -558,14 +569,14 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if self.xds_first.isFailure():
             self.ERROR('first XDS run failed')
             self.setFailure()
-            self.log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id,
                          'Indexing',
                          'Failed',
                          'XDS failed after {0:.1f}s'.format(self.stats['first_xds']))
             return
         else:
             self.screen('FINISHED first XDS run')
-            self.log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id,
                          'Indexing',
                          'Successful',
                          'XDS finished after {0:.1f}s'.format(self.stats['first_xds']))
@@ -591,7 +602,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
 
 
-        self.log_to_ispyb(self.integration_id_anom,
+        self.log_to_ispyb(self.integration_id,
                      'Indexing', 'Launched', 'Start of resolution cutoff')
 
         # apply the first res cutoff with the res extracted from the first XDS run
@@ -628,7 +639,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         if self.first_res_cutoff.isFailure():
             self.ERROR("res cutoff failed")
-            self.log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id,
                          'Indexing',
                          'Failed',
                          'Resolution cutoff failed after {0:.1f}s'.format(self.stats['first_res_cutoff']))
@@ -636,7 +647,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             return
         else:
             self.screen('FINISHED first resolution cutoff')
-            self.log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id,
                          'Indexing',
                          'Successful',
                          'Resolution cutoff finished')
@@ -654,7 +665,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         generate_input.doNoanom = XSDataBoolean(self.doNoanom)
         self.generate.dataInput = generate_input
 
-        self.log_to_ispyb(self.integration_id_anom,
+        self.log_to_ispyb(self.integration_id,
                      'Scaling', 'Launched', 'Start of scaling')
 
         self.DEBUG('STARTING anom/noanom generation')
@@ -669,14 +680,14 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if self.generate.isFailure():
             self.ERROR('generating w/ and w/out anom failed')
             self.setFailure()
-            self.log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id,
                          'Scaling',
                          'Failed',
                          'Scaling failed after {0:.1}s'.format(self.stats['anom/noanom_generation']))
             return
         else:
             self.screen('generating w/ and w/out anom finished')
-            self.log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id,
                          'Scaling',
                          'Successful',
                          'Scaling finished in {0:.1f}s'.format(self.stats['anom/noanom_generation']))
@@ -739,7 +750,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
 
         if self.doAnom:
-            self.log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id,
                          'Scaling', 'Launched', 'Start of anomalous resolution cutoffs')
         if self.doNoanom:
             self.log_to_ispyb(self.integration_id_noanom,
@@ -770,14 +781,14 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             if self.res_cutoff_anom.isFailure():
                 self.ERROR('res cutoff for anom data failed')
                 self.setFailure()
-                self.log_to_ispyb(self.integration_id_anom,
+                self.log_to_ispyb(self.integration_id,
                              'Scaling',
                              'Failed',
                              'Anomalous resolution cutoffs failed in {0:.1f}s'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_anom']))
                 return
             else:
                 self.screen('FINISHED anom res cutoff')
-                self.log_to_ispyb(self.integration_id_anom,
+                self.log_to_ispyb(self.integration_id,
                              'Scaling',
                              'Successful',
                              'Anomalous resolution cutoffs finished'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_anom']))
@@ -909,7 +920,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         self.xscale_generate.dataInput = xscale_generate_in
         self.DEBUG('STARTING xscale generation')
-        self.log_to_ispyb(self.integration_id_anom,
+        self.log_to_ispyb(self.integration_id,
                      'Scaling', 'Launched', 'Start of XSCALE')
 
         t0 = time.time()
@@ -921,14 +932,14 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             strErrorMessage = "Xscale generation failed"
             self.addErrorMessage(strErrorMessage)
             self.ERROR(strErrorMessage)
-            self.log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id,
                          'Scaling',
                          'Failed',
                          'XSCALE failed after {0:.1f}s'.format(self.stats['xscale_generate']))
             return
         else:
             self.screen('xscale anom/merge generation finished')
-            self.log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id,
                          'Scaling',
                          'Successful',
                          'XSCALE finished in {0:.1f}s'.format(self.stats['xscale_generate']))
@@ -963,7 +974,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.phenixXtriage.dataInput = xsDataInputPhenixXtriage
         self.phenixXtriage.executeSynchronous()
         if self.phenixXtriage.isFailure():
-            self.log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id,
                          'Scaling',
                          'Failed',
                          "phenix.xtriage failed")
@@ -981,7 +992,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 strMessage = "No pseudotranslation detected by phenix.xtriage."
                 bPseudotranslation = False
             self.screen(strMessage)
-            self.log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id,
                          'Scaling',
                          'Successful',
                          strMessage)
@@ -993,7 +1004,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 strMessage = "No twinning detected by phenix.xtriage."
                 bTwinning = False
             self.screen(strMessage)
-            self.log_to_ispyb(self.integration_id_anom,
+            self.log_to_ispyb(self.integration_id,
                          'Scaling',
                          'Successful',
                          strMessage)
@@ -1091,8 +1102,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
                 integration_anom = AutoProcIntegration()
                 crystal_stats = self.parse_xds_anom.dataOutput
-                if self.integration_id_anom is not None:
-                    integration_anom.autoProcIntegrationId = self.integration_id_anom
+                if self.integration_id is not None:
+                    integration_anom.autoProcIntegrationId = self.integration_id
                 integration_anom.cell_a = unit_cell[0]
                 integration_anom.cell_b = unit_cell[1]
                 integration_anom.cell_c = unit_cell[2]
@@ -1208,7 +1219,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 else:
                      strBeamline = ''
                 pyarch_path = os.path.join('/data/ispyb', strBeamline, *tokens[3:-1])
-                pyarch_path = os.path.join(pyarch_path, "%s" % self.integration_id_anom)
+                pyarch_path = os.path.join(pyarch_path, "%s" % self.integration_id)
             elif EDUtilsPath.isESRF():
                 if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
                     strDate = time.strftime("%Y%m%d", time.localtime(time.time()))
@@ -1303,7 +1314,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                         self.screen("Anom results uploaded to ISPyB")
                         # store the EDNAproc ID as a filename in the
                         # fastproc_integration_ids directory
-                        os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id_anom)), 0o755)
+                        os.mknod(os.path.join(self.autoproc_ids_dir, str(self.integration_id)), 0o755)
 
                     self.retrieveFailureMessages(self.store_autoproc_anom, "Store EDNAproc anom")
                     self.stats['ispyb_upload'] = time.time() - t0
@@ -1390,7 +1401,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                     # Upload program status to ISPyB
                     # anom
                     inputStoreAutoProcAnom = EDHandlerXSDataISPyBv1_4.createInputStoreAutoProc(
-                            self.dataInput.data_collection_id.value, self.integration_id_anom, isAnomalous=True,
+                            self.dataInput.data_collection_id.value, self.integration_id, isAnomalous=True,
                             programId=self.program_id_anom, status="FAILED", timeStart=self.timeStart, timeEnd=self.timeEnd,
                             processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
                     self.store_autoproc_anom.dataInput = inputStoreAutoProcAnom
