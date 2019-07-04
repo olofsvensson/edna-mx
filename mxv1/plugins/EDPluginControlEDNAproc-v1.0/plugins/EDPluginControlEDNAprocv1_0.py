@@ -692,13 +692,16 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         # Copy the integrate and xds_ascii files to the results directory (for
         # max)
-        shutil.copy(self.generate.dataOutput.hkl_anom.value, os.path.join(self.results_dir, 'ep_XDS_ASCII.HKL'))
-        shutil.copy(self.generate.dataOutput.integrate_anom.value, os.path.join(self.results_dir, 'ep_INTEGRATE.HKL'))
-
-
-        # we can now use the xds output parser on the two correct.lp
-        # files, w/ and w/out anom
         if self.doAnom:
+            shutil.copy(self.generate.dataOutput.hkl_anom.value, os.path.join(self.results_dir, 'ep_XDS_ASCII.HKL'))
+            shutil.copy(self.generate.dataOutput.integrate_anom.value, os.path.join(self.results_dir, 'ep_INTEGRATE.HKL'))
+        elif self.doNoanom:
+            shutil.copy(self.generate.dataOutput.hkl_noanom.value, os.path.join(self.results_dir, 'ep_XDS_ASCII.HKL'))
+            shutil.copy(self.generate.dataOutput.integrate_noanom.value, os.path.join(self.results_dir, 'ep_INTEGRATE.HKL'))
+
+        if self.doAnom:
+            # we can now use the xds output parser on the two correct.lp
+            # files, w/ and w/out anom
             parse_anom_input = XSDataXdsOutputFile()
             parse_anom_input.correct_lp = XSDataFile()
             parse_anom_input.correct_lp.path = self.generate.dataOutput.correct_lp_anom
