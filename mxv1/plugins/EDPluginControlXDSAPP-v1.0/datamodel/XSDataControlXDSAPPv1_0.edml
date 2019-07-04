@@ -10,13 +10,17 @@ import XSDataCommon.XSDataBoolean
 
 
 complex type XSDataInputControlXDSAPP extends XSDataInput {
+	startImageNumber : XSDataInteger optional
+	endImageNumber : XSDataInteger optional
 	dataCollectionId : XSDataInteger optional
 	processDirectory : XSDataFile optional
+	doAnom : XSDataBoolean optional
 	doAnomAndNonanom : XSDataBoolean optional
 	hdf5ToCbfDirectory : XSDataFile optional
 	spaceGroup : XSDataString optional
 	unitCell : XSDataString optional // space separated numerical values
 	useXdsAsciiToXml : XSDataBoolean optional
+	reprocess : XSDataBoolean optional
 }
 
 complex type XSDataResultControlXDSAPP extends XSDataResult {
