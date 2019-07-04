@@ -823,14 +823,14 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 self.log_to_ispyb(self.integration_id_noanom,
                              'Scaling',
                              'Failed',
-                             'Non-anomalous resolution cutoffs failed in {0:.1f}s'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_noanom']))
+                             'Non-anomalous resolution cutoffs failed in {0:.1f}s'.format(self.stats['res_cutoff_noanom']))
                 return
             else:
                 self.screen('FINISHED noanom res cutoff')
                 self.log_to_ispyb(self.integration_id_noanom,
                              'Scaling',
                              'Successful',
-                             'Non-anomalous resolution cutoffs finished'.format(self.stats['res_cutoff_anom'] + self.stats['res_cutoff_noanom']))
+                             'Non-anomalous resolution cutoffs finished'.format(self.stats['res_cutoff_noanom']))
 
 
         import_in = XSDataEDNAprocImport()
@@ -843,7 +843,10 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         import_in.end_image = XSDataInteger(self.data_range[1])
 
         # XXX: is this the right place to get the res from?
-        import_in.res = self.res_cutoff_anom.dataOutput.res
+        if self.doAnom:
+            import_in.res = self.res_cutoff_anom.dataOutput.res
+        elif self.doNoanom:
+            import_in.res = self.res_cutoff_noanom.dataOutput.res
 
         # XXX: This is optional but seems required by aimless
         import_in.nres = self.dataInput.nres
@@ -892,6 +895,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         generate_xscale_input.resolution = resolution
         generate_xscale_input.previous_run_dir = XSDataString(xds_run_directory)
         generate_xscale_input.spacegroup = self.file_conversion.dataOutput.pointless_sgnumber
+        generate_xscale_input.doAnom = XSDataBoolean(self.doAnom)
+        generate_xscale_input.doNoanom = XSDataBoolean(self.doNoanom)
         pointless_cell = ""
         list_pointless_cell = self.file_conversion.dataOutput.pointless_cell
         pointless_cell += "{0}".format(list_pointless_cell[0].value)
@@ -911,13 +916,19 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             input_file.path_anom = self.generate_xscale.dataOutput.hkl_anom
         if self.doNoanom:
             input_file.path_noanom = self.generate_xscale.dataOutput.hkl_no_anom
-        input_file.res = self.res_cutoff_anom.dataOutput.res
 
         xscale_generate_in.xds_files = [input_file]
         xscale_generate_in.unit_cell_constants = self.file_conversion.dataOutput.pointless_cell
         xscale_generate_in.sg_number = self.file_conversion.dataOutput.pointless_sgnumber
-        xscale_generate_in.bins = self.res_cutoff_anom.dataOutput.bins
 
+        if self.doAnom:
+            input_file.res = self.res_cutoff_anom.dataOutput.res
+            xscale_generate_in.bins = self.res_cutoff_anom.dataOutput.bins
+            xscale_generate_in.friedels_law = XSDataBoolean(False)
+        elif self.doNoanom:
+            input_file.res = self.res_cutoff_noanom.dataOutput.res
+            xscale_generate_in.bins = self.res_cutoff_noanom.dataOutput.bins
+            xscale_generate_in.friedels_law = XSDataBoolean(True)
 
         self.xscale_generate.dataInput = xscale_generate_in
         self.DEBUG('STARTING xscale generation')
@@ -970,8 +981,12 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         # Run phenix.xtriage
         xsDataInputPhenixXtriage = XSDataInputPhenixXtriage()
-        xsDataInputPhenixXtriage.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value,
-                                                                                "ep_{0}_unmerged_anom_pointless_multirecord.mtz.gz".format(self.image_prefix))))
+        if self.doAnom:
+            xsDataInputPhenixXtriage.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value,
+                                                                                    "ep_{0}_unmerged_anom_pointless_multirecord.mtz.gz".format(self.image_prefix))))
+        else:
+            xsDataInputPhenixXtriage.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value,
+                                                                                    "ep_{0}_unmerged_noanom_pointless_multirecord.mtz.gz".format(self.image_prefix))))
         self.phenixXtriage.dataInput = xsDataInputPhenixXtriage
         self.phenixXtriage.executeSynchronous()
         if self.phenixXtriage.isFailure():
