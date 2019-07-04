@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Oct 3 01:54::44 2018 by EDGenerateDS.
+# Generated Thu Jul 4 09:36::18 2019 by EDGenerateDS.
 #
 
 import os, sys
@@ -734,7 +734,7 @@ class XSDataEDNAprocImportOut(XSDataResult):
 
 
 class XSDataEDNAprocInput(XSDataInput):
-    def __init__(self, configuration=None, doAnomAndNonanom=None, reprocess=None, end_image=None, start_image=None, output_file=None, unit_cell=None, spacegroup=None, nres=None, low_resolution_limit=None, detector_max_res=None, data_collection_id=None, cc_half_cutoff=None, r_value_cutoff=None, isig_cutoff=None, completeness_cutoff=None, res_override=None, input_file=None):
+    def __init__(self, configuration=None, doAnomAndNonanom=None, doAnom=None, reprocess=None, end_image=None, start_image=None, output_file=None, unit_cell=None, spacegroup=None, nres=None, low_resolution_limit=None, detector_max_res=None, data_collection_id=None, cc_half_cutoff=None, r_value_cutoff=None, isig_cutoff=None, completeness_cutoff=None, res_override=None, input_file=None):
         XSDataInput.__init__(self, configuration)
         if input_file is None:
             self._input_file = None
@@ -847,6 +847,13 @@ class XSDataEDNAprocInput(XSDataInput):
             self._reprocess = reprocess
         else:
             strMessage = "ERROR! XSDataEDNAprocInput constructor argument 'reprocess' is not XSDataBoolean but %s" % self._reprocess.__class__.__name__
+            raise BaseException(strMessage)
+        if doAnom is None:
+            self._doAnom = None
+        elif doAnom.__class__.__name__ == "XSDataBoolean":
+            self._doAnom = doAnom
+        else:
+            strMessage = "ERROR! XSDataEDNAprocInput constructor argument 'doAnom' is not XSDataBoolean but %s" % self._doAnom.__class__.__name__
             raise BaseException(strMessage)
         if doAnomAndNonanom is None:
             self._doAnomAndNonanom = None
@@ -1047,6 +1054,18 @@ class XSDataEDNAprocInput(XSDataInput):
             raise BaseException(strMessage)
     def delReprocess(self): self._reprocess = None
     reprocess = property(getReprocess, setReprocess, delReprocess, "Property for reprocess")
+    # Methods and properties for the 'doAnom' attribute
+    def getDoAnom(self): return self._doAnom
+    def setDoAnom(self, doAnom):
+        if doAnom is None:
+            self._doAnom = None
+        elif doAnom.__class__.__name__ == "XSDataBoolean":
+            self._doAnom = doAnom
+        else:
+            strMessage = "ERROR! XSDataEDNAprocInput.setDoAnom argument is not XSDataBoolean but %s" % doAnom.__class__.__name__
+            raise BaseException(strMessage)
+    def delDoAnom(self): self._doAnom = None
+    doAnom = property(getDoAnom, setDoAnom, delDoAnom, "Property for doAnom")
     # Methods and properties for the 'doAnomAndNonanom' attribute
     def getDoAnomAndNonanom(self): return self._doAnomAndNonanom
     def setDoAnomAndNonanom(self, doAnomAndNonanom):
@@ -1101,6 +1120,8 @@ class XSDataEDNAprocInput(XSDataInput):
             self.end_image.export(outfile, level, name_='end_image')
         if self._reprocess is not None:
             self.reprocess.export(outfile, level, name_='reprocess')
+        if self._doAnom is not None:
+            self.doAnom.export(outfile, level, name_='doAnom')
         if self._doAnomAndNonanom is not None:
             self.doAnomAndNonanom.export(outfile, level, name_='doAnomAndNonanom')
     def build(self, node_):
@@ -1188,6 +1209,11 @@ class XSDataEDNAprocInput(XSDataInput):
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setReprocess(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'doAnom':
+            obj_ = XSDataBoolean()
+            obj_.build(child_)
+            self.setDoAnom(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'doAnomAndNonanom':
             obj_ = XSDataBoolean()
