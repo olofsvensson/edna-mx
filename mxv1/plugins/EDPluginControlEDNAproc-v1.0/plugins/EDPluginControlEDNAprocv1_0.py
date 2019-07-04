@@ -696,7 +696,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             shutil.copy(self.generate.dataOutput.hkl_anom.value, os.path.join(self.results_dir, 'ep_XDS_ASCII.HKL'))
             shutil.copy(self.generate.dataOutput.integrate_anom.value, os.path.join(self.results_dir, 'ep_INTEGRATE.HKL'))
         elif self.doNoanom:
-            shutil.copy(self.generate.dataOutput.hkl_noanom.value, os.path.join(self.results_dir, 'ep_XDS_ASCII.HKL'))
+            shutil.copy(self.generate.dataOutput.hkl_no_anom.value, os.path.join(self.results_dir, 'ep_XDS_ASCII.HKL'))
             shutil.copy(self.generate.dataOutput.integrate_noanom.value, os.path.join(self.results_dir, 'ep_INTEGRATE.HKL'))
 
         if self.doAnom:
