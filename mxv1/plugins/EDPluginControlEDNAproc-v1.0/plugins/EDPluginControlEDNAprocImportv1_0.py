@@ -46,6 +46,8 @@ class EDPluginControlEDNAprocImportv1_0(EDPluginControl):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataEDNAprocImport)
         self.setDataOutput(XSDataEDNAprocImportOut())
+        self.anom = None
+        self.noanom = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -53,27 +55,24 @@ class EDPluginControlEDNAprocImportv1_0(EDPluginControl):
     def preProcess(self):
         EDPluginControl.preProcess(self)
         self.DEBUG('Import : preprocess')
-        self.anom = self.loadPlugin('EDPluginControlFileConversionv1_0')
-        if self.dataInput.input_noanom:
-            self.noanom = self.loadPlugin('EDPluginControlFileConversionv1_0')
         tocopy = ['dataCollectionID', 'start_image', 'end_image',
                   'res', 'nres', 'image_prefix']
 
-        anom_in = XSDataFileConversion()
-        noanom_in = XSDataFileConversion()
-
-        # copy the common attributes from our data model to the subplugins'
-        for a in tocopy:
-            for dm in anom_in, noanom_in:
-                setattr(dm, a, getattr(self.dataInput, a))
-
-        # now set the specific bits
-        anom_in.anom = XSDataBoolean(True)
-        anom_in.input_file = self.dataInput.input_anom
-        anom_in.output_file = XSDataString(os.path.join(self.outdir, OUTFILE_TEMPLATE.format('anom')))
-        self.anom.dataInput = anom_in
+        if self.dataInput.input_anom:
+            self.anom = self.loadPlugin('EDPluginControlFileConversionv1_0')
+            anom_in = XSDataFileConversion()
+            for a in tocopy:
+                setattr(anom_in, a, getattr(self.dataInput, a))
+            anom_in.anom = XSDataBoolean(True)
+            anom_in.input_file = self.dataInput.input_anom
+            anom_in.output_file = XSDataString(os.path.join(self.outdir, OUTFILE_TEMPLATE.format('anom')))
+            self.anom.dataInput = anom_in
 
         if self.dataInput.input_noanom:
+            self.noanom = self.loadPlugin('EDPluginControlFileConversionv1_0')
+            noanom_in = XSDataFileConversion()
+            for a in tocopy:
+                setattr(noanom_in, a, getattr(self.dataInput, a))
             noanom_in.anom = XSDataBoolean(False)
             noanom_in.input_file = self.dataInput.input_noanom
             noanom_in.output_file = XSDataString(os.path.join(self.outdir, OUTFILE_TEMPLATE.format('noanom')))
@@ -122,19 +121,21 @@ class EDPluginControlEDNAprocImportv1_0(EDPluginControl):
         res = XSDataEDNAprocImportOut()
         status = XSDataStatus()
         res.status = status
-        if self.dataInput.input_noanom:
+        if self.dataInput.input_anom and self.dataInput.input_noanom:
             all_good = not self.anom.isFailure() and not self.noanom.isFailure()
-        else:
+        elif self.dataInput.input_anom:
             all_good = not self.anom.isFailure()
+        else:
+            all_good = not self.noanom.isFailure()
         status.isSuccess = XSDataBoolean(all_good)
         files = list()
-        if not self.anom.isFailure():
+        if self.dataInput.input_anom and not self.anom.isFailure():
             files.append(self.anom.dataInput.output_file)
         if self.dataInput.input_noanom and not self.noanom.isFailure():
             files.append(self.noanom.dataInput.output_file)
         res.files = files
 
-        if self.dataInput.input_noanom:
+        if self.noanom:
             res.pointless_sgnumber = self.noanom.dataOutput.pointless_sgnumber
             res.pointless_sgstring = self.noanom.dataOutput.pointless_sgstring
             res.pointless_cell = self.noanom.dataOutput.pointless_cell
@@ -143,7 +144,8 @@ class EDPluginControlEDNAprocImportv1_0(EDPluginControl):
             res.pointless_sgstring = self.anom.dataOutput.pointless_sgstring
             res.pointless_cell = self.anom.dataOutput.pointless_cell
 
-        res.aimless_log_anom = self.anom.dataOutput.aimless_log
+        if self.dataInput.input_anom:
+            res.aimless_log_anom = self.anom.dataOutput.aimless_log
 
         if self.dataInput.input_noanom:
             res.aimless_log_noanom = self.noanom.dataOutput.aimless_log

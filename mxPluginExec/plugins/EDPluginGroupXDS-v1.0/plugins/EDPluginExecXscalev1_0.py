@@ -85,9 +85,14 @@ class EDPluginExecXscalev1_0(EDPluginExecProcessScript):
         for f in self.dataInput.xds_files:
             path = None
             # check which of the anom or noanom file we have to use
-            if self.dataInput.friedels_law.value and f.path_noanom is not None:
+            anomalous = not self.dataInput.friedels_law.value
+            if anomalous and f.path_anom is not None:
+                path = f.path_anom.value
+            elif not anomalous and f.path_noanom is not None:
                 path = f.path_noanom.value
-            else:
+            elif f.path_anom is None:
+                path = f.path_noanom.value
+            elif f.path_noanom is None:
                 path = f.path_anom.value
 
             if not os.path.exists(path):
@@ -100,7 +105,7 @@ class EDPluginExecXscalev1_0(EDPluginExecProcessScript):
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginXscale.preProcess")
-        anomalous = self.dataInput.friedels_law.value
+        anomalous = not self.dataInput.friedels_law.value
         merged = self.dataInput.merge.value
         self.hkl_file = 'merged' if merged else 'unmerged'
         if anomalous:
@@ -113,9 +118,13 @@ class EDPluginExecXscalev1_0(EDPluginExecProcessScript):
             inputfile.write("OUTPUT_FILE= {0}\n".format(self.hkl_file))
             inputfile.write("MERGE= {0}\n".format("TRUE" if merged else "FALSE"))
             for xds_file in self.dataInput.xds_files:
-                if self.dataInput.friedels_law.value and xds_file.path_noanom is not None:
+                if anomalous and xds_file.path_anom is not None:
+                    path = os.path.abspath(xds_file.path_anom.value)
+                elif not anomalous and xds_file.path_noanom is not None:
                     path = os.path.abspath(xds_file.path_noanom.value)
-                else:
+                elif xds_file.path_anom is None:
+                    path = os.path.abspath(xds_file.path_noanom.value)
+                elif xds_file.path_noanom is None:
                     path = os.path.abspath(xds_file.path_anom.value)
                 # make a symlink so we do not hit the 50char limit
                 sympath = os.path.abspath(os.path.join(self.getWorkingDirectory(),
@@ -154,7 +163,7 @@ class EDPluginExecXscalev1_0(EDPluginExecProcessScript):
         if os.path.isfile(lp_file):
             # we have the output file
             # copy it to some other name
-            anomalous = self.dataInput.friedels_law.value
+            anomalous = not self.dataInput.friedels_law.value
             merged = self.dataInput.merge.value
             new_lp_file = 'merged' if merged else 'unmerged'
             if anomalous:
