@@ -129,8 +129,9 @@ class EDHandlerESRFPyarchv1_0:
                                        pipelineName,
                                        strDate)
         if not os.path.exists(pyarch_base):
-            os.makedirs(pyarch_base)
+            os.makedirs(pyarch_base, 0o755)
         pyarch_path = tempfile.mkdtemp(prefix=strTime + "_", dir=pyarch_base)
+        os.chmod(pyarch_path, 0o755)
         return pyarch_path
 
     @staticmethod
