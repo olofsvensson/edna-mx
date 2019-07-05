@@ -130,6 +130,9 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.DEBUG("EDPluginControlXDSAPPv1_0.preProcess")
         self.screen("XDSAPP processing started")
 
+        if self.dataInput.reprocess is not None:
+            self.reprocess = self.dataInput.reprocess.value
+
         self.processingCommandLine = ' '.join(sys.argv)
         self.processingPrograms = "XDSAPP"
         if self.reprocess:
@@ -151,9 +154,6 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             if self.dataInput.doAnom is not None:
                 self.doAnom = self.dataInput.doAnom.value
             self.doNoanom = not self.doAnom
-
-        if self.dataInput.reprocess is not None:
-            self.reprocess = self.dataInput.reprocess.value
 
         self.strHost = socket.gethostname()
         self.screen("Running on {0}".format(self.strHost))
@@ -509,12 +509,6 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
                 programId=programId, status="SUCCESS", timeStart=timeStart, timeEnd=timeEnd,
                 processingCommandLine=self.processingCommandLine, processingPrograms=self.processingPrograms)
         autoProcProgramContainer.AutoProcProgram = autoProcProgram
-
-        # Attached files
-        pyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(processDirectory)
-        pyarchResultPath = os.path.join(pyarchPath, "results")
-        if not os.path.exists(pyarchResultPath):
-            os.makedirs(pyarchResultPath, 0o755)
 
         # XDSAPP log and result files
         if xsDataResultXDSAPP.logFile is not None:
