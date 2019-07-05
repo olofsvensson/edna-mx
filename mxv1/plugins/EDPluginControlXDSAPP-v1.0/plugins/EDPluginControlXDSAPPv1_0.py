@@ -198,6 +198,10 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         beamline = "unknown"
         proposal = "unknown"
 
+        if self.dataInput.startImageNumber is not None:
+            imageNoStart = self.dataInput.startImageNumber.value
+        if self.dataInput.endImageNumber is not None:
+            imageNoEnd = self.dataInput.endImageNumber.value
         # If we have a data collection id, use it
         if self.dataInput.dataCollectionId is not None:
             # Recover the data collection from ISPyB
@@ -209,8 +213,11 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             ispybDataCollection = self.edPluginRetrieveDataCollection.dataOutput.dataCollection
             directory = ispybDataCollection.imageDirectory
             template = ispybDataCollection.fileTemplate.replace("%04d", "####")
-            imageNoStart = ispybDataCollection.startImageNumber
-            imageNoEnd = imageNoStart + ispybDataCollection.numberOfImages - 1
+            if imageNoStart is None:
+                imageNoStart = ispybDataCollection.startImageNumber
+            if imageNoEnd is None:
+                imageNoEnd = ispybDataCollection.startImageNumber + \
+                             ispybDataCollection.numberOfImages - 1
 
 #            # DEBUG we set the end image to 20 in order to speed up things
 #            self.warning("End image set to 20 (was {0})".format(imageNoEnd))
@@ -221,8 +228,6 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             identifier = str(int(time.time()))
             directory = self.dataInput.dirN.value
             template = self.dataInput.templateN.value
-            imageNoStart = self.dataInput.fromN.value
-            imageNoEnd = self.dataInput.toN.value
             fileTemplate = template.replace("####", "%04d")
             pathToStartImage = os.path.join(directory, fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
@@ -260,6 +265,20 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.resultsDirectory = os.path.join(processDirectory, "results")
         if not os.path.exists(self.resultsDirectory):
             os.makedirs(self.resultsDirectory, 0o755)
+
+        # Create path to pyarch
+        if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
+            self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(beamline,
+                "XDSAPP", self.dataInput.dataCollectionId.value)
+        else:
+            self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
+        self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
+        if self.pyarchDirectory is not None and not os.path.exists(self.pyarchDirectory):
+            os.makedirs(self.pyarchDirectory, 0o755)
+
+        # Determine pyarch prefix
+        listPrefix = template.split("_")
+        self.pyarchPrefix = "xa_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
 
         isH5 = False
         if any(beamline in pathToStartImage for beamline in ["id23eh1", "id29"]):
@@ -432,21 +451,6 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         # Parse log file
         dictLog = self.parseLogFile(xsDataResultXDSAPP.logFile.path.value)
         dictXscale = self.parseXscaleLp(strPathXscaleLp)
-
-        # Create path to pyarch
-        if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
-            self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(beamline,
-                "autoPROC", self.dataInput.dataCollectionId.value)
-        else:
-            self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
-        self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
-        if self.pyarchDirectory is not None and not os.path.exists(self.pyarchDirectory):
-            os.makedirs(self.pyarchDirectory, 0o755)
-
-        # Determine pyarch prefix
-        listPrefix = template.split("_")
-        self.pyarchPrefix = "xa_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
-
 
         xsDataInputStoreAutoProc = XSDataInputStoreAutoProc()
         autoProcContainer = AutoProcContainer()
