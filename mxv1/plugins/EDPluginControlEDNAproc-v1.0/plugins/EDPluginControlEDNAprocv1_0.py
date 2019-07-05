@@ -1238,17 +1238,9 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 pyarch_path = os.path.join(pyarch_path, "%s" % self.integration_id)
             elif EDUtilsPath.isESRF():
                 if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
-                    strDate = time.strftime("%Y%m%d", time.localtime(time.time()))
-                    strTime = time.strftime("%H%M%S", time.localtime(time.time()))
-                    year = time.strftime("%Y", time.localtime(time.time()))
-                    if self.dataInput.data_collection_id is not None:
-                        pyarch_base = os.path.join("/data/pyarch", year, "id30a2/reprocess/EDNA_proc", str(self.dataInput.data_collection_id.value), strDate)
-                    else:
-                        pyarch_base = os.path.join("/data/pyarch", year, "id30a2/reprocess/EDNA_proc", strDate)
-                    if not os.path.exists(pyarch_base):
-                        os.makedirs(pyarch_base)
-                    pyarch_path = tempfile.mkdtemp(prefix=strTime + "_", dir=pyarch_base)
-
+                    pyarch_path = EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(beamline,
+                                                                                             "EDNA_proc",
+                                                                                             self.dataInput.data_collection_id)
                 elif files_dir.startswith('/data/visitor'):
                     # We might get empty elements at the head/tail of the list
                     tokens = [elem for elem in files_dir.split(os.path.sep)
