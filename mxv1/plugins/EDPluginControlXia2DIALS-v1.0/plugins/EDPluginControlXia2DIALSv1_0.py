@@ -328,7 +328,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                                                              processingPrograms=self.processingPrograms,
                                                              isAnom=True,
                                                              timeStart=self.timeStart)
-            if self.doAnomAndNonanom:
+            if self.doNoanom:
                 self.autoProcIntegrationIdNoanom, self.autoProcProgramIdNoanom = \
                   EDHandlerXSDataISPyBv1_4.setIspybToRunning(self, dataCollectionId=self.dataInput.dataCollectionId.value,
                                                              processingCommandLine=self.processingCommandLine,
