@@ -27,7 +27,10 @@ __contact__ = "svensson@esrf.fr"
 __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
-import os, shutil
+import os
+import time
+import shutil
+import tempfile
 
 from EDVerbose import EDVerbose
 from EDUtilsImage import EDUtilsImage
@@ -101,6 +104,36 @@ class EDHandlerESRFPyarchv1_0:
         return strPyarchDNAFilePath
 
     @staticmethod
+    def createPyarchReprocessDirectoryPath(beamline, pipelineName, dataCollectionId=None):
+        """
+        This method creates a reprocess directory path for pyarch
+        """
+        strDate = time.strftime("%Y%m%d", time.localtime(time.time()))
+        strTime = time.strftime("%H%M%S", time.localtime(time.time()))
+        year = time.strftime("%Y", time.localtime(time.time()))
+        if dataCollectionId is not None:
+            pyarch_base = os.path.join("/data",
+                                       "pyarch",
+                                       year,
+                                       beamline,
+                                       "reprocess",
+                                       pipelineName,
+                                       str(dataCollectionId),
+                                       strDate)
+        else:
+            pyarch_base = os.path.join("/data",
+                                       "pyarch",
+                                       year,
+                                       beamline,
+                                       "reprocess",
+                                       pipelineName,
+                                       strDate)
+        if not os.path.exists(pyarch_base):
+            os.makedirs(pyarch_base)
+        pyarch_path = tempfile.mkdtemp(prefix=strTime + "_", dir=pyarch_base)
+        return pyarch_path
+
+    @staticmethod
     def createPyarchHtmlDirectoryPath(_xsDataCollection):
         """
         This method creates a directory path for pyarch: in the same directory were the 
@@ -155,10 +188,10 @@ class EDHandlerESRFPyarchv1_0:
     @staticmethod
     def translateToIspybALBAPath(path):
         listOfDirectories = path.split(os.sep)
-        listOfDirectories.pop(4) # removes 'projects'
-        listOfDirectories.pop(3) # removes 'cycle'
+        listOfDirectories.pop(4)  # removes 'projects'
+        listOfDirectories.pop(3)  # removes 'cycle'
         listOfDirectories.insert(2, u'ispyb')
-        listOfDirectories.pop(6) # Removes RAW data
+        listOfDirectories.pop(6)  # Removes RAW data
         _path = os.path.join(os.sep, *listOfDirectories)
         EDVerbose.DEBUG("ALBA strPyarchDNAFilePath: %s" % _path)
         return _path

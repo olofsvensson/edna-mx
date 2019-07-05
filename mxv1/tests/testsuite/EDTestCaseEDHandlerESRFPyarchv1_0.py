@@ -103,6 +103,16 @@ class EDTestCaseEDHandlerESRFPyarchv1_0(EDTestCasePluginUnit):
                        "/data/id30a3/inhouse/opid30a1/20140717/RAW_DATA/opid30a1_1_dnafiles")
 
 
+    def testCreatePyarchReprocessDirectoryPath(self):
+        beamline = "id30a2"
+        pipelineName = "EDNA_proc"
+        dataCollectionId = 123456
+        pyarch_path = EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(beamline, pipelineName, dataCollectionId)
+        EDAssert.equal(True, os.path.exists(pyarch_path))
+        EDAssert.equal(True, pyarch_path.startswith("/data/pyarch/2019/id30a2/reprocess/EDNA_proc/123456"))
+        shutil.rmtree(pyarch_path)
+
+
 
     def testCreatePyarchHtmlDirectoryPath(self):
         strTestDataDir = self.getPluginTestsDataHome()
@@ -146,6 +156,7 @@ class EDTestCaseEDHandlerESRFPyarchv1_0(EDTestCasePluginUnit):
 
     def process(self):
         self.addTestMethod(self.testCreatePyarchFilePath)
+        self.addTestMethod(self.testCreatePyarchReprocessDirectoryPath)
         self.addTestMethod(self.testCreatePyarchHtmlDirectoryPath)
         self.addTestMethod(self.testCopyHTMLFilesAndDir)
 

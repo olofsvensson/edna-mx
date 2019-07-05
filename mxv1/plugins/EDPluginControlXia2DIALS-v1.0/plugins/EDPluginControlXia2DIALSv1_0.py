@@ -223,7 +223,11 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             os.makedirs(self.resultsDirectory, 0o755)
 
         # Create path to pyarch
-        self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
+        if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
+            self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(beamline,
+                "XIA2_DIALS", self.dataInput.dataCollectionId.value)
+        else:
+            self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
         if self.pyarchDirectory is not None:
             self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
             if not os.path.exists(self.pyarchDirectory):

@@ -242,7 +242,11 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
 
 
         # Create path to pyarch
-        self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
+        if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
+            self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(beamline,
+                "autoPROC", self.dataInput.dataCollectionId.value)
+        else:
+            self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
         if self.pyarchDirectory is not None:
             self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
             if not os.path.exists(self.pyarchDirectory):
@@ -395,8 +399,10 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
 
     def finallyProcess(self, _edObject=None):
         EDPluginControl.finallyProcess(self)
-        self.edPluginExecAutoPROCAnom.synchronize()
-        self.edPluginExecAutoPROCNoanom.synchronize()
+        if self.doAnom:
+            self.edPluginExecAutoPROCAnom.synchronize()
+        if self.doNoanom:
+            self.edPluginExecAutoPROCNoanom.synchronize()
         strMessage = ""
         if self.getListOfWarningMessages() != []:
             strMessage += "Warning messages: \n\n"

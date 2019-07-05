@@ -434,7 +434,11 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         dictXscale = self.parseXscaleLp(strPathXscaleLp)
 
         # Create path to pyarch
-        self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
+        if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
+            self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(beamline,
+                "autoPROC", self.dataInput.dataCollectionId.value)
+        else:
+            self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
         self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
         if self.pyarchDirectory is not None and not os.path.exists(self.pyarchDirectory):
             os.makedirs(self.pyarchDirectory, 0o755)
