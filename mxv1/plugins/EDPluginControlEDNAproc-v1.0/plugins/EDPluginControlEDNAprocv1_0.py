@@ -1252,7 +1252,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
                     pyarch_path = EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(beamline,
                                                                                              "EDNA_proc",
-                                                                                             self.dataInput.data_collection_id)
+                                                                                             self.dataInput.data_collection_id.value)
                 elif files_dir.startswith('/data/visitor'):
                     # We might get empty elements at the head/tail of the list
                     tokens = [elem for elem in files_dir.split(os.path.sep)
