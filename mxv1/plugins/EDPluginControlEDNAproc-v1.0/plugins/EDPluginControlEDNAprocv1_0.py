@@ -1237,6 +1237,18 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 pyarch_path = os.path.join('/data/ispyb', strBeamline, *tokens[3:-1])
                 pyarch_path = os.path.join(pyarch_path, "%s" % self.integration_id)
             elif EDUtilsPath.isESRF():
+                listDirectory = self.first_image.split(os.path.sep)
+                try:
+                    if listDirectory[1] == "data":
+                        if listDirectory[2] == "visitor":
+                            beamline = listDirectory[4]
+                            proposal = listDirectory[3]
+                        else:
+                            beamline = listDirectory[2]
+                            proposal = listDirectory[4]
+                except:
+                    beamline = "unknown"
+                    proposal = "unknown"
                 if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
                     pyarch_path = EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(beamline,
                                                                                              "EDNA_proc",
