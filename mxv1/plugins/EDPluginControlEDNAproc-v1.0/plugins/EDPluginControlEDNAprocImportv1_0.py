@@ -66,6 +66,7 @@ class EDPluginControlEDNAprocImportv1_0(EDPluginControl):
             anom_in.anom = XSDataBoolean(True)
             anom_in.input_file = self.dataInput.input_anom
             anom_in.output_file = XSDataString(os.path.join(self.outdir, OUTFILE_TEMPLATE.format('anom')))
+            anom_in.choose_spacegroup = self.dataInput.choose_spacegroup
             self.anom.dataInput = anom_in
 
         if self.dataInput.input_noanom:
@@ -76,12 +77,9 @@ class EDPluginControlEDNAprocImportv1_0(EDPluginControl):
             noanom_in.anom = XSDataBoolean(False)
             noanom_in.input_file = self.dataInput.input_noanom
             noanom_in.output_file = XSDataString(os.path.join(self.outdir, OUTFILE_TEMPLATE.format('noanom')))
+            noanom_in.choose_spacegroup = self.dataInput.choose_spacegroup
             self.noanom.dataInput = noanom_in
 
-        if self.dataInput.choose_spacegroup is not None:
-            anom_in.choose_spacegroup = self.dataInput.choose_spacegroup
-            if self.dataInput.input_noanom:
-                noanom_in.choose_spacegroup = self.dataInput.choose_spacegroup
 
     def checkParameters(self):
         # NB. we'll only check for the output directory existence for
