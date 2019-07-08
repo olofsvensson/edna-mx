@@ -162,7 +162,7 @@ class EDPluginExecReadImageHeaderEiger9Mv10(EDPluginExec):
         dictEiger9M = None
         pyFile = None
         try:
-            pyFile = open(_strImageFileName, "r")
+            pyFile = open(_strImageFileName, "rb")
         except:
             self.ERROR("EDPluginExecReadImageHeaderEiger9Mv10.readHeaderEiger9M: couldn't open file: " + _strImageFileName)
             self.setFailure()
@@ -173,7 +173,7 @@ class EDPluginExecReadImageHeaderEiger9Mv10(EDPluginExec):
             iMax = 60
             iIndex = 0
             while bContinue:
-                strLine = pyFile.readline()
+                strLine = pyFile.readline().decode('utf-8')
                 iIndex += 1
                 if (strLine.find("_array_data.header_contents") != -1):
                     dictEiger9M = {}

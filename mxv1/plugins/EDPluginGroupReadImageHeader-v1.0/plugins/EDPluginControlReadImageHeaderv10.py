@@ -348,15 +348,15 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         pyFile = None
         bIsEiger4MFormat = False
         try:
-            pyFile = open(_strImageFileName, "r")
+            pyFile = open(_strImageFileName, "rb")
         except:
             self.warning("EDPluginControlReadImageHeaderv10.isEiger4MImageFormat: couldn't open file: " + _strImageFileName)
 
         if pyFile != None:
             self.DEBUG("EDPluginControlReadImageHeaderv10.isEiger4MImageFormat: detecting image format from file " + _strImageFileName)
             pyFile.seek(0, 0)
-            for iIndex in range(20):
-                strLine = pyFile.readline()
+            for iIndex in range(10):
+                strLine = pyFile.readline().decode('utf-8')
                 if strLine.find("Detector: Dectris Eiger 4M") != -1:
                     bIsEiger4MFormat = True
             pyFile.close()
@@ -370,15 +370,15 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         pyFile = None
         bIsEiger9MFormat = False
         try:
-            pyFile = open(_strImageFileName, "r")
+            pyFile = open(_strImageFileName, "rb")
         except:
             self.warning("EDPluginControlReadImageHeaderv10.isEiger9MImageFormat: couldn't open file: " + _strImageFileName)
 
         if pyFile != None:
             self.DEBUG("EDPluginControlReadImageHeaderv10.isEiger9MImageFormat: detecting image format from file " + _strImageFileName)
             pyFile.seek(0, 0)
-            for iIndex in range(20):
-                strLine = pyFile.readline()
+            for iIndex in range(10):
+                strLine = pyFile.readline().decode('utf-8')
                 if strLine.find("Detector: Dectris Eiger 9M") != -1:
                     bIsEiger9MFormat = True
             pyFile.close()
@@ -392,7 +392,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         pyFile = None
         bIsEiger16MFormat = False
         try:
-            pyFile = open(_strImageFileName, "r")
+            pyFile = open(_strImageFileName, "rb")
         except:
             self.warning("EDPluginControlReadImageHeaderv10.isEiger16MImageFormat: couldn't open file: " + _strImageFileName)
 
@@ -400,7 +400,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
             self.DEBUG("EDPluginControlReadImageHeaderv10.isEiger16MImageFormat: detecting image format from file " + _strImageFileName)
             pyFile.seek(0, 0)
             for iIndex in range(20):
-                strLine = pyFile.readline()
+                strLine = pyFile.readline().decode('utf-8')
                 if strLine.find("Detector: Dectris Eiger 16M") != -1:
                     bIsEiger16MFormat = True
             pyFile.close()
