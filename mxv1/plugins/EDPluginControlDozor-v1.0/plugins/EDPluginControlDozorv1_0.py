@@ -26,11 +26,15 @@ __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
 import os
+import sys
 import numpy
 import shutil
 import base64
 import tempfile
-import xmlrpclib
+try:
+    from xmlrpclib import ServerProxy
+except:
+    from xmlrpc.client import ServerProxy
 
 from EDPluginControl import EDPluginControl
 from EDUtilsImage import EDUtilsImage
@@ -113,7 +117,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self._strMxCuBE_URI = self.config.get("mxCuBE_URI", None)
         if self._strMxCuBE_URI is not None:
             self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
-            self._oServerProxy = xmlrpclib.ServerProxy(self._strMxCuBE_URI)
+            self._oServerProxy = ServerProxy(self._strMxCuBE_URI)
 
         self.gnuplot = self.config.get("gnuplot", self.gnuplot)
 

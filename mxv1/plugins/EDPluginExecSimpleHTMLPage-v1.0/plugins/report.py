@@ -5,6 +5,7 @@ Created on May 9, 2016
 '''
 
 import os
+import sys
 import cgi
 import PIL.Image
 import json
@@ -13,7 +14,6 @@ import base64
 import tempfile
 
 import markupv1_10
-
 
 # Report version
 REPORT_VERSION = 1.0
@@ -58,19 +58,19 @@ class WorkflowStepReport(object):
         im = PIL.Image.open(pathToImage)
         item["xsize"] = im.size[0]
         item["ysize"] = im.size[1]
-        item["value"] = base64.b64encode(open(pathToImage).read())
+        item["value"] = base64.b64encode(open(pathToImage, "rb").read()).decode("utf-8")
         if pathToThumbnailImage is None:
             if thumbnailHeight is not None and thumbnailWidth is not None:
                 item["thumbnailSuffix"] = pathToImage.split(".")[-1]
                 item["thumbnailXsize"] = thumbnailHeight
                 item["thumbnailYsize"] = thumbnailWidth
-                item["thumbnailValue"] = base64.b64encode(open(pathToImage).read())
+                item["thumbnailValue"] = base64.b64encode(open(pathToImage, "rb").read()).decode("utf-8")
         else:
             item["thumbnailSuffix"] = pathToThumbnailImage.split(".")[-1]
             thumbnailIm = PIL.Image.open(pathToThumbnailImage)
             item["thumbnailXsize"] = thumbnailIm.size[0]
             item["thumbnailYsize"] = thumbnailIm.size[1]
-            item["thumbnailValue"] = base64.b64encode(open(pathToThumbnailImage).read())
+            item["thumbnailValue"] = base64.b64encode(open(pathToThumbnailImage, "rb").read()).decode("utf-8")
         return item
 
     def addImage(self, pathToImage, imageTitle="", pathToThumbnailImage=None, thumbnailHeight=None, thumbnailWidth=None):
@@ -96,7 +96,7 @@ class WorkflowStepReport(object):
         item["type"] = "logFile"
         item["title"] = title
         item["linkText"] = linkText
-        item["logText"] = unicode(open(pathToLogFile).read(), errors='ignore')
+        item["logText"] = open(pathToLogFile, 'rb').read().decode('ISO-8859-1')
         self.dictReport["items"].append(item)
 
 

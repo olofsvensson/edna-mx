@@ -7,7 +7,7 @@
 #                            Grenoble, France
 #
 #    Principal authors: Marie-Francoise Incardona (incardon@esrf.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published
@@ -20,7 +20,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -46,7 +46,7 @@ from EDVerbose import EDVerbose
 
 class EDUtilsFile(object):
 
-    
+
     @staticmethod
     def readFile(_strFileName):
         """
@@ -56,15 +56,17 @@ class EDUtilsFile(object):
         """
         strContent = None
         try:
-            ### Guifre Cuni, 130507 ?!?!?! Possible bug here...
-            ### After some executions there may be an error because too much opened files...
-            ### It can be monitored with command watch "lsof -p $EDNA_TANGODS_PID"
+            # ## Guifre Cuni, 130507 ?!?!?! Possible bug here...
+            # ## After some executions there may be an error because too much opened files...
+            # ## It can be monitored with command watch "lsof -p $EDNA_TANGODS_PID"
 
-            ###strContent = open(_strFileName, "rb").read()
-            with open(_strFileName, "rb") as fd:
-                strContent = fd.read()
+            # ##strContent = open(_strFileName, "rb").read()
             if sys.version.startswith('3'):
-                strContent = strContent.decode('utf-8')
+                with open(_strFileName, "r", encoding="ISO-8859-1") as fd:
+                    strContent = fd.read()
+            else:
+                with open(_strFileName, "rb") as fd:
+                    strContent = fd.read()
 
         except Exception as e:
             strError = "EDUtilsFile.readFile: Reading %s: %s" % (_strFileName, str(e))
@@ -107,7 +109,7 @@ class EDUtilsFile(object):
         @param _dict: Optional dictoionary
         """
         strContent = cls.readFile(_strFileName)
-        # Substitute environment variables 
+        # Substitute environment variables
         strContent = os.path.expandvars(strContent)
         if (_dict is not None):
             for key in _dict.keys():
