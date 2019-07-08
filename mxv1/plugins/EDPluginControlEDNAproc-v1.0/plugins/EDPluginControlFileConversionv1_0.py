@@ -73,7 +73,9 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         self.truncate = self.loadPlugin("EDPluginExecTruncatev1_0")
         self.uniqueify = self.loadPlugin("EDPluginExecUniqueifyv1_0")
 
-        self.strAnomSuffix = "anom" if self.dataInput.anom.value else "noanom"
+        self.strAnomSuffix = "noanom"
+        if self.dataInput.anom is not None and self.dataInput.anom.value:
+             self.strAnomSuffix = "anom"
 
         if self.dataInput.image_prefix is not None:
             self.image_prefix = self.dataInput.image_prefix.value + '_'
@@ -208,11 +210,11 @@ class EDPluginControlFileConversionv1_0(EDPluginControl):
         self.uniqueify.dataInput = uniqueify_in
 
         if EDUtilsPath.isEMBL() or EDUtilsPath.isALBA():
-           #GB: skipping misteriously failing uniqueify run - 
+           # GB: skipping misteriously failing uniqueify run -
            #    which is useless anyway.
            #    copying temp truncate output to results directly
            shutil.copyfile(uniqueify_in.input_file.value, uniqueify_out)
-           return 
+           return
 
         self.screen("Uniqueify run " + self.strAnomSuffix)
         self.uniqueify.executeSynchronous()

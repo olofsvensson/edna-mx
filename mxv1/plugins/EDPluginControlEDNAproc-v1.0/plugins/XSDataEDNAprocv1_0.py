@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Jul 4 09:36::18 2019 by EDGenerateDS.
+# Generated Mon Jul 8 10:27::58 2019 by EDGenerateDS.
 #
 
 import os, sys
@@ -1265,7 +1265,7 @@ class XSDataEDNAprocInput(XSDataInput):
 
 
 class XSDataFileConversion(XSDataInput):
-    def __init__(self, configuration=None, image_prefix=None, choose_spacegroup=None, doNoanom=None, doAnom=None, nres=None, res=None, end_image=None, start_image=None, dataCollectionID=None, output_file=None, input_file=None):
+    def __init__(self, configuration=None, image_prefix=None, choose_spacegroup=None, anom=None, nres=None, res=None, end_image=None, start_image=None, dataCollectionID=None, output_file=None, input_file=None):
         XSDataInput.__init__(self, configuration)
         if input_file is None:
             self._input_file = None
@@ -1316,19 +1316,12 @@ class XSDataFileConversion(XSDataInput):
         else:
             strMessage = "ERROR! XSDataFileConversion constructor argument 'nres' is not XSDataDouble but %s" % self._nres.__class__.__name__
             raise BaseException(strMessage)
-        if doAnom is None:
-            self._doAnom = None
-        elif doAnom.__class__.__name__ == "XSDataBoolean":
-            self._doAnom = doAnom
+        if anom is None:
+            self._anom = None
+        elif anom.__class__.__name__ == "XSDataBoolean":
+            self._anom = anom
         else:
-            strMessage = "ERROR! XSDataFileConversion constructor argument 'doAnom' is not XSDataBoolean but %s" % self._doAnom.__class__.__name__
-            raise BaseException(strMessage)
-        if doNoanom is None:
-            self._doNoanom = None
-        elif doNoanom.__class__.__name__ == "XSDataBoolean":
-            self._doNoanom = doNoanom
-        else:
-            strMessage = "ERROR! XSDataFileConversion constructor argument 'doNoanom' is not XSDataBoolean but %s" % self._doNoanom.__class__.__name__
+            strMessage = "ERROR! XSDataFileConversion constructor argument 'anom' is not XSDataBoolean but %s" % self._anom.__class__.__name__
             raise BaseException(strMessage)
         if choose_spacegroup is None:
             self._choose_spacegroup = None
@@ -1428,30 +1421,18 @@ class XSDataFileConversion(XSDataInput):
             raise BaseException(strMessage)
     def delNres(self): self._nres = None
     nres = property(getNres, setNres, delNres, "Property for nres")
-    # Methods and properties for the 'doAnom' attribute
-    def getDoAnom(self): return self._doAnom
-    def setDoAnom(self, doAnom):
-        if doAnom is None:
-            self._doAnom = None
-        elif doAnom.__class__.__name__ == "XSDataBoolean":
-            self._doAnom = doAnom
+    # Methods and properties for the 'anom' attribute
+    def getAnom(self): return self._anom
+    def setAnom(self, anom):
+        if anom is None:
+            self._anom = None
+        elif anom.__class__.__name__ == "XSDataBoolean":
+            self._anom = anom
         else:
-            strMessage = "ERROR! XSDataFileConversion.setDoAnom argument is not XSDataBoolean but %s" % doAnom.__class__.__name__
+            strMessage = "ERROR! XSDataFileConversion.setAnom argument is not XSDataBoolean but %s" % anom.__class__.__name__
             raise BaseException(strMessage)
-    def delDoAnom(self): self._doAnom = None
-    doAnom = property(getDoAnom, setDoAnom, delDoAnom, "Property for doAnom")
-    # Methods and properties for the 'doNoanom' attribute
-    def getDoNoanom(self): return self._doNoanom
-    def setDoNoanom(self, doNoanom):
-        if doNoanom is None:
-            self._doNoanom = None
-        elif doNoanom.__class__.__name__ == "XSDataBoolean":
-            self._doNoanom = doNoanom
-        else:
-            strMessage = "ERROR! XSDataFileConversion.setDoNoanom argument is not XSDataBoolean but %s" % doNoanom.__class__.__name__
-            raise BaseException(strMessage)
-    def delDoNoanom(self): self._doNoanom = None
-    doNoanom = property(getDoNoanom, setDoNoanom, delDoNoanom, "Property for doNoanom")
+    def delAnom(self): self._anom = None
+    anom = property(getAnom, setAnom, delAnom, "Property for anom")
     # Methods and properties for the 'choose_spacegroup' attribute
     def getChoose_spacegroup(self): return self._choose_spacegroup
     def setChoose_spacegroup(self, choose_spacegroup):
@@ -1512,14 +1493,10 @@ class XSDataFileConversion(XSDataInput):
             self.nres.export(outfile, level, name_='nres')
         else:
             warnEmptyAttribute("nres", "XSDataDouble")
-        if self._doAnom is not None:
-            self.doAnom.export(outfile, level, name_='doAnom')
+        if self._anom is not None:
+            self.anom.export(outfile, level, name_='anom')
         else:
-            warnEmptyAttribute("doAnom", "XSDataBoolean")
-        if self._doNoanom is not None:
-            self.doNoanom.export(outfile, level, name_='doNoanom')
-        else:
-            warnEmptyAttribute("doNoanom", "XSDataBoolean")
+            warnEmptyAttribute("anom", "XSDataBoolean")
         if self._choose_spacegroup is not None:
             self.choose_spacegroup.export(outfile, level, name_='choose_spacegroup')
         if self._image_prefix is not None:
@@ -1565,15 +1542,10 @@ class XSDataFileConversion(XSDataInput):
             obj_.build(child_)
             self.setNres(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'doAnom':
+            nodeName_ == 'anom':
             obj_ = XSDataBoolean()
             obj_.build(child_)
-            self.setDoAnom(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'doNoanom':
-            obj_ = XSDataBoolean()
-            obj_.build(child_)
-            self.setDoNoanom(obj_)
+            self.setAnom(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'choose_spacegroup':
             obj_ = XSDataString()
