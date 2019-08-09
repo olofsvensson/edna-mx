@@ -676,9 +676,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
 
 
     def eiger_template_to_image(self, fmt, num):
-        fileNumber = int(num / 100)
-        if fileNumber == 0:
-            fileNumber = 1
+        import math
+        fileNumber = int(math.ceil(num / 100.0))
         fmt_string = fmt.replace("####", "1_data_%06d" % fileNumber)
         return fmt_string.format(num)
 
