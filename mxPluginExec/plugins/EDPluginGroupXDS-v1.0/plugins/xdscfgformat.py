@@ -87,7 +87,7 @@ class BoundedList(object):
 
 class RefineJobs(Enumeration):
     def __init__(self):
-        JOBS = [ 'ALL', 'DISTANCE', 'BEAM',
+        JOBS = [ 'ALL', 'DISTANCE', 'BEAM', 'POSITION',
                 'AXIS', 'ORIENTATION', 'CELL']
 
         Enumeration.__init__(self, JOBS, default='ALL')
