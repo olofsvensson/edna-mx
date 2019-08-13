@@ -179,6 +179,16 @@ class EDUtilsPath:
             return cls._EDNA_SITE.startswith('ESRF')
 
     @classmethod
+    def isMAXIV(cls):
+        """
+        Returns true if MAXIV config
+        """
+        if cls._EDNA_SITE is None:
+            return False
+        else:
+            return cls._EDNA_SITE.startswith('MAXIV')
+
+    @classmethod
     def getCwd(cls):
         """
         Returns the current directory.

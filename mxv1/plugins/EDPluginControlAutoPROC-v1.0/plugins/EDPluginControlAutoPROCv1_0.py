@@ -172,6 +172,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             directory = ispybDataCollection.imageDirectory
             if EDUtilsPath.isEMBL():
                 template = ispybDataCollection.fileTemplate.replace("%05d", "#" * 5)
+            elif EDUtilsPath.isMAXIV():
+                template = ispybDataCollection.fileTemplate
             else:
                 template = ispybDataCollection.fileTemplate.replace("%04d", "####")
             if self.dataInput.fromN is None:
@@ -273,6 +275,14 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             minSizeFirst = 2000000
             minSizeLast = 2000000
         elif any(beamline in pathToStartImage for beamline in ["id30a3"]):
+            minSizeFirst = 100000
+            minSizeLast = 100000
+            pathToStartImage = os.path.join(directory,
+                                            self.eiger_template_to_image(template, imageNoStart))
+            pathToEndImage = os.path.join(directory,
+                                          self.eiger_template_to_image(template, imageNoEnd))
+            isH5 = True
+        elif EDUtilsPath.isMAXIV():
             minSizeFirst = 100000
             minSizeLast = 100000
             pathToStartImage = os.path.join(directory,
@@ -678,11 +688,17 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
     def eiger_template_to_image(self, fmt, num):
         import math
         fileNumber = int(math.ceil(num / 100.0))
-        fmt_string = fmt.replace("####", "1_data_%06d" % fileNumber)
+        if EDUtilsPath.isMAXIV():
+            fmt_string = fmt.replace("%06d", "data_%06d" % fileNumber)
+        else:
+            fmt_string = fmt.replace("####", "1_data_%06d" % fileNumber)
         return fmt_string.format(num)
 
     def eiger_template_to_master(self, fmt):
-        fmt_string = fmt.replace("####", "1_master")
+        if EDUtilsPath.isMAXIV():
+            fmt_string = fmt.replace("%06d", "master")
+        else:
+            fmt_string = fmt.replace("####", "1_master")
         return fmt_string
 
     def matchesTruncateEarlyLate(self, fileName):

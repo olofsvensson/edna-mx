@@ -214,9 +214,10 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
             parsed_config["LIB="] = self.pathToNeggiaPlugin
 
         # Max no processors
-        if not EDUtilsPath.isEMBL():
+        if not EDUtilsPath.isEMBL() and not EDUtilsPath.isMAXIV():
             parsed_config['MAXIMUM_NUMBER_OF_PROCESSORS='] = str(self.maxNoProcessors)
-        parsed_config['MAXIMUM_NUMBER_OF_JOBS='] = 1
+        if not EDUtilsPath.isMAXIV():
+            parsed_config['MAXIMUM_NUMBER_OF_JOBS='] = 1
 
         # Save back the changes
         dump_xds_file(xds_file, parsed_config)

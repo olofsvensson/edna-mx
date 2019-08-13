@@ -1269,6 +1269,9 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                         year = tokens[4][0:4]
                         pyarch_path = os.path.join('/data/pyarch', year, tokens[1],
                                                    *tokens[3:])
+            elif EDUtilsPath.isMAXIV():
+                pyarch_path =  files_dir.replace("/data","/mxn/groups/ispybstorage",1)
+
             if pyarch_path is not None:
                 pyarch_path = pyarch_path.replace('PROCESSED_DATA', 'RAW_DATA')
                 try:

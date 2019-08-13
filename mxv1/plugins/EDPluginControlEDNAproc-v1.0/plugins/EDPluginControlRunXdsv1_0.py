@@ -31,6 +31,7 @@ import os.path
 
 from EDPluginControl import EDPluginControl
 from EDVerbose import EDVerbose
+from EDUtilsPath import EDUtilsPath
 
 from XSDataCommon import XSDataFile, XSDataString
 
@@ -119,8 +120,9 @@ class EDPluginControlRunXdsv1_0(EDPluginControl):
             params = XSDataMinimalXdsIn()
             params.input_file = self.dataInput.input_file
             params.jobs = 'ALL'
-            params.maxprocs = 4
-            params.maxjobs = 1
+            if not EDUtilsPath.isMAXIV():
+                params.maxprocs = 4
+                params.maxjobs = 1
             self.third_run.dataInput = params
             self.third_run.executeSynchronous()
 
@@ -138,8 +140,9 @@ class EDPluginControlRunXdsv1_0(EDPluginControl):
             params = XSDataMinimalXdsIn()
             params.input_file = self.dataInput.input_file
             params.jobs = 'DEFPIX INTEGRATE CORRECT'
-            params.maxprocs = 4
-            params.maxjobs = 1
+            if not EDUtilsPath.isMAXIV():
+                params.maxprocs = 4
+                params.maxjobs = 1
             self.final_run.dataInput = params
             self.final_run.executeSynchronous()
 
