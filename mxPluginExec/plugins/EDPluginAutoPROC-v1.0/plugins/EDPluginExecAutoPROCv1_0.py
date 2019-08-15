@@ -49,6 +49,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         self.setXSDataInputClass(XSDataInputAutoPROC)
         self.setDataOutput(XSDataResultAutoPROC())
         self.maxNoProcessors = 12
+        self.maxNoJobs = None
         self.pathToNeggiaPlugin = None
         self.doScaleWithXscale = False
         self.rotationAxis = None
@@ -65,6 +66,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginExecAutoPROCv1_0.configure")
         self.maxNoProcessors = self.config.get("maxNoProcessors", self.maxNoProcessors)
+        self.maxNoJobs = self.config.get("maxNoJobs", self.maxNoJobs)
         self.pathToNeggiaPlugin = self.config.get("pathToNeggiaPlugin")
         self.doScaleWithXscale = self.config.get("scaleWithXscale", self.doScaleWithXscale)
         self.rotationAxis = self.config.get("rotationAxis", self.rotationAxis)
@@ -119,6 +121,8 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginExecAutoPROCv1_0.generateCommands")
         strCommandText = "-B -xml -nthreads {0} -M ReportingInlined autoPROC_HIGHLIGHT=\"no\"".format(self.maxNoProcessors)
 
+        if self.maxNoJobs is not None:
+            strCommandText += " autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_JOBS={0}".format(self.maxNoJobs)
         if self.doScaleWithXscale:
             strCommandText += " autoPROC_ScaleWithXscale='yes'"
 
