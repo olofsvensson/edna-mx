@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
 #
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -56,6 +56,7 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
         self.addCompatibleVersion("Mosflm version 7.1.3  for Image plate and CCD data 17th February 2015")
         self.addCompatibleVersion("Mosflm version 7.2.0  for IP, CCD and PAD data 5th June 2015")
         self.addCompatibleVersion("Mosflm version 7.2.1  for IP, CCD and PAD data 10th September 2015")
+        self.addCompatibleVersion("Mosflm version 7.3.0  for IP, CCD and PAD data")
 
         self.strMOSFLMNewmatFileName = None
         self.strMOSFLMMatrixFileName = None
@@ -79,7 +80,7 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
         if (self.getPluginName() == "EDPluginMOSFLMv10"):
             raise RuntimeError("ExectuteAbstractPluginError")
 
-    
+
     def configure(self):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginMOSFLMv10.configure")
@@ -202,7 +203,7 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
                     self.addListCommandExecution("LIMITS EXCLUDE 106.47  0.0 109.56 423.6")
                     self.addListCommandExecution("LIMITS EXCLUDE  70.00  0.0 73.10  423.6")
                     self.addListCommandExecution("LIMITS EXCLUDE  33.54  0.0 36.64  423.6")
-            
+
 
             # Check if raster is configured
             if self.strRaster:
@@ -210,7 +211,7 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
 
             # Check if polarization is configured
             if self.fPolarization is not None:
-                self.addListCommandExecution("POLARIZATION %f" % self.fPolarization )
+                self.addListCommandExecution("POLARIZATION %f" % self.fPolarization)
 
 
     def getNewmatFileName(self):
