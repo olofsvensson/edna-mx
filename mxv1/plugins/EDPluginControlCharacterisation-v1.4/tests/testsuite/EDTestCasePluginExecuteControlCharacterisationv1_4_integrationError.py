@@ -64,7 +64,7 @@ class EDTestCasePluginExecuteControlCharacterisationv1_4_integrationError(EDTest
         strStatusMessage = None
         if edPlugin.hasDataOutput("statusMessage"):
             strStatusMessage = edPlugin.getDataOutput("statusMessage")[0].getValue()
-        EDAssert.equal(True, strStatusMessage.find("Integration FAILURE") != -1, "Status message contains 'Integration FAILURE'")
+        EDAssert.equal(True, strStatusMessage.find("Strategy calculation FAILURE") != -1, "Status message contains 'Integration FAILURE'")
 
 
 
