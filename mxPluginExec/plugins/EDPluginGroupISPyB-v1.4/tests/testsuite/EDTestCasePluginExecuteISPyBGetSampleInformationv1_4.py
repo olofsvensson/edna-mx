@@ -59,7 +59,7 @@ class EDTestCasePluginExecuteISPyBGetSampleInformationv1_4(EDTestCasePluginExecu
         xsDataResult = edPlugin.getDataOutput()
 #        print(xsDataResult.marshal())
         EDAssert.equal(xsDataResult.proteinAcronym is None, False, "Attribute proteinAcronym is not None")
-        EDAssert.equal(xsDataResult.proteinAcronym.value, "2dCD4", "Attribute proteinAcronym is '2dCD4'")
+        EDAssert.equal(xsDataResult.proteinAcronym.value, "ACSYNTH", "Attribute proteinAcronym is 'ACSYNTH'")
         EDAssert.equal(xsDataResult.diffractionPlan is None, False, "Attribute diffractionPlan is not None")
 
 
