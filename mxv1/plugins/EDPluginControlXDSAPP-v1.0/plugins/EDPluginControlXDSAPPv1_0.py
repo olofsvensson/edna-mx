@@ -274,7 +274,10 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.resultsDirectory)
         self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
         if self.pyarchDirectory is not None and not os.path.exists(self.pyarchDirectory):
-            os.makedirs(self.pyarchDirectory, 0o755)
+            try:
+                os.makedirs(self.pyarchDirectory, 0o755)
+            except:
+                self.pyarchDirectory = None
 
         # Determine pyarch prefix
         listPrefix = template.split("_")

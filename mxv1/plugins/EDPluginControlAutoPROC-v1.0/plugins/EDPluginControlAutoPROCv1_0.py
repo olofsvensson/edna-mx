@@ -250,7 +250,10 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         if self.pyarchDirectory is not None:
             self.pyarchDirectory = self.pyarchDirectory.replace('PROCESSED_DATA', 'RAW_DATA')
             if not os.path.exists(self.pyarchDirectory):
-                os.makedirs(self.pyarchDirectory, 0o755)
+                try:
+                    os.makedirs(self.pyarchDirectory, 0o755)
+                except:
+                    self.pyarchDirectory = None
 
         # The resultsDirectory is not used at ALBA (only pyarchDirectory)
         if EDUtilsPath.isALBA():

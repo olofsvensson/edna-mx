@@ -32,9 +32,10 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os
 import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
-import cgi
+if sys.version.startswith('2'):
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+import html
 import PIL.Image
 import json
 import time
@@ -45,6 +46,10 @@ from EDFactoryPluginStatic import EDFactoryPluginStatic
 
 EDFactoryPluginStatic.loadModule("markupv1_10")
 import markupv1_10
+
+if sys.version.startswith('3'):
+    unicode = str
+
 
 
 # Report version
@@ -90,19 +95,19 @@ class EDUtilsReport(object):
         im = PIL.Image.open(pathToImage)
         item["xsize"] = im.size[0]
         item["ysize"] = im.size[1]
-        item["value"] = base64.b64encode(open(pathToImage).read())
+        item["value"] = base64.b64encode(open(pathToImage, 'rb').read()).decode("utf-8") 
         if pathToThumbnailImage is None:
             if thumbnailHeight is not None and thumbnailWidth is not None:
                 item["thumbnailSuffix"] = pathToImage.split(".")[-1]
                 item["thumbnailXsize"] = thumbnailHeight
                 item["thumbnailYsize"] = thumbnailWidth
-                item["thumbnailValue"] = base64.b64encode(open(pathToImage).read())
+                item["thumbnailValue"] = base64.b64encode(open(pathToImage, 'rb').read()).decode("utf-8")
         else:
             item["thumbnailSuffix"] = pathToThumbnailImage.split(".")[-1]
             thumbnailIm = PIL.Image.open(pathToThumbnailImage)
             item["thumbnailXsize"] = thumbnailIm.size[0]
             item["thumbnailYsize"] = thumbnailIm.size[1]
-            item["thumbnailValue"] = base64.b64encode(open(pathToThumbnailImage).read())
+            item["thumbnailValue"] = base64.b64encode(open(pathToThumbnailImage, 'rb').read()).decode("utf-8")
         return item
 
     def addImage(self, pathToImage, imageTitle="", pathToThumbnailImage=None, thumbnailHeight=None, thumbnailWidth=None):
@@ -128,7 +133,7 @@ class EDUtilsReport(object):
         item["type"] = "logFile"
         item["title"] = title
         item["linkText"] = linkText
-        item["logText"] = unicode(open(pathToLogFile).read(), errors='ignore')
+        item["logText"] = open(pathToLogFile, 'rb').read().decode('latin-1')
         self.dictReport["items"].append(item)
 
 
@@ -142,7 +147,7 @@ class EDUtilsReport(object):
         return pathToJsonFile
 
     def escapeCharacters(self, strValue):
-        strValue = cgi.escape(strValue)
+        strValue = html.escape(strValue)
         strValue = strValue.replace(unicode("Å"), "&Aring;")
         strValue = strValue.replace(unicode("°"), "&deg;")
         strValue = strValue.replace("\n", "<br>")
@@ -160,7 +165,7 @@ class EDUtilsReport(object):
         page.div.close()
         for item in self.dictReport["items"]:
             if "value" in item:
-                itemValue = self.escapeCharacters(item["value"])
+                itemValue = item["value"]
             if "title" in item:
                 itemTitle = self.escapeCharacters(item["title"])
             if item["type"] == "info":
@@ -239,7 +244,7 @@ class EDUtilsReport(object):
                     os.close(fd)
                 pageLogHtml = markupv1_10.page()
                 pageLogHtml.h1(itemTitle)
-                pageLogHtml.pre(cgi.escape(item["logText"]))
+                # pageLogHtml.pre(html.escape(item["logText"]))
                 open(pathToLogHtml, "w").write(str(pageLogHtml))
                 os.chmod(pathToLogHtml, 0o644)
                 page.p()
@@ -260,7 +265,7 @@ class EDUtilsReport(object):
                                                prefix=imageName + "_",
                                                dir=pathToHtmlDir)
             os.close(fd)
-        open(pathToImage, "w").write(base64.b64decode(item["value"]))
+        open(pathToImage, "wb").write(base64.b64decode(item["value"]))
         os.chmod(pathToImage, 0o644)
         if "thumbnailValue" in item:
             thumbnailImageName = imageName + "_thumbnail"
@@ -270,7 +275,7 @@ class EDUtilsReport(object):
                                                             prefix=thumbnailImageName + "_",
                                                             dir=pathToHtmlDir)
                 os.close(fd)
-            open(pathToThumbnailImage, "w").write(base64.b64decode(item["thumbnailValue"]))
+            open(pathToThumbnailImage, "wb").write(base64.b64decode(item["thumbnailValue"]))
             os.chmod(pathToThumbnailImage, 0o644)
             pageReferenceImage = markupv1_10.page(mode='loose_html')
             pageReferenceImage.init(title=imageName, footer="Generated on %s" % time.asctime())
