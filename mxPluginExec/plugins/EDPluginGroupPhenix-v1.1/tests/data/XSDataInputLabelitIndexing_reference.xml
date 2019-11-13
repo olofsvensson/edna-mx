@@ -2,12 +2,11 @@
 <XSDataImage>
   <image>
 	<path>
-	  <value>${EDNA_TESTIMAGES}/thau_1_0001.cbf</value>
+	  <value>${EDNA_TESTIMAGES}/ref-opid30a1_4_0001.cbf</value>
 	</path>
   </image>
   <image>
-    <path>
-      <value>${EDNA_TESTIMAGES}/thau_1_0003.cbf</value>
-    </path>
-  </image>
-</XSDataImage>
+	<path>
+	  <value>${EDNA_TESTIMAGES}/ref-opid30a1_4_0002.cbf</value>
+	</path>
+  </image></XSDataImage>

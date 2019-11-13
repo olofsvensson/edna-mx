@@ -49,7 +49,7 @@ class EDTestCasePluginExecuteLabelitIndexingv1_1(EDTestCasePluginExecute):
 
     def preProcess(self):
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage([ "thau_1_0001.cbf", "thau_1_0003.cbf" ])
+        self.loadTestImage([ "ref-opid30a1_4_0001.cbf", "ref-opid30a1_4_0002.cbf" ])
 
 
     def testExecute(self):

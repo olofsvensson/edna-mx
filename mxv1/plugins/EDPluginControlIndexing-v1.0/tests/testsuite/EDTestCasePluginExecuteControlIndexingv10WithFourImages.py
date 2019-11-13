@@ -36,14 +36,14 @@ import os
 from EDTestCasePluginExecuteControlIndexingv10WithLabelit import EDTestCasePluginExecuteControlIndexingv10WithLabelit
 
 
-class EDTestCasePluginExecuteControlIndexingv10WithFiveImages(EDTestCasePluginExecuteControlIndexingv10WithLabelit):
+class EDTestCasePluginExecuteControlIndexingv10WithFourImages(EDTestCasePluginExecuteControlIndexingv10WithLabelit):
 
 
     def __init__(self, _edStringTestName=None):
         EDTestCasePluginExecuteControlIndexingv10WithLabelit.__init__(self, _edStringTestName)
         self.setRequiredPluginConfiguration("EDPluginLabelitIndexingv1_1")
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataIndexingInput_withFiveImages.xml"))
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataIndexingInput_withFourImages.xml"))
 
     def preProcess(self):
         EDTestCasePluginExecuteControlIndexingv10WithLabelit.preProcess(self)
-        self.loadTestImage([ "thau_1_0001.cbf", "thau_1_0002.cbf", "thau_1_0003.cbf", "thau_1_0004.cbf", "thau_1_0005.cbf" ])
+        self.loadTestImage([ "ref-opid30a1_4_0001.cbf", "ref-opid30a1_4_0001.cbf", "ref-opid30a1_4_0001.cbf", "ref-opid30a1_4_0001.cbf"])

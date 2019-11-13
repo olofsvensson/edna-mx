@@ -1,34 +1,34 @@
 <?xml version="1.0" ?>
 <XSDataIndexingInput>
-    <dataCollection>
+	<dataCollection>
 	    <subWedge>
 	        <experimentalCondition>
 	            <beam>
 	                <exposureTime>
-	                    <value>9.900000e-02</value>
+	                    <value>3.330000e-01</value>
 	                </exposureTime>
 	                <wavelength>
-	                    <value>9.762500e-01</value>
+	                    <value>9.650000e-01</value>
 	                </wavelength>
 	            </beam>
 	            <detector>
 	                <beamPositionX>
-	                    <value>2.055589e+02</value>
+	                    <value>1.464614e+02</value>
 	                </beamPositionX>
 	                <beamPositionY>
-	                    <value>2.146233e+02</value>
+	                    <value>1.285408e+02</value>
 	                </beamPositionY>
 	                <distance>
-	                    <value>7.143100e+02</value>
+	                    <value>2.361750e+02</value>
 	                </distance>
 	                <name>
-	                    <value>PILATUS 6M</value>
+	                    <value>PILATUS2 3M</value>
 	                </name>
 	                <numberPixelX>
-	                    <value>2463</value>
+	                    <value>1475</value>
 	                </numberPixelX>
 	                <numberPixelY>
-	                    <value>2527</value>
+	                    <value>1679</value>
 	                </numberPixelY>
 	                <pixelSizeX>
 	                    <value>1.720000e-01</value>
@@ -37,36 +37,30 @@
 	                    <value>1.720000e-01</value>
 	                </pixelSizeY>
 	                <serialNumber>
-	                    <value>PILATUS3 6M, S/N 60-0126</value>
+	                    <value>PILATUS3 2M, S/N 24-0118, ESRF ID30</value>
 	                </serialNumber>
 	                <type>
-	                    <value>pilatus6m</value>
+	                    <value>pilatus2m</value>
 	                </type>
 	            </detector>
 	            <goniostat>
 	                <oscillationWidth>
-	                    <value>5.000000e-01</value>
+	                    <value>1.000000e+00</value>
 	                </oscillationWidth>
 	                <rotationAxisEnd>
-	                    <value>5.000000e-01</value>
+	                    <value>1.000000e+00</value>
 	                </rotationAxisEnd>
 	                <rotationAxisStart>
 	                    <value>0.000000e+00</value>
 	                </rotationAxisStart>
-	                <kappa>
-	                    <value>0.000000e+00</value>
-	                </kappa>
-	                <phi>
-	                    <value>0.000000e+00</value>
-	                </phi>
 	            </goniostat>
 	        </experimentalCondition>
 	        <image>
 	            <path>
-	                <value>${EDNA_TESTIMAGES}/thau_1_0001.cbf</value>
+	                <value>${EDNA_TESTIMAGES}/ref-opid30a1_4_0001.cbf</value>
 	            </path>
 	            <date>
-	                <value>2016/Apr/18 11:12:23.282</value>
+	                <value>2014/Nov/14 16:31:00</value>
 	            </date>
 	            <number>
 	                <value>1</value>
@@ -80,30 +74,30 @@
 	        <experimentalCondition>
 	            <beam>
 	                <exposureTime>
-	                    <value>9.900000e-02</value>
+	                    <value>3.330000e-01</value>
 	                </exposureTime>
 	                <wavelength>
-	                    <value>9.762500e-01</value>
+	                    <value>9.650000e-01</value>
 	                </wavelength>
 	            </beam>
 	            <detector>
 	                <beamPositionX>
-	                    <value>2.055589e+02</value>
+	                    <value>1.464614e+02</value>
 	                </beamPositionX>
 	                <beamPositionY>
-	                    <value>2.146233e+02</value>
+	                    <value>1.285408e+02</value>
 	                </beamPositionY>
 	                <distance>
-	                    <value>7.143100e+02</value>
+	                    <value>2.361750e+02</value>
 	                </distance>
 	                <name>
-	                    <value>PILATUS 6M</value>
+	                    <value>PILATUS2 3M</value>
 	                </name>
 	                <numberPixelX>
-	                    <value>2463</value>
+	                    <value>1475</value>
 	                </numberPixelX>
 	                <numberPixelY>
-	                    <value>2527</value>
+	                    <value>1679</value>
 	                </numberPixelY>
 	                <pixelSizeX>
 	                    <value>1.720000e-01</value>
@@ -112,36 +106,30 @@
 	                    <value>1.720000e-01</value>
 	                </pixelSizeY>
 	                <serialNumber>
-	                    <value>PILATUS3 6M, S/N 60-0126</value>
+	                    <value>PILATUS3 2M, S/N 24-0118, ESRF ID30</value>
 	                </serialNumber>
 	                <type>
-	                    <value>pilatus6m</value>
+	                    <value>pilatus2m</value>
 	                </type>
 	            </detector>
 	            <goniostat>
 	                <oscillationWidth>
-	                    <value>5.000000e-01</value>
+	                    <value>1.000000e+00</value>
 	                </oscillationWidth>
 	                <rotationAxisEnd>
-	                    <value>4.550000e+01</value>
+	                    <value>9.100000e+01</value>
 	                </rotationAxisEnd>
 	                <rotationAxisStart>
-	                    <value>4.500000e+01</value>
+	                    <value>9.000000e+01</value>
 	                </rotationAxisStart>
-	                <kappa>
-	                    <value>0.000000e+00</value>
-	                </kappa>
-	                <phi>
-	                    <value>0.000000e+00</value>
-	                </phi>
 	            </goniostat>
 	        </experimentalCondition>
 	        <image>
 	            <path>
-	                <value>${EDNA_TESTIMAGES}/thau_1_0002.cbf</value>
+	                <value>${EDNA_TESTIMAGES}/ref-opid30a1_4_0002.cbf</value>
 	            </path>
 	            <date>
-	                <value>2016/Apr/18 11:12:27.540</value>
+	                <value>2014/Nov/14 16:31:10</value>
 	            </date>
 	            <number>
 	                <value>2</value>
@@ -155,30 +143,30 @@
 	        <experimentalCondition>
 	            <beam>
 	                <exposureTime>
-	                    <value>9.900000e-02</value>
+	                    <value>3.330000e-01</value>
 	                </exposureTime>
 	                <wavelength>
-	                    <value>9.762500e-01</value>
+	                    <value>9.650000e-01</value>
 	                </wavelength>
 	            </beam>
 	            <detector>
 	                <beamPositionX>
-	                    <value>2.055589e+02</value>
+	                    <value>1.464614e+02</value>
 	                </beamPositionX>
 	                <beamPositionY>
-	                    <value>2.146233e+02</value>
+	                    <value>1.285408e+02</value>
 	                </beamPositionY>
 	                <distance>
-	                    <value>7.143100e+02</value>
+	                    <value>2.361750e+02</value>
 	                </distance>
 	                <name>
-	                    <value>PILATUS 6M</value>
+	                    <value>PILATUS2 3M</value>
 	                </name>
 	                <numberPixelX>
-	                    <value>2463</value>
+	                    <value>1475</value>
 	                </numberPixelX>
 	                <numberPixelY>
-	                    <value>2527</value>
+	                    <value>1679</value>
 	                </numberPixelY>
 	                <pixelSizeX>
 	                    <value>1.720000e-01</value>
@@ -187,36 +175,30 @@
 	                    <value>1.720000e-01</value>
 	                </pixelSizeY>
 	                <serialNumber>
-	                    <value>PILATUS3 6M, S/N 60-0126</value>
+	                    <value>PILATUS3 2M, S/N 24-0118, ESRF ID30</value>
 	                </serialNumber>
 	                <type>
-	                    <value>pilatus6m</value>
+	                    <value>pilatus2m</value>
 	                </type>
 	            </detector>
 	            <goniostat>
 	                <oscillationWidth>
-	                    <value>5.000000e-01</value>
+	                    <value>1.000000e+00</value>
 	                </oscillationWidth>
 	                <rotationAxisEnd>
-	                    <value>9.050000e+01</value>
+	                    <value>1.810000e+02</value>
 	                </rotationAxisEnd>
 	                <rotationAxisStart>
-	                    <value>9.000000e+01</value>
+	                    <value>1.800000e+02</value>
 	                </rotationAxisStart>
-	                <kappa>
-	                    <value>0.000000e+00</value>
-	                </kappa>
-	                <phi>
-	                    <value>0.000000e+00</value>
-	                </phi>
 	            </goniostat>
 	        </experimentalCondition>
 	        <image>
 	            <path>
-	                <value>${EDNA_TESTIMAGES}/thau_1_0003.cbf</value>
+	                <value>${EDNA_TESTIMAGES}/ref-opid30a1_4_0003.cbf</value>
 	            </path>
 	            <date>
-	                <value>2016/Apr/18 11:12:31.714</value>
+	                <value>2014/Nov/14 16:31:16</value>
 	            </date>
 	            <number>
 	                <value>3</value>
@@ -230,30 +212,30 @@
 	        <experimentalCondition>
 	            <beam>
 	                <exposureTime>
-	                    <value>9.900000e-02</value>
+	                    <value>3.330000e-01</value>
 	                </exposureTime>
 	                <wavelength>
-	                    <value>9.762500e-01</value>
+	                    <value>9.650000e-01</value>
 	                </wavelength>
 	            </beam>
 	            <detector>
 	                <beamPositionX>
-	                    <value>2.055589e+02</value>
+	                    <value>1.464614e+02</value>
 	                </beamPositionX>
 	                <beamPositionY>
-	                    <value>2.146233e+02</value>
+	                    <value>1.285408e+02</value>
 	                </beamPositionY>
 	                <distance>
-	                    <value>7.143100e+02</value>
+	                    <value>2.361750e+02</value>
 	                </distance>
 	                <name>
-	                    <value>PILATUS 6M</value>
+	                    <value>PILATUS2 3M</value>
 	                </name>
 	                <numberPixelX>
-	                    <value>2463</value>
+	                    <value>1475</value>
 	                </numberPixelX>
 	                <numberPixelY>
-	                    <value>2527</value>
+	                    <value>1679</value>
 	                </numberPixelY>
 	                <pixelSizeX>
 	                    <value>1.720000e-01</value>
@@ -262,36 +244,30 @@
 	                    <value>1.720000e-01</value>
 	                </pixelSizeY>
 	                <serialNumber>
-	                    <value>PILATUS3 6M, S/N 60-0126</value>
+	                    <value>PILATUS3 2M, S/N 24-0118, ESRF ID30</value>
 	                </serialNumber>
 	                <type>
-	                    <value>pilatus6m</value>
+	                    <value>pilatus2m</value>
 	                </type>
 	            </detector>
 	            <goniostat>
 	                <oscillationWidth>
-	                    <value>5.000000e-01</value>
+	                    <value>1.000000e+00</value>
 	                </oscillationWidth>
 	                <rotationAxisEnd>
-	                    <value>1.355000e+02</value>
+	                    <value>2.710000e+02</value>
 	                </rotationAxisEnd>
 	                <rotationAxisStart>
-	                    <value>1.350000e+02</value>
+	                    <value>2.700000e+02</value>
 	                </rotationAxisStart>
-	                <kappa>
-	                    <value>0.000000e+00</value>
-	                </kappa>
-	                <phi>
-	                    <value>0.000000e+00</value>
-	                </phi>
 	            </goniostat>
 	        </experimentalCondition>
 	        <image>
 	            <path>
-	                <value>${EDNA_TESTIMAGES}/thau_1_0004.cbf</value>
+	                <value>${EDNA_TESTIMAGES}/ref-opid30a1_4_0004.cbf</value>
 	            </path>
 	            <date>
-	                <value>2016/Apr/18 11:12:35.916</value>
+	                <value>2014/Nov/14 16:31:23</value>
 	            </date>
 	            <number>
 	                <value>4</value>
@@ -301,109 +277,34 @@
 	            <value>4</value>
 	        </subWedgeNumber>
 	    </subWedge>
-	    <subWedge>
-	        <experimentalCondition>
-	            <beam>
-	                <exposureTime>
-	                    <value>9.900000e-02</value>
-	                </exposureTime>
-	                <wavelength>
-	                    <value>9.762500e-01</value>
-	                </wavelength>
-	            </beam>
-	            <detector>
-	                <beamPositionX>
-	                    <value>2.055589e+02</value>
-	                </beamPositionX>
-	                <beamPositionY>
-	                    <value>2.146233e+02</value>
-	                </beamPositionY>
-	                <distance>
-	                    <value>7.143100e+02</value>
-	                </distance>
-	                <name>
-	                    <value>PILATUS 6M</value>
-	                </name>
-	                <numberPixelX>
-	                    <value>2463</value>
-	                </numberPixelX>
-	                <numberPixelY>
-	                    <value>2527</value>
-	                </numberPixelY>
-	                <pixelSizeX>
-	                    <value>1.720000e-01</value>
-	                </pixelSizeX>
-	                <pixelSizeY>
-	                    <value>1.720000e-01</value>
-	                </pixelSizeY>
-	                <serialNumber>
-	                    <value>PILATUS3 6M, S/N 60-0126</value>
-	                </serialNumber>
-	                <type>
-	                    <value>pilatus6m</value>
-	                </type>
-	            </detector>
-	            <goniostat>
-	                <oscillationWidth>
-	                    <value>5.000000e-01</value>
-	                </oscillationWidth>
-	                <rotationAxisEnd>
-	                    <value>1.805000e+02</value>
-	                </rotationAxisEnd>
-	                <rotationAxisStart>
-	                    <value>1.800000e+02</value>
-	                </rotationAxisStart>
-	                <kappa>
-	                    <value>0.000000e+00</value>
-	                </kappa>
-	                <phi>
-	                    <value>0.000000e+00</value>
-	                </phi>
-	            </goniostat>
-	        </experimentalCondition>
-	        <image>
-	            <path>
-	                <value>${EDNA_TESTIMAGES}/thau_1_0005.cbf</value>
-	            </path>
-	            <date>
-	                <value>2016/Apr/18 11:12:40.162</value>
-	            </date>
-	            <number>
-	                <value>5</value>
-	            </number>
-	        </image>
-	        <subWedgeNumber>
-	            <value>5</value>
-	        </subWedgeNumber>
-	    </subWedge>
-    </dataCollection>
+	</dataCollection>
     <experimentalCondition>
         <beam>
             <exposureTime>
-                <value>9.900000e-02</value>
+                <value>3.330000e-01</value>
             </exposureTime>
             <wavelength>
-                <value>9.762500e-01</value>
+                <value>9.650000e-01</value>
             </wavelength>
         </beam>
         <detector>
             <beamPositionX>
-                <value>2.055589e+02</value>
+                <value>1.464614e+02</value>
             </beamPositionX>
             <beamPositionY>
-                <value>2.146233e+02</value>
+                <value>1.285408e+02</value>
             </beamPositionY>
             <distance>
-                <value>7.143100e+02</value>
+                <value>2.361750e+02</value>
             </distance>
             <name>
-                <value>PILATUS 6M</value>
+                <value>PILATUS2 3M</value>
             </name>
             <numberPixelX>
-                <value>2463</value>
+                <value>1475</value>
             </numberPixelX>
             <numberPixelY>
-                <value>2527</value>
+                <value>1679</value>
             </numberPixelY>
             <pixelSizeX>
                 <value>1.720000e-01</value>
@@ -412,28 +313,23 @@
                 <value>1.720000e-01</value>
             </pixelSizeY>
             <serialNumber>
-                <value>PILATUS3 6M, S/N 60-0126</value>
+                <value>PILATUS3 2M, S/N 24-0118, ESRF ID30</value>
             </serialNumber>
             <type>
-                <value>pilatus6m</value>
+                <value>pilatus2m</value>
             </type>
         </detector>
         <goniostat>
             <oscillationWidth>
-                <value>5.000000e-01</value>
+                <value>1.000000e+00</value>
             </oscillationWidth>
             <rotationAxisEnd>
-                <value>5.000000e-01</value>
+                <value>1.000000e+00</value>
             </rotationAxisEnd>
             <rotationAxisStart>
                 <value>0.000000e+00</value>
             </rotationAxisStart>
-            <kappa>
-                <value>0.000000e+00</value>
-            </kappa>
-            <phi>
-                <value>0.000000e+00</value>
-            </phi>
         </goniostat>
     </experimentalCondition>
 </XSDataIndexingInput>
+	

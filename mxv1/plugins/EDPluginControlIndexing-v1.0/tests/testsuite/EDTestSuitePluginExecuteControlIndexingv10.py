@@ -41,7 +41,7 @@ class EDTestSuitePluginExecuteControlIndexingv10(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10withForcedSymmetry")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10WithLabelit")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10WithFiveImages")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlIndexingv10WithFourImages")
 
 
 if __name__ == '__main__':

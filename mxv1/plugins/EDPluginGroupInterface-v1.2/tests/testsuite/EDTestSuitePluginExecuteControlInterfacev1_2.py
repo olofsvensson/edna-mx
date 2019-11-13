@@ -9,7 +9,7 @@
 #
 #    Principal author:       Marie-Francoise Incardona (incardon@esrf.fr)
 #
-#    Contributing author:    Olof Svensson (svensson@esrf.fr) 
+#    Contributing author:    Olof Svensson (svensson@esrf.fr)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ class EDTestSuitePluginExecuteControlInterfacev1_2(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_withXMLInput")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_blc6")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_NtermA46")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_303")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_303")
 
 if __name__ == '__main__':
 
