@@ -46,4 +46,4 @@ class EDTestCasePluginExecuteControlIndexingv10WithFourImages(EDTestCasePluginEx
 
     def preProcess(self):
         EDTestCasePluginExecuteControlIndexingv10WithLabelit.preProcess(self)
-        self.loadTestImage([ "ref-opid30a1_4_0001.cbf", "ref-opid30a1_4_0001.cbf", "ref-opid30a1_4_0001.cbf", "ref-opid30a1_4_0001.cbf"])
+        self.loadTestImage([ "ref-opid30a1_4_0001.cbf", "ref-opid30a1_4_0002.cbf", "ref-opid30a1_4_0003.cbf", "ref-opid30a1_4_0004.cbf"])
