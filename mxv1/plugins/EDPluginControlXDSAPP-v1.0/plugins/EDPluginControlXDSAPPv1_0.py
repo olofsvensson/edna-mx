@@ -619,11 +619,9 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         shutil.copy(strPath, os.path.join(self.resultsDirectory, pyarchFileName))
         if doGzip:
             pyarchFileName += ".gz"
-            f_in = open(strPath)
-            f_out = gzip.open(os.path.join(self.pyarchDirectory, pyarchFileName), "wb")
-            f_out.writelines(f_in)
-            f_out.close()
-            f_in.close()
+            with open(strPath, 'rb') as f_in:
+                with gzip.open(os.path.join(self.pyarchDirectory, pyarchFileName), 'wb') as f_out:
+                    shutil.copyfileobj(f_in, f_out)
         else:
             shutil.copy(strPath, os.path.join(self.pyarchDirectory, pyarchFileName))
         autoProcProgramAttachment = AutoProcProgramAttachment()

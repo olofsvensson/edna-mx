@@ -608,11 +608,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             pathToXdsAsciiHkl = os.path.join(processDirectory, "XDS_ASCII.HKL")
             if os.path.exists(pathToXdsAsciiHkl) and self.pyarchDirectory is not None:
                 pyarchXdsAsciiHkl = self.pyarchPrefix + "_{0}_XDS_ASCII.HKL.gz".format(anomString)
-                f_in = open(pathToXdsAsciiHkl)
-                f_out = gzip.open(os.path.join(self.pyarchDirectory, pyarchXdsAsciiHkl), "wb")
-                f_out.writelines(f_in)
-                f_out.close()
-                f_in.close()
+                with open(pathToXdsAsciiHkl, 'rb') as f_in:
+                    with gzip.open(os.path.join(self.pyarchDirectory, pyarchXdsAsciiHkl), 'wb') as f_out:
+                        shutil.copyfileobj(f_in, f_out)
                 if self.resultsDirectory:
                     shutil.copy(os.path.join(self.pyarchDirectory, pyarchXdsAsciiHkl), os.path.join(self.resultsDirectory, pyarchXdsAsciiHkl))
                 autoProcProgramAttachment = AutoProcProgramAttachment()
