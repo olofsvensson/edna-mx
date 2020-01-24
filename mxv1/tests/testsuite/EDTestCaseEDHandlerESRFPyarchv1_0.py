@@ -109,7 +109,7 @@ class EDTestCaseEDHandlerESRFPyarchv1_0(EDTestCasePluginUnit):
         dataCollectionId = 123456
         pyarch_path = EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(beamline, pipelineName, dataCollectionId)
         EDAssert.equal(True, os.path.exists(pyarch_path))
-        EDAssert.equal(True, pyarch_path.startswith("/data/pyarch/2019/id30a2/reprocess/EDNA_proc/123456"))
+        EDAssert.equal(True, pyarch_path.startswith("/data/pyarch/2020/id30a2/reprocess/EDNA_proc/123456"))
         shutil.rmtree(pyarch_path)
 
 
