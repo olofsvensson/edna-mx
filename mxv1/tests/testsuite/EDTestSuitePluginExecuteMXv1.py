@@ -8,7 +8,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
 #
@@ -23,7 +23,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -46,8 +46,8 @@ class EDTestSuitePluginExecuteMXv1(EDTestSuite):
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlGeneratePredictionv10")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlIntegrationv10")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlStrategyv1_2")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteControlCharacterisationv1_2")
-        self.addTestSuiteFromName("EDTestSuitePluginExecuteControlGridScreeningv1_0")
+#        self.addTestSuiteFromName("EDTestSuitePluginExecuteControlCharacterisationv1_2")
+#        self.addTestSuiteFromName("EDTestSuitePluginExecuteControlGridScreeningv1_0")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteReadImageHeaderv10")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteControlInterfacev1_2")
         self.addTestSuiteFromName("EDTestSuitePluginExecuteExecEvaluationIndexingv10")
