@@ -9,7 +9,7 @@
 #                            Grenoble, France
 #
 #    Principal authors: Marie-Francoise Incardona (incardon@esrf.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #                       Jérôme Kieffer (jerome.kieffer@esrf.eu)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -103,7 +103,7 @@ class EDPluginExecProcessScript(EDPluginExecProcess):
         self.__listCommandPreExecution = []
         self.__listCommandExecution = []
         self.__listCommandPostExecution = []
-        self.__iPollScriptProcessTime = 1 # [s]
+        self.__iPollScriptProcessTime = 1  # [s]
         self.__strPathToHostNamePidFile = None
         self.__iNumberOfLastLinesFromLogFileIfError = 15
 
@@ -367,7 +367,7 @@ class EDPluginExecProcessScript(EDPluginExecProcess):
         """
         self.DEBUG("EDPluginExecProcessScript.preparePythonScript")
 
-        #when running python script allow 1s+1% gracetime to let the python scripting mechanism to finish
+        # when running python script allow 1s+1% gracetime to let the python scripting mechanism to finish
         iScriptTimeOut = max(1, self.getTimeOut())
         self.setTimeOut(1 + 1.05 * iScriptTimeOut)
         self.DEBUG("Original Timeout is %s setting to %s" % (iScriptTimeOut, self.getTimeOut()))
@@ -906,7 +906,10 @@ class EDPluginExecProcessScript(EDPluginExecProcess):
         Returns the file content of a process file
         """
         self.DEBUG("EDPluginExecProcessScript.readProcessFile")
-        strFilePath = os.path.join(self.getWorkingDirectory(), _strFileName)
+        if _strFileName.startswith("/"):
+            strFilePath = _strFileName
+        else:
+            strFilePath = os.path.join(self.getWorkingDirectory(), _strFileName)
         strFileContent = None
         if os.path.exists(strFilePath):
             strFileContent = EDUtilsFile.readFile(strFilePath)
