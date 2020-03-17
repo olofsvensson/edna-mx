@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -281,13 +281,16 @@ class EDPluginRaddosev10(EDPluginExecProcessScript):
         else:
             # Fix for problem reading raddose log file under Python 3:
             # 'utf-8' codec can't decode byte 0xf1 in position 2729: invalid continuation byte
-            #strLog = self.readProcessFile(_strFileName)
-            strFilePath = os.path.join(self.getWorkingDirectory(), _strFileName)
+            # strLog = self.readProcessFile(_strFileName)
+            if _strFileName.startswith("/"):
+                strFilePath = _strFileName
+            else:
+                strFilePath = os.path.join(self.getWorkingDirectory(), _strFileName)
             try:
                 with open(_strFileName, "rb") as fd:
                     oContent = fd.read()
                 # Cut off the last 150 bytes
-                oContent = oContent[0:len(oContent)-150]
+                oContent = oContent[0:len(oContent) - 150]
                 if sys.version.startswith('3'):
                     strLog = oContent.decode('utf-8')
                 else:
@@ -328,7 +331,7 @@ class EDPluginRaddosev10(EDPluginExecProcessScript):
         self.checkMandatoryParameters(self.getDataInput().getBeamFlux(), "beamFlux")
         self.checkMandatoryParameters(self.getDataInput().getBeamSize(), "beamSize")
 
-        #self.checkMandatoryParameters( self.getDataInput().getCrystalSize(), "crystalSize")
+        # self.checkMandatoryParameters( self.getDataInput().getCrystalSize(), "crystalSize")
         # Default is 0.1 0.1 0.1
 
         # Default is 0.1 0.1
