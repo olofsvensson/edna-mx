@@ -52,14 +52,12 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         self.setDataOutput(XSDataMinimalXdsOut())
         self.dataOutput.succeeded = XSDataBoolean(False)
         self.maxNoProcessors = 10
-        self.maxNoJobs = 1
         self.pathToNeggiaPlugin = None
 
     def configure(self):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginExecMinimalXdsv1_0.configure")
         self.maxNoProcessors = self.config.get("maxNoProcessors", self.maxNoProcessors)
-        self.maxNoJobs = self.config.get("maxNoJobs", self.maxNoJobs)
         self.pathToNeggiaPlugin = self.config.get("pathToNeggiaPlugin")
 
 
@@ -215,10 +213,10 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         if not "LIB=" in parsed_config and self.pathToNeggiaPlugin is not None:
             parsed_config["LIB="] = self.pathToNeggiaPlugin
 
-        # Max no processors and Jobs
+        # Max no processors
         if not EDUtilsPath.isEMBL():
             parsed_config['MAXIMUM_NUMBER_OF_PROCESSORS='] = str(self.maxNoProcessors)
-        parsed_config['MAXIMUM_NUMBER_OF_JOBS='] = self.maxNoJobs
+        parsed_config['MAXIMUM_NUMBER_OF_JOBS='] = 1
 
         # Save back the changes
         dump_xds_file(xds_file, parsed_config)
