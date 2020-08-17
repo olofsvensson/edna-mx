@@ -116,7 +116,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
             xsDataInputMXWaitFile = XSDataInputMXWaitFile()
             pathToImageFile = strPathToDiffractionImage
             # Quite ugly hack to avoid lag problems at the ESRF:
-            if EDUtilsPath.isESRF() or EDUtilsPath.isALBA():
+            if EDUtilsPath.isESRF() or EDUtilsPath.isALBA() or EDUtilsPath.isMAXIV():
                 if any(beamline in strPathToDiffractionImage for beamline in ["id23eh1", "id29", "id30b"]):
                     # Pilatus 6M
                     self.minImageSize = 6000000
