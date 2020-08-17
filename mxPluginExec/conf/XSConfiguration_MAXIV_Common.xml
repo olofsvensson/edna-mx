@@ -109,7 +109,7 @@
 				</XSParamItem>
                                 <XSParamItem>
                                         <name>symopHome</name>
-                                        <value>/mxn/groups/biomax/cmxsoft/libs/lib/ccp4_lib_data</value>
+                                        <value>/mxn/groups/biomax/cmxsoft/libs/ccp4_lib_data</value>
                                 </XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -159,7 +159,7 @@
 				</XSParamItem>
                                 <XSParamItem>
                                         <name>symopHome</name>
-                                        <value>/mxn/groups/biomax/cmxsoft/libs/lib/ccp4_lib_data</value>
+                                        <value>/mxn/groups/biomax/cmxsoft/libs/ccp4_lib_data</value>
                                 </XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -466,7 +466,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>symdb_path</name>
-					<value>/mxn/groups/biomax/cmxsoft/libs/lib/ccp4_lib_data/syminfo.lib</value>
+					<value>/mxn/groups/biomax/cmxsoft/libs/ccp4_lib_data/syminfo.lib</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -517,6 +517,14 @@
 					<name>maxNoProcessors</name>
 					<value>20</value>
 				</XSParamItem>
+                                <XSParamItem>
+                                        <name>maxNoJobs</name>
+                                        <value>8</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>pathToNeggiaPlugin</name>
+                                        <value>/mxn/groups/biomax/cmxsoft/XDS/dectris-neggia.so</value>
+                                </XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
