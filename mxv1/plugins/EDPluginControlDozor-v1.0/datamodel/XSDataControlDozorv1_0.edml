@@ -59,6 +59,7 @@ complex type XSDataInputControlDozor extends XSDataInput {
 	wedgeNumber : XSDataInteger optional
 	radiationDamage : XSDataBoolean optional
 	keepCbfTmpDirectory : XSDataBoolean optional
+	doISPyBUpload : XSDataBoolean optional
 }
 
 complex type XSDataResultControlDozor extends XSDataResult {

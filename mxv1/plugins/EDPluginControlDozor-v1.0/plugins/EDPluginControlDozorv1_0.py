@@ -100,6 +100,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
         self._oServerProxy = None
         self.doRadiationDamage = False
         self.gnuplot = "gnuplot"
+        self.doISPyBUpload = False
 
 
     def checkParameters(self):
@@ -130,8 +131,9 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             self.batchSize = self.dataInput.batchSize.value
         if self.dataInput.radiationDamage is not None:
             self.doRadiationDamage = self.dataInput.radiationDamage.value
-
-
+        if self.dataInput.doISPyBUpload is not None:
+            if self.dataInput.doISPyBUpload.value:
+                self.doISPyBUpload = True
 
 
     def process(self, _edObject=None):
@@ -445,24 +447,25 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             except:
                 self.warning("Couldn't copy files to results directory: {0}".format(resultsDirectory))
 
-            try:
-                # Create paths on pyarch
-                dozorPlotPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorPlotResultPath)
-                dozorCsvPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorCsvResultPath)
-                if not os.path.exists(os.path.dirname(dozorPlotPyarchPath)):
-                    os.makedirs(os.path.dirname(dozorPlotPyarchPath), 0o755)
-                shutil.copy(dozorPlotResultPath, dozorPlotPyarchPath)
-                shutil.copy(dozorCsvResultPath, dozorCsvPyarchPath)
-                # Upload to data collection
-                xsDataInputISPyBSetImageQualityIndicatorsPlot = XSDataInputISPyBSetImageQualityIndicatorsPlot()
-                xsDataInputISPyBSetImageQualityIndicatorsPlot.dataCollectionId = XSDataInteger(dataCollectionId)
-                xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsPlotPath = XSDataString(dozorPlotPyarchPath)
-                xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsCSVPath = XSDataString(dozorCsvPyarchPath)
-                EDPluginISPyBSetImageQualityIndicatorsPlot = self.loadPlugin("EDPluginISPyBSetImageQualityIndicatorsPlotv1_4")
-                EDPluginISPyBSetImageQualityIndicatorsPlot.dataInput = xsDataInputISPyBSetImageQualityIndicatorsPlot
-                EDPluginISPyBSetImageQualityIndicatorsPlot.executeSynchronous()
-            except:
-                self.warning("Couldn't copy files to pyarch: {0}".format(dozorPlotPyarchPath))
+            if self.doISPyBUpload:
+                try:
+                    # Create paths on pyarch
+                    dozorPlotPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorPlotResultPath)
+                    dozorCsvPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(dozorCsvResultPath)
+                    if not os.path.exists(os.path.dirname(dozorPlotPyarchPath)):
+                        os.makedirs(os.path.dirname(dozorPlotPyarchPath), 0o755)
+                    shutil.copy(dozorPlotResultPath, dozorPlotPyarchPath)
+                    shutil.copy(dozorCsvResultPath, dozorCsvPyarchPath)
+                    # Upload to data collection
+                    xsDataInputISPyBSetImageQualityIndicatorsPlot = XSDataInputISPyBSetImageQualityIndicatorsPlot()
+                    xsDataInputISPyBSetImageQualityIndicatorsPlot.dataCollectionId = XSDataInteger(dataCollectionId)
+                    xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsPlotPath = XSDataString(dozorPlotPyarchPath)
+                    xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsCSVPath = XSDataString(dozorCsvPyarchPath)
+                    EDPluginISPyBSetImageQualityIndicatorsPlot = self.loadPlugin("EDPluginISPyBSetImageQualityIndicatorsPlotv1_4")
+                    EDPluginISPyBSetImageQualityIndicatorsPlot.dataInput = xsDataInputISPyBSetImageQualityIndicatorsPlot
+                    EDPluginISPyBSetImageQualityIndicatorsPlot.executeSynchronous()
+                except:
+                    self.warning("Couldn't copy files to pyarch: {0}".format(dozorPlotPyarchPath))
 
         self.sendMessageToMXCuBE("Processing finished", "info")
         self.setStatusToMXCuBE("Success")
