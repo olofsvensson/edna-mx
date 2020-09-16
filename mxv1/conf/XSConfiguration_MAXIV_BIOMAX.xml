@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<XSConfiguration>
+  	<XSImportConfiguration>
+  		<name>XSConfiguration_MAXIV_Common</name>
+  	</XSImportConfiguration>
+  	<XSImportConfiguration>
+  		<name>XSConfiguration_MAXIV_ISPyB_Common</name>
+  	</XSImportConfiguration>
+</XSConfiguration>

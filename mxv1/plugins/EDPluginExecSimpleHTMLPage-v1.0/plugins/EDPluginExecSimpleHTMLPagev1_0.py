@@ -152,7 +152,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
         xsDataResultSimpleHTMLPage.setPathToHTMLFile(XSDataFile(XSDataString(self.strPath)))
         xsDataResultSimpleHTMLPage.setPathToHTMLDirectory(XSDataFile(XSDataString(os.path.dirname(self.strPath))))
         # Store in Pyarch
-        if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL() or EDUtilsPath.isALBA:
+        if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL() or EDUtilsPath.isMAXIV() or EDUtilsPath.isALBA:
             strPyarchPath = None
             if self.xsDataResultCharacterisation is not None:
                 strPyarchPath = EDHandlerESRFPyarchv1_0.createPyarchHtmlDirectoryPath(self.xsDataResultCharacterisation.getDataCollection())

@@ -60,6 +60,9 @@ class EDHandlerESRFPyarchv1_0:
                                                     *listOfDirectories[4:])
             return strPyarchDNAFilePath
 
+        if EDUtilsPath.isMAXIV():
+            strPyarchDNAFilePath = _strESRFPath.replace("/data","/mxn/groups/ispybstorage",1)
+            return strPyarchDNAFilePath
 
         listBeamlines = ["bm30a", "id14eh1", "id14eh2", "id14eh3", "id14eh4", "id23eh1", "id23eh2",
                          "id29", "id30a1", "id30a2", "id30a3", "id30b", "simulator_mxcube"]

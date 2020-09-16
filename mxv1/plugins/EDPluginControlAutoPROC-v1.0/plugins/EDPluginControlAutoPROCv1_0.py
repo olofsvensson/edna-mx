@@ -172,6 +172,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             directory = ispybDataCollection.imageDirectory
             if EDUtilsPath.isEMBL():
                 template = ispybDataCollection.fileTemplate.replace("%05d", "#" * 5)
+            elif EDUtilsPath.isMAXIV():
+                template = ispybDataCollection.fileTemplate
             else:
                 template = ispybDataCollection.fileTemplate.replace("%04d", "####")
             if self.dataInput.fromN is None:
@@ -287,7 +289,16 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             minSizeFirst = 1000000
             minSizeLast = 1000000
 
-        if EDUtilsPath.isEMBL():
+        if EDUtilsPath.isMAXIV():
+            minSizeFirst = 100000
+            minSizeLast = 100000
+            pathToStartImage = os.path.join(directory,
+                                            self.eiger_template_to_image(template, imageNoStart))
+            pathToEndImage = os.path.join(directory,
+                                          self.eiger_template_to_image(template, imageNoEnd))
+            isH5 = True
+
+        if EDUtilsPath.isEMBL() or EDUtilsPath.isMAXIV():
             fWaitFileTimeout = 60  # s
         else:
             fWaitFileTimeout = 3600  # s
@@ -680,11 +691,17 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         fileNumber = int(num / 100)
         if fileNumber == 0:
             fileNumber = 1
-        fmt_string = fmt.replace("####", "1_data_%06d" % fileNumber)
+        if EDUtilsPath.isMAXIV():
+            fmt_string = fmt.replace("%06d", "data_%06d" % fileNumber)
+        else:
+            fmt_string = fmt.replace("####", "1_data_%06d" % fileNumber)
         return fmt_string.format(num)
 
     def eiger_template_to_master(self, fmt):
-        fmt_string = fmt.replace("####", "1_master")
+        if EDUtilsPath.isMAXIV():
+            fmt_string = fmt.replace("%06d", "master")
+        else:
+            fmt_string = fmt.replace("####", "1_master")
         return fmt_string
 
     def matchesTruncateEarlyLate(self, fileName):
