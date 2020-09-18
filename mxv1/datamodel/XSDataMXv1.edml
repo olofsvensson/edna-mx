@@ -71,6 +71,7 @@ package XSDataMXv1 {
 		
 		complex type XSDataInputCharacterisation extends XSDataInput {
 			dataCollection : XSDataCollection
+			token : XSDataString optional
 		}
 
 		complex type XSDataInputControlISPyB extends XSDataInput {

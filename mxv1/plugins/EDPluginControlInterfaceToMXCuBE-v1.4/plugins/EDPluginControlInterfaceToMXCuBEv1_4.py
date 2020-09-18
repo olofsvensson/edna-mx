@@ -266,6 +266,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         xsDataInputInterface.setDiffractionPlan(xsDataInputMXCuBE.getDiffractionPlan())
         xsDataInputInterface.setSample(xsDataInputMXCuBE.getSample())
         xsDataInputInterface.setDataCollectionId(xsDataInputMXCuBE.getDataCollectionId())
+        xsDataInputInterface.setToken(xsDataInputMXCuBE.getToken())
         self.edPluginControlInterface.setDataInput(xsDataInputInterface)
 
         if not self.isFailure() and self.edPluginControlInterface is not None:

@@ -38,6 +38,7 @@ complex type XSDataInputInterface {
 	shortComments : XSDataString optional
 	comments : XSDataString optional
 	inputCharacterisation : XSDataInputCharacterisation optional
+	token : XSDataString optional
 }
 
 complex type XSDataResultInterface {
