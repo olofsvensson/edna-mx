@@ -255,9 +255,9 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             if self._strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
                 self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
                 if strToken is None:
-                    self._oServerProxy = ServerProxy(self.strMxCuBE_URI)
+                    self._oServerProxy = ServerProxy(self._strMxCuBE_URI)
                 else:
-                    self._oServerProxy = ServerProxy(self.strMxCuBE_URI, transport=TokenTransport(strToken))
+                    self._oServerProxy = ServerProxy(self._strMxCuBE_URI, transport=TokenTransport(strToken))
 
 
     def process(self, _edObject=None):
