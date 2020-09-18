@@ -36,8 +36,10 @@ import tempfile
 
 try:
     from xmlrpclib import ServerProxy
+    from xmlrpclib import Transport
 except:
     from xmlrpc.client import ServerProxy
+    from xmlrpc.client import Transport
 
 from EDMessage import EDMessage
 from EDPluginControl import EDPluginControl
@@ -88,6 +90,21 @@ from XSDataControlH5ToCBFv1_1 import XSDataInputControlH5ToCBF
 
 from EDHandlerXSDataISPyBv1_4 import EDHandlerXSDataISPyBv1_4
 
+class TokenTransport(Transport):
+
+    def __init__(self, token, use_datetime=0):
+        Transport.__init__(self, use_datetime=use_datetime)
+        self.token = token
+
+    def send_content(self, connection, request_body):
+        connection.putheader("Content-Type", "text/xml")
+        connection.putheader("Content-Length", str(len(request_body)))
+        connection.putheader("Token", self.token)
+        connection.endheaders()
+        if request_body:
+            connection.send(request_body)
+
+
 class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
     """
     This is the plugin interface to launch the MXv1 characterisation from an MXCuBE gui.
@@ -136,7 +153,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.bIsEigerDetector = False
         self.xsDataFirstImage = None
         self.strMxCuBE_URI = None
-        self.oServerProxy = None
+        self.serverProxy = None
         self.minImageSize = 100000
         self.fMXWaitFileTimeOut = 10
 
@@ -157,9 +174,6 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.strEDNAEmailSender = self.config.get(self.EDNA_EMAIL_SENDER, self.strEDNAEmailSender)
         self.strEDNAContactEmail = self.config.get(self.EDNA_CONTACT_EMAIL, self.strEDNAContactEmail)
         self.strMxCuBE_URI = self.config.get("mxCuBE_URI", None)
-        if self.strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
-            self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self.strMxCuBE_URI))
-            self.oServerProxy = ServerProxy(self.strMxCuBE_URI)
         self.minImageSize = int(self.config.get("minImageSize", self.minImageSize))
         self.fMXWaitFileTimeOut = int(self.config.get("fileTimeOut", self.fMXWaitFileTimeOut))
 
@@ -187,6 +201,18 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_4.process...")
 
         xsDataInputMXCuBE = self.getDataInput()
+
+        if xsDataInputMXCuBE.token is not None:
+            strToken = xsDataInputMXCuBE.token.value
+        else:
+            strToken = None
+        if self.strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
+            self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self.strMxCuBE_URI))
+            if strToken is None:
+                self.serverProxy = ServerProxy(self.strMxCuBE_URI)
+            else:
+                self.serverProxy = ServerProxy(self.strMxCuBE_URI, transport=TokenTransport(strToken))
+
         xsDataInputInterface = XSDataInputInterface()
         self.edPluginControlInterface = self.loadPlugin(self.strPluginControlInterface)
         self.xsDataFirstImage = None
@@ -240,6 +266,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         xsDataInputInterface.setDiffractionPlan(xsDataInputMXCuBE.getDiffractionPlan())
         xsDataInputInterface.setSample(xsDataInputMXCuBE.getSample())
         xsDataInputInterface.setDataCollectionId(xsDataInputMXCuBE.getDataCollectionId())
+        xsDataInputInterface.setToken(xsDataInputMXCuBE.getToken())
         self.edPluginControlInterface.setDataInput(xsDataInputInterface)
 
         if not self.isFailure() and self.edPluginControlInterface is not None:
@@ -825,12 +852,12 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
 
 
     def sendMessageToMXCuBE(self, _strMessage, level="info"):
-        if self.oServerProxy is not None:
+        if self.serverProxy is not None:
             self.DEBUG("Sending message to mxCuBE: {0}, level {1}".format(_strMessage, level))
             try:
                 for strMessage in _strMessage.split("\n"):
                     if strMessage != "":
-                        self.oServerProxy.log_message("Characterisation: " + strMessage, level)
+                        self.serverProxy.log_message("Characterisation: " + strMessage, level)
             except Exception as e:
                 self.screen(e)
                 self.DEBUG("Sending message to mxCuBE failed!")

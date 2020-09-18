@@ -32,8 +32,10 @@ import os
 
 try:
     from xmlrpclib import ServerProxy
+    from xmlrpclib import Transport
 except:
     from xmlrpc.client import ServerProxy
+    from xmlrpc.client import Transport
 
 from EDVerbose import EDVerbose
 from EDPluginControl import EDPluginControl
@@ -61,12 +63,25 @@ EDFactoryPluginStatic.loadModule("XSDataMXThumbnailv1_1")
 from XSDataMXThumbnailv1_1 import XSDataInputMXThumbnail
 
 
+class TokenTransport(Transport):
+
+    def __init__(self, token, use_datetime=0):
+        Transport.__init__(self, use_datetime=use_datetime)
+        self.token = token
+
+    def send_content(self, connection, request_body):
+        connection.putheader("Content-Type", "text/xml")
+        connection.putheader("Content-Length", str(len(request_body)))
+        connection.putheader("Token", self.token)
+        connection.endheaders()
+        if request_body:
+            connection.send(request_body)
+
+
 class EDPluginControlCharacterisationv1_4(EDPluginControl):
     """
     [To be replaced with a description of EDPluginControlTemplatev10]
     """
-
-
     def __init__(self):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataInputCharacterisation)
@@ -121,9 +136,6 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlCharacterisationv1_4.configure")
         self._strMxCuBE_URI = self.config.get("mxCuBE_URI", None)
-        if self._strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
-            self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
-            self._oServerProxy = ServerProxy(self._strMxCuBE_URI)
         self._runKappa = self.config.get("runKappa", False)
         self._fMinTransmission = self.config.get("minTransmissionWarning", self._fMinTransmission)
         self._bDoOnlyMoslmfIndexing = self.config.get("doOnlyMosflmIndexing", False)
@@ -235,6 +247,17 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
 
                 # Populate characterisation object
                 self._xsDataResultCharacterisation.setDataCollection(XSDataCollection.parseString(self._xsDataCollection.marshal()))
+
+            if xsDataInputCharacterisation.token is not None:
+                strToken = xsDataInputCharacterisation.token.value
+            else:
+                strToken = None
+            if self._strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
+                self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
+                if strToken is None:
+                    self._oServerProxy = ServerProxy(self._strMxCuBE_URI)
+                else:
+                    self._oServerProxy = ServerProxy(self._strMxCuBE_URI, transport=TokenTransport(strToken))
 
 
     def process(self, _edObject=None):

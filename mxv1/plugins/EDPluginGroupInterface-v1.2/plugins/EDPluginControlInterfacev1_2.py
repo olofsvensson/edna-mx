@@ -141,6 +141,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
         self.xsDataExperimentalCodition = None
         self.xsDataSample = None
         self.xsDataDiffractionPlan = None
+        self.xsDataToken = None
 
 
     def configure(self):
@@ -296,6 +297,8 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
 
             if xsDataInputInterface.getDataCollectionId():
                 self.iDataCollectionId = xsDataInputInterface.getDataCollectionId().getValue()
+
+            self.xsDataToken = xsDataInputInterface.getToken()
 
         else:
 
@@ -559,6 +562,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
         if self.xsDataSample is not None:
             xsDataCollection.setSample(XSDataSampleCrystalMM.parseString(self.xsDataSample.marshal()))
         self.xsDataInputCharacterisation.setDataCollection(xsDataCollection)
+        self.xsDataInputCharacterisation.setToken(self.xsDataToken)
 
 
     def generateTemplateFile(self, _edPlugin):

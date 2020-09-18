@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Feb 26 10:18::17 2014 by EDGenerateDS.
+# Generated Fri Sep 18 01:54::19 2020 by EDGenerateDS.
 #
 
 import os, sys
@@ -150,7 +150,7 @@ class MixedContainer(object):
 
 
 class XSDataInputInterface(object):
-    def __init__(self, inputCharacterisation=None, comments=None, shortComments=None, dataCollectionId=None, transmission=None, wavelength=None, beamPosY=None, beamPosX=None, resultsFilePath=None, generatedTemplateFile=None, templateMode=None, beamSizeY=None, beamSizeX=None, beamSize=None, minExposureTimePerImage=None, flux=None, imagePath=None, sample=None, diffractionPlan=None, experimentalCondition=None):
+    def __init__(self, token=None, inputCharacterisation=None, comments=None, shortComments=None, dataCollectionId=None, transmission=None, wavelength=None, beamPosY=None, beamPosX=None, resultsFilePath=None, generatedTemplateFile=None, templateMode=None, beamSizeY=None, beamSizeX=None, beamSize=None, minExposureTimePerImage=None, flux=None, imagePath=None, sample=None, diffractionPlan=None, experimentalCondition=None):
         if experimentalCondition is None:
             self._experimentalCondition = None
         elif experimentalCondition.__class__.__name__ == "XSDataExperimentalCondition":
@@ -290,6 +290,13 @@ class XSDataInputInterface(object):
             self._inputCharacterisation = inputCharacterisation
         else:
             strMessage = "ERROR! XSDataInputInterface constructor argument 'inputCharacterisation' is not XSDataInputCharacterisation but %s" % self._inputCharacterisation.__class__.__name__
+            raise BaseException(strMessage)
+        if token is None:
+            self._token = None
+        elif token.__class__.__name__ == "XSDataString":
+            self._token = token
+        else:
+            strMessage = "ERROR! XSDataInputInterface constructor argument 'token' is not XSDataString but %s" % self._token.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'experimentalCondition' attribute
     def getExperimentalCondition(self): return self._experimentalCondition
@@ -552,6 +559,18 @@ class XSDataInputInterface(object):
             raise BaseException(strMessage)
     def delInputCharacterisation(self): self._inputCharacterisation = None
     inputCharacterisation = property(getInputCharacterisation, setInputCharacterisation, delInputCharacterisation, "Property for inputCharacterisation")
+    # Methods and properties for the 'token' attribute
+    def getToken(self): return self._token
+    def setToken(self, token):
+        if token is None:
+            self._token = None
+        elif token.__class__.__name__ == "XSDataString":
+            self._token = token
+        else:
+            strMessage = "ERROR! XSDataInputInterface.setToken argument is not XSDataString but %s" % token.__class__.__name__
+            raise BaseException(strMessage)
+    def delToken(self): self._token = None
+    token = property(getToken, setToken, delToken, "Property for token")
     def export(self, outfile, level, name_='XSDataInputInterface'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -600,6 +619,8 @@ class XSDataInputInterface(object):
             self.comments.export(outfile, level, name_='comments')
         if self._inputCharacterisation is not None:
             self.inputCharacterisation.export(outfile, level, name_='inputCharacterisation')
+        if self._token is not None:
+            self.token.export(outfile, level, name_='token')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -705,6 +726,11 @@ class XSDataInputInterface(object):
             obj_ = XSDataInputCharacterisation()
             obj_.build(child_)
             self.setInputCharacterisation(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'token':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setToken(obj_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()

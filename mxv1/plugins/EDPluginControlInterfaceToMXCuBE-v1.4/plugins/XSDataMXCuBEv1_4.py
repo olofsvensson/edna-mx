@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Mar 4 05:43::11 2016 by EDGenerateDS.
+# Generated Thu Sep 17 03:33::44 2020 by EDGenerateDS.
 #
 
 import os, sys
@@ -1319,7 +1319,7 @@ class XSDataMXCuBEParameters(XSData):
 
 
 class XSDataInputMXCuBE(XSDataInput):
-    def __init__(self, configuration=None, htmlDir=None, dataSet=None, sample=None, outputFileDirectory=None, experimentalCondition=None, diffractionPlan=None, dataCollectionId=None, characterisationInput=None):
+    def __init__(self, configuration=None, token=None, htmlDir=None, dataSet=None, sample=None, outputFileDirectory=None, experimentalCondition=None, diffractionPlan=None, dataCollectionId=None, characterisationInput=None):
         XSDataInput.__init__(self, configuration)
         if characterisationInput is None:
             self._characterisationInput = None
@@ -1376,6 +1376,13 @@ class XSDataInputMXCuBE(XSDataInput):
             self._htmlDir = htmlDir
         else:
             strMessage = "ERROR! XSDataInputMXCuBE constructor argument 'htmlDir' is not XSDataFile but %s" % self._htmlDir.__class__.__name__
+            raise BaseException(strMessage)
+        if token is None:
+            self._token = None
+        elif token.__class__.__name__ == "XSDataString":
+            self._token = token
+        else:
+            strMessage = "ERROR! XSDataInputMXCuBE constructor argument 'token' is not XSDataString but %s" % self._token.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'characterisationInput' attribute
     def getCharacterisationInput(self): return self._characterisationInput
@@ -1494,6 +1501,18 @@ class XSDataInputMXCuBE(XSDataInput):
             raise BaseException(strMessage)
     def delHtmlDir(self): self._htmlDir = None
     htmlDir = property(getHtmlDir, setHtmlDir, delHtmlDir, "Property for htmlDir")
+    # Methods and properties for the 'token' attribute
+    def getToken(self): return self._token
+    def setToken(self, token):
+        if token is None:
+            self._token = None
+        elif token.__class__.__name__ == "XSDataString":
+            self._token = token
+        else:
+            strMessage = "ERROR! XSDataInputMXCuBE.setToken argument is not XSDataString but %s" % token.__class__.__name__
+            raise BaseException(strMessage)
+    def delToken(self): self._token = None
+    token = property(getToken, setToken, delToken, "Property for token")
     def export(self, outfile, level, name_='XSDataInputMXCuBE'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1518,6 +1537,8 @@ class XSDataInputMXCuBE(XSDataInput):
             dataSet_.export(outfile, level, name_='dataSet')
         if self._htmlDir is not None:
             self.htmlDir.export(outfile, level, name_='htmlDir')
+        if self._token is not None:
+            self.token.export(outfile, level, name_='token')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1563,6 +1584,11 @@ class XSDataInputMXCuBE(XSDataInput):
             obj_ = XSDataFile()
             obj_.build(child_)
             self.setHtmlDir(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'token':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setToken(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

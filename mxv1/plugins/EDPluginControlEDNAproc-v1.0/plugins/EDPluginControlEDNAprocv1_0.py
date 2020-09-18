@@ -1269,6 +1269,9 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                         year = tokens[4][0:4]
                         pyarch_path = os.path.join('/data/pyarch', year, tokens[1],
                                                    *tokens[3:])
+            elif EDUtilsPath.isMAXIV():
+                pyarch_path =  files_dir.replace("/data","/mxn/groups/ispybstorage",1)
+
             if pyarch_path is not None:
                 pyarch_path = pyarch_path.replace('PROCESSED_DATA', 'RAW_DATA')
                 try:
@@ -1372,7 +1375,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                     self.stats['ispyb_upload'] = time.time() - t0
 
             # Finally run dimple if executed at the ESRF
-            if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL() or EDUtilsPath.isALBA():
+            if EDUtilsPath.isESRF() or EDUtilsPath.isEMBL() or EDUtilsPath.isALBA() or EDUtilsPath.isMAXIV():
                 xsDataInputControlDimple = XSDataInputControlDimple()
                 xsDataInputControlDimple.dataCollectionId = self.dataInput.data_collection_id
                 xsDataInputControlDimple.mtzFile = XSDataFile(XSDataString(os.path.join(self.file_conversion.dataInput.output_directory.value, "ep_{0}_anom_aimless.mtz".format(self.image_prefix))))
