@@ -472,8 +472,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 minSizeFirst = 2000000
                 minSizeLast = 2000000
             elif any(beamline in self.first_image for beamline in ["id30a3"]):
-                minSizeFirst = 100000
-                minSizeLast = 100000
+                minSizeFirst = 1000000
+                minSizeLast = 1000000
                 first_image = self.eiger_template_to_image(template, start_image)
                 last_image = self.eiger_template_to_image(template, end_image)
             else:
