@@ -298,7 +298,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
             if xsDataInputInterface.getDataCollectionId():
                 self.iDataCollectionId = xsDataInputInterface.getDataCollectionId().getValue()
 
-            self.xsDataToken = xsDataInput.getToken()
+            self.xsDataToken = xsDataInputInterface.getToken()
 
         else:
 
