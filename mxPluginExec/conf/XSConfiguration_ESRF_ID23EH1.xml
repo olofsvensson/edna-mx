@@ -69,15 +69,15 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>ix_max</name>
-					<value>1230</value>
+					<value>1300</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>iy_min</name>
-					<value>1228</value>
+					<value>1165</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>iy_max</name>
-					<value>1298</value>
+					<value>1367</value>
 				</XSParamItem>				
 			</XSParamList>
 		</XSPluginItem>
