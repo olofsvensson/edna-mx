@@ -148,6 +148,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             library = self.library_cbf
             nx = 1475
             ny = 1679
+            pixel = 0.172
             if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
                 self.ixMin = self.ixMinPilatus2m
                 self.ixMax = self.ixMaxPilatus2m
@@ -157,6 +158,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             library = self.library_cbf
             nx = 2463
             ny = 2527
+            pixel = 0.172
             if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
                 self.ixMin = self.ixMinPilatus6m
                 self.ixMax = self.ixMaxPilatus6m
@@ -166,6 +168,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             library = self.library_cbf
             nx = 2070
             ny = 2167
+            pixel = 0.075
             if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
                 self.ixMin = self.ixMinEiger4m
                 self.ixMax = self.ixMaxEiger4m
@@ -177,8 +180,11 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 _xsDataInputDozor.firstImageNumber.value,
                 _xsDataInputDozor.numberImages.value))
             strCommandText = "!\n"
-            strCommandText += "library %s\n" % library
             strCommandText += "detector %s\n" % _xsDataInputDozor.detectorType.value
+            strCommandText += "library %s\n" % library
+            strCommandText += "nx %d\n" % nx
+            strCommandText += "ny %d\n" % ny
+            strCommandText += "pixel %d\n" % pixel
             strCommandText += "exposure %.3f\n" % _xsDataInputDozor.exposureTime.value
             strCommandText += "spot_size %d\n" % _xsDataInputDozor.spotSize.value
             strCommandText += "detector_distance %.3f\n" % _xsDataInputDozor.detectorDistance.value
@@ -190,8 +196,6 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "fraction_polarization %.3f\n" % fractionPolarization
             strCommandText += "pixel_min 0\n"
             strCommandText += "pixel_max 64000\n"
-            strCommandText += "nx %d\n" % nx
-            strCommandText += "ny %d\n" % ny
             if self.ixMin is not None:
                 strCommandText += "ix_min %d\n" % self.ixMin
                 strCommandText += "ix_max %d\n" % self.ixMax
