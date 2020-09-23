@@ -57,7 +57,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/dozor__v1.3.8</value>
+					<value>/opt/pxsoft/bin/dozor__v2.2.1</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -79,6 +79,22 @@
 					<name>iy_max</name>
 					<value>1367</value>
 				</XSParamItem>				
+				<XSParamItem>
+					<name>library_cbf_debian9</name>
+					<value>/opt/pxsoft/dozor/v2.2.1/debian9-x86_64/bin/xds-zcbf.so</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>library_h5_debian9</name>
+					<value>/opt/pxsoft/dozor/v2.2.1/debian9-x86_64/bin/dectris-neggia.so</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>library_cbf_ubuntu20.04</name>
+					<value>/opt/pxsoft/dozor/v2.2.1/ubuntu20.04-x86_64/bin/xds-zcbf.so</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>library_h5_ubuntu_20.04</name>
+					<value>/opt/pxsoft/dozor/v2.2.1/ubuntu20.04-x86_64/bin/dectris-neggia.so</value>
+				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 	</XSPluginList>
