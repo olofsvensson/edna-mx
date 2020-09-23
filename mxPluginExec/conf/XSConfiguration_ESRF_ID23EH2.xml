@@ -205,15 +205,15 @@
 					<value>852</value>
 				</XSParamItem>				
 				<XSParamItem>
-					<name>library_cbf_debian9</name>
+					<name>library_cbf_debian_9</name>
 					<value>/opt/pxsoft/dozor/v2.2.1/debian9-x86_64/bin/xds-zcbf.so</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>library_h5_debian9</name>
+					<name>library_h5_debian_9</name>
 					<value>/opt/pxsoft/dozor/v2.2.1/debian9-x86_64/bin/dectris-neggia.so</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>library_cbf_ubuntu20.04</name>
+					<name>library_cbf_ubuntu_20.04</name>
 					<value>/opt/pxsoft/dozor/v2.2.1/ubuntu20.04-x86_64/bin/xds-zcbf.so</value>
 				</XSParamItem>
 				<XSParamItem>

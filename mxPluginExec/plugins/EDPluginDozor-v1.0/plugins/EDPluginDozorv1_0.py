@@ -28,6 +28,7 @@ __copyright__ = "ESRF"
 import os
 import time
 import shlex
+import distro
 import pprint
 import matplotlib
 matplotlib.use('Agg')
@@ -102,6 +103,18 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginDozorv1_0.checkParameters")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
 
+    def getLibraryName(self, libraryType, doSubmit=False):
+        libraryName = 'library_' + libraryType
+        idName, version, codename = distro.linux_distribution()
+        if 'Debian' in idName:
+            libraryName += '_debian_'
+        elif idName == 'Ubuntu':
+            libraryName += '_ubuntu_'
+        else:
+            raise RuntimeError('ExecDozor: unknown os name {0}'.format(idName))
+        libraryName += version
+        return libraryName
+
     def configure(self):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginXOalignv1_0.configure")
@@ -111,8 +124,8 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.iyMax = self.config.get("iy_max", None)
         # Eventual bad zones
         self.strBad_zona = self.config.get("bad_zona", None)
-        self.library_cbf = self.config.get("library_cbf_ubuntu20.04")
-        self.library_h5 = self.config.get("library_h5_ubuntu20.04")
+        self.library_cbf = self.config.get(self.getLibraryName("cbf"))
+        self.library_h5 = self.config.get(self.getLibraryName("h5"))
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
@@ -127,7 +140,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             self.setScriptCommandline("-pall -rd dozor.dat")
         else:
             self.setScriptCommandline("-pall -p dozor.dat")
-        strCommands = self.generateCommands(xsDataInputDozor)
+        strCommands = self.generateCommands(xsDataInputDozor, _library_cbf=self.library_cbf, _library_h5=self.library_h5)
         EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), "dozor.dat"), strCommands)
 
     def postProcess(self, _edObject=None):
@@ -138,14 +151,14 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
 
 
 
-    def generateCommands(self, _xsDataInputDozor):
+    def generateCommands(self, _xsDataInputDozor, _library_cbf=None, _library_h5=None):
         """
         This method creates the input file for dozor
         """
         self.DEBUG("EDPluginDozorv1_0.generateCommands")
         strCommandText = None
         if _xsDataInputDozor.detectorType.value == "pilatus2m":
-            library = self.library_cbf
+            library = _library_cbf
             nx = 1475
             ny = 1679
             pixel = 0.172
@@ -155,7 +168,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 self.iyMin = self.iyMinPilatus2m
                 self.iyMax = self.iyMaxPilatus2m
         elif _xsDataInputDozor.detectorType.value == "pilatus6m":
-            library = self.library_cbf
+            library = _library_cbf
             nx = 2463
             ny = 2527
             pixel = 0.172
@@ -165,7 +178,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 self.iyMin = self.iyMinPilatus6m
                 self.iyMax = self.iyMaxPilatus6m
         elif _xsDataInputDozor.detectorType.value == "eiger4m":
-            library = self.library_cbf
+            library = _library_cbf
             nx = 2070
             ny = 2167
             pixel = 0.075
