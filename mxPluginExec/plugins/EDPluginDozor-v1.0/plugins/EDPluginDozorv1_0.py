@@ -111,7 +111,8 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.iyMax = self.config.get("iy_max", None)
         # Eventual bad zones
         self.strBad_zona = self.config.get("bad_zona", None)
-
+        self.library_cbf = self.config.get("library_cbf_ubuntu20.04")
+        self.library_h5 = self.config.get("library_h5_ubuntu20.04")
 
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
@@ -129,7 +130,6 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         strCommands = self.generateCommands(xsDataInputDozor)
         EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), "dozor.dat"), strCommands)
 
-
     def postProcess(self, _edObject=None):
         EDPluginExecProcessScript.postProcess(self)
         self.DEBUG("EDPluginDozorv1_0.postProcess")
@@ -145,18 +145,27 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.DEBUG("EDPluginDozorv1_0.generateCommands")
         strCommandText = None
         if _xsDataInputDozor.detectorType.value == "pilatus2m":
+            library = self.library_cbf
+            nx = 1475
+            ny = 1679
             if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
                 self.ixMin = self.ixMinPilatus2m
                 self.ixMax = self.ixMaxPilatus2m
                 self.iyMin = self.iyMinPilatus2m
                 self.iyMax = self.iyMaxPilatus2m
         elif _xsDataInputDozor.detectorType.value == "pilatus6m":
+            library = self.library_cbf
+            nx = 2463
+            ny = 2527
             if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
                 self.ixMin = self.ixMinPilatus6m
                 self.ixMax = self.ixMaxPilatus6m
                 self.iyMin = self.iyMinPilatus6m
                 self.iyMax = self.iyMaxPilatus6m
         elif _xsDataInputDozor.detectorType.value == "eiger4m":
+            library = self.library_cbf
+            nx = 2070
+            ny = 2167
             if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
                 self.ixMin = self.ixMinEiger4m
                 self.ixMax = self.ixMaxEiger4m
@@ -168,6 +177,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 _xsDataInputDozor.firstImageNumber.value,
                 _xsDataInputDozor.numberImages.value))
             strCommandText = "!\n"
+            strCommandText += "library %s\n" % library
             strCommandText += "detector %s\n" % _xsDataInputDozor.detectorType.value
             strCommandText += "exposure %.3f\n" % _xsDataInputDozor.exposureTime.value
             strCommandText += "spot_size %d\n" % _xsDataInputDozor.spotSize.value
@@ -180,6 +190,8 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "fraction_polarization %.3f\n" % fractionPolarization
             strCommandText += "pixel_min 0\n"
             strCommandText += "pixel_max 64000\n"
+            strCommandText += "nx %d\n" % nx
+            strCommandText += "ny %d\n" % ny
             if self.ixMin is not None:
                 strCommandText += "ix_min %d\n" % self.ixMin
                 strCommandText += "ix_max %d\n" % self.ixMax
