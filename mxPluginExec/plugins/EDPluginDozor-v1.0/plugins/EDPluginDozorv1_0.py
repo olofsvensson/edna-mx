@@ -184,7 +184,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "library %s\n" % library
             strCommandText += "nx %d\n" % nx
             strCommandText += "ny %d\n" % ny
-            strCommandText += "pixel %d\n" % pixel
+            strCommandText += "pixel %f\n" % pixel
             strCommandText += "exposure %.3f\n" % _xsDataInputDozor.exposureTime.value
             strCommandText += "spot_size %d\n" % _xsDataInputDozor.spotSize.value
             strCommandText += "detector_distance %.3f\n" % _xsDataInputDozor.detectorDistance.value
