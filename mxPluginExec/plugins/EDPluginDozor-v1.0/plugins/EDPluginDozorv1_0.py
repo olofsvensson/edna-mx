@@ -124,9 +124,9 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         if xsDataInputDozor.overlap is not None:
             self.overlap = xsDataInputDozor.overlap.value
         if xsDataInputDozor.radiationDamage is not None and xsDataInputDozor.radiationDamage.value:
-            self.setScriptCommandline("-rd dozor.dat")
+            self.setScriptCommandline("-pall -rd dozor.dat")
         else:
-            self.setScriptCommandline("-p dozor.dat")
+            self.setScriptCommandline("-pall -p dozor.dat")
         strCommands = self.generateCommands(xsDataInputDozor)
         EDUtilsFile.writeFile(os.path.join(self.getWorkingDirectory(), "dozor.dat"), strCommands)
 
@@ -255,22 +255,24 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                     if listLine[4].startswith("-") or len(listLine) < 11:
                         xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
                         xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
-                        xsDataImageDozor.spotsResolution = self.parseDouble(listLine[3])
-                        xsDataImageDozor.mainScore = self.parseDouble(listLine[7])
-                        xsDataImageDozor.spotScore = self.parseDouble(listLine[8])
-                        xsDataImageDozor.visibleResolution = self.parseDouble(listLine[9])
+                        xsDataImageDozor.spotsRfactor = self.parseDouble(listLine[3])
+                        xsDataImageDozor.spotsResolution = self.parseDouble(listLine[4])
+                        xsDataImageDozor.mainScore = self.parseDouble(listLine[8])
+                        xsDataImageDozor.spotScore = self.parseDouble(listLine[9])
+                        xsDataImageDozor.visibleResolution = self.parseDouble(listLine[10])
                     else:
                         xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
                         xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
-                        xsDataImageDozor.spotsResolution = self.parseDouble(listLine[3])
-                        xsDataImageDozor.powderWilsonScale = self.parseDouble(listLine[4])
-                        xsDataImageDozor.powderWilsonBfactor = self.parseDouble(listLine[5])
-                        xsDataImageDozor.powderWilsonResolution = self.parseDouble(listLine[6])
-                        xsDataImageDozor.powderWilsonCorrelation = self.parseDouble(listLine[7])
-                        xsDataImageDozor.powderWilsonRfactor = self.parseDouble(listLine[8])
-                        xsDataImageDozor.mainScore = self.parseDouble(listLine[9])
-                        xsDataImageDozor.spotScore = self.parseDouble(listLine[10])
-                        xsDataImageDozor.visibleResolution = self.parseDouble(listLine[11])
+                        xsDataImageDozor.spotsRfactor = self.parseDouble(listLine[3])
+                        xsDataImageDozor.spotsResolution = self.parseDouble(listLine[4])
+                        xsDataImageDozor.powderWilsonScale = self.parseDouble(listLine[5])
+                        xsDataImageDozor.powderWilsonBfactor = self.parseDouble(listLine[6])
+                        xsDataImageDozor.powderWilsonResolution = self.parseDouble(listLine[7])
+                        xsDataImageDozor.powderWilsonCorrelation = self.parseDouble(listLine[8])
+                        xsDataImageDozor.powderWilsonRfactor = self.parseDouble(listLine[9])
+                        xsDataImageDozor.mainScore = self.parseDouble(listLine[10])
+                        xsDataImageDozor.spotScore = self.parseDouble(listLine[11])
+                        xsDataImageDozor.visibleResolution = self.parseDouble(listLine[12])
                 except:
                     pass
                 # Dozor spot file

@@ -14,6 +14,7 @@ complex type XSDataImageDozor {
 	number : XSDataInteger
 	spotsNumOf : XSDataInteger
 	spotsIntAver : XSDataDouble 
+	spotsRfactor : XSDataDouble optional
 	spotsResolution : XSDataDouble optional
 	powderWilsonScale : XSDataDouble optional
 	powderWilsonBfactor : XSDataDouble optional

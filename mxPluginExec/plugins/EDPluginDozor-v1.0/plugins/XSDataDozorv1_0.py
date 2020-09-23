@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Jan 12 02:11::05 2017 by EDGenerateDS.
+# Generated Wed Sep 23 10:39::49 2020 by EDGenerateDS.
 #
 
 import os, sys
@@ -129,7 +129,7 @@ class MixedContainer(object):
 
 
 class XSDataImageDozor(object):
-    def __init__(self, angle=None, spotFile=None, visibleResolution=None, spotScore=None, mainScore=None, powderWilsonRfactor=None, powderWilsonCorrelation=None, powderWilsonResolution=None, powderWilsonBfactor=None, powderWilsonScale=None, spotsResolution=None, spotsIntAver=None, spotsNumOf=None, number=None):
+    def __init__(self, angle=None, spotFile=None, visibleResolution=None, spotScore=None, mainScore=None, powderWilsonRfactor=None, powderWilsonCorrelation=None, powderWilsonResolution=None, powderWilsonBfactor=None, powderWilsonScale=None, spotsResolution=None, spotsRfactor=None, spotsIntAver=None, spotsNumOf=None, number=None):
         if number is None:
             self._number = None
         elif number.__class__.__name__ == "XSDataInteger":
@@ -150,6 +150,13 @@ class XSDataImageDozor(object):
             self._spotsIntAver = spotsIntAver
         else:
             strMessage = "ERROR! XSDataImageDozor constructor argument 'spotsIntAver' is not XSDataDouble but %s" % self._spotsIntAver.__class__.__name__
+            raise BaseException(strMessage)
+        if spotsRfactor is None:
+            self._spotsRfactor = None
+        elif spotsRfactor.__class__.__name__ == "XSDataDouble":
+            self._spotsRfactor = spotsRfactor
+        else:
+            strMessage = "ERROR! XSDataImageDozor constructor argument 'spotsRfactor' is not XSDataDouble but %s" % self._spotsRfactor.__class__.__name__
             raise BaseException(strMessage)
         if spotsResolution is None:
             self._spotsResolution = None
@@ -264,6 +271,18 @@ class XSDataImageDozor(object):
             raise BaseException(strMessage)
     def delSpotsIntAver(self): self._spotsIntAver = None
     spotsIntAver = property(getSpotsIntAver, setSpotsIntAver, delSpotsIntAver, "Property for spotsIntAver")
+    # Methods and properties for the 'spotsRfactor' attribute
+    def getSpotsRfactor(self): return self._spotsRfactor
+    def setSpotsRfactor(self, spotsRfactor):
+        if spotsRfactor is None:
+            self._spotsRfactor = None
+        elif spotsRfactor.__class__.__name__ == "XSDataDouble":
+            self._spotsRfactor = spotsRfactor
+        else:
+            strMessage = "ERROR! XSDataImageDozor.setSpotsRfactor argument is not XSDataDouble but %s" % spotsRfactor.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpotsRfactor(self): self._spotsRfactor = None
+    spotsRfactor = property(getSpotsRfactor, setSpotsRfactor, delSpotsRfactor, "Property for spotsRfactor")
     # Methods and properties for the 'spotsResolution' attribute
     def getSpotsResolution(self): return self._spotsResolution
     def setSpotsResolution(self, spotsResolution):
@@ -416,6 +435,8 @@ class XSDataImageDozor(object):
             self.spotsIntAver.export(outfile, level, name_='spotsIntAver')
         else:
             warnEmptyAttribute("spotsIntAver", "XSDataDouble")
+        if self._spotsRfactor is not None:
+            self.spotsRfactor.export(outfile, level, name_='spotsRfactor')
         if self._spotsResolution is not None:
             self.spotsResolution.export(outfile, level, name_='spotsResolution')
         if self._powderWilsonScale is not None:
@@ -458,6 +479,11 @@ class XSDataImageDozor(object):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setSpotsIntAver(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spotsRfactor':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setSpotsRfactor(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'spotsResolution':
             obj_ = XSDataDouble()
