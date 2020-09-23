@@ -252,7 +252,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 xsDataImageDozor.spotScore = XSDataDouble(0)
                 xsDataImageDozor.visibleResolution = XSDataDouble(40)
                 try:
-                    if listLine[4].startswith("-") or len(listLine) < 11:
+                    if listLine[5].startswith("-") or len(listLine) < 11:
                         xsDataImageDozor.spotsNumOf = XSDataInteger(listLine[1])
                         xsDataImageDozor.spotsIntAver = self.parseDouble(listLine[2])
                         xsDataImageDozor.spotsRfactor = self.parseDouble(listLine[3])
