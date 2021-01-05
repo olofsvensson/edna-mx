@@ -25,7 +25,9 @@ __author__ = "Olof Svensson"
 __license__ = "GPLv3+"
 __copyright__ = "Copyrigth (c) 2010 ESRF"
 
-import os, shutil
+import os
+import time
+import shutil
 
 from EDAssert import EDAssert
 from EDVerbose import EDVerbose
@@ -109,7 +111,8 @@ class EDTestCaseEDHandlerESRFPyarchv1_0(EDTestCasePluginUnit):
         dataCollectionId = 123456
         pyarch_path = EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(beamline, pipelineName, dataCollectionId)
         EDAssert.equal(True, os.path.exists(pyarch_path))
-        EDAssert.equal(True, pyarch_path.startswith("/data/pyarch/2020/id30a2/reprocess/EDNA_proc/123456"))
+        year = time.strftime("%Y", time.localtime(time.time()))
+        EDAssert.equal(True, pyarch_path.startswith("/data/pyarch/{0}/id30a2/reprocess/EDNA_proc/123456".format(year)))
         shutil.rmtree(pyarch_path)
 
 
