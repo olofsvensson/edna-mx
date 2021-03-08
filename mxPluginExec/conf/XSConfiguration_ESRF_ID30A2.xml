@@ -71,10 +71,6 @@
 					<name>timeOut</name>
 					<value>90</value>
 				</XSParamItem>
-				<XSParamItem>
-					<name>omega</name>
-					<value>270</value>
-				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
@@ -99,10 +95,6 @@
 				<XSParamItem>
 					<name>timeOut</name>
 					<value>90</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>omega</name>
-					<value>270</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -129,10 +121,6 @@
 					<name>timeOut</name>
 					<value>90</value>
 				</XSParamItem>
-				<XSParamItem>
-					<name>omega</name>
-					<value>270</value>
-				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem> 
 		<XSPluginItem> 
@@ -154,10 +142,6 @@
 					<name>maxNoProcessors</name>
 					<value>6</value>
 				</XSParamItem>
-				<XSParamItem>
-					<name>raxis</name>
-					<value>0.0 -1.0 0.0</value>
-				</XSParamItem>				
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem> 
@@ -183,10 +167,6 @@
 					<name>maxNoProcessors</name>
 					<value>6</value>
 				</XSParamItem>
-				<XSParamItem>
-					<name>rotationAxis</name>
-					<value>0.0 -1.0 0.0</value>
-				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem> 
@@ -207,10 +187,6 @@
 				<XSParamItem>
 					<name>maxNoProcessors</name>
 					<value>6</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>goniometerAxes</name>
-					<value>0,1,0</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
