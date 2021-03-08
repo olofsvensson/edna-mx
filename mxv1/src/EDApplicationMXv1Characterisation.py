@@ -130,7 +130,7 @@ class EDApplicationMXv1Characterisation(EDApplication):
                     except:
                         errorMessage = EDMessage.ERROR_CANNOT_READ_FILE_02 % ("EDApplicationMXv1Characterisation.process", self.__strDatasetFileName)
                         EDVerbose.error(errorMessage)
-                        raise RuntimeError, errorMessage
+                        raise RuntimeError(errorMessage)
 
 
     def process(self):

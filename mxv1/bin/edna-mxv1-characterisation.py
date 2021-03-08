@@ -35,12 +35,12 @@ pyStrMXv1Path = os.path.split(pyStrBinPath)[0]
 pyStrEdnaHomePath = os.path.split(pyStrMXv1Path)[0]
 os.environ["EDNA_HOME"] = pyStrEdnaHomePath
 if (not "EDNA_SITE" in os.environ.keys()):
-    print "Cannot start the EDNA MXv1 characterisation application:"
-    print "Make sure that $EDNA_SITE is set up before running edna-mxv1-characterisation."
-    print "Example:"
-    print "$ export EDNA_SITE=<SUFFIX> (should be the configuration file suffix XSConfiguration_<SUFFIX>.xml)"
-    print "Please read the INSTALL.txt file under the \"$EDNA_HOME/mxv1\" directory for more details"
-    print ""
+    print("Cannot start the EDNA MXv1 characterisation application:")
+    print("Make sure that $EDNA_SITE is set up before running edna-mxv1-characterisation.")
+    print("Example:")
+    print("$ export EDNA_SITE=<SUFFIX> (should be the configuration file suffix XSConfiguration_<SUFFIX>.xml)")
+    print("Please read the INSTALL.txt file under the \"$EDNA_HOME/mxv1\" directory for more details")
+    print("")
     sys.exit(1)
 strConfigurationFilePath = os.path.join(pyStrEdnaHomePath, "mxv1", "conf", "XSConfiguration_" + os.environ["EDNA_SITE"] + ".xml")
 #
