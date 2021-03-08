@@ -69,15 +69,15 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>ix_max</name>
-					<value>1300</value>
+					<value>2159</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>iy_min</name>
-					<value>1165</value>
+					<value>2087</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>iy_max</name>
-					<value>1367</value>
+					<value>2312</value>
 				</XSParamItem>				
 				<XSParamItem>
 					<name>library_cbf_debian_9</name>
@@ -93,7 +93,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>library_h5_ubuntu_20.04</name>
-					<value>/opt/pxsoft/dozor/v2.2.1/ubuntu20.04-x86_64/bin/dectris-neggia.so</value>
+					<value>/opt/pxsoft/dozor/v2.2.1/ubuntu20.04-x86_64/bin/durin-plugin.so</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>

@@ -786,7 +786,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>pathToNeggiaPlugin</name>
-					<value>/opt/pxsoft/xds/v20161205/linux-x86_64/dectris-neggia.so</value>
+					<value>/opt/pxsoft/xds/vdefault/linux-x86_64/durin-plugin.so</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>

@@ -78,7 +78,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.iyMin = None
         self.ixMax = None
         self.iyMax = None
-        # Default values for ESRF Pilatus6M id23eh1: 1,1230; 1228,1298
+        # Default values for ESRF Pilatus6M id30b: 1,1230; 1228,1298
         self.ixMinPilatus6m = 1
         self.ixMaxPilatus6m = 1230
         self.iyMinPilatus6m = 1228
@@ -93,6 +93,11 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.ixMaxEiger4m = 1120
         self.iyMinEiger4m = 1025
         self.iyMaxEiger4m = 1140
+        # Default values for ESRF Eiger16M : ID23eh1: 1, 2159, 2087, 2312
+        self.ixMinEiger4m = 1
+        self.ixMaxEiger4m = 2159
+        self.iyMinEiger4m = 2087
+        self.iyMaxEiger4m = 2312
         # Bad zones
         self.strBad_zona = None
 
@@ -187,6 +192,18 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 self.ixMax = self.ixMaxEiger4m
                 self.iyMin = self.iyMinEiger4m
                 self.iyMax = self.iyMaxEiger4m
+        elif _xsDataInputDozor.detectorType.value == "eiger16m":
+            library = _library_cbf
+            nx = 4148
+            ny = 4362
+            pixel = 0.075
+            if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
+                self.ixMin = self.ixMinEiger16m
+                self.ixMax = self.ixMaxEiger16m
+                self.iyMin = self.iyMinEiger16m
+                self.iyMax = self.iyMaxEiger16m
+        else:
+            raise RuntimeError("Detector type not recognised: {0}".format(_xsDataInputDozor.detectorType.value))
         if _xsDataInputDozor is not None:
             self.setProcessInfo("name template: %s, first image no: %d, no images: %d" % (
                 os.path.basename(_xsDataInputDozor.nameTemplateImage.value),

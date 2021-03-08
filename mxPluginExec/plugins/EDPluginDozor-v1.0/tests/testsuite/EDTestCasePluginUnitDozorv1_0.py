@@ -56,7 +56,7 @@ class EDTestCasePluginUnitDozorv1_0(EDTestCasePluginUnit):
         strInputXML = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataInputDozor_reference.xml"))
         xsDataInput = XSDataInputDozor.parseString(strInputXML)
         strCommandText = edPlugin.generateCommands(xsDataInput)
-        print strCommandText
+        print(strCommandText)
 
     def test_parseOutput(self):
         edPlugin = self.getPlugin()
@@ -64,7 +64,7 @@ class EDTestCasePluginUnitDozorv1_0(EDTestCasePluginUnit):
         edPlugin.firstImageNumber = 1
         edPlugin.oscillationRange = 0.1
         edPlugin.overlap = 0.0
-        xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "Dozorv1_0-138.log"))
+        xsDataResult = edPlugin.parseOutput(os.path.join(self.strDataPath, "Dozor_00002.log"))
         EDAssert.equal(100, len(xsDataResult.imageDozor), "Result from 100 images")
         EDAssert.equal(True, xsDataResult.halfDoseTime is not None, "Half dose time v1.3.8")
 
