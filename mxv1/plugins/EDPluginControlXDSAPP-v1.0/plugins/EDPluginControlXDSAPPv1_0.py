@@ -284,13 +284,13 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
         self.pyarchPrefix = "xa_{0}_run{1}".format(listPrefix[-3], listPrefix[-2])
 
         isH5 = False
-        if any(beamline in pathToStartImage for beamline in ["id23eh1", "id29"]):
+        if any(beamline in pathToStartImage for beamline in ["id30b"]):
             minSizeFirst = 6000000
             minSizeLast = 6000000
         elif any(beamline in pathToStartImage for beamline in ["id23eh2", "id30a1"]):
             minSizeFirst = 2000000
             minSizeLast = 2000000
-        elif any(beamline in pathToStartImage for beamline in ["id30a3"]):
+        elif any(beamline in pathToStartImage for beamline in ["id23eh1", "id30a3"]):
             minSizeFirst = 100000
             minSizeLast = 100000
             pathToStartImage = os.path.join(directory,
