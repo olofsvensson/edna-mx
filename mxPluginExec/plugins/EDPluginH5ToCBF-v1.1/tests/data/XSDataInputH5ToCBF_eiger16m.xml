@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<XSDataInputH5ToCBF>
+  <imageNumber>
+  	<value>1</value>
+  </imageNumber>
+  <hdf5File>
+  	<path>
+      <value>${EDNA_TESTIMAGES}/t20keV-insulin_4_0001.h5</value>  	
+  	</path>
+  </hdf5File>
+</XSDataInputH5ToCBF>

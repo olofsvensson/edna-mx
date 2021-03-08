@@ -117,7 +117,7 @@ class EDPluginControlPyarchThumbnailGeneratorv1_0(EDPluginControl):
             pathToImageFile = strPathToDiffractionImage
             # Quite ugly hack to avoid lag problems at the ESRF:
             if EDUtilsPath.isESRF() or EDUtilsPath.isALBA() or EDUtilsPath.isMAXIV():
-                if any(beamline in strPathToDiffractionImage for beamline in ["id23eh1", "id29", "id30b"]):
+                if any(beamline in strPathToDiffractionImage for beamline in ["id30b"]):
                     # Pilatus 6M
                     self.minImageSize = 6000000
                 elif any(beamline in strPathToDiffractionImage for beamline in ["id23eh2", "id30a1"]):

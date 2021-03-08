@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<XSDataInputPyarchTumbnailGenerator>
+	<diffractionImage>
+		<path>
+			<value>${EDNA_TESTIMAGES}/t20keV-insulin_4_0001.h5</value>
+		</path>
+	</diffractionImage>
+	<forcedOutputDirectory>
+		<path>
+			<value>${EDNA_WORKING_DIR}</value>
+		</path>
+	</forcedOutputDirectory>
+	<waitForFileTimeOut>
+	    <value>15</value>
+	</waitForFileTimeOut>
+</XSDataInputPyarchTumbnailGenerator>
