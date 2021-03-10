@@ -465,13 +465,13 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if EDUtilsPath.isESRF():
             first_image = self.first_image
             last_image = self.last_image
-            if any(beamline in self.first_image for beamline in ["id23eh1", "id29"]):
+            if any(beamline in self.first_image for beamline in ["id30b"]):
                 minSizeFirst = 6000000
                 minSizeLast = 6000000
             elif any(beamline in self.first_image for beamline in ["id23eh2", "id30a1"]):
                 minSizeFirst = 2000000
                 minSizeLast = 2000000
-            elif any(beamline in self.first_image for beamline in ["id30a3"]):
+            elif any(beamline in self.first_image for beamline in ["id23eh1", "id30a3"]):
                 minSizeFirst = 1000000
                 minSizeLast = 1000000
                 first_image = self.eiger_template_to_image(template, start_image)
@@ -1270,7 +1270,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                         pyarch_path = os.path.join('/data/pyarch', year, tokens[1],
                                                    *tokens[3:])
             elif EDUtilsPath.isMAXIV():
-                pyarch_path =  files_dir.replace("/data","/mxn/groups/ispybstorage",1)
+                pyarch_path = files_dir.replace("/data", "/mxn/groups/ispybstorage", 1)
 
             if pyarch_path is not None:
                 pyarch_path = pyarch_path.replace('PROCESSED_DATA', 'RAW_DATA')
