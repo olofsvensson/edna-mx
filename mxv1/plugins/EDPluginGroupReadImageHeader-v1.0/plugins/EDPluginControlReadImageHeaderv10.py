@@ -401,7 +401,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
             pyFile.seek(0, 0)
             for iIndex in range(20):
                 strLine = pyFile.readline().decode('utf-8')
-                if strLine.find("Detector: Dectris Eiger 16M") != -1:
+                if strLine.find("Detector: Dectris Eiger 16M") != -1 or strLine.find("Detector: Dectris EIGER2 CdTe 16M)"):
                     bIsEiger16MFormat = True
             pyFile.close()
         return bIsEiger16MFormat
