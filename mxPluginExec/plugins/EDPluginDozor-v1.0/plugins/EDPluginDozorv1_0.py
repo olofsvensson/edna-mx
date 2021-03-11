@@ -94,10 +94,10 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
         self.iyMinEiger4m = 1025
         self.iyMaxEiger4m = 1140
         # Default values for ESRF Eiger16M : ID23eh1: 1, 2159, 2087, 2312
-        self.ixMinEiger4m = 1
-        self.ixMaxEiger4m = 2159
-        self.iyMinEiger4m = 2087
-        self.iyMaxEiger4m = 2312
+        self.ixMinEiger16m = 1
+        self.ixMaxEiger16m = 2159
+        self.iyMinEiger16m = 2087
+        self.iyMaxEiger16m = 2312
         # Bad zones
         self.strBad_zona = None
 
