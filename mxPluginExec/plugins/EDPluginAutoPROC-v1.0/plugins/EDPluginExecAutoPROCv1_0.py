@@ -164,8 +164,6 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         if anomalous is not None:
             if anomalous.value:
                 strCommandText += " -ANO"
-            else:
-                strCommandText += " -noANO"
         # Reference MTZ file
         refMTZ = _xsDataInputAutoPROC.refMTZ
         if refMTZ is not None:
