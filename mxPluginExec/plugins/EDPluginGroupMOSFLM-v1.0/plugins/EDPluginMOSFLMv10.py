@@ -171,7 +171,7 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
                 self.addListCommandExecution("MOSAIC " + str(xsDataFloatMosaicity.getValue()))
 
             # Add exclude regions if Pilatus
-            if xsDataMOSFLMInput.getDetector().getType().getValue() == "PILATUS":
+            if xsDataMOSFLMInput.getDetector().getType() and xsDataMOSFLMInput.getDetector().getType().getValue() == "PILATUS":
                 if xsDataMOSFLMInput.getDetector().getNumberPixelX().getValue() == 1475 and \
                    xsDataMOSFLMInput.getDetector().getNumberPixelY().getValue() == 1679:
                     # Pilatus 2M

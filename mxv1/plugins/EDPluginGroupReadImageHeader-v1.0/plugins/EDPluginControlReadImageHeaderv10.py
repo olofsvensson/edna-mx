@@ -69,6 +69,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.strSuffixEiger4M = "cbf"
         self.strSuffixEiger9M = "cbf"
         self.strSuffixEiger16M = "cbf"
+        self.strSuffixEiger2_16M = "cbf"
         # Recognised types of detectors
         self.strADSC = "ADSC"
         self.strMARCCD = "MARCCD"
@@ -77,6 +78,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.strEiger4M = "Eiger4M"
         self.strEiger9M = "Eiger9M"
         self.strEiger16M = "Eiger16M"
+        self.strEiger2_16M = "Eiger16M"
         #
         self.strPluginExecMXWaitFile = "EDPluginMXWaitFilev1_1"
         self.strPluginExecReadImageHeaderADSC = "EDPluginExecReadImageHeaderADSCv10"
@@ -86,6 +88,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
         self.strPluginExecReadImageHeaderEiger4M = "EDPluginExecReadImageHeaderEiger4Mv10"
         self.strPluginExecReadImageHeaderEiger9M = "EDPluginExecReadImageHeaderEiger9Mv10"
         self.strPluginExecReadImageHeaderEiger16M = "EDPluginExecReadImageHeaderEiger16Mv10"
+        self.strPluginExecReadImageHeaderEiger2_16M = "EDPluginExecReadImageHeaderEiger2_16Mv10"
         # Table mapping image suffix with detector type
         self.dictSuffixToImageType = {
               self.strSuffixADSC    : self.strADSC,
@@ -96,6 +99,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
               self.strSuffixEiger4M : self.strEiger4M,
               self.strSuffixEiger9M : self.strEiger9M,
               self.strSuffixEiger16M : self.strEiger16M,
+              self.strSuffixEiger2_16M : self.strEiger2_16M,
                                                     }
 		# Table mapping image type with exec read image header plugin
         self.dictImageTypeToPluginName = {
@@ -106,6 +110,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
               self.strEiger4M : self.strPluginExecReadImageHeaderEiger4M,
               self.strEiger9M : self.strPluginExecReadImageHeaderEiger9M,
               self.strEiger16M : self.strPluginExecReadImageHeaderEiger16M,
+              self.strEiger2_16M : self.strPluginExecReadImageHeaderEiger2_16M,
                 									 }
 
     def checkParameters(self):
@@ -401,10 +406,33 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
             pyFile.seek(0, 0)
             for iIndex in range(20):
                 strLine = pyFile.readline().decode('utf-8')
-                if strLine.find("Detector: Dectris Eiger 16M") != -1 or strLine.find("Detector: Dectris EIGER2 CdTe 16M)"):
+                if strLine.find("Detector: Dectris Eiger 16M") != -1:
                     bIsEiger16MFormat = True
             pyFile.close()
         return bIsEiger16MFormat
+
+
+    def isEiger2_16MImageFormat(self, _strImageFileName):
+        """
+        Detects Eiger2 16M CBF image format and returns True after successful identification.
+        """
+        strKeyword = None
+        pyFile = None
+        bIsEiger2_16MFormat = False
+        try:
+            pyFile = open(_strImageFileName, "rb")
+        except:
+            self.warning("EDPluginControlReadImageHeaderv10.isEiger2_16MImageFormat: couldn't open file: " + _strImageFileName)
+
+        if pyFile != None:
+            self.DEBUG("EDPluginControlReadImageHeaderv10.isEiger2_16MImageFormat: detecting image format from file " + _strImageFileName)
+            pyFile.seek(0, 0)
+            for iIndex in range(20):
+                strLine = pyFile.readline().decode('utf-8')
+                if strLine.find("Detector: Dectris EIGER2 CdTe 16M)"):
+                    bIsEiger2_16MFormat = True
+            pyFile.close()
+        return bIsEiger2_16MFormat
 
 
     def determineImageType(self, _strImagePath):
@@ -432,6 +460,8 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
                 strImageType = self.strEiger9M
             elif self.isEiger16MImageFormat(_strImagePath):
                 strImageType = self.strEiger16M
+            elif self.isEiger2_16MImageFormat(_strImagePath):
+                strImageType = self.strEiger2_16M
             else:
                 bUnknownImageType = True
         else:

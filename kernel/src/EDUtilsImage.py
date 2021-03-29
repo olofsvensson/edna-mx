@@ -8,7 +8,7 @@
 #                            Grenoble, France
 #
 #    Principal authors: Marie-Francoise Incardona (incardon@esrf.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #                       Jerome Kieffer
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -77,6 +77,17 @@ class EDUtilsImage:
             strTemplate = strPrefix + strSeparator + strHashes + "." + strSuffix
         return strTemplate
 
+
+    @staticmethod
+    def getH5MasterTemplate(_strPathToImage):
+        strTemplate = None
+        listResult = EDUtilsImage.__compileAndMatchRegexpTemplate(_strPathToImage)
+        if (listResult != None):
+            strPrefix = listResult[1]
+            strSeparator = listResult[2]
+            strImageNumber = str(int(listResult[3]))
+            strTemplate = strPrefix + strSeparator + strImageNumber + "_master.h5"
+        return strTemplate
 
     @staticmethod
     def getPrefix(_strPathToImage):

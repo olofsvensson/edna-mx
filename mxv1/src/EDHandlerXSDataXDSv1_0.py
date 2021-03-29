@@ -451,6 +451,23 @@ class EDHandlerXSDataXDSv1_0:
 
             xsDataXDSDetector.setSensor_thickness(XSDataDouble(0.32))
 
+        elif strDetectorType == "eiger2_16m":
+            xsDataXDSDetector.setDetector_name(XSDataString("PILATUS"))
+            xsDataXDSDetector.setMinimum_valid_pixel_value(XSDataInteger(0))
+            xsDataXDSDetector.setOverload(XSDataInteger(1048500))
+
+            xsDataXDSIntegerRangeTrustedPixel = XSDataXDSIntegerRange()
+            xsDataXDSIntegerRangeTrustedPixel.setLower(XSDataInteger(4000))
+            xsDataXDSIntegerRangeTrustedPixel.setUpper(XSDataInteger(30000))
+            xsDataXDSDetector.setValue_range_for_trusted_detector_pixels(xsDataXDSIntegerRangeTrustedPixel)
+
+            xsDataXDSDoubleRangeTrustedRegion = XSDataXDSDoubleRange()
+            xsDataXDSDoubleRangeTrustedRegion.setLower(XSDataDouble(0.0))
+            xsDataXDSDoubleRangeTrustedRegion.setUpper(XSDataDouble(1.21))
+            xsDataXDSDetector.setTrusted_region(xsDataXDSDoubleRangeTrustedRegion)
+
+            xsDataXDSDetector.setSensor_thickness(XSDataDouble(0.75))
+
         elif strDetectorType == "mar225":
             xsDataXDSDetector.setDetector_name(XSDataString("CCDCHESS"))
             xsDataXDSDetector.setMinimum_valid_pixel_value(XSDataInteger(0))
