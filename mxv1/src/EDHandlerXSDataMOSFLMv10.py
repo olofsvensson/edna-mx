@@ -426,7 +426,10 @@ class EDHandlerXSDataMOSFLMv10:
 
         xsDataMOSFLMImage = XSDataMOSFLMImage()
 
-        iImageNumber = xsDataImage.getNumber().getValue()
+        if xsDataDetector.type.value == "eiger2_16m":
+            iImageNumber = 1
+        else:
+            iImageNumber = xsDataImage.getNumber().getValue()
         xsDataMOSFLMImage.setNumber(XSDataInteger(iImageNumber))
 
         fOscillationStart = xsDataGoniostat.getRotationAxisStart().getValue()
