@@ -33,6 +33,8 @@ __date__ = "20120712"
 __status__ = "production"
 
 import os
+import h5py
+import shutil
 
 from EDUtilsTable      import EDUtilsTable
 from EDPluginMOSFLMv10 import EDPluginMOSFLMv10
@@ -65,6 +67,37 @@ class EDPluginMOSFLMIndexingv10(EDPluginMOSFLMv10):
         EDPluginMOSFLMv10.preProcess(self)
         self.DEBUG("EDPluginMOSFLMIndexingv10.preProcess")
         self.generateMOSFLMCommands()
+        # Hack for getting MOSFLM to work with Eiger2 16M images
+        xsDataMOSFLMIndexingInput = self.getDataInput()
+        noImages = len(xsDataMOSFLMIndexingInput.image)
+        if noImages > 1 and xsDataMOSFLMIndexingInput.detector.numberPixelX.value == 4148 and \
+           xsDataMOSFLMIndexingInput.detector.numberPixelY.value == 4362:
+            directory = xsDataMOSFLMIndexingInput.directory.value
+            masterFile = xsDataMOSFLMIndexingInput.template.value
+            workingDirectory = self.getWorkingDirectory()
+            # First change the number of images in the master file
+            shutil.copy(os.path.join(directory, masterFile), workingDirectory)
+            f1 = h5py.File(os.path.join(workingDirectory, masterFile), "r+")
+            f1['entry']['instrument']['detector']['detectorSpecific']['nimages'] [()] = noImages
+            f1.close()
+            # Then copy all images to the same data file
+            dataFilePath = os.path.join(workingDirectory, masterFile.replace("master", "data_000001"))
+            f2 = h5py.File(dataFilePath, 'w')
+            data_000001 = f2.create_dataset('/entry/data/data', (noImages, 4362, 4148), dtype="uint32")
+            for imageNumber in range(1, noImages + 1):
+                masterFileN = masterFile.replace("_1_master", "_{0}_master".format(imageNumber))
+                fn = h5py.File(os.path.join(directory, masterFileN), 'r')
+                datan = fn['entry']['data']['data_000001'][()]
+                data_000001[imageNumber - 1, :, :] = datan[0, :, :]
+                fn.close()
+            f2.close()
+            # Modify DIRECTORY to working directory
+            listCommands = self.getListCommandExecution()
+            for index in range(len(listCommands)):
+                if listCommands[index].startswith("DIRECTORY"):
+                    listCommands[index] = "DIRECTORY " + workingDirectory
+                    break
+            self.setListCommandExecution(listCommands)
 
 
     def finallyProcess(self, _edObject=None):
