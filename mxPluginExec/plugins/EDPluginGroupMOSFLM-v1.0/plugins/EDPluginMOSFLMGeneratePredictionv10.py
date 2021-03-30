@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
 #
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -117,8 +117,9 @@ class EDPluginMOSFLMGeneratePredictionv10(EDPluginMOSFLMv10):
             pyStrTemplate = xsDataMOSFLMInputGeneratePrediction.getTemplate().getValue()
             xsDataMOSFLMImage = xsDataMOSFLMInputGeneratePrediction.getImage()
             iImageNumber = xsDataMOSFLMImage.getNumber().getValue()
-
             pyStrImageFileName = self.getImageFileNameFromTemplate(pyStrTemplate, iImageNumber)
+            if "master" in xsDataMOSFLMInputGeneratePrediction.template.value:
+                iImageNumber = 1
             if (pyStrImageFileName is not None):
                 self.setPredictionImageFileName(pyStrImageFileName + "_pred.jpg")
 
@@ -135,7 +136,7 @@ class EDPluginMOSFLMGeneratePredictionv10(EDPluginMOSFLMv10):
             self.addListCommandPostExecution("chmod 644 %s" % self.getPredictionImageFileName())
 
         # Force name of log file
-        self.setScriptLogFileName(self.compactPluginName(self.getClassName())+".log")
+        self.setScriptLogFileName(self.compactPluginName(self.getClassName()) + ".log")
 
         self.DEBUG("Finished EDPluginMOSFLMGeneratePredictionv10.generateMOSFLMCommands")
 
@@ -156,24 +157,30 @@ class EDPluginMOSFLMGeneratePredictionv10(EDPluginMOSFLMv10):
 
 
     def getImageFileNameFromTemplate(self, _strTemplate, _iImageNumber):
-        bHashFound = False
-        bFinished = False
-        iFirstHash = None
-        iNoHashes = 0
-        strImageFileName = None
-        try:
-            for iIndex, pyChar in enumerate(_strTemplate):
-                if ((not bHashFound) and (not bFinished)):
-                    if (pyChar == "#"):
-                        iFirstHash = iIndex
-                        bHashFound = True
-                else:
-                    if ((pyChar != "#") and (not bFinished)):
-                        bFinished = True
-                if (bHashFound and (not bFinished)):
-                    iNoHashes += 1
-            strImageFileName = _strTemplate[ 0:iFirstHash ] + str(_iImageNumber).rjust(iNoHashes, "0")
-        except:
-            self.warning("EDPluginMOSFLMGeneratePredictionv10: Couldn't transform template %s to file name" % _strTemplate)
+        if "master" in _strTemplate:
+            strImageFileName = _strTemplate.replace(
+                "{0}_master.h5".format(_iImageNumber),
+                "{0:04d}".format(_iImageNumber)
+            )
+        else:
+            bHashFound = False
+            bFinished = False
+            iFirstHash = None
+            iNoHashes = 0
             strImageFileName = None
+            try:
+                for iIndex, pyChar in enumerate(_strTemplate):
+                    if ((not bHashFound) and (not bFinished)):
+                        if (pyChar == "#"):
+                            iFirstHash = iIndex
+                            bHashFound = True
+                    else:
+                        if ((pyChar != "#") and (not bFinished)):
+                            bFinished = True
+                    if (bHashFound and (not bFinished)):
+                        iNoHashes += 1
+                strImageFileName = _strTemplate[ 0:iFirstHash ] + str(_iImageNumber).rjust(iNoHashes, "0")
+            except:
+                self.warning("EDPluginMOSFLMGeneratePredictionv10: Couldn't transform template %s to file name" % _strTemplate)
+                strImageFileName = None
         return strImageFileName

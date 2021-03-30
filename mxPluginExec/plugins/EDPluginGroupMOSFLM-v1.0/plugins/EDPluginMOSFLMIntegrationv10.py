@@ -6,7 +6,7 @@
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
-#                            Olof Svensson (svensson@esrf.fr) 
+#                            Olof Svensson (svensson@esrf.fr)
 #
 #    Contributing author:    Karl Levik (karl.levik@diamond.ac.uk)
 #
@@ -21,7 +21,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -113,6 +113,9 @@ class EDPluginMOSFLMIntegrationv10(EDPluginMOSFLMv10):
 
             self.addListCommandExecution("HKLOUT process_%d_%d.mtz" %
                                                        (iImageStart, iImageEnd))
+            if "master" in xsDataMOSFLMInputIntegration.template.value:
+                iImageStart = 1
+                iImageEnd = 1
             self.addListCommandExecution("PROCESS %d TO %d START %f ANGLE %f" %
                                                        (iImageStart, iImageEnd, fRotationAxisStart, fOscillationWidth))
 
@@ -122,7 +125,7 @@ class EDPluginMOSFLMIntegrationv10(EDPluginMOSFLMv10):
             self.addListCommandExecution("BEST OFF")
 
         # Force name of log file
-        self.setScriptLogFileName(self.compactPluginName(self.getClassName())+".log")
+        self.setScriptLogFileName(self.compactPluginName(self.getClassName()) + ".log")
 
         self.DEBUG("Finished EDPluginMOSFLMIntegrationv10.generateMOSFLMCommands")
 
@@ -401,7 +404,7 @@ class EDPluginMOSFLMIntegrationv10(EDPluginMOSFLMv10):
             self.addExecutiveSummaryLine("Profile fitted partials:")
             self.addExecutiveSummaryLine(strNumberProfileFittedPartials)
             self.addExecutiveSummaryLine(strAverageIntensityProfileFittedPartials)
-            #self.addExecutiveSummaryLine( strAverageSigmaProfileFittedPartials )
+            # self.addExecutiveSummaryLine( strAverageSigmaProfileFittedPartials )
             self.addExecutiveSummaryLine(strAverageIOverSigmaProfileFittedPartials)
 
             self.addExecutiveSummaryLine("")

@@ -324,24 +324,23 @@ class EDHandlerXSDataMOSFLMv10:
         xsDataMOSFLMDetector = EDHandlerXSDataMOSFLMv10.getXSDataMOSFLMDetector(xsDataDetector)
         xsDataMOSFLMInputIntegration.setDetector(xsDataMOSFLMDetector)
 
+        iImageStart = None
+        iImageEnd = None
+        for xsDataImage in xsDataImageList:
+            iImageNumber = xsDataImage.getNumber().getValue()
+            if (iImageStart is None):
+                iImageStart = iImageNumber
+            elif (iImageStart > iImageNumber):
+                iImageStart = iImageNumber
+            if (iImageEnd is None):
+                iImageEnd = iImageNumber
+            elif (iImageEnd < iImageNumber):
+                iImageEnd = iImageNumber
+
         if xsDataDetector.type.value == "eiger2_16m":
-            strMOSFLMTemplate = EDUtilsImage.getH5MasterTemplate(strFilenameFirst)
-            iImageStart = 1
-            iImageEnd = 1
+            strMOSFLMTemplate = EDUtilsImage.getH5MasterTemplate(strFilenameFirst, iImageStart)
         else:
             strMOSFLMTemplate = EDUtilsImage.getTemplate(strFilenameFirst, "#")
-            iImageStart = None
-            iImageEnd = None
-            for xsDataImage in xsDataImageList:
-                iImageNumber = xsDataImage.getNumber().getValue()
-                if (iImageStart is None):
-                    iImageStart = iImageNumber
-                elif (iImageStart > iImageNumber):
-                    iImageStart = iImageNumber
-                if (iImageEnd is None):
-                    iImageEnd = iImageNumber
-                elif (iImageEnd < iImageNumber):
-                    iImageEnd = iImageNumber
 
         xsDataMOSFLMInputIntegration.setTemplate(XSDataString(strMOSFLMTemplate))
         xsDataMOSFLMInputIntegration.setImageStart(XSDataInteger(iImageStart))
@@ -413,23 +412,21 @@ class EDHandlerXSDataMOSFLMv10:
         xsDataMOSFLMDetector = EDHandlerXSDataMOSFLMv10.getXSDataMOSFLMDetector(xsDataDetector)
         xsDataMOSFLMInputGeneratePrediction.setDetector(xsDataMOSFLMDetector)
 
-        if xsDataDetector.type.value == "eiger2_16m":
-            strMOSFLMTemplate = EDUtilsImage.getH5MasterTemplate(strFilenameFirst)
-        else:
-            strMOSFLMTemplate = EDUtilsImage.getTemplate(strFilenameFirst, "#")
-        xsDataMOSFLMInputGeneratePrediction.setTemplate(XSDataString(strMOSFLMTemplate))
-
         # The MOSFLM plugin can only handle one image
 
         xsDataImage = xsDataSubWedge.getImage()[0]
         xsDataGoniostat = xsDataSubWedge.getExperimentalCondition().getGoniostat()
 
-        xsDataMOSFLMImage = XSDataMOSFLMImage()
+        iImageNumber = xsDataImage.getNumber().getValue()
 
         if xsDataDetector.type.value == "eiger2_16m":
-            iImageNumber = 1
+            strMOSFLMTemplate = EDUtilsImage.getH5MasterTemplate(strFilenameFirst, iImageNumber)
         else:
-            iImageNumber = xsDataImage.getNumber().getValue()
+            strMOSFLMTemplate = EDUtilsImage.getTemplate(strFilenameFirst, "#")
+        xsDataMOSFLMInputGeneratePrediction.setTemplate(XSDataString(strMOSFLMTemplate))
+
+
+        xsDataMOSFLMImage = XSDataMOSFLMImage()
         xsDataMOSFLMImage.setNumber(XSDataInteger(iImageNumber))
 
         fOscillationStart = xsDataGoniostat.getRotationAxisStart().getValue()
@@ -646,7 +643,7 @@ class EDHandlerXSDataMOSFLMv10:
         elif (strDetectorType == "pilatus6m" or strDetectorType == "pilatus2m"):
             xsDataMOSFLMDetector.setType(XSDataString("PILATUS"))
         elif strDetectorType.startswith("eiger2"):
-            pass
+            xsDataMOSFLMDetector.setType(XSDataString("EIGER2"))
         elif strDetectorType.startswith("eiger"):
             xsDataMOSFLMDetector.setType(XSDataString("EIGER"))
         elif (strDetectorType == "raxis4"):

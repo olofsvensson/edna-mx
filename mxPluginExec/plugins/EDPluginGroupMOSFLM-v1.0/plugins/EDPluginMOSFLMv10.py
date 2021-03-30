@@ -138,7 +138,7 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
             xsDataMOSFLMDetector = xsDataMOSFLMInput.getDetector()
             if (xsDataMOSFLMDetector is not None):
                 strDetectorType = xsDataMOSFLMDetector.getType()
-                if (strDetectorType is not None):
+                if (strDetectorType is not None) and strDetectorType.value != "EIGER2":
                     # Check if reversephi and omega are configured
                     strExtraCommand = ""
                     if (self.iOmega is not None):

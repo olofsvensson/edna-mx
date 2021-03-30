@@ -79,13 +79,13 @@ class EDUtilsImage:
 
 
     @staticmethod
-    def getH5MasterTemplate(_strPathToImage):
+    def getH5MasterTemplate(_strPathToImage, iImageNumber):
         strTemplate = None
         listResult = EDUtilsImage.__compileAndMatchRegexpTemplate(_strPathToImage)
         if (listResult != None):
             strPrefix = listResult[1]
             strSeparator = listResult[2]
-            strImageNumber = str(int(listResult[3]))
+            strImageNumber = str(iImageNumber)
             strTemplate = strPrefix + strSeparator + strImageNumber + "_master.h5"
         return strTemplate
 
