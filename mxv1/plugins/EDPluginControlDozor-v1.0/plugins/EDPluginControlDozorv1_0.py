@@ -296,7 +296,11 @@ class EDPluginControlDozorv1_0(EDPluginControl):
             # Only try to obtain data collection id if at the ESRF and path starts with "/data"
             if EDUtilsPath.isESRF() and self.dataInput.image[0].path.value.startswith("/data"):
                 xsDataInputRetrieveDataCollection = XSDataInputRetrieveDataCollection()
-                xsDataInputRetrieveDataCollection.image = XSDataImage(self.dataInput.image[0].path)
+                # Hack to fix problem with looking for CBF images from ID30A-3 and ID23-1:
+                imagePath = self.dataInput.image[0].path.value
+                if "id23eh1" in imagePath or "id30a3" in imagePath:
+                    imagePath = imagePath.replace(".cbf", ".h5")
+                xsDataInputRetrieveDataCollection.image = XSDataImage(XSDataString(imagePath))
                 edPluginISPyBRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
                 edPluginISPyBRetrieveDataCollection.dataInput = xsDataInputRetrieveDataCollection
                 edPluginISPyBRetrieveDataCollection.executeSynchronous()
