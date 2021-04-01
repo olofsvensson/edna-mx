@@ -1,11 +1,11 @@
 # GONIO Calibration Settings
-OmegaRot 5.0E-5 -1.1E-4 1.0
-KappaRot -0.29746 0.27895 0.91307
-PhiRot -0.00522 -0.00418 0.99998
-KappaTrans -0.43001 -0.36829 1.83651
-PhiTrans -0.13518 0.12589 2.30066
-KappaTransD 0.29013 0.28352 -0.91403
-PhiTransD 0.00744 -0.0050 -0.99996
+OmegaRot 0.00161 -0.00396 0.99999
+KappaRot -0.28439 0.28425 0.9156
+PhiRot -0.00389 5.0E-5 0.99999
+KappaTrans -0.14966 -0.352 1.16121
+PhiTrans 0.13059 -0.06043 1.29735
+KappaTransD 0.29056 0.28972 -0.91194
+PhiTransD 0.00572 -8.3E-4 -0.99998
 
 SECTION Alignment_Plugins
 ##################################
@@ -22,7 +22,7 @@ BCM_Plugin BCMplugin_tango_md2_2012 external
 SECTION Stac_BCMplugin_tango_md2_2012_external
 ##################################
 # TANGO URL:
-TANGOURL tango://wid30bmd2s:18001/EMBL/MD/1#dbase=no
+TANGOURL tango://wid30bmd:18001/EMBL/MD/1#dbase=no
 #TANGOURL tango://pc130.embl.fr:18001/EMBL/MD/1#dbase=no
 #source:
 #  CACHE        - 0
