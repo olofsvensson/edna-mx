@@ -29,6 +29,16 @@ __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os
+import sys
+
+sys.path.insert(0, "/opt/pxsoft/bes/vgit/linux-x86_64/id30a2/edna2")
+
+try:
+    from edna2.tasks.DiffractionThumbnail import DiffractionThumbnail
+    EDNA2_THUMBNAILS = True
+except:
+    EDNA2_THUMBNAILS = False
+
 
 try:
     from xmlrpclib import ServerProxy
@@ -201,25 +211,35 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
                 for subWedge in xsDataInputCharacterisation.dataCollection.subWedge:
                     for image in subWedge.image:
                         self._iNoReferenceImages += 1
-                        edPluginJpeg = self.loadPlugin(self._strPluginGenerateThumbnailName)
-                        xsDataInputMXThumbnail = XSDataInputMXThumbnail()
-                        xsDataInputMXThumbnail.image = XSDataFile(image.path)
-                        xsDataInputMXThumbnail.height = XSDataInteger(1024)
-                        xsDataInputMXThumbnail.width = XSDataInteger(1024)
-                        jpegFilename = os.path.splitext(os.path.basename(image.path.value))[0] + ".jpg"
-                        xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), jpegFilename)))
-                        edPluginJpeg.dataInput = xsDataInputMXThumbnail
-                        edPluginThumnail = self.loadPlugin(self._strPluginGenerateThumbnailName)
-                        xsDataInputMXThumbnail = XSDataInputMXThumbnail()
-                        xsDataInputMXThumbnail.image = XSDataFile(image.path)
-                        xsDataInputMXThumbnail.height = XSDataInteger(256)
-                        xsDataInputMXThumbnail.width = XSDataInteger(256)
-                        thumbnailFilename = os.path.splitext(os.path.basename(image.path.value))[0] + ".thumbnail.jpg"
-                        xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), thumbnailFilename)))
-                        edPluginThumnail.dataInput = xsDataInputMXThumbnail
-                        self._listPluginGenerateThumbnail.append((image, edPluginJpeg, edPluginThumnail))
-                        edPluginJpeg.execute()
-                        edPluginThumnail.execute()
+                        if EDNA2_THUMBNAILS:
+                            inDataDiffThumbnail = {
+                                "image": [image.path.value],
+                                "forcedOutputDirectory": self.getWorkingDirectory(),
+                                "workingDirectory": self.getWorkingDirectory()
+                            }
+                            diffractionThumbnail = DiffractionThumbnail(inData=inDataDiffThumbnail)
+                            diffractionThumbnail.start()
+                            self._listPluginGenerateThumbnail.append((image, diffractionThumbnail))
+                        else:
+                            edPluginJpeg = self.loadPlugin(self._strPluginGenerateThumbnailName)
+                            xsDataInputMXThumbnail = XSDataInputMXThumbnail()
+                            xsDataInputMXThumbnail.image = XSDataFile(image.path)
+                            xsDataInputMXThumbnail.height = XSDataInteger(1024)
+                            xsDataInputMXThumbnail.width = XSDataInteger(1024)
+                            jpegFilename = os.path.splitext(os.path.basename(image.path.value))[0] + ".jpg"
+                            xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), jpegFilename)))
+                            edPluginJpeg.dataInput = xsDataInputMXThumbnail
+                            edPluginThumnail = self.loadPlugin(self._strPluginGenerateThumbnailName)
+                            xsDataInputMXThumbnail = XSDataInputMXThumbnail()
+                            xsDataInputMXThumbnail.image = XSDataFile(image.path)
+                            xsDataInputMXThumbnail.height = XSDataInteger(256)
+                            xsDataInputMXThumbnail.width = XSDataInteger(256)
+                            thumbnailFilename = os.path.splitext(os.path.basename(image.path.value))[0] + ".thumbnail.jpg"
+                            xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), thumbnailFilename)))
+                            edPluginThumnail.dataInput = xsDataInputMXThumbnail
+                            self._listPluginGenerateThumbnail.append((image, edPluginJpeg, edPluginThumnail))
+                            edPluginJpeg.execute()
+                            edPluginThumnail.execute()
                 xsDataExperimentalCondition = xsDataSubWedgeList[0].getExperimentalCondition()
 
                 # Fix for bug 431: if the flux is zero raise an error
@@ -287,14 +307,24 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
         self.DEBUG("EDPluginControlCharacterisationv1_4.finallyProcess")
         # Synchronize thumbnail plugins
         for tuplePlugin in self._listPluginGenerateThumbnail:
-            image = tuplePlugin[0]
-            tuplePlugin[1].synchronize()
-            jpegImage = image.copy()
-            jpegImage.path = tuplePlugin[1].dataOutput.thumbnail.path
-            self._xsDataResultCharacterisation.addJpegImage(jpegImage)
-            tuplePlugin[2].synchronize()
-            thumbnailImage = image.copy()
-            thumbnailImage.path = tuplePlugin[2].dataOutput.thumbnail.path
+            if EDNA2_THUMBNAILS:
+                image = tuplePlugin[0]
+                tuplePlugin[1].join()
+                jpegImage = image.copy()
+                jpegImage.path = XSDataString(tuplePlugin[1].outData["pathToJPEGImage"][0])
+                self._xsDataResultCharacterisation.addJpegImage(jpegImage)
+                thumbnailImage = image.copy()
+                thumbnailImage.path = XSDataString(tuplePlugin[1].outData["pathToThumbImage"][0])
+            else:
+                image = tuplePlugin[0]
+                tuplePlugin[1].synchronize()
+                jpegImage = image.copy()
+                jpegImage.path = tuplePlugin[1].dataOutput.thumbnail.path
+                self._xsDataResultCharacterisation.addJpegImage(jpegImage)
+                tuplePlugin[2].synchronize()
+                thumbnailImage = image.copy()
+                thumbnailImage.path = tuplePlugin[2].dataOutput.thumbnail.path
+            self._xsDataResultCharacterisation.addThumbnailImage(thumbnailImage)           
             self._xsDataResultCharacterisation.addThumbnailImage(thumbnailImage)
         if self._edPluginControlGeneratePrediction.isRunning():
             self._edPluginControlGeneratePrediction.synchronize()
