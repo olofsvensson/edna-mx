@@ -36,8 +36,8 @@ class EDTestSuitePluginExecuteControlInterfacev1_2(EDTestSuite):
 
 
     def process(self):
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_withXMLInput")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_withXMLInput")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_blc6")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_NtermA46")
 #        self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfacev1_2_303")
