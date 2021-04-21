@@ -34,9 +34,9 @@ class EDTestSuitePluginExecuteControlCharacterisationv1_4(EDTestSuite):
     """
 
     def process(self):
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4_withForcedSpaceGroup")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4With2Sweep")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4_withForcedSpaceGroup")
+#        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4With2Sweep")
 #        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4_mccd")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4_fewSpots")
 #        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4_bestBFactorFailed")
