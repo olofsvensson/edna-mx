@@ -122,5 +122,30 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
+               <XSPluginItem>
+                        <name>EDPluginExecAutoPROCv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>execProcessScriptShell</name>
+                                        <value>/bin/bash</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>execProcessScriptExecutable</name>
+                                        <value>/opt/pxsoft/bin/process</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>pathToNeggiaPlugin</name>
+                                        <value>/opt/pxsoft/xds/vdefault/linux-x86_64/durin-plugin.so</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>7200</value>
+                                </XSParamItem>
+                                <XSParamItem>
+                                        <name>maxNoProcessors</name>
+                                        <value>6</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
 	</XSPluginList>
 </XSConfiguration> 

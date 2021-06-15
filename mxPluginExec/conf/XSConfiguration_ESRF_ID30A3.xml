@@ -20,7 +20,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>pathToNeggiaPlugin</name>
-					<value>/opt/pxsoft/xds/vdefault/linux-x86_64/durin-plugin.so</value>
+					<value>/opt/pxsoft/xds/vdefault/linux-x86_64/dectris-neggia.so</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -77,7 +77,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>library_h5_ubuntu_20.04</name>
-					<value>/opt/pxsoft/dozor/v2.2.1/ubuntu20.04-x86_64/bin/durin-plugin.so</value>
+					<value>/opt/pxsoft/dozor/v2.2.1/ubuntu20.04-x86_64/bin/dectris-neggia.so</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
