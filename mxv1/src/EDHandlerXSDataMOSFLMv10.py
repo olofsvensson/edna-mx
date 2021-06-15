@@ -117,7 +117,7 @@ class EDHandlerXSDataMOSFLMv10:
         strDirectory = os.path.dirname(strPath)
 
         if xsDataDetector.type.value == "eiger2_16m":
-            strMOSFLMTemplate = EDUtilsImage.getH5MasterTemplate(strFileName)
+            strMOSFLMTemplate = EDUtilsImage.getH5MasterTemplate(strFileName, 1)
         else:
             strMOSFLMTemplate = EDUtilsImage.getTemplate(strFileName, "#")
         xsDataMOSFLMInputIndexing.setTemplate(XSDataString(strMOSFLMTemplate))
