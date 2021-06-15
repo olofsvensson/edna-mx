@@ -790,7 +790,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>3600</value>
+					<value>7200</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>maxNoProcessors</name>
@@ -811,7 +811,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>7200</value>
+					<value>14400</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>maxNoProcessors</name>

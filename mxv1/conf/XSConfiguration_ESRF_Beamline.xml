@@ -118,10 +118,19 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>timeOut</name>
-					<value>7200</value>
+					<value>10000</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
+                <XSPluginItem>
+                        <name>EDPluginControlRunXdsFastProcv1_0</name>
+                        <XSParamList>
+                                <XSParamItem>
+                                        <name>timeOut</name>
+                                        <value>10000</value>
+                                </XSParamItem>
+                        </XSParamList>
+                </XSPluginItem>
 		<XSPluginItem>
 			<name>EDPluginControlAutoPROCv1_0</name>
 			<XSParamList>
