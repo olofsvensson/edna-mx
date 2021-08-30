@@ -31,6 +31,7 @@ import os
 import time
 import shutil
 import tempfile
+import subprocess
 
 from EDVerbose import EDVerbose
 from EDUtilsImage import EDUtilsImage
@@ -173,7 +174,7 @@ class EDHandlerESRFPyarchv1_0:
     def copyHTMLDir(_strPathToHTMLDir, _strPathToPyarchDirectory):
         if not os.path.exists(_strPathToPyarchDirectory):
             try:
-                os.mkdir(_strPathToPyarchDirectory)
+                os.mkdir(_strPathToPyarchDirectory, mode=0o755)
             except:
                 EDVerbose.WARNING("EDHandlerESRFPyarchv1_0.copyHTMLFilesAndDir: cannot create pyarch html directory %s" % _strPathToPyarchDirectory)
                 return
@@ -183,8 +184,12 @@ class EDHandlerESRFPyarchv1_0:
             try:
                 strPathToPyArchHtmlDirectory = os.path.join(_strPathToPyarchDirectory, "index")
                 if os.path.exists(strPathToPyArchHtmlDirectory):
-                    shutil.rmtree(strPathToPyArchHtmlDirectory, ignore_errors=True)
-                shutil.copytree(_strPathToHTMLDir, strPathToPyArchHtmlDirectory)
+                    # shutil.rmtree(strPathToPyArchHtmlDirectory, ignore_errors=True)
+                    p = subprocess.Popen(['rm', '-rf', strPathToPyArchHtmlDirectory])
+                    p.wait()
+                # shutil.copytree(_strPathToHTMLDir, strPathToPyArchHtmlDirectory)
+                p = subprocess.Popen(['cp', '-r', '-p', _strPathToHTMLDir, strPathToPyArchHtmlDirectory])
+                p.wait()
             except Exception as e:
                 EDVerbose.ERROR("EDHandlerESRFPyarchv1_0.copyHTMLFilesAndDir: Exception caught: %r" % e)
 
