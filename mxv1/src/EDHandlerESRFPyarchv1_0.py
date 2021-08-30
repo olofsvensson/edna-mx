@@ -184,11 +184,12 @@ class EDHandlerESRFPyarchv1_0:
             try:
                 strPathToPyArchHtmlDirectory = os.path.join(_strPathToPyarchDirectory, "index")
                 if os.path.exists(strPathToPyArchHtmlDirectory):
-                    # shutil.rmtree(strPathToPyArchHtmlDirectory, ignore_errors=True)
-                    p = subprocess.Popen(['rm', '-rf', strPathToPyArchHtmlDirectory])
-                    p.wait()
-                # shutil.copytree(_strPathToHTMLDir, strPathToPyArchHtmlDirectory)
-                p = subprocess.Popen(['cp', '-r', '-p', _strPathToHTMLDir, strPathToPyArchHtmlDirectory])
+                    shutil.rmtree(strPathToPyArchHtmlDirectory, ignore_errors=True)
+                shutil.copytree(_strPathToHTMLDir, strPathToPyArchHtmlDirectory)
+                # BES-340: workaround for problem with permissions when copying from ACL directory to non-ACL directory
+                p = subprocess.Popen(['find', strPathToPyArchHtmlDirectory, '-type', 'd', '-exec', 'chmod', '755', '{}', '\;'])
+                p.wait()
+                p = subprocess.Popen(['find', strPathToPyArchHtmlDirectory, '-type', 'f', '-exec', 'chmod', '644', '{}', '\;'])
                 p.wait()
             except Exception as e:
                 EDVerbose.ERROR("EDHandlerESRFPyarchv1_0.copyHTMLFilesAndDir: Exception caught: %r" % e)
