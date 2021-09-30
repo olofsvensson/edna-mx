@@ -31,6 +31,7 @@ import os
 import time
 import shutil
 import tempfile
+import subprocess
 
 from EDVerbose import EDVerbose
 from EDUtilsImage import EDUtilsImage
@@ -173,7 +174,7 @@ class EDHandlerESRFPyarchv1_0:
     def copyHTMLDir(_strPathToHTMLDir, _strPathToPyarchDirectory):
         if not os.path.exists(_strPathToPyarchDirectory):
             try:
-                os.mkdir(_strPathToPyarchDirectory)
+                os.mkdir(_strPathToPyarchDirectory, mode=0o755)
             except:
                 EDVerbose.WARNING("EDHandlerESRFPyarchv1_0.copyHTMLFilesAndDir: cannot create pyarch html directory %s" % _strPathToPyarchDirectory)
                 return
@@ -185,6 +186,11 @@ class EDHandlerESRFPyarchv1_0:
                 if os.path.exists(strPathToPyArchHtmlDirectory):
                     shutil.rmtree(strPathToPyArchHtmlDirectory, ignore_errors=True)
                 shutil.copytree(_strPathToHTMLDir, strPathToPyArchHtmlDirectory)
+                # BES-340: workaround for problem with permissions when copying from ACL directory to non-ACL directory
+                p = subprocess.Popen(['find', strPathToPyArchHtmlDirectory, '-type', 'd', '-exec', 'chmod', '755', '{}', '\;'])
+                p.wait()
+                p = subprocess.Popen(['find', strPathToPyArchHtmlDirectory, '-type', 'f', '-exec', 'chmod', '644', '{}', '\;'])
+                p.wait()
             except Exception as e:
                 EDVerbose.ERROR("EDHandlerESRFPyarchv1_0.copyHTMLFilesAndDir: Exception caught: %r" % e)
 

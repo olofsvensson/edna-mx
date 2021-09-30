@@ -8,11 +8,11 @@
 	</wedgeNumber>	
 	<directory>
 	  <path>
-	    <value>/data/visitor/mx415/id30a2/20160315/RAW_DATA/test3</value>
+	    <value>/scisoft/pxsoft/data/WORKFLOW_TEST_DATA/id30a1/20151214/RAW_DATA/adrcpt/adrcpt-For8/MXPressA_01</value>
 	  </path>
 	</directory>
 	<template>
-		<value>mx415_1_%04d.cbf</value>
+		<value>mesh-adrcpt-For8_1_%04d.cbf</value>
 	</template>
 	<startNo>
 		<value>1</value>
