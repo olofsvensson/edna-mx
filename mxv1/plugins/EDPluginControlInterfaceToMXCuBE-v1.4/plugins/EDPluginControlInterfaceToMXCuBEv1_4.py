@@ -155,7 +155,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.strMxCuBE_URI = None
         self.serverProxy = None
         self.minImageSize = 100000
-        self.fMXWaitFileTimeOut = 600
+        self.fMXWaitFileTimeOut = 60
 
     def checkParameters(self):
         """
