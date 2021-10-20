@@ -30,7 +30,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
- 					<value>http://sybil.esrf.fr:7171</value>
+ 					<value>http://id232control.esrf.fr:7171</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -39,7 +39,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
-					<value>http://sybil.esrf.fr:7171</value>
+					<value>http://id232control.esrf.fr:7171</value>
 				</XSParamItem>
     			<XSParamItem>
 					<name>doOnlyMosflmIndexing</name>
