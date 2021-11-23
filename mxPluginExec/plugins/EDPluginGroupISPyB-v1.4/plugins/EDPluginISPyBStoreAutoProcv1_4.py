@@ -357,8 +357,8 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
         fResolutionLimitHigh = self.getXSValue(_xsDataAutoProcScalingStatistics.getResolutionLimitHigh())
         fRmerge = self.getXSValue(_xsDataAutoProcScalingStatistics.getRMerge())
         fRmeasWithinIplusIminus = self.getXSValue(_xsDataAutoProcScalingStatistics.getRMeasWithinIPlusIMinus())
-        fRmeasAllIplusIminus = self.getXSValue(_xsDataAutoProcScalingStatistics.getMeasAllIPlusIMinus())
-        fRpimWithinIplusIminus = self.getXSValue(_xsDataAutoProcScalingStatistics.getPimWithinIPlusIMinus())
+        fRmeasAllIplusIminus = self.getXSValue(_xsDataAutoProcScalingStatistics.getRMeasAllIPlusIMinus())
+        fRpimWithinIplusIminus = self.getXSValue(_xsDataAutoProcScalingStatistics.getRPimWithinIPlusIMinus())
         fRpimAllIplusIminus = self.getXSValue(_xsDataAutoProcScalingStatistics.getRPimAllIPlusIMinus())
         fFractionalPartialBias = self.getXSValue(_xsDataAutoProcScalingStatistics.getFractionalPartialBias())
         iNtotalObservations = self.getXSValue(_xsDataAutoProcScalingStatistics.getNTotalObservations())
@@ -386,10 +386,10 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginISPyBv1_4):
                 resolutionLimitLow=fResolutionLimitLow,
                 resolutionLimitHigh=fResolutionLimitHigh,
                 rmerge=fRmerge,
-                rMeasWithinIPlusIMinus=fRmeasWithinIplusIminus,
-                rMeasAllIPlusIMinus=fRmeasAllIplusIminus,
-                rPimWithinIPlusIMinus=fRpimWithinIplusIminus,
-                rPimAllIPlusIMinus=fRpimAllIplusIminus,
+                rmeasWithinIplusIminus=fRmeasWithinIplusIminus,
+                rmeasAllIplusIminus=fRmeasAllIplusIminus,
+                rpimWithinIplusIminus=fRpimWithinIplusIminus,
+                rpimAllIplusIminus=fRpimAllIplusIminus,
                 fractionalPartialBias=fFractionalPartialBias,
                 nTotalObservations=iNtotalObservations,
                 nTotalUniqueObservations=iNtotalUniqueObservations,
