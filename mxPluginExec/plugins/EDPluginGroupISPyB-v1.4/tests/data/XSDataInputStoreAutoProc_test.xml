@@ -44,10 +44,10 @@
 				<nTotalObservations>24973</nTotalObservations>
 				<rMerge>21.8</rMerge>
 				<anomalous>1</anomalous>
-				<rmeasWithinIplusIminus>10</rmeasWithinIplusIminus>
-				<rmeasAllIplusIminus>11</rmeasAllIplusIminus>
-				<rpimWithinIplusIminus>12</rpimWithinIplusIminus>
-				<rpimAllIplusIminus>13</rpimAllIplusIminus>
+				<rMeasWithinIPlusIMinus>10</rMeasWithinIPlusIMinus>
+				<rMeasAllIPlusIMinus>11</rMeasAllIPlusIMinus>
+				<rPimWithinIPlusIMinus>12</rPimWithinIPlusIMinus>
+				<rPimAllIPlusIMinus>13</rPimAllIPlusIMinus>
 				<fractionalPartialBias>14</fractionalPartialBias>
 				<ntotalUniqueObservations>15</ntotalUniqueObservations>
 				<anomalousCompleteness>16</anomalousCompleteness>
@@ -73,10 +73,10 @@
 				<nTotalObservations>992</nTotalObservations>
 				<rMerge>3.7</rMerge>
 				<anomalous>1</anomalous>
-				<rmeasWithinIplusIminus>10</rmeasWithinIplusIminus>
-				<rmeasAllIplusIminus>11</rmeasAllIplusIminus>
-				<rpimWithinIplusIminus>12</rpimWithinIplusIminus>
-				<rpimAllIplusIminus>13</rpimAllIplusIminus>
+				<rMeasWithinIPlusIMinus>10</rMeasWithinIPlusIMinus>
+				<rMeasAllIPlusIMinus>11</rMeasAllIPlusIMinus>
+				<rPimWithinIPlusIMinus>12</rPimWithinIPlusIMinus>
+				<rPimAllIPlusIMinus>13</rPimAllIPlusIMinus>
 				<fractionalPartialBias>14</fractionalPartialBias>
 				<ntotalUniqueObservations>15</ntotalUniqueObservations>
 				<anomalousCompleteness>16</anomalousCompleteness>
@@ -101,10 +101,10 @@
 				<nTotalObservations>4023</nTotalObservations>
 				<rMerge>67.7</rMerge>
 				<anomalous>1</anomalous>
-				<rmeasWithinIplusIminus>10</rmeasWithinIplusIminus>
-				<rmeasAllIplusIminus>11</rmeasAllIplusIminus>
-				<rpimWithinIplusIminus>12</rpimWithinIplusIminus>
-				<rpimAllIplusIminus>13</rpimAllIplusIminus>
+				<rMeasWithinIPlusIMinus>10</rMeasWithinIPlusIMinus>
+				<rMeasAllIPlusIMinus>11</rMeasAllIPlusIMinus>
+				<rPimWithinIPlusIMinus>12</rPimWithinIPlusIMinus>
+				<rPimAllIPlusIMinus>13</rPimAllIPlusIMinus>
 				<fractionalPartialBias>14</fractionalPartialBias>
 				<ntotalUniqueObservations>15</ntotalUniqueObservations>
 				<anomalousCompleteness>16</anomalousCompleteness>

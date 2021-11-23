@@ -20,10 +20,10 @@
                 <resolutionLimitLow>4.907000e+01</resolutionLimitLow>
                 <resolutionLimitHigh>1.205000e+01</resolutionLimitHigh>
                 <rMerge>2.600000e+00</rMerge>
-                <rmeasWithinIplusIminus>3.400000e-02</rmeasWithinIplusIminus>
-                <rmeasAllIplusIminus>3.200000e-02</rmeasAllIplusIminus>
-                <rpimWithinIplusIminus>2.100000e-02</rpimWithinIplusIminus>
-                <rpimAllIplusIminus>1.600000e-02</rpimAllIplusIminus>
+                <rMeasWithinIPlusIMinus>3.400000e-02</rMeasWithinIPlusIMinus>
+                <rMeasAllIPlusIMinus>3.200000e-02</rMeasAllIPlusIMinus>
+                <rPimWithinIPlusIMinus>2.100000e-02</rPimWithinIPlusIMinus>
+                <rPimAllIPlusIMinus>1.600000e-02</rPimAllIPlusIMinus>
                 <nTotalObservations>1054</nTotalObservations>
                 <ntotalUniqueObservations>300</ntotalUniqueObservations>
                 <meanIOverSigI>3.560000e+01</meanIOverSigI>
@@ -41,10 +41,10 @@
                 <resolutionLimitLow>3.220000e+00</resolutionLimitLow>
                 <resolutionLimitHigh>3.110000e+00</resolutionLimitHigh>
                 <rMerge>1.078000e+02</rMerge>
-                <rmeasWithinIplusIminus>1.374000e+00</rmeasWithinIplusIminus>
-                <rmeasAllIplusIminus>1.381000e+00</rmeasAllIplusIminus>
-                <rpimWithinIplusIminus>8.420000e-01</rpimWithinIplusIminus>
-                <rpimAllIplusIminus>6.250000e-01</rpimAllIplusIminus>
+                <rMeasWithinIPlusIMinus>1.374000e+00</rMeasWithinIPlusIMinus>
+                <rMeasAllIPlusIMinus>1.381000e+00</rMeasAllIPlusIMinus>
+                <rPimWithinIPlusIMinus>8.420000e-01</rPimWithinIPlusIMinus>
+                <rPimAllIPlusIMinus>6.250000e-01</rPimAllIPlusIMinus>
                 <nTotalObservations>6822</nTotalObservations>
                 <ntotalUniqueObservations>1449</ntotalUniqueObservations>
                 <meanIOverSigI>1.100000e+00</meanIOverSigI>
@@ -62,10 +62,10 @@
                 <resolutionLimitLow>4.907000e+01</resolutionLimitLow>
                 <resolutionLimitHigh>3.110000e+00</resolutionLimitHigh>
                 <rMerge>9.200000e+00</rMerge>
-                <rmeasWithinIplusIminus>1.180000e-01</rmeasWithinIplusIminus>
-                <rmeasAllIplusIminus>1.130000e-01</rmeasAllIplusIminus>
-                <rpimWithinIplusIminus>7.400000e-02</rpimWithinIplusIminus>
-                <rpimAllIplusIminus>5.300000e-02</rpimAllIplusIminus>
+                <rMeasWithinIPlusIMinus>1.180000e-01</rMeasWithinIPlusIMinus>
+                <rMeasAllIPlusIMinus>1.130000e-01</rMeasAllIPlusIMinus>
+                <rPimWithinIPlusIMinus>7.400000e-02</rPimWithinIPlusIMinus>
+                <rPimAllIPlusIMinus>5.300000e-02</rPimAllIPlusIMinus>
                 <nTotalObservations>65482</nTotalObservations>
                 <ntotalUniqueObservations>15038</ntotalUniqueObservations>
                 <meanIOverSigI>1.070000e+01</meanIOverSigI>

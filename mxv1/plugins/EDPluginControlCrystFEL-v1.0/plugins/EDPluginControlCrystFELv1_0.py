@@ -293,10 +293,10 @@ class EDPluginControlCrystFELv1_0(EDPluginControl):
         resolutionLimitLow : float
         resolutionLimitHigh : float
         rMerge : float
-        rmeasWithinIplusIminus : float
-        rmeasAllIplusIminus : float
-        rpimWithinIplusIminus : float
-        rpimAllIplusIminus : float
+        rMeasWithinIPlusIMinus : float
+        rMeasAllIPlusIMinus : float
+        rPimWithinIPlusIMinus : float
+        rPimAllIPlusIMinus : float
         fractionalPartialBias : float
         nTotalObservations : integer
         ntotalUniqueObservations : integer
