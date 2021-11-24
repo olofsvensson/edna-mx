@@ -434,6 +434,10 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                     autoProcScalingStatistics.anomalous = False
                 # Convert from fraction to %
                 autoProcScalingStatistics.rMerge *= 100.0
+                autoProcScalingStatistics.rMeasWithinIPlusIMinus *= 100
+                autoProcScalingStatistics.rMeasAllIPlusIMinus *= 100
+                autoProcScalingStatistics.rPimWithinIPlusIMinus *= 100
+                autoProcScalingStatistics.rPimAllIPlusIMinus *= 100
             autoProcIntegrationContainer = autoProcScalingContainer.AutoProcIntegrationContainer
             autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
             autoProcIntegration.autoProcIntegrationId = integrationId

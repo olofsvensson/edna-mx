@@ -1598,10 +1598,10 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             'Total number of observations': 'nTotalObservations',
             'Total number unique': 'ntotalUniqueObservations',
             'Rmerge  (within I+/I-)': 'rMerge',
-            'Rmeas (within I+/I-)': 'rmeasWithinIplusIminus',
-            'Rmeas (all I+ & I-)': 'rmeasAllIplusIminus',
-            'Rpim (within I+/I-)': 'rpimWithinIplusIminus',
-            'Rpim (all I+ & I-)': 'rpimAllIplusIminus',
+            'Rmeas (within I+/I-)': 'rMeasWithinIPlusIMinus',
+            'Rmeas (all I+ & I-)': 'rMeasAllIPlusIMinus',
+            'Rpim (within I+/I-)': 'rPimWithinIPlusIMinus',
+            'Rpim (all I+ & I-)': 'rPimAllIPlusIMinus',
             'Anomalous completeness': 'anomalousCompleteness',
             'Anomalous multiplicity': 'anomalousMultiplicity',
             'Mn(I) half-set correlation CC(1/2)': 'ccHalf',
@@ -1624,7 +1624,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 for prefix, prop_name in INTERESTING_LINES.items():
                     if line.startswith(prefix):
                         # We need to multiply the values for rMerge by 100
-                        factor = 100 if prop_name == 'rMerge' else 1
+                        factor = 100 if prop_name.lower().startswith('rm') or prop_name.lower().startswith('rp') else 1
                         # 3 last columns are the values we're after
                         overall, inner, outer = [float(x) * factor for x in line.split()[-3:]]
                         overall_stats[prop_name] = overall
