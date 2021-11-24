@@ -655,6 +655,11 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                         if fFlux > self.fFluxThreshold:
                             xsDataExperimentalCondition.getBeam().setFlux(XSDataFlux(fFlux))
                             bFoundValidFlux = True
+                        elif "bm07" in _xsDataFirstImage.path.value:
+                            self.screen("Using fixed flux 1e11 photons/s for BM07")
+                            fFlux = 1e11
+                            xsDataExperimentalCondition.getBeam().setFlux(XSDataFlux(fFlux))
+                            bFoundValidFlux = True
                     fBeamSizeAtSampleX = xsDataISPyBDataCollection.beamSizeAtSampleX
                     fBeamSizeAtSampleY = xsDataISPyBDataCollection.beamSizeAtSampleY
                     if fBeamSizeAtSampleX is not None and fBeamSizeAtSampleY is not None:
