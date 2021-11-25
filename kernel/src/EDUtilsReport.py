@@ -144,6 +144,7 @@ class EDUtilsReport(object):
     def renderJson(self, pathToJsonDir):
         pathToJsonFile = os.path.join(pathToJsonDir, "report.json")
         open(pathToJsonFile, "w").write(json.dumps(self.dictReport, indent=4))
+        os.chmod(pathToJsonFile, 0o644)
         return pathToJsonFile
 
     def escapeCharacters(self, strValue):

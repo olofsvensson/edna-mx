@@ -396,6 +396,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     if not os.path.exists(os.path.dirname(strPyarchWorkflowStepImage)):
                         os.makedirs(os.path.dirname(strPyarchWorkflowStepImage), 755)
                     shutil.copy(strWorkflowStepImage, strPyarchWorkflowStepImage)
+                    os.chmod(strPyarchWorkflowStepImage, 0o644)
                 self.DEBUG("Workflow step image pyarch path: %s " % strPyarchWorkflowStepImage)
                 if self.edPluginControlInterface.dataOutput.resultControlISPyB is not None:
                     xsDataInputISPyBSetBestWilsonPlotPath = XSDataInputISPyBSetBestWilsonPlotPath()
