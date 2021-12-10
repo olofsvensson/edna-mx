@@ -92,9 +92,17 @@ class EDUtilsImage:
     @staticmethod
     def getPrefix(_strPathToImage):
         strPrefix = None
-        listResult = EDUtilsImage.__compileAndMatchRegexpTemplate(_strPathToImage)
-        if (listResult != None):
-            strPrefix = listResult[1]
+        if _strPathToImage.endswith("_master.h5"):
+            strPrefix = _strPathToImage.replace("_master.h5", "")
+            # Remove 'HDF file number'
+            iIndex = len(strPrefix) - 1
+            while (strPrefix[iIndex] != "_"):
+                iIndex -= 1
+            strPrefix = strPrefix[0:iIndex]
+        else:
+            listResult = EDUtilsImage.__compileAndMatchRegexpTemplate(_strPathToImage)
+            if (listResult != None):
+                strPrefix = listResult[1]
         return strPrefix
 
 

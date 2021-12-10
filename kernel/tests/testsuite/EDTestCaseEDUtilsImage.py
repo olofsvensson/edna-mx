@@ -1,4 +1,4 @@
-##
+# #
 #    Project: The EDNA Kernel
 #             http://www.edna-site.org
 #
@@ -8,7 +8,7 @@
 #                            Grenoble, France
 #
 #    Principal authors: Marie-Francoise Incardona (incardon@esrf.fr)
-#                       Olof Svensson (svensson@esrf.fr) 
+#                       Olof Svensson (svensson@esrf.fr)
 #                        Jerome Kieffer
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    and the GNU Lesser General Public License  along with this program.  
+#    and the GNU Lesser General Public License  along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -80,6 +80,16 @@ class EDTestCaseEDUtilsImage(EDTestCase):
         EDAssert.equal(strTemplateReference, strTemplate)
 
 
+    def testGetPrefix(self):
+        strPrefix = EDUtilsImage.getPrefix(self.__strFileName)
+        EDAssert.equal("ref-testscale_1", strPrefix)
+
+
+    def testGetHDF5Prefix(self):
+        strHDF5FileName = "t20keV-insulin_4_1_master.h5"
+        strPrefix = EDUtilsImage.getPrefix(strHDF5FileName)
+        EDAssert.equal("t20keV-insulin_4", strPrefix)
+
 
 ##############################################################################
 
@@ -89,6 +99,8 @@ class EDTestCaseEDUtilsImage(EDTestCase):
         self.addTestMethod(self.testGetImageNumber)
         self.addTestMethod(self.testGetTemplateHash)
         self.addTestMethod(self.testGetTemplateQuestionMark)
+        self.addTestMethod(self.testGetPrefix)
+        self.addTestMethod(self.testGetHDF5Prefix)
 
 
 
