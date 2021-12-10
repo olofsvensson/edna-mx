@@ -229,7 +229,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
                     xsDataInputInterface.addImagePath(cbfFile)
                     if self.xsDataFirstImage is None:
-                        self.xsDataFirstImage = XSDataImage(cbfFile.path.value.replace(".cbf", ".h5"))
+                        self.xsDataFirstImage = XSDataImage(XSDataFile(cbfFile.path.replace(".cbf", ".h5")))
                 else:
                     xsDataInputInterface.addImagePath(xsDataImage)
                     if self.xsDataFirstImage is None:
