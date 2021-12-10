@@ -220,7 +220,6 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             for xsDataImage in xsDataSetMXCuBE.getImageFile():
                 if xsDataImage.path.value.endswith(".h5"):
                     self.bIsEigerDetector = True
-                    self.xsDataFirstImage = xsDataImage
                     xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
                     xsDataInputControlH5ToCBF.hdf5File = XSDataFile(xsDataImage.path)
                     xsDataInputControlH5ToCBF.imageNumber = xsDataImage.number
@@ -229,10 +228,12 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     edPluginControlH5ToCBF.executeSynchronous()
                     cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
                     xsDataInputInterface.addImagePath(cbfFile)
+                    if self.xsDataFirstImage is None:
+                        self.xsDataFirstImage = cbfFile.replace(".cbf", ".h5")
                 else:
                     xsDataInputInterface.addImagePath(xsDataImage)
-                if self.xsDataFirstImage is None:
-                    self.xsDataFirstImage = xsDataImage
+                    if self.xsDataFirstImage is None:
+                        self.xsDataFirstImage = xsDataImage
 
         # Check that images are on disk, otherwise wait
         for xsDataImagePath in xsDataInputInterface.imagePath:
