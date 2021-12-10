@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Sep 17 03:33::44 2020 by EDGenerateDS.
+# Generated Fri Dec 10 02:32::54 2021 by EDGenerateDS.
 #
 
 import os, sys
@@ -22,6 +22,7 @@ dictLocation = { \
  "XSDataMXv1": "mxv1/datamodel", \
  "XSDataMXv1": "mxv1/datamodel", \
  "XSDataMXv1": "mxv1/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
  "XSDataMXv1": "mxv1/datamodel", \
  "XSDataMXv1": "mxv1/datamodel", \
  "XSDataMXv1": "mxv1/datamodel", \
@@ -38,6 +39,7 @@ try:
     from XSDataMXv1 import XSDataCollectionPlan
     from XSDataMXv1 import XSDataDiffractionPlan
     from XSDataMXv1 import XSDataExperimentalCondition
+    from XSDataCommon import XSDataImage
     from XSDataMXv1 import XSDataInputCharacterisation
     from XSDataMXv1 import XSDataResultCharacterisation
     from XSDataMXv1 import XSDataSampleCrystalMM
@@ -61,6 +63,7 @@ from XSDataCommon import XSDataString
 from XSDataMXv1 import XSDataCollectionPlan
 from XSDataMXv1 import XSDataDiffractionPlan
 from XSDataMXv1 import XSDataExperimentalCondition
+from XSDataCommon import XSDataImage
 from XSDataMXv1 import XSDataInputCharacterisation
 from XSDataMXv1 import XSDataResultCharacterisation
 from XSDataMXv1 import XSDataSampleCrystalMM
@@ -168,10 +171,10 @@ class XSDataMXCuBEDataSet(object):
         if value is None:
             strMessage = "ERROR! XSDataMXCuBEDataSet.addImageFile argument is None"
             raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataFile":
+        elif value.__class__.__name__ == "XSDataImage":
             self._imageFile.append(value)
         else:
-            strMessage = "ERROR! XSDataMXCuBEDataSet.addImageFile argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataMXCuBEDataSet.addImageFile argument is not XSDataImage but %s" % value.__class__.__name__
             raise BaseException(strMessage)
     def insertImageFile(self, index, value):
         if index is None:
@@ -180,10 +183,10 @@ class XSDataMXCuBEDataSet(object):
         if value is None:
             strMessage = "ERROR! XSDataMXCuBEDataSet.insertImageFile argument 'value' is None"
             raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataFile":
+        elif value.__class__.__name__ == "XSDataImage":
             self._imageFile[index] = value
         else:
-            strMessage = "ERROR! XSDataMXCuBEDataSet.addImageFile argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataMXCuBEDataSet.addImageFile argument is not XSDataImage but %s" % value.__class__.__name__
             raise BaseException(strMessage)
     def export(self, outfile, level, name_='XSDataMXCuBEDataSet'):
         showIndent(outfile, level)
@@ -196,7 +199,7 @@ class XSDataMXCuBEDataSet(object):
         for imageFile_ in self.getImageFile():
             imageFile_.export(outfile, level, name_='imageFile')
         if self.getImageFile() == []:
-            warnEmptyAttribute("imageFile", "XSDataFile")
+            warnEmptyAttribute("imageFile", "XSDataImage")
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -204,7 +207,7 @@ class XSDataMXCuBEDataSet(object):
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'imageFile':
-            obj_ = XSDataFile()
+            obj_ = XSDataImage()
             obj_.build(child_)
             self.imageFile.append(obj_)
     #Method for marshalling an object

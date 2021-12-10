@@ -217,22 +217,22 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.edPluginControlInterface = self.loadPlugin(self.strPluginControlInterface)
         self.xsDataFirstImage = None
         for xsDataSetMXCuBE in xsDataInputMXCuBE.getDataSet():
-            for xsDataFile in xsDataSetMXCuBE.getImageFile():
-                if xsDataFile.path.value.endswith(".h5"):
+            for xsDataImage in xsDataSetMXCuBE.getImageFile():
+                if xsDataImage.path.value.endswith(".h5"):
                     self.bIsEigerDetector = True
-                    self.xsDataFirstImage = xsDataFile
+                    self.xsDataFirstImage = xsDataImage
                     xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
-                    xsDataInputControlH5ToCBF.hdf5File = XSDataFile(xsDataFile.path)
-                    xsDataInputControlH5ToCBF.imageNumber = XSDataInteger(EDUtilsImage.getImageNumber(xsDataFile.path.value))
+                    xsDataInputControlH5ToCBF.hdf5File = XSDataFile(xsDataImage.path)
+                    xsDataInputControlH5ToCBF.imageNumber = xsDataImage.number
                     edPluginControlH5ToCBF = self.loadPlugin(self.strPluginControlH5ToCBF, "ControlH5ToCBF")
                     edPluginControlH5ToCBF.dataInput = xsDataInputControlH5ToCBF
                     edPluginControlH5ToCBF.executeSynchronous()
                     cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
                     xsDataInputInterface.addImagePath(cbfFile)
                 else:
-                    xsDataInputInterface.addImagePath(xsDataFile)
+                    xsDataInputInterface.addImagePath(xsDataImage)
                 if self.xsDataFirstImage is None:
-                    self.xsDataFirstImage = xsDataFile
+                    self.xsDataFirstImage = xsDataImage
 
         # Check that images are on disk, otherwise wait
         for xsDataImagePath in xsDataInputInterface.imagePath:

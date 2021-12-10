@@ -4,6 +4,7 @@ import XSDataCommon.XSData
 import XSDataCommon.XSDataInteger
 import XSDataCommon.XSDataString
 import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataImage
 import XSDataCommon.XSDataDictionary
 import XSDataCommon.XSDataInput
 import XSDataCommon.XSDataResult
@@ -27,7 +28,7 @@ complex type XSDataInputMXCuBE extends XSDataInput {
 }
 
 complex type XSDataMXCuBEDataSet {
-	imageFile : XSDataFile []
+	imageFile : XSDataImage []
 }
 
 complex type XSDataResultMXCuBE extends XSDataResult {
