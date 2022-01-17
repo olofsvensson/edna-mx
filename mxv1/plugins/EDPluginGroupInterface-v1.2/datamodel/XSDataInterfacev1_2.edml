@@ -3,6 +3,7 @@ targetNamespace "http://www.edna-site.org"
 import XSDataCommon.XSDataBoolean
 import XSDataCommon.XSDataDouble
 import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataImage
 import XSDataCommon.XSDataFloat
 import XSDataCommon.XSDataInteger
 import XSDataCommon.XSDataLength
@@ -20,7 +21,7 @@ complex type XSDataInputInterface {
 	experimentalCondition : XSDataExperimentalCondition optional
 	diffractionPlan : XSDataDiffractionPlan optional
 	sample : XSDataSampleCrystalMM optional
-	imagePath : XSDataFile [] optional
+	imagePath : XSDataImage [] optional
 	flux : XSDataFloat optional
 	minExposureTimePerImage : XSDataTime optional
 	beamSize : XSDataLength optional

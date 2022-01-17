@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Sep 18 01:54::19 2020 by EDGenerateDS.
+# Generated Mon Jan 17 01:39::49 2022 by EDGenerateDS.
 #
 
 import os, sys
@@ -20,6 +20,7 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataMXv1": "mxv1/datamodel", \
  "XSDataMXv1": "mxv1/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
  "XSDataMXv1": "mxv1/datamodel", \
  "XSDataMXv1": "mxv1/datamodel", \
  "XSDataMXv1": "mxv1/datamodel", \
@@ -38,6 +39,7 @@ try:
     from XSDataCommon import XSDataString
     from XSDataMXv1 import XSDataDiffractionPlan
     from XSDataMXv1 import XSDataExperimentalCondition
+    from XSDataCommon import XSDataImage
     from XSDataMXv1 import XSDataInputCharacterisation
     from XSDataMXv1 import XSDataResultCharacterisation
     from XSDataMXv1 import XSDataResultControlISPyB
@@ -63,6 +65,7 @@ from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataString
 from XSDataMXv1 import XSDataDiffractionPlan
 from XSDataMXv1 import XSDataExperimentalCondition
+from XSDataCommon import XSDataImage
 from XSDataMXv1 import XSDataInputCharacterisation
 from XSDataMXv1 import XSDataResultCharacterisation
 from XSDataMXv1 import XSDataResultControlISPyB
@@ -350,10 +353,10 @@ class XSDataInputInterface(object):
         if value is None:
             strMessage = "ERROR! XSDataInputInterface.addImagePath argument is None"
             raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataFile":
+        elif value.__class__.__name__ == "XSDataImage":
             self._imagePath.append(value)
         else:
-            strMessage = "ERROR! XSDataInputInterface.addImagePath argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataInputInterface.addImagePath argument is not XSDataImage but %s" % value.__class__.__name__
             raise BaseException(strMessage)
     def insertImagePath(self, index, value):
         if index is None:
@@ -362,10 +365,10 @@ class XSDataInputInterface(object):
         if value is None:
             strMessage = "ERROR! XSDataInputInterface.insertImagePath argument 'value' is None"
             raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataFile":
+        elif value.__class__.__name__ == "XSDataImage":
             self._imagePath[index] = value
         else:
-            strMessage = "ERROR! XSDataInputInterface.addImagePath argument is not XSDataFile but %s" % value.__class__.__name__
+            strMessage = "ERROR! XSDataInputInterface.addImagePath argument is not XSDataImage but %s" % value.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'flux' attribute
     def getFlux(self): return self._flux
@@ -643,7 +646,7 @@ class XSDataInputInterface(object):
             self.setSample(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'imagePath':
-            obj_ = XSDataFile()
+            obj_ = XSDataImage()
             obj_.build(child_)
             self.imagePath.append(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
