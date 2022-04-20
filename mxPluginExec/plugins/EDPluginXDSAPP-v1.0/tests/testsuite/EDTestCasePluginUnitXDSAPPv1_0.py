@@ -53,7 +53,7 @@ class EDTestCasePluginUnitXDSAPPv1_0(EDTestCasePluginUnit):
 #        EDAssert.equal("--cmd --image /scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5/xtal5w1_1_0001.cbf --fried=true", strCommandLine, "Reference data input")
 
     def test_parseOutputDirectory(self):
-        testXDSAPPDir = "/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0"
+        testXDSAPPDir = "/data/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0"
         edPlugin = self.getPlugin()
         xsDataResultXDSAPP = edPlugin.parseOutputDirectory(testXDSAPPDir, "xtal5w1_1")
         print(xsDataResultXDSAPP.marshal())

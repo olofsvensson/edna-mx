@@ -179,7 +179,7 @@
     <image_link>
         <source>
             <path>
-                <value>/scisoft/pxsoft/data/AUTO_PROCESSING/id30a1/20170623/RAW_DATA/FAE-x09/MXPressP_01/ref-FAE-x09_4_0001.cbf</value>
+                <value>/data/scisoft/pxsoft/data/AUTO_PROCESSING/id30a1/20170623/RAW_DATA/FAE-x09/MXPressP_01/ref-FAE-x09_4_0001.cbf</value>
             </path>
         </source>
         <target>
@@ -189,7 +189,7 @@
     <image_link>
         <source>
             <path>
-                <value>/scisoft/pxsoft/data/AUTO_PROCESSING/id30a1/20170623/RAW_DATA/FAE-x09/MXPressP_01/ref-FAE-x09_4_0002.cbf</value>
+                <value>/data/scisoft/pxsoft/data/AUTO_PROCESSING/id30a1/20170623/RAW_DATA/FAE-x09/MXPressP_01/ref-FAE-x09_4_0002.cbf</value>
             </path>
         </source>
         <target>
@@ -199,7 +199,7 @@
     <image_link>
         <source>
             <path>
-                <value>/scisoft/pxsoft/data/AUTO_PROCESSING/id30a1/20170623/RAW_DATA/FAE-x09/MXPressP_01/ref-FAE-x09_4_0003.cbf</value>
+                <value>/data/scisoft/pxsoft/data/AUTO_PROCESSING/id30a1/20170623/RAW_DATA/FAE-x09/MXPressP_01/ref-FAE-x09_4_0003.cbf</value>
             </path>
         </source>
         <target>
@@ -209,7 +209,7 @@
     <image_link>
         <source>
             <path>
-                <value>/scisoft/pxsoft/data/AUTO_PROCESSING/id30a1/20170623/RAW_DATA/FAE-x09/MXPressP_01/ref-FAE-x09_4_0004.cbf</value>
+                <value>/data/scisoft/pxsoft/data/AUTO_PROCESSING/id30a1/20170623/RAW_DATA/FAE-x09/MXPressP_01/ref-FAE-x09_4_0004.cbf</value>
             </path>
         </source>
         <target>

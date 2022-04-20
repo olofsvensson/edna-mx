@@ -58,7 +58,7 @@ class EDTestCasePluginUnitControlDozorAndXDSAPPv1_0(EDTestCasePluginUnit):
 
     def test_runXscale(self):
         workingDirectory = tempfile.mkdtemp(prefix="XDSAPP_XSCALE_")
-        pathToXdsAsciiHkl = "/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XDS_ASCII.HKL"
+        pathToXdsAsciiHkl = "/data/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XDS_ASCII.HKL"
         self.screen(workingDirectory)
         edPlugin = self.getPlugin()
         edPlugin.runXscale(workingDirectory, pathToXdsAsciiHkl, merged=True)
@@ -73,13 +73,13 @@ class EDTestCasePluginUnitControlDozorAndXDSAPPv1_0(EDTestCasePluginUnit):
         timeEnd = time.localtime()
         processDirectory = "/data/visitor/mx415/id30a2/20161206/PROCESSED_DATA/t3/autoprocessing_t3_run3_1/XDSAPP"
         template = "t3_3_####.cbf"
-        strPathXscaleLp = "/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XSCALE.LP"
+        strPathXscaleLp = "/data/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XSCALE.LP"
         dataCollectionId = 123456
         edPlugin.uploadToISPyB(xsDataResultXDSAPP, processDirectory, template,
                                strPathXscaleLp, isAnom, proposal, timeStart, timeEnd, dataCollectionId)
 
     def test_parseXscaleLp(self):
-        strPathXscaleLp = "/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XSCALE.LP"
+        strPathXscaleLp = "/data/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XSCALE.LP"
         edPlugin = self.getPlugin()
         dictXscale = edPlugin.parseXscaleLp(strPathXscaleLp)
         pprint.pprint(dictXscale)

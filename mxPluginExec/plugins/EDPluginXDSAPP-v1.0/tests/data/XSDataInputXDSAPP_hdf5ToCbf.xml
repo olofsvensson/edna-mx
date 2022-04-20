@@ -2,7 +2,7 @@
 <XSDataInputXDSAPP>
   <image>
     <path>
-      <value>/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/hdf5/thaumatin14_fast_w1_1_000001.cbf</value>
+      <value>/data/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/hdf5/thaumatin14_fast_w1_1_000001.cbf</value>
     </path>
   </image>
 </XSDataInputXDSAPP>

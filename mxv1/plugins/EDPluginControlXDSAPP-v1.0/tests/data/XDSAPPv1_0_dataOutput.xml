@@ -2,32 +2,32 @@
 <XSDataResultXDSAPP>
     <logFile>
         <path>
-            <value>/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/results_xtal5w1_1.txt</value>
+            <value>/data/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/results_xtal5w1_1.txt</value>
         </path>
     </logFile>
     <pointlessLog>
         <path>
-            <value>/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/pointless.log</value>
+            <value>/data/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/pointless.log</value>
         </path>
     </pointlessLog>
     <phenixXtriageLog>
         <path>
-            <value>/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/phenix_xtriage.log</value>
+            <value>/data/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/phenix_xtriage.log</value>
         </path>
     </phenixXtriageLog>
     <XDS_ASCII_HKL>
         <path>
-            <value>/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XDS_ASCII.HKL</value>
+            <value>/data/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XDS_ASCII.HKL</value>
         </path>
     </XDS_ASCII_HKL>
     <XDS_ASCII_HKL_1>
         <path>
-            <value>/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XDS_ASCII.HKL_1</value>
+            <value>/data/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/XDS_ASCII.HKL_1</value>
         </path>
     </XDS_ASCII_HKL_1>
     <correctLP>
         <path>
-            <value>/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/CORRECT.LP</value>
+            <value>/data/scisoft/pxsoft/data/AUTO_PROCESSING/XDSAPP/XDSAPPv1_0/CORRECT.LP</value>
         </path>
     </correctLP>
 </XSDataResultXDSAPP>

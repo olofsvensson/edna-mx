@@ -11,7 +11,7 @@
     </doUploadToIspyb>
     <directory>
         <path>
-            <value>/scisoft/pxsoft/data/WORKFLOW_TEST_DATA/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02</value>
+            <value>/data/scisoft/pxsoft/data/WORKFLOW_TEST_DATA/id30a3/inhouse/opid30a3/20171017/RAW_DATA/mesh2/MeshScan_02</value>
         </path>    
     </directory>
 	<template>

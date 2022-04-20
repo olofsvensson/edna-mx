@@ -53,7 +53,7 @@ class EDTestCasePluginUnitXia2DIALSv1_0(EDTestCasePluginUnit):
         EDAssert.equal("-dials -ispyb_xml_out ispyb.xml image=/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5/xtal5w1_1_0001.cbf", strCommandLine, "Reference data input")
 
     def test_parseOutputDirectory(self):
-        testXia2Dir = "/scisoft/pxsoft/data/AUTO_PROCESSING/xia2/Xia2DIALSv1_0-00000003"
+        testXia2Dir = "/data/scisoft/pxsoft/data/AUTO_PROCESSING/xia2/Xia2DIALSv1_0-00000003"
         edPlugin = self.getPlugin()
         xsDataResultXia2DIALS = edPlugin.parseOutputDirectory(testXia2Dir)
 #        print(xsDataResultXia2DIALS.marshal())

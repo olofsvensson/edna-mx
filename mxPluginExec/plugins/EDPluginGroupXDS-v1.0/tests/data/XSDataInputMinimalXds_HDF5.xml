@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <XSDataInput>
   <input_file>
-    <value>/scisoft/pxsoft/data/AUTO_PROCESSING/id30a3/20161104/PROCESSED_DATA/thaumatin38/autoprocessing_thaumatin38_w1_run1_1/XDS.INP</value> 
+    <value>/data/scisoft/pxsoft/data/AUTO_PROCESSING/id30a3/20161104/PROCESSED_DATA/thaumatin38/autoprocessing_thaumatin38_w1_run1_1/XDS.INP</value>
   </input_file>
   <maxproc>
     <value>4</value>

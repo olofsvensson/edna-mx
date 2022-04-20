@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <XSDataInput>
   <input_file>
-    <value>/scisoft/pxsoft/data/WORKFLOW_TEST_DATA/id30a2/20160722/PROCESSED_DATA/t5/autoprocessing_t5_run1_1/XDS.INP</value>
+    <value>/data/scisoft/pxsoft/data/WORKFLOW_TEST_DATA/id30a2/20160722/PROCESSED_DATA/t5/autoprocessing_t5_run1_1/XDS.INP</value>
   </input_file>
   <maxproc>
     <value>4</value>
