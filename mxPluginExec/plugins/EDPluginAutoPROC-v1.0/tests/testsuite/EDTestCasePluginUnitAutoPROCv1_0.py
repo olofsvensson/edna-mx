@@ -49,7 +49,7 @@ class EDTestCasePluginUnitAutoPROCv1_0(EDTestCasePluginUnit):
         strInputXML1 = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataInputAutoPROC_reference.xml"))
         xsDataInput1 = XSDataInputAutoPROC.parseString(strInputXML1)
         strCommandLine1 = edPlugin.generateCommandLine(xsDataInput1)
-        referenceCommandLine1 = "-B -xml -nthreads 12 -M ReportingInlined autoPROC_HIGHLIGHT=\"no\" -Id 1088454A,/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5,xtal5w1_1_####.cbf,1,50 -R 5.0 2.0"
+        referenceCommandLine1 = "-B -xml -nthreads 12 -M ReportingInlined autoPROC_HIGHLIGHT=\"no\" -Id 1088454A,/data/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5,xtal5w1_1_####.cbf,1,50 -R 5.0 2.0"
         # print(strCommandLine1)
         EDAssert.equal(referenceCommandLine1, strCommandLine1, "Reference data input")
         # Symmetry input
@@ -57,7 +57,7 @@ class EDTestCasePluginUnitAutoPROCv1_0(EDTestCasePluginUnit):
         xsDataInput2 = XSDataInputAutoPROC.parseString(strInputXML2)
         strCommandLine2 = edPlugin.generateCommandLine(xsDataInput2)
         # print(strCommandLine2)
-        referenceCommandLine2 = "-B -xml -nthreads 12 -M ReportingInlined autoPROC_HIGHLIGHT=\"no\" -Id 1088454A,/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5,xtal5w1_1_####.cbf,1,50 -R 5.0 2.0 symm=\"P1\" cell=\"52.4 78.7 79.4 90.0 89.8 109.4\""
+        referenceCommandLine2 = "-B -xml -nthreads 12 -M ReportingInlined autoPROC_HIGHLIGHT=\"no\" -Id 1088454A,/data/scisoft/pxsoft/data/AUTO_PROCESSING/id29/20130301/RAW_DATA/GaelleB/xtal5,xtal5w1_1_####.cbf,1,50 -R 5.0 2.0 symm=\"P1\" cell=\"52.4 78.7 79.4 90.0 89.8 109.4\""
         # print(referenceCommandLine)
         EDAssert.equal(referenceCommandLine2, strCommandLine2, "Reference data input")
 
