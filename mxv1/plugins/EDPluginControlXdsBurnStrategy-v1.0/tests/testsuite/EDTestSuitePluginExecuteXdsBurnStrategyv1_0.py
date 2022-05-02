@@ -37,4 +37,4 @@ class EDTestSuitePluginExecuteXdsBurnStrategyv1_0(EDTestSuite):
 
     def process(self):
         self.addTestCaseFromName("EDTestCasePluginExecuteXdsBurnStrategyv1_0")
-        self.addTestCaseFromName("EDTestCasePluginExecuteXdsBurnStrategyv1_0_firstFailure")
+        #self.addTestCaseFromName("EDTestCasePluginExecuteXdsBurnStrategyv1_0_firstFailure")
