@@ -199,7 +199,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/dozor__v2.2.1</value>
+					<value>/opt/pxsoft/bin/dozor</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
