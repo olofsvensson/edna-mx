@@ -7,7 +7,82 @@
 		<name>XSConfiguration_ESRF_ISPyB_Common</name>
 	</XSImportConfiguration>
 	<XSPluginList>
-		<XSPluginItem> 
+		<XSPluginItem>
+			<name>EDPluginMOSFLMIndexingv10</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptSetupCCP4</name>
+					<value>/opt/pxsoft/ccp4/v7.0/linux-x86_64/ccp4-7.0/bin/ccp4.setup-sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptVersionString</name>
+					<value>Mosflm version 7.4.0 for IP, CCD and PAD data</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>90</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginMOSFLMIntegrationv10</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptSetupCCP4</name>
+					<value>/opt/pxsoft/ccp4/v7.0/linux-x86_64/ccp4-7.0/bin/ccp4.setup-sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptVersionString</name>
+					<value>Mosflm version 7.4.0 for IP, CCD and PAD data</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>90</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginMOSFLMGeneratePredictionv10</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptSetupCCP4</name>
+					<value>/opt/pxsoft/ccp4/v7.0/linux-x86_64/ccp4-7.0/bin/ccp4.setup-sh</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptVersionString</name>
+					<value>Mosflm version 7.4.0 for IP, CCD and PAD data</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>90</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginXOalignv1_0</name>  
 			<XSParamList>
 				<XSParamItem>
@@ -65,19 +140,19 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>ix_min</name>
-					<value>1135</value>
+					<value>1550</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>ix_max</name>
-					<value>1409</value>
+					<value>1590</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>iy_min</name>
-					<value>1241</value>
+					<value>1665</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>iy_max</name>
-					<value>2527</value>
+					<value>3262</value>
 				</XSParamItem>				
 				<XSParamItem>
 					<name>library_cbf_debian_9</name>
@@ -96,6 +171,56 @@
 					<value>/opt/pxsoft/dozor/v2.2.1/ubuntu20.04-x86_64/bin/dectris-neggia.so</value>
 				</XSParamItem>
 			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginExecMinimalXdsv1_0</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/opt/pxsoft/bin/xds_par</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>pathToNeggiaPlugin</name>
+					<value>/opt/pxsoft/xds/vdefault/linux-x86_64/durin-plugin.so</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>3600</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>maxNoProcessors</name>
+					<value>10</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+	   <XSPluginItem>
+				<name>EDPluginExecAutoPROCv1_0</name>
+				<XSParamList>
+						<XSParamItem>
+								<name>execProcessScriptShell</name>
+								<value>/bin/bash</value>
+						</XSParamItem>
+						<XSParamItem>
+								<name>execProcessScriptExecutable</name>
+								<value>/opt/pxsoft/bin/process</value>
+						</XSParamItem>
+						<XSParamItem>
+								<name>pathToNeggiaPlugin</name>
+								<value>/opt/pxsoft/xds/vdefault/linux-x86_64/durin-plugin.so</value>
+						</XSParamItem>
+						<XSParamItem>
+								<name>timeOut</name>
+								<value>7200</value>
+						</XSParamItem>
+						<XSParamItem>
+								<name>maxNoProcessors</name>
+								<value>6</value>
+						</XSParamItem>
+				</XSParamList>
 		</XSPluginItem>
 	</XSPluginList>
 </XSConfiguration> 

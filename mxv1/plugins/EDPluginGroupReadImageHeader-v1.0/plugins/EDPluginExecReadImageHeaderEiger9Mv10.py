@@ -87,8 +87,8 @@ class EDPluginExecReadImageHeaderEiger9Mv10(EDPluginExec):
             xsDataExperimentalCondition = XSDataExperimentalCondition()
             xsDataDetector = XSDataDetector()
 
-            iNoPixelsX = 3110
-            iNoPixelsY = 3269
+            iNoPixelsX = 3108
+            iNoPixelsY = 3262
             xsDataDetector.setNumberPixelX(XSDataInteger(iNoPixelsX))
             xsDataDetector.setNumberPixelY(XSDataInteger(iNoPixelsY))
             # Pixel size

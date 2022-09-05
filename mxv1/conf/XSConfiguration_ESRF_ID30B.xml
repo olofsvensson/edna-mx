@@ -95,5 +95,14 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginControlStrategyv1_2</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>roundUpToEven100</name>
+					<value>true</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
   	</XSPluginList>
 </XSConfiguration> 

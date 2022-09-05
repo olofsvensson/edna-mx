@@ -2,7 +2,7 @@
 <XSDataInputReadImageHeader>
 	<image>
 		<path>
-	            <value>${EDNA_TESTIMAGES}/eiger9m_1_1000.cbf</value>
+	            <value>/data/id30b/inhouse/opid30b/20220824/RAW_DATA/Trypsin/ref-Trypsin_1_0001.cbf</value>
 	    </path>
 	</image>
 </XSDataInputReadImageHeader>

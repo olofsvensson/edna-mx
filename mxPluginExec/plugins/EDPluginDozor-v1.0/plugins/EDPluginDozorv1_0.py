@@ -192,6 +192,16 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
                 self.ixMax = self.ixMaxEiger4m
                 self.iyMin = self.iyMinEiger4m
                 self.iyMax = self.iyMaxEiger4m
+        elif _xsDataInputDozor.detectorType.value == "eiger9m":
+            library = _library_cbf
+            nx = 3108
+            ny = 3262
+            pixel = 0.075
+            if self.ixMin is None or self.ixMax is None or self.iyMin is None or self.iyMax is None:
+                self.ixMin = self.ixMinEiger4m
+                self.ixMax = self.ixMaxEiger4m
+                self.iyMin = self.iyMinEiger4m
+                self.iyMax = self.iyMaxEiger4m
         elif _xsDataInputDozor.detectorType.value == "eiger16m":
             library = _library_cbf
             nx = 4150
