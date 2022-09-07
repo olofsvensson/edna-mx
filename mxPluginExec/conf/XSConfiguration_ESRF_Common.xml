@@ -35,7 +35,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>pathToLabelitSetpathScript</name>
-					<value>/opt/pxsoft/phenix/v1.17.1-3660/linux-x86_64/phenix-1.17.1-3660/phenix_env.sh</value>
+					<value>/opt/pxsoft/phenix/v1.20-4459/linux-x86_64/phenix-1.20-4459/phenix_env.sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
@@ -43,11 +43,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/phenix/v1.17.1-3660/linux-x86_64/phenix-1.17.1-3660/build/bin/labelit.screen</value>
+					<value>/opt/pxsoft/bin/labelit.screen</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
+					<value>/opt/pxsoft/ccp4/v7.1/linux/ccp4-7.1/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -164,7 +164,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v730_20190821</value>
+					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -172,7 +172,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.3.0  for IP, CCD and PAD data</value>
+					<value>Mosflm version 7.4.0 for IP, CCD and PAD data</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -189,7 +189,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v730_20190821</value>
+					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -197,7 +197,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.3.0  for IP, CCD and PAD data</value>
+					<value>Mosflm version 7.4.0 for IP, CCD and PAD data</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -214,7 +214,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v730_20190821</value>
+					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -222,7 +222,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
-					<value>Mosflm version 7.3.0  for IP, CCD and PAD data</value>
+					<value>Mosflm version 7.4.0 for IP, CCD and PAD data</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>

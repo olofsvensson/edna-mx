@@ -116,10 +116,8 @@ class EDHandlerXSDataMOSFLMv10:
         strFileName = os.path.basename(strPath)
         strDirectory = os.path.dirname(strPath)
 
-        if xsDataDetector.type.value == "eiger2_16m":
-            strMOSFLMTemplate = EDUtilsImage.getH5MasterTemplate(strFileName, 1)
-        else:
-            strMOSFLMTemplate = EDUtilsImage.getTemplate(strFileName, "#")
+        strMOSFLMTemplate = EDUtilsImage.getTemplate(strFileName, "#")
+
         xsDataMOSFLMInputIndexing.setTemplate(XSDataString(strMOSFLMTemplate))
         xsDataMOSFLMInputIndexing.setDirectory(XSDataString(strDirectory))
 
@@ -337,10 +335,7 @@ class EDHandlerXSDataMOSFLMv10:
             elif (iImageEnd < iImageNumber):
                 iImageEnd = iImageNumber
 
-        if xsDataDetector.type.value == "eiger2_16m":
-            strMOSFLMTemplate = EDUtilsImage.getH5MasterTemplate(strFilenameFirst, iImageStart)
-        else:
-            strMOSFLMTemplate = EDUtilsImage.getTemplate(strFilenameFirst, "#")
+        strMOSFLMTemplate = EDUtilsImage.getTemplate(strFilenameFirst, "#")
 
         xsDataMOSFLMInputIntegration.setTemplate(XSDataString(strMOSFLMTemplate))
         xsDataMOSFLMInputIntegration.setImageStart(XSDataInteger(iImageStart))
@@ -419,12 +414,9 @@ class EDHandlerXSDataMOSFLMv10:
 
         iImageNumber = xsDataImage.getNumber().getValue()
 
-        if xsDataDetector.type.value == "eiger2_16m":
-            strMOSFLMTemplate = EDUtilsImage.getH5MasterTemplate(strFilenameFirst, iImageNumber)
-        else:
-            strMOSFLMTemplate = EDUtilsImage.getTemplate(strFilenameFirst, "#")
-        xsDataMOSFLMInputGeneratePrediction.setTemplate(XSDataString(strMOSFLMTemplate))
+        strMOSFLMTemplate = EDUtilsImage.getTemplate(strFilenameFirst, "#")
 
+        xsDataMOSFLMInputGeneratePrediction.setTemplate(XSDataString(strMOSFLMTemplate))
 
         xsDataMOSFLMImage = XSDataMOSFLMImage()
         xsDataMOSFLMImage.setNumber(XSDataInteger(iImageNumber))
