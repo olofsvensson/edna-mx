@@ -237,6 +237,7 @@ class EDPluginDozorv1_0(EDPluginExecProcessScript):
             strCommandText += "pixel %f\n" % pixel
             strCommandText += "exposure %.3f\n" % _xsDataInputDozor.exposureTime.value
             strCommandText += "spot_size %d\n" % _xsDataInputDozor.spotSize.value
+            strCommandText += "spot_level 6\n"
             strCommandText += "detector_distance %.3f\n" % _xsDataInputDozor.detectorDistance.value
             strCommandText += "X-ray_wavelength %.3f\n" % _xsDataInputDozor.wavelength.value
             if _xsDataInputDozor.fractionPolarization is None:
