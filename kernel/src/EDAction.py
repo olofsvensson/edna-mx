@@ -235,7 +235,7 @@ class EDAction(EDLogging, Thread):
         self.join(float(self.__fTimeOutInSeconds + 1))
         for fExtraTime in self.__lExtraTime:
             self.join(float(fExtraTime))
-        if self.isAlive():
+        if self.is_alive():
             # Timeout!
             self.__bIsTimeOut = True
             self.DEBUG("EDAction.synchronize: Timeout!")
@@ -320,7 +320,7 @@ class EDAction(EDLogging, Thread):
         self.synchronizeOff()
 
     def isRunning(self):
-        return self.isAlive()
+        return self.is_alive()
 
     def isEnded(self):
         self.DEBUG("%s.isEnded return %s" % (self.getName(), (self.getTimeEnd() is not None)))
