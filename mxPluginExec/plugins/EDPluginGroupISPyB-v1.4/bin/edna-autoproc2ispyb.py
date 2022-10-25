@@ -31,19 +31,20 @@ __status__ = "production"
 import os, time, sys, threading, tempfile
 
 # Append the EDNA kernel source directory to the python path
-if not os.environ.has_key("EDNA_HOME"):
-    pyStrProgramPath = os.path.abspath(sys.argv[0])
-    pyLPath = pyStrProgramPath.split(os.sep)
-    if len(pyLPath) > 5:
-        pyStrEdnaHomePath = os.sep.join(pyLPath[:-5])
-        print pyStrEdnaHomePath
-    else:
-        print ("Problem in the EDNA_HOME path ..." + pyStrEdnaHomePath)
-        sys.exit()
-
-    os.environ["EDNA_HOME"] = pyStrEdnaHomePath
+# if not os.environ.has_key("EDNA_HOME"):
+#     pyStrProgramPath = os.path.abspath(sys.argv[0])
+#     pyLPath = pyStrProgramPath.split(os.sep)
+#     if len(pyLPath) > 5:
+#         pyStrEdnaHomePath = os.sep.join(pyLPath[:-5])
+#         print(pyStrEdnaHomePath)
+#     else:
+#         print("Problem in the EDNA_HOME path ..." + pyStrEdnaHomePath)
+#         sys.exit()
+#
+#     os.environ["EDNA_HOME"] = pyStrEdnaHomePath
 
 # Force config to ESRF_ISPyB
+os.environ["EDNA_HOME"] = "/opt/pxsoft/EDNA/vMX/edna"
 os.environ["EDNA_SITE"] = "ESRF_ISPyB"
 
 sys.path.append(os.path.join(os.environ["EDNA_HOME"], "kernel", "src"))
