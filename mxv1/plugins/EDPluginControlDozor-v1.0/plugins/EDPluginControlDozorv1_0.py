@@ -298,7 +298,7 @@ class EDPluginControlDozorv1_0(EDPluginControl):
                 xsDataInputRetrieveDataCollection = XSDataInputRetrieveDataCollection()
                 # Hack to fix problem with looking for CBF images from ID30A-3 and ID23-1:
                 imagePath = self.dataInput.image[0].path.value
-                if "id23eh1" in imagePath or "id30a3" in imagePath or "id30b" in imagePath:
+                if "id23eh1" in imagePath or "id23eh2" in imagePath or "id30a3" in imagePath or "id30b" in imagePath:
                     imagePath = imagePath.replace(".cbf", ".h5")
                 xsDataInputRetrieveDataCollection.image = XSDataImage(XSDataString(imagePath))
                 edPluginISPyBRetrieveDataCollection = self.loadPlugin("EDPluginISPyBRetrieveDataCollectionv1_4")
