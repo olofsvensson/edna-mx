@@ -157,7 +157,7 @@ class EDPluginExecReadImageHeaderEiger9Mv10(EDPluginExec):
 
     def readHeaderEiger9M(self, _strImageFileName):
         """
-        Returns an dictionary with the contents of a Pilatus 6M CBF image header.
+        Returns an dictionary with the contents of a Pilatus 9M CBF image header.
         """
         dictEiger9M = None
         pyFile = None
