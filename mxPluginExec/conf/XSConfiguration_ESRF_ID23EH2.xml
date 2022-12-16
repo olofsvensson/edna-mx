@@ -20,7 +20,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>pathToNeggiaPlugin</name>
-					<value>/opt/pxsoft/xds/vdefault/linux-x86_64/dectris-neggia.so</value>
+					<value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/neggia/1.2.0/dectris-neggia.so</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -41,11 +41,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/cvmfs/sb.esrf.fr/bin/mosflm</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v7.1/linux/ccp4-7.1/bin/ccp4.setup-sh</value>
+					<value>/cvmfs/sb.esrf.fr/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -70,11 +66,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/cvmfs/sb.esrf.fr/bin/mosflm</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v7.1/linux/ccp4-7.1/bin/ccp4.setup-sh</value>
+					<value>/cvmfs/sb.esrf.fr/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -99,11 +91,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/cvmfs/sb.esrf.fr/bin/mosflm</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v7.1/linux/ccp4-7.1/bin/ccp4.setup-sh</value>
+					<value>/cvmfs/sb.esrf.fr/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -157,7 +145,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>pathToNeggiaPlugin</name>
-					<value>/opt/pxsoft/xds/vdefault/linux-x86_64/dectris-neggia.so</value>
+					<value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/neggia/1.2.0/dectris-neggia.so</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>

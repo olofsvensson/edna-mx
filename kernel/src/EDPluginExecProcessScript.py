@@ -396,7 +396,7 @@ class EDPluginExecProcessScript(EDPluginExecProcess):
         # Add pre-execution commands - if any
         cmdline = ""
         if self.__bRequireCCP4:
-            if self.__strConfigSetupCCP4 == None or self.__strConfigSetupCCP4 == "":
+            if self.__strConfigSetupCCP4 is None or self.__strConfigSetupCCP4 == "":
                 self.DEBUG("EDPluginExecProcessScript.preparePythonScript : CCP4 setup script not defined.")
             else:
                 cmdline += ". %s %s" % (self.__strConfigSetupCCP4, EDUtilsPlatform.cmdSep)

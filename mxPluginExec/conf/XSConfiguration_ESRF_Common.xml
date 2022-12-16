@@ -5,20 +5,12 @@
 			<name>EDPluginLabelitv10</name>  
 			<XSParamList>
 				<XSParamItem>
-					<name>pathToLabelitSetpathScript</name>
-					<value>/opt/pxsoft/phenix/v1.17.1-3660/linux-x86_64/phenix-1.17.1-3660/phenix_env.sh</value>
-				</XSParamItem>
-				<XSParamItem>
 					<name>execProcessScriptShell</name>
 					<value>/bin/bash</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
 					<value>/opt/pxsoft/phenix/v1.17.1-3660/linux-x86_64/phenix-1.17.1-3660/build/bin/labelit.screen</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -34,20 +26,12 @@
 			<name>EDPluginLabelitIndexingv1_1</name>  
 			<XSParamList>
 				<XSParamItem>
-					<name>pathToLabelitSetpathScript</name>
-					<value>/opt/pxsoft/phenix/v1.20-4459/linux-x86_64/phenix-1.20-4459/phenix_env.sh</value>
-				</XSParamItem>
-				<XSParamItem>
 					<name>execProcessScriptShell</name>
 					<value>/bin/bash</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
 					<value>/cvmfs/sb.esrf.fr/bin/labelit.screen</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v7.1/linux/ccp4-7.1/bin/ccp4.setup-sh</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -62,10 +46,6 @@
 		<XSPluginItem> 
 			<name>EDPluginLabelitIndexingv1_2</name>  
 			<XSParamList>
-				<XSParamItem>
-					<name>pathToLabelitSetpathScript</name>
-					<value>/opt/pxsoft/phenix/v1.17.1-3660/linux-x86_64/phenix-1.17.1-3660/phenix_env.sh</value>
-				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptShell</name>
 					<value>/bin/bash</value>
@@ -130,20 +110,12 @@
 			<name>EDPluginLabelitDistlv1_1</name>  
 			<XSParamList>
 				<XSParamItem>
-					<name>pathToLabelitSetpathScript</name>
-					<value>/opt/pxsoft/phenix/v1.17.1-3660/linux-x86_64/phenix-1.17.1-3660/phenix_env.sh</value>
-				</XSParamItem>
-				<XSParamItem>
 					<name>execProcessScriptShell</name>
 					<value>/bin/bash</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/phenix/v1.17.1-3660/linux-x86_64/phenix-1.17.1-3660/build/bin/labelit.distl</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
+					<value>/cvmfs/sb.esrf.fr/bin/labelit.distl</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -164,7 +136,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/cvmfs/sb.esrf.fr/bin/mosflm</value>
+					<value>/cvmfs/sb.esrf.fr/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -189,7 +161,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/cvmfs/sb.esrf.fr/bin/mosflm</value>
+					<value>/cvmfs/sb.esrf.fr/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -214,7 +186,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/cvmfs/sb.esrf.fr/bin/mosflm</value>
+					<value>/cvmfs/sb.esrf.fr/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -268,7 +240,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/BEST/v4.1.0_20121002/linux/best</value>
+					<value>/cvmfs/sb.esrf.fr/bin/best</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -352,7 +324,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/H5ToXds</value>
+					<value>/cvmfs/sb.esrf.fr/bin/H5ToXds</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -369,7 +341,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/eiger2cbf</value>
+					<value>/cvmfs/sb.esrf.fr/bin/eiger2cbf</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -558,10 +530,6 @@
 					<name>timeOut</name>
 					<value>600</value>
 				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.5/linux-x86_64/ccp4-6.5/bin/ccp4.setup-sh</value>
-				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem> 
@@ -647,7 +615,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/uniqueify</value>
+					<value>/cvmfs/sb.esrf.fr/bin/uniqueify</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -661,6 +629,10 @@
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
 					<value>/cvmfs/sb.esrf.fr/bin/xds_par</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>pathToNeggiaPlugin</name>
+					<value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/neggia/1.2.0/dectris-neggia.so</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -748,7 +720,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/phenix/v1.17.1-3660/linux-x86_64/phenix-1.17.1-3660/build/bin/phenix.xtriage</value>
+					<value>/cvmfs/sb.esrf.fr/bin/phenix.xtriage</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -786,7 +758,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>pathToNeggiaPlugin</name>
-					<value>/opt/pxsoft/xds/vdefault/linux-x86_64/dectris-neggia.so</value>
+					<value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/neggia/1.2.0/dectris-neggia.so</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>

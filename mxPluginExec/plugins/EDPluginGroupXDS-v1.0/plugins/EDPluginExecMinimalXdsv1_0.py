@@ -212,7 +212,9 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
             parsed_config['Y-GEO_CORR='] = os.path.basename(ygeo)
 
         # Neggia plugin
-        if not "LIB=" in parsed_config and self.pathToNeggiaPlugin is not None:
+        if not "LIB=" in parsed_config and \
+                self.pathToNeggiaPlugin is not None and \
+                file_template.lower().endswith("h5"):
             parsed_config["LIB="] = self.pathToNeggiaPlugin
 
         # Max no processors and Jobs

@@ -20,7 +20,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>pathToNeggiaPlugin</name>
-					<value>/opt/pxsoft/xds/vdefault/linux-x86_64/dectris-neggia.so</value>
+					<value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/neggia/1.2.0/dectris-neggia.so</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -135,7 +135,7 @@
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>pathToNeggiaPlugin</name>
-                                        <value>/opt/pxsoft/xds/vdefault/linux-x86_64/dectris-neggia.so</value>
+                                        <value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/neggia/1.2.0/dectris-neggia.so</value>
                                 </XSParamItem>
                                 <XSParamItem>
                                         <name>timeOut</name>

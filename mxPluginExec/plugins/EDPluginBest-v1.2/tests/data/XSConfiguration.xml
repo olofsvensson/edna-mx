@@ -17,10 +17,6 @@
 					<value>/opt/pxsoft/DNA/v20080304/redhate4-i686/third_party/best_v3.1.0.d/best</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4-6.0.2/include/ccp4.setup-bash.orig</value>
-				</XSParamItem>
-				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
 					<value>Version of Best to be tested</value>
 				</XSParamItem>

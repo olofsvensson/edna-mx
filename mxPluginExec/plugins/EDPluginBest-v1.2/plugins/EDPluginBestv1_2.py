@@ -165,7 +165,6 @@ class EDPluginBestv1_2(EDPluginExecProcessScript):
     def configure(self):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginBestv1_2.configure")
-        self.setRequireCCP4(True)
         strScriptExecutable = self.getScriptExecutable()
         self.DEBUG("EDPluginBestv1_2.configure: Script Executable: " + strScriptExecutable)
         strBestScriptHome = EDUtilsPath.getFolderName(strScriptExecutable)

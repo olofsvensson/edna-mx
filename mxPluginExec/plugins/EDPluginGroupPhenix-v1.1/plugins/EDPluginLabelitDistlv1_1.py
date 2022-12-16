@@ -54,7 +54,8 @@ class EDPluginLabelitDistlv1_1(EDPluginLabelitv1_1):
         self.setScriptExecutable("labelit.distl")
         self.initaliseLabelitCommandLine()
         self.addListCommandPreExecution("export PYTHONPATH=\"\" ")
-        self.addListCommandPreExecution(". %s" % self.getPathToLabelitSetpathScript())
+        if self.getPathToLabelitSetpathScript() is not None:
+            self.addListCommandPreExecution(". %s" % self.getPathToLabelitSetpathScript())
 
 
     def postProcess(self, _edObject=None):
