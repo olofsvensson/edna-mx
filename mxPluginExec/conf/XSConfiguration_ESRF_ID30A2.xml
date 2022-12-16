@@ -57,7 +57,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
+					<value>/cvmfs/sb.esrf.fr/bin/mosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -82,7 +82,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
+					<value>/cvmfs/sb.esrf.fr/bin/mosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -107,7 +107,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
+					<value>/cvmfs/sb.esrf.fr/bin/mosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -153,7 +153,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/process</value>
+					<value>/cvmfs/sb.esrf.fr/bin/process</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>pathToNeggiaPlugin</name>
@@ -178,7 +178,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/xia2</value>
+					<value>/cvmfs/sb.esrf.fr/bin/xia2</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -199,7 +199,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/dozor</value>
+					<value>/cvmfs/sb.esrf.fr/bin/dozor</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>

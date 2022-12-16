@@ -16,7 +16,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/xds_par</value>
+					<value>/cvmfs/sb.esrf.fr/bin/xds_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>pathToNeggiaPlugin</name>
@@ -41,7 +41,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
+					<value>/cvmfs/sb.esrf.fr/bin/mosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -70,7 +70,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
+					<value>/cvmfs/sb.esrf.fr/bin/mosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -99,7 +99,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
+					<value>/cvmfs/sb.esrf.fr/bin/mosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptSetupCCP4</name>
@@ -153,7 +153,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/process</value>
+					<value>/cvmfs/sb.esrf.fr/bin/process</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>pathToNeggiaPlugin</name>
@@ -182,7 +182,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/xia2</value>
+					<value>/cvmfs/sb.esrf.fr/bin/xia2</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -207,7 +207,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/dozor</value>
+					<value>/cvmfs/sb.esrf.fr/bin/dozor</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -215,19 +215,19 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>ix_min</name>
-					<value>697</value>
+					<value>1603</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>ix_max</name>
-					<value>1474</value>
+					<value>3108</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>iy_min</name>
-					<value>790</value>
+					<value>1972</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>iy_max</name>
-					<value>852</value>
+					<value>2080</value>
 				</XSParamItem>				
 				<XSParamItem>
 					<name>library_cbf_debian_9</name>
