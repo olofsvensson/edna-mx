@@ -152,7 +152,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>library_cbf_ubuntu_20.04</name>
-					<value>/opt/pxsoft/dozor/v2.2.1/ubuntu20.04-x86_64/bin/xds-zcbf.so</value>
+					<value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/xds-zcbf/20200922/xds-zcbf.so</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>library_h5_ubuntu_20.04</name>
