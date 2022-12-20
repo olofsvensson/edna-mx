@@ -65,7 +65,6 @@ class EDTestCasePluginUnitBestv1_2(EDTestCasePluginUnit):
         edPluginBest.configure()
         EDAssert.equal("/bin/bash", edPluginBest.getScriptShell())
         EDAssert.equal("cat", edPluginBest.getScriptExecutable())
-        EDAssert.equal("/opt/pxsoft/ccp4-6.0.2/include/ccp4.setup-bash.orig", edPluginBest.getSetupCCP4())
         EDAssert.equal("Version of Best to be tested", edPluginBest.getStringVersion())
         EDAssert.equal(600, edPluginBest.getTimeOut())
         EDAssert.equal("/home/sweet/home", edPluginBest.getBestHome())
