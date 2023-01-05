@@ -34,6 +34,7 @@ __status__ = "production"
 
 import os
 
+import EDUtilsPath
 
 from EDPluginLabelitv1_1 import EDPluginLabelitv1_1
 
@@ -92,7 +93,10 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
         self.addListCommandPreExecution("export PYTHONPATH=\"\" ")
         if self.getPathToLabelitSetpathScript() is not None:
             self.addListCommandPreExecution(". %s" % self.getPathToLabelitSetpathScript())
-        self.addListCommandPostExecution("[ -f \"LABELIT_possible\" ] && labelit.mosflm_scripts")
+        if EDUtilsPath.isESRF():
+            self.addListCommandPostExecution("[ -f \"LABELIT_possible\" ] && /cvmfs/sb.esrf.fr/bin/labelit.mosflm_scripts")
+        else:
+            self.addListCommandPostExecution("[ -f \"LABELIT_possible\" ] && labelit.mosflm_scripts")
         # Force name of log file
         self.setScriptLogFileName(self.compactPluginName(self.getClassName()) + ".log")
 
