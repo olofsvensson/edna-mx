@@ -32,6 +32,7 @@ __status__ = "production"
 
 
 from EDPluginLabelitv1_1 import EDPluginLabelitv1_1
+from EDUtilsPath import EDUtilsPath
 
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataInteger
@@ -51,7 +52,10 @@ class EDPluginLabelitDistlv1_1(EDPluginLabelitv1_1):
         """
         EDPluginLabelitv1_1.preProcess(self, _edObject)
         self.DEBUG("EDPluginLabelitDistlv1_1.preProcess...")
-        self.setScriptExecutable("labelit.distl")
+        if EDUtilsPath.isESRF():
+            self.setScriptExecutable("/cvmfs/sb.esrf.fr/bin/labelit.distl")
+        else:
+            self.setScriptExecutable("labelit.distl")
         self.initaliseLabelitCommandLine()
         self.addListCommandPreExecution("export PYTHONPATH=\"\" ")
         if self.getPathToLabelitSetpathScript() is not None:
