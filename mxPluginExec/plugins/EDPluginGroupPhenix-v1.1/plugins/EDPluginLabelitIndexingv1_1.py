@@ -34,7 +34,7 @@ __status__ = "production"
 
 import os
 
-import EDUtilsPath
+from EDUtilsPath import EDUtilsPath
 
 from EDPluginLabelitv1_1 import EDPluginLabelitv1_1
 
