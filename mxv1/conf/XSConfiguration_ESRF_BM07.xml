@@ -9,7 +9,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
- 					<value>http://bm07server.esrf.fr:7171</value>
+ 					<value>http://bm07server2.esrf.fr:7171</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -18,7 +18,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
-					<value>http://bm07server.esrf.fr:7171</value>
+					<value>http://bm07server2.esrf.fr:7171</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>runKappa</name>
