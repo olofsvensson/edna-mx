@@ -24,19 +24,19 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>ix_min</name>
-					<value>680</value>
+					<value>1184</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>ix_max</name>
-					<value>715</value>
+					<value>1204</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>iy_min</name>
-					<value>821</value>
+					<value>1272</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>iy_max</name>
-					<value>1679</value>
+					<value>2528</value>
 				</XSParamItem>				
 				<XSParamItem>
 					<name>library_cbf_debian_9</name>
