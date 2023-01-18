@@ -157,7 +157,6 @@ class EDPluginRaddosev10(EDPluginExecProcessScript):
     def configure(self):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginRaddosev10.configure")
-        self.setRequireCCP4(True)
 
 
     def preProcess(self, _edObject=None):

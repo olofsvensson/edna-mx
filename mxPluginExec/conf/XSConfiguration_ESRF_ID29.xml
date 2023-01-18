@@ -57,7 +57,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/dozor__v1.3.8</value>
+					<value>/cvmfs/sb.esrf.fr/bin/dozor</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>

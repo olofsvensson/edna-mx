@@ -465,10 +465,10 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         if EDUtilsPath.isESRF():
             first_image = self.first_image
             last_image = self.last_image
-            if any(beamline in self.first_image for beamline in ["id23eh2", "id30a1"]):
+            if any(beamline in self.first_image for beamline in ["id30a1"]):
                 minSizeFirst = 2000000
                 minSizeLast = 2000000
-            elif any(beamline in self.first_image for beamline in ["id23eh1", "id30a3", "id30b"]):
+            elif any(beamline in self.first_image for beamline in ["id23eh1", "id23eh2", "id30a3", "id30b"]):
                 minSizeFirst = 1000000
                 minSizeLast = 1000000
                 first_image = self.eiger_template_to_image(template, start_image)

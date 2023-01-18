@@ -17,10 +17,6 @@
 					<value>/opt/pxsoft/labelit/v1.1.7/redhate5-x86_64/labelit_build/bin/labelit.screen</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.1.2/linux/include/ccp4.setup-bash</value>
-				</XSParamItem>
-				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
 					<value></value>
 				</XSParamItem>
@@ -44,10 +40,6 @@
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
 					<value>/opt/pxsoft/labelit/v1.1.7/redhate5-x86_64/labelit_build/bin/labelit.screen</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.1.2/linux/include/ccp4.setup-bash</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -97,11 +89,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v707_20101220</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.1.2/linux/include/ccp4.setup-bash</value>
+					<value>/cvmfs/sb.esrf.fr/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -122,11 +110,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v707_20101220</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.1.2/linux/include/ccp4.setup-bash</value>
+					<value>/cvmfs/sb.esrf.fr/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -147,11 +131,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v707_20101220</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.1.2/linux/include/ccp4.setup-bash</value>
+					<value>/cvmfs/sb.esrf.fr/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -172,11 +152,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/raddose__v20090103</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.1.2/linux/include/ccp4.setup-bash</value>
+					<value>/cvmfs/sb.esrf.fr/bin/raddose</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -204,10 +180,6 @@
 					<value>/opt/pxsoft/BEST/v3.2.0.z_20081103/redhate4-i686/best</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.1.2/linux/include/ccp4.setup-bash</value>
-				</XSParamItem>
-				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
 					<value>Version 3.2.0 //  03.11.2008</value>
 				</XSParamItem>
@@ -230,10 +202,6 @@
 					<!--  <value>/opt/pxsoft/BEST/v3.1.0d_20070716/linux/bin/best</value>  -->
 				</XSParamItem>
 				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.1.2/linux/include/ccp4.setup-bash</value>
-				</XSParamItem>
-				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
 					<value>Version 3.2.0 //  03.11.2008</value>
 					<!--  <value>Version 3.1.0.d //  16.07.2007</value> -->
@@ -254,10 +222,6 @@
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
 					<value>/opt/pxsoft/BEST/v3.4.4_20110610/linux/best</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v6.1.2/linux/include/ccp4.setup-bash</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>

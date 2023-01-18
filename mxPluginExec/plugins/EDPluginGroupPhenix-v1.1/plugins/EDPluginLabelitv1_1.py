@@ -56,13 +56,7 @@ class EDPluginLabelitv1_1(EDPluginExecProcessScript):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginLabelitv1_1.configure")
         strPathToLabelitSetpathScript = self.config.get(self.CONF_PATH_TO_LABELIT_SETPATH_SCRIPT)
-        if(strPathToLabelitSetpathScript == None):
-            strErrorMessage = "EDPluginLabelitv1_1.configure : Configuration parameter missing: " + \
-                                EDPluginLabelitv1_1.CONF_PATH_TO_LABELIT_SETPATH_SCRIPT
-            self.error(strErrorMessage)
-            self.addErrorMessage(strErrorMessage)
-            self.setFailure()
-        else:
+        if strPathToLabelitSetpathScript is not None:
             self.setPathToLabelitSetpathScript(strPathToLabelitSetpathScript)
 
 

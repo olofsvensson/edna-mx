@@ -16,11 +16,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/xds_par</value>
+					<value>/cvmfs/sb.esrf.fr/bin/xds_par</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>pathToNeggiaPlugin</name>
-					<value>/opt/pxsoft/xds/vdefault/linux-x86_64/dectris-neggia.so</value>
+					<value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/neggia/1.2.0/dectris-neggia.so</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -41,7 +41,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/dozor</value>
+					<value>/cvmfs/sb.esrf.fr/bin/dozor</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -73,7 +73,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>library_cbf_ubuntu_20.04</name>
-					<value>/opt/pxsoft/dozor/v2.2.1/ubuntu20.04-x86_64/bin/xds-zcbf.so</value>
+					<value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/xds-zcbf/20200922/xds-zcbf.so</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>library_h5_ubuntu_20.04</name>

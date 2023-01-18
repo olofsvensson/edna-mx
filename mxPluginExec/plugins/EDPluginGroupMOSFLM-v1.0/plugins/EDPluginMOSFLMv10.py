@@ -85,7 +85,6 @@ class EDPluginMOSFLMv10(EDPluginExecProcessScript):
     def configure(self):
         EDPluginExecProcessScript.configure(self)
         self.DEBUG("EDPluginMOSFLMv10.configure")
-        self.setRequireCCP4(True)
         self.setScriptCommandline(" DNA " + self.getScriptBaseName() + "_dnaTables.xml")
         # Check for reversephi configuration option
         self.bReversephi = self.config.get("reversephi")

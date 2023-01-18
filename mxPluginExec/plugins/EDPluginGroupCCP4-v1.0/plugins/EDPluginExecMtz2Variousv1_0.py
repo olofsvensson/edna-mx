@@ -45,7 +45,6 @@ class EDPluginExecMtz2Variousv1_0(EDPluginExecProcessScript ):
     def __init__(self ):
         EDPluginExecProcessScript.__init__(self )
         self.setXSDataInputClass(XSDataInputMtz2Various)
-        self.setRequireCCP4(True)
         self.strHklFile = None
 
 

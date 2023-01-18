@@ -126,8 +126,8 @@ class EDPluginExecPlotGlev1_1(EDPluginExec):
                 if not os.path.exists(os.path.join(self.getWorkingDirectory(), strDataFile)):
                     shutil.copy(strDataFileFullPath, self.getWorkingDirectory())
             if EDUtilsPath.isESRF():
-                # Force PXSOFT version of gle
-                strCommand = "/opt/pxsoft/bin/gle -verbosity 0 -r 150 -d jpg %s" % os.path.basename(dictPlot["script"])
+                # Force SB-CVMFS version of gle
+                strCommand = "/cvmfs/sb.esrf.fr/bin/gle -verbosity 0 -r 150 -d jpg %s" % os.path.basename(dictPlot["script"])
             else:
                 strCommand = "gle -verbosity 0 -r 150 -d jpg %s" % os.path.basename(dictPlot["script"])
             # Copied from EDPluginExecProcess

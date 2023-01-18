@@ -7,7 +7,32 @@
   	<name>XSConfiguration_ESRF_ISPyB_Common</name>
   </XSImportConfiguration>	
 	<XSPluginList>
-		<XSPluginItem> 
+		<XSPluginItem>
+			<name>EDPluginExecMinimalXdsv1_0</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>execProcessScriptShell</name>
+					<value>/bin/bash</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>execProcessScriptExecutable</name>
+					<value>/cvmfs/sb.esrf.fr/bin/xds_par</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>pathToNeggiaPlugin</name>
+					<value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/neggia/1.2.0/dectris-neggia.so</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>timeOut</name>
+					<value>3600</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>maxNoProcessors</name>
+					<value>10</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginMOSFLMIndexingv10</name>  
 			<XSParamList>
 				<XSParamItem>
@@ -16,11 +41,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v7.1/linux/ccp4-7.1/bin/ccp4.setup-sh</value>
+					<value>/cvmfs/sb.esrf.fr/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -45,11 +66,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v7.1/linux/ccp4-7.1/bin/ccp4.setup-sh</value>
+					<value>/cvmfs/sb.esrf.fr/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -74,11 +91,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/mosflm__v740_20210916</value>
-				</XSParamItem>
-				<XSParamItem>
-					<name>execProcessScriptSetupCCP4</name>
-					<value>/opt/pxsoft/ccp4/v7.1/linux/ccp4-7.1/bin/ccp4.setup-sh</value>
+					<value>/cvmfs/sb.esrf.fr/bin/ipmosflm</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptVersionString</name>
@@ -128,11 +141,11 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/process</value>
+					<value>/cvmfs/sb.esrf.fr/bin/process</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>pathToNeggiaPlugin</name>
-					<value>/opt/pxsoft/xds/vdefault/linux-x86_64/dectris-neggia.so</value>
+					<value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/neggia/1.2.0/dectris-neggia.so</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -157,7 +170,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/xia2</value>
+					<value>/cvmfs/sb.esrf.fr/bin/xia2</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -182,7 +195,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/dozor</value>
+					<value>/cvmfs/sb.esrf.fr/bin/dozor</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
@@ -190,19 +203,19 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>ix_min</name>
-					<value>697</value>
+					<value>1603</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>ix_max</name>
-					<value>1474</value>
+					<value>3108</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>iy_min</name>
-					<value>790</value>
+					<value>1972</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>iy_max</name>
-					<value>852</value>
+					<value>2080</value>
 				</XSParamItem>				
 				<XSParamItem>
 					<name>library_cbf_debian_9</name>
@@ -214,7 +227,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>library_cbf_ubuntu_20.04</name>
-					<value>/opt/pxsoft/dozor/v2.2.1/ubuntu20.04-x86_64/bin/xds-zcbf.so</value>
+					<value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/xds-zcbf/20200922/xds-zcbf.so</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>library_h5_ubuntu_20.04</name>
