@@ -78,11 +78,11 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
         EDPluginLabelitv1_1.preProcess(self, _edObject)
         self.DEBUG("EDPluginLabelitIndexingv1_1.preProcess...")
         strCommandLabelit = "--index_only"
-        if len(self.dataInput.image) > 2:
-            file = open(os.path.join(self.getWorkingDirectory(), "dataset_preferences.py"), "w")
-            file.write("wedgelimit={0}\n".format(len(self.dataInput.image)))
-            file.close()
-        for xsDataImage in self.dataInput.image:
+        # if len(self.dataInput.image) > 2:
+        #     file = open(os.path.join(self.getWorkingDirectory(), "dataset_preferences.py"), "w")
+        #     file.write("wedgelimit={0}\n".format(len(self.dataInput.image)))
+        #     file.close()
+        for xsDataImage in self.dataInput.image[:2]:
             strCommandLabelit = strCommandLabelit + " " + xsDataImage.getPath().getValue()
         self.setScriptCommandline(strCommandLabelit)
         if self.dataInput.forcedSpaceGroup is not None:
