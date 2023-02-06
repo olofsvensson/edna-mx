@@ -216,6 +216,8 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         xsDataInputInterface = XSDataInputInterface()
         self.edPluginControlInterface = self.loadPlugin(self.strPluginControlInterface)
         self.xsDataFirstImage = None
+        dictH5ToCBFPlugin = {}
+        pluginIndex = 1
         for xsDataSetMXCuBE in xsDataInputMXCuBE.getDataSet():
             for xsDataImage in xsDataSetMXCuBE.getImageFile():
                 if xsDataImage.path.value.endswith(".h5"):
@@ -223,9 +225,16 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
                     xsDataInputControlH5ToCBF.hdf5File = XSDataFile(xsDataImage.path)
                     xsDataInputControlH5ToCBF.imageNumber = xsDataImage.number
-                    edPluginControlH5ToCBF = self.loadPlugin(self.strPluginControlH5ToCBF, "ControlH5ToCBF")
+                    edPluginControlH5ToCBF = self.loadPlugin(self.strPluginControlH5ToCBF, "ControlH5ToCBF_{0:01d}".format(pluginIndex))
                     edPluginControlH5ToCBF.dataInput = xsDataInputControlH5ToCBF
-                    edPluginControlH5ToCBF.executeSynchronous()
+                    edPluginControlH5ToCBF.execute()
+                    dictH5ToCBFPlugin[xsDataImage.path.value] = edPluginControlH5ToCBF
+                    pluginIndex += 1
+        for xsDataSetMXCuBE in xsDataInputMXCuBE.getDataSet():
+            for xsDataImage in xsDataSetMXCuBE.getImageFile():
+                if xsDataImage.path.value.endswith(".h5"):
+                    edPluginControlH5ToCBF = dictH5ToCBFPlugin[xsDataImage.path.value]
+                    edPluginControlH5ToCBF.synchronize()
                     cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
                     xsDataInputInterface.addImagePath(XSDataImage(cbfFile.path))
                     if self.xsDataFirstImage is None:
