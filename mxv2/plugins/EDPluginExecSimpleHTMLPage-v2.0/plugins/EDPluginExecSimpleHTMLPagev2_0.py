@@ -22,7 +22,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import os, shutil, time, cgi
+import os, shutil, time, html
 
 from EDPluginExec import EDPluginExec
 from EDFactoryPluginStatic import EDFactoryPluginStatic
@@ -103,7 +103,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
                 pageEDNALog = markupv1_10.page()
                 pageEDNALog.h1("EDNA Log")
                 pageEDNALog.a("Back to previous page", href_=self.strHtmlFileName)
-                pageEDNALog.pre(cgi.escape(EDUtilsFile.readFile(strPathToLogFile)))
+                pageEDNALog.pre(html.escape(EDUtilsFile.readFile(strPathToLogFile)))
                 pageEDNALog.a("Back to previous page", href_=self.strHtmlFileName)
                 EDUtilsFile.writeFile(self.strPageEDNALog, str(pageEDNALog))
                 self.page.a("EDNA log file", href_="edna_log.html")
@@ -178,7 +178,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
                     pageIntegrationLog = markupv1_10.page()
                     pageIntegrationLog.h1("Integration Log No %d" % iIntegration)
                     pageIntegrationLog.a("Back to previous page", href_=self.strHtmlFileName)
-                    pageIntegrationLog.pre(cgi.escape(EDUtilsFile.readFile(strPathToIntegrationLogFile)))
+                    pageIntegrationLog.pre(html.escape(EDUtilsFile.readFile(strPathToIntegrationLogFile)))
                     pageIntegrationLog.a("Back to previous page", href_=self.strHtmlFileName)
                     EDUtilsFile.writeFile(strPageIntegrationLog, str(pageIntegrationLog))
                     self.page.a("Integration log file %d" % iIntegration, href=strIntegrationHtmlPageName)
@@ -229,7 +229,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
                     pageBestLog = markupv1_10.page()
                     pageBestLog.h1("BEST Log")
                     pageBestLog.a("Back to previous page", href_=self.strHtmlFileName)
-                    pageBestLog.pre(cgi.escape(EDUtilsFile.readFile(strPathToBestLogFile)))
+                    pageBestLog.pre(html.escape(EDUtilsFile.readFile(strPathToBestLogFile)))
                     pageBestLog.a("Back to previous page", href_=self.strHtmlFileName)
                     EDUtilsFile.writeFile(strPageBestLog, str(pageBestLog))
             # Add link to RADDOSE log file:
@@ -241,7 +241,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
                     pageRaddoseLog = markupv1_10.page()
                     pageRaddoseLog.h1("RADDOSE Log")
                     pageRaddoseLog.a("Back to previous page", href_=self.strHtmlFileName)
-                    pageRaddoseLog.pre(cgi.escape(EDUtilsFile.readFile(strPathToRaddoseLogFile)))
+                    pageRaddoseLog.pre(html.escape(EDUtilsFile.readFile(strPathToRaddoseLogFile)))
                     pageRaddoseLog.a("Back to previous page", href_=self.strHtmlFileName)
                     EDUtilsFile.writeFile(strPageRaddoseLog, str(pageRaddoseLog))
             listXSDataCollectionPlan = xsDataResultStrategy.getCollectionPlan()
@@ -530,7 +530,7 @@ class EDPluginExecSimpleHTMLPagev2_0(EDPluginExec):
             pageIndexingLog = markupv1_10.page()
             pageIndexingLog.h1("Indexing Log")
             pageIndexingLog.a("Back to previous page", href_=self.strHtmlFileName)
-            pageIndexingLog.pre(cgi.escape(EDUtilsFile.readFile(strPathToIndexingLogFile)))
+            pageIndexingLog.pre(html.escape(EDUtilsFile.readFile(strPathToIndexingLogFile)))
             pageIndexingLog.a("Back to previous page", href_=self.strHtmlFileName)
             EDUtilsFile.writeFile(strPageIndexingLog, str(pageIndexingLog))
             self.page.a("Indexing log file", href="indexing_log.html")

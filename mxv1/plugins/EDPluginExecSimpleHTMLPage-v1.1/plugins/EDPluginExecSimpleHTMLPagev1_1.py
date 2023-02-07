@@ -23,7 +23,7 @@
 #
 
 import os
-import cgi
+import html
 import json
 import time
 import shutil
@@ -650,7 +650,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             for solution in self.xsDataResultCharacterisation.kappaReorientation.solution:
                 listRow.append(" %.2f " % float(solution.kappa.value))
                 listRow.append(" %.2f " % float(solution.phi.value))
-                listRow.append(" %s " % cgi.escape(solution.settings.value))
+                listRow.append(" %s " % html.escape(solution.settings.value))
             tableData = []
             tableData.append(listRow)
             self.workflowStepReport.addTable("Suggested kappa goniostat reorientation (XOAlign*)",

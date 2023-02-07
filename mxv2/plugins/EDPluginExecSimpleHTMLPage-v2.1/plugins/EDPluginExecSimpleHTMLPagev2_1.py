@@ -23,7 +23,7 @@
 #
 
 import os
-import cgi
+import html
 import json
 import time
 import shutil

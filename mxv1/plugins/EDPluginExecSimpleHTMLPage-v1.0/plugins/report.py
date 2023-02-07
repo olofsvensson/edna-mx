@@ -6,7 +6,7 @@ Created on May 9, 2016
 
 import os
 import sys
-import cgi
+import html
 import PIL.Image
 import json
 import time
@@ -177,7 +177,7 @@ class WorkflowStepReport(object):
                 os.close(fd)
                 pageLogHtml = markupv1_10.page()
                 pageLogHtml.h1(item["title"])
-                pageLogHtml.pre(cgi.escape(item["logText"]))
+                pageLogHtml.pre(html.escape(item["logText"]))
                 open(pathToLogHtml, "w").write(str(pageLogHtml))
                 os.chmod(pathToLogHtml, 0o644)
                 page.p()
