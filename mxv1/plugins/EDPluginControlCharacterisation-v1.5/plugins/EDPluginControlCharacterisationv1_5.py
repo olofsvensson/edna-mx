@@ -92,7 +92,7 @@ class TokenTransport(Transport):
             connection.send(request_body)
 
 
-class EDPluginControlCharacterisationv1_4(EDPluginControl):
+class EDPluginControlCharacterisationv1_5(EDPluginControl):
     """
     [To be replaced with a description of EDPluginControlTemplatev10]
     """
@@ -163,6 +163,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlCharacterisationv1_5.preProcess")
+        self.screen("EDPluginControlCharacterisationv1_5")
         self._xsDataResultCharacterisation = XSDataResultCharacterisation()
         # Load the plugins
         self._edPluginControlIndexingIndicators = self.loadPlugin(self._strPluginControlIndexingIndicators, \
@@ -381,7 +382,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             indicatorsShortSummary = self._edPluginControlIndexingIndicators.getDataOutput("indicatorsShortSummary")[0].getValue()
             self._strCharacterisationShortSummary += indicatorsShortSummary
             self.sendMessageToMXCuBE(indicatorsShortSummary)
-        if self._iNoImagesWithDozorScore > 0:
+        if self._iNoImagesWithDozorScore is not None and self._iNoImagesWithDozorScore > 0:
             if not self._bDoOnlyMoslmfIndexing:
                 strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
                 self.WARNING(strWarningMessage)
@@ -394,17 +395,18 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             self._edPluginControlIndexingMOSFLM.dataInput = xsDataIndexingInput
             self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
         else:
-            strErrorMessage = "Execution of Indexing and Indicators plugin failed. Execution of characterisation aborted."
-            self.ERROR(strErrorMessage)
-            self.sendMessageToMXCuBE(strErrorMessage, "error")
-            self.addErrorMessage(strErrorMessage)
-            self.generateExecutiveSummary(self)
-            if self._xsDataResultCharacterisation is not None:
-                self.setDataOutput(self._xsDataResultCharacterisation)
-            self.setFailure()
-            if self._strStatusMessage != None:
-                self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-                self.writeDataOutput()
+            strWarningMessage = "Execution of Indexing and Indicators plugin failed."
+            self.WARNING(strWarningMessage)
+            self.sendMessageToMXCuBE(strWarningMessage, "warning")
+            self.addWarningMessage(strWarningMessage)
+            self.executeFbest()
+            # self.generateExecutiveSummary(self)
+            # if self._xsDataResultCharacterisation is not None:
+            #     self.setDataOutput(self._xsDataResultCharacterisation)
+            # self.setFailure()
+            # if self._strStatusMessage != None:
+            #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+            #     self.writeDataOutput()
 
 
 
@@ -464,15 +466,16 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
                 self._edPluginControlIndexingMOSFLM.setDataInput(xsDataIndexingInput)
                 self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
             else:
-                strErrorMessage = "Execution of indexing with Labelit failed."
-                self.ERROR(strErrorMessage)
-                self.sendMessageToMXCuBE(strErrorMessage, "error")
-                self.addErrorMessage(strErrorMessage)
-                self.setFailure()
-                self.generateExecutiveSummary(self)
-                if self._strStatusMessage != None:
-                    self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-                    self.writeDataOutput()
+                strWarningMessage = "Execution of indexing with Labelit failed."
+                self.ERROR(strWarningMessage)
+                self.sendMessageToMXCuBE(strWarningMessage, "warning")
+                self.addWarningMessage(strWarningMessage)
+                self.executeFbest()
+                # self.setFailure()
+                # self.generateExecutiveSummary(self)
+                # if self._strStatusMessage != None:
+                #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+                #     self.writeDataOutput()
 
 
     def doSuccessEvaluationIndexingMOSFLM(self, _edPlugin=None):
@@ -499,15 +502,16 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             # Then start the integration of the reference images
             self.indexingToIntegration()
         else:
-            strErrorMessage = "Execution of indexing with MOSFLM failed."
-            self.ERROR(strErrorMessage)
-            self.sendMessageToMXCuBE(strErrorMessage, "error")
-            self.addErrorMessage(strErrorMessage)
-            self.setFailure()
-            self.generateExecutiveSummary(self)
-            if self._strStatusMessage != None:
-                self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-                self.writeDataOutput()
+            strWarningMessage = "Execution of indexing with MOSFLM failed."
+            self.WARNING(strWarningMessage)
+            self.sendMessageToMXCuBE(strWarningMessage, "error")
+            self.addWarningMessage(strWarningMessage)
+            self.executeFbest()
+            # self.setFailure()
+            # self.generateExecutiveSummary(self)
+            # if self._strStatusMessage != None:
+            #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+            #     self.writeDataOutput()
 
     def generateIndexingShortSummary(self, _xsDataIndexingResult):
         """
@@ -727,22 +731,32 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
 
 
     def executeFbest(self):
+        inputCharacterisation = self.getDataInput()
+        dataCollection = inputCharacterisation.dataCollection
+        subWedge = dataCollection.subWedge[0]
+        dataCollection = subWedge.experimentalCondition
+        beam = dataCollection.beam
+        flux = beam.flux.value
+        beamH = beam.size.x.value
+        beamV = beam.size.y.value
+        wavelength = beam.wavelength.value
+        minExposureTime = beam.minExposureTimePerImage.value
         xsDataInputFbest = XSDataInputFbest()
-        xsDataInputFbest.flux = XSDataDouble(0.0)
-        xsDataInputFbest.resolution = XSDataDouble(0.0)
-        xsDataInputFbest.beamH = XSDataDouble(0.0)
-        xsDataInputFbest.beamV = XSDataDouble(0.0)
-        xsDataInputFbest.wavelength = XSDataDouble(0.0)
-        xsDataInputFbest.aperture = XSDataDouble(0.0)
-        xsDataInputFbest.slitX = XSDataDouble(0.0)
-        xsDataInputFbest.slitY = XSDataDouble(0.0)
-        xsDataInputFbest.rotationRange = XSDataDouble(0.0)
-        xsDataInputFbest.rotationWidth = XSDataDouble(0.0)
-        xsDataInputFbest.minExposureTime = XSDataDouble(0.0)
-        xsDataInputFbest.doseLimit = XSDataDouble(0.0)
-        xsDataInputFbest.doseRate = XSDataDouble(0.0)
-        xsDataInputFbest.sensitivity = XSDataDouble(0.0)
-        xsDataInputFbest.crystalSize = XSDataDouble(0.0)
+        xsDataInputFbest.flux = XSDataDouble(flux)
+        xsDataInputFbest.resolution = XSDataDouble(2.0)
+        xsDataInputFbest.beamH = XSDataDouble(beamH * 1000)
+        xsDataInputFbest.beamV = XSDataDouble(beamV * 1000)
+        xsDataInputFbest.wavelength = XSDataDouble(wavelength)
+        # xsDataInputFbest.aperture = XSDataDouble(0.0)
+        # xsDataInputFbest.slitX = XSDataDouble(0.0)
+        # xsDataInputFbest.slitY = XSDataDouble(0.0)
+        # xsDataInputFbest.rotationRange = XSDataDouble(0.0)
+        # xsDataInputFbest.rotationWidth = XSDataDouble(0.0)
+        xsDataInputFbest.minExposureTime = XSDataDouble(minExposureTime)
+        # xsDataInputFbest.doseLimit = XSDataDouble(0.0)
+        # xsDataInputFbest.doseRate = XSDataDouble(0.0)
+        # xsDataInputFbest.sensitivity = XSDataDouble(0.0)
+        # xsDataInputFbest.crystalSize = XSDataDouble(0.0)
         self._edPluginExecFbest.setDataInput(xsDataInputFbest)
         self.executePluginSynchronous(self._edPluginExecFbest)
         # Generate xsDataStrategyResult
