@@ -23,6 +23,15 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
+			<name>EDPluginControlCharacterisationv1_5</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+					<value>http://id30a1control.esrf.fr:7171</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginControlImageQualityIndicatorsv1_4</name>  
 			<XSParamList>
 				<XSParamItem>
