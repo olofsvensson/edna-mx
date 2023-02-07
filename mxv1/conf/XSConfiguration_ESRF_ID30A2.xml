@@ -26,5 +26,18 @@
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
+		<XSPluginItem>
+			<name>EDPluginControlCharacterisationv1_5</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+ 					<value>http://ub1004.esrf.fr:7171</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>runKappa</name>
+					<value>true</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
   	</XSPluginList>
 </XSConfiguration> 
