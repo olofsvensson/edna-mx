@@ -28,12 +28,30 @@ __contact__ = "svensson@esrf.fr"
 __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
-import os, xmlrpclib
+import os
+import sys
+
+sys.path.insert(0, "/opt/pxsoft/bes/vgit/linux-x86_64/id30a2/edna2")
+
+try:
+    from edna2.tasks.DiffractionThumbnail import DiffractionThumbnail
+    EDNA2_THUMBNAILS = True
+except:
+    EDNA2_THUMBNAILS = False
+
+
+try:
+    from xmlrpclib import ServerProxy
+    from xmlrpclib import Transport
+except:
+    from xmlrpc.client import ServerProxy
+    from xmlrpc.client import Transport
 
 from EDVerbose import EDVerbose
 from EDPluginControl import EDPluginControl
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 
+from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataFile
@@ -51,17 +69,33 @@ from XSDataMXv1 import XSDataInputStrategy
 from XSDataMXv1 import XSDataInputControlXDSGenerateBackgroundImage
 from XSDataMXv1 import XSDataIndexingInput
 from XSDataMXv1 import XSDataInputControlKappa
+from XSDataMXv1 import XSDataResultStrategy
+
+EDFactoryPluginStatic.loadModule("XSDataFbestv1_0")
+from XSDataFbestv1_0 import XSDataInputFbest
 
 EDFactoryPluginStatic.loadModule("XSDataMXThumbnailv1_1")
 from XSDataMXThumbnailv1_1 import XSDataInputMXThumbnail
 
+class TokenTransport(Transport):
 
-class EDPluginControlCharacterisationv1_5(EDPluginControl):
+    def __init__(self, token, use_datetime=0):
+        Transport.__init__(self, use_datetime=use_datetime)
+        self.token = token
+
+    def send_content(self, connection, request_body):
+        connection.putheader("Content-Type", "text/xml")
+        connection.putheader("Content-Length", str(len(request_body)))
+        connection.putheader("Token", self.token)
+        connection.endheaders()
+        if request_body:
+            connection.send(request_body)
+
+
+class EDPluginControlCharacterisationv1_4(EDPluginControl):
     """
     [To be replaced with a description of EDPluginControlTemplatev10]
     """
-
-
     def __init__(self):
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataInputCharacterisation)
@@ -71,9 +105,10 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._strPluginControlGeneratePrediction = "EDPluginControlGeneratePredictionv10"
         self._strPluginControlIntegration = "EDPluginControlIntegrationv10"
         self._strPluginControlXDSGenerateBackgroundImage = "EDPluginControlXDSGenerateBackgroundImagev1_0"
-        self._strPluginControlStrategy = "EDPluginControlStrategyv1_3"
+        self._strPluginControlStrategy = "EDPluginControlStrategyv1_2"
         self._strPluginGenerateThumbnailName = "EDPluginMXThumbnailv1_1"
         self._strPluginControlKappaName = "EDPluginControlKappav1_0"
+        self._strPluginExecFbestName = "EDPluginFbestv1_0"
         self._listPluginGenerateThumbnail = []
         self._edPluginControlIndexingIndicators = None
         self._edPluginExecEvaluationIndexingMOSFLM = None
@@ -97,6 +132,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._strMxCuBE_URI = None
         self._oServerProxy = None
         self._runKappa = False
+        self._bDoOnlyMoslmfIndexing = False
 
 
     def checkParameters(self):
@@ -115,11 +151,12 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlCharacterisationv1_5.configure")
         self._strMxCuBE_URI = self.config.get("mxCuBE_URI", None)
-        if self._strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
-            self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
-            self._oServerProxy = xmlrpclib.ServerProxy(self._strMxCuBE_URI)
+        # if self._strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
+        #    self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
+        #    self._oServerProxy = xmlrpclib.ServerProxy(self._strMxCuBE_URI)
         self._runKappa = self.config.get("runKappa", False)
         self._fMinTransmission = self.config.get("minTransmissionWarning", self._fMinTransmission)
+        self._bDoOnlyMoslmfIndexing = self.config.get("doOnlyMosflmIndexing", False)
 
 
 
@@ -144,6 +181,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                                                             "ControlXDSGenerateBackgroundImage")
         self._edPluginControlStrategy = self.loadPlugin(self._strPluginControlStrategy, \
                                                          "Strategy")
+        self._edPluginExecFbest = self.loadPlugin(self._strPluginExecFbestName, \
+                                                         "Fbest")
         if self._runKappa:
             self._edPluginControlKappa = self.loadPlugin(self._strPluginControlKappaName, "Kappa")
         if (self._edPluginControlIndexingIndicators is not None):
@@ -177,6 +216,40 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 self.ERROR(strError)
                 self.setFailure()
             else:
+                # Load the thumbnail plugins
+                self._iNoReferenceImages = 0
+                for subWedge in xsDataInputCharacterisation.dataCollection.subWedge:
+                    for image in subWedge.image:
+                        self._iNoReferenceImages += 1
+                        if EDNA2_THUMBNAILS:
+                            inDataDiffThumbnail = {
+                                "image": [image.path.value],
+                                "forcedOutputDirectory": self.getWorkingDirectory(),
+                                "workingDirectory": self.getWorkingDirectory()
+                            }
+                            diffractionThumbnail = DiffractionThumbnail(inData=inDataDiffThumbnail)
+                            diffractionThumbnail.start()
+                            self._listPluginGenerateThumbnail.append((image, diffractionThumbnail))
+                        else:
+                            edPluginJpeg = self.loadPlugin(self._strPluginGenerateThumbnailName)
+                            xsDataInputMXThumbnail = XSDataInputMXThumbnail()
+                            xsDataInputMXThumbnail.image = XSDataFile(image.path)
+                            xsDataInputMXThumbnail.height = XSDataInteger(1024)
+                            xsDataInputMXThumbnail.width = XSDataInteger(1024)
+                            jpegFilename = os.path.splitext(os.path.basename(image.path.value))[0] + ".jpg"
+                            xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), jpegFilename)))
+                            edPluginJpeg.dataInput = xsDataInputMXThumbnail
+                            edPluginThumnail = self.loadPlugin(self._strPluginGenerateThumbnailName)
+                            xsDataInputMXThumbnail = XSDataInputMXThumbnail()
+                            xsDataInputMXThumbnail.image = XSDataFile(image.path)
+                            xsDataInputMXThumbnail.height = XSDataInteger(256)
+                            xsDataInputMXThumbnail.width = XSDataInteger(256)
+                            thumbnailFilename = os.path.splitext(os.path.basename(image.path.value))[0] + ".thumbnail.jpg"
+                            xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), thumbnailFilename)))
+                            edPluginThumnail.dataInput = xsDataInputMXThumbnail
+                            self._listPluginGenerateThumbnail.append((image, edPluginJpeg, edPluginThumnail))
+                            edPluginJpeg.execute()
+                            edPluginThumnail.execute()
                 xsDataExperimentalCondition = xsDataSubWedgeList[0].getExperimentalCondition()
 
                 # Fix for bug 431: if the flux is zero raise an error
@@ -204,29 +277,17 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
 
                 # Populate characterisation object
                 self._xsDataResultCharacterisation.setDataCollection(XSDataCollection.parseString(self._xsDataCollection.marshal()))
-            # Load the thumbnail plugins
-            self._iNoReferenceImages = 0
-            if not self.isFailure():
-                for subWedge in xsDataInputCharacterisation.dataCollection.subWedge:
-                    for image in subWedge.image:
-                        self._iNoReferenceImages += 1
-                        edPluginJpeg = self.loadPlugin(self._strPluginGenerateThumbnailName)
-                        xsDataInputMXThumbnail = XSDataInputMXThumbnail()
-                        xsDataInputMXThumbnail.image = XSDataFile(image.path)
-                        xsDataInputMXThumbnail.height = XSDataInteger(1024)
-                        xsDataInputMXThumbnail.width = XSDataInteger(1024)
-                        jpegFilename = os.path.splitext(os.path.basename(image.path.value))[0] + ".jpg"
-                        xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), jpegFilename)))
-                        edPluginJpeg.dataInput = xsDataInputMXThumbnail
-                        edPluginThumnail = self.loadPlugin(self._strPluginGenerateThumbnailName)
-                        xsDataInputMXThumbnail = XSDataInputMXThumbnail()
-                        xsDataInputMXThumbnail.image = XSDataFile(image.path)
-                        xsDataInputMXThumbnail.height = XSDataInteger(256)
-                        xsDataInputMXThumbnail.width = XSDataInteger(256)
-                        thumbnailFilename = os.path.splitext(os.path.basename(image.path.value))[0] + ".thumbnail.jpg"
-                        xsDataInputMXThumbnail.outputPath = XSDataFile(XSDataString(os.path.join(self.getWorkingDirectory(), thumbnailFilename)))
-                        edPluginThumnail.dataInput = xsDataInputMXThumbnail
-                        self._listPluginGenerateThumbnail.append((image, edPluginJpeg, edPluginThumnail))
+
+            if xsDataInputCharacterisation.token is not None:
+                strToken = xsDataInputCharacterisation.token.value
+            else:
+                strToken = None
+            if self._strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
+                self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
+                if strToken is None:
+                    self._oServerProxy = ServerProxy(self._strMxCuBE_URI)
+                else:
+                    self._oServerProxy = ServerProxy(self._strMxCuBE_URI, transport=TokenTransport(strToken))
 
 
     def process(self, _edObject=None):
@@ -256,14 +317,24 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self.DEBUG("EDPluginControlCharacterisationv1_5.finallyProcess")
         # Synchronize thumbnail plugins
         for tuplePlugin in self._listPluginGenerateThumbnail:
-            image = tuplePlugin[0]
-            tuplePlugin[1].synchronize()
-            jpegImage = image.copy()
-            jpegImage.path = tuplePlugin[1].dataOutput.thumbnail.path
-            self._xsDataResultCharacterisation.addJpegImage(jpegImage)
-            tuplePlugin[2].synchronize()
-            thumbnailImage = image.copy()
-            thumbnailImage.path = tuplePlugin[2].dataOutput.thumbnail.path
+            if EDNA2_THUMBNAILS:
+                image = tuplePlugin[0]
+                tuplePlugin[1].join()
+                jpegImage = image.copy()
+                jpegImage.path = XSDataString(tuplePlugin[1].outData["pathToJPEGImage"][0])
+                self._xsDataResultCharacterisation.addJpegImage(jpegImage)
+                thumbnailImage = image.copy()
+                thumbnailImage.path = XSDataString(tuplePlugin[1].outData["pathToThumbImage"][0])
+            else:
+                image = tuplePlugin[0]
+                tuplePlugin[1].synchronize()
+                jpegImage = image.copy()
+                jpegImage.path = tuplePlugin[1].dataOutput.thumbnail.path
+                self._xsDataResultCharacterisation.addJpegImage(jpegImage)
+                tuplePlugin[2].synchronize()
+                thumbnailImage = image.copy()
+                thumbnailImage.path = tuplePlugin[2].dataOutput.thumbnail.path
+            self._xsDataResultCharacterisation.addThumbnailImage(thumbnailImage)           
             self._xsDataResultCharacterisation.addThumbnailImage(thumbnailImage)
         if self._edPluginControlGeneratePrediction.isRunning():
             self._edPluginControlGeneratePrediction.synchronize()
@@ -300,9 +371,6 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             indicatorsShortSummary = self._edPluginControlIndexingIndicators.getDataOutput("indicatorsShortSummary")[0].getValue()
             self._strCharacterisationShortSummary += indicatorsShortSummary
             self.sendMessageToMXCuBE(indicatorsShortSummary)
-        for tuplePlugin in self._listPluginGenerateThumbnail:
-            tuplePlugin[1].execute()
-            tuplePlugin[2].execute()
         self.executePluginSynchronous(self._edPluginExecEvaluationIndexingLABELIT)
 
 
@@ -314,10 +382,11 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self._strCharacterisationShortSummary += indicatorsShortSummary
             self.sendMessageToMXCuBE(indicatorsShortSummary)
         if self._iNoImagesWithDozorScore > 0:
-            strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
-            self.WARNING(strWarningMessage)
-            self.sendMessageToMXCuBE(strWarningMessage, "warning")
-            self.addWarningMessage(strWarningMessage)
+            if not self._bDoOnlyMoslmfIndexing:
+                strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
+                self.WARNING(strWarningMessage)
+                self.sendMessageToMXCuBE(strWarningMessage, "warning")
+                self.addWarningMessage(strWarningMessage)
             xsDataIndexingInput = XSDataIndexingInput()
             xsDataIndexingInput.dataCollection = self._xsDataCollection
             xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
@@ -368,8 +437,6 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         if bIndexingSuccess:
             xsDataIndexingResult = self._edPluginExecEvaluationIndexingLABELIT.getDataOutput("indexingResult")[0]
             self._xsDataResultCharacterisation.setIndexingResult(xsDataIndexingResult)
-            if self._edPluginControlIndexingIndicators.hasDataOutput("indexingShortSummary"):
-                self._strCharacterisationShortSummary += self._edPluginControlIndexingIndicators.getDataOutput("indexingShortSummary")[0].getValue()
             xsDataCollection = self._xsDataResultCharacterisation.getDataCollection()
             xsDataGeneratePredictionInput = XSDataGeneratePredictionInput()
             xsDataGeneratePredictionInput.setDataCollection(XSDataCollection.parseString(xsDataCollection.marshal()))
@@ -385,10 +452,11 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self.indexingToIntegration()
         else:
             if self._iNoImagesWithDozorScore > 0:
-                strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
-                self.WARNING(strWarningMessage)
-                self.sendMessageToMXCuBE(strWarningMessage, "warning")
-                self.addWarningMessage(strWarningMessage)
+                if not self._bDoOnlyMoslmfIndexing:
+                    strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
+                    self.WARNING(strWarningMessage)
+                    self.sendMessageToMXCuBE(strWarningMessage, "warning")
+                    self.addWarningMessage(strWarningMessage)
                 xsDataIndexingInput = XSDataIndexingInput()
                 xsDataIndexingInput.dataCollection = self._xsDataCollection
                 xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
@@ -511,32 +579,34 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
 
 
     def doFailureEvaluationIndexingLABELIT(self, _edPlugin=None):
-        self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureEvaluationIndexing")
-        strErrorMessage = "Execution of indexing evaluation plugin failed."
-        self.ERROR(strErrorMessage)
-        self.sendMessageToMXCuBE(strErrorMessage, "error")
-        self.addErrorMessage(strErrorMessage)
-        self.generateExecutiveSummary(self)
-        if self._xsDataResultCharacterisation is not None:
-            self.setDataOutput(self._xsDataResultCharacterisation)
-        self.setFailure()
-        if self._strStatusMessage != None:
-            self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-            self.writeDataOutput()
+        self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureEvaluationIndexingLABELIT")
+        strWarningMessage = "Execution of indexing evaluation plugin failed."
+        self.WARNING(strWarningMessage)
+        self.sendMessageToMXCuBE(strWarningMessage, "warning")
+        self.addWarningMessage(strWarningMessage)
+        self.executeFbest()
+        # self.generateExecutiveSummary(self)
+        # if self._xsDataResultCharacterisation is not None:
+        #     self.setDataOutput(self._xsDataResultCharacterisation)
+        # self.setFailure()
+        # if self._strStatusMessage != None:
+        #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+        #     self.writeDataOutput()
 
     def doFailureEvaluationIndexingMOSFLM(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureEvaluationIndexingMOSFLM")
-        strErrorMessage = "Execution of indexing evaluation plugin failed."
-        self.ERROR(strErrorMessage)
-        self.sendMessageToMXCuBE(strErrorMessage, "error")
-        self.addErrorMessage(strErrorMessage)
-        self.generateExecutiveSummary(self)
-        if self._xsDataResultCharacterisation is not None:
-            self.setDataOutput(self._xsDataResultCharacterisation)
-        self.setFailure()
-        if self._strStatusMessage != None:
-            self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-            self.writeDataOutput()
+        strWarningMessage = "Execution of indexing evaluation plugin failed."
+        self.ERROR(strWarningMessage)
+        self.sendMessageToMXCuBE(strWarningMessage, "warning")
+        self.addWarningMessage(strWarningMessage)
+        self.executeFbest()
+        # self.generateExecutiveSummary(self)
+        # if self._xsDataResultCharacterisation is not None:
+        #     self.setDataOutput(self._xsDataResultCharacterisation)
+        # self.setFailure()
+        # if self._strStatusMessage != None:
+        #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+        #     self.writeDataOutput()
 
     def doSuccessGeneratePrediction(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doSuccessGeneratePrediction")
@@ -595,18 +665,20 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
 
     def doFailureIntegration(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureIntegration")
-        strErrorMessage = "Execution of integration failed."
+        strWarningMessage = "Execution of integration failed."
         self.addStatusMessage("Integration FAILURE.")
-        self.ERROR(strErrorMessage)
-        self.addErrorMessage(strErrorMessage)
+        self.WARNING(strWarningMessage)
+        self.sendMessageToMXCuBE(strWarningMessage, "warning")
+        self.addWarningMessage(strWarningMessage)
+        self.executeFbest()
         # self.addComment("integration failure")
-        if self._xsDataResultCharacterisation is not None:
-            self.setDataOutput(self._xsDataResultCharacterisation)
-        self.generateExecutiveSummary(self)
-        self.setFailure()
-        if self._strStatusMessage != None:
-            self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-            self.writeDataOutput()
+        # if self._xsDataResultCharacterisation is not None:
+        #     self.setDataOutput(self._xsDataResultCharacterisation)
+        # self.generateExecutiveSummary(self)
+        # self.setFailure()
+        # if self._strStatusMessage != None:
+        #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+        #     self.writeDataOutput()
 
 
     def doSuccessXDSGenerateBackgroundImage(self, _edPlugin=None):
@@ -652,6 +724,31 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
             self.writeDataOutput()
         self.setFailure()
+
+
+    def executeFbest(self):
+        xsDataInputFbest = XSDataInputFbest()
+        xsDataInputFbest.flux = XSDataDouble(0.0)
+        xsDataInputFbest.resolution = XSDataDouble(0.0)
+        xsDataInputFbest.beamH = XSDataDouble(0.0)
+        xsDataInputFbest.beamV = XSDataDouble(0.0)
+        xsDataInputFbest.wavelength = XSDataDouble(0.0)
+        xsDataInputFbest.aperture = XSDataDouble(0.0)
+        xsDataInputFbest.slitX = XSDataDouble(0.0)
+        xsDataInputFbest.slitY = XSDataDouble(0.0)
+        xsDataInputFbest.rotationRange = XSDataDouble(0.0)
+        xsDataInputFbest.rotationWidth = XSDataDouble(0.0)
+        xsDataInputFbest.minExposureTime = XSDataDouble(0.0)
+        xsDataInputFbest.doseLimit = XSDataDouble(0.0)
+        xsDataInputFbest.doseRate = XSDataDouble(0.0)
+        xsDataInputFbest.sensitivity = XSDataDouble(0.0)
+        xsDataInputFbest.crystalSize = XSDataDouble(0.0)
+        self._edPluginExecFbest.setDataInput(xsDataInputFbest)
+        self.executePluginSynchronous(self._edPluginExecFbest)
+        # Generate xsDataStrategyResult
+        xsDataStrategyResult = XSDataResultStrategy()
+        self._xsDataResultCharacterisation.setStrategyResult(xsDataStrategyResult)
+        self.addStatusMessage("Fbest strategy calculation successful.")
 
 
     def generateExecutiveSummary(self, _edPlugin):
