@@ -55,6 +55,8 @@ from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataInteger
 from XSDataCommon import XSDataFile
+from XSDataCommon import XSDataAngle
+from XSDataCommon import XSDataTime
 
 from XSDataMXv1 import XSDataCollection
 from XSDataMXv1 import XSDataCrystal
@@ -70,6 +72,13 @@ from XSDataMXv1 import XSDataInputControlXDSGenerateBackgroundImage
 from XSDataMXv1 import XSDataIndexingInput
 from XSDataMXv1 import XSDataInputControlKappa
 from XSDataMXv1 import XSDataResultStrategy
+from XSDataMXv1 import XSDataCollectionPlan
+from XSDataMXv1 import XSDataCollection
+from XSDataMXv1 import XSDataSubWedge
+from XSDataMXv1 import XSDataExperimentalCondition
+from XSDataMXv1 import XSDataGoniostat
+from XSDataMXv1 import XSDataBeam
+from XSDataMXv1 import XSDataStrategySummary
 
 EDFactoryPluginStatic.loadModule("XSDataFbestv1_0")
 from XSDataFbestv1_0 import XSDataInputFbest
@@ -304,7 +313,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._edPluginExecEvaluationIndexingMOSFLM.connectFAILURE(self.doFailureEvaluationIndexingMOSFLM)
         self._edPluginControlGeneratePrediction.connectSUCCESS(self.doSuccessGeneratePrediction)
         self._edPluginControlGeneratePrediction.connectFAILURE(self.doFailureGeneratePrediction)
-        self._edPluginControlIntegration.connectSUCCESS(self.doSuccessIntegration)
+        # self._edPluginControlIntegration.connectSUCCESS(self.doSuccessIntegration)
+        self._edPluginControlIntegration.connectSUCCESS(self.doFailureIntegration)
         self._edPluginControlIntegration.connectFAILURE(self.doFailureIntegration)
         self._edPluginControlXDSGenerateBackgroundImage.connectSUCCESS(self.doSuccessXDSGenerateBackgroundImage)
         self._edPluginControlXDSGenerateBackgroundImage.connectFAILURE(self.doFailureXDSGenerateBackgroundImage)
@@ -734,8 +744,9 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         inputCharacterisation = self.getDataInput()
         dataCollection = inputCharacterisation.dataCollection
         subWedge = dataCollection.subWedge[0]
-        dataCollection = subWedge.experimentalCondition
-        beam = dataCollection.beam
+        experimentalCondition = subWedge.experimentalCondition
+        detector = experimentalCondition.detector
+        beam = experimentalCondition.beam
         flux = beam.flux.value
         beamH = beam.size.x.value
         beamV = beam.size.y.value
@@ -759,9 +770,56 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         # xsDataInputFbest.crystalSize = XSDataDouble(0.0)
         self._edPluginExecFbest.setDataInput(xsDataInputFbest)
         self.executePluginSynchronous(self._edPluginExecFbest)
+        xsDataResultFbest = self._edPluginExecFbest.dataOutput
         # Generate xsDataStrategyResult
-        xsDataStrategyResult = XSDataResultStrategy()
-        self._xsDataResultCharacterisation.setStrategyResult(xsDataStrategyResult)
+        xsDataResultStrategy = XSDataResultStrategy()
+        xsDataCollectionPlan = XSDataCollectionPlan()
+        xsDataCollectionPlan.collectionPlanNumber = XSDataInteger(1)
+        xsDataCollectionStrategy = XSDataCollection()
+        xsDataStrategySummary = XSDataStrategySummary()
+        xsDataSubWedge = XSDataSubWedge()
+        xsDataExperimentalCondition = XSDataExperimentalCondition()
+        xsDataGoniostat = XSDataGoniostat()
+        xsDataBeam = XSDataBeam()
+        if xsDataResultFbest.exposureTimePerImage is not None:
+            exposureTime = xsDataResultFbest.exposureTimePerImage.value
+            xsDataBeam.exposureTime = XSDataTime(exposureTime)
+        if xsDataResultFbest.transmission is not None:
+            xsDataBeam.transmission = xsDataResultFbest.transmission
+        if xsDataResultFbest.rotationWidth is not None:
+            rotationWidth = xsDataResultFbest.rotationWidth.value
+            xsDataGoniostat.oscillationWidth = XSDataAngle(rotationWidth)
+        if xsDataResultFbest.numberOfImages is not None:
+            numberOfImages = xsDataResultFbest.numberOfImages.value
+            xsDataGoniostat.rotationAxisStart = XSDataAngle(0.0)
+            xsDataGoniostat.rotationAxisEnd = XSDataAngle(numberOfImages * rotationWidth)
+        if xsDataResultFbest.resolution is not None:
+            resolution = xsDataResultFbest.resolution.value
+            xsDataStrategySummary.resolution = XSDataDouble(resolution)
+        if xsDataResultFbest.totalDose is not None:
+            totalDose = xsDataResultFbest.totalDose.value
+        # if xsDataResultFbest.totalExposureTime is not None:
+        #     totalExposureTime = xsDataResultFbest.totalExposureTime.value
+        #     xsDataStrategySummary.totalDataCollectionTime = XSDataTime(totalExposureTime)
+        if xsDataResultFbest.doseRate is not None:
+            doseRate = xsDataResultFbest.doseRate.value
+        if xsDataResultFbest.sensitivity is not None:
+            sensitivity = xsDataResultFbest.sensitivity.value
+        if xsDataResultFbest.minExposure is not None:
+            minExposure = xsDataResultFbest.minExposure.value
+
+
+        xsDataExperimentalCondition.beam = xsDataBeam
+        xsDataExperimentalCondition.goniostat = xsDataGoniostat
+        xsDataExperimentalCondition.detector = detector
+        xsDataSubWedge.subWedgeNumber = XSDataInteger(1)
+        xsDataSubWedge.experimentalCondition = xsDataExperimentalCondition
+        xsDataCollectionStrategy.addSubWedge(xsDataSubWedge)
+        xsDataCollectionPlan.collectionStrategy = xsDataCollectionStrategy
+        xsDataCollectionPlan.strategySummary = xsDataStrategySummary
+        xsDataResultStrategy.addCollectionPlan(xsDataCollectionPlan)
+        self._xsDataResultCharacterisation.setStrategyResult(xsDataResultStrategy)
+        self.screen(self._xsDataResultCharacterisation.marshal())
         self.addStatusMessage("Fbest strategy calculation successful.")
 
 
