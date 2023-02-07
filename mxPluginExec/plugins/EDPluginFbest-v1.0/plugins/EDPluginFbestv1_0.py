@@ -192,7 +192,7 @@ class EDPluginFbestv1_0(EDPluginExecProcessScript):
                     elif label == "Min.Exposure":
                         xsDataResultFbest.minExposure = XSDataDouble(value)
                 except:
-                    self.error("Cannot parse value for {0}!".format(label))
+                    self.warning(f"FBest: Cannot parse value for {label} - vale is {value}")
 
         return xsDataResultFbest
 
