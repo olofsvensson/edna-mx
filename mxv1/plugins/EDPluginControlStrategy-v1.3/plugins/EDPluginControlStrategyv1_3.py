@@ -93,6 +93,9 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
         self.xsDataFileRaddoseLog = None
 
 
+        self.roundUpToEven100 = False
+
+
     def preProcess(self, _edObject=None):
         """
         Gets the Configuration Parameters, if found, overrides default parameters
@@ -173,11 +176,11 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroup)
                             bSpaceGroupForced = True
-                        except Exception, detail:
+                        except Exception as detail:
                             strErrorMessage = "EDPluginControlStrategyv1_3: Problem to calculate Number of symmetry operators: {0}".format(detail)
                             self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
-                            raise RuntimeError, strErrorMessage
+                            raise RuntimeError(strErrorMessage)
                 if not bSpaceGroupForced:
                     # Space Group has NOT been forced
                     xsDataStringSpaceGroup = self._xsDataSampleCopy.getCrystal().getSpaceGroup().getName()
@@ -187,22 +190,22 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                         self.DEBUG("EDPluginControlStrategyv1_3.preProcess: Space Group IT Name found by indexing: " + strSpaceGroupName)
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupName(strSpaceGroupName)
-                        except Exception, detail:
+                        except Exception as detail:
                             strErrorMessage = "EDPluginControlStrategyv1_3: Problem to calculate Number of symmetry operators: {0}".format(detail)
                             self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
-                            raise RuntimeError, strErrorMessage
+                            raise RuntimeError(strErrorMessage)
                     else:
                         # Prepare chemical composition calculation with the Space Group calculated by indexing (Space Group IT number)
                         iSpaceGroupITNumber = self._xsDataSampleCopy.getCrystal().getSpaceGroup().getITNumber().getValue()
                         self.DEBUG("EDPluginControlStrategyv1_3.preProcess: Space Group IT Number Found by indexing: %d" % iSpaceGroupITNumber)
                         try:
                             strNumOperators = EDUtilsSymmetry.getNumberOfSymmetryOperatorsFromSpaceGroupITNumber(str(iSpaceGroupITNumber))
-                        except Exception, detail:
+                        except Exception as detail:
                             strErrorMessage = "EDPluginControlStrategyv1_3: Problem to calculate Number of symmetry operators: {0}".format(detail)
                             self.error(strErrorMessage)
                             self.addErrorMessage(strErrorMessage)
-                            raise RuntimeError, strErrorMessage
+                            raise RuntimeError(strErrorMessage)
 
                 if (strNumOperators is not None):
                     iNumOperators = int(strNumOperators)
@@ -210,7 +213,7 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                     strErrorMessage = "EDPluginControlStrategyv1_3: No symmetry operators found for Space Group: {0}".format(strNumOperators)
                     self.error(strErrorMessage)
                     self.addErrorMessage(strErrorMessage)
-                    raise RuntimeError, strErrorMessage
+                    raise RuntimeError(strErrorMessage)
 
                 xsDataChemicalComposition = self._xsDataSampleCopy.getChemicalComposition()
 
@@ -250,6 +253,12 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
                     self._edPluginRaddose.setBaseName(self._strPluginRaddoseName)
 
 
+
+    def configure(self):
+        EDPluginControl.configure(self)
+        self.DEBUG("EDPluginControlStrategyv1_2.configure")
+        # Even 100 images?
+        self.roundUpToEven100 = self.config.get("roundUpToEven100", False)
 
 
 
@@ -297,9 +306,15 @@ class EDPluginControlStrategyv1_3(EDPluginControl):
         xsDataResultBest = self._edPluginBest.getDataOutput()
         if(xsDataResultBest is not None and self.getDataInput().getDiffractionPlan().getStrategyOption() is not None):
             if (self.getDataInput().getDiffractionPlan().getStrategyOption().getValue() != "-Bonly"):
-                xsDataResultStrategy = self._edHandlerXSDataBest.getXSDataResultStrategy(xsDataResultBest, self.getDataInput().getExperimentalCondition(), self._xsDataSampleCopy)
+                xsDataResultStrategy = self._edHandlerXSDataBest.getXSDataResultStrategy(xsDataResultBest,
+                                                                                         self.getDataInput().getExperimentalCondition(),
+                                                                                         self._xsDataSampleCopy,
+                                                                                         roundUpToEven100=self.roundUpToEven100)
         else:
-            xsDataResultStrategy = self._edHandlerXSDataBest.getXSDataResultStrategy(xsDataResultBest, self.getDataInput().getExperimentalCondition(), self._xsDataSampleCopy)
+            xsDataResultStrategy = self._edHandlerXSDataBest.getXSDataResultStrategy(xsDataResultBest,
+                                                                                     self.getDataInput().getExperimentalCondition(),
+                                                                                     self._xsDataSampleCopy,
+                                                                                     roundUpToEven100=self.roundUpToEven100)
 
         if self.xsDataFileRaddoseLog is not None:
             xsDataResultStrategy.setRaddoseLogFile(self.xsDataFileRaddoseLog)
