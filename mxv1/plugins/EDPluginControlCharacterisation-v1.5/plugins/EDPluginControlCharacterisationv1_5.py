@@ -138,6 +138,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._fMinTransmission = 10  # %
         self._iNoReferenceImages = None
         self._iNoImagesWithDozorScore = None
+        self._fAverageDozorScore = None
         self._strMxCuBE_URI = None
         self._oServerProxy = None
         self._runKappa = False
@@ -292,7 +293,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 strToken = xsDataInputCharacterisation.token.value
             else:
                 strToken = None
-            if self._strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
+            if self._strMxCuBE_URI is not None:
                 self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
                 if strToken is None:
                     self._oServerProxy = ServerProxy(self._strMxCuBE_URI)
@@ -358,7 +359,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         if self._xsDataResultCharacterisation is not None:
             self.setDataOutput(self._xsDataResultCharacterisation)
         if self.isFailure():
-            self.sendMessageToMXCuBE("Ended with error messages", "error")
+            self.sendMessageToMXCuBE("Characterisation ended with error messages", "error")
 
 
     def doSuccessIndexingIndicators(self, _edPlugin=None):
@@ -369,13 +370,18 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             # self._xsDataResultCharacterisation.setIndexingResult(xsDataIndexingResult)
             self._edPluginExecEvaluationIndexingLABELIT.setDataInput(xsDataIndexingResult, "indexingResult")
         if self._edPluginControlIndexingIndicators.hasDataOutput("imageQualityIndicators"):
+            nScores = 1
             listXSDataImageQualityIndicators = self._edPluginControlIndexingIndicators.getDataOutput("imageQualityIndicators")
             for xsDataImageQualityIndicators in listXSDataImageQualityIndicators:
                 if xsDataImageQualityIndicators.dozor_score:
                     if self._iNoImagesWithDozorScore is None:
                         self._iNoImagesWithDozorScore = 0
-                    if xsDataImageQualityIndicators.dozor_score.value > 0.001:
+                        self._fAverageDozorScore = 0.0
+                    fNewDozorScore = xsDataImageQualityIndicators.dozor_score.value
+                    if fNewDozorScore > 0.001:
                         self._iNoImagesWithDozorScore += 1
+                    self._fAverageDozorScore = self._fAverageDozorScore + ( fNewDozorScore - self._fAverageDozorScore ) / nScores
+                    nScores += 1
                 self._xsDataResultCharacterisation.addImageQualityIndicators(xsDataImageQualityIndicators)
                 self._edPluginExecEvaluationIndexingLABELIT.setDataInput(xsDataImageQualityIndicators, "imageQualityIndicators")
         if self._edPluginControlIndexingIndicators.hasDataOutput("indicatorsShortSummary"):
@@ -394,10 +400,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self.sendMessageToMXCuBE(indicatorsShortSummary)
         if self._iNoImagesWithDozorScore is not None and self._iNoImagesWithDozorScore > 0:
             if not self._bDoOnlyMoslmfIndexing:
-                strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
-                self.WARNING(strWarningMessage)
+                strWarningMessage = "Execution Labelit indexing - trying to index with MOSFLM."
                 self.sendMessageToMXCuBE(strWarningMessage, "warning")
-                self.addWarningMessage(strWarningMessage)
             xsDataIndexingInput = XSDataIndexingInput()
             xsDataIndexingInput.dataCollection = self._xsDataCollection
             xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
@@ -405,18 +409,15 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self._edPluginControlIndexingMOSFLM.dataInput = xsDataIndexingInput
             self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
         else:
-            strWarningMessage = "Execution of Indexing and Indicators plugin failed."
-            self.WARNING(strWarningMessage)
-            self.sendMessageToMXCuBE(strWarningMessage, "warning")
-            self.addWarningMessage(strWarningMessage)
-            self.executeFbest()
-            # self.generateExecutiveSummary(self)
-            # if self._xsDataResultCharacterisation is not None:
-            #     self.setDataOutput(self._xsDataResultCharacterisation)
-            # self.setFailure()
-            # if self._strStatusMessage != None:
-            #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-            #     self.writeDataOutput()
+            strErrorMessage = "Execution of Indexing and Indicators plugin failed."
+            self.sendMessageToMXCuBE(strErrorMessage, "error")
+            self.generateExecutiveSummary(self)
+            if self._xsDataResultCharacterisation is not None:
+                self.setDataOutput(self._xsDataResultCharacterisation)
+            self.setFailure()
+            if self._strStatusMessage != None:
+                self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+                self.writeDataOutput()
 
 
 
@@ -430,9 +431,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
 
     def doFailureIndexingMOSFLM(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureIndexingMOSFLM")
-        strErrorMessage = "Indexing with MOSFLM failed."
-        self.ERROR(strErrorMessage)
-        self.sendMessageToMXCuBE(strErrorMessage, "error")
+        strWarningMessage = "Indexing with MOSFLM failed."
+        self.sendMessageToMXCuBE(strWarningMessage, "warning")
         self.executePluginSynchronous(self._edPluginExecEvaluationIndexingMOSFLM)
 
 
@@ -464,29 +464,29 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self.indexingToIntegration()
         else:
             if self._iNoImagesWithDozorScore > 0:
-                if not self._bDoOnlyMoslmfIndexing:
-                    strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
-                    self.WARNING(strWarningMessage)
-                    self.sendMessageToMXCuBE(strWarningMessage, "warning")
-                    self.addWarningMessage(strWarningMessage)
-                xsDataIndexingInput = XSDataIndexingInput()
-                xsDataIndexingInput.dataCollection = self._xsDataCollection
-                xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
-                xsDataIndexingInput.crystal = self._xsDataCrystal
-                self._edPluginControlIndexingMOSFLM.setDataInput(xsDataIndexingInput)
-                self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
+                if self._fAverageDozorScore > 10.0:
+                    if not self._bDoOnlyMoslmfIndexing:
+                        strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
+                        self.sendMessageToMXCuBE(strWarningMessage, "warning")
+                    xsDataIndexingInput = XSDataIndexingInput()
+                    xsDataIndexingInput.dataCollection = self._xsDataCollection
+                    xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
+                    xsDataIndexingInput.crystal = self._xsDataCrystal
+                    self._edPluginControlIndexingMOSFLM.setDataInput(xsDataIndexingInput)
+                    self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
+                else:
+                    strWarningMessage = "Execution of Indexing and Indicators plugin failed."
+                    self.checkIfExecuteFbest(strWarningMessage)
             else:
-                strWarningMessage = "Execution of indexing with Labelit failed."
-                self.ERROR(strWarningMessage)
-                self.sendMessageToMXCuBE(strWarningMessage, "warning")
-                self.addWarningMessage(strWarningMessage)
-                self.executeFbest()
-                # self.setFailure()
-                # self.generateExecutiveSummary(self)
-                # if self._strStatusMessage != None:
-                #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-                #     self.writeDataOutput()
-
+                strErrorMessage = "Execution of Indexing and Indicators plugin failed."
+                self.sendMessageToMXCuBE(strErrorMessage, "error")
+                self.generateExecutiveSummary(self)
+                if self._xsDataResultCharacterisation is not None:
+                    self.setDataOutput(self._xsDataResultCharacterisation)
+                self.setFailure()
+                if self._strStatusMessage != None:
+                    self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+                    self.writeDataOutput()
 
     def doSuccessEvaluationIndexingMOSFLM(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doSuccessEvaluationIndexingMOSFLM")
@@ -512,16 +512,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             # Then start the integration of the reference images
             self.indexingToIntegration()
         else:
-            strWarningMessage = "Execution of indexing with MOSFLM failed."
-            self.WARNING(strWarningMessage)
-            self.sendMessageToMXCuBE(strWarningMessage, "error")
-            self.addWarningMessage(strWarningMessage)
-            self.executeFbest()
-            # self.setFailure()
-            # self.generateExecutiveSummary(self)
-            # if self._strStatusMessage != None:
-            #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-            #     self.writeDataOutput()
+            strWarningMessage = "Execution of MOSFLM indexing failed."
+            self.checkIfExecuteFbest(strWarningMessage)
 
     def generateIndexingShortSummary(self, _xsDataIndexingResult):
         """
@@ -595,32 +587,12 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
     def doFailureEvaluationIndexingLABELIT(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureEvaluationIndexingLABELIT")
         strWarningMessage = "Execution of indexing evaluation plugin failed."
-        self.WARNING(strWarningMessage)
-        self.sendMessageToMXCuBE(strWarningMessage, "warning")
-        self.addWarningMessage(strWarningMessage)
-        self.executeFbest()
-        # self.generateExecutiveSummary(self)
-        # if self._xsDataResultCharacterisation is not None:
-        #     self.setDataOutput(self._xsDataResultCharacterisation)
-        # self.setFailure()
-        # if self._strStatusMessage != None:
-        #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-        #     self.writeDataOutput()
+        self.checkIfExecuteFbest(strWarningMessage)
 
     def doFailureEvaluationIndexingMOSFLM(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureEvaluationIndexingMOSFLM")
         strWarningMessage = "Execution of indexing evaluation plugin failed."
-        self.ERROR(strWarningMessage)
-        self.sendMessageToMXCuBE(strWarningMessage, "warning")
-        self.addWarningMessage(strWarningMessage)
-        self.executeFbest()
-        # self.generateExecutiveSummary(self)
-        # if self._xsDataResultCharacterisation is not None:
-        #     self.setDataOutput(self._xsDataResultCharacterisation)
-        # self.setFailure()
-        # if self._strStatusMessage != None:
-        #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-        #     self.writeDataOutput()
+        self.checkIfExecuteFbest(strWarningMessage)
 
     def doSuccessGeneratePrediction(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doSuccessGeneratePrediction")
@@ -679,20 +651,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
 
     def doFailureIntegration(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureIntegration")
-        strWarningMessage = "Execution of integration failed."
-        self.addStatusMessage("Integration FAILURE.")
-        self.WARNING(strWarningMessage)
-        self.sendMessageToMXCuBE(strWarningMessage, "warning")
-        self.addWarningMessage(strWarningMessage)
-        self.executeFbest()
-        # self.addComment("integration failure")
-        # if self._xsDataResultCharacterisation is not None:
-        #     self.setDataOutput(self._xsDataResultCharacterisation)
-        # self.generateExecutiveSummary(self)
-        # self.setFailure()
-        # if self._strStatusMessage != None:
-        #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-        #     self.writeDataOutput()
+        self.checkIfExecuteFbest("Integration FAILURE.")
 
 
     def doSuccessXDSGenerateBackgroundImage(self, _edPlugin=None):
@@ -721,9 +680,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
     def doFailureStrategy(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureStrategy")
         strErrorMessage = "Strategy calculation FAILURE."
-        self.ERROR(strErrorMessage)
         self.sendMessageToMXCuBE(strErrorMessage, "error")
-        self.addErrorMessage(strErrorMessage)
         xsDataStrategyResult = self._edPluginControlStrategy.getDataOutput()
         self._xsDataResultCharacterisation.setStrategyResult(xsDataStrategyResult)
         if self._edPluginControlStrategy.hasDataOutput("strategyShortSummary"):
@@ -740,7 +697,21 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self.setFailure()
 
 
+    def checkIfExecuteFbest(self, _strMessage):
+        self.sendMessageToMXCuBE(_strMessage, "warning")
+        if self._fAverageDozorScore > 1.0:
+            self.executeFbest()
+        else:
+            strMessage = "Not running Fbest due to low average dozor score ({0:.3f})".format(self._fAverageDozorScore)
+            self.sendMessageToMXCuBE(strMessage, "error")
+            self.generateExecutiveSummary(self)
+            if self._xsDataResultCharacterisation is not None:
+                self.setDataOutput(self._xsDataResultCharacterisation)
+            self.setFailure()
+
     def executeFbest(self):
+        strMessage = "Executing Fbest for minimal strategy"
+        self.addStatusMessage(strMessage)
         inputCharacterisation = self.getDataInput()
         dataCollection = inputCharacterisation.dataCollection
         subWedge = dataCollection.subWedge[0]
@@ -909,6 +880,14 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
 
     def sendMessageToMXCuBE(self, _strMessage, level="info"):
         # Only for mxCuBE
+        if level.lower() == "warning":
+            self.WARNING(_strMessage)
+            self.addWarningMessage(_strMessage)
+        elif level.lower() == "error":
+            self.ERROR(_strMessage)
+            self.addErrorMessage(_strMessage)
+        else:
+            self.screen(_strMessage)
         if self._strMxCuBE_URI is not None:
             self.DEBUG("Sending message to mxCuBE: {0}".format(_strMessage))
             try:
