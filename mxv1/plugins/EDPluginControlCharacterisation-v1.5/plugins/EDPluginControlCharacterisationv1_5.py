@@ -314,8 +314,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._edPluginExecEvaluationIndexingMOSFLM.connectFAILURE(self.doFailureEvaluationIndexingMOSFLM)
         self._edPluginControlGeneratePrediction.connectSUCCESS(self.doSuccessGeneratePrediction)
         self._edPluginControlGeneratePrediction.connectFAILURE(self.doFailureGeneratePrediction)
-        # self._edPluginControlIntegration.connectSUCCESS(self.doSuccessIntegration)
-        self._edPluginControlIntegration.connectSUCCESS(self.doFailureIntegration)
+        self._edPluginControlIntegration.connectSUCCESS(self.doSuccessIntegration)
         self._edPluginControlIntegration.connectFAILURE(self.doFailureIntegration)
         self._edPluginControlXDSGenerateBackgroundImage.connectSUCCESS(self.doSuccessXDSGenerateBackgroundImage)
         self._edPluginControlXDSGenerateBackgroundImage.connectFAILURE(self.doFailureXDSGenerateBackgroundImage)
@@ -687,19 +686,19 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             strategyShortSummary = self._edPluginControlStrategy.getDataOutput("strategyShortSummary")[0].getValue()
             self._strCharacterisationShortSummary += strategyShortSummary
             self.sendMessageToMXCuBE(strategyShortSummary)
-        if self._xsDataResultCharacterisation is not None:
-            self.setDataOutput(self._xsDataResultCharacterisation)
-        self.addStatusMessage("Strategy calculation FAILURE.")
-        self.generateExecutiveSummary(self)
-        if self._strStatusMessage != None:
-            self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-            self.writeDataOutput()
-        self.setFailure()
+        # if self._xsDataResultCharacterisation is not None:
+        #     self.setDataOutput(self._xsDataResultCharacterisation)
+        self.checkIfExecuteFbest("Strategy calculation FAILURE.")
+        # self.generateExecutiveSummary(self)
+        # if self._strStatusMessage != None:
+        #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
+        #     self.writeDataOutput()
+        # self.setFailure()
 
 
     def checkIfExecuteFbest(self, _strMessage):
         self.sendMessageToMXCuBE(_strMessage, "warning")
-        if self._fAverageDozorScore > 1.0:
+        if self._fAverageDozorScore > 0.001:
             self.executeFbest()
         else:
             strMessage = "Not running Fbest due to low average dozor score ({0:.3f})".format(self._fAverageDozorScore)
@@ -733,7 +732,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         # xsDataInputFbest.slitX = XSDataDouble(0.0)
         # xsDataInputFbest.slitY = XSDataDouble(0.0)
         # xsDataInputFbest.rotationRange = XSDataDouble(0.0)
-        # xsDataInputFbest.rotationWidth = XSDataDouble(0.0)
+        xsDataInputFbest.rotationWidth = XSDataDouble(0.2)
         xsDataInputFbest.minExposureTime = XSDataDouble(minExposureTime)
         # xsDataInputFbest.doseLimit = XSDataDouble(0.0)
         # xsDataInputFbest.doseRate = XSDataDouble(0.0)
