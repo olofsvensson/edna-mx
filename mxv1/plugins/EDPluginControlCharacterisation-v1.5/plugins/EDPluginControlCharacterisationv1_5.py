@@ -377,8 +377,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                         self._iNoImagesWithDozorScore = 0
                         self._fAverageDozorScore = 0.0
                     fNewDozorScore = xsDataImageQualityIndicators.dozor_score.value
-                    if fNewDozorScore > 0.001:
-                        self._iNoImagesWithDozorScore += 1
+                    self._iNoImagesWithDozorScore += 1
                     self._fAverageDozorScore = self._fAverageDozorScore + ( fNewDozorScore - self._fAverageDozorScore ) / nScores
                     nScores += 1
                 self._xsDataResultCharacterisation.addImageQualityIndicators(xsDataImageQualityIndicators)
@@ -398,15 +397,19 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self._strCharacterisationShortSummary += indicatorsShortSummary
             self.sendMessageToMXCuBE(indicatorsShortSummary)
         if self._iNoImagesWithDozorScore is not None and self._iNoImagesWithDozorScore > 0:
-            if not self._bDoOnlyMoslmfIndexing:
-                strWarningMessage = "Execution Labelit indexing - trying to index with MOSFLM."
-                self.sendMessageToMXCuBE(strWarningMessage, "warning")
-            xsDataIndexingInput = XSDataIndexingInput()
-            xsDataIndexingInput.dataCollection = self._xsDataCollection
-            xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
-            xsDataIndexingInput.crystal = self._xsDataCrystal
-            self._edPluginControlIndexingMOSFLM.dataInput = xsDataIndexingInput
-            self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
+            if self._fAverageDozorScore > 10.0:
+                if not self._bDoOnlyMoslmfIndexing:
+                    strWarningMessage = "Execution Labelit indexing - trying to index with MOSFLM."
+                    self.sendMessageToMXCuBE(strWarningMessage, "warning")
+                xsDataIndexingInput = XSDataIndexingInput()
+                xsDataIndexingInput.dataCollection = self._xsDataCollection
+                xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
+                xsDataIndexingInput.crystal = self._xsDataCrystal
+                self._edPluginControlIndexingMOSFLM.dataInput = xsDataIndexingInput
+                self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
+            else:
+                strWarningMessage = "Execution of Indexing and Indicators plugin failed."
+                self.checkIfExecuteFbest(strWarningMessage)
         else:
             strErrorMessage = "Execution of Indexing and Indicators plugin failed."
             self.sendMessageToMXCuBE(strErrorMessage, "error")
