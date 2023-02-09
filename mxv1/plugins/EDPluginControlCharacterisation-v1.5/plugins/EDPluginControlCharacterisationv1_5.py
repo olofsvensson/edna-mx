@@ -143,6 +143,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._oServerProxy = None
         self._runKappa = False
         self._bDoOnlyMoslmfIndexing = False
+        self._fThresholdMosflmIndexing = None
+        self._fVMaxVisibleResolution = None
 
 
     def checkParameters(self):
@@ -167,7 +169,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._runKappa = self.config.get("runKappa", False)
         self._fMinTransmission = self.config.get("minTransmissionWarning", self._fMinTransmission)
         self._bDoOnlyMoslmfIndexing = self.config.get("doOnlyMosflmIndexing", False)
-
+        self._fThresholdMosflmIndexing = self.config.get("thresholdMosflmIndexing", 10.0)
 
 
     def preProcess(self, _edObject=None):
@@ -320,6 +322,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._edPluginControlXDSGenerateBackgroundImage.connectFAILURE(self.doFailureXDSGenerateBackgroundImage)
         self._edPluginControlStrategy.connectSUCCESS(self.doSuccessStrategy)
         self._edPluginControlStrategy.connectFAILURE(self.doFailureStrategy)
+        self.addStatusMessage("Starting Labelit indexing")
         self.executePluginSynchronous(self._edPluginControlIndexingIndicators)
 
 
@@ -369,7 +372,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             # self._xsDataResultCharacterisation.setIndexingResult(xsDataIndexingResult)
             self._edPluginExecEvaluationIndexingLABELIT.setDataInput(xsDataIndexingResult, "indexingResult")
         if self._edPluginControlIndexingIndicators.hasDataOutput("imageQualityIndicators"):
-            nScores = 1
+            nDozorScores = 1
             listXSDataImageQualityIndicators = self._edPluginControlIndexingIndicators.getDataOutput("imageQualityIndicators")
             for xsDataImageQualityIndicators in listXSDataImageQualityIndicators:
                 if xsDataImageQualityIndicators.dozor_score:
@@ -378,8 +381,12 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                         self._fAverageDozorScore = 0.0
                     fNewDozorScore = xsDataImageQualityIndicators.dozor_score.value
                     self._iNoImagesWithDozorScore += 1
-                    self._fAverageDozorScore = self._fAverageDozorScore + ( fNewDozorScore - self._fAverageDozorScore ) / nScores
-                    nScores += 1
+                    self._fAverageDozorScore = self._fAverageDozorScore + ( fNewDozorScore - self._fAverageDozorScore ) / nDozorScores
+                    nDozorScores += 1
+                if xsDataImageQualityIndicators.dozorVisibleResolution:
+                    fNewVisibleResolution = xsDataImageQualityIndicators.dozorVisibleResolution.value
+                    if self._fVMaxVisibleResolution is None or fNewVisibleResolution < self._fVMaxVisibleResolution:
+                        self._fVMaxVisibleResolution = fNewVisibleResolution
                 self._xsDataResultCharacterisation.addImageQualityIndicators(xsDataImageQualityIndicators)
                 self._edPluginExecEvaluationIndexingLABELIT.setDataInput(xsDataImageQualityIndicators, "imageQualityIndicators")
         if self._edPluginControlIndexingIndicators.hasDataOutput("indicatorsShortSummary"):
@@ -397,19 +404,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self._strCharacterisationShortSummary += indicatorsShortSummary
             self.sendMessageToMXCuBE(indicatorsShortSummary)
         if self._iNoImagesWithDozorScore is not None and self._iNoImagesWithDozorScore > 0:
-            if self._fAverageDozorScore > 10.0:
-                if not self._bDoOnlyMoslmfIndexing:
-                    strWarningMessage = "Execution Labelit indexing - trying to index with MOSFLM."
-                    self.sendMessageToMXCuBE(strWarningMessage, "warning")
-                xsDataIndexingInput = XSDataIndexingInput()
-                xsDataIndexingInput.dataCollection = self._xsDataCollection
-                xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
-                xsDataIndexingInput.crystal = self._xsDataCrystal
-                self._edPluginControlIndexingMOSFLM.dataInput = xsDataIndexingInput
-                self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
-            else:
-                strWarningMessage = "Execution of Indexing and Indicators plugin failed."
-                self.checkIfExecuteFbest(strWarningMessage)
+            self.checkIfIndexWithMosflm()
         else:
             strErrorMessage = "Execution of Indexing and Indicators plugin failed."
             self.sendMessageToMXCuBE(strErrorMessage, "error")
@@ -422,6 +417,25 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 self.writeDataOutput()
 
 
+    def checkIfIndexWithMosflm(self):
+        if self._fAverageDozorScore >= self._fThresholdMosflmIndexing:
+            if not self._bDoOnlyMoslmfIndexing:
+                strWarningMessage = "Labelit indexing failed, trying MOSFLM indexing " + \
+                                    "(average dozor score {0:.1f} >= threshold {1.1f}).".format(
+                                        self._fAverageDozorScore, self._fThresholdMosflmIndexing)
+                self.sendMessageToMXCuBE(strWarningMessage, "warning")
+            xsDataIndexingInput = XSDataIndexingInput()
+            xsDataIndexingInput.dataCollection = self._xsDataCollection
+            xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
+            xsDataIndexingInput.crystal = self._xsDataCrystal
+            self._edPluginControlIndexingMOSFLM.dataInput = xsDataIndexingInput
+            self.addStatusMessage("Starting MOSFLM indexing")
+            self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
+        else:
+            strWarningMessage = "Labelit indexing failed, not running Fbest because" +\
+                                " average dozor score {0:.1f} < threshold {1.1f}.".format(
+                                    self._fAverageDozorScore, self._fThresholdMosflmIndexing)
+            self.checkIfExecuteFbest(strWarningMessage)
 
 
     def doSuccessIndexingMOSFLM(self, _edPlugin=None):
@@ -466,21 +480,9 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self.indexingToIntegration()
         else:
             if self._iNoImagesWithDozorScore > 0:
-                if self._fAverageDozorScore > 10.0:
-                    if not self._bDoOnlyMoslmfIndexing:
-                        strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
-                        self.sendMessageToMXCuBE(strWarningMessage, "warning")
-                    xsDataIndexingInput = XSDataIndexingInput()
-                    xsDataIndexingInput.dataCollection = self._xsDataCollection
-                    xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
-                    xsDataIndexingInput.crystal = self._xsDataCrystal
-                    self._edPluginControlIndexingMOSFLM.setDataInput(xsDataIndexingInput)
-                    self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
-                else:
-                    strWarningMessage = "Execution of Indexing and Indicators plugin failed."
-                    self.checkIfExecuteFbest(strWarningMessage)
+                self.checkIfIndexWithMosflm()
             else:
-                strErrorMessage = "Execution of Indexing and Indicators plugin failed."
+                strErrorMessage = "Execution of Dozor failed."
                 self.sendMessageToMXCuBE(strErrorMessage, "error")
                 self.generateExecutiveSummary(self)
                 if self._xsDataResultCharacterisation is not None:
@@ -704,7 +706,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         if self._fAverageDozorScore > 0.001:
             self.executeFbest()
         else:
-            strMessage = "Not running Fbest due to low average dozor score ({0:.3f})".format(self._fAverageDozorScore)
+            strMessage = "Not running Fbest due to very low average dozor score ({0:.3f}). Characterisation failed.".format(self._fAverageDozorScore)
             self.sendMessageToMXCuBE(strMessage, "error")
             self.generateExecutiveSummary(self)
             if self._xsDataResultCharacterisation is not None:
@@ -727,7 +729,11 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         minExposureTime = beam.minExposureTimePerImage.value
         xsDataInputFbest = XSDataInputFbest()
         xsDataInputFbest.flux = XSDataDouble(flux)
-        xsDataInputFbest.resolution = XSDataDouble(2.0)
+        if self._fVMaxVisibleResolution is None:
+            xsDataInputFbest.resolution = XSDataDouble(2.0)
+            self.sendMessageToMXCuBE("Hard-coded resolution set to 2.0 A", "warning")
+        else:
+            xsDataInputFbest.resolution = XSDataDouble(self._fVMaxVisibleResolution)
         xsDataInputFbest.beamH = XSDataDouble(beamH * 1000)
         xsDataInputFbest.beamV = XSDataDouble(beamV * 1000)
         xsDataInputFbest.wavelength = XSDataDouble(wavelength)
