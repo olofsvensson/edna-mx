@@ -386,7 +386,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 if xsDataImageQualityIndicators.dozorVisibleResolution:
                     fNewVisibleResolution = xsDataImageQualityIndicators.dozorVisibleResolution.value
                     if self._fVMaxVisibleResolution is None or fNewVisibleResolution < self._fVMaxVisibleResolution:
-                        self._fVMaxVisibleResolution = fNewVisibleResolution
+                        if self._fVMaxVisibleResolution < 6.0: # Dozor returns max visible resolution 50 if no diffraction
+                            self._fVMaxVisibleResolution = fNewVisibleResolution
                 self._xsDataResultCharacterisation.addImageQualityIndicators(xsDataImageQualityIndicators)
                 self._edPluginExecEvaluationIndexingLABELIT.setDataInput(xsDataImageQualityIndicators, "imageQualityIndicators")
             if self._iNoImagesWithDozorScore is not None:
@@ -908,3 +909,13 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                         self._oServerProxy.log_message("Characterisation: " + strMessage, level)
             except:
                 self.DEBUG("Sending message to mxCuBE failed!")
+
+    def getResolutionFromMXCuBE(self):
+        fCurrentResolution = None
+        if self._strMxCuBE_URI is not None:
+            self.DEBUG("Trying to read resolution from MXCuBE")
+            try:
+                fCurrentResolution = float(self._oServerProxy.beamline_setup_read("/beamline/resolution"))
+            except Exception as e:
+                self.DEBUG("Cannot read resolution from MXCuBE!")
+        return fCurrentResolution
