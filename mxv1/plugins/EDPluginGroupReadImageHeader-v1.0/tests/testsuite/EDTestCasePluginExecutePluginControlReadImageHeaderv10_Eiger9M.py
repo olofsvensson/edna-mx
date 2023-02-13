@@ -44,7 +44,7 @@ class EDTestCasePluginExecutePluginControlReadImageHeaderv10_Eiger9M(EDTestCaseP
 
     def preProcess(self):
         EDTestCasePluginExecutePluginControlReadImageHeaderv10.preProcess(self)
-        self.loadTestImage([ "eiger9m_1_1000.cbf" ])
+        self.loadTestImage([ "ref-opid30b_1_0001.cbf" ])
 
 
 
