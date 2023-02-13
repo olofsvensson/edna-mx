@@ -1,6 +1,7 @@
 targetNamespace "http://www.edna-site.org"
 
 import XSDataCommon.XSData
+import XSDataCommon.XSDataDouble
 import XSDataCommon.XSDataInteger
 import XSDataCommon.XSDataString
 import XSDataCommon.XSDataFile
@@ -25,6 +26,7 @@ complex type XSDataInputMXCuBE extends XSDataInput {
 	dataSet : XSDataMXCuBEDataSet [] optional
 	htmlDir : XSDataFile optional
 	token : XSDataString optional
+	currentResolution : XSDataDouble optional
 }
 
 complex type XSDataMXCuBEDataSet {

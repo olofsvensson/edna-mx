@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Dec 10 02:32::54 2021 by EDGenerateDS.
+# Generated Thu Feb 9 10:58::29 2023 by EDGenerateDS.
 #
 
 import os, sys
@@ -12,6 +12,7 @@ from xml.dom import Node
 strEdnaHome = os.environ.get("EDNA_HOME", None)
 
 dictLocation = { \
+ "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
@@ -31,6 +32,7 @@ dictLocation = { \
 try:
     from XSDataCommon import XSData
     from XSDataCommon import XSDataDictionary
+    from XSDataCommon import XSDataDouble
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataInteger
@@ -55,6 +57,7 @@ except ImportError as error:
         raise error
 from XSDataCommon import XSData
 from XSDataCommon import XSDataDictionary
+from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataInteger
@@ -1322,7 +1325,7 @@ class XSDataMXCuBEParameters(XSData):
 
 
 class XSDataInputMXCuBE(XSDataInput):
-    def __init__(self, configuration=None, token=None, htmlDir=None, dataSet=None, sample=None, outputFileDirectory=None, experimentalCondition=None, diffractionPlan=None, dataCollectionId=None, characterisationInput=None):
+    def __init__(self, configuration=None, currentResolution=None, token=None, htmlDir=None, dataSet=None, sample=None, outputFileDirectory=None, experimentalCondition=None, diffractionPlan=None, dataCollectionId=None, characterisationInput=None):
         XSDataInput.__init__(self, configuration)
         if characterisationInput is None:
             self._characterisationInput = None
@@ -1386,6 +1389,13 @@ class XSDataInputMXCuBE(XSDataInput):
             self._token = token
         else:
             strMessage = "ERROR! XSDataInputMXCuBE constructor argument 'token' is not XSDataString but %s" % self._token.__class__.__name__
+            raise BaseException(strMessage)
+        if currentResolution is None:
+            self._currentResolution = None
+        elif currentResolution.__class__.__name__ == "XSDataDouble":
+            self._currentResolution = currentResolution
+        else:
+            strMessage = "ERROR! XSDataInputMXCuBE constructor argument 'currentResolution' is not XSDataDouble but %s" % self._currentResolution.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'characterisationInput' attribute
     def getCharacterisationInput(self): return self._characterisationInput
@@ -1516,6 +1526,18 @@ class XSDataInputMXCuBE(XSDataInput):
             raise BaseException(strMessage)
     def delToken(self): self._token = None
     token = property(getToken, setToken, delToken, "Property for token")
+    # Methods and properties for the 'currentResolution' attribute
+    def getCurrentResolution(self): return self._currentResolution
+    def setCurrentResolution(self, currentResolution):
+        if currentResolution is None:
+            self._currentResolution = None
+        elif currentResolution.__class__.__name__ == "XSDataDouble":
+            self._currentResolution = currentResolution
+        else:
+            strMessage = "ERROR! XSDataInputMXCuBE.setCurrentResolution argument is not XSDataDouble but %s" % currentResolution.__class__.__name__
+            raise BaseException(strMessage)
+    def delCurrentResolution(self): self._currentResolution = None
+    currentResolution = property(getCurrentResolution, setCurrentResolution, delCurrentResolution, "Property for currentResolution")
     def export(self, outfile, level, name_='XSDataInputMXCuBE'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1542,6 +1564,8 @@ class XSDataInputMXCuBE(XSDataInput):
             self.htmlDir.export(outfile, level, name_='htmlDir')
         if self._token is not None:
             self.token.export(outfile, level, name_='token')
+        if self._currentResolution is not None:
+            self.currentResolution.export(outfile, level, name_='currentResolution')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1592,6 +1616,11 @@ class XSDataInputMXCuBE(XSDataInput):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setToken(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'currentResolution':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setCurrentResolution(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
