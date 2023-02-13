@@ -145,6 +145,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._bDoOnlyMoslmfIndexing = False
         self._fThresholdMosflmIndexing = None
         self._fVMaxVisibleResolution = None
+        self._fCurrentResolution = None
+
 
 
     def checkParameters(self):
@@ -295,6 +297,12 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 strToken = xsDataInputCharacterisation.token.value
             else:
                 strToken = None
+
+            if xsDataInputCharacterisation.currentResolution is not None:
+                self._fCurrentResolution = xsDataInputCharacterisation.currentResolution.value
+            else:
+                self._fCurrentResolution = None
+
             if self._strMxCuBE_URI is not None:
                 self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
                 if strToken is None:
@@ -484,7 +492,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             # Then start the integration of the reference images
             self.indexingToIntegration()
         else:
-            if self._iNoImagesWithDozorScore > 0:
+            if self._iNoImagesWithDozorScore is not None and self._iNoImagesWithDozorScore > 0:
                 self.checkIfIndexWithMosflm()
             else:
                 strErrorMessage = "Execution of Dozor failed."
@@ -708,7 +716,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
 
     def checkIfExecuteFbest(self, _strMessage):
         self.sendMessageToMXCuBE(_strMessage, "warning")
-        if self._fAverageDozorScore > 0.001:
+        if self._fAverageDozorScore is not None and self._fAverageDozorScore > 0.001:
             self.executeFbest()
         else:
             strMessage = "Not running Fbest due to very low average dozor score ({0:.3f}). Characterisation failed.".format(self._fAverageDozorScore)
@@ -734,11 +742,20 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         minExposureTime = beam.minExposureTimePerImage.value
         xsDataInputFbest = XSDataInputFbest()
         xsDataInputFbest.flux = XSDataDouble(flux)
-        if self._fVMaxVisibleResolution is None:
-            xsDataInputFbest.resolution = XSDataDouble(2.0)
-            self.sendMessageToMXCuBE("Hard-coded resolution set to 2.0 A", "warning")
+        fFbestResolution = None
+        if self._fVMaxVisibleResolution is not None:
+            fFbestResolution = self._fVMaxVisibleResolution
+            self.addStatusMessage("Fbest resolution from Dozor visible resolution")
+        elif self._fCurrentResolution is not None:
+            fFbestResolution = self._fCurrentResolution
+            self.addStatusMessage("Fbest resolution from input file")
         else:
-            xsDataInputFbest.resolution = XSDataDouble(self._fVMaxVisibleResolution)
+            fFbestResolution = self.getResolutionFromMXCuBE()
+            if fFbestResolution is None:
+                self.sendMessageToMXCuBE("No input resolution, using default resolution", "warning")
+                fFbestResolution = 2.0
+        xsDataInputFbest.resolution = XSDataDouble(fFbestResolution)
+        self.addStatusMessage(f"Fbest resolution set to {fFbestResolution} A")
         xsDataInputFbest.beamH = XSDataDouble(beamH * 1000)
         xsDataInputFbest.beamV = XSDataDouble(beamV * 1000)
         xsDataInputFbest.wavelength = XSDataDouble(wavelength)
