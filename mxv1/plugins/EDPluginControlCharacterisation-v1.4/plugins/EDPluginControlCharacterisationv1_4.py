@@ -272,7 +272,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
                 strToken = xsDataInputCharacterisation.token.value
             else:
                 strToken = None
-            if self._strMxCuBE_URI is not None and "mxCuBE_XMLRPC_log" in os.environ.keys():
+            if self._strMxCuBE_URI is not None:
                 self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self._strMxCuBE_URI))
                 if strToken is None:
                     self._oServerProxy = ServerProxy(self._strMxCuBE_URI)
