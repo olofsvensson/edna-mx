@@ -142,6 +142,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
         self.xsDataSample = None
         self.xsDataDiffractionPlan = None
         self.xsDataToken = None
+        self.xsDataCurrentResolution = None
 
 
     def configure(self):
@@ -299,6 +300,8 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
                 self.iDataCollectionId = xsDataInputInterface.getDataCollectionId().getValue()
 
             self.xsDataToken = xsDataInputInterface.getToken()
+
+            self.xsDataCurrentResolution = xsDataInputInterface.getCurrentResolution()
 
         else:
 
@@ -563,6 +566,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
             xsDataCollection.setSample(XSDataSampleCrystalMM.parseString(self.xsDataSample.marshal()))
         self.xsDataInputCharacterisation.setDataCollection(xsDataCollection)
         self.xsDataInputCharacterisation.setToken(self.xsDataToken)
+        self.xsDataInputCharacterisation.setCurrentResolution(self.xsDataCurrentResolution)
 
 
     def generateTemplateFile(self, _edPlugin):

@@ -47,8 +47,8 @@ class EDTestCasePluginExecuteControlCharacterisationv1_5_indexingError(EDTestCas
         EDTestCasePluginExecuteControlCharacterisationv1_5.__init__(self, "EDTestCasePluginExecuteControlCharacterisationv1_5_indexingError")
         self.setConfigurationFile(self.getRefConfigFile())
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputCharacterisation_indexingError.xml"))
-        self.setNoExpectedWarningMessages(4)
-        self.setNoExpectedErrorMessages(1)
+        self.setNoExpectedWarningMessages(6)
+        self.setNoExpectedErrorMessages(2)
         self.setAcceptPluginFailure(True)
 
 

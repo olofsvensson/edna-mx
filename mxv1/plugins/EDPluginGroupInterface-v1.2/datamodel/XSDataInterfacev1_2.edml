@@ -40,6 +40,7 @@ complex type XSDataInputInterface {
 	comments : XSDataString optional
 	inputCharacterisation : XSDataInputCharacterisation optional
 	token : XSDataString optional
+	currentResolution : XSDataDouble optional
 }
 
 complex type XSDataResultInterface {

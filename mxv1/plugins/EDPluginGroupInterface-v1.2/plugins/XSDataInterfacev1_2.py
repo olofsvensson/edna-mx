@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Jan 17 01:39::49 2022 by EDGenerateDS.
+# Generated Thu Feb 9 11:00::30 2023 by EDGenerateDS.
 #
 
 import os, sys
@@ -153,7 +153,7 @@ class MixedContainer(object):
 
 
 class XSDataInputInterface(object):
-    def __init__(self, token=None, inputCharacterisation=None, comments=None, shortComments=None, dataCollectionId=None, transmission=None, wavelength=None, beamPosY=None, beamPosX=None, resultsFilePath=None, generatedTemplateFile=None, templateMode=None, beamSizeY=None, beamSizeX=None, beamSize=None, minExposureTimePerImage=None, flux=None, imagePath=None, sample=None, diffractionPlan=None, experimentalCondition=None):
+    def __init__(self, currentResolution=None, token=None, inputCharacterisation=None, comments=None, shortComments=None, dataCollectionId=None, transmission=None, wavelength=None, beamPosY=None, beamPosX=None, resultsFilePath=None, generatedTemplateFile=None, templateMode=None, beamSizeY=None, beamSizeX=None, beamSize=None, minExposureTimePerImage=None, flux=None, imagePath=None, sample=None, diffractionPlan=None, experimentalCondition=None):
         if experimentalCondition is None:
             self._experimentalCondition = None
         elif experimentalCondition.__class__.__name__ == "XSDataExperimentalCondition":
@@ -300,6 +300,13 @@ class XSDataInputInterface(object):
             self._token = token
         else:
             strMessage = "ERROR! XSDataInputInterface constructor argument 'token' is not XSDataString but %s" % self._token.__class__.__name__
+            raise BaseException(strMessage)
+        if currentResolution is None:
+            self._currentResolution = None
+        elif currentResolution.__class__.__name__ == "XSDataDouble":
+            self._currentResolution = currentResolution
+        else:
+            strMessage = "ERROR! XSDataInputInterface constructor argument 'currentResolution' is not XSDataDouble but %s" % self._currentResolution.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'experimentalCondition' attribute
     def getExperimentalCondition(self): return self._experimentalCondition
@@ -574,6 +581,18 @@ class XSDataInputInterface(object):
             raise BaseException(strMessage)
     def delToken(self): self._token = None
     token = property(getToken, setToken, delToken, "Property for token")
+    # Methods and properties for the 'currentResolution' attribute
+    def getCurrentResolution(self): return self._currentResolution
+    def setCurrentResolution(self, currentResolution):
+        if currentResolution is None:
+            self._currentResolution = None
+        elif currentResolution.__class__.__name__ == "XSDataDouble":
+            self._currentResolution = currentResolution
+        else:
+            strMessage = "ERROR! XSDataInputInterface.setCurrentResolution argument is not XSDataDouble but %s" % currentResolution.__class__.__name__
+            raise BaseException(strMessage)
+    def delCurrentResolution(self): self._currentResolution = None
+    currentResolution = property(getCurrentResolution, setCurrentResolution, delCurrentResolution, "Property for currentResolution")
     def export(self, outfile, level, name_='XSDataInputInterface'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -624,6 +643,8 @@ class XSDataInputInterface(object):
             self.inputCharacterisation.export(outfile, level, name_='inputCharacterisation')
         if self._token is not None:
             self.token.export(outfile, level, name_='token')
+        if self._currentResolution is not None:
+            self.currentResolution.export(outfile, level, name_='currentResolution')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -734,6 +755,11 @@ class XSDataInputInterface(object):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setToken(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'currentResolution':
+            obj_ = XSDataDouble()
+            obj_.build(child_)
+            self.setCurrentResolution(obj_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()
