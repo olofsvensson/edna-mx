@@ -123,7 +123,7 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
             strCommandText += " autoPROC_ScaleWithXscale='yes'"
 
         if self.rotationAxis is not None:
-            strCommandText += " autoPROC_XdsKeyword_ROTATION_AXIS=\"{0}\"".format(self.rotationAxis)
+            strCommandText += " XdsFormatSpecificJiffyRun=no autoPROC_XdsKeyword_ROTATION_AXIS=\"{0}\"".format(self.rotationAxis)
 
         # Master H5 file
         masterH5 = _xsDataInputAutoPROC.masterH5
