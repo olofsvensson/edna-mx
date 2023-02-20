@@ -48,6 +48,19 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
+			<name>EDPluginControlCharacterisationv1_5</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+ 					<value>http://id232control.esrf.fr:7171</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>doOnlyMosflmIndexing</name>
+					<value>true</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginControlImageQualityIndicatorsv1_4</name>  
 			<XSParamList>
 				<XSParamItem>

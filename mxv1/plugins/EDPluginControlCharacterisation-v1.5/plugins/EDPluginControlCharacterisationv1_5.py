@@ -386,7 +386,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 if xsDataImageQualityIndicators.dozorVisibleResolution:
                     fNewVisibleResolution = xsDataImageQualityIndicators.dozorVisibleResolution.value
                     if self._fVMaxVisibleResolution is None or fNewVisibleResolution < self._fVMaxVisibleResolution:
-                        if self._fVMaxVisibleResolution < 6.0: # Dozor returns max visible resolution 50 if no diffraction
+                        if self._fVMaxVisibleResolution is not None and self._fVMaxVisibleResolution < 6.0: # Dozor returns max visible resolution 50 if no diffraction
                             self._fVMaxVisibleResolution = fNewVisibleResolution
                 self._xsDataResultCharacterisation.addImageQualityIndicators(xsDataImageQualityIndicators)
                 self._edPluginExecEvaluationIndexingLABELIT.setDataInput(xsDataImageQualityIndicators, "imageQualityIndicators")
@@ -434,8 +434,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
             xsDataIndexingInput.crystal = self._xsDataCrystal
             self._edPluginControlIndexingMOSFLM.dataInput = xsDataIndexingInput
-            self.addStatusMessage("Starting MOSFLM indexing")
             self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
+            self.addStatusMessage("Starting MOSFLM indexing")
         else:
             strWarningMessage = "Labelit indexing failed, not running MOSFLM indexing because" +\
                                 " average dozor score {0:.1f} < threshold {1:.1f}.".format(
@@ -735,10 +735,15 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         xsDataInputFbest = XSDataInputFbest()
         xsDataInputFbest.flux = XSDataDouble(flux)
         if self._fVMaxVisibleResolution is None:
-            xsDataInputFbest.resolution = XSDataDouble(2.0)
-            self.sendMessageToMXCuBE("Hard-coded resolution set to 2.0 A", "warning")
+            fResolutionMXCuBE = self.getResolutionFromMXCuBE()
+            if fResolutionMXCuBE is None:
+                xsDataInputFbest.resolution = XSDataDouble(2.0)
+                self.sendMessageToMXCuBE("Hard-coded FBest resolution!", "warning")
+            else:
+                xsDataInputFbest.resolution = XSDataDouble(fResolutionMXCuBE)
         else:
             xsDataInputFbest.resolution = XSDataDouble(self._fVMaxVisibleResolution)
+        self.sendMessageToMXCuBE("Fbest resolution set to {0:.1f} A".format(xsDataInputFbest.resolution.value))
         xsDataInputFbest.beamH = XSDataDouble(beamH * 1000)
         xsDataInputFbest.beamV = XSDataDouble(beamV * 1000)
         xsDataInputFbest.wavelength = XSDataDouble(wavelength)
@@ -803,7 +808,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         xsDataCollectionPlan.strategySummary = xsDataStrategySummary
         xsDataResultStrategy.addCollectionPlan(xsDataCollectionPlan)
         self._xsDataResultCharacterisation.setStrategyResult(xsDataResultStrategy)
-        self.screen(self._xsDataResultCharacterisation.marshal())
+        # self.screen(self._xsDataResultCharacterisation.marshal())
         self.addStatusMessage("Fbest strategy calculation successful.")
 
 
