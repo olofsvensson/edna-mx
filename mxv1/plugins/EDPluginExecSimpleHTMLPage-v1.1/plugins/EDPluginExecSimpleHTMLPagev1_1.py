@@ -143,7 +143,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             xsDataResultSimpleHTMLPage.setPathToHTMLDirectory(XSDataFile(XSDataString(strPyarchPath)))
             if not os.path.exists(strPyarchPath):
                 os.makedirs(strPyarchPath, 0o755)
-            shutil.copy(pathToJsonFile, strPyarchPath)
+            EDUtilsPath.systemCopyFile(pathToJsonFile, strPyarchPath)
             pathToJsonFile = os.path.join(strPyarchPath, os.path.basename(pathToJsonFile))
         # Write json file
         xsDataResultSimpleHTMLPage.pathToJsonFile = XSDataFile(XSDataString(pathToJsonFile))

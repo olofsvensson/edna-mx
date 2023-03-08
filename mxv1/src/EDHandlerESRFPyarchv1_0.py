@@ -29,9 +29,7 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os
 import time
-import shutil
 import tempfile
-import subprocess
 
 from EDVerbose import EDVerbose
 from EDUtilsImage import EDUtilsImage
@@ -184,8 +182,8 @@ class EDHandlerESRFPyarchv1_0:
             try:
                 strPathToPyArchHtmlDirectory = os.path.join(_strPathToPyarchDirectory, "index")
                 if os.path.exists(strPathToPyArchHtmlDirectory):
-                    shutil.rmtree(strPathToPyArchHtmlDirectory, ignore_errors=True)
-                shutil.copytree(_strPathToHTMLDir, strPathToPyArchHtmlDirectory)
+                    EDUtilsPath.systemRmTree(strPathToPyArchHtmlDirectory, ignore_errors=True)
+                EDUtilsPath.systemCopyTree(_strPathToHTMLDir, strPathToPyArchHtmlDirectory)
             except Exception as e:
                 EDVerbose.ERROR("EDHandlerESRFPyarchv1_0.copyHTMLFilesAndDir: Exception caught: %r" % e)
 

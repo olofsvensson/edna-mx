@@ -33,7 +33,8 @@ This is the test case for the EDUtilsFile static class.
 """
 
 
-import os, tempfile
+import os
+import tempfile
 
 from EDTestCase     import EDTestCase
 from EDVerbose      import EDVerbose
@@ -60,11 +61,69 @@ class EDTestCaseEDUtilsPath(EDTestCase):
         # Delete the test file
         os.remove(strPathTestFile)
         
-        
+    def testSystemCopyFile(self):
+        testText = "Test text"
+        file1 = tempfile.NamedTemporaryFile(prefix="file1_")
+        fileName1 = file1.name
+        file1.close()
+        with open(fileName1, "w") as f1:
+            f1.write(testText)
+        file2 = tempfile.NamedTemporaryFile(prefix="file2_")
+        file2.close()
+        fileName2 = file2.name
+        EDUtilsPath.systemCopyFile(fileName1, fileName2)
+        with open(fileName2) as f:
+            file2Content = f.read()
+        EDAssert.equal(testText, file2Content)
+
+    def testSystemCopyTree(self):
+        testText = "Test text"
+        dir1 = tempfile.mkdtemp(prefix= "dir1_")
+        testFileName = "test_file.txt"
+        testFilePath1 = os.path.join(dir1, testFileName)
+        with open(testFilePath1, "w") as f1:
+            f1.write(testText)
+        dir2 = tempfile.mkdtemp(prefix= "dir2_")
+        EDUtilsPath.systemCopyTree(dir1, dir2, dirs_exists_ok=True)
+        testFilePath2 = os.path.join(dir2, testFileName)
+        with open(testFilePath2) as f:
+            file2Content = f.read()
+        EDAssert.equal(testText, file2Content)
+
+    def testSystemRmTreeWithoutErrors(self):
+        testText = "Test text"
+        dir1 = tempfile.mkdtemp(prefix= "dir1_")
+        testFileName = "test_file.txt"
+        testFilePath1 = os.path.join(dir1, testFileName)
+        with open(testFilePath1, "w") as f1:
+            f1.write(testText)
+        EDUtilsPath.systemRmTree(dir1, ignore_errors=False)
+
+    def testSystemRmTreeWithErrors(self):
+        # try with ignore_errors=False
+        dir1 = "/a/path/which/does/not/exists"
+        try:
+            EDUtilsPath.systemRmTree(dir1, ignore_errors=False)
+            exception_caught = False
+        except Exception as e:
+            exception_caught = True
+        EDAssert.equal(True, exception_caught)
+        # try with ignore_errors=True
+        try:
+            EDUtilsPath.systemRmTree(dir1, ignore_errors=True)
+            exception_caught = False
+        except Exception as e:
+            exception_caught = True
+        EDAssert.equal(False, exception_caught)
+
 
 
     def process(self):
         self.addTestMethod(self.testGetEdnaUserTempFolder)
+        self.addTestMethod(self.testSystemCopyFile)
+        self.addTestMethod(self.testSystemCopyTree)
+        self.addTestMethod(self.testSystemRmTreeWithoutErrors)
+        self.addTestMethod(self.testSystemRmTreeWithErrors)
 
 
 if __name__ == '__main__':

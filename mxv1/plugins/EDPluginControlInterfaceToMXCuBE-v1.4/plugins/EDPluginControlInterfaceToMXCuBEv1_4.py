@@ -27,11 +27,9 @@ __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os
-import shutil
 import smtplib
 import time
 import socket
-import shutil
 import tempfile
 
 try:
@@ -407,7 +405,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                 if not os.path.exists(strPyarchWorkflowStepImage):
                     if not os.path.exists(os.path.dirname(strPyarchWorkflowStepImage)):
                         os.makedirs(os.path.dirname(strPyarchWorkflowStepImage), 755)
-                    shutil.copy(strWorkflowStepImage, strPyarchWorkflowStepImage)
+                    EDUtilsPath.systemCopyFile(strWorkflowStepImage, strPyarchWorkflowStepImage)
                     os.chmod(strPyarchWorkflowStepImage, 0o644)
                 self.DEBUG("Workflow step image pyarch path: %s " % strPyarchWorkflowStepImage)
                 if self.edPluginControlInterface.dataOutput.resultControlISPyB is not None:
@@ -521,7 +519,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             if (os.path.exists(_strDNAFileDirectoryPath)):
                 self.warning("Removing existing DNA files directory: %s" % _strDNAFileDirectoryPath)
                 if (os.access(_strDNAFileDirectoryPath, os.W_OK)):
-                    shutil.rmtree(_strDNAFileDirectoryPath)
+                    EDUtilsPath.systemRmTree(_strDNAFileDirectoryPath)
                 else:
                     self.warning("Cannot remove existing DNA files directory!")
             if (_strDNAFileDirectoryPath is not None):
@@ -845,7 +843,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                 # Potentially unsafe but very unlikely that this will cause problems
                 htmlDir = tempfile.mktemp(prefix=os.path.basename(htmlDir),
                                           dir=os.path.dirname(htmlDir))
-            shutil.copytree(os.path.dirname(_edPlugin.dataOutput.pathToHTMLFile.path.value), htmlDir)
+            EDUtilsPath.systemCopyTree(os.path.dirname(_edPlugin.dataOutput.pathToHTMLFile.path.value), htmlDir)
             htmlPage = os.path.join(htmlDir, os.path.basename(_edPlugin.dataOutput.pathToHTMLFile.path.value))
             self.xsDataResultMXCuBE.setHtmlPage(XSDataFile(XSDataString(htmlPage)))
 

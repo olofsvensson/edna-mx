@@ -113,7 +113,7 @@ class EDTestCaseEDHandlerESRFPyarchv1_0(EDTestCasePluginUnit):
         EDAssert.equal(True, os.path.exists(pyarch_path))
         year = time.strftime("%Y", time.localtime(time.time()))
         EDAssert.equal(True, pyarch_path.startswith("/data/pyarch/{0}/id30a2/reprocess/EDNA_proc/123456".format(year)))
-        shutil.rmtree(pyarch_path)
+        EDUtilsPath.systemRmTree(pyarch_path)
 
 
 
@@ -133,7 +133,7 @@ class EDTestCaseEDHandlerESRFPyarchv1_0(EDTestCasePluginUnit):
         if not os.path.exists(EDUtilsPath.getEdnaUserTempFolder()):
             os.mkdir(EDUtilsPath.getEdnaUserTempFolder())
         strTestFromDir = os.path.join(EDUtilsPath.getEdnaUserTempFolder(), "TestFromDir")
-        shutil.rmtree(strTestFromDir, ignore_errors=True)
+        EDUtilsPath.systemRmTree(strTestFromDir, ignore_errors=True)
         os.mkdir(strTestFromDir)
         strTestHtmlFilePath = os.path.join(strTestFromDir, "index.html")
         strTestHtmlDirPath = os.path.join(strTestFromDir, "index")
@@ -144,7 +144,7 @@ class EDTestCaseEDHandlerESRFPyarchv1_0(EDTestCasePluginUnit):
         EDUtilsFile.writeFile(strTestHtmlDirFilePath, "Test content")
         #
         strTestToDir = os.path.join(EDUtilsPath.getEdnaUserTempFolder(), "TestToDir")
-        shutil.rmtree(strTestToDir, ignore_errors=True)
+        EDUtilsPath.systemRmTree(strTestToDir, ignore_errors=True)
         os.mkdir(strTestToDir)
         EDHandlerESRFPyarchv1_0.copyHTMLDir(strTestFromDir, strTestToDir)
         #
@@ -152,8 +152,8 @@ class EDTestCaseEDHandlerESRFPyarchv1_0(EDTestCasePluginUnit):
         EDAssert.isFile(os.path.join(strTestToDir, "index", "index.html"))
         EDAssert.isFile(os.path.join(strTestToDir, "index", "index", "test.txt"))
         #
-        shutil.rmtree(strTestFromDir, ignore_errors=True)
-        shutil.rmtree(strTestToDir, ignore_errors=True)
+        EDUtilsPath.systemRmTree(strTestFromDir, ignore_errors=True)
+        EDUtilsPath.systemRmTree(strTestToDir, ignore_errors=True)
 
 
 

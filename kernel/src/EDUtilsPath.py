@@ -33,10 +33,20 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20120216"
 
 
-import os, glob, tempfile, getpass, hashlib
+import os
+import glob
+import getpass
+import hashlib
+import subprocess
+import tempfile
+
+from os.path import dirname
+from os.path import abspath
+from os.path import exists
+
 from EDThreading import Semaphore
 from EDVerbose import EDVerbose
-from os.path import dirname, abspath, exists
+
 
 class classproperty(property):
     def __get__(self, obj, type_):
@@ -400,3 +410,29 @@ class EDUtilsPath:
                "${TMPDIR}": cls._TMPDIR
                }
         return res
+
+    @classmethod
+    def systemCopyFile(cls, _fromPath, _toPath):
+        p = subprocess.Popen(["cp", _fromPath, _toPath])
+        p.wait()
+
+    @classmethod
+    def systemRmTree(cls, _treePath, ignore_errors=False):
+        try:
+            if ignore_errors:
+                subprocess.check_call(f"rm -rf {_treePath}", shell=True)
+            else:
+                subprocess.check_call(f"rm -r {_treePath} 2>&1 > /dev/null", shell=True)
+        except subprocess.CalledProcessError:
+            if not ignore_errors:
+                raise
+
+    @classmethod
+    def systemCopyTree(cls, _fromPath, _toPath, dirs_exists_ok=False):
+        if os.path.exists(_toPath):
+            if dirs_exists_ok:
+                EDUtilsPath.systemRmTree(_toPath)
+            else:
+                raise FileExistsError(_toPath)
+        p = subprocess.Popen(["cp", "-r", _fromPath, _toPath])
+        p.wait()
