@@ -314,6 +314,7 @@ package XSDataMXv1 {
 			requiredResolution : XSDataDouble optional
 			rFriedel : XSDataDouble optional
 			strategyOption : XSDataString optional
+			strategyType : XSDataString optional
 			userDefinedRotationRange : XSDataAngle optional
 			userDefinedRotationStart : XSDataAngle optional
 		}
