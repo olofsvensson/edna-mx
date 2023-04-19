@@ -125,6 +125,9 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         if self.rotationAxis is not None:
             strCommandText += " XdsFormatSpecificJiffyRun=no autoPROC_XdsKeyword_ROTATION_AXIS=\"{0}\"".format(self.rotationAxis)
 
+        # Make sure we only store PDF files in summary html file
+        strCommandText += " autoPROC_Summary2Base64_ConvertExtensions=\"pdf\""
+
         # Master H5 file
         masterH5 = _xsDataInputAutoPROC.masterH5
         if masterH5 is None:
