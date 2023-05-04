@@ -420,9 +420,9 @@ class EDUtilsPath:
     def systemRmTree(cls, _treePath, ignore_errors=False):
         try:
             if ignore_errors:
-                subprocess.check_call(f"rm -rf {_treePath}", shell=True)
+                subprocess.check_call("rm -rf {0}".format(_treePath), shell=True)
             else:
-                subprocess.check_call(f"rm -r {_treePath} 2>&1 > /dev/null", shell=True)
+                subprocess.check_call("rm -r {0} 2>&1 > /dev/null".format(_treePath), shell=True)
         except subprocess.CalledProcessError:
             if not ignore_errors:
                 raise

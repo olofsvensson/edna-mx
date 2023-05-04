@@ -754,7 +754,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 self.sendMessageToMXCuBE("No input resolution, using default resolution", "warning")
                 fFbestResolution = 2.0
         xsDataInputFbest.resolution = XSDataDouble(fFbestResolution)
-        self.addStatusMessage(f"Fbest resolution set to {fFbestResolution} A")
+        self.addStatusMessage("Fbest resolution set to {0} A".format(fFbestResolution))
         xsDataInputFbest.beamH = XSDataDouble(beamH * 1000)
         xsDataInputFbest.beamV = XSDataDouble(beamV * 1000)
         xsDataInputFbest.wavelength = XSDataDouble(wavelength)
