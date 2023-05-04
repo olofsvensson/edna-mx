@@ -128,6 +128,8 @@ class EDPluginExecAutoPROCv1_0(EDPluginExecProcessScript):
         # Make sure we only store PDF files in summary html file
         strCommandText += " autoPROC_Summary2Base64_ConvertExtensions=\"pdf\""
 
+        strCommandText += " autoPROC_Summary2Base64_ModalExtensions=\"LP html log mrfana pdb stats table1 xml sca\""
+
         # Master H5 file
         masterH5 = _xsDataInputAutoPROC.masterH5
         if masterH5 is None:
