@@ -146,7 +146,9 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._fThresholdMosflmIndexing = None
         self._fVMaxVisibleResolution = None
         self._fCurrentResolution = None
-
+        self._strStrategyType = None
+        self._bDoOnlyFbest = False
+        self._bMoslmWithoutThreshold = True
 
     def checkParameters(self):
         """
@@ -171,6 +173,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._fMinTransmission = self.config.get("minTransmissionWarning", self._fMinTransmission)
         self._bDoOnlyMoslmfIndexing = self.config.get("doOnlyMosflmIndexing", False)
         self._fThresholdMosflmIndexing = float(self.config.get("thresholdMosflmIndexing", 10.0))
+        self._strStrategyType = self.config.get("strategyType", None)
 
 
     def preProcess(self, _edObject=None):
@@ -204,6 +207,25 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             # create Data Input for indexing
             xsDataInputCharacterisation = self.getDataInput()
             self._xsDataCollection = xsDataInputCharacterisation.getDataCollection()
+            self._xsDataDiffractionPlan = self._xsDataCollection.getDiffractionPlan()
+            self._bDoOnlyFbest = False
+            self._bMoslmWithoutThreshold = True
+            if self._xsDataDiffractionPlan.strategyType is not None:
+                self._strStrategyType = self._xsDataDiffractionPlan.strategyType.value
+            if self._strStrategyType is None:
+                self._strStrategyType = "full"
+            if self._strStrategyType.lower() == "fbest":
+                self.sendMessageToMXCuBE("FBEST strategy (instead of BEST)", "info")
+                self._bDoOnlyFbest = True
+                self._bDoStrategyCalculation = False
+            elif self._strStrategyType.lower() == "fast":
+                self.sendMessageToMXCuBE("FAST strategy: Labelit, MOSLFM only if diffraction signal above threshold, and BEST", "info")
+                self._bMoslmWithoutThreshold = False
+            elif self._strStrategyType.lower() == "full":
+                self.sendMessageToMXCuBE("FULL strategy: Labelit, MOSLFM and BEST", "info")
+            else:
+                self.sendMessageToMXCuBE(f"Unknow strategy type: {self._strStrategyType}", "warning")
+                self.sendMessageToMXCuBE("Using FULL strategy: Labelit, MOSLFM and BEST", "warning")
             # MXSUP-1445: Check if transmission is less than 10% and warn if it's the case
             xsDataFirstSubWedge = self._xsDataCollection.getSubWedge()[0]
             xsDataBeam = xsDataFirstSubWedge.getExperimentalCondition().getBeam()
@@ -405,7 +427,10 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             indicatorsShortSummary = self._edPluginControlIndexingIndicators.getDataOutput("indicatorsShortSummary")[0].getValue()
             self._strCharacterisationShortSummary += indicatorsShortSummary
             self.sendMessageToMXCuBE(indicatorsShortSummary)
-        self.executePluginSynchronous(self._edPluginExecEvaluationIndexingLABELIT)
+        if self._bDoOnlyFbest:
+            self.checkIfExecuteFbest("Running Fbest")
+        else:
+            self.executePluginSynchronous(self._edPluginExecEvaluationIndexingLABELIT)
 
 
     def doFailureIndexingIndicators(self, _edPlugin=None):
@@ -430,7 +455,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
 
 
     def checkIfIndexWithMosflm(self):
-        if self._fAverageDozorScore >= self._fThresholdMosflmIndexing:
+        if self._fAverageDozorScore >= self._fThresholdMosflmIndexing or self._bMoslmWithoutThreshold:
             if not self._bDoOnlyMoslmfIndexing:
                 strWarningMessage = "Labelit indexing failed, trying MOSFLM indexing " + \
                                     "(average dozor score {0:.1f} >= threshold {1:.1f}).".format(
@@ -662,6 +687,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             xsDataInputStrategy.setDiffractionPlan(self._xsDataResultCharacterisation.getDataCollection().getDiffractionPlan())
             self._edPluginControlStrategy.setDataInput(xsDataInputStrategy)
             self.executePluginSynchronous(self._edPluginControlStrategy)
+        else:
+            self.executeFbest()
 
 
 
@@ -715,7 +742,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
 
     def checkIfExecuteFbest(self, _strMessage):
         self.sendMessageToMXCuBE(_strMessage, "warning")
-        if self._fAverageDozorScore is not None and self._fAverageDozorScore > 0.001:
+        if self._bDoOnlyFbest or (self._fAverageDozorScore is not None and self._fAverageDozorScore > 0.001):
             self.executeFbest()
         else:
             strMessage = "Not running Fbest due to very low average dozor score ({0:.3f}). Characterisation failed.".format(self._fAverageDozorScore)
