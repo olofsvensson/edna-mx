@@ -213,7 +213,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             if self._xsDataDiffractionPlan.strategyType is not None:
                 self._strStrategyType = self._xsDataDiffractionPlan.strategyType.value
             if self._strStrategyType is None:
-                self._strStrategyType = "full"
+                self._strStrategyType = "fast"
             if self._strStrategyType.lower() == "fbest":
                 self.sendMessageToMXCuBE("FBEST strategy (instead of BEST)", "info")
                 self._bDoOnlyFbest = True
@@ -465,9 +465,9 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             xsDataIndexingInput.dataCollection = self._xsDataCollection
             xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
             xsDataIndexingInput.crystal = self._xsDataCrystal
-            self._edPluginControlIndexingMOSFLM.dataInput = xsDataIndexingInput
-            self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
+            self._edPluginControlIndexingMOSFLM.setDataInput(xsDataIndexingInput)
             self.addStatusMessage("Starting MOSFLM indexing")
+            self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
         else:
             strWarningMessage = "Labelit indexing failed, not running MOSFLM indexing because" +\
                                 " average dozor score {0:.1f} < threshold {1:.1f}.".format(
@@ -778,10 +778,12 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         else:
             fFbestResolution = self.getResolutionFromMXCuBE()
             if fFbestResolution is None:
-                self.sendMessageToMXCuBE("No input resolution, using default resolution", "warning")
+                self.addStatusMessage("No input resolution, using default resolution", "warning")
                 fFbestResolution = 2.0
+            else:
+                self.addStatusMessage("Fbest resolution from MXCuBE")
         xsDataInputFbest.resolution = XSDataDouble(fFbestResolution)
-        self.addStatusMessage("Fbest resolution set to {0} A".format(fFbestResolution))
+        self.addStatusMessage("Fbest resolution set to {0:.2f} A".format(fFbestResolution))
         xsDataInputFbest.beamH = XSDataDouble(beamH * 1000)
         xsDataInputFbest.beamV = XSDataDouble(beamV * 1000)
         xsDataInputFbest.wavelength = XSDataDouble(wavelength)

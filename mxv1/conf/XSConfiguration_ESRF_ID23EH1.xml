@@ -27,6 +27,27 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
+			<name>EDPluginControlCharacterisationv1_5</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+					<value>http://id231control.esrf.fr:7171</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>runKappa</name>
+					<value>true</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>thresholdMosflmIndexing</name>
+					<value>10</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+					<value>http://id231control.esrf.fr:7171</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginControlImageQualityIndicatorsv1_2</name>  
 			<XSParamList>
 				<XSParamItem>
