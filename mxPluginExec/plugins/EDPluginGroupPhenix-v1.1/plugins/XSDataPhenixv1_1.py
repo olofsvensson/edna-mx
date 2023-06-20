@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Sun May 1 08:42::05 2016 by EDGenerateDS.
+# Generated Tue Jun 20 04:21::28 2023 by EDGenerateDS.
 #
 
 import os, sys
@@ -2304,9 +2304,9 @@ class XSDataResultDistlSignalStrength(XSDataResult):
 # end class XSDataResultDistlSignalStrength
 
 
-class XSDataResultLabelitIndexing(XSDataInput):
-    def __init__(self, configuration=None, mosflmScriptsOutput=None, screenOutput=None):
-        XSDataInput.__init__(self, configuration)
+class XSDataResultLabelitIndexing(XSDataResult):
+    def __init__(self, status=None, mosflmScriptsOutput=None, screenOutput=None):
+        XSDataResult.__init__(self, status)
         if screenOutput is None:
             self._screenOutput = None
         elif screenOutput.__class__.__name__ == "XSDataLabelitScreenOutput":
@@ -2352,7 +2352,7 @@ class XSDataResultLabelitIndexing(XSDataInput):
         showIndent(outfile, level)
         outfile.write(unicode('</%s>\n' % name_))
     def exportChildren(self, outfile, level, name_='XSDataResultLabelitIndexing'):
-        XSDataInput.exportChildren(self, outfile, level, name_)
+        XSDataResult.exportChildren(self, outfile, level, name_)
         if self._screenOutput is not None:
             self.screenOutput.export(outfile, level, name_='screenOutput')
         if self._mosflmScriptsOutput is not None:
@@ -2372,7 +2372,7 @@ class XSDataResultLabelitIndexing(XSDataInput):
             obj_ = XSDataLabelitMosflmScriptsOutput()
             obj_.build(child_)
             self.setMosflmScriptsOutput(obj_)
-        XSDataInput.buildChildren(self, child_, nodeName_)
+        XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
         oStreamString = StringIO()

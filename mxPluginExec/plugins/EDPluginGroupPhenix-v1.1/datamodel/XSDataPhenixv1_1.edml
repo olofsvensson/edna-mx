@@ -113,7 +113,7 @@ complex type XSDataInputLabelitIndexing extends XSDataInput {
 }
 
 
-complex type XSDataResultLabelitIndexing extends XSDataInput {
+complex type XSDataResultLabelitIndexing extends XSDataResult {
 	screenOutput : XSDataLabelitScreenOutput optional
 	mosflmScriptsOutput : XSDataLabelitMosflmScriptsOutput optional
 }
