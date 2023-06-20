@@ -413,10 +413,10 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                     self._iNoImagesWithDozorScore += 1
                     self._fAverageDozorScore = self._fAverageDozorScore + ( fNewDozorScore - self._fAverageDozorScore ) / nDozorScores
                     nDozorScores += 1
-                if xsDataImageQualityIndicators.dozorVisibleResolution:
+                if xsDataImageQualityIndicators.dozorVisibleResolution is not None:
                     fNewVisibleResolution = xsDataImageQualityIndicators.dozorVisibleResolution.value
-                    if self._fVMaxVisibleResolution is None or fNewVisibleResolution < self._fVMaxVisibleResolution:
-                        if self._fVMaxVisibleResolution is not None and self._fVMaxVisibleResolution < 6.0: # Dozor returns max visible resolution 50 if no diffraction
+                    if fNewVisibleResolution < 6.0: # Dozor returns max visible resolution 50 if no diffraction
+                        if self._fVMaxVisibleResolution is None or fNewVisibleResolution < self._fVMaxVisibleResolution:
                             self._fVMaxVisibleResolution = fNewVisibleResolution
                 self._xsDataResultCharacterisation.addImageQualityIndicators(xsDataImageQualityIndicators)
                 self._edPluginExecEvaluationIndexingLABELIT.setDataInput(xsDataImageQualityIndicators, "imageQualityIndicators")
@@ -779,7 +779,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         else:
             fFbestResolution = self.getResolutionFromMXCuBE()
             if fFbestResolution is None:
-                self.addStatusMessage("No input resolution, using default resolution", "warning")
+                self.addStatusMessage("No input resolution, using default resolution")
                 fFbestResolution = 2.0
             else:
                 self.addStatusMessage("Fbest resolution from MXCuBE")
