@@ -179,7 +179,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
     def preProcess(self, _edObject=None):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlCharacterisationv1_5.preProcess")
-        self.screen("EDPluginControlCharacterisationv1_5")
+        self.sendMessageToMXCuBE("EDPluginControlCharacterisationv1_5")
         self._xsDataResultCharacterisation = XSDataResultCharacterisation()
         # Load the plugins
         self._edPluginControlIndexingIndicators = self.loadPlugin(self._strPluginControlIndexingIndicators, \
@@ -351,7 +351,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._edPluginControlXDSGenerateBackgroundImage.connectFAILURE(self.doFailureXDSGenerateBackgroundImage)
         self._edPluginControlStrategy.connectSUCCESS(self.doSuccessStrategy)
         self._edPluginControlStrategy.connectFAILURE(self.doFailureStrategy)
-        self.addStatusMessage("Starting Labelit indexing")
+        if not self._bDoOnlyMoslmfIndexing:
+            self.addStatusMessage("Starting Labelit indexing")
         self.executePluginSynchronous(self._edPluginControlIndexingIndicators)
 
 

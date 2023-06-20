@@ -86,6 +86,7 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.configure")
         self.bDoLabelitIndexing = self.config.get("doLabelitIndexing", self.bDoLabelitIndexing)
+        self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.configure: doLabelitIndexing = {0}".format(self.bDoLabelitIndexing))
 
     def checkParameters(self):
         """
