@@ -496,8 +496,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doSuccessEvaluationIndexingLABELIT")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv1_5.doSuccessEvaluationIndexingLABELIT")
         # Retrieve status messages (if any)
-        if self._edPluginExecEvaluationIndexingLABELIT.hasDataOutput("statusMessageIndexing"):
-            self.addStatusMessage("Labelit: " + self._edPluginExecEvaluationIndexingLABELIT.getDataOutput("statusMessageIndexing")[0].getValue())
+        # if self._edPluginExecEvaluationIndexingLABELIT.hasDataOutput("statusMessageIndexing"):
+        #     self.addStatusMessage("Labelit: " + self._edPluginExecEvaluationIndexingLABELIT.getDataOutput("statusMessageIndexing")[0].getValue())
         # Check if indexing was successful
         bIndexingSuccess = self._edPluginExecEvaluationIndexingLABELIT.getDataOutput("indexingSuccess")[0].getValue()
         if bIndexingSuccess:
@@ -511,7 +511,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             if self._edPluginControlIndexingIndicators.hasDataOutput("indexingShortSummary"):
                 indexingShortSummary = self._edPluginControlIndexingIndicators.getDataOutput("indexingShortSummary")[0].getValue()
                 self._strCharacterisationShortSummary += indexingShortSummary
-                self.sendMessageToMXCuBE(indexingShortSummary)
+                self.addStatusMessage(indexingShortSummary)
             # Start the generation of prediction images - we synchronize in the post-process
             self._edPluginControlGeneratePrediction.execute()
             # Then start the integration of the reference images
@@ -520,8 +520,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             if self._iNoImagesWithDozorScore is not None and self._iNoImagesWithDozorScore > 0:
                 self.checkIfIndexWithMosflm()
             else:
-                strErrorMessage = "Execution of Dozor failed."
-                self.sendMessageToMXCuBE(strErrorMessage, "error")
+                self.addStatusMessage("Execution of Dozor failed.", "error")
                 self.generateExecutiveSummary(self)
                 if self._xsDataResultCharacterisation is not None:
                     self.setDataOutput(self._xsDataResultCharacterisation)
@@ -534,8 +533,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doSuccessEvaluationIndexingMOSFLM")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlCharacterisationv1_5.doSuccessEvaluationIndexingMOSFLM")
         # Retrieve status messages (if any)
-        if self._edPluginExecEvaluationIndexingMOSFLM.hasDataOutput("statusMessageIndexing"):
-            self.addStatusMessage("MOSFLM: " + self._edPluginExecEvaluationIndexingMOSFLM.getDataOutput("statusMessageIndexing")[0].getValue())
+        # if self._edPluginExecEvaluationIndexingMOSFLM.hasDataOutput("statusMessageIndexing"):
+        #     self.addStatusMessage("MOSFLM: " + self._edPluginExecEvaluationIndexingMOSFLM.getDataOutput("statusMessageIndexing")[0].getValue())
         # Check if indexing was successful
         bIndexingSuccess = self._edPluginExecEvaluationIndexingMOSFLM.getDataOutput("indexingSuccess")[0].getValue()
         if bIndexingSuccess:
@@ -554,8 +553,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             # Then start the integration of the reference images
             self.indexingToIntegration()
         else:
-            strWarningMessage = "Execution of MOSFLM indexing failed."
-            self.checkIfExecuteFbest(strWarningMessage)
+            self.addStatusMessage("MOSFLM: no indexing solution found.")
+            self.checkIfExecuteFbest()
 
     def generateIndexingShortSummary(self, _xsDataIndexingResult):
         """
@@ -628,13 +627,14 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
 
     def doFailureEvaluationIndexingLABELIT(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureEvaluationIndexingLABELIT")
-        strWarningMessage = "Execution of indexing evaluation plugin failed."
-        self.checkIfExecuteFbest(strWarningMessage)
+        strWarningMessage =
+        self.addStatusMessage("Execution of Labelit indexing evaluation plugin failed.", "warning")
+        self.checkIfExecuteFbest()
 
     def doFailureEvaluationIndexingMOSFLM(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureEvaluationIndexingMOSFLM")
-        strWarningMessage = "Execution of indexing evaluation plugin failed."
-        self.checkIfExecuteFbest(strWarningMessage)
+        self.addStatusMessage("Execution of MOSFLM indexing evaluation plugin failed.", "warning")
+        self.checkIfExecuteFbest()
 
     def doSuccessGeneratePrediction(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doSuccessGeneratePrediction")
@@ -695,7 +695,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
 
     def doFailureIntegration(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureIntegration")
-        self.checkIfExecuteFbest("Integration FAILURE.")
+        self.addStatusMessage("MOSFLM integration of one or more images failed.", "warning")
+        self.checkIfExecuteFbest()
 
 
     def doSuccessXDSGenerateBackgroundImage(self, _edPlugin=None):
@@ -733,7 +734,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self.sendMessageToMXCuBE(strategyShortSummary)
         # if self._xsDataResultCharacterisation is not None:
         #     self.setDataOutput(self._xsDataResultCharacterisation)
-        self.checkIfExecuteFbest("Strategy calculation FAILURE.")
+        self.addStatusMessage("BEST strategy calulation failed.")
+        self.checkIfExecuteFbest()
         # self.generateExecutiveSummary(self)
         # if self._strStatusMessage != None:
         #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
@@ -741,21 +743,18 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         # self.setFailure()
 
 
-    def checkIfExecuteFbest(self, _strMessage):
-        self.sendMessageToMXCuBE(_strMessage, "warning")
+    def checkIfExecuteFbest(self):
         if self._bDoOnlyFbest or (self._fAverageDozorScore is not None and self._fAverageDozorScore > 0.001):
             self.executeFbest()
         else:
-            strMessage = "Not running Fbest due to very low average dozor score ({0:.3f}). Characterisation failed.".format(self._fAverageDozorScore)
-            self.sendMessageToMXCuBE(strMessage, "error")
+            self.sendMessageToMXCuBE("No diffraction detected therefore no strategy calculated.", "warning")
             self.generateExecutiveSummary(self)
             if self._xsDataResultCharacterisation is not None:
                 self.setDataOutput(self._xsDataResultCharacterisation)
             self.setFailure()
 
     def executeFbest(self):
-        strMessage = "Executing Fbest for minimal strategy"
-        self.addStatusMessage(strMessage)
+        self.addStatusMessage("Executing Fbest for minimal strategy")
         inputCharacterisation = self.getDataInput()
         dataCollection = inputCharacterisation.dataCollection
         subWedge = dataCollection.subWedge[0]
@@ -772,19 +771,18 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         fFbestResolution = None
         if self._fVMaxVisibleResolution is not None:
             fFbestResolution = self._fVMaxVisibleResolution
-            self.addStatusMessage("Fbest resolution from Dozor visible resolution")
+            self.addStatusMessage(f"Fbest resolution {fFbestResolution:.2f} A from Dozor visible resolution")
         elif self._fCurrentResolution is not None:
             fFbestResolution = self._fCurrentResolution
-            self.addStatusMessage("Fbest resolution from input file")
+            self.addStatusMessage(f"Fbest resolution {fFbestResolution:.2f} A from input file")
         else:
             fFbestResolution = self.getResolutionFromMXCuBE()
             if fFbestResolution is None:
-                self.addStatusMessage("No input resolution, using default resolution")
                 fFbestResolution = 2.0
+                self.addStatusMessage(f"No input resolution, using default resolution {fFbestResolution:.2f} A", "warning")
             else:
-                self.addStatusMessage("Fbest resolution from MXCuBE")
+                self.addStatusMessage(f"Fbest resolution {fFbestResolution:.2f} A from MXCuBE")
         xsDataInputFbest.resolution = XSDataDouble(fFbestResolution)
-        self.addStatusMessage("Fbest resolution set to {0:.2f} A".format(fFbestResolution))
         xsDataInputFbest.beamH = XSDataDouble(beamH * 1000)
         xsDataInputFbest.beamV = XSDataDouble(beamV * 1000)
         xsDataInputFbest.wavelength = XSDataDouble(wavelength)
@@ -801,56 +799,60 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._edPluginExecFbest.setDataInput(xsDataInputFbest)
         self.executePluginSynchronous(self._edPluginExecFbest)
         xsDataResultFbest = self._edPluginExecFbest.dataOutput
-        # Generate xsDataStrategyResult
-        xsDataResultStrategy = XSDataResultStrategy()
-        xsDataCollectionPlan = XSDataCollectionPlan()
-        xsDataCollectionPlan.collectionPlanNumber = XSDataInteger(1)
-        xsDataCollectionStrategy = XSDataCollection()
-        xsDataStrategySummary = XSDataStrategySummary()
-        xsDataSubWedge = XSDataSubWedge()
-        xsDataExperimentalCondition = XSDataExperimentalCondition()
-        xsDataGoniostat = XSDataGoniostat()
-        xsDataBeam = XSDataBeam()
-        if xsDataResultFbest.exposureTimePerImage is not None:
-            exposureTime = xsDataResultFbest.exposureTimePerImage.value
-            xsDataBeam.exposureTime = XSDataTime(exposureTime)
-        if xsDataResultFbest.transmission is not None:
-            xsDataBeam.transmission = xsDataResultFbest.transmission
-        if xsDataResultFbest.rotationWidth is not None:
-            rotationWidth = xsDataResultFbest.rotationWidth.value
-            xsDataGoniostat.oscillationWidth = XSDataAngle(rotationWidth)
-        if xsDataResultFbest.numberOfImages is not None:
-            numberOfImages = xsDataResultFbest.numberOfImages.value
-            xsDataGoniostat.rotationAxisStart = XSDataAngle(0.0)
-            xsDataGoniostat.rotationAxisEnd = XSDataAngle(numberOfImages * rotationWidth)
-        if xsDataResultFbest.resolution is not None:
-            resolution = xsDataResultFbest.resolution.value
-            xsDataStrategySummary.resolution = XSDataDouble(resolution)
-        if xsDataResultFbest.totalDose is not None:
-            totalDose = xsDataResultFbest.totalDose.value
-        # if xsDataResultFbest.totalExposureTime is not None:
-        #     totalExposureTime = xsDataResultFbest.totalExposureTime.value
-        #     xsDataStrategySummary.totalDataCollectionTime = XSDataTime(totalExposureTime)
-        if xsDataResultFbest.doseRate is not None:
-            doseRate = xsDataResultFbest.doseRate.value
-        if xsDataResultFbest.sensitivity is not None:
-            sensitivity = xsDataResultFbest.sensitivity.value
-        if xsDataResultFbest.minExposure is not None:
-            minExposure = xsDataResultFbest.minExposure.value
+        if xsDataResultFbest is None or self._edPluginExecFbest.isFailure():
+            self.addStatusMessage("Fbest execution failed", "error")
+            self.setFailure()
+        else:
+            # Generate xsDataStrategyResult
+            xsDataResultStrategy = XSDataResultStrategy()
+            xsDataCollectionPlan = XSDataCollectionPlan()
+            xsDataCollectionPlan.collectionPlanNumber = XSDataInteger(1)
+            xsDataCollectionStrategy = XSDataCollection()
+            xsDataStrategySummary = XSDataStrategySummary()
+            xsDataSubWedge = XSDataSubWedge()
+            xsDataExperimentalCondition = XSDataExperimentalCondition()
+            xsDataGoniostat = XSDataGoniostat()
+            xsDataBeam = XSDataBeam()
+            if xsDataResultFbest.exposureTimePerImage is not None:
+                exposureTime = xsDataResultFbest.exposureTimePerImage.value
+                xsDataBeam.exposureTime = XSDataTime(exposureTime)
+            if xsDataResultFbest.transmission is not None:
+                xsDataBeam.transmission = xsDataResultFbest.transmission
+            if xsDataResultFbest.rotationWidth is not None:
+                rotationWidth = xsDataResultFbest.rotationWidth.value
+                xsDataGoniostat.oscillationWidth = XSDataAngle(rotationWidth)
+            if xsDataResultFbest.numberOfImages is not None:
+                numberOfImages = xsDataResultFbest.numberOfImages.value
+                xsDataGoniostat.rotationAxisStart = XSDataAngle(0.0)
+                xsDataGoniostat.rotationAxisEnd = XSDataAngle(numberOfImages * rotationWidth)
+            if xsDataResultFbest.resolution is not None:
+                resolution = xsDataResultFbest.resolution.value
+                xsDataStrategySummary.resolution = XSDataDouble(resolution)
+            if xsDataResultFbest.totalDose is not None:
+                totalDose = xsDataResultFbest.totalDose.value
+            # if xsDataResultFbest.totalExposureTime is not None:
+            #     totalExposureTime = xsDataResultFbest.totalExposureTime.value
+            #     xsDataStrategySummary.totalDataCollectionTime = XSDataTime(totalExposureTime)
+            if xsDataResultFbest.doseRate is not None:
+                doseRate = xsDataResultFbest.doseRate.value
+            if xsDataResultFbest.sensitivity is not None:
+                sensitivity = xsDataResultFbest.sensitivity.value
+            if xsDataResultFbest.minExposure is not None:
+                minExposure = xsDataResultFbest.minExposure.value
 
 
-        xsDataExperimentalCondition.beam = xsDataBeam
-        xsDataExperimentalCondition.goniostat = xsDataGoniostat
-        xsDataExperimentalCondition.detector = detector
-        xsDataSubWedge.subWedgeNumber = XSDataInteger(1)
-        xsDataSubWedge.experimentalCondition = xsDataExperimentalCondition
-        xsDataCollectionStrategy.addSubWedge(xsDataSubWedge)
-        xsDataCollectionPlan.collectionStrategy = xsDataCollectionStrategy
-        xsDataCollectionPlan.strategySummary = xsDataStrategySummary
-        xsDataResultStrategy.addCollectionPlan(xsDataCollectionPlan)
-        self._xsDataResultCharacterisation.setStrategyResult(xsDataResultStrategy)
-        # self.screen(self._xsDataResultCharacterisation.marshal())
-        self.addStatusMessage("Fbest strategy calculation successful.")
+            xsDataExperimentalCondition.beam = xsDataBeam
+            xsDataExperimentalCondition.goniostat = xsDataGoniostat
+            xsDataExperimentalCondition.detector = detector
+            xsDataSubWedge.subWedgeNumber = XSDataInteger(1)
+            xsDataSubWedge.experimentalCondition = xsDataExperimentalCondition
+            xsDataCollectionStrategy.addSubWedge(xsDataSubWedge)
+            xsDataCollectionPlan.collectionStrategy = xsDataCollectionStrategy
+            xsDataCollectionPlan.strategySummary = xsDataStrategySummary
+            xsDataResultStrategy.addCollectionPlan(xsDataCollectionPlan)
+            self._xsDataResultCharacterisation.setStrategyResult(xsDataResultStrategy)
+            # self.screen(self._xsDataResultCharacterisation.marshal())
+            self.addStatusMessage("Fbest strategy calculation successful.")
 
 
     def generateExecutiveSummary(self, _edPlugin):
@@ -926,11 +928,13 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         return self._strPluginControlStrategy
 
 
-    def addStatusMessage(self, _strStatusMessage):
+    def addStatusMessage(self, _strStatusMessage, level="info"):
         if self._strStatusMessage != "":
+            if not _strStatusMessage.endswith("."):
+                self._strStatusMessage += "."
             self._strStatusMessage += " "
         self._strStatusMessage += _strStatusMessage
-        self.sendMessageToMXCuBE(_strStatusMessage)
+        self.sendMessageToMXCuBE(_strStatusMessage, level=level)
 
 
     def doStrategyCalculation(self, _bValue):

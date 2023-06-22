@@ -101,29 +101,29 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
         self.setScriptLogFileName(self.compactPluginName(self.getClassName()) + ".log")
 
 
-    def postProcess(self, _edObject=None):
+    def finallyProcess(self, _edObject=None):
         """
         Parses the labelit.screen log file and the generated MOSFLM script
         """
         EDPluginLabelitv1_1.postProcess(self, _edObject)
-        self.DEBUG("EDPluginLabelitIndexingv1_1.postProcess...")
+        self.DEBUG("EDPluginLabelitIndexingv1_1.finallyProcess...")
         strLabelitLog = self.readProcessLogFile()
         if (strLabelitLog is None):
-            strErrorMessage = "EDPluginLabelitIndexingv1_1.postProcess : Could not read the Labelit log file"
+            strErrorMessage = "EDPluginLabelitIndexingv1_1.finallyProcess : Could not read the Labelit log file"
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             self.setFailure()
         else:
             xsDataLabelitScreenOutput = self.parseLabelitScreenOutput(strLabelitLog)
             if xsDataLabelitScreenOutput is None:
-                strErrorMessage = "EDPluginLabelitIndexingv1_1.postProcess : Cannot parse output"
+                strErrorMessage = "EDPluginLabelitIndexingv1_1.finallyProcess : Cannot parse output"
                 self.error(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
                 self.setFailure()
             else:
                 xsDataIntegerSelectedSolutionNumber = xsDataLabelitScreenOutput.getSelectedSolutionNumber()
                 if (xsDataIntegerSelectedSolutionNumber is None):
-                    strErrorMessage = "EDPluginLabelitIndexingv1_1.postProcess : No selected solution"
+                    strErrorMessage = "EDPluginLabelitIndexingv1_1.finallyProcess : No selected solution"
                     self.error(strErrorMessage)
                     self.addErrorMessage(strErrorMessage)
                     self.setFailure()
@@ -143,7 +143,7 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
         This method parses the labelit.screen log and populates the relevant
         parts of the XSDataLabelitScreenOutput object which is then returned.
         """
-        self.DEBUG("EDPluginLabelitIndexingv1_1.parseLabelitLogText")
+        self.DEBUG("EDPluginLabelitIndexingv1_1.parseLabelitScreenOutput")
         xsDataLabelitScreenOutput = None
 
         iIndex = 0
@@ -161,7 +161,7 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
                     bContinue = False
 
         if (bFoundLabelitIndexingResults == False):
-            strErrorMessage = "EDPluginLabelitIndexingv1_1.parseLabelitLogText : Labelit log message: %s" % _strLabelitLogText
+            strErrorMessage = "EDPluginLabelitIndexingv1_1.parseLabelitScreenOutput : Labelit log message: %s" % _strLabelitLogText
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
             self.setFailure()
@@ -207,8 +207,8 @@ class EDPluginLabelitIndexingv1_1(EDPluginLabelitv1_1):
                     strErrorMessage = "Indexing with labelit.screen failed! Log file:"
                     self.ERROR(strErrorMessage)
                     self.addErrorMessage(strErrorMessage)
-                    self.ERROR(_strLabelitLogText)
-                    self.addErrorMessage(_strLabelitLogText)
+                    # self.ERROR(_strLabelitLogText)
+                    # self.addErrorMessage(_strLabelitLogText)
                     self.setFailure()
                     bContinue = False
 
