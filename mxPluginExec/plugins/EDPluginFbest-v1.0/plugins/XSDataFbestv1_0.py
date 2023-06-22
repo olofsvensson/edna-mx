@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Oct 25 10:15::44 2017 by EDGenerateDS.
+# Generated Thu Jun 22 03:11::54 2023 by EDGenerateDS.
 #
 
 import os, sys
@@ -15,10 +15,12 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
     from XSDataCommon import XSDataDouble
+    from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
     from XSDataCommon import XSDataResult
 except ImportError as error:
@@ -32,6 +34,7 @@ except ImportError as error:
     else:
         raise error
 from XSDataCommon import XSDataDouble
+from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
 from XSDataCommon import XSDataResult
 
@@ -569,7 +572,7 @@ class XSDataInputFbest(XSDataInput):
 
 
 class XSDataResultFbest(XSDataResult):
-    def __init__(self, status=None, minExposure=None, sensitivity=None, doseRate=None, totalExposureTime=None, totalDose=None, resolution=None, rotationWidth=None, numberOfImages=None, transmission=None, exposureTimePerImage=None):
+    def __init__(self, status=None, fbestLogFile=None, minExposure=None, sensitivity=None, doseRate=None, totalExposureTime=None, totalDose=None, resolution=None, rotationWidth=None, numberOfImages=None, transmission=None, exposureTimePerImage=None):
         XSDataResult.__init__(self, status)
         if exposureTimePerImage is None:
             self._exposureTimePerImage = None
@@ -640,6 +643,13 @@ class XSDataResultFbest(XSDataResult):
             self._minExposure = minExposure
         else:
             strMessage = "ERROR! XSDataResultFbest constructor argument 'minExposure' is not XSDataDouble but %s" % self._minExposure.__class__.__name__
+            raise BaseException(strMessage)
+        if fbestLogFile is None:
+            self._fbestLogFile = None
+        elif fbestLogFile.__class__.__name__ == "XSDataFile":
+            self._fbestLogFile = fbestLogFile
+        else:
+            strMessage = "ERROR! XSDataResultFbest constructor argument 'fbestLogFile' is not XSDataFile but %s" % self._fbestLogFile.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'exposureTimePerImage' attribute
     def getExposureTimePerImage(self): return self._exposureTimePerImage
@@ -761,6 +771,18 @@ class XSDataResultFbest(XSDataResult):
             raise BaseException(strMessage)
     def delMinExposure(self): self._minExposure = None
     minExposure = property(getMinExposure, setMinExposure, delMinExposure, "Property for minExposure")
+    # Methods and properties for the 'fbestLogFile' attribute
+    def getFbestLogFile(self): return self._fbestLogFile
+    def setFbestLogFile(self, fbestLogFile):
+        if fbestLogFile is None:
+            self._fbestLogFile = None
+        elif fbestLogFile.__class__.__name__ == "XSDataFile":
+            self._fbestLogFile = fbestLogFile
+        else:
+            strMessage = "ERROR! XSDataResultFbest.setFbestLogFile argument is not XSDataFile but %s" % fbestLogFile.__class__.__name__
+            raise BaseException(strMessage)
+    def delFbestLogFile(self): self._fbestLogFile = None
+    fbestLogFile = property(getFbestLogFile, setFbestLogFile, delFbestLogFile, "Property for fbestLogFile")
     def export(self, outfile, level, name_='XSDataResultFbest'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -789,6 +811,8 @@ class XSDataResultFbest(XSDataResult):
             self.sensitivity.export(outfile, level, name_='sensitivity')
         if self._minExposure is not None:
             self.minExposure.export(outfile, level, name_='minExposure')
+        if self._fbestLogFile is not None:
+            self.fbestLogFile.export(outfile, level, name_='fbestLogFile')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -844,6 +868,11 @@ class XSDataResultFbest(XSDataResult):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setMinExposure(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'fbestLogFile':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setFbestLogFile(obj_)
         XSDataResult.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

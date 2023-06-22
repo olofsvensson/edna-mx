@@ -34,4 +34,5 @@ complex type XSDataResultFbest extends XSDataResult {
 	doseRate : XSDataDouble optional
 	sensitivity : XSDataDouble optional
 	minExposure : XSDataDouble optional
+	fbestLogFile : XSDataFile optional
 }
