@@ -552,6 +552,7 @@ package XSDataMXv1 {
 			"Several collection plans could be present in case of multi-sweep strategy"
 			bestGraphFile : XSDataFile [] optional
 			bestLogFile : XSDataFile optional
+			fbestLogFile : XSDataFile optional
 			collectionPlan : XSDataCollectionPlan [] optional
 			raddoseLogFile : XSDataFile optional
 			sample : XSDataSampleCrystalMM optional
