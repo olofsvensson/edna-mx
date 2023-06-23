@@ -27,6 +27,7 @@ complex type XSDataInputMXCuBE extends XSDataInput {
 	htmlDir : XSDataFile optional
 	token : XSDataString optional
 	currentResolution : XSDataDouble optional
+	outputFilePath : XSDataFile optional
 }
 
 complex type XSDataMXCuBEDataSet {
