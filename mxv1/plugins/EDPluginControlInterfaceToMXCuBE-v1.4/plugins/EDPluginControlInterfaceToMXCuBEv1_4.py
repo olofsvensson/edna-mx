@@ -31,6 +31,7 @@ import smtplib
 import time
 import socket
 import tempfile
+import xml
 
 try:
     from xmlrpclib import ServerProxy
@@ -154,6 +155,8 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.serverProxy = None
         self.minImageSize = 100000
         self.fMXWaitFileTimeOut = 60
+        self.strSubject = None
+        self.strMessage = None
 
     def checkParameters(self):
         """
@@ -216,8 +219,8 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.xsDataFirstImage = None
         dictH5ToCBFPlugin = {}
         pluginIndex = 1
-        for xsDataSetMXCuBE in xsDataInputMXCuBE.getDataSet():
-            for xsDataImage in xsDataSetMXCuBE.getImageFile():
+        for xsDataSetMXCuBE in xsDataInputMXCuBE.dataSet:
+            for xsDataImage in xsDataSetMXCuBE.imageFile:
                 if xsDataImage.path.value.endswith(".h5"):
                     self.bIsEigerDetector = True
                     xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
@@ -228,8 +231,8 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     edPluginControlH5ToCBF.execute()
                     dictH5ToCBFPlugin[xsDataImage.path.value] = edPluginControlH5ToCBF
                     pluginIndex += 1
-        for xsDataSetMXCuBE in xsDataInputMXCuBE.getDataSet():
-            for xsDataImage in xsDataSetMXCuBE.getImageFile():
+        for xsDataSetMXCuBE in xsDataInputMXCuBE.dataSet:
+            for xsDataImage in xsDataSetMXCuBE.imageFile:
                 if xsDataImage.path.value.endswith(".h5"):
                     edPluginControlH5ToCBF = dictH5ToCBFPlugin[xsDataImage.path.value]
                     edPluginControlH5ToCBF.synchronize()
@@ -250,7 +253,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             if os.path.exists(imagePath):
                 message = "Input file ok: {0}".format(imagePath)
                 self.screen(message)
-                self.sendMessageToMXCuBE(message)
+                # self.sendMessageToMXCuBE(message)
             else:
                 self.sendMessageToMXCuBE("Waiting for file: {0}, timeout {1} s".format(imagePath, self.fMXWaitFileTimeOut))
                 edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
@@ -270,14 +273,14 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
 
 
         xsDataExperimentalCondition = self.getFluxAndBeamSizeFromISPyB(self.xsDataFirstImage, \
-                                                            xsDataInputMXCuBE.getExperimentalCondition())
+                                                            xsDataInputMXCuBE.experimentalCondition)
 
-        xsDataInputInterface.setExperimentalCondition(xsDataExperimentalCondition)
-        xsDataInputInterface.setDiffractionPlan(xsDataInputMXCuBE.getDiffractionPlan())
-        xsDataInputInterface.setSample(xsDataInputMXCuBE.getSample())
-        xsDataInputInterface.setDataCollectionId(xsDataInputMXCuBE.getDataCollectionId())
-        xsDataInputInterface.setToken(xsDataInputMXCuBE.getToken())
-        self.edPluginControlInterface.setDataInput(xsDataInputInterface)
+        xsDataInputInterface.experimentalCondition = xsDataExperimentalCondition
+        xsDataInputInterface.diffractionPlan = xsDataInputMXCuBE.diffractionPlan
+        xsDataInputInterface.sample = xsDataInputMXCuBE.sample
+        xsDataInputInterface.dataCollectionId = xsDataInputMXCuBE.dataCollectionId
+        xsDataInputInterface.token = xsDataInputMXCuBE.token
+        self.edPluginControlInterface.dataInput = xsDataInputInterface
 
         if not self.isFailure() and self.edPluginControlInterface is not None:
             self.connectProcess(self.edPluginControlInterface.executeSynchronous)
@@ -287,7 +290,10 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
 
     def finallyProcess(self, _edPlugin=None):
         EDPluginControl.finallyProcess(self, _edPlugin)
-        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_4.postProcess...")
+        self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_4.finallyProcess...")
+        self.createResultMXCubE()
+        self.sendCharacterisationResultToMXCuBE(xml.sax.saxutils.escape(self.xsDataResultMXCuBE.marshal()))
+        self.storeResultsInISPyB(self.strSubject, self.strMessage)
         self.setDataOutput(self.xsDataResultMXCuBE)
 
 
@@ -296,86 +302,73 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.retrieveSuccessMessages(self.edPluginControlInterface, "EDPluginControlInterfaceToMXCuBEv1_4.doSuccessActionInterface")
         # Send success email message (MXSUP-183):
         self.tStop = time.time()
-        strSubject = "SUCCESS"
-        strMessage = "Characterisation success!"
-        self.storeResultsInISPyB(strSubject, strMessage)
+        self.strSubject = "SUCCESS"
+        self.strMessage = "Characterisation success!"
 
     def doFailureActionInterface(self, _edPlugin=None):
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_4.doFailureActionInterface...")
         # Send failure email message (MXSUP-183):
         self.tStop = time.time()
-        strSubject = "FAILURE"
-        strMessage = "Characterisation FAILURE!"
-        self.storeResultsInISPyB(strSubject, strMessage)
-        # self.setFailure()
-#        xsDataResultCharacterisation = None
-#        if self.edPluginControlInterface.hasDataOutput("characterisation"):
-#            xsDataResultCharacterisation = self.edPluginControlInterface.getDataOutput("characterisation")[0]
-#        # Execute plugin which creates a simple HTML page
-#        self.executeSimpleHTML(xsDataResultCharacterisation)
-#        xsDataResultCharacterisation = self.edPluginControlInterface.dataOutput.resultCharacterisation
-#        if xsDataResultCharacterisation is not None:
-#            self.xsDataResultMXCuBE.characterisationResult = xsDataResultCharacterisation
-#            if xsDataResultCharacterisation.getStatusMessage():
-#                strMessage += "\n\n"
-#                strMessage += xsDataResultCharacterisation.getStatusMessage().getValue()
-#            if xsDataResultCharacterisation.getShortSummary():
-#                strMessage += "\n\n"
-#                strMessage += xsDataResultCharacterisation.getShortSummary().getValue()
-#        self.sendEmail(strSubject, strMessage)
+        self.strSubject = "FAILURE"
+        self.strMessage = "Characterisation FAILURE!"
 
 
-    def storeResultsInISPyB(self, _strSubject, _strMessage):
-        strPyArchPathToDNAFileDirectory = None
-        strCharacterisationSuccess = None
-        strSubject = _strSubject
-        strMessage = _strMessage
-        xsDataResultCharacterisation = self.edPluginControlInterface.getDataOutput().getResultCharacterisation()
+    def createResultMXCubE(self):
+        xsDataResultCharacterisation = self.edPluginControlInterface.dataOutput.resultCharacterisation
         if self.bIsEigerDetector:
             xsDataResultCharacterisation = self.makeNumberOfImagesMultipleOf100(xsDataResultCharacterisation)
         self.xsDataResultMXCuBE.setCharacterisationResult(xsDataResultCharacterisation)
-        xsDataResultControlISPyB = self.edPluginControlInterface.getDataOutput().getResultControlISPyB()
+        xsDataResultControlISPyB = self.edPluginControlInterface.dataOutput.resultControlISPyB
         if xsDataResultControlISPyB != None:
-            self.xsDataResultMXCuBE.setScreeningId(xsDataResultControlISPyB.getScreeningId())
+            self.xsDataResultMXCuBE.screeningId = xsDataResultControlISPyB.screeningId
         if xsDataResultCharacterisation != None:
             self.xsDataResultMXCuBE.characterisationResult = xsDataResultCharacterisation
             strPathCharacterisationResult = os.path.join(self.getWorkingDirectory(), "CharacterisationResult.xml")
             xsDataResultCharacterisation.exportToFile(strPathCharacterisationResult)
             self.xsDataResultMXCuBE.setListOfOutputFiles(XSDataString(strPathCharacterisationResult))
             # For the moment, create "DNA" style output directory
-            strPathToDNAFileDirectory = self.createDNAFileDirectoryPath(xsDataResultCharacterisation)
+            self.strPathToDNAFileDirectory = self.createDNAFileDirectoryPath(xsDataResultCharacterisation)
             xsDataDictionaryLogFile = None
-            if (self.createDNAFileDirectory(strPathToDNAFileDirectory)):
-                xsDataDictionaryLogFile = self.createOutputFileDictionary(xsDataResultCharacterisation, strPathToDNAFileDirectory)
-            strPyArchPathToDNAFileDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(strPathToDNAFileDirectory)
+            if (self.createDNAFileDirectory(self.strPathToDNAFileDirectory)):
+                xsDataDictionaryLogFile = self.createOutputFileDictionary(xsDataResultCharacterisation, self.strPathToDNAFileDirectory)
+            strPyArchPathToDNAFileDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.strPathToDNAFileDirectory)
             if (self.createDNAFileDirectory(strPyArchPathToDNAFileDirectory)):
                 xsDataDictionaryLogFile = self.createOutputFileDictionary(xsDataResultCharacterisation, strPyArchPathToDNAFileDirectory)
             self.xsDataResultMXCuBE.setOutputFileDictionary(xsDataDictionaryLogFile)
-            if xsDataResultCharacterisation.getStatusMessage():
+
+    def storeResultsInISPyB(self, _strSubject, _strMessage):
+        if self.xsDataResultMXCuBE.characterisationResult is not None:
+            xsDataResultCharacterisation = self.xsDataResultMXCuBE.characterisationResult
+            xsDataDictionaryLogFile = self.xsDataResultMXCuBE.outputFileDictionary
+            strPyArchPathToDNAFileDirectory = None
+            strCharacterisationSuccess = None
+            strSubject = _strSubject
+            strMessage = _strMessage
+            if xsDataResultCharacterisation.statusMessage:
                 strMessage += "\n\n"
-                strMessage += xsDataResultCharacterisation.getStatusMessage().getValue()
-            if xsDataResultCharacterisation.getShortSummary():
+                strMessage += xsDataResultCharacterisation.statusMessage.value
+            if xsDataResultCharacterisation.shortSummary:
                 strMessage += "\n\n"
-                strMessage += xsDataResultCharacterisation.getShortSummary().getValue()
+                strMessage += xsDataResultCharacterisation.shortSummary.value
             self.sendEmail(strSubject, strMessage)
             # Fix for bug EDNA-55 : If burning strategy EDNA2html shouldn't be run
             bRunExecOutputHTML = False
             xsDataInputMXCuBE = self.getDataInput()
-            xsDataDiffractionPlan = xsDataInputMXCuBE.getDiffractionPlan()
-            if xsDataDiffractionPlan is not None and xsDataDiffractionPlan.getStrategyOption() is not None:
-                strStrategyOption = xsDataDiffractionPlan.getStrategyOption().getValue()
+            xsDataDiffractionPlan = xsDataInputMXCuBE.diffractionPlan
+            if xsDataDiffractionPlan is not None and xsDataDiffractionPlan.strategyOption is not None:
+                strStrategyOption = xsDataDiffractionPlan.strategyOption.value
                 if strStrategyOption.find("-DamPar") != -1:
                     bRunExecOutputHTML = False
             if (self.edPluginExecOutputHTML is not None) and bRunExecOutputHTML:
-                self.edPluginExecOutputHTML.setDataInput(XSDataFile(XSDataString(strPathToDNAFileDirectory)), "dnaFileDirectory")
+                self.edPluginExecOutputHTML.setDataInput(XSDataFile(XSDataString(self.strPathToDNAFileDirectory)), "dnaFileDirectory")
                 self.edPluginExecOutputHTML.execute()
             # Fix for bug MXSUP-251: Put the BEST .par file in the EDNA characterisation root directory
-            xsDataIntegrationResult = xsDataResultCharacterisation.getIntegrationResult()
+            xsDataIntegrationResult = xsDataResultCharacterisation.integrationResult
             if xsDataIntegrationResult:
-                listXSDataIntegrationSubWedgeResult = xsDataIntegrationResult.getIntegrationSubWedgeResult()
+                listXSDataIntegrationSubWedgeResult = xsDataIntegrationResult.integrationSubWedgeResult
                 for xsDataIntegrationSubWedgeResult in listXSDataIntegrationSubWedgeResult:
-                    if xsDataIntegrationSubWedgeResult.getBestfilePar() is not None:
-                        strBestfilePar = xsDataIntegrationSubWedgeResult.getBestfilePar().getValue()
+                    if xsDataIntegrationSubWedgeResult.bestfilePar is not None:
+                        strBestfilePar = xsDataIntegrationSubWedgeResult.bestfilePar.value
                         # Put the file one directory above the mxCuBE v1.3 plugin working directory:
                         strDir = os.path.dirname(self.getWorkingDirectory())
                         strPath = os.path.join(strDir, "bestfile.par")
@@ -470,9 +463,9 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_4.doFailureActionISpyB...")
         self.retrieveFailureMessages(self.edPluginControlISPyB, "EDPluginControlInterfaceToMXCuBEv1_4.doFailureActionISpyB")
         # Send failure email message (MXSUP-183):
-        strSubject = "%s : FAILURE!" % EDUtilsPath.getEdnaSite()
-        strMessage = "ISPyB FAILURE!"
-        self.sendEmail(strSubject, strMessage)
+        self.strSubject = "%s : FAILURE!" % EDUtilsPath.getEdnaSite()
+        self.strMessage = "ISPyB FAILURE!"
+        self.sendEmail(self.strSubject, self.strMessage)
 
 
     def createDNAFileDirectoryPath(self, _xsDataResultCharacterisation):
@@ -485,12 +478,12 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         The path to this directory is returned if the directory was successfully created.
         """
         # First extract all reference image directory paths and names
-        xsDataCollection = _xsDataResultCharacterisation.getDataCollection()
+        xsDataCollection = _xsDataResultCharacterisation.dataCollection
         listImageDirectoryPath = []
         listImagePrefix = []
-        for xsDataSubWedge in xsDataCollection.getSubWedge():
-            for xsDataImage in xsDataSubWedge.getImage():
-                strImagePath = xsDataImage.getPath().getValue()
+        for xsDataSubWedge in xsDataCollection.subWedge:
+            for xsDataImage in xsDataSubWedge.image:
+                strImagePath = xsDataImage.path.value
                 listImageDirectoryPath.append(os.path.dirname(strImagePath))
                 listImagePrefix.append(EDUtilsImage.getPrefix(strImagePath))
         # TODO: Check that all paths and prefixes are the same
@@ -567,17 +560,17 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         """
         xsDataDictionaryLogFile = XSDataDictionary()
         # Start with the prediction images
-        xsDataIndexingResult = _xsDataResultCharacterisation.getIndexingResult()
+        xsDataIndexingResult = _xsDataResultCharacterisation.indexingResult
         if xsDataIndexingResult is not None:
-            xsDataGeneratePredictionResult = xsDataIndexingResult.getPredictionResult()
+            xsDataGeneratePredictionResult = xsDataIndexingResult.predictionResult
             if xsDataGeneratePredictionResult is not None:
-                listXSDataImagePrediction = xsDataGeneratePredictionResult.getPredictionImage()
+                listXSDataImagePrediction = xsDataGeneratePredictionResult.predictionImage
                 for xsDataImagePrediction in listXSDataImagePrediction:
                     xsDataKeyValuePair = XSDataKeyValuePair()
-                    iPredictionImageNumber = xsDataImagePrediction.getNumber().getValue()
+                    iPredictionImageNumber = xsDataImagePrediction.number.value
                     xsDataStringKey = XSDataString("predictionImage_%d" % iPredictionImageNumber)
                     xsDataStringValue = None
-                    strPredictionImagePath = xsDataImagePrediction.getPath().getValue()
+                    strPredictionImagePath = xsDataImagePrediction.path.value
                     if (_strPathToLogFileDirectory is not None):
                         strPredictionImageFileName = EDUtilsFile.getBaseName(strPredictionImagePath)
                         strNewPredictionImagePath = os.path.join(_strPathToLogFileDirectory, strPredictionImageFileName)
@@ -590,10 +583,11 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataDictionaryLogFile.addKeyValuePair(xsDataKeyValuePair)
         # Best log file
         strPathToBESTLogFile = None
+        strPathToFBESTLogFile = None
         strPathToExecutiveSummary = self.getLogFileName()
-        if _xsDataResultCharacterisation.getStrategyResult() is not None:
-            if _xsDataResultCharacterisation.getStrategyResult().getBestLogFile() != None:
-                strPathToBESTLogFile = _xsDataResultCharacterisation.getStrategyResult().getBestLogFile().getPath().getValue()
+        if _xsDataResultCharacterisation.strategyResult is not None:
+            if _xsDataResultCharacterisation.strategyResult.bestLogFile is not None:
+                strPathToBESTLogFile = _xsDataResultCharacterisation.strategyResult.bestLogFile.path.value
             if strPathToBESTLogFile is not None:
                 xsDataStringKey = XSDataString("logFileBest")
                 xsDataStringValue = None
@@ -603,6 +597,21 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataStringValue = XSDataString(strNewBestLogPath)
                 else:
                     xsDataStringValue = XSDataString(strPathToBESTLogFile)
+                xsDataKeyValuePair = XSDataKeyValuePair()
+                xsDataKeyValuePair.setKey(xsDataStringKey)
+                xsDataKeyValuePair.setValue(xsDataStringValue)
+                xsDataDictionaryLogFile.addKeyValuePair(xsDataKeyValuePair)
+            if _xsDataResultCharacterisation.strategyResult.fbestLogFile is not None:
+                strPathToFBESTLogFile = _xsDataResultCharacterisation.strategyResult.fbestLogFile.path.value
+            if strPathToFBESTLogFile is not None:
+                xsDataStringKey = XSDataString("logFileFBest")
+                xsDataStringValue = None
+                if (_strPathToLogFileDirectory is not None):
+                    strNewFBestLogPath = os.path.join(_strPathToLogFileDirectory, "fbest.log")
+                    EDUtilsFile.copyFile(strPathToFBESTLogFile, strNewFBestLogPath)
+                    xsDataStringValue = XSDataString(strNewFBestLogPath)
+                else:
+                    xsDataStringValue = XSDataString(strPathToFBESTLogFile)
                 xsDataKeyValuePair = XSDataKeyValuePair()
                 xsDataKeyValuePair.setKey(xsDataStringKey)
                 xsDataKeyValuePair.setValue(xsDataStringValue)
@@ -639,9 +648,9 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         self.DEBUG("EDPluginControlInterfacev1_4.doFailureActionCharacterisation")
         self.setFailure()
         # Send failure email message (MXSUP-183):
-        strSubject = "%s : FAILURE!" % EDUtilsPath.getEdnaSite()
-        strMessage = "Characterisation FAILURE!"
-        self.sendEmail(strSubject, strMessage)
+        self.strSubject = "%s : FAILURE!" % EDUtilsPath.getEdnaSite()
+        self.strMessage = "Characterisation FAILURE!"
+        self.sendEmail(self.strSubject, self.strMessage)
 
 
     def getFluxAndBeamSizeFromISPyB(self, _xsDataFirstImage, _xsDataExperimentalCondition):
@@ -653,23 +662,23 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             bFoundValidFlux = False
             xsDataExperimentalCondition = _xsDataExperimentalCondition.copy()
             xsDataInputRetrieveDataCollection = XSDataInputRetrieveDataCollection()
-            xsDataInputRetrieveDataCollection.setImage(XSDataImage(_xsDataFirstImage.getPath()))
+            xsDataInputRetrieveDataCollection.setImage(XSDataImage(_xsDataFirstImage.path))
             self.edPluginISPyBRetrieveDataCollection.setDataInput(xsDataInputRetrieveDataCollection)
             self.edPluginISPyBRetrieveDataCollection.executeSynchronous()
-            xsDataResultRetrieveDataCollection = self.edPluginISPyBRetrieveDataCollection.getDataOutput()
+            xsDataResultRetrieveDataCollection = self.edPluginISPyBRetrieveDataCollection.dataOutput
             if xsDataResultRetrieveDataCollection is not None:
-                xsDataISPyBDataCollection = xsDataResultRetrieveDataCollection.getDataCollection()
+                xsDataISPyBDataCollection = xsDataResultRetrieveDataCollection.dataCollection
                 if xsDataISPyBDataCollection is not None:
-                    fFlux = xsDataISPyBDataCollection.getFlux_end()
+                    fFlux = xsDataISPyBDataCollection.flux_end
                     if fFlux is not None:
                         self.screen("ISPyB reports flux to be: %g photons/sec" % fFlux)
                         if fFlux > self.fFluxThreshold:
-                            xsDataExperimentalCondition.getBeam().setFlux(XSDataFlux(fFlux))
+                            xsDataExperimentalCondition.beam.flux = XSDataFlux(fFlux)
                             bFoundValidFlux = True
                         elif "bm07" in _xsDataFirstImage.path.value:
                             self.screen("Using fixed flux 1e11 photons/s for BM07")
                             fFlux = 1e11
-                            xsDataExperimentalCondition.getBeam().setFlux(XSDataFlux(fFlux))
+                            xsDataExperimentalCondition.beam.flux = XSDataFlux(fFlux)
                             bFoundValidFlux = True
                     fBeamSizeAtSampleX = xsDataISPyBDataCollection.beamSizeAtSampleX
                     fBeamSizeAtSampleY = xsDataISPyBDataCollection.beamSizeAtSampleY
@@ -679,26 +688,26 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                         xsDataSize = XSDataSize()
                         xsDataSize.x = XSDataLength(fBeamSizeAtSampleX)
                         xsDataSize.y = XSDataLength(fBeamSizeAtSampleY)
-                        xsDataExperimentalCondition.getBeam().setSize(xsDataSize)
+                        xsDataExperimentalCondition.beam.size = xsDataSize
                     # Get transmission if it's not already there
                     if xsDataExperimentalCondition.beam.transmission is None:
                         fTransmission = xsDataISPyBDataCollection.transmission
                         xsDataExperimentalCondition.beam.transmission = XSDataDouble(fTransmission)
             if not bFoundValidFlux:
                 self.screen("No valid flux could be retrieved from ISPyB! Trying to obtain flux from input data.")
-                xsDataBeam = xsDataExperimentalCondition.getBeam()
-                xsDataBeamFlux = xsDataBeam.getFlux()
+                xsDataBeam = xsDataExperimentalCondition.beam
+                xsDataBeamFlux = xsDataBeam.flux
                 if xsDataBeamFlux is not None:
-                    fFluxMXCuBE = xsDataBeamFlux.getValue()
+                    fFluxMXCuBE = xsDataBeamFlux.value
                     self.screen("MXCuBE reports flux to be: %g photons/sec" % fFluxMXCuBE)
                     if fFluxMXCuBE < self.fFluxThreshold:
                         self.screen("MXCuBE flux lower than threshold flux %g photons/s!" % self.fFluxThreshold)
                         self.screen("Forcing flux to 0.0 photons/s")
-                        xsDataExperimentalCondition.getBeam().setFlux(XSDataFlux(0.0))
+                        xsDataExperimentalCondition.beam.flux = XSDataFlux(0.0)
                 else:
                     # Force missing flux to 0.0
                     self.screen("No flux neither in ISPyB nor in mxCuBE, forcing flux to 0.0 photon/s")
-                    xsDataExperimentalCondition.getBeam().setFlux(XSDataFlux(0.0))
+                    xsDataExperimentalCondition.beam.flux = XSDataFlux(0.0)
 
         return xsDataExperimentalCondition
 
@@ -720,38 +729,38 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         - Sample information
         """
         self.DEBUG("EDPluginControlInterfaceToMXCuBEv1_4.createDataInputCharacterisationFromDataSets")
-        xsDataCollection = _xsDataInputCharacterisation.getDataCollection()
+        xsDataCollection = _xsDataInputCharacterisation.dataCollection
         if (_xsDataInputCharacterisation is not None):
             xsDataInputCCP4i = self.getDataInput()
             # Update with diffraction plan
-            xsDiffactionPlan = xsDataInputCCP4i.getDiffractionPlan()
+            xsDiffactionPlan = xsDataInputCCP4i.diffractionPlan
             if(xsDiffactionPlan is not None):
                 xsDataCollection.setDiffractionPlan(xsDiffactionPlan)
             # Update the data collection subwedges with additional experimental conditions
-            for xsDataSubWedge in xsDataCollection.getSubWedge():
-                xsDataExperimentalCondition = xsDataInputCCP4i.getExperimentalCondition()
+            for xsDataSubWedge in xsDataCollection.subWedge:
+                xsDataExperimentalCondition = xsDataInputCCP4i.experimentalCondition
                 if(xsDataExperimentalCondition is not None):
-                    xsDataBeam = xsDataExperimentalCondition.getBeam()
+                    xsDataBeam = xsDataExperimentalCondition.beam
                     if(xsDataBeam is not None):
-                        xsDataBeamSize = xsDataBeam.getSize()
+                        xsDataBeamSize = xsDataBeam.size
                         if(xsDataBeamSize is not None):
-                            xsDataSubWedge.getExperimentalCondition().getBeam().setSize(xsDataBeamSize)
-                        xsDataBeamFlux = xsDataBeam.getFlux()
+                            xsDataSubWedge.experimentalCondition.beam.size = xsDataBeamSize
+                        xsDataBeamFlux = xsDataBeam.flux
                         if(xsDataBeamFlux is not None):
-                            xsDataSubWedge.getExperimentalCondition().getBeam().setFlux(xsDataBeamFlux)
-                        xsDataMinExposureTime = xsDataBeam.getMinExposureTimePerImage()
+                            xsDataSubWedge.experimentalCondition.beam.flux = xsDataBeamFlux
+                        xsDataMinExposureTime = xsDataBeam.minExposureTimePerImage
                         if(xsDataMinExposureTime is not None):
-                            xsDataSubWedge.getExperimentalCondition().getBeam().setMinExposureTimePerImage(xsDataMinExposureTime)
-                    xsDataGoniostat = xsDataExperimentalCondition.getGoniostat()
+                            xsDataSubWedge.experimentalCondition.beam.minExposureTimePerImage = xsDataMinExposureTime
+                    xsDataGoniostat = xsDataExperimentalCondition.goniostat
                     if(xsDataGoniostat is not None):
-                        xsDataMaxOscSpeed = xsDataGoniostat.getMaxOscillationSpeed()
+                        xsDataMaxOscSpeed = xsDataGoniostat.maxOscillationSpeed
                         if(xsDataMaxOscSpeed is not None):
-                            xsDataSubWedge.getExperimentalCondition().getGoniostat().setMaxOscillationSpeed(xsDataMaxOscSpeed)
-                        xsDataMinOscWidth = xsDataGoniostat.getMinOscillationWidth()
+                            xsDataSubWedge.experimentalCondition.goniostat.maxOscillationSpeed = xsDataMaxOscSpeed
+                        xsDataMinOscWidth = xsDataGoniostat.minOscillationWidth
                         if(xsDataMinOscWidth is not None):
-                            xsDataSubWedge.getExperimentalCondition().getGoniostat().setMinOscillationWidth(xsDataMinOscWidth)
+                            xsDataSubWedge.experimentalCondition.goniostat.minOscillationWidth = xsDataMinOscWidth
             # Update with the sample
-            xsDataSample = xsDataInputCCP4i.getSample()
+            xsDataSample = xsDataInputCCP4i.sample
             if(xsDataSample is not None):
                 xsDataCollection.setSample(xsDataSample)
 
@@ -808,7 +817,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                 xsDataInputMXCuBE = self.getDataInput()
                 for xsDataSetMXCuBE in xsDataInputMXCuBE.getDataSet():
                     for xsDataFile in xsDataSetMXCuBE.getImageFile():
-                        strMessage += "%s\n" % xsDataFile.getPath().getValue()
+                        strMessage += "%s\n" % xsDataFile.path.value
                 strMessage += "\n"
                 strMessage += _strMessage
                 strEmailMsg = ("From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s" % (self.strEDNAEmailSender, \
@@ -877,3 +886,11 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             except Exception as e:
                 self.screen(e)
                 self.DEBUG("Sending message to mxCuBE failed!")
+
+    def sendCharacterisationResultToMXCuBE(self, _strXML):
+        if self.serverProxy is not None:
+            try:
+                self.serverProxy.setCharacterisationResult(_strXML)
+            except Exception as e:
+                self.screen(e)
+                self.DEBUG("Sending characterisation results to mxCuBE failed!")
