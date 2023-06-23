@@ -9,16 +9,16 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
- 					<value>http://linsvensson.esrf.fr:7171</value>
+ 					<value>http://scisoft10.esrf.fr:7171</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
-			<name>EDPluginControlCharacterisationv1_4</name>  
+			<name>EDPluginControlCharacterisationv1_4</name>
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
- 					<value>http://linsvensson.esrf.fr:7171</value>
+ 					<value>http://scisoft10.esrf.fr:7171</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>runKappa</name>
@@ -31,11 +31,15 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
- 					<value>http://linsvensson.esrf.fr:7171</value>
+ 					<value>http://scisoft10.esrf.fr:7171</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>runKappa</name>
 					<value>true</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>thresholdMosflmIndexing</name>
+					<value>100.0</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
