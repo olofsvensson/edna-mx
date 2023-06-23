@@ -62,7 +62,7 @@ class EDTestCasePluginUnitFbestv1_0(EDTestCasePluginUnit):
 
     def test_parseOutput(self):
         edPlugin = self.getPlugin()
-        strLogPath = os.path.join(self.strDataPath, "Fbest.log")
+        strLogPath = os.path.join(self.strDataPath, "fbest.log")
         xsDataResult = edPlugin.parseOutput(strLogPath)
         strResultReferenceXML = EDUtilsFile.readFile(os.path.join(self.strDataPath, "XSDataResultFbest_reference.xml"))
         EDAssert.equal(strResultReferenceXML, xsDataResult.marshal(), "parseOutput")

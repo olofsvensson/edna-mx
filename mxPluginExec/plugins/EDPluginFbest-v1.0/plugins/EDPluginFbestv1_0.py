@@ -93,6 +93,7 @@ class EDPluginFbestv1_0(EDPluginExecProcessScript):
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginFbestv1_0.preProcess")
+        self.setScriptLogFileName("fbest.log")
         xsDataInputFbest = self.getDataInput()
         self.setScriptCommandline(self.generateCommands(xsDataInputFbest))
 
@@ -164,7 +165,7 @@ class EDPluginFbestv1_0(EDPluginExecProcessScript):
         xsDataResultFbest = XSDataResultFbest()
         strOutput = EDUtilsFile.readFile(_strFileName)
         listOutput = strOutput.split("\n")
-
+        xsDataResultFbest.fbestLogFile = XSDataFile(XSDataString(_strFileName))
         for strLine in listOutput:
             listLine = strLine.split("=")
             if len(listLine) == 2:
