@@ -321,3 +321,6 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
             for strLine in strIndicatorsShortSummary.split("\n"):
                 self.screen(strLine)
             self.setDataOutput(XSDataString(strIndicatorsShortSummary), "indicatorsShortSummary")
+
+    def setLabelitIndexing(self, value):
+        self.bDoLabelitIndexing = value
