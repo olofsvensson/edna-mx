@@ -417,35 +417,11 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                     nDozorScores += 1
                 if xsDataImageQualityIndicators.dozorVisibleResolution is not None:
                     fNewVisibleResolution = xsDataImageQualityIndicators.dozorVisibleResolution.value
-                    if fNewVisibleResolution < 6.0: # Dozor returns max visible resolution 50 if no diffraction
-                        if self._fVMaxVisibleResolution is None or fNewVisibleResolution < self._fVMaxVisibleResolution:
-                            self._fVMaxVisibleResolution = fNewVisibleResolution
+                    if self._fVMaxVisibleResolution is None or fNewVisibleResolution < self._fVMaxVisibleResolution:
+                        self._fVMaxVisibleResolution = fNewVisibleResolution
                 self._xsDataResultCharacterisation.addImageQualityIndicators(xsDataImageQualityIndicators)
                 self._edPluginExecEvaluationIndexingLABELIT.setDataInput(xsDataImageQualityIndicators, "imageQualityIndicators")
-            if self._iNoImagesWithDozorScore is not None:
-                self.sendMessageToMXCuBE("Average dozor score: {0:.1f}".format(self._fAverageDozorScore))
-            if self._fVMaxVisibleResolution is not None:
-                self.sendMessageToMXCuBE("Max visible resolution: {0:.1f}".format(self._fVMaxVisibleResolution))
-        if self._edPluginControlIndexingIndicators.hasDataOutput("indicatorsShortSummary"):
-            indicatorsShortSummary = self._edPluginControlIndexingIndicators.getDataOutput("indicatorsShortSummary")[0].getValue()
-            self._strCharacterisationShortSummary += indicatorsShortSummary
-            self.sendMessageToMXCuBE(indicatorsShortSummary)
-        if self._bDoOnlyFbest:
-            self.checkIfExecuteFbest()
-        else:
-            self.executePluginSynchronous(self._edPluginExecEvaluationIndexingLABELIT)
-
-
-    def doFailureIndexingIndicators(self, _edPlugin=None):
-        self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureIndexingIndicators")
-        # If more than two reference images try to index with MOSFLM:
-        if self._edPluginControlIndexingIndicators.hasDataOutput("indicatorsShortSummary"):
-            indicatorsShortSummary = self._edPluginControlIndexingIndicators.getDataOutput("indicatorsShortSummary")[0].getValue()
-            self._strCharacterisationShortSummary += indicatorsShortSummary
-            self.sendMessageToMXCuBE(indicatorsShortSummary)
-        if self._iNoImagesWithDozorScore is not None and self._iNoImagesWithDozorScore > 0:
-            self.checkIfIndexWithMosflm()
-        else:
+        if self._iNoImagesWithDozorScore is None or self._iNoImagesWithDozorScore > 0:
             strErrorMessage = "Execution of Indexing and Indicators plugin failed."
             self.sendMessageToMXCuBE(strErrorMessage, "error")
             self.generateExecutiveSummary(self)
@@ -455,15 +431,55 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             if self._strStatusMessage != None:
                 self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
                 self.writeDataOutput()
+        elif self._fAverageDozorScore is None or self._fAverageDozorScore > 0.001:
+            self.sendMessageToMXCuBE("No diffraction detected therefore no strategy calculated.", "warning")
+            self.generateExecutiveSummary(self)
+            if self._xsDataResultCharacterisation is not None:
+                self.setDataOutput(self._xsDataResultCharacterisation)
+            self.setFailure()
+        else:
+            self.sendMessageToMXCuBE("Average dozor score: {0:.1f}".format(self._fAverageDozorScore))
+            self.sendMessageToMXCuBE("Max visible resolution: {0:.1f}".format(self._fVMaxVisibleResolution))
+            if self._edPluginControlIndexingIndicators.hasDataOutput("indicatorsShortSummary"):
+                indicatorsShortSummary = self._edPluginControlIndexingIndicators.getDataOutput("indicatorsShortSummary")[0].getValue()
+                self._strCharacterisationShortSummary += indicatorsShortSummary
+                self.sendMessageToMXCuBE(indicatorsShortSummary)
+            if self._bDoOnlyFbest:
+                self.executeFbest()
+            else:
+                self.executePluginSynchronous(self._edPluginExecEvaluationIndexingLABELIT)
+
+
+    def doFailureIndexingIndicators(self, _edPlugin=None):
+        self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureIndexingIndicators")
+        # If more than two reference images try to index with MOSFLM:
+        if self._edPluginControlIndexingIndicators.hasDataOutput("indicatorsShortSummary"):
+            indicatorsShortSummary = self._edPluginControlIndexingIndicators.getDataOutput("indicatorsShortSummary")[0].getValue()
+            self._strCharacterisationShortSummary += indicatorsShortSummary
+            self.sendMessageToMXCuBE(indicatorsShortSummary)
+        self.checkIfIndexWithMosflm()
 
 
     def checkIfIndexWithMosflm(self):
-        if self._fAverageDozorScore >= self._fThresholdMosflmIndexing or self._bMoslmWithoutThreshold:
-            if not self._bDoOnlyMoslmfIndexing:
-                strWarningMessage = "No indexing solution from Labelit, trying MOSFLM indexing " + \
-                                    "(average dozor score {0:.1f} >= threshold {1:.1f}).".format(
-                                        self._fAverageDozorScore, self._fThresholdMosflmIndexing)
-                self.sendMessageToMXCuBE(strWarningMessage, "warning")
+        strWarningMessage = None
+        if self._bMoslmWithoutThreshold or self._bDoOnlyMoslmfIndexing:
+            bRunMOSFLM = True
+        elif self._fVMaxVisibleResolution > 4.0:
+            strWarningMessage = f"Not running MOSFLM indexing because visible resolution ({self._fVMaxVisibleResolution:.1f} A) lower than 4.0 A"
+            bRunMOSFLM = False
+        elif self._fVMaxVisibleResolution < 2.0:
+            bRunMOSFLM = True
+        elif self._fAverageDozorScore < self._fThresholdMosflmIndexing:
+            strWarningMessage = "Not running MOSFLM indexing because of low diffraction signal" + \
+                                f" (dozor score {self._fAverageDozorScore:.1f}" + \
+                                f" less than threshold {self._fThresholdMosflmIndexing:.1f})."
+            bRunMOSFLM = False
+        else:
+            bRunMOSFLM = True
+        if strWarningMessage is not None:
+            strWarningMessage = "No indexing solution from Labelit, trying MOSFLM indexing"
+            self.sendMessageToMXCuBE(strWarningMessage, "warning")
+        if bRunMOSFLM:
             xsDataIndexingInput = XSDataIndexingInput()
             xsDataIndexingInput.dataCollection = self._xsDataCollection
             xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
@@ -472,12 +488,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self.addStatusMessage("Starting MOSFLM indexing")
             self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
         else:
-            strWarningMessage = "Not running MOSFLM indexing because of low diffraction signal" +\
-                                f" (dozor score {self._fAverageDozorScore:.1f}" +\
-                                f" less than threshold {self._fThresholdMosflmIndexing:.1f})."
-            self.addStatusMessage(strWarningMessage, "warning")
-            self.checkIfExecuteFbest()
-
+            self.executeFbest()
 
 
     def doSuccessIndexingMOSFLM(self, _edPlugin=None):
@@ -527,17 +538,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             # Then start the integration of the reference images
             self.indexingToIntegration()
         else:
-            if self._iNoImagesWithDozorScore is not None and self._iNoImagesWithDozorScore > 0:
-                self.checkIfIndexWithMosflm()
-            else:
-                self.addStatusMessage("Execution of Dozor failed.", "error")
-                self.generateExecutiveSummary(self)
-                if self._xsDataResultCharacterisation is not None:
-                    self.setDataOutput(self._xsDataResultCharacterisation)
-                self.setFailure()
-                if self._strStatusMessage != None:
-                    self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-                    self.writeDataOutput()
+            self.checkIfIndexWithMosflm()
+
 
     def doSuccessEvaluationIndexingMOSFLM(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doSuccessEvaluationIndexingMOSFLM")
@@ -570,7 +572,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self.indexingToIntegration()
         else:
             self.addStatusMessage("MOSFLM: no indexing solution found.")
-            self.checkIfExecuteFbest()
+            self.executeFbest()
 
     def generateIndexingShortSummary(self, _xsDataIndexingResult):
         """
@@ -644,12 +646,12 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
     def doFailureEvaluationIndexingLABELIT(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureEvaluationIndexingLABELIT")
         self.addStatusMessage("Execution of Labelit indexing evaluation plugin failed.", "warning")
-        self.checkIfExecuteFbest()
+        self.executeFbest()
 
     def doFailureEvaluationIndexingMOSFLM(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureEvaluationIndexingMOSFLM")
         self.addStatusMessage("Execution of MOSFLM indexing evaluation plugin failed.", "warning")
-        self.checkIfExecuteFbest()
+        self.executeFbest()
 
     def doSuccessGeneratePrediction(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doSuccessGeneratePrediction")
@@ -711,7 +713,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
     def doFailureIntegration(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureIntegration")
         self.addStatusMessage("MOSFLM integration of one or more images failed.", "warning")
-        self.checkIfExecuteFbest()
+        self.executeFbest()
 
 
     def doSuccessXDSGenerateBackgroundImage(self, _edPlugin=None):
@@ -739,34 +741,11 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
 
     def doFailureStrategy(self, _edPlugin=None):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doFailureStrategy")
-        # strErrorMessage = "Strategy calculation FAILURE."
-        # self.sendMessageToMXCuBE(strErrorMessage, "error")
         xsDataStrategyResult = self._edPluginControlStrategy.getDataOutput()
         self._xsDataResultCharacterisation.setStrategyResult(xsDataStrategyResult)
-        # if self._edPluginControlStrategy.hasDataOutput("strategyShortSummary"):
-        #     strategyShortSummary = self._edPluginControlStrategy.getDataOutput("strategyShortSummary")[0].getValue()
-        #     self._strCharacterisationShortSummary += strategyShortSummary
-            # self.sendMessageToMXCuBE(strategyShortSummary)
-        # if self._xsDataResultCharacterisation is not None:
-        #     self.setDataOutput(self._xsDataResultCharacterisation)
         self.addStatusMessage("BEST strategy calculation failed.", "warning")
-        self.checkIfExecuteFbest()
-        # self.generateExecutiveSummary(self)
-        # if self._strStatusMessage != None:
-        #     self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
-        #     self.writeDataOutput()
-        # self.setFailure()
+        self.executeFbest()
 
-
-    def checkIfExecuteFbest(self):
-        if self._bDoOnlyFbest or (self._fAverageDozorScore is not None and self._fAverageDozorScore > 0.001):
-            self.executeFbest()
-        else:
-            self.sendMessageToMXCuBE("No diffraction detected therefore no strategy calculated.", "warning")
-            self.generateExecutiveSummary(self)
-            if self._xsDataResultCharacterisation is not None:
-                self.setDataOutput(self._xsDataResultCharacterisation)
-            self.setFailure()
 
     def executeFbest(self):
         self.addStatusMessage("Executing Fbest for minimal strategy")
