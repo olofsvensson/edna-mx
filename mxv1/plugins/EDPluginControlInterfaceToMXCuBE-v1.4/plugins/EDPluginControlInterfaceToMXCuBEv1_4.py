@@ -328,16 +328,15 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             xsDataDictionaryLogFile = None
             if (self.createDNAFileDirectory(self.strPathToDNAFileDirectory)):
                 xsDataDictionaryLogFile = self.createOutputFileDictionary(xsDataResultCharacterisation, self.strPathToDNAFileDirectory)
-            strPyArchPathToDNAFileDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.strPathToDNAFileDirectory)
-            if (self.createDNAFileDirectory(strPyArchPathToDNAFileDirectory)):
-                xsDataDictionaryLogFile = self.createOutputFileDictionary(xsDataResultCharacterisation, strPyArchPathToDNAFileDirectory)
+            self.strPyArchPathToDNAFileDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(self.strPathToDNAFileDirectory)
+            if (self.createDNAFileDirectory(self.strPyArchPathToDNAFileDirectory)):
+                xsDataDictionaryLogFile = self.createOutputFileDictionary(xsDataResultCharacterisation, self.strPyArchPathToDNAFileDirectory)
             self.xsDataResultMXCuBE.setOutputFileDictionary(xsDataDictionaryLogFile)
 
     def storeResultsInISPyB(self, _strSubject, _strMessage):
         if self.xsDataResultMXCuBE.characterisationResult is not None:
             xsDataResultCharacterisation = self.xsDataResultMXCuBE.characterisationResult
             xsDataDictionaryLogFile = self.xsDataResultMXCuBE.outputFileDictionary
-            strPyArchPathToDNAFileDirectory = None
             strCharacterisationSuccess = None
             strSubject = _strSubject
             strMessage = _strMessage
@@ -377,12 +376,12 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             strWorkflowStepImage = None
             strPyarchWorkflowStepImage = None
             strBestWilsonPlotPath = EDHandlerXSDataISPyBv1_4.getBestWilsonPlotPath(xsDataResultCharacterisation)
-            if strPyArchPathToDNAFileDirectory is not None:
+            if self.strPyArchPathToDNAFileDirectory is not None:
                 if strBestWilsonPlotPath is not None:
                     strCharacterisationSuccess = "Success"
                     # Copy wilson path to Pyarch
                     strWorkflowStepImage = strBestWilsonPlotPath
-                    strPyarchWorkflowStepImage = os.path.join(strPyArchPathToDNAFileDirectory, os.path.basename(strBestWilsonPlotPath))
+                    strPyarchWorkflowStepImage = os.path.join(self.strPyArchPathToDNAFileDirectory, os.path.basename(strBestWilsonPlotPath))
                 else:
                     strCharacterisationSuccess = "Failure"
                     # Copy first thumbnail image
@@ -390,7 +389,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                         strThumbnailImage = xsDataResultCharacterisation.thumbnailImage[0].path.value
                         if os.path.exists(strThumbnailImage):
                             strWorkflowStepImage = strThumbnailImage
-                            strPyarchWorkflowStepImage = os.path.join(strPyArchPathToDNAFileDirectory, os.path.basename(strWorkflowStepImage))
+                            strPyarchWorkflowStepImage = os.path.join(self.strPyArchPathToDNAFileDirectory, os.path.basename(strWorkflowStepImage))
             if strPyarchWorkflowStepImage is not None:
                 if not os.path.exists(strPyarchWorkflowStepImage):
                     if not os.path.exists(os.path.dirname(strPyarchWorkflowStepImage)):
@@ -441,8 +440,8 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataInputISPyBStoreWorkflowStep.status = XSDataString(strCharacterisationSuccess)
                     if strPyarchWorkflowStepImage is not None:
                         xsDataInputISPyBStoreWorkflowStep.imageResultFilePath = XSDataString(strPyarchWorkflowStepImage)
-                    if strPyArchPathToDNAFileDirectory is not None:
-                        xsDataInputISPyBStoreWorkflowStep.htmlResultFilePath = XSDataString(os.path.join(strPyArchPathToDNAFileDirectory, "Characterisation", "index.html"))
+                    if self.strPyArchPathToDNAFileDirectory is not None:
+                        xsDataInputISPyBStoreWorkflowStep.htmlResultFilePath = XSDataString(os.path.join(self.strPyArchPathToDNAFileDirectory, "Characterisation", "index.html"))
                     if self.edPluginExecSimpleHTML.dataOutput is not None:
                          strResultFilePath = self.edPluginExecSimpleHTML.dataOutput.pathToJsonFile.path.value
                          # strPyarchResultFilePath = EDHandlerESRFPyarchv1_0.createPyarchFilePath(strResultFilePath)
