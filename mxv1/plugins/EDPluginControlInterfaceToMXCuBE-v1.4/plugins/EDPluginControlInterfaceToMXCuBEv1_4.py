@@ -221,6 +221,28 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         pluginIndex = 1
         for xsDataSetMXCuBE in xsDataInputMXCuBE.dataSet:
             for xsDataImage in xsDataSetMXCuBE.imageFile:
+                imagePath = xsDataImage.path.value
+                if os.path.exists(imagePath):
+                    message = "Input file ok: {0}".format(imagePath)
+                    self.screen(message)
+                    # self.sendMessageToMXCuBE(message)
+                else:
+                    self.sendMessageToMXCuBE(
+                        "Waiting for file: {0}, timeout {1} s".format(imagePath, self.fMXWaitFileTimeOut))
+                    edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
+                    xsDataInputMXWaitFile = XSDataInputMXWaitFile()
+                    xsDataInputMXWaitFile.file = XSDataFile(XSDataString(imagePath))
+                    xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
+                    xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
+                    self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
+                    edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
+                    edPluginMXWaitFile.executeSynchronous()
+                    if edPluginMXWaitFile.dataOutput.timedOut.value:
+                        errorMessage = "ERROR! File {0} does not exist on disk.".format(imagePath)
+                        self.ERROR(errorMessage)
+                        self.sendMessageToMXCuBE(errorMessage, "error")
+                        self.setFailure()
+                        break
                 if xsDataImage.path.value.endswith(".h5"):
                     self.bIsEigerDetector = True
                     xsDataInputControlH5ToCBF = XSDataInputControlH5ToCBF()
@@ -246,31 +268,6 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataInputInterface.addImagePath(xsDataImage)
                     if self.xsDataFirstImage is None:
                         self.xsDataFirstImage = xsDataImage
-
-        # Check that images are on disk, otherwise wait
-        for xsDataImagePath in xsDataInputInterface.imagePath:
-            imagePath = xsDataImagePath.path.value
-            if os.path.exists(imagePath):
-                message = "Input file ok: {0}".format(imagePath)
-                self.screen(message)
-                # self.sendMessageToMXCuBE(message)
-            else:
-                self.sendMessageToMXCuBE("Waiting for file: {0}, timeout {1} s".format(imagePath, self.fMXWaitFileTimeOut))
-                edPluginMXWaitFile = self.loadPlugin(self.strPluginMXWaitFileName)
-                xsDataInputMXWaitFile = XSDataInputMXWaitFile()
-                xsDataInputMXWaitFile.file = XSDataFile(XSDataString(imagePath))
-                xsDataInputMXWaitFile.setSize(XSDataInteger(self.minImageSize))
-                xsDataInputMXWaitFile.setTimeOut(XSDataTime(self.fMXWaitFileTimeOut))
-                self.DEBUG("Wait file timeOut set to %f" % self.fMXWaitFileTimeOut)
-                edPluginMXWaitFile.setDataInput(xsDataInputMXWaitFile)
-                edPluginMXWaitFile.executeSynchronous()
-                if edPluginMXWaitFile.dataOutput.timedOut.value:
-                    errorMessage = "ERROR! File {0} does not exist on disk.".format(imagePath)
-                    self.ERROR(errorMessage)
-                    self.sendMessageToMXCuBE(errorMessage, "error")
-                    self.setFailure()
-                    break
-
 
         xsDataExperimentalCondition = self.getFluxAndBeamSizeFromISPyB(self.xsDataFirstImage, \
                                                             xsDataInputMXCuBE.experimentalCondition)
