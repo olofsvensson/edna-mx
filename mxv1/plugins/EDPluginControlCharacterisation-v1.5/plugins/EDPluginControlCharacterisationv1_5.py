@@ -233,6 +233,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 self.addStatusMessage("FBEST strategy (instead of BEST)")
                 self._bDoOnlyFbest = True
                 self._bDoStrategyCalculation = False
+                self._edPluginControlIndexingIndicators.setLabelitIndexing(False)
             elif self._strStrategyType.lower() == "fast":
                 self.addStatusMessage("FAST strategy: Labelit, MOSLFM only if diffraction signal above threshold, and BEST")
                 self._bMoslmWithoutThreshold = False
@@ -350,7 +351,9 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._edPluginControlXDSGenerateBackgroundImage.connectFAILURE(self.doFailureXDSGenerateBackgroundImage)
         self._edPluginControlStrategy.connectSUCCESS(self.doSuccessStrategy)
         self._edPluginControlStrategy.connectFAILURE(self.doFailureStrategy)
-        if not self._bDoOnlyMoslmfIndexing:
+        if self._bDoOnlyFbest:
+            self.addStatusMessage("Starting Dozor")
+        elif not self._bDoOnlyMoslmfIndexing:
             self.addStatusMessage("Starting Labelit indexing")
         self.executePluginSynchronous(self._edPluginControlIndexingIndicators)
 
