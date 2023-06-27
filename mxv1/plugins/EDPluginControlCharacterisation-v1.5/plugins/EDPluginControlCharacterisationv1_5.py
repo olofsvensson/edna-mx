@@ -352,9 +352,9 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._edPluginControlStrategy.connectSUCCESS(self.doSuccessStrategy)
         self._edPluginControlStrategy.connectFAILURE(self.doFailureStrategy)
         if self._bDoOnlyFbest:
-            self.addStatusMessage("Starting Dozor")
+            self.addStatusMessage("Dozor")
         elif not self._bDoOnlyMoslmfIndexing:
-            self.addStatusMessage("Starting Labelit indexing")
+            self.addStatusMessage("Labelit indexing")
         self.executePluginSynchronous(self._edPluginControlIndexingIndicators)
 
 
@@ -421,7 +421,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                         self._fVMaxVisibleResolution = fNewVisibleResolution
                 self._xsDataResultCharacterisation.addImageQualityIndicators(xsDataImageQualityIndicators)
                 self._edPluginExecEvaluationIndexingLABELIT.setDataInput(xsDataImageQualityIndicators, "imageQualityIndicators")
-        if self._iNoImagesWithDozorScore is None or self._iNoImagesWithDozorScore > 0:
+        if self._iNoImagesWithDozorScore is None or self._iNoImagesWithDozorScore == 0:
             strErrorMessage = "Execution of Indexing and Indicators plugin failed."
             self.sendMessageToMXCuBE(strErrorMessage, "error")
             self.generateExecutiveSummary(self)
@@ -431,7 +431,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             if self._strStatusMessage != None:
                 self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
                 self.writeDataOutput()
-        elif self._fAverageDozorScore is None or self._fAverageDozorScore > 0.001:
+        elif self._fAverageDozorScore is None or self._fAverageDozorScore < 0.001:
             self.sendMessageToMXCuBE("No diffraction detected therefore no strategy calculated.", "warning")
             self.generateExecutiveSummary(self)
             if self._xsDataResultCharacterisation is not None:
@@ -464,19 +464,24 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         strWarningMessage = None
         if self._bMoslmWithoutThreshold or self._bDoOnlyMoslmfIndexing:
             bRunMOSFLM = True
+            self.sendMessageToMXCuBE("Running MOSFLM by default")
         elif self._fVMaxVisibleResolution > 4.0:
-            strWarningMessage = f"Not running MOSFLM indexing because visible resolution ({self._fVMaxVisibleResolution:.1f} A) lower than 4.0 A"
             bRunMOSFLM = False
+            strWarningMessage = f"Not running MOSFLM indexing because visible resolution lower than 4.0 A"
+            self.sendMessageToMXCuBE(strWarningMessage, "warning")
         elif self._fVMaxVisibleResolution < 2.0:
             bRunMOSFLM = True
+            self.sendMessageToMXCuBE("Running MOSFLM because visible resolution higher than 2.0 A")
         elif self._fAverageDozorScore < self._fThresholdMosflmIndexing:
+            bRunMOSFLM = False
             strWarningMessage = "Not running MOSFLM indexing because of low diffraction signal" + \
                                 f" (dozor score {self._fAverageDozorScore:.1f}" + \
                                 f" less than threshold {self._fThresholdMosflmIndexing:.1f})."
-            bRunMOSFLM = False
+            self.sendMessageToMXCuBE(strWarningMessage, "warning")
         else:
             bRunMOSFLM = True
-        if strWarningMessage is not None:
+            self.sendMessageToMXCuBE(f"Running MOSFLM (average dozor score average above threshold {self._fThresholdMosflmIndexing:.1f})")
+        if strWarningMessage is not None and bRunMOSFLM:
             strWarningMessage = "No indexing solution from Labelit, trying MOSFLM indexing"
             self.sendMessageToMXCuBE(strWarningMessage, "warning")
         if bRunMOSFLM:
@@ -485,7 +490,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             xsDataIndexingInput.experimentalCondition = self._xsDataCollection.subWedge[0].experimentalCondition
             xsDataIndexingInput.crystal = self._xsDataCrystal
             self._edPluginControlIndexingMOSFLM.setDataInput(xsDataIndexingInput)
-            self.addStatusMessage("Starting MOSFLM indexing")
+            self.addStatusMessage("MOSFLM indexing")
             self.executePluginSynchronous(self._edPluginControlIndexingMOSFLM)
         else:
             self.executeFbest()

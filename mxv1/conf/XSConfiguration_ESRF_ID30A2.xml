@@ -39,7 +39,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>thresholdMosflmIndexing</name>
-					<value>100.0</value>
+					<value>10.0</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
