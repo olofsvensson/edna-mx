@@ -41,10 +41,6 @@
 					<name>thresholdMosflmIndexing</name>
 					<value>10</value>
 				</XSParamItem>
-				<XSParamItem>
-					<name>mxCuBE_URI</name>
-					<value>http://id231control.esrf.fr:7171</value>
-				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
