@@ -26,6 +26,10 @@ __copyright__ = "ESRF"
 __date__ = "20120711"
 __status__ = "production"
 
+import time
+
+from xmlrpc.client import ServerProxy
+from xmlrpc.client import Transport
 
 """
 This control plugin will launch in parallel indexing with Labelit (edPluginIndexingLabelitv1_0) 
@@ -50,6 +54,19 @@ from XSDataMXv1 import XSDataIndexingInput
 from XSDataMXv1 import XSDataString
 from XSDataMXv1 import XSDataInputControlImageQualityIndicators
 
+class TokenTransport(Transport):
+
+    def __init__(self, token, use_datetime=0):
+        Transport.__init__(self, use_datetime=use_datetime)
+        self.token = token
+
+    def send_content(self, connection, request_body):
+        connection.putheader("Content-Type", "text/xml")
+        connection.putheader("Content-Length", str(len(request_body)))
+        connection.putheader("Token", self.token)
+        connection.endheaders()
+        if request_body:
+            connection.send(request_body)
 
 class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
     """
@@ -81,12 +98,17 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
         self.edPluginControlIndicators = None
         self.xsDataExperimentalCondition = None
         self.bDoLabelitIndexing = True
+        self.fVMaxVisibleResolution = None
+        self.iStartLabelitTime = None
+        self.strMxCuBE_URI = None
+        self.strToken = None
 
     def configure(self):
         EDPluginControl.configure(self)
         self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.configure")
         self.bDoLabelitIndexing = self.config.get("doLabelitIndexing", self.bDoLabelitIndexing)
         self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.configure: doLabelitIndexing = {0}".format(self.bDoLabelitIndexing))
+        self.strMxCuBE_URI = self.config.get("mxCuBE_URI", None)
 
     def checkParameters(self):
         """
@@ -127,21 +149,33 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
             for xsDataImage in xsDataImageList:
                 xsDataInputControlImageQualityIndicators.addImage(xsDataImage)
         self.edPluginControlIndicators.setDataInput(xsDataInputControlImageQualityIndicators)
+        if self.strMxCuBE_URI is not None:
+            self.DEBUG("Enabling sending messages to mxCuBE via URI {0}".format(self.strMxCuBE_URI))
+            if self.strToken is None:
+                self._oServerProxy = ServerProxy(self._strMxCuBE_URI)
+            else:
+                self._oServerProxy = ServerProxy(self._strMxCuBE_URI, transport=TokenTransport(self.strToken))
 
 
     def process(self, _edObject=None):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.process")
-        edActionCluster = EDActionCluster()
         if self.bDoLabelitIndexing:
-            edActionCluster.addAction(self.edPluginIndexingLabelit)
-            self.edPluginIndexingLabelit.connectSUCCESS(self.doSuccessLabelitIndexing)
-            self.edPluginIndexingLabelit.connectFAILURE(self.doFailureLabelitIndexing)
-        edActionCluster.addAction(self.edPluginControlIndicators)
+            self.edPluginIndexingLabelit.execute()
+            self.iStartLabelitTime = time.time()
+            # edActionCluster.addAction(self.edPluginIndexingLabelit)
+            # self.edPluginIndexingLabelit.connectSUCCESS(self.doSuccessLabelitIndexing)
+            # self.edPluginIndexingLabelit.connectFAILURE(self.doFailureLabelitIndexing)
+        # edActionCluster.addAction(self.edPluginControlIndicators)
         self.edPluginControlIndicators.connectSUCCESS(self.doSuccessControlIndicators)
         self.edPluginControlIndicators.connectFAILURE(self.doFailureControlIndicators)
-        edActionCluster.execute()
-        edActionCluster.synchronize()
+        self.edPluginControlIndicators.executeSynchronous()
+        if self.edPluginControlIndicators.isFailure():
+            self.doFailureControlIndicators(self.edPluginControlIndicators)
+        else:
+            self.doSuccessControlIndicators(self.edPluginControlIndicators)
+        # edActionCluster.execute()
+        # edActionCluster.synchronize()
 
 
     def postProcess(self, _edObject=None):
@@ -185,10 +219,49 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
 
     def doSuccessControlIndicators(self, _edPlugin=None):
         self.DEBUG("EDPluginControlIndexingIndicatorsv1_1.doSuccessControlIndicators")
-        self.synchronizeOn()
         self.generateExecutiveSummaryIndicators(self.edPluginControlIndicators)
         self.generateIndicatorsShortSummary(self.edPluginControlIndicators)
-        self.synchronizeOff()
+        # Check if any dozor score is 0.000
+        bHasZeroDozorScore = False
+        if _edPlugin.hasDataOutput():
+            for xsDataQualityIndicators in _edPlugin.dataOutput.imageQualityIndicators:
+                if xsDataQualityIndicators.dozor_score is not None:
+                    fDozorScore = xsDataQualityIndicators.dozor_score.value
+                    if fDozorScore < 0.001:
+                        bHasZeroDozorScore = True
+                        break
+                if xsDataQualityIndicators.dozorVisibleResolution is not None:
+                    fNewVisibleResolution = xsDataQualityIndicators.dozorVisibleResolution.value
+                    if self.fVMaxVisibleResolution is None or fNewVisibleResolution < self.fVMaxVisibleResolution:
+                        self.fVMaxVisibleResolution = fNewVisibleResolution
+        if self.fVMaxVisibleResolution > 6.0:
+            warningMessage = "Low resolution detected! Labelit indexing aborted."
+            self.addExecutiveSummaryLine(warningMessage)
+            self.warning(warningMessage)
+        elif self.bDoLabelitIndexing and bHasZeroDozorScore:
+            warningMessage = "Zero dozor score detected! Labelit indexing aborted."
+            self.addExecutiveSummaryLine(warningMessage)
+            self.warning(warningMessage)
+        else:
+            # Wait max 10 s
+            bDoContinue = True
+            doLabelit = False
+            while bDoContinue:
+                deltaTime = time.time() - self.iStartLabelitTime
+                self.sendMessageToMXCuBE(f"Waiting for Labelit, time {deltaTime}")
+                if deltaTime > 5.0:
+                    bDoContinue = False
+                elif self.edPluginIndexingLabelit.isRunning():
+                    time.sleep(1)
+                else:
+                    bDoContinue = False
+                    doLabelit = True
+            if doLabelit:
+                self.edPluginIndexingLabelit.synchronize()
+                if self.edPluginIndexingLabelit.isFailure():
+                    self.doFailureLabelitIndexing(self.edPluginIndexingLabelit)
+                else:
+                    self.doSuccessLabelitIndexing(self.edPluginIndexingLabelit)
 
 
     def doFailureControlIndicators(self, _edPlugin=None):
@@ -324,3 +397,22 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
 
     def setLabelitIndexing(self, value):
         self.bDoLabelitIndexing = value
+
+    def sendMessageToMXCuBE(self, _strMessage, level="info"):
+        # Only for mxCuBE
+        if level.lower() == "warning":
+            self.WARNING(_strMessage)
+            self.addWarningMessage(_strMessage)
+        elif level.lower() == "error":
+            self.ERROR(_strMessage)
+            self.addErrorMessage(_strMessage)
+        else:
+            self.screen(_strMessage)
+        if self.strMxCuBE_URI is not None:
+            self.DEBUG("Sending message to mxCuBE: {0}".format(_strMessage))
+            try:
+                for strMessage in _strMessage.split("\n"):
+                    if strMessage != "":
+                        self._oServerProxy.log_message("Characterisation: " + strMessage, level)
+            except:
+                self.DEBUG("Sending message to mxCuBE failed!")
