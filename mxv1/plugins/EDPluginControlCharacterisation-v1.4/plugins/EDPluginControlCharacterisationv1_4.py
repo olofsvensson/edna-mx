@@ -371,7 +371,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             indicatorsShortSummary = self._edPluginControlIndexingIndicators.getDataOutput("indicatorsShortSummary")[0].getValue()
             self._strCharacterisationShortSummary += indicatorsShortSummary
             self.sendMessageToMXCuBE(indicatorsShortSummary)
-        if self._iNoImagesWithDozorScore > 0:
+        if self._iNoImagesWithDozorScore is not None and self._iNoImagesWithDozorScore > 0:
             if not self._bDoOnlyMoslmfIndexing:
                 strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
                 self.WARNING(strWarningMessage)
@@ -441,7 +441,7 @@ class EDPluginControlCharacterisationv1_4(EDPluginControl):
             # Then start the integration of the reference images
             self.indexingToIntegration()
         else:
-            if self._iNoImagesWithDozorScore > 0:
+            if self._iNoImagesWithDozorScore is not None and self._iNoImagesWithDozorScore > 0:
                 if not self._bDoOnlyMoslmfIndexing:
                     strWarningMessage = "Execution of Indexing and Indicators plugin failed - trying to index with MOSFLM."
                     self.WARNING(strWarningMessage)

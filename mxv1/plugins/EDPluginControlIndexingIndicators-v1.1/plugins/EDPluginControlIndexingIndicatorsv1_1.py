@@ -229,7 +229,6 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
                     fDozorScore = xsDataQualityIndicators.dozor_score.value
                     if fDozorScore < 0.001:
                         bHasZeroDozorScore = True
-                        break
                 if xsDataQualityIndicators.dozorVisibleResolution is not None:
                     fNewVisibleResolution = xsDataQualityIndicators.dozorVisibleResolution.value
                     if self.fVMaxVisibleResolution is None or fNewVisibleResolution < self.fVMaxVisibleResolution:
