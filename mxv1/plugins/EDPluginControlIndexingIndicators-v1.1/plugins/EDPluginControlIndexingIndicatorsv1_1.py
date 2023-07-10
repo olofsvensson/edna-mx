@@ -233,21 +233,19 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
                     fNewVisibleResolution = xsDataQualityIndicators.dozorVisibleResolution.value
                     if self.fVMaxVisibleResolution is None or fNewVisibleResolution < self.fVMaxVisibleResolution:
                         self.fVMaxVisibleResolution = fNewVisibleResolution
-        if self.fVMaxVisibleResolution > 6.0:
+        if self.fVMaxVisibleResolution is None or self.fVMaxVisibleResolution > 6.0:
             warningMessage = "Low resolution detected! Labelit indexing aborted."
-            self.addExecutiveSummaryLine(warningMessage)
-            self.warning(warningMessage)
+            self.sendMessageToMXCuBE(warningMessage, "warning")
         elif self.bDoLabelitIndexing and bHasZeroDozorScore:
             warningMessage = "Zero dozor score detected! Labelit indexing aborted."
-            self.addExecutiveSummaryLine(warningMessage)
-            self.warning(warningMessage)
-        else:
+            self.sendMessageToMXCuBE(warningMessage, "warning")
+        elif self.bDoLabelitIndexing:
             # Wait max 10 s
             bDoContinue = True
             doLabelit = False
             while bDoContinue:
                 deltaTime = time.time() - self.iStartLabelitTime
-                self.sendMessageToMXCuBE(f"Waiting for Labelit, time {deltaTime}")
+                self.DEBUG(f"Waiting for Labelit, time {deltaTime}")
                 if deltaTime > 5.0:
                     bDoContinue = False
                 elif self.edPluginIndexingLabelit.isRunning():

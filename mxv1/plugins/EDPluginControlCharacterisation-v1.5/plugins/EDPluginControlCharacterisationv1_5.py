@@ -477,29 +477,29 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         strWarningMessage = None
         if self._bMoslmWithoutThreshold or self._bDoOnlyMoslmfIndexing:
             bRunMOSFLM = True
-            self.sendMessageToMXCuBE("Running MOSFLM by default")
+            # self.sendMessageToMXCuBE("Running MOSFLM by default")
         elif self._fVMaxVisibleResolution > 6.0:
             bRunMOSFLM = False
-            strWarningMessage = f"Labelit indexing cancelled and not running MOSFLM indexing because visible resolution lower than 6.0 A"
+            strWarningMessage = f"Labelit and MOSFLM indexing cancelled because visible resolution lower than 6.0 A"
             self.sendMessageToMXCuBE(strWarningMessage, "warning")
         elif self._fVMaxVisibleResolution > 4.0:
             bRunMOSFLM = False
-            strWarningMessage = f"Not running MOSFLM indexing because visible resolution lower than 4.0 A"
+            # strWarningMessage = f"Not running MOSFLM indexing because visible resolution lower than 4.0 A"
             self.sendMessageToMXCuBE(strWarningMessage, "warning")
         elif self._fVMaxVisibleResolution < 2.0:
             bRunMOSFLM = True
-            self.sendMessageToMXCuBE("Running MOSFLM because visible resolution higher than 2.0 A")
+            # self.sendMessageToMXCuBE("Running MOSFLM because visible resolution higher than 2.0 A")
         elif self._fMinDozorScore < self._fThresholdMosflmIndexing:
             bRunMOSFLM = False
-            strWarningMessage = "Not running MOSFLM indexing because of low diffraction signal from at least one image" + \
-                                f" (dozor score {self._fMinDozorScore:.1f}" + \
-                                f" less than threshold {self._fThresholdMosflmIndexing:.1f})."
-            self.sendMessageToMXCuBE(strWarningMessage, "warning")
+            # strWarningMessage = "Not running MOSFLM indexing because of low diffraction signal from at least one image" + \
+            #                     f" (dozor score {self._fMinDozorScore:.1f}" + \
+            #                     f" less than threshold {self._fThresholdMosflmIndexing:.1f})."
+            # self.sendMessageToMXCuBE(strWarningMessage, "warning")
         else:
             bRunMOSFLM = True
-            self.sendMessageToMXCuBE(f"Running MOSFLM (average dozor score average above threshold {self._fThresholdMosflmIndexing:.1f})")
+            # self.sendMessageToMXCuBE(f"Running MOSFLM (average dozor score average above threshold {self._fThresholdMosflmIndexing:.1f})")
         if strWarningMessage is not None and bRunMOSFLM:
-            strWarningMessage = "No indexing solution from Labelit, trying MOSFLM indexing"
+            strWarningMessage = "No indexing solution from Labelit"
             self.sendMessageToMXCuBE(strWarningMessage, "warning")
         if bRunMOSFLM:
             self._edPluginControlIndexingMOSFLM.synchronize()
