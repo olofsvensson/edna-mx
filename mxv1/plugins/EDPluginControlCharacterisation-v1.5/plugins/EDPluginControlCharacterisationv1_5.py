@@ -788,6 +788,10 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         xsDataInputFbest.flux = XSDataDouble(flux)
         fFbestResolution = None
         if self._fVMaxVisibleResolution is not None:
+            if self._fMaxResolution is None:
+                # Try to get max resolution from MXCuBE
+                fLowResolution, fHighResolution = self.getResolutionLimitsFromMXCuBE()
+                self._fMaxResolution = fHighResolution
             if self._fVMaxVisibleResolution < self._fMaxResolution:
                 fFbestResolution = self._fMaxResolution
                 resolutionSource = "max beamline resolution"
@@ -1012,3 +1016,14 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             except Exception as e:
                 self.DEBUG("Cannot read resolution from MXCuBE!")
         return fCurrentResolution
+
+    def getResolutionLimitsFromMXCuBE(self):
+        fLowResolution = None
+        fHighResolution = None
+        if self._strMxCuBE_URI is not None:
+            self.DEBUG("Trying to read resolution limits from MXCuBE")
+            try:
+                fLowResolution, fHighResolution = self._oServerProxy.get_resolution_limits()
+            except Exception as e:
+                self.DEBUG("Cannot read resolution limits from MXCuBE!")
+        return fLowResolution, fHighResolution
