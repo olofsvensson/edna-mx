@@ -150,6 +150,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._strStrategyType = None
         self._bDoOnlyFbest = False
         self._bMoslmWithoutThreshold = True
+        self._fMaxResolution = None
 
     def checkParameters(self):
         """
@@ -175,6 +176,9 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._bDoOnlyMoslmfIndexing = self.config.get("doOnlyMosflmIndexing", False)
         self._fThresholdMosflmIndexing = float(self.config.get("thresholdMosflmIndexing", 10.0))
         self._strStrategyType = self.config.get("strategyType", None)
+        self._fMaxResolution = self.config("maxResolution", None)
+        if self._fMaxResolution is not None:
+            self._fMaxResolution = float(self._fMaxResolution)
 
 
     def preProcess(self, _edObject=None):
@@ -784,8 +788,12 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         xsDataInputFbest.flux = XSDataDouble(flux)
         fFbestResolution = None
         if self._fVMaxVisibleResolution is not None:
-            fFbestResolution = self._fVMaxVisibleResolution
-            resolutionSource = "dozor visible resolution"
+            if self._fVMaxVisibleResolution < self._fMaxResolution:
+                fFbestResolution = self._fMaxResolution
+                resolutionSource = "max beamline resolution"
+            else:
+                fFbestResolution = self._fVMaxVisibleResolution
+                resolutionSource = "dozor visible resolution"
         elif self._fCurrentResolution is not None:
             fFbestResolution = self._fCurrentResolution
             resolutionSource = "input file"

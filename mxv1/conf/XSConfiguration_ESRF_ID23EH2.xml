@@ -58,6 +58,10 @@
 					<name>doOnlyMosflmIndexing</name>
 					<value>true</value>
 				</XSParamItem>
+				<XSParamItem>
+					<name>maxResolution</name>
+					<value>1.31</value>
+				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
