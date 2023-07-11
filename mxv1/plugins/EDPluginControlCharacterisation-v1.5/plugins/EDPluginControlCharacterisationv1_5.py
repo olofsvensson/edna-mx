@@ -176,7 +176,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._bDoOnlyMoslmfIndexing = self.config.get("doOnlyMosflmIndexing", False)
         self._fThresholdMosflmIndexing = float(self.config.get("thresholdMosflmIndexing", 10.0))
         self._strStrategyType = self.config.get("strategyType", None)
-        self._fMaxResolution = self.config("maxResolution", None)
+        self._fMaxResolution = self.config.get("maxResolution", None)
         if self._fMaxResolution is not None:
             self._fMaxResolution = float(self._fMaxResolution)
 
