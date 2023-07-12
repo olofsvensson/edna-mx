@@ -870,6 +870,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 resolution = xsDataResultFbest.resolution.value
                 fBestShortSummary2 += f" resolution {resolution} A"
                 xsDataStrategySummary.resolution = XSDataDouble(resolution)
+                xsDataStrategySummary.rankingResolution = XSDataDouble(resolution)
             self.sendMessageToMXCuBE(fBestShortSummary1)
             self.sendMessageToMXCuBE(fBestShortSummary2)
             self._strCharacterisationShortSummary += fBestShortSummary2 + "\n"
