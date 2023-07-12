@@ -30,6 +30,7 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 import os
 import sys
+import time
 
 sys.path.insert(0, "/opt/pxsoft/bes/vgit/linux-x86_64/id30a2/edna2")
 
@@ -151,6 +152,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._bDoOnlyFbest = False
         self._bMoslmWithoutThreshold = True
         self._fMaxResolution = None
+        self._iTimeStartMOSFLM = None
 
     def checkParameters(self):
         """
@@ -369,6 +371,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self.addStatusMessage("Labelit indexing")
         self.addStatusMessage("MOSFLM indexing")
         self.executePlugin(self._edPluginControlIndexingMOSFLM)
+        self._iTimeStartMOSFLM = time.time()
         self.executePluginSynchronous(self._edPluginControlIndexingIndicators)
 
 
@@ -506,11 +509,27 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             strWarningMessage = "No indexing solution from Labelit"
             self.sendMessageToMXCuBE(strWarningMessage, "warning")
         if bRunMOSFLM:
-            self._edPluginControlIndexingMOSFLM.synchronize()
-            if self._edPluginControlIndexingMOSFLM.isFailure():
-                self.doFailureIndexingMOSFLM(self._edPluginControlIndexingMOSFLM)
+            # Wait max 15 s
+            bDoContinue = True
+            doMOSFLM = False
+            while bDoContinue:
+                deltaTime = time.time() - self._iTimeStartMOSFLM
+                self.DEBUG(f"Waiting for MOSFLM, time {deltaTime}")
+                if deltaTime > 15.0:
+                    bDoContinue = False
+                elif self._edPluginControlIndexingMOSFLM.isRunning():
+                    time.sleep(1)
+                else:
+                    bDoContinue = False
+                    doMOSFLM = True
+            if doMOSFLM:
+                self._edPluginControlIndexingMOSFLM.synchronize()
+                if self._edPluginControlIndexingMOSFLM.isFailure():
+                    self.doFailureIndexingMOSFLM(self._edPluginControlIndexingMOSFLM)
+                else:
+                    self.doSuccessIndexingMOSFLM(self._edPluginControlIndexingMOSFLM)
             else:
-                self.doSuccessIndexingMOSFLM(self._edPluginControlIndexingMOSFLM)
+                self.executeFbest()
         else:
             self.executeFbest()
 
@@ -792,7 +811,10 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 # Try to get max resolution from MXCuBE
                 fLowResolution, fHighResolution = self.getResolutionLimitsFromMXCuBE()
                 self._fMaxResolution = fHighResolution
-            if self._fVMaxVisibleResolution < self._fMaxResolution:
+            if self._fMaxResolution is None:
+                fFbestResolution = 2.0
+                resolutionSource = "hardwired resolution"
+            elif self._fVMaxVisibleResolution < self._fMaxResolution:
                 fFbestResolution = self._fMaxResolution
                 resolutionSource = "max beamline resolution"
             else:
