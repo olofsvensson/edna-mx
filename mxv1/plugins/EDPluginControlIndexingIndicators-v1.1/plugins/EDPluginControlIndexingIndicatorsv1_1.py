@@ -246,7 +246,7 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
             while bDoContinue:
                 deltaTime = time.time() - self.iStartLabelitTime
                 self.DEBUG(f"Waiting for Labelit, time {deltaTime}")
-                if deltaTime > 5.0:
+                if deltaTime > 10.0:
                     bDoContinue = False
                 elif self.edPluginIndexingLabelit.isRunning():
                     time.sleep(1)
