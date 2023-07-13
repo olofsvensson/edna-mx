@@ -653,9 +653,13 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
         """
         This method retrieves the flux and beamsize from ISPyB
         """
+        fFlux = None
         xsDataExperimentalCondition = None
         if (_xsDataExperimentalCondition is not None):
-            bFoundValidFlux = False
+            if _xsDataExperimentalCondition.beam is not None:
+                if _xsDataExperimentalCondition.beam.flux is not None:
+                    fFlux = _xsDataExperimentalCondition.beam.flux.value
+                    self.screen("MXCuBE reports flux to be: %g photons/sec" % fFlux)
             xsDataExperimentalCondition = _xsDataExperimentalCondition.copy()
             xsDataInputRetrieveDataCollection = XSDataInputRetrieveDataCollection()
             xsDataInputRetrieveDataCollection.setImage(XSDataImage(_xsDataFirstImage.path))
@@ -665,17 +669,9 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             if xsDataResultRetrieveDataCollection is not None:
                 xsDataISPyBDataCollection = xsDataResultRetrieveDataCollection.dataCollection
                 if xsDataISPyBDataCollection is not None:
-                    fFlux = xsDataISPyBDataCollection.flux_end
-                    if fFlux is not None:
+                    if fFlux is None:
+                        fFlux = xsDataISPyBDataCollection.flux_end
                         self.screen("ISPyB reports flux to be: %g photons/sec" % fFlux)
-                        if fFlux > self.fFluxThreshold:
-                            xsDataExperimentalCondition.beam.flux = XSDataFlux(fFlux)
-                            bFoundValidFlux = True
-                        elif "bm07" in _xsDataFirstImage.path.value:
-                            self.screen("Using fixed flux 1e11 photons/s for BM07")
-                            fFlux = 1e11
-                            xsDataExperimentalCondition.beam.flux = XSDataFlux(fFlux)
-                            bFoundValidFlux = True
                     fBeamSizeAtSampleX = xsDataISPyBDataCollection.beamSizeAtSampleX
                     fBeamSizeAtSampleY = xsDataISPyBDataCollection.beamSizeAtSampleY
                     if fBeamSizeAtSampleX is not None and fBeamSizeAtSampleY is not None:
@@ -689,21 +685,12 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     if xsDataExperimentalCondition.beam.transmission is None:
                         fTransmission = xsDataISPyBDataCollection.transmission
                         xsDataExperimentalCondition.beam.transmission = XSDataDouble(fTransmission)
-            if not bFoundValidFlux:
-                self.screen("No valid flux could be retrieved from ISPyB! Trying to obtain flux from input data.")
-                xsDataBeam = xsDataExperimentalCondition.beam
-                xsDataBeamFlux = xsDataBeam.flux
-                if xsDataBeamFlux is not None:
-                    fFluxMXCuBE = xsDataBeamFlux.value
-                    self.screen("MXCuBE reports flux to be: %g photons/sec" % fFluxMXCuBE)
-                    if fFluxMXCuBE < self.fFluxThreshold:
-                        self.screen("MXCuBE flux lower than threshold flux %g photons/s!" % self.fFluxThreshold)
-                        self.screen("Forcing flux to 0.0 photons/s")
-                        xsDataExperimentalCondition.beam.flux = XSDataFlux(0.0)
-                else:
-                    # Force missing flux to 0.0
-                    self.screen("No flux neither in ISPyB nor in mxCuBE, forcing flux to 0.0 photon/s")
-                    xsDataExperimentalCondition.beam.flux = XSDataFlux(0.0)
+            if fFlux is not None and fFlux > self.fFluxThreshold:
+                xsDataExperimentalCondition.beam.flux = XSDataFlux(fFlux)
+            else:
+                # Force flux to 0.0
+                self.screen("No flux could be obtained from neither mxCuBE nor from ISPyB, forcing flux to 0.0 photon/s")
+                xsDataExperimentalCondition.beam.flux = XSDataFlux(0.0)
 
         return xsDataExperimentalCondition
 
