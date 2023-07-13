@@ -517,6 +517,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 self.DEBUG(f"Waiting for MOSFLM, time {deltaTime}")
                 if deltaTime > 15.0:
                     bDoContinue = False
+                    strWarningMessage = "MOSFLM execution timeout"
+                    self.sendMessageToMXCuBE(strWarningMessage, "warning")
                 elif self._edPluginControlIndexingMOSFLM.isRunning():
                     time.sleep(1)
                 else:
