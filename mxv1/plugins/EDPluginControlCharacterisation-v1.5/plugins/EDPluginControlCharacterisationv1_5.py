@@ -235,7 +235,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             if self._xsDataDiffractionPlan.strategyType is not None:
                 self._strStrategyType = self._xsDataDiffractionPlan.strategyType.value
             if self._strStrategyType is None:
-                self._strStrategyType = "fast"
+                self._strStrategyType = "optimal"
             if self._strStrategyType.lower() == "fast":
                 self.addStatusMessage("FAST strategy (instead of BEST)")
                 self._bDoOnlyFbest = True
