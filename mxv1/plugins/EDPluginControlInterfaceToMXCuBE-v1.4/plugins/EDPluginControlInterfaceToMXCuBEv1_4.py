@@ -250,6 +250,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     xsDataInputControlH5ToCBF.imageNumber = xsDataImage.number
                     edPluginControlH5ToCBF = self.loadPlugin(self.strPluginControlH5ToCBF, "ControlH5ToCBF_{0:01d}".format(pluginIndex))
                     edPluginControlH5ToCBF.dataInput = xsDataInputControlH5ToCBF
+                    self.sendMessageToMXCuBE(f"Starting to convert {os.path.basename(xsDataImage.path.value)}, index = {pluginIndex}")
                     edPluginControlH5ToCBF.execute()
                     dictH5ToCBFPlugin[xsDataImage.path.value] = edPluginControlH5ToCBF
                     pluginIndex += 1
@@ -259,6 +260,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     edPluginControlH5ToCBF = dictH5ToCBFPlugin[xsDataImage.path.value]
                     edPluginControlH5ToCBF.synchronize()
                     cbfFile = edPluginControlH5ToCBF.dataOutput.outputCBFFile
+                    self.sendMessageToMXCuBE(f"Image converted {os.path.basename(cbfFile.path.value)}")
                     xsDataInputInterface.addImagePath(XSDataImage(cbfFile.path))
                     if self.xsDataFirstImage is None:
                         strCbfFilePath = cbfFile.path.value
@@ -865,6 +867,7 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
             try:
                 for strMessage in _strMessage.split("\n"):
                     if strMessage != "":
+                        self.screen(strMessage)
                         self.serverProxy.log_message("Characterisation: " + strMessage, level)
             except Exception as e:
                 self.screen(e)
