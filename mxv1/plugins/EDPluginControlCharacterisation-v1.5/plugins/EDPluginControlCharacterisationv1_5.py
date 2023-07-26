@@ -236,19 +236,20 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 self._strStrategyType = self._xsDataDiffractionPlan.strategyType.value
             if self._strStrategyType is None:
                 self._strStrategyType = "fast"
-            if self._strStrategyType.lower() == "fbest":
-                self.addStatusMessage("FBEST strategy (instead of BEST)")
+            if self._strStrategyType.lower() == "fast":
+                self.addStatusMessage("FAST strategy (instead of BEST)")
                 self._bDoOnlyFbest = True
                 self._bDoStrategyCalculation = False
                 self._edPluginControlIndexingIndicators.setLabelitIndexing(False)
-            elif self._strStrategyType.lower() == "fast":
-                self.addStatusMessage("FAST strategy: Labelit, MOSLFM only if diffraction signal above threshold, and BEST")
+            elif self._strStrategyType.lower() == "optimal":
+                self.addStatusMessage("OPTIMAL strategy: Labelit, MOSLFM only if diffraction signal above threshold, and BEST")
                 self._bMoslmWithoutThreshold = False
             elif self._strStrategyType.lower() == "full":
                 self.addStatusMessage("FULL strategy: Labelit, MOSLFM and BEST")
             else:
                 self.addStatusMessage(f"Unknow strategy type: {self._strStrategyType}", "warning")
-                self.addStatusMessage("Using FULL strategy: Labelit, MOSLFM and BEST", "warning")
+                self.addStatusMessage("Using OPTIMAL strategy: Labelit, MOSLFM only if diffraction signal above threshold, and BEST", "warning")
+                self._bMoslmWithoutThreshold = False
             # MXSUP-1445: Check if transmission is less than 10% and warn if it's the case
             xsDataFirstSubWedge = self._xsDataCollection.getSubWedge()[0]
             xsDataBeam = xsDataFirstSubWedge.getExperimentalCondition().getBeam()
@@ -450,7 +451,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             if self._strStatusMessage != None:
                 self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
                 self.writeDataOutput()
-        elif self._fAverageDozorScore is None or self._fAverageDozorScore < 0.001:
+        elif False: # self._fAverageDozorScore is None or self._fAverageDozorScore < 0.001:
             self.sendMessageToMXCuBE("No diffraction detected therefore no strategy calculated.", "warning")
             self.generateExecutiveSummary(self)
             if self._xsDataResultCharacterisation is not None:
