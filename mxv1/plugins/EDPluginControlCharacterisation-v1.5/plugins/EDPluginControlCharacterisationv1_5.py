@@ -812,7 +812,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         if self._fVMaxVisibleResolution is not None:
             if self._fMaxResolution is None:
                 # Try to get max resolution from MXCuBE
-                fLowResolution, fHighResolution = self.getResolutionLimitsFromMXCuBE()
+                fHighResolution, fLowResolution = self.getResolutionLimitsFromMXCuBE()
                 self._fMaxResolution = fHighResolution
             if self._fMaxResolution is None:
                 fFbestResolution = 2.0
@@ -1049,7 +1049,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         if self._strMxCuBE_URI is not None:
             self.DEBUG("Trying to read resolution limits from MXCuBE")
             try:
-                fLowResolution, fHighResolution = self._oServerProxy.get_resolution_limits()
+                fHighResolution, fLowResolution = self._oServerProxy.get_resolution_limits()
             except Exception as e:
                 self.DEBUG("Cannot read resolution limits from MXCuBE!")
-        return fLowResolution, fHighResolution
+        return fHighResolution, fLowResolution
