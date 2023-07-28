@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Jul 3 05:01::57 2019 by EDGenerateDS.
+# Generated Fri Jul 28 03:59::44 2023 by EDGenerateDS.
 #
 
 import os, sys
@@ -126,7 +126,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlAutoPROC(XSDataInput):
-    def __init__(self, configuration=None, highResolutionLimit=None, lowResolutionLimit=None, reprocess=None, cell=None, symm=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, dataCollectionId=None):
+    def __init__(self, configuration=None, highResolutionLimit=None, lowResolutionLimit=None, reprocess=None, cell=None, symm=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, icatProcessDataDir=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -134,6 +134,13 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self._dataCollectionId = dataCollectionId
         else:
             strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'dataCollectionId' is not XSDataInteger but %s" % self._dataCollectionId.__class__.__name__
+            raise BaseException(strMessage)
+        if icatProcessDataDir is None:
+            self._icatProcessDataDir = None
+        elif icatProcessDataDir.__class__.__name__ == "XSDataFile":
+            self._icatProcessDataDir = icatProcessDataDir
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'icatProcessDataDir' is not XSDataFile but %s" % self._icatProcessDataDir.__class__.__name__
             raise BaseException(strMessage)
         if dirN is None:
             self._dirN = None
@@ -231,6 +238,18 @@ class XSDataInputControlAutoPROC(XSDataInput):
             raise BaseException(strMessage)
     def delDataCollectionId(self): self._dataCollectionId = None
     dataCollectionId = property(getDataCollectionId, setDataCollectionId, delDataCollectionId, "Property for dataCollectionId")
+    # Methods and properties for the 'icatProcessDataDir' attribute
+    def getIcatProcessDataDir(self): return self._icatProcessDataDir
+    def setIcatProcessDataDir(self, icatProcessDataDir):
+        if icatProcessDataDir is None:
+            self._icatProcessDataDir = None
+        elif icatProcessDataDir.__class__.__name__ == "XSDataFile":
+            self._icatProcessDataDir = icatProcessDataDir
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.setIcatProcessDataDir argument is not XSDataFile but %s" % icatProcessDataDir.__class__.__name__
+            raise BaseException(strMessage)
+    def delIcatProcessDataDir(self): self._icatProcessDataDir = None
+    icatProcessDataDir = property(getIcatProcessDataDir, setIcatProcessDataDir, delIcatProcessDataDir, "Property for icatProcessDataDir")
     # Methods and properties for the 'dirN' attribute
     def getDirN(self): return self._dirN
     def setDirN(self, dirN):
@@ -385,6 +404,8 @@ class XSDataInputControlAutoPROC(XSDataInput):
         XSDataInput.exportChildren(self, outfile, level, name_)
         if self._dataCollectionId is not None:
             self.dataCollectionId.export(outfile, level, name_='dataCollectionId')
+        if self._icatProcessDataDir is not None:
+            self.icatProcessDataDir.export(outfile, level, name_='icatProcessDataDir')
         if self._dirN is not None:
             self.dirN.export(outfile, level, name_='dirN')
         if self._templateN is not None:
@@ -419,6 +440,11 @@ class XSDataInputControlAutoPROC(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setDataCollectionId(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'icatProcessDataDir':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setIcatProcessDataDir(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'dirN':
             obj_ = XSDataFile()

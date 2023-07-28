@@ -12,6 +12,7 @@ import XSDataCommon.XSDataDouble
 
 complex type XSDataInputControlAutoPROC extends XSDataInput {
 	dataCollectionId : XSDataInteger optional
+	icatProcessDataDir : XSDataFile optional
 	dirN : XSDataFile optional
 	templateN : XSDataString optional
 	fromN : XSDataInteger optional

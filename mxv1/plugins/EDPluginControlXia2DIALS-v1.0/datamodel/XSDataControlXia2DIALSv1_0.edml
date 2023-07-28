@@ -11,6 +11,7 @@ import XSDataCommon.XSDataBoolean
 
 complex type XSDataInputControlXia2DIALS extends XSDataInput {
 	dataCollectionId : XSDataInteger optional
+	icatProcessDataDir : XSDataFile optional
 	processDirectory : XSDataFile optional
 	doAnom : XSDataBoolean optional
 	doAnomAndNonanom : XSDataBoolean optional

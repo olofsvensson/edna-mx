@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Jul 4 02:44::24 2019 by EDGenerateDS.
+# Generated Fri Jul 28 04:00::06 2023 by EDGenerateDS.
 #
 
 import os, sys
@@ -123,7 +123,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlXDSAPP(XSDataInput):
-    def __init__(self, configuration=None, reprocess=None, useXdsAsciiToXml=None, unitCell=None, spaceGroup=None, hdf5ToCbfDirectory=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, dataCollectionId=None, endImageNumber=None, startImageNumber=None):
+    def __init__(self, configuration=None, reprocess=None, useXdsAsciiToXml=None, unitCell=None, spaceGroup=None, hdf5ToCbfDirectory=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, icatProcessDataDir=None, dataCollectionId=None, endImageNumber=None, startImageNumber=None):
         XSDataInput.__init__(self, configuration)
         if startImageNumber is None:
             self._startImageNumber = None
@@ -145,6 +145,13 @@ class XSDataInputControlXDSAPP(XSDataInput):
             self._dataCollectionId = dataCollectionId
         else:
             strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'dataCollectionId' is not XSDataInteger but %s" % self._dataCollectionId.__class__.__name__
+            raise BaseException(strMessage)
+        if icatProcessDataDir is None:
+            self._icatProcessDataDir = None
+        elif icatProcessDataDir.__class__.__name__ == "XSDataFile":
+            self._icatProcessDataDir = icatProcessDataDir
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP constructor argument 'icatProcessDataDir' is not XSDataFile but %s" % self._icatProcessDataDir.__class__.__name__
             raise BaseException(strMessage)
         if processDirectory is None:
             self._processDirectory = None
@@ -238,6 +245,18 @@ class XSDataInputControlXDSAPP(XSDataInput):
             raise BaseException(strMessage)
     def delDataCollectionId(self): self._dataCollectionId = None
     dataCollectionId = property(getDataCollectionId, setDataCollectionId, delDataCollectionId, "Property for dataCollectionId")
+    # Methods and properties for the 'icatProcessDataDir' attribute
+    def getIcatProcessDataDir(self): return self._icatProcessDataDir
+    def setIcatProcessDataDir(self, icatProcessDataDir):
+        if icatProcessDataDir is None:
+            self._icatProcessDataDir = None
+        elif icatProcessDataDir.__class__.__name__ == "XSDataFile":
+            self._icatProcessDataDir = icatProcessDataDir
+        else:
+            strMessage = "ERROR! XSDataInputControlXDSAPP.setIcatProcessDataDir argument is not XSDataFile but %s" % icatProcessDataDir.__class__.__name__
+            raise BaseException(strMessage)
+    def delIcatProcessDataDir(self): self._icatProcessDataDir = None
+    icatProcessDataDir = property(getIcatProcessDataDir, setIcatProcessDataDir, delIcatProcessDataDir, "Property for icatProcessDataDir")
     # Methods and properties for the 'processDirectory' attribute
     def getProcessDirectory(self): return self._processDirectory
     def setProcessDirectory(self, processDirectory):
@@ -348,6 +367,8 @@ class XSDataInputControlXDSAPP(XSDataInput):
             self.endImageNumber.export(outfile, level, name_='endImageNumber')
         if self._dataCollectionId is not None:
             self.dataCollectionId.export(outfile, level, name_='dataCollectionId')
+        if self._icatProcessDataDir is not None:
+            self.icatProcessDataDir.export(outfile, level, name_='icatProcessDataDir')
         if self._processDirectory is not None:
             self.processDirectory.export(outfile, level, name_='processDirectory')
         if self._doAnom is not None:
@@ -384,6 +405,11 @@ class XSDataInputControlXDSAPP(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setDataCollectionId(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'icatProcessDataDir':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setIcatProcessDataDir(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'processDirectory':
             obj_ = XSDataFile()

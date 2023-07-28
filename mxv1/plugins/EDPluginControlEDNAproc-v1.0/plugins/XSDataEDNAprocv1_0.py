@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Jul 8 10:27::58 2019 by EDGenerateDS.
+# Generated Fri Jul 28 03:59::50 2023 by EDGenerateDS.
 #
 
 import os, sys
@@ -734,7 +734,7 @@ class XSDataEDNAprocImportOut(XSDataResult):
 
 
 class XSDataEDNAprocInput(XSDataInput):
-    def __init__(self, configuration=None, doAnomAndNonanom=None, doAnom=None, reprocess=None, end_image=None, start_image=None, output_file=None, unit_cell=None, spacegroup=None, nres=None, low_resolution_limit=None, detector_max_res=None, data_collection_id=None, cc_half_cutoff=None, r_value_cutoff=None, isig_cutoff=None, completeness_cutoff=None, res_override=None, input_file=None):
+    def __init__(self, configuration=None, doAnomAndNonanom=None, doAnom=None, reprocess=None, end_image=None, start_image=None, output_file=None, unit_cell=None, spacegroup=None, nres=None, low_resolution_limit=None, detector_max_res=None, icat_processed_data_dir=None, data_collection_id=None, cc_half_cutoff=None, r_value_cutoff=None, isig_cutoff=None, completeness_cutoff=None, res_override=None, input_file=None):
         XSDataInput.__init__(self, configuration)
         if input_file is None:
             self._input_file = None
@@ -784,6 +784,13 @@ class XSDataEDNAprocInput(XSDataInput):
             self._data_collection_id = data_collection_id
         else:
             strMessage = "ERROR! XSDataEDNAprocInput constructor argument 'data_collection_id' is not XSDataInteger but %s" % self._data_collection_id.__class__.__name__
+            raise BaseException(strMessage)
+        if icat_processed_data_dir is None:
+            self._icat_processed_data_dir = None
+        elif icat_processed_data_dir.__class__.__name__ == "XSDataString":
+            self._icat_processed_data_dir = icat_processed_data_dir
+        else:
+            strMessage = "ERROR! XSDataEDNAprocInput constructor argument 'icat_processed_data_dir' is not XSDataString but %s" % self._icat_processed_data_dir.__class__.__name__
             raise BaseException(strMessage)
         if detector_max_res is None:
             self._detector_max_res = None
@@ -946,6 +953,18 @@ class XSDataEDNAprocInput(XSDataInput):
             raise BaseException(strMessage)
     def delData_collection_id(self): self._data_collection_id = None
     data_collection_id = property(getData_collection_id, setData_collection_id, delData_collection_id, "Property for data_collection_id")
+    # Methods and properties for the 'icat_processed_data_dir' attribute
+    def getIcat_processed_data_dir(self): return self._icat_processed_data_dir
+    def setIcat_processed_data_dir(self, icat_processed_data_dir):
+        if icat_processed_data_dir is None:
+            self._icat_processed_data_dir = None
+        elif icat_processed_data_dir.__class__.__name__ == "XSDataString":
+            self._icat_processed_data_dir = icat_processed_data_dir
+        else:
+            strMessage = "ERROR! XSDataEDNAprocInput.setIcat_processed_data_dir argument is not XSDataString but %s" % icat_processed_data_dir.__class__.__name__
+            raise BaseException(strMessage)
+    def delIcat_processed_data_dir(self): self._icat_processed_data_dir = None
+    icat_processed_data_dir = property(getIcat_processed_data_dir, setIcat_processed_data_dir, delIcat_processed_data_dir, "Property for icat_processed_data_dir")
     # Methods and properties for the 'detector_max_res' attribute
     def getDetector_max_res(self): return self._detector_max_res
     def setDetector_max_res(self, detector_max_res):
@@ -1102,6 +1121,8 @@ class XSDataEDNAprocInput(XSDataInput):
             self.cc_half_cutoff.export(outfile, level, name_='cc_half_cutoff')
         if self._data_collection_id is not None:
             self.data_collection_id.export(outfile, level, name_='data_collection_id')
+        if self._icat_processed_data_dir is not None:
+            self.icat_processed_data_dir.export(outfile, level, name_='icat_processed_data_dir')
         if self._detector_max_res is not None:
             self.detector_max_res.export(outfile, level, name_='detector_max_res')
         if self._low_resolution_limit is not None:
@@ -1164,6 +1185,11 @@ class XSDataEDNAprocInput(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setData_collection_id(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'icat_processed_data_dir':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setIcat_processed_data_dir(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'detector_max_res':
             obj_ = XSDataDouble()

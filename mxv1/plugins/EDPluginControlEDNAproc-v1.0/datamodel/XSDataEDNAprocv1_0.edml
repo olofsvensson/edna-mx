@@ -20,6 +20,7 @@ complex type XSDataEDNAprocInput extends XSDataInput {
 	cc_half_cutoff : XSDataDouble optional
 
 	data_collection_id : XSDataInteger optional
+	icat_processed_data_dir : XSDataString optional
 	detector_max_res : XSDataDouble optional
 	low_resolution_limit : XSDataDouble optional
 	nres : XSDataDouble optional

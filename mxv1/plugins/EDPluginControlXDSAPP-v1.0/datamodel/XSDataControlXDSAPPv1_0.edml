@@ -13,6 +13,7 @@ complex type XSDataInputControlXDSAPP extends XSDataInput {
 	startImageNumber : XSDataInteger optional
 	endImageNumber : XSDataInteger optional
 	dataCollectionId : XSDataInteger optional
+	icatProcessDataDir : XSDataFile optional
 	processDirectory : XSDataFile optional
 	doAnom : XSDataBoolean optional
 	doAnomAndNonanom : XSDataBoolean optional

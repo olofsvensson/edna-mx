@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Jul 4 03:38::47 2019 by EDGenerateDS.
+# Generated Fri Jul 28 03:59::59 2023 by EDGenerateDS.
 #
 
 import os, sys
@@ -123,7 +123,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlXia2DIALS(XSDataInput):
-    def __init__(self, configuration=None, reprocess=None, endFrame=None, startFrame=None, unitCell=None, spaceGroup=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, dataCollectionId=None):
+    def __init__(self, configuration=None, reprocess=None, endFrame=None, startFrame=None, unitCell=None, spaceGroup=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, icatProcessDataDir=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -131,6 +131,13 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             self._dataCollectionId = dataCollectionId
         else:
             strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'dataCollectionId' is not XSDataInteger but %s" % self._dataCollectionId.__class__.__name__
+            raise BaseException(strMessage)
+        if icatProcessDataDir is None:
+            self._icatProcessDataDir = None
+        elif icatProcessDataDir.__class__.__name__ == "XSDataFile":
+            self._icatProcessDataDir = icatProcessDataDir
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'icatProcessDataDir' is not XSDataFile but %s" % self._icatProcessDataDir.__class__.__name__
             raise BaseException(strMessage)
         if processDirectory is None:
             self._processDirectory = None
@@ -200,6 +207,18 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             raise BaseException(strMessage)
     def delDataCollectionId(self): self._dataCollectionId = None
     dataCollectionId = property(getDataCollectionId, setDataCollectionId, delDataCollectionId, "Property for dataCollectionId")
+    # Methods and properties for the 'icatProcessDataDir' attribute
+    def getIcatProcessDataDir(self): return self._icatProcessDataDir
+    def setIcatProcessDataDir(self, icatProcessDataDir):
+        if icatProcessDataDir is None:
+            self._icatProcessDataDir = None
+        elif icatProcessDataDir.__class__.__name__ == "XSDataFile":
+            self._icatProcessDataDir = icatProcessDataDir
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.setIcatProcessDataDir argument is not XSDataFile but %s" % icatProcessDataDir.__class__.__name__
+            raise BaseException(strMessage)
+    def delIcatProcessDataDir(self): self._icatProcessDataDir = None
+    icatProcessDataDir = property(getIcatProcessDataDir, setIcatProcessDataDir, delIcatProcessDataDir, "Property for icatProcessDataDir")
     # Methods and properties for the 'processDirectory' attribute
     def getProcessDirectory(self): return self._processDirectory
     def setProcessDirectory(self, processDirectory):
@@ -306,6 +325,8 @@ class XSDataInputControlXia2DIALS(XSDataInput):
         XSDataInput.exportChildren(self, outfile, level, name_)
         if self._dataCollectionId is not None:
             self.dataCollectionId.export(outfile, level, name_='dataCollectionId')
+        if self._icatProcessDataDir is not None:
+            self.icatProcessDataDir.export(outfile, level, name_='icatProcessDataDir')
         if self._processDirectory is not None:
             self.processDirectory.export(outfile, level, name_='processDirectory')
         if self._doAnom is not None:
@@ -332,6 +353,11 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setDataCollectionId(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'icatProcessDataDir':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setIcatProcessDataDir(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'processDirectory':
             obj_ = XSDataFile()
