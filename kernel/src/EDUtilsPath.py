@@ -436,3 +436,35 @@ class EDUtilsPath:
                 raise FileExistsError(_toPath)
         p = subprocess.Popen(["cp", "-r", _fromPath, _toPath])
         p.wait()
+
+    @classmethod
+    def getBeamlineProposal(cls, directory):
+        userName = os.environ["USER"]
+        if EDUtilsPath.isESRF():
+            listDirectory = directory.split(os.sep)
+            try:
+                if listDirectory[1] == "data":
+                    if listDirectory[2] == "visitor":
+                        beamline = listDirectory[4]
+                        proposal = listDirectory[3]
+                    else:
+                        beamline = listDirectory[2]
+                        proposal = listDirectory[4]
+            except:
+                beamline = "unknown"
+                proposal = userName
+        return beamline, proposal
+
+    @classmethod
+    def getIcatBeamline(cls, beamline):
+        dict_beamline = {
+            "id23eh1": "ID23-1",
+            "id23eh2": "ID23-2",
+            "id30a1": "ID30A-1",
+            "id30a2": "ID30A-2",
+            "id30a3": "ID30A-3",
+            "id30b": "ID30b",
+            "bm07": "BM07"
+        }
+        icat_beamline = dict_beamline.get(beamline, None)
+        return icat_beamline

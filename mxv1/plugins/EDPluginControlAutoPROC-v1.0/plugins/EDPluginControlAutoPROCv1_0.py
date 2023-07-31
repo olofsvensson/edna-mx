@@ -26,11 +26,14 @@ __license__ = "GPLv2+"
 __copyright__ = "ESRF"
 
 import os
+import pathlib
 import sys
 import gzip
 import time
 import shutil
 import socket
+
+from pyicat_plus.client.main import IcatClient
 
 from EDPluginControl import EDPluginControl
 from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
@@ -156,7 +159,6 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         imageNoEnd = None
         pathToStartImage = None
         pathToEndImage = None
-        userName = os.environ["USER"]
         beamline = "unknown"
         proposal = "unknown"
 
@@ -203,20 +205,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
 
         # Try to get proposal from path
-        if EDUtilsPath.isESRF():
-            listDirectory = directory.split(os.sep)
-            try:
-                if listDirectory[1] == "data":
-                    if listDirectory[2] == "visitor":
-                        beamline = listDirectory[4]
-                        proposal = listDirectory[3]
-                    else:
-                        beamline = listDirectory[2]
-                        proposal = listDirectory[4]
-            except:
-                beamline = "unknown"
-                proposal = userName
-
+        beamline, proposal = EDUtilsPath.getBeamlineProposal(directory)
 
         if imageNoEnd - imageNoStart < 8:
             error_message = "There are fewer than 8 images, aborting"
@@ -399,13 +388,100 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             self.edPluginExecAutoPROCNoanom.synchronize()
         timeEnd = time.localtime()
 
-        # Upload to ISPyB
+        if self.dataInput.icatProcessDataDir is not None:
+            icatProcessDataDir = self.dataInput.icatProcessDataDir.path.value
+        else:
+            icatProcessDataDir = None
+
+        # Upload to ISPyB and ICAT
+        self.screen("Uploading to ISPyB and ICAT")
         if self.doAnom:
-            self.uploadToISPyB(self.edPluginExecAutoPROCAnom, True, False, proposal, timeStart, timeEnd)
-            self.uploadToISPyB(self.edPluginExecAutoPROCAnom, True, True, proposal, timeStart, timeEnd)
+            self.screen("Anom upload")
+            xsDataInputStoreAutoProc_anom = self.uploadToISPyB(
+                edPluginExecAutoPROC=self.edPluginExecAutoPROCAnom,
+                isAnom=True,
+                isStaraniso=False,
+                proposal=proposal,
+                timeStart=timeStart,
+                timeEnd=timeEnd
+            )
+            self.screen(f"{xsDataInputStoreAutoProc_anom} and {icatProcessDataDir}")
+            if xsDataInputStoreAutoProc_anom is not None and icatProcessDataDir is not None:
+                self.uploadToICAT(
+                    xsDataInputStoreAutoProc=xsDataInputStoreAutoProc_anom,
+                    directory=directory,
+                    icatProcessDataDir=icatProcessDataDir,
+                    isAnom=True,
+                    isStaraniso=False,
+                    beamline=beamline,
+                    proposal=proposal,
+                    timeStart=timeStart,
+                    timeEnd=timeEnd
+                )
+            xsDataInputStoreAutoProc_anom_staraniso = self.uploadToISPyB(
+                edPluginExecAutoPROC=self.edPluginExecAutoPROCAnom,
+                isAnom=True,
+                isStaraniso=True,
+                proposal=proposal,
+                timeStart=timeStart,
+                timeEnd=timeEnd
+            )
+            self.screen(f"{xsDataInputStoreAutoProc_anom_staraniso} and {icatProcessDataDir}")
+            if xsDataInputStoreAutoProc_anom_staraniso is not None and icatProcessDataDir is not None:
+                self.uploadToICAT(
+                    xsDataInputStoreAutoProc=xsDataInputStoreAutoProc_anom_staraniso,
+                    directory=directory,
+                    icatProcessDataDir=icatProcessDataDir,
+                    isAnom=True,
+                    isStaraniso=True,
+                    beamline=beamline,
+                    proposal=proposal,
+                    timeStart=timeStart,
+                    timeEnd=timeEnd
+                )
+
         if self.doNoanom:
-            self.uploadToISPyB(self.edPluginExecAutoPROCNoanom, False, False, proposal, timeStart, timeEnd)
-            self.uploadToISPyB(self.edPluginExecAutoPROCNoanom, False, True, proposal, timeStart, timeEnd)
+            self.screen("Noanom upload")
+            xsDataInputStoreAutoProc_noanom = self.uploadToISPyB(
+                edPluginExecAutoPROC=self.edPluginExecAutoPROCNoanom,
+                isAnom=False,
+                isStaraniso=False,
+                proposal=proposal,
+                timeStart=timeStart,
+                timeEnd=timeEnd
+            )
+            if xsDataInputStoreAutoProc_noanom is not None and icatProcessDataDir is not None:
+                self.uploadToICAT(
+                    xsDataInputStoreAutoProc=xsDataInputStoreAutoProc_noanom,
+                    directory=directory,
+                    icatProcessDataDir=icatProcessDataDir,
+                    isAnom=True,
+                    isStaraniso=False,
+                    beamline=beamline,
+                    proposal=proposal,
+                    timeStart=timeStart,
+                    timeEnd=timeEnd
+                )
+            xsDataInputStoreAutoProc_noanom_staraniso = self.uploadToISPyB(
+                edPluginExecAutoPROC=self.edPluginExecAutoPROCNoanom,
+                isAnom=False,
+                isStaraniso=True,
+                proposal=proposal,
+                timeStart=timeStart,
+                timeEnd=timeEnd
+            )
+            if xsDataInputStoreAutoProc_noanom_staraniso is not None and icatProcessDataDir is not None:
+                self.uploadToICAT(
+                    xsDataInputStoreAutoProc=xsDataInputStoreAutoProc_noanom_staraniso,
+                    directory=directory,
+                    icatProcessDataDir=icatProcessDataDir,
+                    isAnom=True,
+                    isStaraniso=False,
+                    beamline=beamline,
+                    proposal=proposal,
+                    timeStart=timeStart,
+                    timeEnd=timeEnd
+                )
 
 
     def finallyProcess(self, _edObject=None):
@@ -482,6 +558,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             staranisoString = ""
         # Read the generated ISPyB xml file
         pathToISPyBXML = None
+        xsDataInputStoreAutoProc = None
         if isStaraniso:
             if edPluginExecAutoPROC.dataOutput.ispybXML_staraniso is not None:
                 pathToISPyBXML = edPluginExecAutoPROC.dataOutput.ispybXML_staraniso.path.value
@@ -686,7 +763,55 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                         self.hasUploadedNoanomResultsToISPyB = True
             else:
                 self.screen("Could not upload {0}{1} results to ISPyB".format(anomString, staranisoString))
+        return xsDataInputStoreAutoProc
 
+
+    def uploadToICAT(self, xsDataInputStoreAutoProc, directory, icatProcessDataDir, isAnom, isStaraniso, beamline, proposal, timeStart, timeEnd):
+        if isAnom:
+            anomString = "anom"
+        else:
+            anomString = "noanom"
+        if isStaraniso:
+            staranisoString = "_staraniso"
+        else:
+            staranisoString = ""
+        dataset_name = f"autoPROC_{anomString}{staranisoString}"
+        icat_dir = os.path.join(icatProcessDataDir, dataset_name)
+        os.makedirs(icat_dir, mode=0o755, exist_ok=False)
+        autoProcContainer = xsDataInputStoreAutoProc.AutoProcContainer
+        autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
+        for autoProcProgramAttachment in autoProcProgramContainer.AutoProcProgramAttachment:
+            file_path = autoProcProgramAttachment.filePath
+            file_name = autoProcProgramAttachment.fileName
+            shutil.copy(os.path.join(file_path, file_name), icat_dir)
+        icat_beamline = EDUtilsPath.getIcatBeamline(beamline)
+        if icat_beamline is not None:
+            if icat_beamline == "ID30A-2":
+                metadata_urls = ["bcu-mq-04.esrf.fr:61613"]
+            else:
+                metadata_urls = ["bcu-mq-01.esrf.fr:61613", "bcu-mq-02.esrf.fr:61613"]
+            self.screen(metadata_urls)
+            if len(metadata_urls) > 0:
+                client = IcatClient(metadata_urls=metadata_urls)
+                data = {
+                    "Sample_name": dataset_name
+                }
+                self.screen("Before store")
+                self.screen(f"icat_beamline {icat_beamline}")
+                self.screen(f"proposal {proposal}")
+                self.screen(f"dataset_name {dataset_name}")
+                self.screen(f"path {icat_dir}")
+                self.screen(f"data {data}")
+                self.screen(f"raw {directory}")
+                client.store_processed_data(
+                    beamline=icat_beamline,
+                    proposal=proposal,
+                    dataset=dataset_name,
+                    path=str(icat_dir),
+                    metadata=data,
+                    raw=str(directory),
+                )
+                self.screen("After store")
 
     def eiger_template_to_image(self, fmt, num):
         fileNumber = int(num / 100)
