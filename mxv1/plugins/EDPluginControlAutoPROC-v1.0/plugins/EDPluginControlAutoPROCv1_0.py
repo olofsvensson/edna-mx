@@ -809,7 +809,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                     dataset=dataset_name,
                     path=str(icat_dir),
                     metadata=data,
-                    raw=str(directory),
+                    raw=[str(directory)],
                 )
                 self.screen("After store")
 
