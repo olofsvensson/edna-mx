@@ -796,20 +796,21 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 data = {
                     "Sample_name": dataset_name
                 }
+                raw = [str(pathlib.Path(directory))]
                 self.screen("Before store")
                 self.screen(f"icat_beamline {icat_beamline}")
                 self.screen(f"proposal {proposal}")
                 self.screen(f"dataset_name {dataset_name}")
                 self.screen(f"path {icat_dir}")
                 self.screen(f"data {data}")
-                self.screen(f"raw {directory}")
+                self.screen(f"raw {raw}")
                 client.store_processed_data(
                     beamline=icat_beamline,
                     proposal=proposal,
                     dataset=dataset_name,
                     path=str(icat_dir),
                     metadata=data,
-                    raw=[str(directory)],
+                    raw=raw,
                 )
                 self.screen("After store")
 
