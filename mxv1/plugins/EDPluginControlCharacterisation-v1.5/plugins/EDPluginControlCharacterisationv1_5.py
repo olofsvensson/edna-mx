@@ -842,7 +842,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         # xsDataInputFbest.aperture = XSDataDouble(0.0)
         # xsDataInputFbest.slitX = XSDataDouble(0.0)
         # xsDataInputFbest.slitY = XSDataDouble(0.0)
-        # xsDataInputFbest.rotationRange = XSDataDouble(0.0)
+        if self._xsDataDiffractionPlan.userDefinedRotationRange is not None:
+            xsDataInputFbest.rotationRange = XSDataDouble(self._xsDataDiffractionPlan.userDefinedRotationRange.value)
         xsDataInputFbest.rotationWidth = XSDataDouble(0.2)
         xsDataInputFbest.minExposureTime = XSDataDouble(minExposureTime)
         # xsDataInputFbest.doseLimit = XSDataDouble(0.0)
@@ -970,6 +971,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self.addExecutiveSummaryLine("Required multiplicity                 : %6.1f" % xsDataDiffractionPlan.getRequiredMultiplicity().getValue())
         if (xsDataDiffractionPlan.getForcedSpaceGroup() is not None):
             self.addExecutiveSummaryLine("Forced space group                    : %6s" % xsDataDiffractionPlan.getForcedSpaceGroup().getValue())
+        if (xsDataDiffractionPlan.getUserDefinedRotationRange() is not None):
+            self.addExecutiveSummaryLine("User defined rotation range:          : %6s" % xsDataDiffractionPlan.getUserDefinedRotationRange().getValue())
         if (xsDataDiffractionPlan.getMaxExposureTimePerDataCollection() is not None):
             self.addExecutiveSummaryLine("Max exposure time per data collection : %6.1f [s]" % xsDataDiffractionPlan.getMaxExposureTimePerDataCollection().getValue())
         self.addExecutiveSummarySeparator()
