@@ -1083,6 +1083,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             if len(metadata_urls) > 0:
                 client = IcatClient(metadata_urls=metadata_urls)
                 metadata["Sample_name"] = dataset_name
+                metadata["scanType"] = "integration"
+                metadata["Process_program"] = "autoPROC" + staranisoString
                 raw = [str(pathlib.Path(directory))]
                 self.screen("Before store")
                 self.screen(f"icat_beamline {icat_beamline}")
