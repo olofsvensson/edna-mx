@@ -181,6 +181,12 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self._fMaxResolution = self.config.get("maxResolution", None)
         if self._fMaxResolution is not None:
             self._fMaxResolution = float(self._fMaxResolution)
+        self._fBeamH = self.config.get("beamH")
+        self._fBeamV = self.config.get("beamV")
+        if self._fBeamH is not None:
+            self._fBeamH = float(self._fBeamH)
+        if self._fBeamV is not None:
+            self._fBeamV = float(self._fBeamV)
 
 
     def preProcess(self, _edObject=None):
@@ -802,8 +808,8 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         detector = experimentalCondition.detector
         beam = experimentalCondition.beam
         flux = beam.flux.value
-        beamH = beam.size.x.value
-        beamV = beam.size.y.value
+        apertureH = beam.size.x.value
+        apertureV = beam.size.y.value
         wavelength = beam.wavelength.value
         minExposureTime = beam.minExposureTimePerImage.value
         xsDataInputFbest = XSDataInputFbest()
@@ -836,8 +842,11 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 resolutionSource = "MXCuBE"
         self.addStatusMessage(f"Fbest: input resolution {fFbestResolution:.2f} A from {resolutionSource}")
         xsDataInputFbest.resolution = XSDataDouble(fFbestResolution)
-        xsDataInputFbest.beamH = XSDataDouble(beamH * 1000)
-        xsDataInputFbest.beamV = XSDataDouble(beamV * 1000)
+        if self._fBeamH is not None:
+            xsDataInputFbest.beamH = XSDataDouble(self._fBeamH * 1000)
+        if self._fBeamV is not None:
+            xsDataInputFbest.beamV = XSDataDouble(self._fBeamV * 1000)
+        xsDataInputFbest.aperture = XSDataDouble((apertureH + apertureV) / 2 * 1000)
         xsDataInputFbest.wavelength = XSDataDouble(wavelength)
         # xsDataInputFbest.aperture = XSDataDouble(0.0)
         # xsDataInputFbest.slitX = XSDataDouble(0.0)

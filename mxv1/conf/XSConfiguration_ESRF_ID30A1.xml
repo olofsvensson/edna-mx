@@ -29,6 +29,14 @@
 					<name>mxCuBE_URI</name>
 					<value>http://id30a1control.esrf.fr:7171</value>
 				</XSParamItem>
+				<XSParamItem>
+					<name>beamH</name>
+					<value>0.070</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>beamV</name>
+					<value>0.040</value>
+				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
