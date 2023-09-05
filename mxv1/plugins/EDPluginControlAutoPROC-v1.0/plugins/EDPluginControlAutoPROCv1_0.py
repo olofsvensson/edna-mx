@@ -796,13 +796,13 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             "MXAutoprocIntegration_cell_gamma": autoProc.refinedCell_gamma,
             "MXAutoprocIntegration_space_group": autoProc.spaceGroup,
         }
-        autoProcIntegrationContainer = autoProcContainer.AutoProcIntegrationContainer
+        autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
+        autoProcIntegrationContainer = autoProcScalingContainer.AutoProcIntegrationContainer
         autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
         if autoProcIntegration.anomalous:
             metadata["MXAutoprocIntegration_anomalous"] = 1
         else:
             metadata["MXAutoprocIntegration_anomalous"] = 0
-        autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
         for autoProcScalingStatistics in autoProcScalingContainer.AutoProcScalingStatistics:
             statistics_type = autoProcScalingStatistics.scalingStatisticsType
             icat_stat_name = statistics_type.replacte("Shell", "")
