@@ -457,7 +457,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             if self._strStatusMessage != None:
                 self.setDataOutput(XSDataString(self._strStatusMessage), "statusMessage")
                 self.writeDataOutput()
-        elif False: # self._fAverageDozorScore is None or self._fAverageDozorScore < 0.001:
+        elif self._fAverageDozorScore is None or self._fAverageDozorScore < 0.001:
             self.sendMessageToMXCuBE("No diffraction detected therefore no strategy calculated.", "warning")
             self.generateExecutiveSummary(self)
             if self._xsDataResultCharacterisation is not None:
