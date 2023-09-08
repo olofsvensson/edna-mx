@@ -450,7 +450,12 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
 
         self.first_image = _template_to_image(template, start_image)
         self.last_image = _template_to_image(template, end_image)
-        self.raw_data_dir = os.path.dirname(template)
+        self.raw_data_dir = os.path.relpath(os.path.dirname(template))
+        # Follow symbolic links and remore "/mnt/..." from path:
+        if EDUtilsPath.isESRF() and "/data" in self.raw_data_dir:
+            if not self.raw_data_dir.startswith("/data"):
+                position = self.raw_data_dir.find("/data")
+                self.raw_data_dir = self.raw_data_dir[position:]
 
         self.xds_first = self.loadPlugin(
             "EDPluginControlRunXdsFastProcv1_0", "XDS_first"
