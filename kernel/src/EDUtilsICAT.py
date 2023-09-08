@@ -30,6 +30,7 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20230906"
 
 import os
+import pprint
 import shutil
 import pathlib
 
@@ -56,6 +57,11 @@ class EDUtilsICAT:
         timeEnd,
         isStaraniso=False,
     ):
+        if directory.endswith("/"):
+            directory = directory[:-1]
+        if icatProcessDataDir.endswith("/"):
+            icatProcessDataDir = icatProcessDataDir[:-1]
+
         if isAnom:
             anomString = "anom"
         else:
@@ -77,21 +83,29 @@ class EDUtilsICAT:
             file_name = autoProcProgramAttachment.fileName
             shutil.copy(os.path.join(file_path, file_name), icat_dir)
         # Meta-data
+        metadata = {}
         autoProc = autoProcContainer.AutoProc
-        metadata = {
-            "MXAutoprocIntegration_cell_a": autoProc.refinedCell_a,
-            "MXAutoprocIntegration_cell_b": autoProc.refinedCell_b,
-            "MXAutoprocIntegration_cell_c": autoProc.refinedCell_c,
-            "MXAutoprocIntegration_cell_alpha": autoProc.refinedCell_alpha,
-            "MXAutoprocIntegration_cell_beta": autoProc.refinedCell_beta,
-            "MXAutoprocIntegration_cell_gamma": autoProc.refinedCell_gamma,
-            "MXAutoprocIntegration_space_group": autoProc.spaceGroup,
-        }
         autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
         autoProcIntegrationContainer = (
             autoProcScalingContainer.AutoProcIntegrationContainer
         )
         autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
+        metadata["MXAutoprocIntegration_space_group"] = autoProc.spaceGroup
+        if autoProc.refinedCell_a is not None:
+            metadata["MXAutoprocIntegration_cell_a"] = autoProc.refinedCell_a
+            metadata["MXAutoprocIntegration_cell_b"] = autoProc.refinedCell_b
+            metadata["MXAutoprocIntegration_cell_c"] = autoProc.refinedCell_c
+            metadata["MXAutoprocIntegration_cell_alpha"] = autoProc.refinedCell_alpha
+            metadata["MXAutoprocIntegration_cell_beta"] = autoProc.refinedCell_beta
+            metadata["MXAutoprocIntegration_cell_gamma"] = autoProc.refinedCell_gamma
+        else:
+            metadata["MXAutoprocIntegration_cell_a"] = autoProcIntegration.cell_a
+            metadata["MXAutoprocIntegration_cell_b"] = autoProcIntegration.cell_b
+            metadata["MXAutoprocIntegration_cell_c"] = autoProcIntegration.cell_c
+            metadata["MXAutoprocIntegration_cell_alpha"] = autoProcIntegration.cell_alpha
+            metadata["MXAutoprocIntegration_cell_beta"] = autoProcIntegration.cell_beta
+            metadata["MXAutoprocIntegration_cell_gamma"] = autoProcIntegration.cell_gamma
+
         if autoProcIntegration.anomalous:
             metadata["MXAutoprocIntegration_anomalous"] = 1
         else:
@@ -135,14 +149,14 @@ class EDUtilsICAT:
                 client = IcatClient(metadata_urls=metadata_urls)
                 metadata["Sample_name"] = dataset_name
                 metadata["scanType"] = "integration"
-                metadata["Process_program"] = "autoPROC" + staranisoString
+                metadata["Process_program"] = processName + staranisoString
                 raw = [str(pathlib.Path(directory))]
                 EDVerbose.screen("Before store")
                 EDVerbose.screen(f"icat_beamline {icat_beamline}")
                 EDVerbose.screen(f"proposal {proposal}")
                 EDVerbose.screen(f"dataset_name {dataset_name}")
-                EDVerbose.screen(f"path {icat_dir}")
-                EDVerbose.screen(f"metadata {metadata}")
+                EDVerbose.screen(f"icat_dir {icat_dir}")
+                EDVerbose.screen(f"metadata {pprint.pformat(metadata)}")
                 EDVerbose.screen(f"raw {raw}")
                 client.store_processed_data(
                     beamline=icat_beamline,
