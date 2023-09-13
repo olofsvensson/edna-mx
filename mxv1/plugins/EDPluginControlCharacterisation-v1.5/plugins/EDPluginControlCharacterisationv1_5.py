@@ -816,16 +816,23 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         xsDataInputFbest.flux = XSDataDouble(flux)
         fFbestResolution = None
         if self._fVMaxVisibleResolution is not None:
-            if self._fMaxResolution is None:
-                # Try to get max resolution from MXCuBE
-                fHighResolution, fLowResolution = self.getResolutionLimitsFromMXCuBE()
-                self._fMaxResolution = fHighResolution
-            if self._fMaxResolution is None:
-                fFbestResolution = 2.0
-                resolutionSource = "hardwired resolution"
-            elif self._fVMaxVisibleResolution < self._fMaxResolution:
-                fFbestResolution = self._fMaxResolution
-                resolutionSource = "max beamline resolution"
+            if self._fVMaxVisibleResolution < 2.0:
+                if self._fMaxResolution is None:
+                    # Try to get max resolution from MXCuBE
+                    fHighResolution, fLowResolution = self.getResolutionLimitsFromMXCuBE()
+                    self._fMaxResolution = fHighResolution
+                if self._fMaxResolution is None:
+                    fFbestResolution = 2.0
+                    resolutionSource = "no resolution limits could be obtained from MXCuBE"
+                elif self._fVMaxVisibleResolution < self._fMaxResolution:
+                    fFbestResolution = self._fMaxResolution
+                    resolutionSource = "max beamline resolution"
+                else:
+                    fFbestResolution = self._fVMaxVisibleResolution
+                    resolutionSource = "dozor visible resolution"
+            elif self._fVMaxVisibleResolution > 4.0:
+                fFbestResolution = 4.0
+                resolutionSource = "limited because dozor visible resolution > 4 A"
             else:
                 fFbestResolution = self._fVMaxVisibleResolution
                 resolutionSource = "dozor visible resolution"
@@ -840,7 +847,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
                 self.addStatusMessage(f"No input resolution, using default resolution {fFbestResolution:.2f} A", "warning")
             else:
                 resolutionSource = "MXCuBE"
-        self.addStatusMessage(f"Fbest: input resolution {fFbestResolution:.2f} A from {resolutionSource}")
+        self.addStatusMessage(f"Fbest: input resolution {fFbestResolution:.2f} A ({resolutionSource})")
         xsDataInputFbest.resolution = XSDataDouble(fFbestResolution)
         if self._fBeamH is not None:
             xsDataInputFbest.beamH = XSDataDouble(self._fBeamH * 1000)
