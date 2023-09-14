@@ -30,9 +30,11 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20230906"
 
 import os
+import sys
 import pprint
 import shutil
 import pathlib
+import traceback
 
 from pyicat_plus.client.main import IcatClient
 
@@ -45,7 +47,7 @@ class EDUtilsICAT:
 
     @classmethod
     def uploadToICAT(
-        self,
+        cls,
         processName,
         xsDataInputStoreAutoProc,
         directory,
@@ -181,3 +183,75 @@ class EDUtilsICAT:
         }
         icat_beamline = dict_beamline.get(beamline, None)
         return icat_beamline
+
+    @classmethod
+    def storeWorkflowStep(
+        cls,
+        beamline,
+        proposal,
+        directory,
+        workflowStepType,
+        sample_name,
+        workflow_name,
+        workflow_type,
+        request_id,
+        snap_shot_path,
+        json_path,
+        icat_sub_dir=None,
+    ):
+        try:
+            if directory.endswith("/"):
+                directory = directory[:-1]
+            # Create PROCESSED_DATA directory
+            processed_dir = pathlib.Path(directory.replace("RAW_DATA", "PROCESSED_DATA"))
+            if icat_sub_dir is not None:
+                processed_dir = processed_dir / icat_sub_dir
+            processed_dir.mkdir(mode=0o755, parents=True, exist_ok=False)
+            # Copy image and json to gallery directory
+            gallery_dir = processed_dir / "gallery"
+            gallery_dir.mkdir(mode=0o755)
+            gallery_image_path = gallery_dir / (workflowStepType + os.path.splitext(snap_shot_path)[1])
+            gallery_json_path = gallery_dir / (workflowStepType + "-report.json")
+            shutil.copy(snap_shot_path, gallery_image_path)
+            shutil.copy(json_path, gallery_json_path)
+            # ICAT parameters
+            icat_beamline = EDUtilsICAT.getIcatBeamline(beamline)
+            if icat_beamline == "ID30A-2":
+                metadata_urls = ["bcu-mq-04.esrf.fr:61613"]
+            else:
+                metadata_urls = ["bcu-mq-01.esrf.fr:61613", "bcu-mq-02.esrf.fr:61613"]
+            client = IcatClient(metadata_urls=metadata_urls)
+            metadata = {
+                "scanType": workflowStepType,
+                "Sample_name": sample_name,
+                "Workflow_name": workflow_name,
+                "Workflow_type": workflow_type,
+                "Workflow_id": request_id
+            }
+            EDVerbose.screen(f"metadata_urls {metadata_urls}")
+            EDVerbose.screen(f"beamline {icat_beamline}")
+            EDVerbose.screen(f"proposal {proposal}")
+            EDVerbose.screen(f"dataset {workflowStepType}")
+            EDVerbose.screen(f"path {processed_dir}")
+            EDVerbose.screen(f"metadata {metadata}")
+            EDVerbose.screen(f"raw {directory}")
+            client.store_processed_data(
+                beamline=icat_beamline,
+                proposal=proposal,
+                dataset=workflowStepType,
+                path=str(processed_dir),
+                metadata=metadata,
+                raw=[str(directory)],
+            )
+        except Exception as e:
+            EDVerbose.screen("Error in ICAT upload:")
+            EDVerbose.screen(e)
+            (exc_type, exc_value, exc_traceback) = sys.exc_info()
+            error_message = f"{exc_type} {exc_value}"
+            EDVerbose.screen(error_message)
+            list_trace = traceback.extract_tb(exc_traceback)
+            EDVerbose.screen("Traceback (most recent call last): %s" % os.linesep)
+            for list_line in list_trace:
+                error_line = f"  File '{list_line[0]}', line {list_line[1]}, in {list_line[2]}{os.sep}"
+                EDVerbose.screen(error_line)
+
