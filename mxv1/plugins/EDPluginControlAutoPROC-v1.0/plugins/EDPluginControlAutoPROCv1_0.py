@@ -33,11 +33,10 @@ import time
 import shutil
 import socket
 
-from pyicat_plus.client.main import IcatClient
-
 from EDPluginControl import EDPluginControl
 from EDHandlerESRFPyarchv1_0 import EDHandlerESRFPyarchv1_0
 from EDUtilsPath import EDUtilsPath
+from EDUtilsICAT import EDUtilsICAT
 from EDHandlerXSDataISPyBv1_4 import EDHandlerXSDataISPyBv1_4
 
 from EDFactoryPlugin import edFactoryPlugin
@@ -474,12 +473,12 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 xsDataInputStoreAutoProc_anom is not None
                 and icatProcessDataDir is not None
             ):
-                self.uploadToICAT(
+                EDUtilsICAT.uploadToICAT(
+                    processName="autoPROC",
                     xsDataInputStoreAutoProc=xsDataInputStoreAutoProc_anom,
                     directory=directory,
                     icatProcessDataDir=icatProcessDataDir,
                     isAnom=True,
-                    isStaraniso=False,
                     beamline=beamline,
                     proposal=proposal,
                     timeStart=timeStart,
@@ -500,12 +499,12 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 xsDataInputStoreAutoProc_anom_staraniso is not None
                 and icatProcessDataDir is not None
             ):
-                self.uploadToICAT(
+                EDUtilsICAT.uploadToICAT(
+                    processName="autoPROC_staraniso",
                     xsDataInputStoreAutoProc=xsDataInputStoreAutoProc_anom_staraniso,
                     directory=directory,
                     icatProcessDataDir=icatProcessDataDir,
                     isAnom=True,
-                    isStaraniso=True,
                     beamline=beamline,
                     proposal=proposal,
                     timeStart=timeStart,
@@ -526,12 +525,12 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 xsDataInputStoreAutoProc_noanom is not None
                 and icatProcessDataDir is not None
             ):
-                self.uploadToICAT(
+                EDUtilsICAT.uploadToICAT(
+                    processName="autoPROC",
                     xsDataInputStoreAutoProc=xsDataInputStoreAutoProc_noanom,
                     directory=directory,
                     icatProcessDataDir=icatProcessDataDir,
-                    isAnom=True,
-                    isStaraniso=False,
+                    isAnom=False,
                     beamline=beamline,
                     proposal=proposal,
                     timeStart=timeStart,
@@ -549,12 +548,12 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 xsDataInputStoreAutoProc_noanom_staraniso is not None
                 and icatProcessDataDir is not None
             ):
-                self.uploadToICAT(
+                EDUtilsICAT.uploadToICAT(
+                    processName="autoPROC_staraniso",
                     xsDataInputStoreAutoProc=xsDataInputStoreAutoProc_noanom_staraniso,
                     directory=directory,
                     icatProcessDataDir=icatProcessDataDir,
-                    isAnom=True,
-                    isStaraniso=False,
+                    isAnom=False,
                     beamline=beamline,
                     proposal=proposal,
                     timeStart=timeStart,
@@ -993,115 +992,6 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 )
         return xsDataInputStoreAutoProc
 
-    def uploadToICAT(
-        self,
-        xsDataInputStoreAutoProc,
-        directory,
-        icatProcessDataDir,
-        isAnom,
-        isStaraniso,
-        beamline,
-        proposal,
-        timeStart,
-        timeEnd,
-    ):
-        if isAnom:
-            anomString = "anom"
-        else:
-            anomString = "noanom"
-        if isStaraniso:
-            staranisoString = "_staraniso"
-        else:
-            staranisoString = ""
-        dataset_name = f"autoPROC_{anomString}{staranisoString}"
-        icat_dir = os.path.join(icatProcessDataDir, dataset_name)
-        os.makedirs(icat_dir, mode=0o755, exist_ok=False)
-        # Attached files
-        autoProcContainer = xsDataInputStoreAutoProc.AutoProcContainer
-        autoProcProgramContainer = autoProcContainer.AutoProcProgramContainer
-        for (
-            autoProcProgramAttachment
-        ) in autoProcProgramContainer.AutoProcProgramAttachment:
-            file_path = autoProcProgramAttachment.filePath
-            file_name = autoProcProgramAttachment.fileName
-            shutil.copy(os.path.join(file_path, file_name), icat_dir)
-        # Meta-data
-        autoProc = autoProcContainer.AutoProc
-        metadata = {
-            "MXAutoprocIntegration_cell_a": autoProc.refinedCell_a,
-            "MXAutoprocIntegration_cell_b": autoProc.refinedCell_b,
-            "MXAutoprocIntegration_cell_c": autoProc.refinedCell_c,
-            "MXAutoprocIntegration_cell_alpha": autoProc.refinedCell_alpha,
-            "MXAutoprocIntegration_cell_beta": autoProc.refinedCell_beta,
-            "MXAutoprocIntegration_cell_gamma": autoProc.refinedCell_gamma,
-            "MXAutoprocIntegration_space_group": autoProc.spaceGroup,
-        }
-        autoProcScalingContainer = autoProcContainer.AutoProcScalingContainer
-        autoProcIntegrationContainer = (
-            autoProcScalingContainer.AutoProcIntegrationContainer
-        )
-        autoProcIntegration = autoProcIntegrationContainer.AutoProcIntegration
-        if autoProcIntegration.anomalous:
-            metadata["MXAutoprocIntegration_anomalous"] = 1
-        else:
-            metadata["MXAutoprocIntegration_anomalous"] = 0
-        for (
-            autoProcScalingStatistics
-        ) in autoProcScalingContainer.AutoProcScalingStatistics:
-            statistics_type = autoProcScalingStatistics.scalingStatisticsType
-            icat_stat_name = statistics_type.replace("Shell", "")
-            metadata[
-                f"MXAutoprocIntegrationScaling_{icat_stat_name}_completeness"
-            ] = autoProcScalingStatistics.completeness
-            metadata[
-                f"MXAutoprocIntegrationScaling_{icat_stat_name}_resolution_limit_low"
-            ] = autoProcScalingStatistics.resolutionLimitLow
-            metadata[
-                f"MXAutoprocIntegrationScaling_{icat_stat_name}_resolution_limit_high"
-            ] = autoProcScalingStatistics.resolutionLimitHigh
-            metadata[
-                f"MXAutoprocIntegrationScaling_{icat_stat_name}_r_merge"
-            ] = autoProcScalingStatistics.rMerge
-            metadata[
-                f"MXAutoprocIntegrationScaling_{icat_stat_name}_mean_I_over_sigI"
-            ] = autoProcScalingStatistics.meanIOverSigI
-            metadata[
-                f"MXAutoprocIntegrationScaling_{icat_stat_name}_cc_half"
-            ] = autoProcScalingStatistics.ccHalf
-            metadata[
-                f"MXAutoprocIntegrationScaling_{icat_stat_name}_cc_ano"
-            ] = autoProcScalingStatistics.ccAno
-
-        # ICAT settings
-        icat_beamline = EDUtilsPath.getIcatBeamline(beamline)
-        if icat_beamline is not None:
-            if icat_beamline == "ID30A-2":
-                metadata_urls = ["bcu-mq-04.esrf.fr:61613"]
-            else:
-                metadata_urls = ["bcu-mq-01.esrf.fr:61613", "bcu-mq-02.esrf.fr:61613"]
-            self.screen(metadata_urls)
-            if len(metadata_urls) > 0:
-                client = IcatClient(metadata_urls=metadata_urls)
-                metadata["Sample_name"] = dataset_name
-                metadata["scanType"] = "integration"
-                metadata["Process_program"] = "autoPROC" + staranisoString
-                raw = [str(pathlib.Path(directory))]
-                self.screen("Before store")
-                self.screen(f"icat_beamline {icat_beamline}")
-                self.screen(f"proposal {proposal}")
-                self.screen(f"dataset_name {dataset_name}")
-                self.screen(f"path {icat_dir}")
-                self.screen(f"metadata {metadata}")
-                self.screen(f"raw {raw}")
-                client.store_processed_data(
-                    beamline=icat_beamline,
-                    proposal=proposal,
-                    dataset=dataset_name,
-                    path=str(icat_dir),
-                    metadata=metadata,
-                    raw=raw,
-                )
-                self.screen("After store")
 
     def eiger_template_to_image(self, fmt, num):
         fileNumber = int(num / 100)
