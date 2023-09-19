@@ -152,7 +152,7 @@ class EDUtilsICAT:
                 client = IcatClient(metadata_urls=metadata_urls)
                 # Get the sample name
                 raw = [str(pathlib.Path(directory))]
-                metadata_path = os.path.join(raw, "metadata.json")
+                metadata_path = os.path.join(directory, "metadata.json")
                 sample_name = None
                 if os.path.exists(metadata_path):
                     with open(metadata_path) as f:
