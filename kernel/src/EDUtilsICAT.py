@@ -29,6 +29,7 @@ __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20230906"
 
+import json
 import os
 import sys
 import pprint
@@ -149,10 +150,30 @@ class EDUtilsICAT:
             EDVerbose.screen(metadata_urls)
             if len(metadata_urls) > 0:
                 client = IcatClient(metadata_urls=metadata_urls)
-                metadata["Sample_name"] = dataset_name
+                # Get the sample name
+                raw = [str(pathlib.Path(directory))]
+                metadata_path = os.path.join(raw, "metadata.json")
+                sample_name = None
+                if os.path.exists(metadata_path):
+                    with open(metadata_path) as f:
+                        metadata = json.loads(f.read())
+                    if "Sample_name" in metadata:
+                        sample_name = metadata["Sample_name"]
+                if sample_name is None:
+                    dir1 = os.path.dirname(raw)
+                    dir1_name = os.path.basename(dir1)
+                    if dir1_name.startswith("run"):
+                        dir2 = os.path.dirname(dir1)
+                        dir2_name = os.path.basename(dir2)
+                        if dir2_name.startswith("run"):
+                            sample_name = os.path.basename(os.path.dirname(dir2))
+                        else:
+                            sample_name = dir2_name
+                    else:
+                        sample_name = dir1_name
+                metadata["Sample_name"] = sample_name
                 metadata["scanType"] = "integration"
                 metadata["Process_program"] = processName + staranisoString
-                raw = [str(pathlib.Path(directory))]
                 EDVerbose.screen("Before store")
                 EDVerbose.screen(f"icat_beamline {icat_beamline}")
                 EDVerbose.screen(f"proposal {proposal}")
