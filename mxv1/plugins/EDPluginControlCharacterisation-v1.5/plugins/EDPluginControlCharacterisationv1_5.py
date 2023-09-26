@@ -516,13 +516,13 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             strWarningMessage = "No indexing solution from Labelit"
             self.sendMessageToMXCuBE(strWarningMessage, "warning")
         if bRunMOSFLM:
-            # Wait max 15 s
+            # Wait max 30 s
             bDoContinue = True
             doMOSFLM = False
             while bDoContinue:
                 deltaTime = time.time() - self._iTimeStartMOSFLM
-                self.DEBUG(f"Waiting for MOSFLM, time {deltaTime}")
-                if deltaTime > 15.0:
+                self.debug(f"Waiting for MOSFLM, time {deltaTime}")
+                if deltaTime > 30.0:
                     bDoContinue = False
                     strWarningMessage = "MOSFLM execution timeout"
                     self.sendMessageToMXCuBE(strWarningMessage, "warning")

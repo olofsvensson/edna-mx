@@ -240,13 +240,13 @@ class EDPluginControlIndexingIndicatorsv1_1(EDPluginControl):
             warningMessage = "Zero dozor score detected! Labelit indexing aborted."
             self.sendMessageToMXCuBE(warningMessage, "warning")
         elif self.bDoLabelitIndexing:
-            # Wait max 10 s
+            # Wait max 15 s
             bDoContinue = True
             doLabelit = False
             while bDoContinue:
                 deltaTime = time.time() - self.iStartLabelitTime
                 self.DEBUG(f"Waiting for Labelit, time {deltaTime}")
-                if deltaTime > 10.0:
+                if deltaTime > 15.0:
                     bDoContinue = False
                 elif self.edPluginIndexingLabelit.isRunning():
                     time.sleep(1)
