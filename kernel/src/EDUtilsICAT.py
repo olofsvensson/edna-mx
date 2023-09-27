@@ -122,6 +122,15 @@ class EDUtilsICAT:
                 f"MXAutoprocIntegrationScaling_{icat_stat_name}_completeness"
             ] = autoProcScalingStatistics.completeness
             metadata[
+                f"MXAutoprocIntegrationScaling_{icat_stat_name}_anomalous_completeness"
+            ] = autoProcScalingStatistics.anomalousCompleteness
+            metadata[
+                f"MXAutoprocIntegrationScaling_{icat_stat_name}_multiplicity"
+            ] = autoProcScalingStatistics.multiplicity
+            metadata[
+                f"MXAutoprocIntegrationScaling_{icat_stat_name}_anomalous_multiplicity"
+            ] = autoProcScalingStatistics.anomalousMultiplicity
+            metadata[
                 f"MXAutoprocIntegrationScaling_{icat_stat_name}_resolution_limit_low"
             ] = autoProcScalingStatistics.resolutionLimitLow
             metadata[
