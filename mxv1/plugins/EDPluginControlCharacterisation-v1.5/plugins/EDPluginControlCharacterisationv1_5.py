@@ -240,7 +240,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             self._bMoslmWithoutThreshold = True
             if self._xsDataDiffractionPlan.strategyType is not None:
                 self._strStrategyType = self._xsDataDiffractionPlan.strategyType.value
-            if self._strStrategyType is None:
+            if self._strStrategyType is None or self._strStrategyType == "":
                 self._strStrategyType = "optimal"
             if self._strStrategyType.lower() == "fast":
                 self.addStatusMessage("FAST strategy (instead of BEST)")
