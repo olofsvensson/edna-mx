@@ -41,14 +41,14 @@
 					<name>thresholdMosflmIndexing</name>
 					<value>10</value>
 				</XSParamItem>
-                                <XSParamItem>
-                                        <name>beamH</name>
-                                        <value>0.040</value>
-                                </XSParamItem>
-                                <XSParamItem>
-                                        <name>beamV</name>
-                                        <value>0.030</value>
-                                </XSParamItem>
+				<XSParamItem>
+						<name>beamH</name>
+						<value>0.040</value>
+				</XSParamItem>
+				<XSParamItem>
+						<name>beamV</name>
+						<value>0.030</value>
+				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>

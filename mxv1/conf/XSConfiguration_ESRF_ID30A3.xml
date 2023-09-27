@@ -27,6 +27,23 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
+			<name>EDPluginControlCharacterisationv1_5</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+					<value>http://id30a3control.esrf.fr:7171</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>minTransmissionWarning</name>
+					<value>1</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>maxResolution</name>
+					<value>1.31</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginExecSimpleHTMLPagev1_0</name>  
 			<XSParamList>
 				<XSParamItem>

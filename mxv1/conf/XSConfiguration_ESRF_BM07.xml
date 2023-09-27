@@ -27,6 +27,23 @@
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
+			<name>EDPluginControlCharacterisationv1_5</name>
+			<XSParamList>
+				<XSParamItem>
+					<name>mxCuBE_URI</name>
+					<value>http://bm07server2.esrf.fr:7171</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>runKappa</name>
+					<value>true</value>
+				</XSParamItem>
+				<XSParamItem>
+					<name>maxResolution</name>
+					<value>1.3</value>
+				</XSParamItem>
+			</XSParamList>
+		</XSPluginItem>
+		<XSPluginItem>
 			<name>EDPluginControlImageQualityIndicatorsv1_2</name>  
 			<XSParamList>
 				<XSParamItem>

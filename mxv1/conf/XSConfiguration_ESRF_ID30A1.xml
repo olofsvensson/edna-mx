@@ -37,6 +37,10 @@
 					<name>beamV</name>
 					<value>0.040</value>
 				</XSParamItem>
+				<XSParamItem>
+					<name>maxResolution</name>
+					<value>1.1</value>
+				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
