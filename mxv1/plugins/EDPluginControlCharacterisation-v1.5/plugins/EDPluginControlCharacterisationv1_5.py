@@ -521,7 +521,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
             doMOSFLM = False
             while bDoContinue:
                 deltaTime = time.time() - self._iTimeStartMOSFLM
-                self.debug(f"Waiting for MOSFLM, time {deltaTime}")
+                self.DEBUG(f"Waiting for MOSFLM, time {deltaTime}")
                 if deltaTime > 30.0:
                     bDoContinue = False
                     strWarningMessage = "MOSFLM execution timeout"
