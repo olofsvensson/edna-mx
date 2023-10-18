@@ -808,12 +808,20 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         detector = experimentalCondition.detector
         beam = experimentalCondition.beam
         flux = beam.flux.value
+        transmission = beam.transmission.value
         apertureH = beam.size.x.value
         apertureV = beam.size.y.value
         wavelength = beam.wavelength.value
         minExposureTime = beam.minExposureTimePerImage.value
         xsDataInputFbest = XSDataInputFbest()
-        xsDataInputFbest.flux = XSDataDouble(flux)
+        # Covert flux to 100 % transmission
+        if abs(transmission - 100) > 1:
+            flux_100 = 100 * flux / transmission
+            self.addStatusMessage(f"Fbest: flux {flux:.4g} ph/s, transmission {transmission} %")
+            self.addStatusMessage(f"Fbest: converting flux to 100 % transmission: {flux_100:.4g}")
+        else:
+            flux_100 = flux
+        xsDataInputFbest.flux = XSDataDouble(flux_100)
         fFbestResolution = None
         if self._fVMaxVisibleResolution is not None:
             if self._fVMaxVisibleResolution < 2.0:
