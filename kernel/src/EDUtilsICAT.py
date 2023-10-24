@@ -58,17 +58,13 @@ class EDUtilsICAT:
         proposal,
         timeStart,
         timeEnd,
-        isStaraniso=False,
     ):
         if directory.endswith("/"):
             directory = directory[:-1]
         if icatProcessDataDir.endswith("/"):
             icatProcessDataDir = icatProcessDataDir[:-1]
 
-        if isStaraniso:
-            dataset_name = f"{processName}_staraniso"
-        else:
-            dataset_name = processName
+        dataset_name = processName
         icat_dir = os.path.join(icatProcessDataDir, dataset_name)
         os.makedirs(icat_dir, mode=0o755, exist_ok=False)
         # Attached files
@@ -177,7 +173,7 @@ class EDUtilsICAT:
                         sample_name = dir1_name
                 metadata["Sample_name"] = sample_name
                 metadata["scanType"] = "integration"
-                metadata["Process_program"] = dataset_name
+                metadata["Process_program"] = processName
                 EDVerbose.screen("Before store")
                 EDVerbose.screen(f"icat_beamline {icat_beamline}")
                 EDVerbose.screen(f"proposal {proposal}")
