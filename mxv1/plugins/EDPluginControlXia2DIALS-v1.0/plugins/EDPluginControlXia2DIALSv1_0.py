@@ -106,8 +106,8 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
 
         self.processingCommandLine = " ".join(sys.argv)
         self.processingPrograms = "XIA2_DIALS"
-        if self.reprocess:
-            self.processingPrograms += " reprocess"
+        if self.dataInput.reprocess is not None:
+            self.reprocess = self.dataInput.reprocess.value
 
         if self.dataInput.doAnomAndNonanom is not None:
             self.doAnomAndNonanom = self.dataInput.doAnomAndNonanom.value
@@ -120,8 +120,6 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                 self.doAnom = self.dataInput.doAnom.value
             self.doNoanom = not self.doAnom
 
-        if self.dataInput.reprocess is not None:
-            self.reprocess = self.dataInput.reprocess.value
 
         self.strHost = socket.gethostname()
         self.screen("Running on {0}".format(self.strHost))
@@ -247,16 +245,9 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
             os.makedirs(self.resultsDirectory, 0o755)
 
         # Create path to pyarch
-        if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
-            self.pyarchDirectory = (
-                EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(
-                    beamline, "XIA2_DIALS", self.dataInput.dataCollectionId.value
-                )
-            )
-        else:
-            self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(
-                self.resultsDirectory
-            )
+        self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(
+            self.resultsDirectory
+        )
         if self.pyarchDirectory is not None:
             self.pyarchDirectory = self.pyarchDirectory.replace(
                 "PROCESSED_DATA", "RAW_DATA"

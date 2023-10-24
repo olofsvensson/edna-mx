@@ -177,8 +177,6 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         EDPluginControl.preProcess(self)
         self.DEBUG("EDPluginControlEDNAprocv1_0.preProcess")
         self.processingPrograms = "EDNA_proc"
-        if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
-            self.processingPrograms = "EDNA_proc reprocess"
         self.screen("EDNA Auto Processing started")
         self.strHost = socket.gethostname()
         self.screen("Running on {0}".format(self.strHost))
@@ -1426,19 +1424,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                 pyarch_path = os.path.join("/data/ispyb", strBeamline, *tokens[3:-1])
                 pyarch_path = os.path.join(pyarch_path, "%s" % self.integration_id)
             elif EDUtilsPath.isESRF():
-                listDirectory = self.first_image.split(os.path.sep)
-                if (
-                    self.dataInput.reprocess is not None
-                    and self.dataInput.reprocess.value
-                ):
-                    pyarch_path = (
-                        EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(
-                            self.strBeamline,
-                            "EDNA_proc",
-                            self.dataInput.data_collection_id.value,
-                        )
-                    )
-                elif files_dir.startswith("/data/visitor"):
+                if files_dir.startswith("/data/visitor"):
                     # We might get empty elements at the head/tail of the list
                     tokens = [
                         elem for elem in files_dir.split(os.path.sep) if len(elem) > 0

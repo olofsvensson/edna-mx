@@ -243,16 +243,9 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 os.makedirs(self.resultsDirectory, 0o755)
 
         # Create path to pyarch
-        if self.dataInput.reprocess is not None and self.dataInput.reprocess.value:
-            self.pyarchDirectory = (
-                EDHandlerESRFPyarchv1_0.createPyarchReprocessDirectoryPath(
-                    beamline, "autoPROC", self.dataInput.dataCollectionId.value
-                )
-            )
-        else:
-            self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(
-                self.resultsDirectory
-            )
+        self.pyarchDirectory = EDHandlerESRFPyarchv1_0.createPyarchFilePath(
+            self.resultsDirectory
+        )
         if self.pyarchDirectory is not None:
             self.pyarchDirectory = self.pyarchDirectory.replace(
                 "PROCESSED_DATA", "RAW_DATA"
@@ -708,12 +701,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                         self.autoProcIntegrationIdNoanom
                     )
                     autoProcProgram.autoProcProgramId = self.autoProcProgramIdNoanom
-            if self.reprocess:
-                autoProcProgram.processingPrograms = (
-                    "autoPROC" + staranisoString + " reprocess"
-                )
-            else:
-                autoProcProgram.processingPrograms = "autoPROC" + staranisoString
+            autoProcProgram.processingPrograms = "autoPROC" + staranisoString
             autoProcProgram.processingStartTime = time.strftime(
                 "%a %b %d %H:%M:%S %Y", timeStart
             )
