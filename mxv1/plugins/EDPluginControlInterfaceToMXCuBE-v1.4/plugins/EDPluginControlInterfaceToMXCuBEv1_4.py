@@ -898,4 +898,4 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                 self.serverProxy.setCharacterisationResult(_strXML)
             except Exception as e:
                 self.screen(e)
-                self.DEBUG("Sending characterisation results to mxCuBE failed!")
+                self.ERROR("Sending characterisation results to mxCuBE failed!")
