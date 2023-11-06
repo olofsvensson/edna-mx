@@ -9,7 +9,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
-					<value>http://id231control.esrf.fr:7171</value>
+					<value>http://id231control2.esrf.fr:7171</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -18,7 +18,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
-					<value>http://id231control.esrf.fr:7171</value>
+					<value>http://id231control2.esrf.fr:7171</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>runKappa</name>
@@ -31,7 +31,7 @@
 			<XSParamList>
 				<XSParamItem>
 					<name>mxCuBE_URI</name>
-					<value>http://id231control.esrf.fr:7171</value>
+					<value>http://id231control2.esrf.fr:7171</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>runKappa</name>
@@ -42,13 +42,17 @@
 					<value>10</value>
 				</XSParamItem>
 				<XSParamItem>
-					<name>mxCuBE_URI</name>
-					<value>http://id231control.esrf.fr:7171</value>
+						<name>beamH</name>
+						<value>0.040</value>
+				</XSParamItem>
+				<XSParamItem>
+						<name>beamV</name>
+						<value>0.030</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
 		<XSPluginItem>
-			<name>EDPluginControlImageQualityIndicatorsv1_2</name>  
+			<name>EDPluginControlImageQualityIndicatorsv1_2</name>
 			<XSParamList>
 				<XSParamItem>
 					<name>timeOut</name>
