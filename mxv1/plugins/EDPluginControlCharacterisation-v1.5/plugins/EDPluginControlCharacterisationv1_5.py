@@ -783,6 +783,33 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         self.DEBUG("EDPluginControlCharacterisationv1_5.doSuccessStrategy")
         self.retrieveSuccessMessages(self._edPluginControlStrategy, "EDPluginControlCharacterisationv1_5.doSuccessStrategy")
         xsDataStrategyResult = self._edPluginControlStrategy.getDataOutput()
+        # Check resolution limits - try to get max resolution from MXCuBE
+        fHighResolution, fLowResolution = self.getResolutionLimitsFromMXCuBE()
+        if fHighResolution is not None and fLowResolution is not None:
+            for xsDataCollectionPlan in  xsDataStrategyResult.collectionPlan:
+                xsDataStrategySummary = xsDataCollectionPlan.strategySummary
+                resolution = xsDataStrategySummary.resolution.getValue()
+                if resolution < fHighResolution:
+                    self.addStatusMessage(f"Strategy resolution {resolution} A is higher than MXCuBE max resolution {fHighResolution} A!.")
+                    resolution = fHighResolution
+                    self.addStatusMessage(f"Using resolution {resolution} A")
+                    xsDataStrategySummary.resolution = XSDataDouble(resolution)
+                elif resolution > fLowResolution:
+                    self.addStatusMessage(f"Strategy resolution {resolution} A is lower than MXCuBE min resolution {fLowResolution} A!.")
+                    resolution = fLowResolution
+                    xsDataStrategySummary.resolution = XSDataDouble(resolution)
+                    self.addStatusMessage(f"Using resolution {resolution} A")
+                rankingResolution = xsDataStrategySummary.rankingResolution.getValue()
+                if rankingResolution < fHighResolution:
+                    self.addStatusMessage(f"Strategy ranking resolution {rankingResolution} A is higher than MXCuBE max resolution {fHighResolution} A!.")
+                    rankingResolution = fHighResolution
+                    xsDataStrategySummary.rankingResolution = XSDataDouble(rankingResolution)
+                    self.addStatusMessage(f"Using ranking resolution {rankingResolution} A")
+                elif rankingResolution > fLowResolution:
+                    self.addStatusMessage(f"Strategy ranking resolution {rankingResolution} A is lower than MXCuBE min resolution {fLowResolution} A!.")
+                    rankingResolution = fLowResolution
+                    xsDataStrategySummary.rankingResolution = XSDataDouble(rankingResolution)
+                    self.addStatusMessage(f"Using ranking resolution {rankingResolution} A")
         self._xsDataResultCharacterisation.setStrategyResult(xsDataStrategyResult)
         if self._edPluginControlStrategy.hasDataOutput("strategyShortSummary"):
             strategyShortSummary = self._edPluginControlStrategy.getDataOutput("strategyShortSummary")[0].getValue()
