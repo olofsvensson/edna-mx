@@ -41,10 +41,34 @@ from pyicat_plus.client.main import IcatClient
 
 from EDVerbose import EDVerbose
 
+
+
 class EDUtilsICAT:
     """
     This is a static utility class for ICAT.
     """
+
+    @classmethod
+    def get_sample_name(cls, directory):
+        path_directory = pathlib.Path(str(directory))
+        metadata_path = path_directory / "metadata.json"
+        sample_name = None
+        if metadata_path.exists():
+            with open(metadata_path) as f:
+                metadata = json.loads(f.read())
+            if "Sample_name" in metadata:
+                sample_name = metadata["Sample_name"]
+        if sample_name is None:
+            dir1 = path_directory.parent
+            if dir1.name.startswith("run"):
+                dir2 = dir1.parent
+                if dir2.name.startswith("run"):
+                    sample_name = dir2.parent.name
+                else:
+                    sample_name = dir2.name
+            else:
+                sample_name = dir1.name
+        return sample_name
 
     @classmethod
     def uploadToICAT(
@@ -144,7 +168,7 @@ class EDUtilsICAT:
         icat_beamline = EDUtilsICAT.getIcatBeamline(beamline)
         if icat_beamline is not None:
             if icat_beamline == "ID30A-2":
-                metadata_urls = ["bcu-mq-04.esrf.fr:61613"]
+                metadata_urls = ["dau-dm-04.esrf.fr:61613"]
             else:
                 metadata_urls = ["bcu-mq-01.esrf.fr:61613", "bcu-mq-02.esrf.fr:61613"]
             EDVerbose.screen(metadata_urls)
@@ -153,24 +177,7 @@ class EDUtilsICAT:
                 # Get the sample name
                 raw = [str(pathlib.Path(directory))]
                 raw_metadata_path = os.path.join(directory, "metadata.json")
-                sample_name = None
-                if os.path.exists(raw_metadata_path):
-                    with open(raw_metadata_path) as f:
-                        raw_metadata = json.loads(f.read())
-                    if "Sample_name" in raw_metadata:
-                        sample_name = raw_metadata["Sample_name"]
-                if sample_name is None:
-                    dir1 = os.path.dirname(raw)
-                    dir1_name = os.path.basename(dir1)
-                    if dir1_name.startswith("run"):
-                        dir2 = os.path.dirname(dir1)
-                        dir2_name = os.path.basename(dir2)
-                        if dir2_name.startswith("run"):
-                            sample_name = os.path.basename(os.path.dirname(dir2))
-                        else:
-                            sample_name = dir2_name
-                    else:
-                        sample_name = dir1_name
+                sample_name = EDUtilsICAT.get_sample_name(raw_metadata_path)
                 metadata["Sample_name"] = sample_name
                 metadata["scanType"] = "integration"
                 metadata["Process_program"] = processName
@@ -212,7 +219,6 @@ class EDUtilsICAT:
         proposal,
         directory,
         workflowStepType,
-        sample_name,
         workflow_name,
         workflow_type,
         request_id,
@@ -238,10 +244,11 @@ class EDUtilsICAT:
             # ICAT parameters
             icat_beamline = EDUtilsICAT.getIcatBeamline(beamline)
             if icat_beamline == "ID30A-2":
-                metadata_urls = ["bcu-mq-04.esrf.fr:61613"]
+                metadata_urls = ["dau-dm-04.esrf.fr:61613"]
             else:
                 metadata_urls = ["bcu-mq-01.esrf.fr:61613", "bcu-mq-02.esrf.fr:61613"]
             client = IcatClient(metadata_urls=metadata_urls)
+            sample_name = EDUtilsICAT.get_sample_name(directory)
             metadata = {
                 "scanType": workflowStepType,
                 "Sample_name": sample_name,

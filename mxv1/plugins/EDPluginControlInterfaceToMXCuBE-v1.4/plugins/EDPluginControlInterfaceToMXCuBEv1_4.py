@@ -453,14 +453,12 @@ class EDPluginControlInterfaceToMXCuBEv1_4(EDPluginControl):
                     self.edPluginStoreWorkflowStep.executeSynchronous()
                     # Upload also to ICAT
                     first_image_path = self.xsDataFirstImage.path.value
-                    sample_name = os.path.basename(os.path.dirname(first_image_path))
                     beamline, proposal = EDUtilsPath.getBeamlineProposal(first_image_path)
                     EDUtilsICAT.storeWorkflowStep(
                         beamline=beamline,
                         proposal=proposal,
                         directory=os.path.dirname(first_image_path),
                         workflowStepType="characterisation",
-                        sample_name=sample_name,
                         workflow_name=None,
                         workflow_type=None,
                         request_id=None,
