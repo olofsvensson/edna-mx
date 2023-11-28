@@ -687,7 +687,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                                            os.path.splitext(os.path.basename(strPathToPredictionImage))[0] + ".thumbnail.jpg")
                     size = [256, 256]
                     im = Image.open(strPathToPredictionImage)
-                    im.thumbnail(size, Image.ANTIALIAS)
+                    im.thumbnail(size, Image.LANCZOS)
                     im.save(outfile, "JPEG")
                     os.chmod(outfile, 0o644)
                     self.page.a(href=strPageReferenceImage)
@@ -930,7 +930,7 @@ class EDPluginExecSimpleHTMLPagev1_0(EDPluginExec):
                                        os.path.splitext(strFileName)[0] + ".thumbnail.jpg")
                 size = [300, 200]
                 im = Image.open(xsDataFile.path.value)
-                im.thumbnail(size, Image.ANTIALIAS)
+                im.thumbnail(size, Image.LANCZOS)
                 im.save(outfile, "JPEG")
                 self.page.a(href=strPageGraphFileName)
                 self.page.img(src=os.path.basename(outfile), title=strFileName)

@@ -475,7 +475,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                                                os.path.splitext(os.path.basename(strPathToPredictionImage))[0] + ".thumbnail.jpg")
                         size = [256, 256]
                         im = Image.open(strPathToPredictionImage)
-                        im.thumbnail(size, Image.ANTIALIAS)
+                        im.thumbnail(size, Image.LANCZOS)
                         im.save(outfile, "JPEG")
                         os.chmod(outfile, 0o644)
                         self.workflowStepReport.addImage(strPathToPredictionImage, os.path.basename(os.path.splitext(strFileName)[0]),
@@ -633,7 +633,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
                                           plotTitle + ".thumbnail.jpg")
                 size = [300, 200]
                 im = Image.open(plotPath)
-                im.thumbnail(size, Image.ANTIALIAS)
+                im.thumbnail(size, Image.LANCZOS)
                 im.save(tmpOutfile, "JPEG")
                 self.workflowStepReport.addImage(plotPath, plotTitle, tmpOutfile)
                 os.remove(tmpOutfile)
