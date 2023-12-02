@@ -50,3 +50,4 @@ pip-log.txt
 
 # Backup files
 *.bkp
+.DS_Store
