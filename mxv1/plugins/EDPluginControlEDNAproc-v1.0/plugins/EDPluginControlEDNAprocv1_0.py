@@ -154,6 +154,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.raw_data_dir = None
         self.icat_processed_data_dir = None
         self.processingPrograms = None
+        self.reprocess = False
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -191,6 +192,9 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         # ICAT upload
         if self.dataInput.icat_processed_data_dir is not None:
             self.icat_processed_data_dir = self.dataInput.icat_processed_data_dir.value
+
+        if self.dataInput.reprocess is not None:
+            self.reprocess = self.dataInput.reprocess.value
 
         if data_in.input_file is None:
             # Input data file not provided, try to create one
@@ -1547,6 +1551,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                             proposal=self.strProposal,
                             timeStart=None,
                             timeEnd=None,
+                            reprocess=self.reprocess
                         )
 
             if self.doNoanom:
@@ -1600,6 +1605,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                             proposal=self.strProposal,
                             timeStart=None,
                             timeEnd=None,
+                            reprocess=self.reprocess
                         )
 
             # Finally run dimple if executed at the ESRF

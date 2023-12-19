@@ -426,6 +426,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                     proposal=proposal,
                     timeStart=None,
                     timeEnd=None,
+                    reprocess=self.reprocess
                 )
         if self.doNoanom:
             (
@@ -454,6 +455,7 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                     proposal=proposal,
                     timeStart=None,
                     timeEnd=None,
+                    reprocess=self.reprocess
                 )
 
     def finallyProcess(self, _edObject=None):

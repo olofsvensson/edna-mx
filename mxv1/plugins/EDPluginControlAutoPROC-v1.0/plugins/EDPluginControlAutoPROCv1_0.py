@@ -476,6 +476,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                     proposal=proposal,
                     timeStart=timeStart,
                     timeEnd=timeEnd,
+                    reprocess=self.reprocess
                 )
             xsDataInputStoreAutoProc_anom_staraniso = self.uploadToISPyB(
                 edPluginExecAutoPROC=self.edPluginExecAutoPROCAnom,
@@ -502,6 +503,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                     proposal=proposal,
                     timeStart=timeStart,
                     timeEnd=timeEnd,
+                    reprocess=self.reprocess
                 )
 
         if self.doNoanom:
@@ -528,6 +530,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                     proposal=proposal,
                     timeStart=timeStart,
                     timeEnd=timeEnd,
+                    reprocess=self.reprocess
                 )
             xsDataInputStoreAutoProc_noanom_staraniso = self.uploadToISPyB(
                 edPluginExecAutoPROC=self.edPluginExecAutoPROCNoanom,
@@ -551,6 +554,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                     proposal=proposal,
                     timeStart=timeStart,
                     timeEnd=timeEnd,
+                    reprocess=self.reprocess
                 )
 
     def finallyProcess(self, _edObject=None):

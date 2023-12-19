@@ -82,6 +82,7 @@ class EDUtilsICAT:
         proposal,
         timeStart,
         timeEnd,
+        reprocess=False
     ):
         if directory.endswith("/"):
             directory = directory[:-1]
@@ -165,6 +166,8 @@ class EDUtilsICAT:
             ] = autoProcScalingStatistics.ccAno
 
         # ICAT settings
+        if reprocess:
+            metadata["Process_triggering"] = "manual"
         icat_beamline = EDUtilsICAT.getIcatBeamline(beamline)
         if icat_beamline is not None:
             if icat_beamline == "ID30A-2":
