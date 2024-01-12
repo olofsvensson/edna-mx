@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Jul 28 03:59::50 2023 by EDGenerateDS.
+# Generated Thu Jan 11 04:56::37 2024 by EDGenerateDS.
 #
 
 import os, sys
@@ -734,7 +734,7 @@ class XSDataEDNAprocImportOut(XSDataResult):
 
 
 class XSDataEDNAprocInput(XSDataInput):
-    def __init__(self, configuration=None, doAnomAndNonanom=None, doAnom=None, reprocess=None, end_image=None, start_image=None, output_file=None, unit_cell=None, spacegroup=None, nres=None, low_resolution_limit=None, detector_max_res=None, icat_processed_data_dir=None, data_collection_id=None, cc_half_cutoff=None, r_value_cutoff=None, isig_cutoff=None, completeness_cutoff=None, res_override=None, input_file=None):
+    def __init__(self, configuration=None, doAnomAndNonanom=None, doAnom=None, reprocess=None, list_exclude_range=None, end_image=None, start_image=None, output_file=None, unit_cell=None, spacegroup=None, nres=None, low_resolution_limit=None, detector_max_res=None, icat_processed_data_dir=None, data_collection_id=None, cc_half_cutoff=None, r_value_cutoff=None, isig_cutoff=None, completeness_cutoff=None, res_override=None, input_file=None):
         XSDataInput.__init__(self, configuration)
         if input_file is None:
             self._input_file = None
@@ -847,6 +847,13 @@ class XSDataEDNAprocInput(XSDataInput):
             self._end_image = end_image
         else:
             strMessage = "ERROR! XSDataEDNAprocInput constructor argument 'end_image' is not XSDataInteger but %s" % self._end_image.__class__.__name__
+            raise BaseException(strMessage)
+        if list_exclude_range is None:
+            self._list_exclude_range = None
+        elif list_exclude_range.__class__.__name__ == "XSDataString":
+            self._list_exclude_range = list_exclude_range
+        else:
+            strMessage = "ERROR! XSDataEDNAprocInput constructor argument 'list_exclude_range' is not XSDataString but %s" % self._list_exclude_range.__class__.__name__
             raise BaseException(strMessage)
         if reprocess is None:
             self._reprocess = None
@@ -1061,6 +1068,18 @@ class XSDataEDNAprocInput(XSDataInput):
             raise BaseException(strMessage)
     def delEnd_image(self): self._end_image = None
     end_image = property(getEnd_image, setEnd_image, delEnd_image, "Property for end_image")
+    # Methods and properties for the 'list_exclude_range' attribute
+    def getList_exclude_range(self): return self._list_exclude_range
+    def setList_exclude_range(self, list_exclude_range):
+        if list_exclude_range is None:
+            self._list_exclude_range = None
+        elif list_exclude_range.__class__.__name__ == "XSDataString":
+            self._list_exclude_range = list_exclude_range
+        else:
+            strMessage = "ERROR! XSDataEDNAprocInput.setList_exclude_range argument is not XSDataString but %s" % list_exclude_range.__class__.__name__
+            raise BaseException(strMessage)
+    def delList_exclude_range(self): self._list_exclude_range = None
+    list_exclude_range = property(getList_exclude_range, setList_exclude_range, delList_exclude_range, "Property for list_exclude_range")
     # Methods and properties for the 'reprocess' attribute
     def getReprocess(self): return self._reprocess
     def setReprocess(self, reprocess):
@@ -1139,6 +1158,8 @@ class XSDataEDNAprocInput(XSDataInput):
             self.start_image.export(outfile, level, name_='start_image')
         if self._end_image is not None:
             self.end_image.export(outfile, level, name_='end_image')
+        if self._list_exclude_range is not None:
+            self.list_exclude_range.export(outfile, level, name_='list_exclude_range')
         if self._reprocess is not None:
             self.reprocess.export(outfile, level, name_='reprocess')
         if self._doAnom is not None:
@@ -1230,6 +1251,11 @@ class XSDataEDNAprocInput(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setEnd_image(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'list_exclude_range':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setList_exclude_range(obj_)
         elif child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'reprocess':
             obj_ = XSDataBoolean()
