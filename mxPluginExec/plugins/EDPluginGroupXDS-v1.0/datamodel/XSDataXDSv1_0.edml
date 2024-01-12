@@ -40,7 +40,7 @@ complex type XSDataMinimalXdsIn extends XSDataInput {
 	unit_cell : XSDataString optional
 	start_image : XSDataInteger optional
 	end_image : XSDataInteger optional
-	list_exclude_range : XSDataString optional // json string containing a list of exclude range pairs
+	exclude_range : XSDataRange [] optional
 }
 
 complex type XSDataMinimalXdsOut extends XSDataResult {

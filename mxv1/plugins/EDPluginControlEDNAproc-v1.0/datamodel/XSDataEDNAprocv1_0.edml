@@ -10,6 +10,11 @@ import XSDataCommon.XSDataResult
 import XSDataCommon.XSDataBoolean
 import XSDataCommon.XSDataFile
 
+complex type XSDataRange {
+	begin : integer
+	end : integer
+}
+
 complex type XSDataEDNAprocInput extends XSDataInput {
 	input_file : XSDataFile
 	res_override : XSDataDouble optional
@@ -31,7 +36,7 @@ complex type XSDataEDNAprocInput extends XSDataInput {
 
 	start_image : XSDataInteger optional
 	end_image : XSDataInteger optional
-	list_exclude_range : XSDataString optional // json string containing a list of exclude range pairs
+	exclude_range : XSDataRange [] optional
 	
 	reprocess : XSDataBoolean optional
 
