@@ -5,7 +5,8 @@ REPEATABLE_PARAMS = ['UNTRUSTED_RECTANGLE=',
                      'UNTRUSTED_ELLIPSE=',
                      'UNTRUSTED_QUADRILATERAL=',
                      'EXCLUDE_RESOLUTION_RANGE=',
-                     'SPOT_RANGE=']
+                     'SPOT_RANGE=',
+                     'EXCLUDE_DATA_RANGE=']
 
 
 # parsers

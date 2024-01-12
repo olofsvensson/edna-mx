@@ -25,6 +25,7 @@ __authors__ = ["Thomas Boeglin", "Olof Svensson"]
 __license__ = "GPLv3+"
 __copyright__ = "ESRF"
 
+import json
 import smtplib
 
 WS_URL = "https://ispyb.esrf.fr/ispyb-ws/ispybWS/ToolsForCollectionWebService?wsdl"
@@ -290,6 +291,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         xds_in.input_file = data_in.input_file.path
         xds_in.start_image = data_in.start_image
         xds_in.end_image = data_in.end_image
+        xds_in.exclude_range = data_in.exclude_range
         if sgnumber is not None:
             xds_in.spacegroup = XSDataInteger(sgnumber)
 

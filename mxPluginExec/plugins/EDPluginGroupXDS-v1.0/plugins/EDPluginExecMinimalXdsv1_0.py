@@ -128,10 +128,12 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
         resolution_range = self.dataInput.resolution_range
         friedels_law = self.dataInput.friedels_law
         spot_range = self.dataInput.spot_range
+        exclude_range = self.dataInput.exclude_range
         spacegroup = self.dataInput.spacegroup
         unit_cell = self.dataInput.unit_cell
 
         self.DEBUG('requested spot range is {0}'.format(spot_range))
+        self.DEBUG('requested exclude range is {0}'.format(exclude_range))
 
         if job is not None:
             parsed_config["JOB="] = job.value
@@ -168,6 +170,19 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
             spot_range_list = [[start_image, end_image]]
         self.DEBUG('setting the spot range to {0}'.format(spot_range_list))
         parsed_config['SPOT_RANGE='] = spot_range_list
+        # Exclude data
+        exclude_range_list = list()
+        if exclude_range is not None and len(exclude_range) > 0:
+            exclude_range_list = []
+            for srange in exclude_range:
+                exclude_range_list.append([srange.begin, srange.end])
+            exclude_range_list = self.checkExcludeRanges(exclude_range_list, start_image, end_image)
+        elif 'EXCLUDE_DATA_RANGE=' in parsed_config:
+            exclude_range_list = self.checkExcludeRanges(parsed_config['EXCLUDE_DATA_RANGE='], start_image, end_image)
+        if len(exclude_range_list) > 0:
+            self.DEBUG('setting the exclude range to {0}'.format(exclude_range_list))
+            parsed_config['EXCLUDE_DATA_RANGE='] = exclude_range_list
+
         # Check background range
         if 'BACKGROUND_RANGE=' in parsed_config:
             background_range = parsed_config['BACKGROUND_RANGE=']
@@ -283,6 +298,12 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
             newListSpotRange = ['{0} {1}'.format(start_image, end_image)]
         return newListSpotRange
 
+    def checkExcludeRanges(self, _listExcludeRange, start_image, end_image):
+        # Check existing exclude range
+        newListExcludeRange = []
+        for excludeRange in _listExcludeRange:
+            newListExcludeRange.append('{0} {1}'.format(excludeRange[0], excludeRange[1]))
+        return newListExcludeRange
 
 
 # XXX: This is the third file I copy this function to: extract it
