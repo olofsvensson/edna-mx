@@ -136,6 +136,7 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
             input_anom.resolution_range = [XSDataDouble(60), self.dataInput.resolution]
             input_anom.spacegroup = self.dataInput.spacegroup
             input_anom.unit_cell = self.dataInput.unit_cell
+            input_anom.exclude_range = self.dataInput.exclude_range
             self.xds_anom.dataInput = input_anom
             xds_anom_dir = os.path.abspath(self.xds_anom.getWorkingDirectory())
 
@@ -147,6 +148,7 @@ class EDPluginXDSGeneratev1_0(EDPluginControl):
             input_noanom.resolution_range = [XSDataDouble(60), self.dataInput.resolution]
             input_noanom.spacegroup = self.dataInput.spacegroup
             input_noanom.unit_cell = self.dataInput.unit_cell
+            input_noanom.exclude_range = self.dataInput.exclude_range
             self.xds_noanom.dataInput = input_noanom
             xds_noanom_dir = os.path.abspath(self.xds_noanom.getWorkingDirectory())
 

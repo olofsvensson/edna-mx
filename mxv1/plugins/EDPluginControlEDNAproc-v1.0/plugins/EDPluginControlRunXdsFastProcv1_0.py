@@ -163,6 +163,7 @@ class EDPluginControlRunXdsFastProcv1_0(EDPluginControl):
             # params.job = XSDataString('DEFPIX INTEGRATE CORRECT')
             params.spacegroup = self.dataInput.spacegroup
             params.unit_cell = self.dataInput.unit_cell
+            params.exclude_range = self.dataInput.exclude_range
 
             # Extended spot range
             if self.end_image_no - self.start_image_no < 300:
@@ -212,6 +213,7 @@ class EDPluginControlRunXdsFastProcv1_0(EDPluginControl):
             # params.job = XSDataString('DEFPIX INTEGRATE CORRECT')
             params.spacegroup = self.dataInput.spacegroup
             params.unit_cell = self.dataInput.unit_cell
+            params.exclude_range = self.dataInput.exclude_range
 
             # Limited spot range: 1 to 20 or max no data points
 

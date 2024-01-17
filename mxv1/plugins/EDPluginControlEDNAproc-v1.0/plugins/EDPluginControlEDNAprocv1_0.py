@@ -748,6 +748,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         generate_input.previous_run_dir = XSDataString(xds_run_directory)
         generate_input.doAnom = XSDataBoolean(self.doAnom)
         generate_input.doNoanom = XSDataBoolean(self.doNoanom)
+        generate_input.exclude_range = self.dataInput.exclude_range
         self.generate.dataInput = generate_input
 
         self.log_to_ispyb(
@@ -1048,6 +1049,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         )
         generate_xscale_input.doAnom = XSDataBoolean(self.doAnom)
         generate_xscale_input.doNoanom = XSDataBoolean(self.doNoanom)
+        generate_xscale_input.exclude_range = self.dataInput.exclude_range
         pointless_cell = ""
         list_pointless_cell = self.file_conversion.dataOutput.pointless_cell
         pointless_cell += "{0}".format(list_pointless_cell[0].value)
