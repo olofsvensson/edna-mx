@@ -8,6 +8,7 @@ import XSDataCommon.XSDataFile
 import XSDataCommon.XSDataString
 import XSDataCommon.XSDataBoolean
 import XSDataCommon.XSDataDouble
+import XSDataCommon.XSDataRange
 
 
 complex type XSDataInputControlAutoPROC extends XSDataInput {
@@ -25,6 +26,7 @@ complex type XSDataInputControlAutoPROC extends XSDataInput {
 	reprocess : XSDataBoolean optional
 	lowResolutionLimit : XSDataDouble optional
 	highResolutionLimit : XSDataDouble optional
+	exclude_range : XSDataRange [] optional
 }
 
 complex type XSDataResultControlAutoPROC extends XSDataResult {

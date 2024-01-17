@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Jul 28 03:59::59 2023 by EDGenerateDS.
+# Generated Wed Jan 17 02:58::53 2024 by EDGenerateDS.
 #
 
 import os, sys
@@ -18,9 +18,11 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSDataRange
     from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataFile
     from XSDataCommon import XSDataInput
@@ -37,6 +39,7 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSDataRange
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataFile
 from XSDataCommon import XSDataInput
@@ -123,7 +126,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlXia2DIALS(XSDataInput):
-    def __init__(self, configuration=None, reprocess=None, endFrame=None, startFrame=None, unitCell=None, spaceGroup=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, icatProcessDataDir=None, dataCollectionId=None):
+    def __init__(self, configuration=None, exclude_range=None, reprocess=None, endFrame=None, startFrame=None, unitCell=None, spaceGroup=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, icatProcessDataDir=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -194,6 +197,13 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             self._reprocess = reprocess
         else:
             strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'reprocess' is not XSDataBoolean but %s" % self._reprocess.__class__.__name__
+            raise BaseException(strMessage)
+        if exclude_range is None:
+            self._exclude_range = []
+        elif exclude_range.__class__.__name__ == "list":
+            self._exclude_range = exclude_range
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS constructor argument 'exclude_range' is not list but %s" % self._exclude_range.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -315,6 +325,39 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             raise BaseException(strMessage)
     def delReprocess(self): self._reprocess = None
     reprocess = property(getReprocess, setReprocess, delReprocess, "Property for reprocess")
+    # Methods and properties for the 'exclude_range' attribute
+    def getExclude_range(self): return self._exclude_range
+    def setExclude_range(self, exclude_range):
+        if exclude_range is None:
+            self._exclude_range = []
+        elif exclude_range.__class__.__name__ == "list":
+            self._exclude_range = exclude_range
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.setExclude_range argument is not list but %s" % exclude_range.__class__.__name__
+            raise BaseException(strMessage)
+    def delExclude_range(self): self._exclude_range = None
+    exclude_range = property(getExclude_range, setExclude_range, delExclude_range, "Property for exclude_range")
+    def addExclude_range(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.addExclude_range argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataRange":
+            self._exclude_range.append(value)
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.addExclude_range argument is not XSDataRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertExclude_range(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.insertExclude_range argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.insertExclude_range argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataRange":
+            self._exclude_range[index] = value
+        else:
+            strMessage = "ERROR! XSDataInputControlXia2DIALS.addExclude_range argument is not XSDataRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     def export(self, outfile, level, name_='XSDataInputControlXia2DIALS'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -343,6 +386,8 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             self.endFrame.export(outfile, level, name_='endFrame')
         if self._reprocess is not None:
             self.reprocess.export(outfile, level, name_='reprocess')
+        for exclude_range_ in self.getExclude_range():
+            exclude_range_.export(outfile, level, name_='exclude_range')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -398,6 +443,11 @@ class XSDataInputControlXia2DIALS(XSDataInput):
             obj_ = XSDataBoolean()
             obj_.build(child_)
             self.setReprocess(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'exclude_range':
+            obj_ = XSDataRange()
+            obj_.build(child_)
+            self.exclude_range.append(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

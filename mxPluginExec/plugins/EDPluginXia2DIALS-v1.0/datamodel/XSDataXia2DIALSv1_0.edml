@@ -8,6 +8,7 @@ import XSDataCommon.XSDataDouble
 import XSDataCommon.XSDataBoolean
 import XSDataCommon.XSDataString
 import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataRange
 
 
 complex type XSDataInputXia2DIALS extends XSDataInput {
@@ -17,6 +18,7 @@ complex type XSDataInputXia2DIALS extends XSDataInput {
 	unitCell : XSDataString optional
 	startFrame : XSDataInteger optional
 	endFrame : XSDataInteger optional
+	exclude_range : XSDataRange [] optional
 }
 
 complex type XSDataResultXia2DIALS extends XSDataResult {

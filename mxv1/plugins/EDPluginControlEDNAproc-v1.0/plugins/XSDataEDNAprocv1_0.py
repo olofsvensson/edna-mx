@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Jan 12 01:40::39 2024 by EDGenerateDS.
+# Generated Wed Jan 17 02:58::35 2024 by EDGenerateDS.
 #
 
 import os, sys
@@ -19,9 +19,11 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSDataRange
     from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataDouble
     from XSDataCommon import XSDataFile
@@ -39,6 +41,7 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSDataRange
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataFile
@@ -123,119 +126,6 @@ class MixedContainer(object):
 # Data representation classes.
 #
 
-
-
-class XSDataRange(object):
-    def __init__(self, end=None, begin=None):
-        if begin is None:
-            self._begin = None
-        else:
-            self._begin = int(begin)
-        if end is None:
-            self._end = None
-        else:
-            self._end = int(end)
-    # Methods and properties for the 'begin' attribute
-    def getBegin(self): return self._begin
-    def setBegin(self, begin):
-        if begin is None:
-            self._begin = None
-        else:
-            self._begin = int(begin)
-    def delBegin(self): self._begin = None
-    begin = property(getBegin, setBegin, delBegin, "Property for begin")
-    # Methods and properties for the 'end' attribute
-    def getEnd(self): return self._end
-    def setEnd(self, end):
-        if end is None:
-            self._end = None
-        else:
-            self._end = int(end)
-    def delEnd(self): self._end = None
-    end = property(getEnd, setEnd, delEnd, "Property for end")
-    def export(self, outfile, level, name_='XSDataRange'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataRange'):
-        pass
-        if self._begin is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<begin>%d</begin>\n' % self._begin))
-        else:
-            warnEmptyAttribute("begin", "integer")
-        if self._end is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<end>%d</end>\n' % self._end))
-        else:
-            warnEmptyAttribute("end", "integer")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'begin':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._begin = ival_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'end':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._end = ival_
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataRange" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataRange' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataRange is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataRange.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataRange()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataRange" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataRange()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataRange
 
 
 class XSDataEDNAprocImport(XSDataInput):

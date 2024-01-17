@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Jan 15 02:18::33 2024 by EDGenerateDS.
+# Generated Wed Jan 17 02:12::00 2024 by EDGenerateDS.
 #
 
 import os, sys
@@ -25,10 +25,12 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
     from XSDataCommon import XSData
+    from XSDataCommon import XSDataRange
     from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataDouble
     from XSDataCommon import XSDataFile
@@ -52,6 +54,7 @@ except ImportError as error:
     else:
         raise error
 from XSDataCommon import XSData
+from XSDataCommon import XSDataRange
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataFile
@@ -483,119 +486,6 @@ class XSDataCell(object):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataCell
-
-
-class XSDataRange(object):
-    def __init__(self, end=None, begin=None):
-        if begin is None:
-            self._begin = None
-        else:
-            self._begin = int(begin)
-        if end is None:
-            self._end = None
-        else:
-            self._end = int(end)
-    # Methods and properties for the 'begin' attribute
-    def getBegin(self): return self._begin
-    def setBegin(self, begin):
-        if begin is None:
-            self._begin = None
-        else:
-            self._begin = int(begin)
-    def delBegin(self): self._begin = None
-    begin = property(getBegin, setBegin, delBegin, "Property for begin")
-    # Methods and properties for the 'end' attribute
-    def getEnd(self): return self._end
-    def setEnd(self, end):
-        if end is None:
-            self._end = None
-        else:
-            self._end = int(end)
-    def delEnd(self): self._end = None
-    end = property(getEnd, setEnd, delEnd, "Property for end")
-    def export(self, outfile, level, name_='XSDataRange'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataRange'):
-        pass
-        if self._begin is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<begin>%d</begin>\n' % self._begin))
-        else:
-            warnEmptyAttribute("begin", "integer")
-        if self._end is not None:
-            showIndent(outfile, level)
-            outfile.write(unicode('<end>%d</end>\n' % self._end))
-        else:
-            warnEmptyAttribute("end", "integer")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'begin':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._begin = ival_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'end':
-            if child_.firstChild:
-                sval_ = child_.firstChild.nodeValue
-                try:
-                    ival_ = int(sval_)
-                except ValueError:
-                    raise ValueError('requires integer -- %s' % child_.toxml())
-                self._end = ival_
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataRange" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataRange' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataRange is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataRange.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataRange()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataRange" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataRange()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataRange
 
 
 class XSDataXdsCompletenessEntry(object):
@@ -1599,415 +1489,6 @@ class XSDataXDSDoubleRange(XSData):
 # end class XSDataXDSDoubleRange
 
 
-class XSDataXDSGoniostat(XSData):
-    def __init__(self, starting_angle=None, rotation_axis=None, oscillation_range=None):
-        XSData.__init__(self, )
-        if oscillation_range is None:
-            self._oscillation_range = None
-        elif oscillation_range.__class__.__name__ == "XSDataAngle":
-            self._oscillation_range = oscillation_range
-        else:
-            strMessage = "ERROR! XSDataXDSGoniostat constructor argument 'oscillation_range' is not XSDataAngle but %s" % self._oscillation_range.__class__.__name__
-            raise BaseException(strMessage)
-        if rotation_axis is None:
-            self._rotation_axis = None
-        elif rotation_axis.__class__.__name__ == "XSDataVectorDouble":
-            self._rotation_axis = rotation_axis
-        else:
-            strMessage = "ERROR! XSDataXDSGoniostat constructor argument 'rotation_axis' is not XSDataVectorDouble but %s" % self._rotation_axis.__class__.__name__
-            raise BaseException(strMessage)
-        if starting_angle is None:
-            self._starting_angle = None
-        elif starting_angle.__class__.__name__ == "XSDataAngle":
-            self._starting_angle = starting_angle
-        else:
-            strMessage = "ERROR! XSDataXDSGoniostat constructor argument 'starting_angle' is not XSDataAngle but %s" % self._starting_angle.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'oscillation_range' attribute
-    def getOscillation_range(self): return self._oscillation_range
-    def setOscillation_range(self, oscillation_range):
-        if oscillation_range is None:
-            self._oscillation_range = None
-        elif oscillation_range.__class__.__name__ == "XSDataAngle":
-            self._oscillation_range = oscillation_range
-        else:
-            strMessage = "ERROR! XSDataXDSGoniostat.setOscillation_range argument is not XSDataAngle but %s" % oscillation_range.__class__.__name__
-            raise BaseException(strMessage)
-    def delOscillation_range(self): self._oscillation_range = None
-    oscillation_range = property(getOscillation_range, setOscillation_range, delOscillation_range, "Property for oscillation_range")
-    # Methods and properties for the 'rotation_axis' attribute
-    def getRotation_axis(self): return self._rotation_axis
-    def setRotation_axis(self, rotation_axis):
-        if rotation_axis is None:
-            self._rotation_axis = None
-        elif rotation_axis.__class__.__name__ == "XSDataVectorDouble":
-            self._rotation_axis = rotation_axis
-        else:
-            strMessage = "ERROR! XSDataXDSGoniostat.setRotation_axis argument is not XSDataVectorDouble but %s" % rotation_axis.__class__.__name__
-            raise BaseException(strMessage)
-    def delRotation_axis(self): self._rotation_axis = None
-    rotation_axis = property(getRotation_axis, setRotation_axis, delRotation_axis, "Property for rotation_axis")
-    # Methods and properties for the 'starting_angle' attribute
-    def getStarting_angle(self): return self._starting_angle
-    def setStarting_angle(self, starting_angle):
-        if starting_angle is None:
-            self._starting_angle = None
-        elif starting_angle.__class__.__name__ == "XSDataAngle":
-            self._starting_angle = starting_angle
-        else:
-            strMessage = "ERROR! XSDataXDSGoniostat.setStarting_angle argument is not XSDataAngle but %s" % starting_angle.__class__.__name__
-            raise BaseException(strMessage)
-    def delStarting_angle(self): self._starting_angle = None
-    starting_angle = property(getStarting_angle, setStarting_angle, delStarting_angle, "Property for starting_angle")
-    def export(self, outfile, level, name_='XSDataXDSGoniostat'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataXDSGoniostat'):
-        XSData.exportChildren(self, outfile, level, name_)
-        if self._oscillation_range is not None:
-            self.oscillation_range.export(outfile, level, name_='oscillation_range')
-        else:
-            warnEmptyAttribute("oscillation_range", "XSDataAngle")
-        if self._rotation_axis is not None:
-            self.rotation_axis.export(outfile, level, name_='rotation_axis')
-        else:
-            warnEmptyAttribute("rotation_axis", "XSDataVectorDouble")
-        if self._starting_angle is not None:
-            self.starting_angle.export(outfile, level, name_='starting_angle')
-        else:
-            warnEmptyAttribute("starting_angle", "XSDataAngle")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'oscillation_range':
-            obj_ = XSDataAngle()
-            obj_.build(child_)
-            self.setOscillation_range(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'rotation_axis':
-            obj_ = XSDataVectorDouble()
-            obj_.build(child_)
-            self.setRotation_axis(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'starting_angle':
-            obj_ = XSDataAngle()
-            obj_.build(child_)
-            self.setStarting_angle(obj_)
-        XSData.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataXDSGoniostat" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataXDSGoniostat' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataXDSGoniostat is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataXDSGoniostat.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataXDSGoniostat()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataXDSGoniostat" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataXDSGoniostat()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataXDSGoniostat
-
-
-class XSDataXDSImage(XSData):
-    def __init__(self, name_template_of_data_frames=None, starting_frame=None, spot_range=None, data_range=None, background_range=None):
-        XSData.__init__(self, )
-        if background_range is None:
-            self._background_range = []
-        elif background_range.__class__.__name__ == "list":
-            self._background_range = background_range
-        else:
-            strMessage = "ERROR! XSDataXDSImage constructor argument 'background_range' is not list but %s" % self._background_range.__class__.__name__
-            raise BaseException(strMessage)
-        if data_range is None:
-            self._data_range = []
-        elif data_range.__class__.__name__ == "list":
-            self._data_range = data_range
-        else:
-            strMessage = "ERROR! XSDataXDSImage constructor argument 'data_range' is not list but %s" % self._data_range.__class__.__name__
-            raise BaseException(strMessage)
-        if spot_range is None:
-            self._spot_range = []
-        elif spot_range.__class__.__name__ == "list":
-            self._spot_range = spot_range
-        else:
-            strMessage = "ERROR! XSDataXDSImage constructor argument 'spot_range' is not list but %s" % self._spot_range.__class__.__name__
-            raise BaseException(strMessage)
-        if starting_frame is None:
-            self._starting_frame = None
-        elif starting_frame.__class__.__name__ == "XSDataInteger":
-            self._starting_frame = starting_frame
-        else:
-            strMessage = "ERROR! XSDataXDSImage constructor argument 'starting_frame' is not XSDataInteger but %s" % self._starting_frame.__class__.__name__
-            raise BaseException(strMessage)
-        if name_template_of_data_frames is None:
-            self._name_template_of_data_frames = None
-        elif name_template_of_data_frames.__class__.__name__ == "XSDataString":
-            self._name_template_of_data_frames = name_template_of_data_frames
-        else:
-            strMessage = "ERROR! XSDataXDSImage constructor argument 'name_template_of_data_frames' is not XSDataString but %s" % self._name_template_of_data_frames.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'background_range' attribute
-    def getBackground_range(self): return self._background_range
-    def setBackground_range(self, background_range):
-        if background_range is None:
-            self._background_range = []
-        elif background_range.__class__.__name__ == "list":
-            self._background_range = background_range
-        else:
-            strMessage = "ERROR! XSDataXDSImage.setBackground_range argument is not list but %s" % background_range.__class__.__name__
-            raise BaseException(strMessage)
-    def delBackground_range(self): self._background_range = None
-    background_range = property(getBackground_range, setBackground_range, delBackground_range, "Property for background_range")
-    def addBackground_range(self, value):
-        if value is None:
-            strMessage = "ERROR! XSDataXDSImage.addBackground_range argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
-            self._background_range.append(value)
-        else:
-            strMessage = "ERROR! XSDataXDSImage.addBackground_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertBackground_range(self, index, value):
-        if index is None:
-            strMessage = "ERROR! XSDataXDSImage.insertBackground_range argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! XSDataXDSImage.insertBackground_range argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
-            self._background_range[index] = value
-        else:
-            strMessage = "ERROR! XSDataXDSImage.addBackground_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'data_range' attribute
-    def getData_range(self): return self._data_range
-    def setData_range(self, data_range):
-        if data_range is None:
-            self._data_range = []
-        elif data_range.__class__.__name__ == "list":
-            self._data_range = data_range
-        else:
-            strMessage = "ERROR! XSDataXDSImage.setData_range argument is not list but %s" % data_range.__class__.__name__
-            raise BaseException(strMessage)
-    def delData_range(self): self._data_range = None
-    data_range = property(getData_range, setData_range, delData_range, "Property for data_range")
-    def addData_range(self, value):
-        if value is None:
-            strMessage = "ERROR! XSDataXDSImage.addData_range argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
-            self._data_range.append(value)
-        else:
-            strMessage = "ERROR! XSDataXDSImage.addData_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertData_range(self, index, value):
-        if index is None:
-            strMessage = "ERROR! XSDataXDSImage.insertData_range argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! XSDataXDSImage.insertData_range argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
-            self._data_range[index] = value
-        else:
-            strMessage = "ERROR! XSDataXDSImage.addData_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'spot_range' attribute
-    def getSpot_range(self): return self._spot_range
-    def setSpot_range(self, spot_range):
-        if spot_range is None:
-            self._spot_range = []
-        elif spot_range.__class__.__name__ == "list":
-            self._spot_range = spot_range
-        else:
-            strMessage = "ERROR! XSDataXDSImage.setSpot_range argument is not list but %s" % spot_range.__class__.__name__
-            raise BaseException(strMessage)
-    def delSpot_range(self): self._spot_range = None
-    spot_range = property(getSpot_range, setSpot_range, delSpot_range, "Property for spot_range")
-    def addSpot_range(self, value):
-        if value is None:
-            strMessage = "ERROR! XSDataXDSImage.addSpot_range argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
-            self._spot_range.append(value)
-        else:
-            strMessage = "ERROR! XSDataXDSImage.addSpot_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertSpot_range(self, index, value):
-        if index is None:
-            strMessage = "ERROR! XSDataXDSImage.insertSpot_range argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! XSDataXDSImage.insertSpot_range argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
-            self._spot_range[index] = value
-        else:
-            strMessage = "ERROR! XSDataXDSImage.addSpot_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'starting_frame' attribute
-    def getStarting_frame(self): return self._starting_frame
-    def setStarting_frame(self, starting_frame):
-        if starting_frame is None:
-            self._starting_frame = None
-        elif starting_frame.__class__.__name__ == "XSDataInteger":
-            self._starting_frame = starting_frame
-        else:
-            strMessage = "ERROR! XSDataXDSImage.setStarting_frame argument is not XSDataInteger but %s" % starting_frame.__class__.__name__
-            raise BaseException(strMessage)
-    def delStarting_frame(self): self._starting_frame = None
-    starting_frame = property(getStarting_frame, setStarting_frame, delStarting_frame, "Property for starting_frame")
-    # Methods and properties for the 'name_template_of_data_frames' attribute
-    def getName_template_of_data_frames(self): return self._name_template_of_data_frames
-    def setName_template_of_data_frames(self, name_template_of_data_frames):
-        if name_template_of_data_frames is None:
-            self._name_template_of_data_frames = None
-        elif name_template_of_data_frames.__class__.__name__ == "XSDataString":
-            self._name_template_of_data_frames = name_template_of_data_frames
-        else:
-            strMessage = "ERROR! XSDataXDSImage.setName_template_of_data_frames argument is not XSDataString but %s" % name_template_of_data_frames.__class__.__name__
-            raise BaseException(strMessage)
-    def delName_template_of_data_frames(self): self._name_template_of_data_frames = None
-    name_template_of_data_frames = property(getName_template_of_data_frames, setName_template_of_data_frames, delName_template_of_data_frames, "Property for name_template_of_data_frames")
-    def export(self, outfile, level, name_='XSDataXDSImage'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataXDSImage'):
-        XSData.exportChildren(self, outfile, level, name_)
-        for background_range_ in self.getBackground_range():
-            background_range_.export(outfile, level, name_='background_range')
-        if self.getBackground_range() == []:
-            warnEmptyAttribute("background_range", "XSDataXDSIntegerRange")
-        for data_range_ in self.getData_range():
-            data_range_.export(outfile, level, name_='data_range')
-        if self.getData_range() == []:
-            warnEmptyAttribute("data_range", "XSDataXDSIntegerRange")
-        for spot_range_ in self.getSpot_range():
-            spot_range_.export(outfile, level, name_='spot_range')
-        if self.getSpot_range() == []:
-            warnEmptyAttribute("spot_range", "XSDataXDSIntegerRange")
-        if self._starting_frame is not None:
-            self.starting_frame.export(outfile, level, name_='starting_frame')
-        else:
-            warnEmptyAttribute("starting_frame", "XSDataInteger")
-        if self._name_template_of_data_frames is not None:
-            self.name_template_of_data_frames.export(outfile, level, name_='name_template_of_data_frames')
-        else:
-            warnEmptyAttribute("name_template_of_data_frames", "XSDataString")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'background_range':
-            obj_ = XSDataXDSIntegerRange()
-            obj_.build(child_)
-            self.background_range.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'data_range':
-            obj_ = XSDataXDSIntegerRange()
-            obj_.build(child_)
-            self.data_range.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'spot_range':
-            obj_ = XSDataXDSIntegerRange()
-            obj_.build(child_)
-            self.spot_range.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'starting_frame':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setStarting_frame(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'name_template_of_data_frames':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setName_template_of_data_frames(obj_)
-        XSData.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataXDSImage" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataXDSImage' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataXDSImage is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataXDSImage.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataXDSImage()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataXDSImage" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataXDSImage()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataXDSImage
-
-
 class XSDataXDSImageLink(XSData):
     def __init__(self, target=None, source=None):
         XSData.__init__(self, )
@@ -2240,179 +1721,6 @@ class XSDataXDSIntegerRange(XSData):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataXDSIntegerRange
-
-
-class XSDataXDSRectangle(XSData):
-    def __init__(self, y2=None, y1=None, x2=None, x1=None):
-        XSData.__init__(self, )
-        if x1 is None:
-            self._x1 = None
-        elif x1.__class__.__name__ == "XSDataInteger":
-            self._x1 = x1
-        else:
-            strMessage = "ERROR! XSDataXDSRectangle constructor argument 'x1' is not XSDataInteger but %s" % self._x1.__class__.__name__
-            raise BaseException(strMessage)
-        if x2 is None:
-            self._x2 = None
-        elif x2.__class__.__name__ == "XSDataInteger":
-            self._x2 = x2
-        else:
-            strMessage = "ERROR! XSDataXDSRectangle constructor argument 'x2' is not XSDataInteger but %s" % self._x2.__class__.__name__
-            raise BaseException(strMessage)
-        if y1 is None:
-            self._y1 = None
-        elif y1.__class__.__name__ == "XSDataInteger":
-            self._y1 = y1
-        else:
-            strMessage = "ERROR! XSDataXDSRectangle constructor argument 'y1' is not XSDataInteger but %s" % self._y1.__class__.__name__
-            raise BaseException(strMessage)
-        if y2 is None:
-            self._y2 = None
-        elif y2.__class__.__name__ == "XSDataInteger":
-            self._y2 = y2
-        else:
-            strMessage = "ERROR! XSDataXDSRectangle constructor argument 'y2' is not XSDataInteger but %s" % self._y2.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'x1' attribute
-    def getX1(self): return self._x1
-    def setX1(self, x1):
-        if x1 is None:
-            self._x1 = None
-        elif x1.__class__.__name__ == "XSDataInteger":
-            self._x1 = x1
-        else:
-            strMessage = "ERROR! XSDataXDSRectangle.setX1 argument is not XSDataInteger but %s" % x1.__class__.__name__
-            raise BaseException(strMessage)
-    def delX1(self): self._x1 = None
-    x1 = property(getX1, setX1, delX1, "Property for x1")
-    # Methods and properties for the 'x2' attribute
-    def getX2(self): return self._x2
-    def setX2(self, x2):
-        if x2 is None:
-            self._x2 = None
-        elif x2.__class__.__name__ == "XSDataInteger":
-            self._x2 = x2
-        else:
-            strMessage = "ERROR! XSDataXDSRectangle.setX2 argument is not XSDataInteger but %s" % x2.__class__.__name__
-            raise BaseException(strMessage)
-    def delX2(self): self._x2 = None
-    x2 = property(getX2, setX2, delX2, "Property for x2")
-    # Methods and properties for the 'y1' attribute
-    def getY1(self): return self._y1
-    def setY1(self, y1):
-        if y1 is None:
-            self._y1 = None
-        elif y1.__class__.__name__ == "XSDataInteger":
-            self._y1 = y1
-        else:
-            strMessage = "ERROR! XSDataXDSRectangle.setY1 argument is not XSDataInteger but %s" % y1.__class__.__name__
-            raise BaseException(strMessage)
-    def delY1(self): self._y1 = None
-    y1 = property(getY1, setY1, delY1, "Property for y1")
-    # Methods and properties for the 'y2' attribute
-    def getY2(self): return self._y2
-    def setY2(self, y2):
-        if y2 is None:
-            self._y2 = None
-        elif y2.__class__.__name__ == "XSDataInteger":
-            self._y2 = y2
-        else:
-            strMessage = "ERROR! XSDataXDSRectangle.setY2 argument is not XSDataInteger but %s" % y2.__class__.__name__
-            raise BaseException(strMessage)
-    def delY2(self): self._y2 = None
-    y2 = property(getY2, setY2, delY2, "Property for y2")
-    def export(self, outfile, level, name_='XSDataXDSRectangle'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataXDSRectangle'):
-        XSData.exportChildren(self, outfile, level, name_)
-        if self._x1 is not None:
-            self.x1.export(outfile, level, name_='x1')
-        else:
-            warnEmptyAttribute("x1", "XSDataInteger")
-        if self._x2 is not None:
-            self.x2.export(outfile, level, name_='x2')
-        else:
-            warnEmptyAttribute("x2", "XSDataInteger")
-        if self._y1 is not None:
-            self.y1.export(outfile, level, name_='y1')
-        else:
-            warnEmptyAttribute("y1", "XSDataInteger")
-        if self._y2 is not None:
-            self.y2.export(outfile, level, name_='y2')
-        else:
-            warnEmptyAttribute("y2", "XSDataInteger")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'x1':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setX1(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'x2':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setX2(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'y1':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setY1(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'y2':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setY2(obj_)
-        XSData.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataXDSRectangle" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataXDSRectangle' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataXDSRectangle is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataXDSRectangle.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataXDSRectangle()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataXDSRectangle" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataXDSRectangle()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataXDSRectangle
 
 
 class XSDataXDSDetector(XSData):
@@ -2937,6 +2245,588 @@ class XSDataXDSDetector(XSData):
 # end class XSDataXDSDetector
 
 
+class XSDataXDSGoniostat(XSData):
+    def __init__(self, starting_angle=None, rotation_axis=None, oscillation_range=None):
+        XSData.__init__(self, )
+        if oscillation_range is None:
+            self._oscillation_range = None
+        elif oscillation_range.__class__.__name__ == "XSDataAngle":
+            self._oscillation_range = oscillation_range
+        else:
+            strMessage = "ERROR! XSDataXDSGoniostat constructor argument 'oscillation_range' is not XSDataAngle but %s" % self._oscillation_range.__class__.__name__
+            raise BaseException(strMessage)
+        if rotation_axis is None:
+            self._rotation_axis = None
+        elif rotation_axis.__class__.__name__ == "XSDataVectorDouble":
+            self._rotation_axis = rotation_axis
+        else:
+            strMessage = "ERROR! XSDataXDSGoniostat constructor argument 'rotation_axis' is not XSDataVectorDouble but %s" % self._rotation_axis.__class__.__name__
+            raise BaseException(strMessage)
+        if starting_angle is None:
+            self._starting_angle = None
+        elif starting_angle.__class__.__name__ == "XSDataAngle":
+            self._starting_angle = starting_angle
+        else:
+            strMessage = "ERROR! XSDataXDSGoniostat constructor argument 'starting_angle' is not XSDataAngle but %s" % self._starting_angle.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'oscillation_range' attribute
+    def getOscillation_range(self): return self._oscillation_range
+    def setOscillation_range(self, oscillation_range):
+        if oscillation_range is None:
+            self._oscillation_range = None
+        elif oscillation_range.__class__.__name__ == "XSDataAngle":
+            self._oscillation_range = oscillation_range
+        else:
+            strMessage = "ERROR! XSDataXDSGoniostat.setOscillation_range argument is not XSDataAngle but %s" % oscillation_range.__class__.__name__
+            raise BaseException(strMessage)
+    def delOscillation_range(self): self._oscillation_range = None
+    oscillation_range = property(getOscillation_range, setOscillation_range, delOscillation_range, "Property for oscillation_range")
+    # Methods and properties for the 'rotation_axis' attribute
+    def getRotation_axis(self): return self._rotation_axis
+    def setRotation_axis(self, rotation_axis):
+        if rotation_axis is None:
+            self._rotation_axis = None
+        elif rotation_axis.__class__.__name__ == "XSDataVectorDouble":
+            self._rotation_axis = rotation_axis
+        else:
+            strMessage = "ERROR! XSDataXDSGoniostat.setRotation_axis argument is not XSDataVectorDouble but %s" % rotation_axis.__class__.__name__
+            raise BaseException(strMessage)
+    def delRotation_axis(self): self._rotation_axis = None
+    rotation_axis = property(getRotation_axis, setRotation_axis, delRotation_axis, "Property for rotation_axis")
+    # Methods and properties for the 'starting_angle' attribute
+    def getStarting_angle(self): return self._starting_angle
+    def setStarting_angle(self, starting_angle):
+        if starting_angle is None:
+            self._starting_angle = None
+        elif starting_angle.__class__.__name__ == "XSDataAngle":
+            self._starting_angle = starting_angle
+        else:
+            strMessage = "ERROR! XSDataXDSGoniostat.setStarting_angle argument is not XSDataAngle but %s" % starting_angle.__class__.__name__
+            raise BaseException(strMessage)
+    def delStarting_angle(self): self._starting_angle = None
+    starting_angle = property(getStarting_angle, setStarting_angle, delStarting_angle, "Property for starting_angle")
+    def export(self, outfile, level, name_='XSDataXDSGoniostat'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataXDSGoniostat'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._oscillation_range is not None:
+            self.oscillation_range.export(outfile, level, name_='oscillation_range')
+        else:
+            warnEmptyAttribute("oscillation_range", "XSDataAngle")
+        if self._rotation_axis is not None:
+            self.rotation_axis.export(outfile, level, name_='rotation_axis')
+        else:
+            warnEmptyAttribute("rotation_axis", "XSDataVectorDouble")
+        if self._starting_angle is not None:
+            self.starting_angle.export(outfile, level, name_='starting_angle')
+        else:
+            warnEmptyAttribute("starting_angle", "XSDataAngle")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'oscillation_range':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setOscillation_range(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'rotation_axis':
+            obj_ = XSDataVectorDouble()
+            obj_.build(child_)
+            self.setRotation_axis(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'starting_angle':
+            obj_ = XSDataAngle()
+            obj_.build(child_)
+            self.setStarting_angle(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataXDSGoniostat" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataXDSGoniostat' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataXDSGoniostat is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataXDSGoniostat.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataXDSGoniostat()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataXDSGoniostat" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataXDSGoniostat()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataXDSGoniostat
+
+
+class XSDataXDSImage(XSData):
+    def __init__(self, name_template_of_data_frames=None, starting_frame=None, spot_range=None, data_range=None, background_range=None):
+        XSData.__init__(self, )
+        if background_range is None:
+            self._background_range = []
+        elif background_range.__class__.__name__ == "list":
+            self._background_range = background_range
+        else:
+            strMessage = "ERROR! XSDataXDSImage constructor argument 'background_range' is not list but %s" % self._background_range.__class__.__name__
+            raise BaseException(strMessage)
+        if data_range is None:
+            self._data_range = []
+        elif data_range.__class__.__name__ == "list":
+            self._data_range = data_range
+        else:
+            strMessage = "ERROR! XSDataXDSImage constructor argument 'data_range' is not list but %s" % self._data_range.__class__.__name__
+            raise BaseException(strMessage)
+        if spot_range is None:
+            self._spot_range = []
+        elif spot_range.__class__.__name__ == "list":
+            self._spot_range = spot_range
+        else:
+            strMessage = "ERROR! XSDataXDSImage constructor argument 'spot_range' is not list but %s" % self._spot_range.__class__.__name__
+            raise BaseException(strMessage)
+        if starting_frame is None:
+            self._starting_frame = None
+        elif starting_frame.__class__.__name__ == "XSDataInteger":
+            self._starting_frame = starting_frame
+        else:
+            strMessage = "ERROR! XSDataXDSImage constructor argument 'starting_frame' is not XSDataInteger but %s" % self._starting_frame.__class__.__name__
+            raise BaseException(strMessage)
+        if name_template_of_data_frames is None:
+            self._name_template_of_data_frames = None
+        elif name_template_of_data_frames.__class__.__name__ == "XSDataString":
+            self._name_template_of_data_frames = name_template_of_data_frames
+        else:
+            strMessage = "ERROR! XSDataXDSImage constructor argument 'name_template_of_data_frames' is not XSDataString but %s" % self._name_template_of_data_frames.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'background_range' attribute
+    def getBackground_range(self): return self._background_range
+    def setBackground_range(self, background_range):
+        if background_range is None:
+            self._background_range = []
+        elif background_range.__class__.__name__ == "list":
+            self._background_range = background_range
+        else:
+            strMessage = "ERROR! XSDataXDSImage.setBackground_range argument is not list but %s" % background_range.__class__.__name__
+            raise BaseException(strMessage)
+    def delBackground_range(self): self._background_range = None
+    background_range = property(getBackground_range, setBackground_range, delBackground_range, "Property for background_range")
+    def addBackground_range(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataXDSImage.addBackground_range argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
+            self._background_range.append(value)
+        else:
+            strMessage = "ERROR! XSDataXDSImage.addBackground_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertBackground_range(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataXDSImage.insertBackground_range argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataXDSImage.insertBackground_range argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
+            self._background_range[index] = value
+        else:
+            strMessage = "ERROR! XSDataXDSImage.addBackground_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'data_range' attribute
+    def getData_range(self): return self._data_range
+    def setData_range(self, data_range):
+        if data_range is None:
+            self._data_range = []
+        elif data_range.__class__.__name__ == "list":
+            self._data_range = data_range
+        else:
+            strMessage = "ERROR! XSDataXDSImage.setData_range argument is not list but %s" % data_range.__class__.__name__
+            raise BaseException(strMessage)
+    def delData_range(self): self._data_range = None
+    data_range = property(getData_range, setData_range, delData_range, "Property for data_range")
+    def addData_range(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataXDSImage.addData_range argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
+            self._data_range.append(value)
+        else:
+            strMessage = "ERROR! XSDataXDSImage.addData_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertData_range(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataXDSImage.insertData_range argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataXDSImage.insertData_range argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
+            self._data_range[index] = value
+        else:
+            strMessage = "ERROR! XSDataXDSImage.addData_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'spot_range' attribute
+    def getSpot_range(self): return self._spot_range
+    def setSpot_range(self, spot_range):
+        if spot_range is None:
+            self._spot_range = []
+        elif spot_range.__class__.__name__ == "list":
+            self._spot_range = spot_range
+        else:
+            strMessage = "ERROR! XSDataXDSImage.setSpot_range argument is not list but %s" % spot_range.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpot_range(self): self._spot_range = None
+    spot_range = property(getSpot_range, setSpot_range, delSpot_range, "Property for spot_range")
+    def addSpot_range(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataXDSImage.addSpot_range argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
+            self._spot_range.append(value)
+        else:
+            strMessage = "ERROR! XSDataXDSImage.addSpot_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertSpot_range(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataXDSImage.insertSpot_range argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataXDSImage.insertSpot_range argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
+            self._spot_range[index] = value
+        else:
+            strMessage = "ERROR! XSDataXDSImage.addSpot_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'starting_frame' attribute
+    def getStarting_frame(self): return self._starting_frame
+    def setStarting_frame(self, starting_frame):
+        if starting_frame is None:
+            self._starting_frame = None
+        elif starting_frame.__class__.__name__ == "XSDataInteger":
+            self._starting_frame = starting_frame
+        else:
+            strMessage = "ERROR! XSDataXDSImage.setStarting_frame argument is not XSDataInteger but %s" % starting_frame.__class__.__name__
+            raise BaseException(strMessage)
+    def delStarting_frame(self): self._starting_frame = None
+    starting_frame = property(getStarting_frame, setStarting_frame, delStarting_frame, "Property for starting_frame")
+    # Methods and properties for the 'name_template_of_data_frames' attribute
+    def getName_template_of_data_frames(self): return self._name_template_of_data_frames
+    def setName_template_of_data_frames(self, name_template_of_data_frames):
+        if name_template_of_data_frames is None:
+            self._name_template_of_data_frames = None
+        elif name_template_of_data_frames.__class__.__name__ == "XSDataString":
+            self._name_template_of_data_frames = name_template_of_data_frames
+        else:
+            strMessage = "ERROR! XSDataXDSImage.setName_template_of_data_frames argument is not XSDataString but %s" % name_template_of_data_frames.__class__.__name__
+            raise BaseException(strMessage)
+    def delName_template_of_data_frames(self): self._name_template_of_data_frames = None
+    name_template_of_data_frames = property(getName_template_of_data_frames, setName_template_of_data_frames, delName_template_of_data_frames, "Property for name_template_of_data_frames")
+    def export(self, outfile, level, name_='XSDataXDSImage'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataXDSImage'):
+        XSData.exportChildren(self, outfile, level, name_)
+        for background_range_ in self.getBackground_range():
+            background_range_.export(outfile, level, name_='background_range')
+        if self.getBackground_range() == []:
+            warnEmptyAttribute("background_range", "XSDataXDSIntegerRange")
+        for data_range_ in self.getData_range():
+            data_range_.export(outfile, level, name_='data_range')
+        if self.getData_range() == []:
+            warnEmptyAttribute("data_range", "XSDataXDSIntegerRange")
+        for spot_range_ in self.getSpot_range():
+            spot_range_.export(outfile, level, name_='spot_range')
+        if self.getSpot_range() == []:
+            warnEmptyAttribute("spot_range", "XSDataXDSIntegerRange")
+        if self._starting_frame is not None:
+            self.starting_frame.export(outfile, level, name_='starting_frame')
+        else:
+            warnEmptyAttribute("starting_frame", "XSDataInteger")
+        if self._name_template_of_data_frames is not None:
+            self.name_template_of_data_frames.export(outfile, level, name_='name_template_of_data_frames')
+        else:
+            warnEmptyAttribute("name_template_of_data_frames", "XSDataString")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'background_range':
+            obj_ = XSDataXDSIntegerRange()
+            obj_.build(child_)
+            self.background_range.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'data_range':
+            obj_ = XSDataXDSIntegerRange()
+            obj_.build(child_)
+            self.data_range.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spot_range':
+            obj_ = XSDataXDSIntegerRange()
+            obj_.build(child_)
+            self.spot_range.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'starting_frame':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setStarting_frame(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'name_template_of_data_frames':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setName_template_of_data_frames(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataXDSImage" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataXDSImage' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataXDSImage is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataXDSImage.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataXDSImage()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataXDSImage" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataXDSImage()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataXDSImage
+
+
+class XSDataXDSRectangle(XSData):
+    def __init__(self, y2=None, y1=None, x2=None, x1=None):
+        XSData.__init__(self, )
+        if x1 is None:
+            self._x1 = None
+        elif x1.__class__.__name__ == "XSDataInteger":
+            self._x1 = x1
+        else:
+            strMessage = "ERROR! XSDataXDSRectangle constructor argument 'x1' is not XSDataInteger but %s" % self._x1.__class__.__name__
+            raise BaseException(strMessage)
+        if x2 is None:
+            self._x2 = None
+        elif x2.__class__.__name__ == "XSDataInteger":
+            self._x2 = x2
+        else:
+            strMessage = "ERROR! XSDataXDSRectangle constructor argument 'x2' is not XSDataInteger but %s" % self._x2.__class__.__name__
+            raise BaseException(strMessage)
+        if y1 is None:
+            self._y1 = None
+        elif y1.__class__.__name__ == "XSDataInteger":
+            self._y1 = y1
+        else:
+            strMessage = "ERROR! XSDataXDSRectangle constructor argument 'y1' is not XSDataInteger but %s" % self._y1.__class__.__name__
+            raise BaseException(strMessage)
+        if y2 is None:
+            self._y2 = None
+        elif y2.__class__.__name__ == "XSDataInteger":
+            self._y2 = y2
+        else:
+            strMessage = "ERROR! XSDataXDSRectangle constructor argument 'y2' is not XSDataInteger but %s" % self._y2.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'x1' attribute
+    def getX1(self): return self._x1
+    def setX1(self, x1):
+        if x1 is None:
+            self._x1 = None
+        elif x1.__class__.__name__ == "XSDataInteger":
+            self._x1 = x1
+        else:
+            strMessage = "ERROR! XSDataXDSRectangle.setX1 argument is not XSDataInteger but %s" % x1.__class__.__name__
+            raise BaseException(strMessage)
+    def delX1(self): self._x1 = None
+    x1 = property(getX1, setX1, delX1, "Property for x1")
+    # Methods and properties for the 'x2' attribute
+    def getX2(self): return self._x2
+    def setX2(self, x2):
+        if x2 is None:
+            self._x2 = None
+        elif x2.__class__.__name__ == "XSDataInteger":
+            self._x2 = x2
+        else:
+            strMessage = "ERROR! XSDataXDSRectangle.setX2 argument is not XSDataInteger but %s" % x2.__class__.__name__
+            raise BaseException(strMessage)
+    def delX2(self): self._x2 = None
+    x2 = property(getX2, setX2, delX2, "Property for x2")
+    # Methods and properties for the 'y1' attribute
+    def getY1(self): return self._y1
+    def setY1(self, y1):
+        if y1 is None:
+            self._y1 = None
+        elif y1.__class__.__name__ == "XSDataInteger":
+            self._y1 = y1
+        else:
+            strMessage = "ERROR! XSDataXDSRectangle.setY1 argument is not XSDataInteger but %s" % y1.__class__.__name__
+            raise BaseException(strMessage)
+    def delY1(self): self._y1 = None
+    y1 = property(getY1, setY1, delY1, "Property for y1")
+    # Methods and properties for the 'y2' attribute
+    def getY2(self): return self._y2
+    def setY2(self, y2):
+        if y2 is None:
+            self._y2 = None
+        elif y2.__class__.__name__ == "XSDataInteger":
+            self._y2 = y2
+        else:
+            strMessage = "ERROR! XSDataXDSRectangle.setY2 argument is not XSDataInteger but %s" % y2.__class__.__name__
+            raise BaseException(strMessage)
+    def delY2(self): self._y2 = None
+    y2 = property(getY2, setY2, delY2, "Property for y2")
+    def export(self, outfile, level, name_='XSDataXDSRectangle'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataXDSRectangle'):
+        XSData.exportChildren(self, outfile, level, name_)
+        if self._x1 is not None:
+            self.x1.export(outfile, level, name_='x1')
+        else:
+            warnEmptyAttribute("x1", "XSDataInteger")
+        if self._x2 is not None:
+            self.x2.export(outfile, level, name_='x2')
+        else:
+            warnEmptyAttribute("x2", "XSDataInteger")
+        if self._y1 is not None:
+            self.y1.export(outfile, level, name_='y1')
+        else:
+            warnEmptyAttribute("y1", "XSDataInteger")
+        if self._y2 is not None:
+            self.y2.export(outfile, level, name_='y2')
+        else:
+            warnEmptyAttribute("y2", "XSDataInteger")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'x1':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setX1(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'x2':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setX2(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'y1':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setY1(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'y2':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setY2(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataXDSRectangle" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataXDSRectangle' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataXDSRectangle is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataXDSRectangle.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataXDSRectangle()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataXDSRectangle" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataXDSRectangle()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataXDSRectangle
+
+
 class XSDataXDSVector(XSData):
     def __init__(self, v3=None, v2=None, v1=None):
         XSData.__init__(self, )
@@ -3169,6 +3059,223 @@ class XSDataXscaleCompletenessEntry(XSDataXdsCompletenessEntry):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataXscaleCompletenessEntry
+
+
+class XSDataXDSFilePaths(XSDataInput):
+    def __init__(self, configuration=None, blankCbf=None, gainCbf=None, bkginitCbf=None, yCorrectionsCbf=None, xCorrectionsCbf=None, xparmXds=None):
+        XSDataInput.__init__(self, configuration)
+        if xparmXds is None:
+            self._xparmXds = None
+        elif xparmXds.__class__.__name__ == "XSDataFile":
+            self._xparmXds = xparmXds
+        else:
+            strMessage = "ERROR! XSDataXDSFilePaths constructor argument 'xparmXds' is not XSDataFile but %s" % self._xparmXds.__class__.__name__
+            raise BaseException(strMessage)
+        if xCorrectionsCbf is None:
+            self._xCorrectionsCbf = None
+        elif xCorrectionsCbf.__class__.__name__ == "XSDataFile":
+            self._xCorrectionsCbf = xCorrectionsCbf
+        else:
+            strMessage = "ERROR! XSDataXDSFilePaths constructor argument 'xCorrectionsCbf' is not XSDataFile but %s" % self._xCorrectionsCbf.__class__.__name__
+            raise BaseException(strMessage)
+        if yCorrectionsCbf is None:
+            self._yCorrectionsCbf = None
+        elif yCorrectionsCbf.__class__.__name__ == "XSDataFile":
+            self._yCorrectionsCbf = yCorrectionsCbf
+        else:
+            strMessage = "ERROR! XSDataXDSFilePaths constructor argument 'yCorrectionsCbf' is not XSDataFile but %s" % self._yCorrectionsCbf.__class__.__name__
+            raise BaseException(strMessage)
+        if bkginitCbf is None:
+            self._bkginitCbf = None
+        elif bkginitCbf.__class__.__name__ == "XSDataFile":
+            self._bkginitCbf = bkginitCbf
+        else:
+            strMessage = "ERROR! XSDataXDSFilePaths constructor argument 'bkginitCbf' is not XSDataFile but %s" % self._bkginitCbf.__class__.__name__
+            raise BaseException(strMessage)
+        if gainCbf is None:
+            self._gainCbf = None
+        elif gainCbf.__class__.__name__ == "XSDataFile":
+            self._gainCbf = gainCbf
+        else:
+            strMessage = "ERROR! XSDataXDSFilePaths constructor argument 'gainCbf' is not XSDataFile but %s" % self._gainCbf.__class__.__name__
+            raise BaseException(strMessage)
+        if blankCbf is None:
+            self._blankCbf = None
+        elif blankCbf.__class__.__name__ == "XSDataFile":
+            self._blankCbf = blankCbf
+        else:
+            strMessage = "ERROR! XSDataXDSFilePaths constructor argument 'blankCbf' is not XSDataFile but %s" % self._blankCbf.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'xparmXds' attribute
+    def getXparmXds(self): return self._xparmXds
+    def setXparmXds(self, xparmXds):
+        if xparmXds is None:
+            self._xparmXds = None
+        elif xparmXds.__class__.__name__ == "XSDataFile":
+            self._xparmXds = xparmXds
+        else:
+            strMessage = "ERROR! XSDataXDSFilePaths.setXparmXds argument is not XSDataFile but %s" % xparmXds.__class__.__name__
+            raise BaseException(strMessage)
+    def delXparmXds(self): self._xparmXds = None
+    xparmXds = property(getXparmXds, setXparmXds, delXparmXds, "Property for xparmXds")
+    # Methods and properties for the 'xCorrectionsCbf' attribute
+    def getXCorrectionsCbf(self): return self._xCorrectionsCbf
+    def setXCorrectionsCbf(self, xCorrectionsCbf):
+        if xCorrectionsCbf is None:
+            self._xCorrectionsCbf = None
+        elif xCorrectionsCbf.__class__.__name__ == "XSDataFile":
+            self._xCorrectionsCbf = xCorrectionsCbf
+        else:
+            strMessage = "ERROR! XSDataXDSFilePaths.setXCorrectionsCbf argument is not XSDataFile but %s" % xCorrectionsCbf.__class__.__name__
+            raise BaseException(strMessage)
+    def delXCorrectionsCbf(self): self._xCorrectionsCbf = None
+    xCorrectionsCbf = property(getXCorrectionsCbf, setXCorrectionsCbf, delXCorrectionsCbf, "Property for xCorrectionsCbf")
+    # Methods and properties for the 'yCorrectionsCbf' attribute
+    def getYCorrectionsCbf(self): return self._yCorrectionsCbf
+    def setYCorrectionsCbf(self, yCorrectionsCbf):
+        if yCorrectionsCbf is None:
+            self._yCorrectionsCbf = None
+        elif yCorrectionsCbf.__class__.__name__ == "XSDataFile":
+            self._yCorrectionsCbf = yCorrectionsCbf
+        else:
+            strMessage = "ERROR! XSDataXDSFilePaths.setYCorrectionsCbf argument is not XSDataFile but %s" % yCorrectionsCbf.__class__.__name__
+            raise BaseException(strMessage)
+    def delYCorrectionsCbf(self): self._yCorrectionsCbf = None
+    yCorrectionsCbf = property(getYCorrectionsCbf, setYCorrectionsCbf, delYCorrectionsCbf, "Property for yCorrectionsCbf")
+    # Methods and properties for the 'bkginitCbf' attribute
+    def getBkginitCbf(self): return self._bkginitCbf
+    def setBkginitCbf(self, bkginitCbf):
+        if bkginitCbf is None:
+            self._bkginitCbf = None
+        elif bkginitCbf.__class__.__name__ == "XSDataFile":
+            self._bkginitCbf = bkginitCbf
+        else:
+            strMessage = "ERROR! XSDataXDSFilePaths.setBkginitCbf argument is not XSDataFile but %s" % bkginitCbf.__class__.__name__
+            raise BaseException(strMessage)
+    def delBkginitCbf(self): self._bkginitCbf = None
+    bkginitCbf = property(getBkginitCbf, setBkginitCbf, delBkginitCbf, "Property for bkginitCbf")
+    # Methods and properties for the 'gainCbf' attribute
+    def getGainCbf(self): return self._gainCbf
+    def setGainCbf(self, gainCbf):
+        if gainCbf is None:
+            self._gainCbf = None
+        elif gainCbf.__class__.__name__ == "XSDataFile":
+            self._gainCbf = gainCbf
+        else:
+            strMessage = "ERROR! XSDataXDSFilePaths.setGainCbf argument is not XSDataFile but %s" % gainCbf.__class__.__name__
+            raise BaseException(strMessage)
+    def delGainCbf(self): self._gainCbf = None
+    gainCbf = property(getGainCbf, setGainCbf, delGainCbf, "Property for gainCbf")
+    # Methods and properties for the 'blankCbf' attribute
+    def getBlankCbf(self): return self._blankCbf
+    def setBlankCbf(self, blankCbf):
+        if blankCbf is None:
+            self._blankCbf = None
+        elif blankCbf.__class__.__name__ == "XSDataFile":
+            self._blankCbf = blankCbf
+        else:
+            strMessage = "ERROR! XSDataXDSFilePaths.setBlankCbf argument is not XSDataFile but %s" % blankCbf.__class__.__name__
+            raise BaseException(strMessage)
+    def delBlankCbf(self): self._blankCbf = None
+    blankCbf = property(getBlankCbf, setBlankCbf, delBlankCbf, "Property for blankCbf")
+    def export(self, outfile, level, name_='XSDataXDSFilePaths'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataXDSFilePaths'):
+        XSDataInput.exportChildren(self, outfile, level, name_)
+        if self._xparmXds is not None:
+            self.xparmXds.export(outfile, level, name_='xparmXds')
+        if self._xCorrectionsCbf is not None:
+            self.xCorrectionsCbf.export(outfile, level, name_='xCorrectionsCbf')
+        if self._yCorrectionsCbf is not None:
+            self.yCorrectionsCbf.export(outfile, level, name_='yCorrectionsCbf')
+        if self._bkginitCbf is not None:
+            self.bkginitCbf.export(outfile, level, name_='bkginitCbf')
+        if self._gainCbf is not None:
+            self.gainCbf.export(outfile, level, name_='gainCbf')
+        if self._blankCbf is not None:
+            self.blankCbf.export(outfile, level, name_='blankCbf')
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'xparmXds':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setXparmXds(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'xCorrectionsCbf':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setXCorrectionsCbf(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'yCorrectionsCbf':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setYCorrectionsCbf(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'bkginitCbf':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setBkginitCbf(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'gainCbf':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setGainCbf(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'blankCbf':
+            obj_ = XSDataFile()
+            obj_.build(child_)
+            self.setBlankCbf(obj_)
+        XSDataInput.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataXDSFilePaths" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataXDSFilePaths' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataXDSFilePaths is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataXDSFilePaths.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataXDSFilePaths()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataXDSFilePaths" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataXDSFilePaths()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataXDSFilePaths
 
 
 class XSDataInputXDS(XSDataInput):
@@ -4514,223 +4621,6 @@ class XSDataResCutoffResult(XSDataResult):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataResCutoffResult
-
-
-class XSDataXDSFilePaths(XSDataInput):
-    def __init__(self, configuration=None, blankCbf=None, gainCbf=None, bkginitCbf=None, yCorrectionsCbf=None, xCorrectionsCbf=None, xparmXds=None):
-        XSDataInput.__init__(self, configuration)
-        if xparmXds is None:
-            self._xparmXds = None
-        elif xparmXds.__class__.__name__ == "XSDataFile":
-            self._xparmXds = xparmXds
-        else:
-            strMessage = "ERROR! XSDataXDSFilePaths constructor argument 'xparmXds' is not XSDataFile but %s" % self._xparmXds.__class__.__name__
-            raise BaseException(strMessage)
-        if xCorrectionsCbf is None:
-            self._xCorrectionsCbf = None
-        elif xCorrectionsCbf.__class__.__name__ == "XSDataFile":
-            self._xCorrectionsCbf = xCorrectionsCbf
-        else:
-            strMessage = "ERROR! XSDataXDSFilePaths constructor argument 'xCorrectionsCbf' is not XSDataFile but %s" % self._xCorrectionsCbf.__class__.__name__
-            raise BaseException(strMessage)
-        if yCorrectionsCbf is None:
-            self._yCorrectionsCbf = None
-        elif yCorrectionsCbf.__class__.__name__ == "XSDataFile":
-            self._yCorrectionsCbf = yCorrectionsCbf
-        else:
-            strMessage = "ERROR! XSDataXDSFilePaths constructor argument 'yCorrectionsCbf' is not XSDataFile but %s" % self._yCorrectionsCbf.__class__.__name__
-            raise BaseException(strMessage)
-        if bkginitCbf is None:
-            self._bkginitCbf = None
-        elif bkginitCbf.__class__.__name__ == "XSDataFile":
-            self._bkginitCbf = bkginitCbf
-        else:
-            strMessage = "ERROR! XSDataXDSFilePaths constructor argument 'bkginitCbf' is not XSDataFile but %s" % self._bkginitCbf.__class__.__name__
-            raise BaseException(strMessage)
-        if gainCbf is None:
-            self._gainCbf = None
-        elif gainCbf.__class__.__name__ == "XSDataFile":
-            self._gainCbf = gainCbf
-        else:
-            strMessage = "ERROR! XSDataXDSFilePaths constructor argument 'gainCbf' is not XSDataFile but %s" % self._gainCbf.__class__.__name__
-            raise BaseException(strMessage)
-        if blankCbf is None:
-            self._blankCbf = None
-        elif blankCbf.__class__.__name__ == "XSDataFile":
-            self._blankCbf = blankCbf
-        else:
-            strMessage = "ERROR! XSDataXDSFilePaths constructor argument 'blankCbf' is not XSDataFile but %s" % self._blankCbf.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'xparmXds' attribute
-    def getXparmXds(self): return self._xparmXds
-    def setXparmXds(self, xparmXds):
-        if xparmXds is None:
-            self._xparmXds = None
-        elif xparmXds.__class__.__name__ == "XSDataFile":
-            self._xparmXds = xparmXds
-        else:
-            strMessage = "ERROR! XSDataXDSFilePaths.setXparmXds argument is not XSDataFile but %s" % xparmXds.__class__.__name__
-            raise BaseException(strMessage)
-    def delXparmXds(self): self._xparmXds = None
-    xparmXds = property(getXparmXds, setXparmXds, delXparmXds, "Property for xparmXds")
-    # Methods and properties for the 'xCorrectionsCbf' attribute
-    def getXCorrectionsCbf(self): return self._xCorrectionsCbf
-    def setXCorrectionsCbf(self, xCorrectionsCbf):
-        if xCorrectionsCbf is None:
-            self._xCorrectionsCbf = None
-        elif xCorrectionsCbf.__class__.__name__ == "XSDataFile":
-            self._xCorrectionsCbf = xCorrectionsCbf
-        else:
-            strMessage = "ERROR! XSDataXDSFilePaths.setXCorrectionsCbf argument is not XSDataFile but %s" % xCorrectionsCbf.__class__.__name__
-            raise BaseException(strMessage)
-    def delXCorrectionsCbf(self): self._xCorrectionsCbf = None
-    xCorrectionsCbf = property(getXCorrectionsCbf, setXCorrectionsCbf, delXCorrectionsCbf, "Property for xCorrectionsCbf")
-    # Methods and properties for the 'yCorrectionsCbf' attribute
-    def getYCorrectionsCbf(self): return self._yCorrectionsCbf
-    def setYCorrectionsCbf(self, yCorrectionsCbf):
-        if yCorrectionsCbf is None:
-            self._yCorrectionsCbf = None
-        elif yCorrectionsCbf.__class__.__name__ == "XSDataFile":
-            self._yCorrectionsCbf = yCorrectionsCbf
-        else:
-            strMessage = "ERROR! XSDataXDSFilePaths.setYCorrectionsCbf argument is not XSDataFile but %s" % yCorrectionsCbf.__class__.__name__
-            raise BaseException(strMessage)
-    def delYCorrectionsCbf(self): self._yCorrectionsCbf = None
-    yCorrectionsCbf = property(getYCorrectionsCbf, setYCorrectionsCbf, delYCorrectionsCbf, "Property for yCorrectionsCbf")
-    # Methods and properties for the 'bkginitCbf' attribute
-    def getBkginitCbf(self): return self._bkginitCbf
-    def setBkginitCbf(self, bkginitCbf):
-        if bkginitCbf is None:
-            self._bkginitCbf = None
-        elif bkginitCbf.__class__.__name__ == "XSDataFile":
-            self._bkginitCbf = bkginitCbf
-        else:
-            strMessage = "ERROR! XSDataXDSFilePaths.setBkginitCbf argument is not XSDataFile but %s" % bkginitCbf.__class__.__name__
-            raise BaseException(strMessage)
-    def delBkginitCbf(self): self._bkginitCbf = None
-    bkginitCbf = property(getBkginitCbf, setBkginitCbf, delBkginitCbf, "Property for bkginitCbf")
-    # Methods and properties for the 'gainCbf' attribute
-    def getGainCbf(self): return self._gainCbf
-    def setGainCbf(self, gainCbf):
-        if gainCbf is None:
-            self._gainCbf = None
-        elif gainCbf.__class__.__name__ == "XSDataFile":
-            self._gainCbf = gainCbf
-        else:
-            strMessage = "ERROR! XSDataXDSFilePaths.setGainCbf argument is not XSDataFile but %s" % gainCbf.__class__.__name__
-            raise BaseException(strMessage)
-    def delGainCbf(self): self._gainCbf = None
-    gainCbf = property(getGainCbf, setGainCbf, delGainCbf, "Property for gainCbf")
-    # Methods and properties for the 'blankCbf' attribute
-    def getBlankCbf(self): return self._blankCbf
-    def setBlankCbf(self, blankCbf):
-        if blankCbf is None:
-            self._blankCbf = None
-        elif blankCbf.__class__.__name__ == "XSDataFile":
-            self._blankCbf = blankCbf
-        else:
-            strMessage = "ERROR! XSDataXDSFilePaths.setBlankCbf argument is not XSDataFile but %s" % blankCbf.__class__.__name__
-            raise BaseException(strMessage)
-    def delBlankCbf(self): self._blankCbf = None
-    blankCbf = property(getBlankCbf, setBlankCbf, delBlankCbf, "Property for blankCbf")
-    def export(self, outfile, level, name_='XSDataXDSFilePaths'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataXDSFilePaths'):
-        XSDataInput.exportChildren(self, outfile, level, name_)
-        if self._xparmXds is not None:
-            self.xparmXds.export(outfile, level, name_='xparmXds')
-        if self._xCorrectionsCbf is not None:
-            self.xCorrectionsCbf.export(outfile, level, name_='xCorrectionsCbf')
-        if self._yCorrectionsCbf is not None:
-            self.yCorrectionsCbf.export(outfile, level, name_='yCorrectionsCbf')
-        if self._bkginitCbf is not None:
-            self.bkginitCbf.export(outfile, level, name_='bkginitCbf')
-        if self._gainCbf is not None:
-            self.gainCbf.export(outfile, level, name_='gainCbf')
-        if self._blankCbf is not None:
-            self.blankCbf.export(outfile, level, name_='blankCbf')
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'xparmXds':
-            obj_ = XSDataFile()
-            obj_.build(child_)
-            self.setXparmXds(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'xCorrectionsCbf':
-            obj_ = XSDataFile()
-            obj_.build(child_)
-            self.setXCorrectionsCbf(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'yCorrectionsCbf':
-            obj_ = XSDataFile()
-            obj_.build(child_)
-            self.setYCorrectionsCbf(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'bkginitCbf':
-            obj_ = XSDataFile()
-            obj_.build(child_)
-            self.setBkginitCbf(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'gainCbf':
-            obj_ = XSDataFile()
-            obj_.build(child_)
-            self.setGainCbf(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'blankCbf':
-            obj_ = XSDataFile()
-            obj_.build(child_)
-            self.setBlankCbf(obj_)
-        XSDataInput.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataXDSFilePaths" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataXDSFilePaths' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataXDSFilePaths is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataXDSFilePaths.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataXDSFilePaths()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataXDSFilePaths" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataXDSFilePaths()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataXDSFilePaths
 
 
 class XSDataResultXDS(XSDataResult):

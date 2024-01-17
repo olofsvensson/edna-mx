@@ -7,7 +7,7 @@ import XSDataCommon.XSDataInteger
 import XSDataCommon.XSDataFile
 import XSDataCommon.XSDataString
 import XSDataCommon.XSDataBoolean
-
+import XSDataCommon.XSDataRange
 
 complex type XSDataInputControlXia2DIALS extends XSDataInput {
 	dataCollectionId : XSDataInteger optional
@@ -20,6 +20,7 @@ complex type XSDataInputControlXia2DIALS extends XSDataInput {
 	startFrame : XSDataInteger optional
 	endFrame : XSDataInteger optional
 	reprocess : XSDataBoolean optional
+	exclude_range : XSDataRange [] optional
 }
 
 complex type XSDataResultControlXia2DIALS extends XSDataResult {

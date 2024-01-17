@@ -9,11 +9,7 @@ import XSDataCommon.XSDataInput
 import XSDataCommon.XSDataResult
 import XSDataCommon.XSDataBoolean
 import XSDataCommon.XSDataFile
-
-complex type XSDataRange {
-	begin : integer
-	end : integer
-}
+import XSDataCommon.XSDataRange
 
 complex type XSDataEDNAprocInput extends XSDataInput {
 	input_file : XSDataFile

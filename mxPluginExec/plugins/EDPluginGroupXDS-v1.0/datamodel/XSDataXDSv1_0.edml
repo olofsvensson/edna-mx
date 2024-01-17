@@ -13,6 +13,7 @@ import XSDataCommon.XSDataResult
 import XSDataCommon.XSDataString
 import XSDataCommon.XSDataVectorDouble
 import XSDataCommon.XSDataWavelength
+import XSDataCommon.XSDataRange
 
 complex type XSDataCell {
 	angle_alpha : XSDataAngle
@@ -21,11 +22,6 @@ complex type XSDataCell {
 	length_a : XSDataLength
 	length_b : XSDataLength
 	length_c : XSDataLength
-}
-
-complex type XSDataRange {
-	begin : integer
-	end : integer
 }
 
 complex type XSDataMinimalXdsIn extends XSDataInput {

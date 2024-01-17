@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Jul 28 03:59::44 2023 by EDGenerateDS.
+# Generated Wed Jan 17 02:58::16 2024 by EDGenerateDS.
 #
 
 import os, sys
@@ -19,9 +19,11 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSDataRange
     from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataDouble
     from XSDataCommon import XSDataFile
@@ -39,6 +41,7 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSDataRange
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataDouble
 from XSDataCommon import XSDataFile
@@ -126,7 +129,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlAutoPROC(XSDataInput):
-    def __init__(self, configuration=None, highResolutionLimit=None, lowResolutionLimit=None, reprocess=None, cell=None, symm=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, icatProcessDataDir=None, dataCollectionId=None):
+    def __init__(self, configuration=None, exclude_range=None, highResolutionLimit=None, lowResolutionLimit=None, reprocess=None, cell=None, symm=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, icatProcessDataDir=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -225,6 +228,13 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self._highResolutionLimit = highResolutionLimit
         else:
             strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'highResolutionLimit' is not XSDataDouble but %s" % self._highResolutionLimit.__class__.__name__
+            raise BaseException(strMessage)
+        if exclude_range is None:
+            self._exclude_range = []
+        elif exclude_range.__class__.__name__ == "list":
+            self._exclude_range = exclude_range
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'exclude_range' is not list but %s" % self._exclude_range.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -394,6 +404,39 @@ class XSDataInputControlAutoPROC(XSDataInput):
             raise BaseException(strMessage)
     def delHighResolutionLimit(self): self._highResolutionLimit = None
     highResolutionLimit = property(getHighResolutionLimit, setHighResolutionLimit, delHighResolutionLimit, "Property for highResolutionLimit")
+    # Methods and properties for the 'exclude_range' attribute
+    def getExclude_range(self): return self._exclude_range
+    def setExclude_range(self, exclude_range):
+        if exclude_range is None:
+            self._exclude_range = []
+        elif exclude_range.__class__.__name__ == "list":
+            self._exclude_range = exclude_range
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.setExclude_range argument is not list but %s" % exclude_range.__class__.__name__
+            raise BaseException(strMessage)
+    def delExclude_range(self): self._exclude_range = None
+    exclude_range = property(getExclude_range, setExclude_range, delExclude_range, "Property for exclude_range")
+    def addExclude_range(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.addExclude_range argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataRange":
+            self._exclude_range.append(value)
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.addExclude_range argument is not XSDataRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertExclude_range(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.insertExclude_range argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.insertExclude_range argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataRange":
+            self._exclude_range[index] = value
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.addExclude_range argument is not XSDataRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     def export(self, outfile, level, name_='XSDataInputControlAutoPROC'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -430,6 +473,8 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self.lowResolutionLimit.export(outfile, level, name_='lowResolutionLimit')
         if self._highResolutionLimit is not None:
             self.highResolutionLimit.export(outfile, level, name_='highResolutionLimit')
+        for exclude_range_ in self.getExclude_range():
+            exclude_range_.export(outfile, level, name_='exclude_range')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -505,6 +550,11 @@ class XSDataInputControlAutoPROC(XSDataInput):
             obj_ = XSDataDouble()
             obj_.build(child_)
             self.setHighResolutionLimit(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'exclude_range':
+            obj_ = XSDataRange()
+            obj_.build(child_)
+            self.exclude_range.append(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Mar 7 10:35::49 2018 by EDGenerateDS.
+# Generated Wed Jan 17 02:58::00 2024 by EDGenerateDS.
 #
 
 import os, sys
@@ -18,9 +18,11 @@ dictLocation = { \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
  "XSDataCommon": "kernel/datamodel", \
+ "XSDataCommon": "kernel/datamodel", \
 }
 
 try:
+    from XSDataCommon import XSDataRange
     from XSDataCommon import XSDataBoolean
     from XSDataCommon import XSDataString
     from XSDataCommon import XSDataFile
@@ -37,6 +39,7 @@ except ImportError as error:
                     sys.path.append(strRoot)
     else:
         raise error
+from XSDataCommon import XSDataRange
 from XSDataCommon import XSDataBoolean
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataFile
@@ -123,7 +126,7 @@ class MixedContainer(object):
 
 
 class XSDataInputXia2DIALS(XSDataInput):
-    def __init__(self, configuration=None, endFrame=None, startFrame=None, unitCell=None, spaceGroup=None, anomalous=None, image=None):
+    def __init__(self, configuration=None, exclude_range=None, endFrame=None, startFrame=None, unitCell=None, spaceGroup=None, anomalous=None, image=None):
         XSDataInput.__init__(self, configuration)
         if image is None:
             self._image = []
@@ -166,6 +169,13 @@ class XSDataInputXia2DIALS(XSDataInput):
             self._endFrame = endFrame
         else:
             strMessage = "ERROR! XSDataInputXia2DIALS constructor argument 'endFrame' is not XSDataInteger but %s" % self._endFrame.__class__.__name__
+            raise BaseException(strMessage)
+        if exclude_range is None:
+            self._exclude_range = []
+        elif exclude_range.__class__.__name__ == "list":
+            self._exclude_range = exclude_range
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS constructor argument 'exclude_range' is not list but %s" % self._exclude_range.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'image' attribute
     def getImage(self): return self._image
@@ -260,6 +270,39 @@ class XSDataInputXia2DIALS(XSDataInput):
             raise BaseException(strMessage)
     def delEndFrame(self): self._endFrame = None
     endFrame = property(getEndFrame, setEndFrame, delEndFrame, "Property for endFrame")
+    # Methods and properties for the 'exclude_range' attribute
+    def getExclude_range(self): return self._exclude_range
+    def setExclude_range(self, exclude_range):
+        if exclude_range is None:
+            self._exclude_range = []
+        elif exclude_range.__class__.__name__ == "list":
+            self._exclude_range = exclude_range
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS.setExclude_range argument is not list but %s" % exclude_range.__class__.__name__
+            raise BaseException(strMessage)
+    def delExclude_range(self): self._exclude_range = None
+    exclude_range = property(getExclude_range, setExclude_range, delExclude_range, "Property for exclude_range")
+    def addExclude_range(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataInputXia2DIALS.addExclude_range argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataRange":
+            self._exclude_range.append(value)
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS.addExclude_range argument is not XSDataRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertExclude_range(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataInputXia2DIALS.insertExclude_range argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataInputXia2DIALS.insertExclude_range argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataRange":
+            self._exclude_range[index] = value
+        else:
+            strMessage = "ERROR! XSDataInputXia2DIALS.addExclude_range argument is not XSDataRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
     def export(self, outfile, level, name_='XSDataInputXia2DIALS'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -282,6 +325,8 @@ class XSDataInputXia2DIALS(XSDataInput):
             self.startFrame.export(outfile, level, name_='startFrame')
         if self._endFrame is not None:
             self.endFrame.export(outfile, level, name_='endFrame')
+        for exclude_range_ in self.getExclude_range():
+            exclude_range_.export(outfile, level, name_='exclude_range')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -317,6 +362,11 @@ class XSDataInputXia2DIALS(XSDataInput):
             obj_ = XSDataInteger()
             obj_.build(child_)
             self.setEndFrame(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'exclude_range':
+            obj_ = XSDataRange()
+            obj_.build(child_)
+            self.exclude_range.append(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
