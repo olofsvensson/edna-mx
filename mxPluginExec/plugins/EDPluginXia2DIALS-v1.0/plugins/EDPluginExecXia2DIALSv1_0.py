@@ -111,14 +111,32 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         if anomalous:
             strCommandText += " atom=X"
 
-        if _xsDataInputXia2DIALS.startFrame is not None and _xsDataInputXia2DIALS.endFrame is not None:
+        image = _xsDataInputXia2DIALS.image[0]
+        if _xsDataInputXia2DIALS.exclude_range is None:
+            if _xsDataInputXia2DIALS.startFrame is not None and _xsDataInputXia2DIALS.endFrame is not None:
+                startFrame = _xsDataInputXia2DIALS.startFrame.value
+                endFrame = _xsDataInputXia2DIALS.endFrame.value
+                image = _xsDataInputXia2DIALS.image[0]
+                strCommandText += " image={0}:{1}:{2}".format(image.path.value, startFrame, endFrame)
+            else:
+                strCommandText += " image={0}".format(image.path.value)
+        else:
             startFrame = _xsDataInputXia2DIALS.startFrame.value
             endFrame = _xsDataInputXia2DIALS.endFrame.value
-            for image in _xsDataInputXia2DIALS.image:
-                strCommandText += " image={0}:{1}:{2}".format(image.path.value, startFrame, endFrame)
-        else:
-            for image in _xsDataInputXia2DIALS.image:
-                strCommandText += " image={0}".format(image.path.value)
+            list_data_range = []
+            first_iteration = True
+            for xsdata_range in _xsDataInputXia2DIALS.exclude_range:
+                if first_iteration:
+                    list_data_range.append([startFrame, xsdata_range.begin-1])
+                    first_iteration = False
+                else:
+                    list_data_range.append([next_include_begin, xsdata_range.begin-1])
+                next_include_begin = xsdata_range.end + 1
+            list_data_range.append([next_include_begin, endFrame])
+            for index, range in enumerate(list_data_range):
+                begin, end = range
+                strCommandText += " image={0}:{1}:{2}".format(image.path.value, begin, end)
+
 
         if self.maxNoProcessors is not None:
             strCommandText += " multiprocessing.nproc={0}".format(self.maxNoProcessors)

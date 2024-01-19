@@ -91,6 +91,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         self.hasUploadedNoanomStaranisoResultsToISPyB = False
         self.listPyarchFile = []
         self.reprocess = False
+        self.exclude_range = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -213,6 +214,11 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 fileTemplate = template.replace("####", "%04d")
             pathToStartImage = os.path.join(directory, fileTemplate % imageNoStart)
             pathToEndImage = os.path.join(directory, fileTemplate % imageNoEnd)
+
+        if self.dataInput.exclude_range is not None:
+            self.exclude_range = []
+            for xsdata_range in self.dataInput.exclude_range:
+                self.exclude_range.append([xsdata_range.begin, xsdata_range.end])
 
         # Try to get proposal from path
         beamline, proposal = EDUtilsPath.getBeamlineProposal(directory)
@@ -409,16 +415,31 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             xsDataInputAutoPROCNoanom.highResolutionLimit = (
                 self.dataInput.highResolutionLimit
             )
-        xsDataAutoPROCIdentifier = XSDataAutoPROCIdentifier()
-        xsDataAutoPROCIdentifier.idN = XSDataString(identifier)
-        xsDataAutoPROCIdentifier.dirN = XSDataFile(XSDataString(directory))
-        xsDataAutoPROCIdentifier.templateN = XSDataString(template)
-        xsDataAutoPROCIdentifier.fromN = XSDataInteger(imageNoStart)
-        xsDataAutoPROCIdentifier.toN = XSDataInteger(imageNoEnd)
-        if self.doAnom:
-            xsDataInputAutoPROCAnom.addIdentifier(xsDataAutoPROCIdentifier)
-        if self.doNoanom:
-            xsDataInputAutoPROCNoanom.addIdentifier(xsDataAutoPROCIdentifier.copy())
+        if self.exclude_range is None:
+            list_data_range = [[imageNoStart, imageNoEnd]]
+        else:
+            list_data_range = []
+            first_iteration = True
+            for exclude_begin, exclude_end in self.exclude_range:
+                if first_iteration:
+                    list_data_range.append([imageNoStart, exclude_begin-1])
+                    first_iteration = False
+                else:
+                    list_data_range.append([next_include_begin, exclude_begin-1])
+                next_include_begin = exclude_end + 1
+            list_data_range.append([next_include_begin, imageNoEnd])
+        for index, range in enumerate(list_data_range):
+            begin, end = range
+            xsDataAutoPROCIdentifier = XSDataAutoPROCIdentifier()
+            xsDataAutoPROCIdentifier.idN = XSDataString(identifier + "_" + str(index+1))
+            xsDataAutoPROCIdentifier.dirN = XSDataFile(XSDataString(directory))
+            xsDataAutoPROCIdentifier.templateN = XSDataString(template)
+            xsDataAutoPROCIdentifier.fromN = XSDataInteger(begin)
+            xsDataAutoPROCIdentifier.toN = XSDataInteger(end)
+            if self.doAnom:
+                xsDataInputAutoPROCAnom.addIdentifier(xsDataAutoPROCIdentifier)
+            if self.doNoanom:
+                xsDataInputAutoPROCNoanom.addIdentifier(xsDataAutoPROCIdentifier.copy())
         if isH5:
             masterFilePath = os.path.join(
                 directory, self.eiger_template_to_master(template)
