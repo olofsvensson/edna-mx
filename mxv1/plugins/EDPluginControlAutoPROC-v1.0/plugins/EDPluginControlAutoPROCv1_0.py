@@ -415,7 +415,7 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             xsDataInputAutoPROCNoanom.highResolutionLimit = (
                 self.dataInput.highResolutionLimit
             )
-        if self.exclude_range is None:
+        if self.exclude_range is None or len(self.exclude_range) == 0:
             list_data_range = [[imageNoStart, imageNoEnd]]
         else:
             list_data_range = []

@@ -112,7 +112,7 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
             strCommandText += " atom=X"
 
         image = _xsDataInputXia2DIALS.image[0]
-        if _xsDataInputXia2DIALS.exclude_range is None:
+        if _xsDataInputXia2DIALS.exclude_range is None or len(_xsDataInputXia2DIALS.exclude_range) == 0:
             if _xsDataInputXia2DIALS.startFrame is not None and _xsDataInputXia2DIALS.endFrame is not None:
                 startFrame = _xsDataInputXia2DIALS.startFrame.value
                 endFrame = _xsDataInputXia2DIALS.endFrame.value
