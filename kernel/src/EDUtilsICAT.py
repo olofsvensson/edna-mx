@@ -156,6 +156,18 @@ class EDUtilsICAT:
                 f"MXAutoprocIntegrationScaling_{icat_stat_name}_r_merge"
             ] = autoProcScalingStatistics.rMerge
             metadata[
+                f"MXAutoprocIntegrationScaling_{icat_stat_name}_r_meas_within_IPlus_IMinus"
+            ] = autoProcScalingStatistics.rMeasWithinIPlusIMinus
+            metadata[
+                f"MXAutoprocIntegrationScaling_{icat_stat_name}_r_meas_all_IPlus_IMinus"
+            ] = autoProcScalingStatistics.rMeasAllIPlusIMinus
+            metadata[
+                f"MXAutoprocIntegrationScaling_{icat_stat_name}_r_pim_within_IPlus_IMinus"
+            ] = autoProcScalingStatistics.rPimWithinIPlusIMinus
+            metadata[
+                f"MXAutoprocIntegrationScaling_{icat_stat_name}_r_pim_all_IPlus_IMinus"
+            ] = autoProcScalingStatistics.rPimAllIPlusIMinus
+            metadata[
                 f"MXAutoprocIntegrationScaling_{icat_stat_name}_mean_I_over_sigI"
             ] = autoProcScalingStatistics.meanIOverSigI
             metadata[
