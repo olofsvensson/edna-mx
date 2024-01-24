@@ -134,6 +134,7 @@ class EDPluginExecSimpleHTMLPagev1_1(EDPluginExec):
             XSDataFile(XSDataString(self.getWorkingDirectory()))
         )
         # Write workflowStepReport HTML page
+        pathToIndexFile = self.workflowStepReport.renderHtml(self.getWorkingDirectory(), nameOfIndexFile=self.strHtmlFileName)
         pathToJsonFile = self.workflowStepReport.renderJson(self.getWorkingDirectory())
         # Store in Pyarch
         if (
