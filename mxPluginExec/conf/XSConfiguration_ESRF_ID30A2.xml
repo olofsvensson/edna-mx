@@ -132,7 +132,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>maxNoProcessors</name>
-					<value>6</value>
+					<value>20</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -157,7 +157,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>maxNoProcessors</name>
-					<value>6</value>
+					<value>20</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
@@ -178,7 +178,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>maxNoProcessors</name>
-					<value>6</value>
+					<value>20</value>
 				</XSParamItem>
 			</XSParamList>
 		</XSPluginItem>
