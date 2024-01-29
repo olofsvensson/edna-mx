@@ -685,7 +685,7 @@ class EDPluginControlXDSAPPv1_0(EDPluginControl):
             strXscaleInp += "FRIEDEL'S_LAW= {0}\n".format(str(not anom).upper())
             EDUtilsFile.writeFile(os.path.join(_workingDirectory, "XSCALE.INP"), strXscaleInp)
             xscaleLog = os.path.join(_workingDirectory, "xscale.log")
-            pipe1 = subprocess.Popen("/opt/pxsoft/bin/xscale",
+            pipe1 = subprocess.Popen("/cvmfs/sb.esrf.fr/bin/xscale",
                                      shell=True,
                                      stdout=subprocess.PIPE,
                                      close_fds=True,

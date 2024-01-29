@@ -86,7 +86,7 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
         if EDUtilsPath.isEMBL(): 
             subprocess.call("/mx-beta/dials/dials-v1-10-0/build/bin/xia2.ispyb_xml")
         else:
-            subprocess.call("/opt/pxsoft/bin/xia2.ispyb_xml")
+            subprocess.call("/cvmfs/sb.esrf.fr/bin/xia2.ispyb_xml")
         os.chdir(currentDir)
         # Populate the results
         xsDataResultXia2DIALS = self.parseOutputDirectory(self.getWorkingDirectory())
