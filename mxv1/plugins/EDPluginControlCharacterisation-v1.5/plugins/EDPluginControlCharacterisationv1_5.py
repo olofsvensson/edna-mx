@@ -840,6 +840,29 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         apertureV = beam.size.y.value
         wavelength = beam.wavelength.value
         minExposureTime = beam.minExposureTimePerImage.value
+        sample = dataCollection.sample
+        sample_size = None
+        if sample is not None:
+            size = sample.size
+            if size is not None:
+                if size.x is not None:
+                    sample_size_x = size.x.value
+                else:
+                    sample_size_x = 0
+                if size.y is not None:
+                    sample_size_y = size.y.value
+                else:
+                    sample_size_y = 0
+                if size.z is not None:
+                    sample_size_z = size.z.value
+                else:
+                    sample_size_z = 0
+                sample_size = max(sample_size_x, sample_size_y, sample_size_z) * 1000
+        if sample_size is None or sample_size == 0:
+            sample_size = 100
+            self.addStatusMessage(f"Fbest: default crystal size {sample_size} um")
+        else:
+            self.addStatusMessage(f"Fbest: crystal size {sample_size} um")
         xsDataInputFbest = XSDataInputFbest()
         # Covert flux to 100 % transmission
         if abs(transmission - 100) > 1:
@@ -900,7 +923,7 @@ class EDPluginControlCharacterisationv1_5(EDPluginControl):
         # xsDataInputFbest.doseLimit = XSDataDouble(0.0)
         # xsDataInputFbest.doseRate = XSDataDouble(0.0)
         # xsDataInputFbest.sensitivity = XSDataDouble(0.0)
-        # xsDataInputFbest.crystalSize = XSDataDouble(0.0)
+        xsDataInputFbest.crystalSize = XSDataDouble(sample_size)
         self._edPluginExecFbest.setDataInput(xsDataInputFbest)
         self.executePluginSynchronous(self._edPluginExecFbest)
         xsDataResultFbest = self._edPluginExecFbest.dataOutput
