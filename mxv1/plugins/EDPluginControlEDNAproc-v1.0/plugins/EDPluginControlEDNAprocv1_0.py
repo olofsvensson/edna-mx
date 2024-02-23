@@ -117,7 +117,7 @@ WAIT_FOR_FRAME_TIMEOUT = 240  # max uses 50*5
 # ispyb upload. Now some files should not be uploaded, so we'll
 # discriminate by extension for now
 ISPYB_UPLOAD_EXTENSIONS = [".lp", ".mtz", ".log", ".inp", ".gz"]
-
+ISPYB_EXCLUDE_EXTENSIONS = ["multirecord.mtz", "multirecord.mtz.gz"]
 
 class EDPluginControlEDNAprocv1_0(EDPluginControl):
     """
@@ -1477,10 +1477,16 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
                         in ISPYB_UPLOAD_EXTENSIONS
                     ):
                         continue
-                    new_path = os.path.join(pyarch_path, f)
-                    self.screen("Uploading {0} to ISPyB".format(f))
-                    file_list.append(new_path)
-                    shutil.copyfile(current, new_path)
+                    do_upload = True
+                    for exclude_extension in ISPYB_EXCLUDE_EXTENSIONS:
+                        if current.endswith(exclude_extension):
+                            do_upload = False
+                            break
+                    if do_upload:
+                        new_path = os.path.join(pyarch_path, f)
+                        self.screen("Uploading {0} to ISPyB".format(f))
+                        file_list.append(new_path)
+                        shutil.copyfile(current, new_path)
                 # now add those to the ispyb upload
                 for path in file_list:
                     dirname, filename = os.path.split(path)
