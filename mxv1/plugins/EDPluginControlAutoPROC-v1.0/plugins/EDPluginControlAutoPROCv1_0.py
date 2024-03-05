@@ -915,6 +915,45 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
                 autoProcProgramContainer.addAutoProcProgramAttachment(
                     autoProcProgramAttachment
                 )
+            # Add XPARM.XDS and GXPARM.XDS if present
+            xparm_xds_path = os.path.join(processDirectory, "XPARM.XDS")
+            if os.path.exists(xparm_xds_path):
+                pyarch_xparm_xds_name = self.pyarchPrefix + "_{0}_XPARM.XDS".format(anomString)
+                if self.resultsDirectory:
+                    shutil.copy(
+                        xparm_xds_path,
+                        os.path.join(self.resultsDirectory, pyarch_xparm_xds_name),
+                    )
+                shutil.copyfile(
+                    xparm_xds_path,
+                    os.path.join(self.pyarchDirectory, pyarch_xparm_xds_name)
+                )
+                autoProcProgramAttachment = AutoProcProgramAttachment()
+                autoProcProgramAttachment.fileName = pyarch_xparm_xds_name
+                autoProcProgramAttachment.filePath = self.pyarchDirectory
+                autoProcProgramAttachment.fileType = "Result"
+                autoProcProgramContainer.addAutoProcProgramAttachment(
+                    autoProcProgramAttachment
+                )
+            gxparm_xds_path = os.path.join(processDirectory, "GXPARM.XDS")
+            if os.path.exists(gxparm_xds_path):
+                pyarch_gxparm_xds_name = self.pyarchPrefix + "_{0}_GXPARM.XDS".format(anomString)
+                if self.resultsDirectory:
+                    shutil.copy(
+                        gxparm_xds_path,
+                        os.path.join(self.resultsDirectory, pyarch_gxparm_xds_name),
+                    )
+                shutil.copyfile(
+                    gxparm_xds_path,
+                    os.path.join(self.pyarchDirectory, pyarch_gxparm_xds_name)
+                )
+                autoProcProgramAttachment = AutoProcProgramAttachment()
+                autoProcProgramAttachment.fileName = pyarch_gxparm_xds_name
+                autoProcProgramAttachment.filePath = self.pyarchDirectory
+                autoProcProgramAttachment.fileType = "Result"
+                autoProcProgramContainer.addAutoProcProgramAttachment(
+                    autoProcProgramAttachment
+                )
             # Add log file
             pathToLogFile = edPluginExecAutoPROC.dataOutput.logFile.path.value
             autoPROClog = open(pathToLogFile).read()
