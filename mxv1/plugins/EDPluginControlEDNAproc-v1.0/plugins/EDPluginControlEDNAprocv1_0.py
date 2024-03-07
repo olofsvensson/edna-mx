@@ -116,7 +116,7 @@ WAIT_FOR_FRAME_TIMEOUT = 240  # max uses 50*5
 # We used to go through the results directory and add all files to the
 # ispyb upload. Now some files should not be uploaded, so we'll
 # discriminate by extension for now
-ISPYB_UPLOAD_EXTENSIONS = [".lp", ".mtz", ".log", ".inp", ".gz"]
+ISPYB_UPLOAD_EXTENSIONS = [".lp", ".mtz", ".log", ".inp", ".gz", ".xds"]
 ISPYB_EXCLUDE_EXTENSIONS = ["multirecord.mtz", "multirecord.mtz.gz"]
 
 class EDPluginControlEDNAprocv1_0(EDPluginControl):
@@ -658,8 +658,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
             tmppath,
         )
 
-        # Copy the CORRECT.LP and INTEGRATE.LP files as well
-        for fileName in ["CORRECT.LP", "INTEGRATE.LP"]:
+        # Copy the CORRECT.LP, INTEGRATE.LP, XPARM.XDS and GXPARM.XDS files as well
+        for fileName in ["CORRECT.LP", "INTEGRATE.LP", "XPARM.XDS", "GXPARM.XDS"]:
             filePath = os.path.join(
                 self.results_dir, "ep_" + self.image_prefix + "_" + fileName
             )
