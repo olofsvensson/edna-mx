@@ -440,6 +440,8 @@ class EDUtilsPath:
     @classmethod
     def getBeamlineProposal(cls, directory):
         userName = os.environ["USER"]
+        beamline = "unknown"
+        proposal = "unknown"
         if EDUtilsPath.isESRF():
             listDirectory = directory.split(os.sep)
             try:
