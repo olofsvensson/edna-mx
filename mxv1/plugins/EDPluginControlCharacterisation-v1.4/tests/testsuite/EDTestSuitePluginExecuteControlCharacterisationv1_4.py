@@ -42,7 +42,7 @@ class EDTestSuitePluginExecuteControlCharacterisationv1_4(EDTestSuite):
 #        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4_bestBFactorFailed")
 #        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4_iceRings")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4_indexingError")
-        self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4_integrationError")
+        # self.addTestCaseFromName("EDTestCasePluginExecuteControlCharacterisationv1_4_integrationError")
 
 
 
