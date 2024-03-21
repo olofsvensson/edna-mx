@@ -347,7 +347,7 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
 
     def isEiger4MImageFormat(self, _strImageFileName):
         """
-        Detects Eiger 4M CBF image format and returns True after successful identification.
+        Detects Eiger 4M CBF or EIGER1 Si 4M image format and returns True after successful identification.
         """
         strKeyword = None
         pyFile = None
@@ -363,6 +363,8 @@ class EDPluginControlReadImageHeaderv10(EDPluginControl):
             for iIndex in range(10):
                 strLine = pyFile.readline().decode('utf-8')
                 if strLine.find("Detector: Dectris Eiger 4M") != -1:
+                    bIsEiger4MFormat = True
+                elif strLine.find("EIGER1 Si 4M") != -1:
                     bIsEiger4MFormat = True
             pyFile.close()
         return bIsEiger4MFormat
