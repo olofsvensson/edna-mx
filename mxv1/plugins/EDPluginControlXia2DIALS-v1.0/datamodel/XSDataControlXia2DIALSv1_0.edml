@@ -21,6 +21,7 @@ complex type XSDataInputControlXia2DIALS extends XSDataInput {
 	endFrame : XSDataInteger optional
 	reprocess : XSDataBoolean optional
 	exclude_range : XSDataRange [] optional
+	no_cores : XSDataInteger optional
 }
 
 complex type XSDataResultControlXia2DIALS extends XSDataResult {

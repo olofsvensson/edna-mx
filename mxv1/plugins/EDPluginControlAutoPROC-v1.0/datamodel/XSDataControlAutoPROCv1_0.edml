@@ -27,6 +27,7 @@ complex type XSDataInputControlAutoPROC extends XSDataInput {
 	lowResolutionLimit : XSDataDouble optional
 	highResolutionLimit : XSDataDouble optional
 	exclude_range : XSDataRange [] optional
+	no_cores : XSDataInteger optional
 }
 
 complex type XSDataResultControlAutoPROC extends XSDataResult {

@@ -37,6 +37,7 @@ complex type XSDataMinimalXdsIn extends XSDataInput {
 	start_image : XSDataInteger optional
 	end_image : XSDataInteger optional
 	exclude_range : XSDataRange [] optional
+	no_cores : XSDataInteger optional
 }
 
 complex type XSDataMinimalXdsOut extends XSDataResult {

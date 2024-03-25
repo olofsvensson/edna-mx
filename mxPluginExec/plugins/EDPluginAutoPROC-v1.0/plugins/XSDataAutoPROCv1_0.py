@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu May 17 11:11::09 2018 by EDGenerateDS.
+# Generated Mon Mar 25 02:26::16 2024 by EDGenerateDS.
 #
 
 import os, sys
@@ -330,7 +330,7 @@ class XSDataAutoPROCIdentifier(XSData):
 
 
 class XSDataInputAutoPROC(XSDataInput):
-    def __init__(self, configuration=None, cell=None, symm=None, masterH5=None, refMTZ=None, anomalous=None, highResolutionLimit=None, lowResolutionLimit=None, identifier=None):
+    def __init__(self, configuration=None, no_cores=None, cell=None, symm=None, masterH5=None, refMTZ=None, anomalous=None, highResolutionLimit=None, lowResolutionLimit=None, identifier=None):
         XSDataInput.__init__(self, configuration)
         if identifier is None:
             self._identifier = []
@@ -387,6 +387,13 @@ class XSDataInputAutoPROC(XSDataInput):
             self._cell = cell
         else:
             strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'cell' is not XSDataString but %s" % self._cell.__class__.__name__
+            raise BaseException(strMessage)
+        if no_cores is None:
+            self._no_cores = None
+        elif no_cores.__class__.__name__ == "XSDataInteger":
+            self._no_cores = no_cores
+        else:
+            strMessage = "ERROR! XSDataInputAutoPROC constructor argument 'no_cores' is not XSDataInteger but %s" % self._no_cores.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'identifier' attribute
     def getIdentifier(self): return self._identifier
@@ -505,6 +512,18 @@ class XSDataInputAutoPROC(XSDataInput):
             raise BaseException(strMessage)
     def delCell(self): self._cell = None
     cell = property(getCell, setCell, delCell, "Property for cell")
+    # Methods and properties for the 'no_cores' attribute
+    def getNo_cores(self): return self._no_cores
+    def setNo_cores(self, no_cores):
+        if no_cores is None:
+            self._no_cores = None
+        elif no_cores.__class__.__name__ == "XSDataInteger":
+            self._no_cores = no_cores
+        else:
+            strMessage = "ERROR! XSDataInputAutoPROC.setNo_cores argument is not XSDataInteger but %s" % no_cores.__class__.__name__
+            raise BaseException(strMessage)
+    def delNo_cores(self): self._no_cores = None
+    no_cores = property(getNo_cores, setNo_cores, delNo_cores, "Property for no_cores")
     def export(self, outfile, level, name_='XSDataInputAutoPROC'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -531,6 +550,8 @@ class XSDataInputAutoPROC(XSDataInput):
             self.symm.export(outfile, level, name_='symm')
         if self._cell is not None:
             self.cell.export(outfile, level, name_='cell')
+        if self._no_cores is not None:
+            self.no_cores.export(outfile, level, name_='no_cores')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -576,6 +597,11 @@ class XSDataInputAutoPROC(XSDataInput):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setCell(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'no_cores':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setNo_cores(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

@@ -38,6 +38,8 @@ complex type XSDataEDNAprocInput extends XSDataInput {
 
 	doAnom : XSDataBoolean optional
 	doAnomAndNonanom : XSDataBoolean optional
+
+	no_cores : XSDataInteger optional
 }
 
 // these are use by the subplugins of the general file conversion

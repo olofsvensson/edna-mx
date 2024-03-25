@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Wed Jan 17 02:58::16 2024 by EDGenerateDS.
+# Generated Mon Mar 25 02:32::21 2024 by EDGenerateDS.
 #
 
 import os, sys
@@ -129,7 +129,7 @@ class MixedContainer(object):
 
 
 class XSDataInputControlAutoPROC(XSDataInput):
-    def __init__(self, configuration=None, exclude_range=None, highResolutionLimit=None, lowResolutionLimit=None, reprocess=None, cell=None, symm=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, icatProcessDataDir=None, dataCollectionId=None):
+    def __init__(self, configuration=None, no_cores=None, exclude_range=None, highResolutionLimit=None, lowResolutionLimit=None, reprocess=None, cell=None, symm=None, doAnomAndNonanom=None, doAnom=None, processDirectory=None, toN=None, fromN=None, templateN=None, dirN=None, icatProcessDataDir=None, dataCollectionId=None):
         XSDataInput.__init__(self, configuration)
         if dataCollectionId is None:
             self._dataCollectionId = None
@@ -235,6 +235,13 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self._exclude_range = exclude_range
         else:
             strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'exclude_range' is not list but %s" % self._exclude_range.__class__.__name__
+            raise BaseException(strMessage)
+        if no_cores is None:
+            self._no_cores = None
+        elif no_cores.__class__.__name__ == "XSDataInteger":
+            self._no_cores = no_cores
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC constructor argument 'no_cores' is not XSDataInteger but %s" % self._no_cores.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'dataCollectionId' attribute
     def getDataCollectionId(self): return self._dataCollectionId
@@ -437,6 +444,18 @@ class XSDataInputControlAutoPROC(XSDataInput):
         else:
             strMessage = "ERROR! XSDataInputControlAutoPROC.addExclude_range argument is not XSDataRange but %s" % value.__class__.__name__
             raise BaseException(strMessage)
+    # Methods and properties for the 'no_cores' attribute
+    def getNo_cores(self): return self._no_cores
+    def setNo_cores(self, no_cores):
+        if no_cores is None:
+            self._no_cores = None
+        elif no_cores.__class__.__name__ == "XSDataInteger":
+            self._no_cores = no_cores
+        else:
+            strMessage = "ERROR! XSDataInputControlAutoPROC.setNo_cores argument is not XSDataInteger but %s" % no_cores.__class__.__name__
+            raise BaseException(strMessage)
+    def delNo_cores(self): self._no_cores = None
+    no_cores = property(getNo_cores, setNo_cores, delNo_cores, "Property for no_cores")
     def export(self, outfile, level, name_='XSDataInputControlAutoPROC'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -475,6 +494,8 @@ class XSDataInputControlAutoPROC(XSDataInput):
             self.highResolutionLimit.export(outfile, level, name_='highResolutionLimit')
         for exclude_range_ in self.getExclude_range():
             exclude_range_.export(outfile, level, name_='exclude_range')
+        if self._no_cores is not None:
+            self.no_cores.export(outfile, level, name_='no_cores')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -555,6 +576,11 @@ class XSDataInputControlAutoPROC(XSDataInput):
             obj_ = XSDataRange()
             obj_.build(child_)
             self.exclude_range.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'no_cores':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setNo_cores(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
