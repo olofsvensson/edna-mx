@@ -98,6 +98,10 @@ class EDPluginExecMinimalXdsv1_0(EDPluginExecProcessScript):
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginMinimalXDS.preProcess")
+        # Check if no_cores in input
+        if self.dataInput.no_cores is not None:
+            self.maxNoProcessors = self.dataInput.no_cores.value
+            self.screen(f"Number of cores set to {self.maxNoProcessors}")
         xds_input = os.path.abspath(self.dataInput.input_file.value)
         workingDirectory = self.getWorkingDirectory()
         if not os.path.exists(workingDirectory):

@@ -73,6 +73,10 @@ class EDPluginExecXia2DIALSv1_0(EDPluginExecProcessScript):
     def preProcess(self, _edObject=None):
         EDPluginExecProcessScript.preProcess(self)
         self.DEBUG("EDPluginExecXia2DIALSv1_0.preProcess")
+        # Check if no_cores in input
+        if self.dataInput.no_cores is not None:
+            self.maxNoProcessors = self.dataInput.no_cores.value
+            self.screen(f"Number of cores set to {self.maxNoProcessors}")
         strCommandLine = self.generateCommandLine(self.dataInput)
         self.setScriptCommandline(strCommandLine)
 

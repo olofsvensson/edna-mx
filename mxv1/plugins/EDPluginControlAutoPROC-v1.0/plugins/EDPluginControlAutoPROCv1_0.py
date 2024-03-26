@@ -92,9 +92,14 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
         self.listPyarchFile = []
         self.reprocess = False
         self.exclude_range = None
+        self.no_cores = None
 
     def configure(self):
         EDPluginControl.configure(self)
+        # Number of cores
+        if "SLURM_NO_CORES" in os.environ:
+            self.no_cores = int(os.environ["SLURM_NO_CORES"])
+            self.screen(f"Max number of cores set to {self.no_cores}")
 
     def checkParameters(self):
         """
@@ -404,6 +409,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             xsDataInputAutoPROCAnom.highResolutionLimit = (
                 self.dataInput.highResolutionLimit
             )
+            if self.no_cores is not None:
+                xsDataInputAutoPROCAnom.no_cores = XSDataInteger(self.no_cores)
         if self.doNoanom:
             xsDataInputAutoPROCNoanom = XSDataInputAutoPROC()
             xsDataInputAutoPROCNoanom.anomalous = XSDataBoolean(False)
@@ -415,6 +422,8 @@ class EDPluginControlAutoPROCv1_0(EDPluginControl):
             xsDataInputAutoPROCNoanom.highResolutionLimit = (
                 self.dataInput.highResolutionLimit
             )
+            if self.no_cores is not None:
+                xsDataInputAutoPROCNoanom.no_cores = XSDataInteger(self.no_cores)
         if self.exclude_range is None or len(self.exclude_range) == 0:
             list_data_range = [[imageNoStart, imageNoEnd]]
         else:

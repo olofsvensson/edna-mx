@@ -156,6 +156,7 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.icat_processed_data_dir = None
         self.processingPrograms = None
         self.reprocess = False
+        self.no_cores = None
 
     def configure(self):
         EDPluginControl.configure(self)
@@ -167,6 +168,10 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         self.strEDNAEmailSender = self.config.get(
             "emailSender", self.strEDNAEmailSender
         )
+        # Number of cores
+        if "SLURM_NO_CORES" in os.environ:
+            self.no_cores = int(os.environ["SLURM_NO_CORES"])
+            self.screen(f"Max number of cores set to {self.no_cores}")
 
     def checkParameters(self):
         """
@@ -294,6 +299,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         xds_in.exclude_range = data_in.exclude_range
         if sgnumber is not None:
             xds_in.spacegroup = XSDataInteger(sgnumber)
+        if self.no_cores is not None:
+            xds_in.no_cores = XSDataInteger(self.no_cores)
 
         if data_in.unit_cell is not None:
             # Workaround for mxCuBE unit cell comma separation and trailing "2"
@@ -749,6 +756,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         generate_input.doAnom = XSDataBoolean(self.doAnom)
         generate_input.doNoanom = XSDataBoolean(self.doNoanom)
         generate_input.exclude_range = self.dataInput.exclude_range
+        if self.no_cores is not None:
+            generate_input.no_cores = XSDataInteger(self.no_cores)
         self.generate.dataInput = generate_input
 
         self.log_to_ispyb(

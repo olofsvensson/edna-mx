@@ -85,9 +85,14 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
         self.hasUploadedNoanomResultsToISPyB = False
         self.reprocess = False
         self.icatProcessDataDir = None
+        self.no_cores = None
 
     def configure(self):
         EDPluginControl.configure(self)
+        # Number of cores
+        if "SLURM_NO_CORES" in os.environ:
+            self.no_cores = int(os.environ["SLURM_NO_CORES"])
+            self.screen(f"Max number of cores set to {self.no_cores}")
 
     def checkParameters(self):
         """
@@ -328,6 +333,8 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                 xsDataInputXia2DIALSAnom.startFrame = XSDataInteger(imageNoStart)
             if imageNoEnd is not None:
                 xsDataInputXia2DIALSAnom.endFrame = XSDataInteger(imageNoEnd)
+            if self.no_cores is not None:
+                xsDataInputXia2DIALSAnom.no_cores = XSDataInteger(self.no_cores)
         if self.doNoanom:
             xsDataInputXia2DIALSNoanom = XSDataInputXia2DIALS()
             xsDataInputXia2DIALSNoanom.anomalous = XSDataBoolean(False)
@@ -338,6 +345,8 @@ class EDPluginControlXia2DIALSv1_0(EDPluginControl):
                 xsDataInputXia2DIALSNoanom.startFrame = XSDataInteger(imageNoStart)
             if imageNoEnd is not None:
                 xsDataInputXia2DIALSNoanom.endFrame = XSDataInteger(imageNoEnd)
+            if self.no_cores is not None:
+                xsDataInputXia2DIALSNoanom.no_cores = XSDataInteger(self.no_cores)
         if isH5:
             masterFilePath = os.path.join(
                 directory, self.eiger_template_to_master(template)
