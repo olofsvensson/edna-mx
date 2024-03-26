@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Mar 25 02:26::52 2024 by EDGenerateDS.
+# Generated Tue Mar 26 10:20::48 2024 by EDGenerateDS.
 #
 
 import os, sys
@@ -1367,7 +1367,7 @@ class XSDataEDNAprocInput(XSDataInput):
 
 
 class XSDataFileConversion(XSDataInput):
-    def __init__(self, configuration=None, image_prefix=None, choose_spacegroup=None, anom=None, nres=None, res=None, end_image=None, start_image=None, dataCollectionID=None, output_file=None, input_file=None):
+    def __init__(self, configuration=None, no_cores=None, image_prefix=None, choose_spacegroup=None, anom=None, nres=None, res=None, end_image=None, start_image=None, dataCollectionID=None, output_file=None, input_file=None):
         XSDataInput.__init__(self, configuration)
         if input_file is None:
             self._input_file = None
@@ -1438,6 +1438,13 @@ class XSDataFileConversion(XSDataInput):
             self._image_prefix = image_prefix
         else:
             strMessage = "ERROR! XSDataFileConversion constructor argument 'image_prefix' is not XSDataString but %s" % self._image_prefix.__class__.__name__
+            raise BaseException(strMessage)
+        if no_cores is None:
+            self._no_cores = None
+        elif no_cores.__class__.__name__ == "XSDataInteger":
+            self._no_cores = no_cores
+        else:
+            strMessage = "ERROR! XSDataFileConversion constructor argument 'no_cores' is not XSDataInteger but %s" % self._no_cores.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'input_file' attribute
     def getInput_file(self): return self._input_file
@@ -1559,6 +1566,18 @@ class XSDataFileConversion(XSDataInput):
             raise BaseException(strMessage)
     def delImage_prefix(self): self._image_prefix = None
     image_prefix = property(getImage_prefix, setImage_prefix, delImage_prefix, "Property for image_prefix")
+    # Methods and properties for the 'no_cores' attribute
+    def getNo_cores(self): return self._no_cores
+    def setNo_cores(self, no_cores):
+        if no_cores is None:
+            self._no_cores = None
+        elif no_cores.__class__.__name__ == "XSDataInteger":
+            self._no_cores = no_cores
+        else:
+            strMessage = "ERROR! XSDataFileConversion.setNo_cores argument is not XSDataInteger but %s" % no_cores.__class__.__name__
+            raise BaseException(strMessage)
+    def delNo_cores(self): self._no_cores = None
+    no_cores = property(getNo_cores, setNo_cores, delNo_cores, "Property for no_cores")
     def export(self, outfile, level, name_='XSDataFileConversion'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -1603,6 +1622,8 @@ class XSDataFileConversion(XSDataInput):
             self.choose_spacegroup.export(outfile, level, name_='choose_spacegroup')
         if self._image_prefix is not None:
             self.image_prefix.export(outfile, level, name_='image_prefix')
+        if self._no_cores is not None:
+            self.no_cores.export(outfile, level, name_='no_cores')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -1658,6 +1679,11 @@ class XSDataFileConversion(XSDataInput):
             obj_ = XSDataString()
             obj_.build(child_)
             self.setImage_prefix(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'no_cores':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setNo_cores(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):

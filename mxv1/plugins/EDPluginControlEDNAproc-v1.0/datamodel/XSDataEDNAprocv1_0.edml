@@ -59,6 +59,7 @@ complex type XSDataFileConversion extends XSDataInput {
 	choose_spacegroup : XSDataString optional
 	// optional because the way we get it is fragile and may break
 	image_prefix : XSDataString optional
+	no_cores : XSDataInteger optional
 }
 
 complex type XSDataFileConversionOut extends XSDataResult {
