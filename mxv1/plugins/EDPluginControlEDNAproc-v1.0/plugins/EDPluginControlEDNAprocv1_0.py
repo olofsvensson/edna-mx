@@ -1058,7 +1058,8 @@ class EDPluginControlEDNAprocv1_0(EDPluginControl):
         )
         generate_xscale_input.doAnom = XSDataBoolean(self.doAnom)
         generate_xscale_input.doNoanom = XSDataBoolean(self.doNoanom)
-        generate_xscale_input.exclude_range = self.dataInput.exclude_range
+        if self.no_cores is not None:
+            generate_xscale_input.no_cores = XSDataInteger(self.no_cores)
         pointless_cell = ""
         list_pointless_cell = self.file_conversion.dataOutput.pointless_cell
         pointless_cell += "{0}".format(list_pointless_cell[0].value)
