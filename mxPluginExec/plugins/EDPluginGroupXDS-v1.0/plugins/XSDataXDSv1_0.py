@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Mar 25 02:26::24 2024 by EDGenerateDS.
+# Generated Tue Mar 26 10:51::12 2024 by EDGenerateDS.
 #
 
 import os, sys
@@ -1868,6 +1868,270 @@ class XSDataXDSIntegerRange(XSData):
 # end class XSDataXDSIntegerRange
 
 
+class XSDataXDSImage(XSData):
+    def __init__(self, name_template_of_data_frames=None, starting_frame=None, spot_range=None, data_range=None, background_range=None):
+        XSData.__init__(self, )
+        if background_range is None:
+            self._background_range = []
+        elif background_range.__class__.__name__ == "list":
+            self._background_range = background_range
+        else:
+            strMessage = "ERROR! XSDataXDSImage constructor argument 'background_range' is not list but %s" % self._background_range.__class__.__name__
+            raise BaseException(strMessage)
+        if data_range is None:
+            self._data_range = []
+        elif data_range.__class__.__name__ == "list":
+            self._data_range = data_range
+        else:
+            strMessage = "ERROR! XSDataXDSImage constructor argument 'data_range' is not list but %s" % self._data_range.__class__.__name__
+            raise BaseException(strMessage)
+        if spot_range is None:
+            self._spot_range = []
+        elif spot_range.__class__.__name__ == "list":
+            self._spot_range = spot_range
+        else:
+            strMessage = "ERROR! XSDataXDSImage constructor argument 'spot_range' is not list but %s" % self._spot_range.__class__.__name__
+            raise BaseException(strMessage)
+        if starting_frame is None:
+            self._starting_frame = None
+        elif starting_frame.__class__.__name__ == "XSDataInteger":
+            self._starting_frame = starting_frame
+        else:
+            strMessage = "ERROR! XSDataXDSImage constructor argument 'starting_frame' is not XSDataInteger but %s" % self._starting_frame.__class__.__name__
+            raise BaseException(strMessage)
+        if name_template_of_data_frames is None:
+            self._name_template_of_data_frames = None
+        elif name_template_of_data_frames.__class__.__name__ == "XSDataString":
+            self._name_template_of_data_frames = name_template_of_data_frames
+        else:
+            strMessage = "ERROR! XSDataXDSImage constructor argument 'name_template_of_data_frames' is not XSDataString but %s" % self._name_template_of_data_frames.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'background_range' attribute
+    def getBackground_range(self): return self._background_range
+    def setBackground_range(self, background_range):
+        if background_range is None:
+            self._background_range = []
+        elif background_range.__class__.__name__ == "list":
+            self._background_range = background_range
+        else:
+            strMessage = "ERROR! XSDataXDSImage.setBackground_range argument is not list but %s" % background_range.__class__.__name__
+            raise BaseException(strMessage)
+    def delBackground_range(self): self._background_range = None
+    background_range = property(getBackground_range, setBackground_range, delBackground_range, "Property for background_range")
+    def addBackground_range(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataXDSImage.addBackground_range argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
+            self._background_range.append(value)
+        else:
+            strMessage = "ERROR! XSDataXDSImage.addBackground_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertBackground_range(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataXDSImage.insertBackground_range argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataXDSImage.insertBackground_range argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
+            self._background_range[index] = value
+        else:
+            strMessage = "ERROR! XSDataXDSImage.addBackground_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'data_range' attribute
+    def getData_range(self): return self._data_range
+    def setData_range(self, data_range):
+        if data_range is None:
+            self._data_range = []
+        elif data_range.__class__.__name__ == "list":
+            self._data_range = data_range
+        else:
+            strMessage = "ERROR! XSDataXDSImage.setData_range argument is not list but %s" % data_range.__class__.__name__
+            raise BaseException(strMessage)
+    def delData_range(self): self._data_range = None
+    data_range = property(getData_range, setData_range, delData_range, "Property for data_range")
+    def addData_range(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataXDSImage.addData_range argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
+            self._data_range.append(value)
+        else:
+            strMessage = "ERROR! XSDataXDSImage.addData_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertData_range(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataXDSImage.insertData_range argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataXDSImage.insertData_range argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
+            self._data_range[index] = value
+        else:
+            strMessage = "ERROR! XSDataXDSImage.addData_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'spot_range' attribute
+    def getSpot_range(self): return self._spot_range
+    def setSpot_range(self, spot_range):
+        if spot_range is None:
+            self._spot_range = []
+        elif spot_range.__class__.__name__ == "list":
+            self._spot_range = spot_range
+        else:
+            strMessage = "ERROR! XSDataXDSImage.setSpot_range argument is not list but %s" % spot_range.__class__.__name__
+            raise BaseException(strMessage)
+    def delSpot_range(self): self._spot_range = None
+    spot_range = property(getSpot_range, setSpot_range, delSpot_range, "Property for spot_range")
+    def addSpot_range(self, value):
+        if value is None:
+            strMessage = "ERROR! XSDataXDSImage.addSpot_range argument is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
+            self._spot_range.append(value)
+        else:
+            strMessage = "ERROR! XSDataXDSImage.addSpot_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    def insertSpot_range(self, index, value):
+        if index is None:
+            strMessage = "ERROR! XSDataXDSImage.insertSpot_range argument 'index' is None"
+            raise BaseException(strMessage)            
+        if value is None:
+            strMessage = "ERROR! XSDataXDSImage.insertSpot_range argument 'value' is None"
+            raise BaseException(strMessage)            
+        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
+            self._spot_range[index] = value
+        else:
+            strMessage = "ERROR! XSDataXDSImage.addSpot_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'starting_frame' attribute
+    def getStarting_frame(self): return self._starting_frame
+    def setStarting_frame(self, starting_frame):
+        if starting_frame is None:
+            self._starting_frame = None
+        elif starting_frame.__class__.__name__ == "XSDataInteger":
+            self._starting_frame = starting_frame
+        else:
+            strMessage = "ERROR! XSDataXDSImage.setStarting_frame argument is not XSDataInteger but %s" % starting_frame.__class__.__name__
+            raise BaseException(strMessage)
+    def delStarting_frame(self): self._starting_frame = None
+    starting_frame = property(getStarting_frame, setStarting_frame, delStarting_frame, "Property for starting_frame")
+    # Methods and properties for the 'name_template_of_data_frames' attribute
+    def getName_template_of_data_frames(self): return self._name_template_of_data_frames
+    def setName_template_of_data_frames(self, name_template_of_data_frames):
+        if name_template_of_data_frames is None:
+            self._name_template_of_data_frames = None
+        elif name_template_of_data_frames.__class__.__name__ == "XSDataString":
+            self._name_template_of_data_frames = name_template_of_data_frames
+        else:
+            strMessage = "ERROR! XSDataXDSImage.setName_template_of_data_frames argument is not XSDataString but %s" % name_template_of_data_frames.__class__.__name__
+            raise BaseException(strMessage)
+    def delName_template_of_data_frames(self): self._name_template_of_data_frames = None
+    name_template_of_data_frames = property(getName_template_of_data_frames, setName_template_of_data_frames, delName_template_of_data_frames, "Property for name_template_of_data_frames")
+    def export(self, outfile, level, name_='XSDataXDSImage'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataXDSImage'):
+        XSData.exportChildren(self, outfile, level, name_)
+        for background_range_ in self.getBackground_range():
+            background_range_.export(outfile, level, name_='background_range')
+        if self.getBackground_range() == []:
+            warnEmptyAttribute("background_range", "XSDataXDSIntegerRange")
+        for data_range_ in self.getData_range():
+            data_range_.export(outfile, level, name_='data_range')
+        if self.getData_range() == []:
+            warnEmptyAttribute("data_range", "XSDataXDSIntegerRange")
+        for spot_range_ in self.getSpot_range():
+            spot_range_.export(outfile, level, name_='spot_range')
+        if self.getSpot_range() == []:
+            warnEmptyAttribute("spot_range", "XSDataXDSIntegerRange")
+        if self._starting_frame is not None:
+            self.starting_frame.export(outfile, level, name_='starting_frame')
+        else:
+            warnEmptyAttribute("starting_frame", "XSDataInteger")
+        if self._name_template_of_data_frames is not None:
+            self.name_template_of_data_frames.export(outfile, level, name_='name_template_of_data_frames')
+        else:
+            warnEmptyAttribute("name_template_of_data_frames", "XSDataString")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'background_range':
+            obj_ = XSDataXDSIntegerRange()
+            obj_.build(child_)
+            self.background_range.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'data_range':
+            obj_ = XSDataXDSIntegerRange()
+            obj_.build(child_)
+            self.data_range.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'spot_range':
+            obj_ = XSDataXDSIntegerRange()
+            obj_.build(child_)
+            self.spot_range.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'starting_frame':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setStarting_frame(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'name_template_of_data_frames':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setName_template_of_data_frames(obj_)
+        XSData.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataXDSImage" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataXDSImage' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataXDSImage is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataXDSImage.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataXDSImage()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataXDSImage" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataXDSImage()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataXDSImage
+
+
 class XSDataXDSRectangle(XSData):
     def __init__(self, y2=None, y1=None, x2=None, x1=None):
         XSData.__init__(self, )
@@ -2561,270 +2825,6 @@ class XSDataXDSDetector(XSData):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataXDSDetector
-
-
-class XSDataXDSImage(XSData):
-    def __init__(self, name_template_of_data_frames=None, starting_frame=None, spot_range=None, data_range=None, background_range=None):
-        XSData.__init__(self, )
-        if background_range is None:
-            self._background_range = []
-        elif background_range.__class__.__name__ == "list":
-            self._background_range = background_range
-        else:
-            strMessage = "ERROR! XSDataXDSImage constructor argument 'background_range' is not list but %s" % self._background_range.__class__.__name__
-            raise BaseException(strMessage)
-        if data_range is None:
-            self._data_range = []
-        elif data_range.__class__.__name__ == "list":
-            self._data_range = data_range
-        else:
-            strMessage = "ERROR! XSDataXDSImage constructor argument 'data_range' is not list but %s" % self._data_range.__class__.__name__
-            raise BaseException(strMessage)
-        if spot_range is None:
-            self._spot_range = []
-        elif spot_range.__class__.__name__ == "list":
-            self._spot_range = spot_range
-        else:
-            strMessage = "ERROR! XSDataXDSImage constructor argument 'spot_range' is not list but %s" % self._spot_range.__class__.__name__
-            raise BaseException(strMessage)
-        if starting_frame is None:
-            self._starting_frame = None
-        elif starting_frame.__class__.__name__ == "XSDataInteger":
-            self._starting_frame = starting_frame
-        else:
-            strMessage = "ERROR! XSDataXDSImage constructor argument 'starting_frame' is not XSDataInteger but %s" % self._starting_frame.__class__.__name__
-            raise BaseException(strMessage)
-        if name_template_of_data_frames is None:
-            self._name_template_of_data_frames = None
-        elif name_template_of_data_frames.__class__.__name__ == "XSDataString":
-            self._name_template_of_data_frames = name_template_of_data_frames
-        else:
-            strMessage = "ERROR! XSDataXDSImage constructor argument 'name_template_of_data_frames' is not XSDataString but %s" % self._name_template_of_data_frames.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'background_range' attribute
-    def getBackground_range(self): return self._background_range
-    def setBackground_range(self, background_range):
-        if background_range is None:
-            self._background_range = []
-        elif background_range.__class__.__name__ == "list":
-            self._background_range = background_range
-        else:
-            strMessage = "ERROR! XSDataXDSImage.setBackground_range argument is not list but %s" % background_range.__class__.__name__
-            raise BaseException(strMessage)
-    def delBackground_range(self): self._background_range = None
-    background_range = property(getBackground_range, setBackground_range, delBackground_range, "Property for background_range")
-    def addBackground_range(self, value):
-        if value is None:
-            strMessage = "ERROR! XSDataXDSImage.addBackground_range argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
-            self._background_range.append(value)
-        else:
-            strMessage = "ERROR! XSDataXDSImage.addBackground_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertBackground_range(self, index, value):
-        if index is None:
-            strMessage = "ERROR! XSDataXDSImage.insertBackground_range argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! XSDataXDSImage.insertBackground_range argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
-            self._background_range[index] = value
-        else:
-            strMessage = "ERROR! XSDataXDSImage.addBackground_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'data_range' attribute
-    def getData_range(self): return self._data_range
-    def setData_range(self, data_range):
-        if data_range is None:
-            self._data_range = []
-        elif data_range.__class__.__name__ == "list":
-            self._data_range = data_range
-        else:
-            strMessage = "ERROR! XSDataXDSImage.setData_range argument is not list but %s" % data_range.__class__.__name__
-            raise BaseException(strMessage)
-    def delData_range(self): self._data_range = None
-    data_range = property(getData_range, setData_range, delData_range, "Property for data_range")
-    def addData_range(self, value):
-        if value is None:
-            strMessage = "ERROR! XSDataXDSImage.addData_range argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
-            self._data_range.append(value)
-        else:
-            strMessage = "ERROR! XSDataXDSImage.addData_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertData_range(self, index, value):
-        if index is None:
-            strMessage = "ERROR! XSDataXDSImage.insertData_range argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! XSDataXDSImage.insertData_range argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
-            self._data_range[index] = value
-        else:
-            strMessage = "ERROR! XSDataXDSImage.addData_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'spot_range' attribute
-    def getSpot_range(self): return self._spot_range
-    def setSpot_range(self, spot_range):
-        if spot_range is None:
-            self._spot_range = []
-        elif spot_range.__class__.__name__ == "list":
-            self._spot_range = spot_range
-        else:
-            strMessage = "ERROR! XSDataXDSImage.setSpot_range argument is not list but %s" % spot_range.__class__.__name__
-            raise BaseException(strMessage)
-    def delSpot_range(self): self._spot_range = None
-    spot_range = property(getSpot_range, setSpot_range, delSpot_range, "Property for spot_range")
-    def addSpot_range(self, value):
-        if value is None:
-            strMessage = "ERROR! XSDataXDSImage.addSpot_range argument is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
-            self._spot_range.append(value)
-        else:
-            strMessage = "ERROR! XSDataXDSImage.addSpot_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    def insertSpot_range(self, index, value):
-        if index is None:
-            strMessage = "ERROR! XSDataXDSImage.insertSpot_range argument 'index' is None"
-            raise BaseException(strMessage)            
-        if value is None:
-            strMessage = "ERROR! XSDataXDSImage.insertSpot_range argument 'value' is None"
-            raise BaseException(strMessage)            
-        elif value.__class__.__name__ == "XSDataXDSIntegerRange":
-            self._spot_range[index] = value
-        else:
-            strMessage = "ERROR! XSDataXDSImage.addSpot_range argument is not XSDataXDSIntegerRange but %s" % value.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'starting_frame' attribute
-    def getStarting_frame(self): return self._starting_frame
-    def setStarting_frame(self, starting_frame):
-        if starting_frame is None:
-            self._starting_frame = None
-        elif starting_frame.__class__.__name__ == "XSDataInteger":
-            self._starting_frame = starting_frame
-        else:
-            strMessage = "ERROR! XSDataXDSImage.setStarting_frame argument is not XSDataInteger but %s" % starting_frame.__class__.__name__
-            raise BaseException(strMessage)
-    def delStarting_frame(self): self._starting_frame = None
-    starting_frame = property(getStarting_frame, setStarting_frame, delStarting_frame, "Property for starting_frame")
-    # Methods and properties for the 'name_template_of_data_frames' attribute
-    def getName_template_of_data_frames(self): return self._name_template_of_data_frames
-    def setName_template_of_data_frames(self, name_template_of_data_frames):
-        if name_template_of_data_frames is None:
-            self._name_template_of_data_frames = None
-        elif name_template_of_data_frames.__class__.__name__ == "XSDataString":
-            self._name_template_of_data_frames = name_template_of_data_frames
-        else:
-            strMessage = "ERROR! XSDataXDSImage.setName_template_of_data_frames argument is not XSDataString but %s" % name_template_of_data_frames.__class__.__name__
-            raise BaseException(strMessage)
-    def delName_template_of_data_frames(self): self._name_template_of_data_frames = None
-    name_template_of_data_frames = property(getName_template_of_data_frames, setName_template_of_data_frames, delName_template_of_data_frames, "Property for name_template_of_data_frames")
-    def export(self, outfile, level, name_='XSDataXDSImage'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataXDSImage'):
-        XSData.exportChildren(self, outfile, level, name_)
-        for background_range_ in self.getBackground_range():
-            background_range_.export(outfile, level, name_='background_range')
-        if self.getBackground_range() == []:
-            warnEmptyAttribute("background_range", "XSDataXDSIntegerRange")
-        for data_range_ in self.getData_range():
-            data_range_.export(outfile, level, name_='data_range')
-        if self.getData_range() == []:
-            warnEmptyAttribute("data_range", "XSDataXDSIntegerRange")
-        for spot_range_ in self.getSpot_range():
-            spot_range_.export(outfile, level, name_='spot_range')
-        if self.getSpot_range() == []:
-            warnEmptyAttribute("spot_range", "XSDataXDSIntegerRange")
-        if self._starting_frame is not None:
-            self.starting_frame.export(outfile, level, name_='starting_frame')
-        else:
-            warnEmptyAttribute("starting_frame", "XSDataInteger")
-        if self._name_template_of_data_frames is not None:
-            self.name_template_of_data_frames.export(outfile, level, name_='name_template_of_data_frames')
-        else:
-            warnEmptyAttribute("name_template_of_data_frames", "XSDataString")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'background_range':
-            obj_ = XSDataXDSIntegerRange()
-            obj_.build(child_)
-            self.background_range.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'data_range':
-            obj_ = XSDataXDSIntegerRange()
-            obj_.build(child_)
-            self.data_range.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'spot_range':
-            obj_ = XSDataXDSIntegerRange()
-            obj_.build(child_)
-            self.spot_range.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'starting_frame':
-            obj_ = XSDataInteger()
-            obj_.build(child_)
-            self.setStarting_frame(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'name_template_of_data_frames':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setName_template_of_data_frames(obj_)
-        XSData.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataXDSImage" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataXDSImage' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataXDSImage is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataXDSImage.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataXDSImage()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataXDSImage" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataXDSImage()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataXDSImage
 
 
 class XSDataXDSVector(XSData):
@@ -4737,7 +4737,7 @@ class XSDataResultXDS(XSDataResult):
 
 
 class XSDataXdsGenerateInput(XSDataInput):
-    def __init__(self, configuration=None, exclude_range=None, doNoanom=None, doAnom=None, unit_cell=None, spacegroup=None, resolution=None, previous_run_dir=None):
+    def __init__(self, configuration=None, no_cores=None, exclude_range=None, doNoanom=None, doAnom=None, unit_cell=None, spacegroup=None, resolution=None, previous_run_dir=None):
         XSDataInput.__init__(self, configuration)
         if previous_run_dir is None:
             self._previous_run_dir = None
@@ -4787,6 +4787,13 @@ class XSDataXdsGenerateInput(XSDataInput):
             self._exclude_range = exclude_range
         else:
             strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'exclude_range' is not list but %s" % self._exclude_range.__class__.__name__
+            raise BaseException(strMessage)
+        if no_cores is None:
+            self._no_cores = None
+        elif no_cores.__class__.__name__ == "XSDataInteger":
+            self._no_cores = no_cores
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput constructor argument 'no_cores' is not XSDataInteger but %s" % self._no_cores.__class__.__name__
             raise BaseException(strMessage)
     # Methods and properties for the 'previous_run_dir' attribute
     def getPrevious_run_dir(self): return self._previous_run_dir
@@ -4893,6 +4900,18 @@ class XSDataXdsGenerateInput(XSDataInput):
         else:
             strMessage = "ERROR! XSDataXdsGenerateInput.addExclude_range argument is not XSDataRange but %s" % value.__class__.__name__
             raise BaseException(strMessage)
+    # Methods and properties for the 'no_cores' attribute
+    def getNo_cores(self): return self._no_cores
+    def setNo_cores(self, no_cores):
+        if no_cores is None:
+            self._no_cores = None
+        elif no_cores.__class__.__name__ == "XSDataInteger":
+            self._no_cores = no_cores
+        else:
+            strMessage = "ERROR! XSDataXdsGenerateInput.setNo_cores argument is not XSDataInteger but %s" % no_cores.__class__.__name__
+            raise BaseException(strMessage)
+    def delNo_cores(self): self._no_cores = None
+    no_cores = property(getNo_cores, setNo_cores, delNo_cores, "Property for no_cores")
     def export(self, outfile, level, name_='XSDataXdsGenerateInput'):
         showIndent(outfile, level)
         outfile.write(unicode('<%s>\n' % name_))
@@ -4919,6 +4938,8 @@ class XSDataXdsGenerateInput(XSDataInput):
             self.doNoanom.export(outfile, level, name_='doNoanom')
         for exclude_range_ in self.getExclude_range():
             exclude_range_.export(outfile, level, name_='exclude_range')
+        if self._no_cores is not None:
+            self.no_cores.export(outfile, level, name_='no_cores')
     def build(self, node_):
         for child_ in node_.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
@@ -4959,6 +4980,11 @@ class XSDataXdsGenerateInput(XSDataInput):
             obj_ = XSDataRange()
             obj_.build(child_)
             self.exclude_range.append(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'no_cores':
+            obj_ = XSDataInteger()
+            obj_.build(child_)
+            self.setNo_cores(obj_)
         XSDataInput.buildChildren(self, child_, nodeName_)
     #Method for marshalling an object
     def marshal( self ):
@@ -6007,403 +6033,6 @@ class XSDataXdsOutputFile(XSDataInput):
 # end class XSDataXdsOutputFile
 
 
-class XSDataXscaleGeneratedFiles(XSDataResult):
-    def __init__(self, status=None, stats_noanom_unmerged=None, lp_noanom_unmerged=None, hkl_noanom_unmerged=None, stats_anom_unmerged=None, lp_anom_unmerged=None, hkl_anom_unmerged=None, stats_noanom_merged=None, lp_noanom_merged=None, hkl_noanom_merged=None, stats_anom_merged=None, lp_anom_merged=None, hkl_anom_merged=None):
-        XSDataResult.__init__(self, status)
-        if hkl_anom_merged is None:
-            self._hkl_anom_merged = None
-        elif hkl_anom_merged.__class__.__name__ == "XSDataString":
-            self._hkl_anom_merged = hkl_anom_merged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'hkl_anom_merged' is not XSDataString but %s" % self._hkl_anom_merged.__class__.__name__
-            raise BaseException(strMessage)
-        if lp_anom_merged is None:
-            self._lp_anom_merged = None
-        elif lp_anom_merged.__class__.__name__ == "XSDataString":
-            self._lp_anom_merged = lp_anom_merged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'lp_anom_merged' is not XSDataString but %s" % self._lp_anom_merged.__class__.__name__
-            raise BaseException(strMessage)
-        if stats_anom_merged is None:
-            self._stats_anom_merged = None
-        elif stats_anom_merged.__class__.__name__ == "XSDataXscaleParsedOutput":
-            self._stats_anom_merged = stats_anom_merged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'stats_anom_merged' is not XSDataXscaleParsedOutput but %s" % self._stats_anom_merged.__class__.__name__
-            raise BaseException(strMessage)
-        if hkl_noanom_merged is None:
-            self._hkl_noanom_merged = None
-        elif hkl_noanom_merged.__class__.__name__ == "XSDataString":
-            self._hkl_noanom_merged = hkl_noanom_merged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'hkl_noanom_merged' is not XSDataString but %s" % self._hkl_noanom_merged.__class__.__name__
-            raise BaseException(strMessage)
-        if lp_noanom_merged is None:
-            self._lp_noanom_merged = None
-        elif lp_noanom_merged.__class__.__name__ == "XSDataString":
-            self._lp_noanom_merged = lp_noanom_merged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'lp_noanom_merged' is not XSDataString but %s" % self._lp_noanom_merged.__class__.__name__
-            raise BaseException(strMessage)
-        if stats_noanom_merged is None:
-            self._stats_noanom_merged = None
-        elif stats_noanom_merged.__class__.__name__ == "XSDataXscaleParsedOutput":
-            self._stats_noanom_merged = stats_noanom_merged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'stats_noanom_merged' is not XSDataXscaleParsedOutput but %s" % self._stats_noanom_merged.__class__.__name__
-            raise BaseException(strMessage)
-        if hkl_anom_unmerged is None:
-            self._hkl_anom_unmerged = None
-        elif hkl_anom_unmerged.__class__.__name__ == "XSDataString":
-            self._hkl_anom_unmerged = hkl_anom_unmerged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'hkl_anom_unmerged' is not XSDataString but %s" % self._hkl_anom_unmerged.__class__.__name__
-            raise BaseException(strMessage)
-        if lp_anom_unmerged is None:
-            self._lp_anom_unmerged = None
-        elif lp_anom_unmerged.__class__.__name__ == "XSDataString":
-            self._lp_anom_unmerged = lp_anom_unmerged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'lp_anom_unmerged' is not XSDataString but %s" % self._lp_anom_unmerged.__class__.__name__
-            raise BaseException(strMessage)
-        if stats_anom_unmerged is None:
-            self._stats_anom_unmerged = None
-        elif stats_anom_unmerged.__class__.__name__ == "XSDataXscaleParsedOutput":
-            self._stats_anom_unmerged = stats_anom_unmerged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'stats_anom_unmerged' is not XSDataXscaleParsedOutput but %s" % self._stats_anom_unmerged.__class__.__name__
-            raise BaseException(strMessage)
-        if hkl_noanom_unmerged is None:
-            self._hkl_noanom_unmerged = None
-        elif hkl_noanom_unmerged.__class__.__name__ == "XSDataString":
-            self._hkl_noanom_unmerged = hkl_noanom_unmerged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'hkl_noanom_unmerged' is not XSDataString but %s" % self._hkl_noanom_unmerged.__class__.__name__
-            raise BaseException(strMessage)
-        if lp_noanom_unmerged is None:
-            self._lp_noanom_unmerged = None
-        elif lp_noanom_unmerged.__class__.__name__ == "XSDataString":
-            self._lp_noanom_unmerged = lp_noanom_unmerged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'lp_noanom_unmerged' is not XSDataString but %s" % self._lp_noanom_unmerged.__class__.__name__
-            raise BaseException(strMessage)
-        if stats_noanom_unmerged is None:
-            self._stats_noanom_unmerged = None
-        elif stats_noanom_unmerged.__class__.__name__ == "XSDataXscaleParsedOutput":
-            self._stats_noanom_unmerged = stats_noanom_unmerged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'stats_noanom_unmerged' is not XSDataXscaleParsedOutput but %s" % self._stats_noanom_unmerged.__class__.__name__
-            raise BaseException(strMessage)
-    # Methods and properties for the 'hkl_anom_merged' attribute
-    def getHkl_anom_merged(self): return self._hkl_anom_merged
-    def setHkl_anom_merged(self, hkl_anom_merged):
-        if hkl_anom_merged is None:
-            self._hkl_anom_merged = None
-        elif hkl_anom_merged.__class__.__name__ == "XSDataString":
-            self._hkl_anom_merged = hkl_anom_merged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setHkl_anom_merged argument is not XSDataString but %s" % hkl_anom_merged.__class__.__name__
-            raise BaseException(strMessage)
-    def delHkl_anom_merged(self): self._hkl_anom_merged = None
-    hkl_anom_merged = property(getHkl_anom_merged, setHkl_anom_merged, delHkl_anom_merged, "Property for hkl_anom_merged")
-    # Methods and properties for the 'lp_anom_merged' attribute
-    def getLp_anom_merged(self): return self._lp_anom_merged
-    def setLp_anom_merged(self, lp_anom_merged):
-        if lp_anom_merged is None:
-            self._lp_anom_merged = None
-        elif lp_anom_merged.__class__.__name__ == "XSDataString":
-            self._lp_anom_merged = lp_anom_merged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setLp_anom_merged argument is not XSDataString but %s" % lp_anom_merged.__class__.__name__
-            raise BaseException(strMessage)
-    def delLp_anom_merged(self): self._lp_anom_merged = None
-    lp_anom_merged = property(getLp_anom_merged, setLp_anom_merged, delLp_anom_merged, "Property for lp_anom_merged")
-    # Methods and properties for the 'stats_anom_merged' attribute
-    def getStats_anom_merged(self): return self._stats_anom_merged
-    def setStats_anom_merged(self, stats_anom_merged):
-        if stats_anom_merged is None:
-            self._stats_anom_merged = None
-        elif stats_anom_merged.__class__.__name__ == "XSDataXscaleParsedOutput":
-            self._stats_anom_merged = stats_anom_merged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setStats_anom_merged argument is not XSDataXscaleParsedOutput but %s" % stats_anom_merged.__class__.__name__
-            raise BaseException(strMessage)
-    def delStats_anom_merged(self): self._stats_anom_merged = None
-    stats_anom_merged = property(getStats_anom_merged, setStats_anom_merged, delStats_anom_merged, "Property for stats_anom_merged")
-    # Methods and properties for the 'hkl_noanom_merged' attribute
-    def getHkl_noanom_merged(self): return self._hkl_noanom_merged
-    def setHkl_noanom_merged(self, hkl_noanom_merged):
-        if hkl_noanom_merged is None:
-            self._hkl_noanom_merged = None
-        elif hkl_noanom_merged.__class__.__name__ == "XSDataString":
-            self._hkl_noanom_merged = hkl_noanom_merged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setHkl_noanom_merged argument is not XSDataString but %s" % hkl_noanom_merged.__class__.__name__
-            raise BaseException(strMessage)
-    def delHkl_noanom_merged(self): self._hkl_noanom_merged = None
-    hkl_noanom_merged = property(getHkl_noanom_merged, setHkl_noanom_merged, delHkl_noanom_merged, "Property for hkl_noanom_merged")
-    # Methods and properties for the 'lp_noanom_merged' attribute
-    def getLp_noanom_merged(self): return self._lp_noanom_merged
-    def setLp_noanom_merged(self, lp_noanom_merged):
-        if lp_noanom_merged is None:
-            self._lp_noanom_merged = None
-        elif lp_noanom_merged.__class__.__name__ == "XSDataString":
-            self._lp_noanom_merged = lp_noanom_merged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setLp_noanom_merged argument is not XSDataString but %s" % lp_noanom_merged.__class__.__name__
-            raise BaseException(strMessage)
-    def delLp_noanom_merged(self): self._lp_noanom_merged = None
-    lp_noanom_merged = property(getLp_noanom_merged, setLp_noanom_merged, delLp_noanom_merged, "Property for lp_noanom_merged")
-    # Methods and properties for the 'stats_noanom_merged' attribute
-    def getStats_noanom_merged(self): return self._stats_noanom_merged
-    def setStats_noanom_merged(self, stats_noanom_merged):
-        if stats_noanom_merged is None:
-            self._stats_noanom_merged = None
-        elif stats_noanom_merged.__class__.__name__ == "XSDataXscaleParsedOutput":
-            self._stats_noanom_merged = stats_noanom_merged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setStats_noanom_merged argument is not XSDataXscaleParsedOutput but %s" % stats_noanom_merged.__class__.__name__
-            raise BaseException(strMessage)
-    def delStats_noanom_merged(self): self._stats_noanom_merged = None
-    stats_noanom_merged = property(getStats_noanom_merged, setStats_noanom_merged, delStats_noanom_merged, "Property for stats_noanom_merged")
-    # Methods and properties for the 'hkl_anom_unmerged' attribute
-    def getHkl_anom_unmerged(self): return self._hkl_anom_unmerged
-    def setHkl_anom_unmerged(self, hkl_anom_unmerged):
-        if hkl_anom_unmerged is None:
-            self._hkl_anom_unmerged = None
-        elif hkl_anom_unmerged.__class__.__name__ == "XSDataString":
-            self._hkl_anom_unmerged = hkl_anom_unmerged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setHkl_anom_unmerged argument is not XSDataString but %s" % hkl_anom_unmerged.__class__.__name__
-            raise BaseException(strMessage)
-    def delHkl_anom_unmerged(self): self._hkl_anom_unmerged = None
-    hkl_anom_unmerged = property(getHkl_anom_unmerged, setHkl_anom_unmerged, delHkl_anom_unmerged, "Property for hkl_anom_unmerged")
-    # Methods and properties for the 'lp_anom_unmerged' attribute
-    def getLp_anom_unmerged(self): return self._lp_anom_unmerged
-    def setLp_anom_unmerged(self, lp_anom_unmerged):
-        if lp_anom_unmerged is None:
-            self._lp_anom_unmerged = None
-        elif lp_anom_unmerged.__class__.__name__ == "XSDataString":
-            self._lp_anom_unmerged = lp_anom_unmerged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setLp_anom_unmerged argument is not XSDataString but %s" % lp_anom_unmerged.__class__.__name__
-            raise BaseException(strMessage)
-    def delLp_anom_unmerged(self): self._lp_anom_unmerged = None
-    lp_anom_unmerged = property(getLp_anom_unmerged, setLp_anom_unmerged, delLp_anom_unmerged, "Property for lp_anom_unmerged")
-    # Methods and properties for the 'stats_anom_unmerged' attribute
-    def getStats_anom_unmerged(self): return self._stats_anom_unmerged
-    def setStats_anom_unmerged(self, stats_anom_unmerged):
-        if stats_anom_unmerged is None:
-            self._stats_anom_unmerged = None
-        elif stats_anom_unmerged.__class__.__name__ == "XSDataXscaleParsedOutput":
-            self._stats_anom_unmerged = stats_anom_unmerged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setStats_anom_unmerged argument is not XSDataXscaleParsedOutput but %s" % stats_anom_unmerged.__class__.__name__
-            raise BaseException(strMessage)
-    def delStats_anom_unmerged(self): self._stats_anom_unmerged = None
-    stats_anom_unmerged = property(getStats_anom_unmerged, setStats_anom_unmerged, delStats_anom_unmerged, "Property for stats_anom_unmerged")
-    # Methods and properties for the 'hkl_noanom_unmerged' attribute
-    def getHkl_noanom_unmerged(self): return self._hkl_noanom_unmerged
-    def setHkl_noanom_unmerged(self, hkl_noanom_unmerged):
-        if hkl_noanom_unmerged is None:
-            self._hkl_noanom_unmerged = None
-        elif hkl_noanom_unmerged.__class__.__name__ == "XSDataString":
-            self._hkl_noanom_unmerged = hkl_noanom_unmerged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setHkl_noanom_unmerged argument is not XSDataString but %s" % hkl_noanom_unmerged.__class__.__name__
-            raise BaseException(strMessage)
-    def delHkl_noanom_unmerged(self): self._hkl_noanom_unmerged = None
-    hkl_noanom_unmerged = property(getHkl_noanom_unmerged, setHkl_noanom_unmerged, delHkl_noanom_unmerged, "Property for hkl_noanom_unmerged")
-    # Methods and properties for the 'lp_noanom_unmerged' attribute
-    def getLp_noanom_unmerged(self): return self._lp_noanom_unmerged
-    def setLp_noanom_unmerged(self, lp_noanom_unmerged):
-        if lp_noanom_unmerged is None:
-            self._lp_noanom_unmerged = None
-        elif lp_noanom_unmerged.__class__.__name__ == "XSDataString":
-            self._lp_noanom_unmerged = lp_noanom_unmerged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setLp_noanom_unmerged argument is not XSDataString but %s" % lp_noanom_unmerged.__class__.__name__
-            raise BaseException(strMessage)
-    def delLp_noanom_unmerged(self): self._lp_noanom_unmerged = None
-    lp_noanom_unmerged = property(getLp_noanom_unmerged, setLp_noanom_unmerged, delLp_noanom_unmerged, "Property for lp_noanom_unmerged")
-    # Methods and properties for the 'stats_noanom_unmerged' attribute
-    def getStats_noanom_unmerged(self): return self._stats_noanom_unmerged
-    def setStats_noanom_unmerged(self, stats_noanom_unmerged):
-        if stats_noanom_unmerged is None:
-            self._stats_noanom_unmerged = None
-        elif stats_noanom_unmerged.__class__.__name__ == "XSDataXscaleParsedOutput":
-            self._stats_noanom_unmerged = stats_noanom_unmerged
-        else:
-            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setStats_noanom_unmerged argument is not XSDataXscaleParsedOutput but %s" % stats_noanom_unmerged.__class__.__name__
-            raise BaseException(strMessage)
-    def delStats_noanom_unmerged(self): self._stats_noanom_unmerged = None
-    stats_noanom_unmerged = property(getStats_noanom_unmerged, setStats_noanom_unmerged, delStats_noanom_unmerged, "Property for stats_noanom_unmerged")
-    def export(self, outfile, level, name_='XSDataXscaleGeneratedFiles'):
-        showIndent(outfile, level)
-        outfile.write(unicode('<%s>\n' % name_))
-        self.exportChildren(outfile, level + 1, name_)
-        showIndent(outfile, level)
-        outfile.write(unicode('</%s>\n' % name_))
-    def exportChildren(self, outfile, level, name_='XSDataXscaleGeneratedFiles'):
-        XSDataResult.exportChildren(self, outfile, level, name_)
-        if self._hkl_anom_merged is not None:
-            self.hkl_anom_merged.export(outfile, level, name_='hkl_anom_merged')
-        else:
-            warnEmptyAttribute("hkl_anom_merged", "XSDataString")
-        if self._lp_anom_merged is not None:
-            self.lp_anom_merged.export(outfile, level, name_='lp_anom_merged')
-        else:
-            warnEmptyAttribute("lp_anom_merged", "XSDataString")
-        if self._stats_anom_merged is not None:
-            self.stats_anom_merged.export(outfile, level, name_='stats_anom_merged')
-        else:
-            warnEmptyAttribute("stats_anom_merged", "XSDataXscaleParsedOutput")
-        if self._hkl_noanom_merged is not None:
-            self.hkl_noanom_merged.export(outfile, level, name_='hkl_noanom_merged')
-        else:
-            warnEmptyAttribute("hkl_noanom_merged", "XSDataString")
-        if self._lp_noanom_merged is not None:
-            self.lp_noanom_merged.export(outfile, level, name_='lp_noanom_merged')
-        else:
-            warnEmptyAttribute("lp_noanom_merged", "XSDataString")
-        if self._stats_noanom_merged is not None:
-            self.stats_noanom_merged.export(outfile, level, name_='stats_noanom_merged')
-        else:
-            warnEmptyAttribute("stats_noanom_merged", "XSDataXscaleParsedOutput")
-        if self._hkl_anom_unmerged is not None:
-            self.hkl_anom_unmerged.export(outfile, level, name_='hkl_anom_unmerged')
-        else:
-            warnEmptyAttribute("hkl_anom_unmerged", "XSDataString")
-        if self._lp_anom_unmerged is not None:
-            self.lp_anom_unmerged.export(outfile, level, name_='lp_anom_unmerged')
-        else:
-            warnEmptyAttribute("lp_anom_unmerged", "XSDataString")
-        if self._stats_anom_unmerged is not None:
-            self.stats_anom_unmerged.export(outfile, level, name_='stats_anom_unmerged')
-        else:
-            warnEmptyAttribute("stats_anom_unmerged", "XSDataXscaleParsedOutput")
-        if self._hkl_noanom_unmerged is not None:
-            self.hkl_noanom_unmerged.export(outfile, level, name_='hkl_noanom_unmerged')
-        else:
-            warnEmptyAttribute("hkl_noanom_unmerged", "XSDataString")
-        if self._lp_noanom_unmerged is not None:
-            self.lp_noanom_unmerged.export(outfile, level, name_='lp_noanom_unmerged')
-        else:
-            warnEmptyAttribute("lp_noanom_unmerged", "XSDataString")
-        if self._stats_noanom_unmerged is not None:
-            self.stats_noanom_unmerged.export(outfile, level, name_='stats_noanom_unmerged')
-        else:
-            warnEmptyAttribute("stats_noanom_unmerged", "XSDataXscaleParsedOutput")
-    def build(self, node_):
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
-            self.buildChildren(child_, nodeName_)
-    def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'hkl_anom_merged':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setHkl_anom_merged(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'lp_anom_merged':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setLp_anom_merged(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'stats_anom_merged':
-            obj_ = XSDataXscaleParsedOutput()
-            obj_.build(child_)
-            self.setStats_anom_merged(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'hkl_noanom_merged':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setHkl_noanom_merged(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'lp_noanom_merged':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setLp_noanom_merged(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'stats_noanom_merged':
-            obj_ = XSDataXscaleParsedOutput()
-            obj_.build(child_)
-            self.setStats_noanom_merged(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'hkl_anom_unmerged':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setHkl_anom_unmerged(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'lp_anom_unmerged':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setLp_anom_unmerged(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'stats_anom_unmerged':
-            obj_ = XSDataXscaleParsedOutput()
-            obj_.build(child_)
-            self.setStats_anom_unmerged(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'hkl_noanom_unmerged':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setHkl_noanom_unmerged(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'lp_noanom_unmerged':
-            obj_ = XSDataString()
-            obj_.build(child_)
-            self.setLp_noanom_unmerged(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'stats_noanom_unmerged':
-            obj_ = XSDataXscaleParsedOutput()
-            obj_.build(child_)
-            self.setStats_noanom_unmerged(obj_)
-        XSDataResult.buildChildren(self, child_, nodeName_)
-    #Method for marshalling an object
-    def marshal( self ):
-        oStreamString = StringIO()
-        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
-        self.export( oStreamString, 0, name_="XSDataXscaleGeneratedFiles" )
-        oStringXML = oStreamString.getvalue()
-        oStreamString.close()
-        return oStringXML
-    #Only to export the entire XML tree to a file stream on disk
-    def exportToFile( self, _outfileName ):
-        outfile = open( _outfileName, "w" )
-        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
-        self.export( outfile, 0, name_='XSDataXscaleGeneratedFiles' )
-        outfile.close()
-    #Deprecated method, replaced by exportToFile
-    def outputFile( self, _outfileName ):
-        print("WARNING: Method outputFile in class XSDataXscaleGeneratedFiles is deprecated, please use instead exportToFile!")
-        self.exportToFile(_outfileName)
-    #Method for making a copy in a new instance
-    def copy( self ):
-        return XSDataXscaleGeneratedFiles.parseString(self.marshal())
-    #Static method for parsing a string
-    def parseString( _inString ):
-        doc = minidom.parseString(_inString)
-        rootNode = doc.documentElement
-        rootObj = XSDataXscaleGeneratedFiles()
-        rootObj.build(rootNode)
-        # Check that all minOccurs are obeyed by marshalling the created object
-        oStreamString = StringIO()
-        rootObj.export( oStreamString, 0, name_="XSDataXscaleGeneratedFiles" )
-        oStreamString.close()
-        return rootObj
-    parseString = staticmethod( parseString )
-    #Static method for parsing a file
-    def parseFile( _inFilePath ):
-        doc = minidom.parse(_inFilePath)
-        rootNode = doc.documentElement
-        rootObj = XSDataXscaleGeneratedFiles()
-        rootObj.build(rootNode)
-        return rootObj
-    parseFile = staticmethod( parseFile )
-# end class XSDataXscaleGeneratedFiles
-
-
 class XSDataXscaleInputFile(XSDataInput):
     def __init__(self, configuration=None, res=None, path_noanom=None, path_anom=None):
         XSDataInput.__init__(self, configuration)
@@ -7112,6 +6741,403 @@ class XSDataXscaleParsedOutput(XSDataResult):
         return rootObj
     parseFile = staticmethod( parseFile )
 # end class XSDataXscaleParsedOutput
+
+
+class XSDataXscaleGeneratedFiles(XSDataResult):
+    def __init__(self, status=None, stats_noanom_unmerged=None, lp_noanom_unmerged=None, hkl_noanom_unmerged=None, stats_anom_unmerged=None, lp_anom_unmerged=None, hkl_anom_unmerged=None, stats_noanom_merged=None, lp_noanom_merged=None, hkl_noanom_merged=None, stats_anom_merged=None, lp_anom_merged=None, hkl_anom_merged=None):
+        XSDataResult.__init__(self, status)
+        if hkl_anom_merged is None:
+            self._hkl_anom_merged = None
+        elif hkl_anom_merged.__class__.__name__ == "XSDataString":
+            self._hkl_anom_merged = hkl_anom_merged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'hkl_anom_merged' is not XSDataString but %s" % self._hkl_anom_merged.__class__.__name__
+            raise BaseException(strMessage)
+        if lp_anom_merged is None:
+            self._lp_anom_merged = None
+        elif lp_anom_merged.__class__.__name__ == "XSDataString":
+            self._lp_anom_merged = lp_anom_merged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'lp_anom_merged' is not XSDataString but %s" % self._lp_anom_merged.__class__.__name__
+            raise BaseException(strMessage)
+        if stats_anom_merged is None:
+            self._stats_anom_merged = None
+        elif stats_anom_merged.__class__.__name__ == "XSDataXscaleParsedOutput":
+            self._stats_anom_merged = stats_anom_merged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'stats_anom_merged' is not XSDataXscaleParsedOutput but %s" % self._stats_anom_merged.__class__.__name__
+            raise BaseException(strMessage)
+        if hkl_noanom_merged is None:
+            self._hkl_noanom_merged = None
+        elif hkl_noanom_merged.__class__.__name__ == "XSDataString":
+            self._hkl_noanom_merged = hkl_noanom_merged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'hkl_noanom_merged' is not XSDataString but %s" % self._hkl_noanom_merged.__class__.__name__
+            raise BaseException(strMessage)
+        if lp_noanom_merged is None:
+            self._lp_noanom_merged = None
+        elif lp_noanom_merged.__class__.__name__ == "XSDataString":
+            self._lp_noanom_merged = lp_noanom_merged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'lp_noanom_merged' is not XSDataString but %s" % self._lp_noanom_merged.__class__.__name__
+            raise BaseException(strMessage)
+        if stats_noanom_merged is None:
+            self._stats_noanom_merged = None
+        elif stats_noanom_merged.__class__.__name__ == "XSDataXscaleParsedOutput":
+            self._stats_noanom_merged = stats_noanom_merged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'stats_noanom_merged' is not XSDataXscaleParsedOutput but %s" % self._stats_noanom_merged.__class__.__name__
+            raise BaseException(strMessage)
+        if hkl_anom_unmerged is None:
+            self._hkl_anom_unmerged = None
+        elif hkl_anom_unmerged.__class__.__name__ == "XSDataString":
+            self._hkl_anom_unmerged = hkl_anom_unmerged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'hkl_anom_unmerged' is not XSDataString but %s" % self._hkl_anom_unmerged.__class__.__name__
+            raise BaseException(strMessage)
+        if lp_anom_unmerged is None:
+            self._lp_anom_unmerged = None
+        elif lp_anom_unmerged.__class__.__name__ == "XSDataString":
+            self._lp_anom_unmerged = lp_anom_unmerged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'lp_anom_unmerged' is not XSDataString but %s" % self._lp_anom_unmerged.__class__.__name__
+            raise BaseException(strMessage)
+        if stats_anom_unmerged is None:
+            self._stats_anom_unmerged = None
+        elif stats_anom_unmerged.__class__.__name__ == "XSDataXscaleParsedOutput":
+            self._stats_anom_unmerged = stats_anom_unmerged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'stats_anom_unmerged' is not XSDataXscaleParsedOutput but %s" % self._stats_anom_unmerged.__class__.__name__
+            raise BaseException(strMessage)
+        if hkl_noanom_unmerged is None:
+            self._hkl_noanom_unmerged = None
+        elif hkl_noanom_unmerged.__class__.__name__ == "XSDataString":
+            self._hkl_noanom_unmerged = hkl_noanom_unmerged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'hkl_noanom_unmerged' is not XSDataString but %s" % self._hkl_noanom_unmerged.__class__.__name__
+            raise BaseException(strMessage)
+        if lp_noanom_unmerged is None:
+            self._lp_noanom_unmerged = None
+        elif lp_noanom_unmerged.__class__.__name__ == "XSDataString":
+            self._lp_noanom_unmerged = lp_noanom_unmerged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'lp_noanom_unmerged' is not XSDataString but %s" % self._lp_noanom_unmerged.__class__.__name__
+            raise BaseException(strMessage)
+        if stats_noanom_unmerged is None:
+            self._stats_noanom_unmerged = None
+        elif stats_noanom_unmerged.__class__.__name__ == "XSDataXscaleParsedOutput":
+            self._stats_noanom_unmerged = stats_noanom_unmerged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles constructor argument 'stats_noanom_unmerged' is not XSDataXscaleParsedOutput but %s" % self._stats_noanom_unmerged.__class__.__name__
+            raise BaseException(strMessage)
+    # Methods and properties for the 'hkl_anom_merged' attribute
+    def getHkl_anom_merged(self): return self._hkl_anom_merged
+    def setHkl_anom_merged(self, hkl_anom_merged):
+        if hkl_anom_merged is None:
+            self._hkl_anom_merged = None
+        elif hkl_anom_merged.__class__.__name__ == "XSDataString":
+            self._hkl_anom_merged = hkl_anom_merged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setHkl_anom_merged argument is not XSDataString but %s" % hkl_anom_merged.__class__.__name__
+            raise BaseException(strMessage)
+    def delHkl_anom_merged(self): self._hkl_anom_merged = None
+    hkl_anom_merged = property(getHkl_anom_merged, setHkl_anom_merged, delHkl_anom_merged, "Property for hkl_anom_merged")
+    # Methods and properties for the 'lp_anom_merged' attribute
+    def getLp_anom_merged(self): return self._lp_anom_merged
+    def setLp_anom_merged(self, lp_anom_merged):
+        if lp_anom_merged is None:
+            self._lp_anom_merged = None
+        elif lp_anom_merged.__class__.__name__ == "XSDataString":
+            self._lp_anom_merged = lp_anom_merged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setLp_anom_merged argument is not XSDataString but %s" % lp_anom_merged.__class__.__name__
+            raise BaseException(strMessage)
+    def delLp_anom_merged(self): self._lp_anom_merged = None
+    lp_anom_merged = property(getLp_anom_merged, setLp_anom_merged, delLp_anom_merged, "Property for lp_anom_merged")
+    # Methods and properties for the 'stats_anom_merged' attribute
+    def getStats_anom_merged(self): return self._stats_anom_merged
+    def setStats_anom_merged(self, stats_anom_merged):
+        if stats_anom_merged is None:
+            self._stats_anom_merged = None
+        elif stats_anom_merged.__class__.__name__ == "XSDataXscaleParsedOutput":
+            self._stats_anom_merged = stats_anom_merged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setStats_anom_merged argument is not XSDataXscaleParsedOutput but %s" % stats_anom_merged.__class__.__name__
+            raise BaseException(strMessage)
+    def delStats_anom_merged(self): self._stats_anom_merged = None
+    stats_anom_merged = property(getStats_anom_merged, setStats_anom_merged, delStats_anom_merged, "Property for stats_anom_merged")
+    # Methods and properties for the 'hkl_noanom_merged' attribute
+    def getHkl_noanom_merged(self): return self._hkl_noanom_merged
+    def setHkl_noanom_merged(self, hkl_noanom_merged):
+        if hkl_noanom_merged is None:
+            self._hkl_noanom_merged = None
+        elif hkl_noanom_merged.__class__.__name__ == "XSDataString":
+            self._hkl_noanom_merged = hkl_noanom_merged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setHkl_noanom_merged argument is not XSDataString but %s" % hkl_noanom_merged.__class__.__name__
+            raise BaseException(strMessage)
+    def delHkl_noanom_merged(self): self._hkl_noanom_merged = None
+    hkl_noanom_merged = property(getHkl_noanom_merged, setHkl_noanom_merged, delHkl_noanom_merged, "Property for hkl_noanom_merged")
+    # Methods and properties for the 'lp_noanom_merged' attribute
+    def getLp_noanom_merged(self): return self._lp_noanom_merged
+    def setLp_noanom_merged(self, lp_noanom_merged):
+        if lp_noanom_merged is None:
+            self._lp_noanom_merged = None
+        elif lp_noanom_merged.__class__.__name__ == "XSDataString":
+            self._lp_noanom_merged = lp_noanom_merged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setLp_noanom_merged argument is not XSDataString but %s" % lp_noanom_merged.__class__.__name__
+            raise BaseException(strMessage)
+    def delLp_noanom_merged(self): self._lp_noanom_merged = None
+    lp_noanom_merged = property(getLp_noanom_merged, setLp_noanom_merged, delLp_noanom_merged, "Property for lp_noanom_merged")
+    # Methods and properties for the 'stats_noanom_merged' attribute
+    def getStats_noanom_merged(self): return self._stats_noanom_merged
+    def setStats_noanom_merged(self, stats_noanom_merged):
+        if stats_noanom_merged is None:
+            self._stats_noanom_merged = None
+        elif stats_noanom_merged.__class__.__name__ == "XSDataXscaleParsedOutput":
+            self._stats_noanom_merged = stats_noanom_merged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setStats_noanom_merged argument is not XSDataXscaleParsedOutput but %s" % stats_noanom_merged.__class__.__name__
+            raise BaseException(strMessage)
+    def delStats_noanom_merged(self): self._stats_noanom_merged = None
+    stats_noanom_merged = property(getStats_noanom_merged, setStats_noanom_merged, delStats_noanom_merged, "Property for stats_noanom_merged")
+    # Methods and properties for the 'hkl_anom_unmerged' attribute
+    def getHkl_anom_unmerged(self): return self._hkl_anom_unmerged
+    def setHkl_anom_unmerged(self, hkl_anom_unmerged):
+        if hkl_anom_unmerged is None:
+            self._hkl_anom_unmerged = None
+        elif hkl_anom_unmerged.__class__.__name__ == "XSDataString":
+            self._hkl_anom_unmerged = hkl_anom_unmerged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setHkl_anom_unmerged argument is not XSDataString but %s" % hkl_anom_unmerged.__class__.__name__
+            raise BaseException(strMessage)
+    def delHkl_anom_unmerged(self): self._hkl_anom_unmerged = None
+    hkl_anom_unmerged = property(getHkl_anom_unmerged, setHkl_anom_unmerged, delHkl_anom_unmerged, "Property for hkl_anom_unmerged")
+    # Methods and properties for the 'lp_anom_unmerged' attribute
+    def getLp_anom_unmerged(self): return self._lp_anom_unmerged
+    def setLp_anom_unmerged(self, lp_anom_unmerged):
+        if lp_anom_unmerged is None:
+            self._lp_anom_unmerged = None
+        elif lp_anom_unmerged.__class__.__name__ == "XSDataString":
+            self._lp_anom_unmerged = lp_anom_unmerged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setLp_anom_unmerged argument is not XSDataString but %s" % lp_anom_unmerged.__class__.__name__
+            raise BaseException(strMessage)
+    def delLp_anom_unmerged(self): self._lp_anom_unmerged = None
+    lp_anom_unmerged = property(getLp_anom_unmerged, setLp_anom_unmerged, delLp_anom_unmerged, "Property for lp_anom_unmerged")
+    # Methods and properties for the 'stats_anom_unmerged' attribute
+    def getStats_anom_unmerged(self): return self._stats_anom_unmerged
+    def setStats_anom_unmerged(self, stats_anom_unmerged):
+        if stats_anom_unmerged is None:
+            self._stats_anom_unmerged = None
+        elif stats_anom_unmerged.__class__.__name__ == "XSDataXscaleParsedOutput":
+            self._stats_anom_unmerged = stats_anom_unmerged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setStats_anom_unmerged argument is not XSDataXscaleParsedOutput but %s" % stats_anom_unmerged.__class__.__name__
+            raise BaseException(strMessage)
+    def delStats_anom_unmerged(self): self._stats_anom_unmerged = None
+    stats_anom_unmerged = property(getStats_anom_unmerged, setStats_anom_unmerged, delStats_anom_unmerged, "Property for stats_anom_unmerged")
+    # Methods and properties for the 'hkl_noanom_unmerged' attribute
+    def getHkl_noanom_unmerged(self): return self._hkl_noanom_unmerged
+    def setHkl_noanom_unmerged(self, hkl_noanom_unmerged):
+        if hkl_noanom_unmerged is None:
+            self._hkl_noanom_unmerged = None
+        elif hkl_noanom_unmerged.__class__.__name__ == "XSDataString":
+            self._hkl_noanom_unmerged = hkl_noanom_unmerged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setHkl_noanom_unmerged argument is not XSDataString but %s" % hkl_noanom_unmerged.__class__.__name__
+            raise BaseException(strMessage)
+    def delHkl_noanom_unmerged(self): self._hkl_noanom_unmerged = None
+    hkl_noanom_unmerged = property(getHkl_noanom_unmerged, setHkl_noanom_unmerged, delHkl_noanom_unmerged, "Property for hkl_noanom_unmerged")
+    # Methods and properties for the 'lp_noanom_unmerged' attribute
+    def getLp_noanom_unmerged(self): return self._lp_noanom_unmerged
+    def setLp_noanom_unmerged(self, lp_noanom_unmerged):
+        if lp_noanom_unmerged is None:
+            self._lp_noanom_unmerged = None
+        elif lp_noanom_unmerged.__class__.__name__ == "XSDataString":
+            self._lp_noanom_unmerged = lp_noanom_unmerged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setLp_noanom_unmerged argument is not XSDataString but %s" % lp_noanom_unmerged.__class__.__name__
+            raise BaseException(strMessage)
+    def delLp_noanom_unmerged(self): self._lp_noanom_unmerged = None
+    lp_noanom_unmerged = property(getLp_noanom_unmerged, setLp_noanom_unmerged, delLp_noanom_unmerged, "Property for lp_noanom_unmerged")
+    # Methods and properties for the 'stats_noanom_unmerged' attribute
+    def getStats_noanom_unmerged(self): return self._stats_noanom_unmerged
+    def setStats_noanom_unmerged(self, stats_noanom_unmerged):
+        if stats_noanom_unmerged is None:
+            self._stats_noanom_unmerged = None
+        elif stats_noanom_unmerged.__class__.__name__ == "XSDataXscaleParsedOutput":
+            self._stats_noanom_unmerged = stats_noanom_unmerged
+        else:
+            strMessage = "ERROR! XSDataXscaleGeneratedFiles.setStats_noanom_unmerged argument is not XSDataXscaleParsedOutput but %s" % stats_noanom_unmerged.__class__.__name__
+            raise BaseException(strMessage)
+    def delStats_noanom_unmerged(self): self._stats_noanom_unmerged = None
+    stats_noanom_unmerged = property(getStats_noanom_unmerged, setStats_noanom_unmerged, delStats_noanom_unmerged, "Property for stats_noanom_unmerged")
+    def export(self, outfile, level, name_='XSDataXscaleGeneratedFiles'):
+        showIndent(outfile, level)
+        outfile.write(unicode('<%s>\n' % name_))
+        self.exportChildren(outfile, level + 1, name_)
+        showIndent(outfile, level)
+        outfile.write(unicode('</%s>\n' % name_))
+    def exportChildren(self, outfile, level, name_='XSDataXscaleGeneratedFiles'):
+        XSDataResult.exportChildren(self, outfile, level, name_)
+        if self._hkl_anom_merged is not None:
+            self.hkl_anom_merged.export(outfile, level, name_='hkl_anom_merged')
+        else:
+            warnEmptyAttribute("hkl_anom_merged", "XSDataString")
+        if self._lp_anom_merged is not None:
+            self.lp_anom_merged.export(outfile, level, name_='lp_anom_merged')
+        else:
+            warnEmptyAttribute("lp_anom_merged", "XSDataString")
+        if self._stats_anom_merged is not None:
+            self.stats_anom_merged.export(outfile, level, name_='stats_anom_merged')
+        else:
+            warnEmptyAttribute("stats_anom_merged", "XSDataXscaleParsedOutput")
+        if self._hkl_noanom_merged is not None:
+            self.hkl_noanom_merged.export(outfile, level, name_='hkl_noanom_merged')
+        else:
+            warnEmptyAttribute("hkl_noanom_merged", "XSDataString")
+        if self._lp_noanom_merged is not None:
+            self.lp_noanom_merged.export(outfile, level, name_='lp_noanom_merged')
+        else:
+            warnEmptyAttribute("lp_noanom_merged", "XSDataString")
+        if self._stats_noanom_merged is not None:
+            self.stats_noanom_merged.export(outfile, level, name_='stats_noanom_merged')
+        else:
+            warnEmptyAttribute("stats_noanom_merged", "XSDataXscaleParsedOutput")
+        if self._hkl_anom_unmerged is not None:
+            self.hkl_anom_unmerged.export(outfile, level, name_='hkl_anom_unmerged')
+        else:
+            warnEmptyAttribute("hkl_anom_unmerged", "XSDataString")
+        if self._lp_anom_unmerged is not None:
+            self.lp_anom_unmerged.export(outfile, level, name_='lp_anom_unmerged')
+        else:
+            warnEmptyAttribute("lp_anom_unmerged", "XSDataString")
+        if self._stats_anom_unmerged is not None:
+            self.stats_anom_unmerged.export(outfile, level, name_='stats_anom_unmerged')
+        else:
+            warnEmptyAttribute("stats_anom_unmerged", "XSDataXscaleParsedOutput")
+        if self._hkl_noanom_unmerged is not None:
+            self.hkl_noanom_unmerged.export(outfile, level, name_='hkl_noanom_unmerged')
+        else:
+            warnEmptyAttribute("hkl_noanom_unmerged", "XSDataString")
+        if self._lp_noanom_unmerged is not None:
+            self.lp_noanom_unmerged.export(outfile, level, name_='lp_noanom_unmerged')
+        else:
+            warnEmptyAttribute("lp_noanom_unmerged", "XSDataString")
+        if self._stats_noanom_unmerged is not None:
+            self.stats_noanom_unmerged.export(outfile, level, name_='stats_noanom_unmerged')
+        else:
+            warnEmptyAttribute("stats_noanom_unmerged", "XSDataXscaleParsedOutput")
+    def build(self, node_):
+        for child_ in node_.childNodes:
+            nodeName_ = child_.nodeName.split(':')[-1]
+            self.buildChildren(child_, nodeName_)
+    def buildChildren(self, child_, nodeName_):
+        if child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'hkl_anom_merged':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setHkl_anom_merged(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'lp_anom_merged':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setLp_anom_merged(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'stats_anom_merged':
+            obj_ = XSDataXscaleParsedOutput()
+            obj_.build(child_)
+            self.setStats_anom_merged(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'hkl_noanom_merged':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setHkl_noanom_merged(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'lp_noanom_merged':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setLp_noanom_merged(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'stats_noanom_merged':
+            obj_ = XSDataXscaleParsedOutput()
+            obj_.build(child_)
+            self.setStats_noanom_merged(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'hkl_anom_unmerged':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setHkl_anom_unmerged(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'lp_anom_unmerged':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setLp_anom_unmerged(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'stats_anom_unmerged':
+            obj_ = XSDataXscaleParsedOutput()
+            obj_.build(child_)
+            self.setStats_anom_unmerged(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'hkl_noanom_unmerged':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setHkl_noanom_unmerged(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'lp_noanom_unmerged':
+            obj_ = XSDataString()
+            obj_.build(child_)
+            self.setLp_noanom_unmerged(obj_)
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'stats_noanom_unmerged':
+            obj_ = XSDataXscaleParsedOutput()
+            obj_.build(child_)
+            self.setStats_noanom_unmerged(obj_)
+        XSDataResult.buildChildren(self, child_, nodeName_)
+    #Method for marshalling an object
+    def marshal( self ):
+        oStreamString = StringIO()
+        oStreamString.write(unicode('<?xml version="1.0" ?>\n'))
+        self.export( oStreamString, 0, name_="XSDataXscaleGeneratedFiles" )
+        oStringXML = oStreamString.getvalue()
+        oStreamString.close()
+        return oStringXML
+    #Only to export the entire XML tree to a file stream on disk
+    def exportToFile( self, _outfileName ):
+        outfile = open( _outfileName, "w" )
+        outfile.write(unicode('<?xml version=\"1.0\" ?>\n'))
+        self.export( outfile, 0, name_='XSDataXscaleGeneratedFiles' )
+        outfile.close()
+    #Deprecated method, replaced by exportToFile
+    def outputFile( self, _outfileName ):
+        print("WARNING: Method outputFile in class XSDataXscaleGeneratedFiles is deprecated, please use instead exportToFile!")
+        self.exportToFile(_outfileName)
+    #Method for making a copy in a new instance
+    def copy( self ):
+        return XSDataXscaleGeneratedFiles.parseString(self.marshal())
+    #Static method for parsing a string
+    def parseString( _inString ):
+        doc = minidom.parseString(_inString)
+        rootNode = doc.documentElement
+        rootObj = XSDataXscaleGeneratedFiles()
+        rootObj.build(rootNode)
+        # Check that all minOccurs are obeyed by marshalling the created object
+        oStreamString = StringIO()
+        rootObj.export( oStreamString, 0, name_="XSDataXscaleGeneratedFiles" )
+        oStreamString.close()
+        return rootObj
+    parseString = staticmethod( parseString )
+    #Static method for parsing a file
+    def parseFile( _inFilePath ):
+        doc = minidom.parse(_inFilePath)
+        rootNode = doc.documentElement
+        rootObj = XSDataXscaleGeneratedFiles()
+        rootObj.build(rootNode)
+        return rootObj
+    parseFile = staticmethod( parseFile )
+# end class XSDataXscaleGeneratedFiles
 
 
 class XSDataXscaleParsingInput(XSDataInput):
