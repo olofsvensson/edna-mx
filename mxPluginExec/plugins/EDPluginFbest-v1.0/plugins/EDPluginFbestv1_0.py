@@ -112,48 +112,48 @@ class EDPluginFbestv1_0(EDPluginExecProcessScript):
         """
         self.DEBUG("EDPluginFbestv1_0.generateCommands")
 
-        strScriptCommandLine = " -f {0:.3g}".format(_xsDataInputFbest.flux.value)
+        strScriptCommandLine = " -f {0:.6g}".format(_xsDataInputFbest.flux.value)
 
-        strScriptCommandLine += " -res {0:.2f}".format(_xsDataInputFbest.resolution.value)
+        strScriptCommandLine += " -res {0:.6f}".format(_xsDataInputFbest.resolution.value)
 
         if _xsDataInputFbest.beamH is not None:
-            strScriptCommandLine += " -bh {0:.3f}".format(_xsDataInputFbest.beamH.value)
+            strScriptCommandLine += " -bh {0:.6f}".format(_xsDataInputFbest.beamH.value)
 
         if _xsDataInputFbest.beamV is not None:
-            strScriptCommandLine += " -bv {0:.3f}".format(_xsDataInputFbest.beamV.value)
+            strScriptCommandLine += " -bv {0:.6f}".format(_xsDataInputFbest.beamV.value)
 
         if _xsDataInputFbest.wavelength is not None:
-            strScriptCommandLine += " -w {0:.3f}".format(_xsDataInputFbest.wavelength.value)
+            strScriptCommandLine += " -w {0:.6f}".format(_xsDataInputFbest.wavelength.value)
 
         if _xsDataInputFbest.aperture is not None:
-            strScriptCommandLine += " -a {0:.3f}".format(_xsDataInputFbest.aperture.value)
+            strScriptCommandLine += " -a {0:.6f}".format(_xsDataInputFbest.aperture.value)
 
         if _xsDataInputFbest.slitX is not None:
-            strScriptCommandLine += " -sx {0:.3f}".format(_xsDataInputFbest.slitX.value)
+            strScriptCommandLine += " -sx {0:.6f}".format(_xsDataInputFbest.slitX.value)
 
         if _xsDataInputFbest.slitY is not None:
-            strScriptCommandLine += " -sy {0:.3f}".format(_xsDataInputFbest.slitY.value)
+            strScriptCommandLine += " -sy {0:.6f}".format(_xsDataInputFbest.slitY.value)
 
         if _xsDataInputFbest.rotationRange is not None:
-            strScriptCommandLine += " -rot {0:.3f}".format(_xsDataInputFbest.rotationRange.value)
+            strScriptCommandLine += " -rot {0:.6f}".format(_xsDataInputFbest.rotationRange.value)
 
         if _xsDataInputFbest.rotationWidth is not None:
-            strScriptCommandLine += " -rst {0:.3f}".format(_xsDataInputFbest.rotationWidth.value)
+            strScriptCommandLine += " -rst {0:.6f}".format(_xsDataInputFbest.rotationWidth.value)
 
         if _xsDataInputFbest.minExposureTime is not None:
-            strScriptCommandLine += " -tlim {0:.3f}".format(_xsDataInputFbest.minExposureTime.value)
+            strScriptCommandLine += " -tlim {0:.6f}".format(_xsDataInputFbest.minExposureTime.value)
 
         if _xsDataInputFbest.doseLimit is not None:
-            strScriptCommandLine += " -Dmax {0:.1f}".format(_xsDataInputFbest.doseLimit.value)
+            strScriptCommandLine += " -Dmax {0:.6f}".format(_xsDataInputFbest.doseLimit.value)
 
         if _xsDataInputFbest.doseRate is not None:
-            strScriptCommandLine += " -dose {0:.1f}".format(_xsDataInputFbest.doseRate.value)
+            strScriptCommandLine += " -dose {0:.6f}".format(_xsDataInputFbest.doseRate.value)
 
         if _xsDataInputFbest.sensitivity is not None:
-            strScriptCommandLine += " -sen {0:.1f}".format(_xsDataInputFbest.sensitivity.value)
+            strScriptCommandLine += " -sen {0:.6f}".format(_xsDataInputFbest.sensitivity.value)
 
         if _xsDataInputFbest.crystalSize is not None:
-            strScriptCommandLine += " -cs {0:.3f}".format(_xsDataInputFbest.crystalSize.value)
+            strScriptCommandLine += " -cs {0:.6f}".format(_xsDataInputFbest.crystalSize.value)
 
         return strScriptCommandLine
 
