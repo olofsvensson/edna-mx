@@ -28,6 +28,8 @@ __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
+import shutil
+
 """
 This is the test case for the EDUtilsFile static class.
 """
@@ -117,13 +119,75 @@ class EDTestCaseEDUtilsPath(EDTestCase):
         EDAssert.equal(False, exception_caught)
 
 
+    def testTruncateFilePath1(self):
+        # Create path < 255 char
+        dir1 = tempfile.mkdtemp(prefix= "testTruncateFilePath_")
+        dir1a = EDUtilsPath.truncateFilePath(dir1)
+        EDAssert.equal(dir1, dir1a)
+        shutil.rmtree(dir1)
+
+    def testTruncateFilePath2(self):
+        # Create path > 255 char with last directory exceeding 255 char
+        dir2top = tempfile.mkdtemp(prefix= "testTruncateFilePath_")
+        part_dir = "/1234567890123456789"
+        no_part_dir = int((255 - len(dir2top)) / len(part_dir)) + 1
+        dir2 = dir2top + part_dir * no_part_dir
+        os.makedirs(dir2)
+        # print(dir2)
+        # print(len(dir2))
+        dir2a = EDUtilsPath.truncateFilePath(dir2)
+        # print(dir2a)
+        # print(len(dir2a))
+        absPath = os.path.realpath(dir2a)
+        EDAssert.equal(dir2, absPath)
+        shutil.rmtree(dir2top)
+
+
+    def testTruncateFilePath3(self):
+        # Create path > 255 char with many directories exceeding 255 char
+        dir3top = tempfile.mkdtemp(prefix= "testTruncateFilePath_")
+        part_dir = "/1234567890"
+        no_part_dir = int((255 - len(dir3top)) / len(part_dir)) + 10
+        dir3 = dir3top + part_dir * no_part_dir
+        os.makedirs(dir3)
+        dir3a = EDUtilsPath.truncateFilePath(dir3)
+        absPath = os.path.realpath(dir3a)
+        EDAssert.equal(dir3, absPath)
+        shutil.rmtree(dir3top)
+
+    def testTruncateFilePath4(self):
+        import random
+        max_length = 255
+        for index in range(10,20):
+            # Create path > 255 char with many directories exceeding 255 char
+            dir4top = tempfile.mkdtemp(prefix= "testTruncateFilePath_")
+            dir4 = dir4top
+            while len(dir4) < max_length*2:
+                dir4 = os.path.join(dir4, "1"*int(index*random.random()))
+            dir4 = os.path.realpath(dir4)
+            print(dir4)
+            print(len(dir4))
+            os.makedirs(dir4)
+            dir4a = EDUtilsPath.truncateFilePath(dir4, maxLength=max_length)
+            print(dir4a)
+            print(len(dir4a))
+            absPath = os.path.realpath(dir4a)
+            print(absPath)
+            print(len(absPath))
+            EDAssert.equal(dir4, absPath)
+            shutil.rmtree(dir4top)
+
 
     def process(self):
-        self.addTestMethod(self.testGetEdnaUserTempFolder)
-        self.addTestMethod(self.testSystemCopyFile)
-        self.addTestMethod(self.testSystemCopyTree)
-        self.addTestMethod(self.testSystemRmTreeWithoutErrors)
-        self.addTestMethod(self.testSystemRmTreeWithErrors)
+        # self.addTestMethod(self.testGetEdnaUserTempFolder)
+        # self.addTestMethod(self.testSystemCopyFile)
+        # self.addTestMethod(self.testSystemCopyTree)
+        # self.addTestMethod(self.testSystemRmTreeWithoutErrors)
+        # self.addTestMethod(self.testSystemRmTreeWithErrors)
+        # self.addTestMethod(self.testTruncateFilePath1)
+        # self.addTestMethod(self.testTruncateFilePath2)
+        # self.addTestMethod(self.testTruncateFilePath3)
+        self.addTestMethod(self.testTruncateFilePath4)
 
 
 if __name__ == '__main__':

@@ -470,3 +470,39 @@ class EDUtilsPath:
         }
         icat_beamline = dict_beamline.get(beamline, None)
         return icat_beamline
+
+    @classmethod
+    def truncateFilePath(cls, strFilePath, maxLength=255):
+        strNewFilePath = strFilePath
+        if len(strFilePath) > maxLength:
+            listFilePath = strFilePath.split("/")
+            index = len(listFilePath) - 1
+            strNewFilePath = "/".join(listFilePath[:index])
+            while len(strNewFilePath) > maxLength-10:
+                index -=1
+                strNewFilePath = "/".join(listFilePath[:index])
+            fp = tempfile.NamedTemporaryFile(prefix="", dir=strNewFilePath)
+            strNewFilePath = os.path.join(strNewFilePath, fp.name)
+            fp.close()
+            strNewRemainingPath = "/".join(listFilePath[index+1:])
+            strNewFileName = os.path.basename(strNewFilePath)
+
+            strParentDir = os.path.dirname(strNewFilePath)
+            strTargetDirPath = listFilePath[index]
+            strTargetPath = os.path.basename(strTargetDirPath) + "/" + strNewRemainingPath
+            # Check that a symbolic link to this target doesn't already exist
+            listPaths = glob.glob(os.path.join(strParentDir, "*"))
+            linkFound = False
+            for strPath in listPaths:
+                if os.path.islink(strPath):
+                    targetLink = os.readlink(strPath)
+                    if targetLink == strTargetPath:
+                        strNewFilePath = strPath
+                        linkFound = True
+                        break
+            if not linkFound:
+                strCurrentWorkingDir = os.getcwd()
+                os.chdir(strParentDir)
+                os.system("ln -s {0} {1}".format(strTargetPath, strNewFileName))
+                os.chdir(strCurrentWorkingDir)
+        return strNewFilePath

@@ -106,7 +106,7 @@ class EDPluginISPyBv1_4(EDPluginExec):
             oReturnValue = _oValue
         return oReturnValue
 
-    def getXSValue(self, _xsData, _oDefaultValue=None, _iMaxStringLength=255):
+    def getXSValue(self, _xsData, _oDefaultValue=None, _iMaxStringLength=255, _bDoTruncate=True):
         if _xsData is None:
             oReturnValue = _oDefaultValue
         elif (PYTHON3 and (type(_xsData) == str)) or (not PYTHON3 and ((type(_xsData) == str) or (type(_xsData) == unicode))):
@@ -120,7 +120,7 @@ class EDPluginISPyBv1_4(EDPluginExec):
                 oReturnValue = "1"
             else:
                 oReturnValue = "0"
-        if (PYTHON3 and (type(oReturnValue) == str)) or (not PYTHON3 and ((type(oReturnValue) == str) or (type(oReturnValue) == unicode))):
+        if _bDoTruncate and ((PYTHON3 and (type(oReturnValue) == str)) or (not PYTHON3 and ((type(oReturnValue) == str) or (type(oReturnValue) == unicode)))):
             if len(oReturnValue) > _iMaxStringLength:
                 strOldString = oReturnValue
                 oReturnValue = oReturnValue[0:_iMaxStringLength - 3] + "..."

@@ -42,6 +42,7 @@ from suds.transport.http import HttpAuthenticated
 from suds.sax.date import DateTime
 
 from XSDataCommon import XSDataInteger
+from EDUtilsPath import EDUtilsPath
 
 from XSDataISPyBv1_4 import XSDataInputStoreAutoProcProgramAttachment
 from XSDataISPyBv1_4 import XSDataResultStoreAutoProcProgramAttachment
@@ -98,7 +99,9 @@ class EDPluginISPyBStoreAutoProcProgramAttachmentv1_4(EDPluginISPyBv1_4):
         iAutoProcProgramId = self.getXSValue(_xsDataAutoProcProgramAttachment.getAutoProcProgramId())
         strFileType = self.getXSValue(_xsDataAutoProcProgramAttachment.getFileType())
         strFileName = self.getXSValue(_xsDataAutoProcProgramAttachment.getFileName())
-        strFilePath = self.getXSValue(_xsDataAutoProcProgramAttachment.getFilePath())
+        strFilePath = self.getXSValue(_xsDataAutoProcProgramAttachment.getFilePath(), _bDoTruncate=False)
+        # DPC-152 : Make sure that file path is never more than 255 characters
+        strFilePath = EDUtilsPath.truncateFilePath(strFilePath)
         recordTimeStamp = DateTime(datetime.datetime.now())
         iAutoProcProgramAttachmentId = _clientToolsForAutoprocessingWebService.service.storeOrUpdateAutoProcProgramAttachment(
                 arg0=iAutoProcProgramAttachmentId, \
