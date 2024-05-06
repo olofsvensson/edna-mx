@@ -98,7 +98,7 @@ class EDPluginMXThumbnailv1_1(EDPluginExec):
         numpyImageInt = ( mumpyImageFloat * 255.0 ).astype(numpy.uint8)
         pilOutputImage = ImageOps.invert(Image.fromarray(numpyImageInt, 'L'))
         if self.dataInput.height is not None and self.dataInput.width is not None:
-            pilOutputImage = pilOutputImage.resize((self.dataInput.width.value, self.dataInput.height.value), Image.ANTIALIAS)
+            pilOutputImage = pilOutputImage.resize((self.dataInput.width.value, self.dataInput.height.value), Image.Resampling.LANCZOS)
         if self.dataInput.outputPath is None:
             outputPath = os.path.join(self.getWorkingDirectory(), os.path.splitext(imageFileName)[0] + "." + strSuffix)
         else:
