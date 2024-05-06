@@ -30,17 +30,14 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20161109"
 __status__ = "production"
 
-import os
-
-from EDFactoryPluginStatic import EDFactoryPluginStatic
-
 from EDPluginISPyBv1_4 import EDPluginISPyBv1_4
 
 from suds.client import Client
 from suds.transport.http import HttpAuthenticated
-from suds.sax.date import DateTime
 
 from XSDataCommon import XSDataInteger
+
+from EDUtilsPath import EDUtilsPath
 
 from XSDataISPyBv1_4 import XSDataInputISPyBSetImageQualityIndicatorsPlot
 from XSDataISPyBv1_4 import XSDataResultISPyBSetImageQualityIndicatorsPlot
@@ -53,51 +50,73 @@ class EDPluginISPyBSetImageQualityIndicatorsPlotv1_4(EDPluginISPyBv1_4):
 
     def __init__(self):
         """
-        Sets default values for dbserver parameters 
+        Sets default values for dbserver parameters
         """
         EDPluginISPyBv1_4.__init__(self)
         self.setXSDataInputClass(XSDataInputISPyBSetImageQualityIndicatorsPlot)
         self.dataCollectionId = None
 
-
     def configure(self):
         """
         Gets the web servise wdsl parameters from the config file and stores them in class member attributes.
         """
-        EDPluginISPyBv1_4.configure(self, _bRequireToolsForCollectionWebServiceWsdl=True)
-
+        EDPluginISPyBv1_4.configure(
+            self, _bRequireToolsForCollectionWebServiceWsdl=True
+        )
 
     def process(self, _edObject=None):
         """
-        Uses ToolsForCollectionWebService 
+        Uses ToolsForCollectionWebService
         """
         EDPluginISPyBv1_4.process(self)
         self.DEBUG("EDPluginISPyBSetImageQualityIndicatorsPlotv1_4.process")
-        httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(username=self.strUserName, password=self.strPassWord)
-        clientToolsForCollectionWebService = Client(self.strToolsForCollectionWebServiceWsdl,
-                                                    transport=httpAuthenticatedToolsForCollectionWebService,
-                                                    cache=None)
+        httpAuthenticatedToolsForCollectionWebService = HttpAuthenticated(
+            username=self.strUserName, password=self.strPassWord
+        )
+        clientToolsForCollectionWebService = Client(
+            self.strToolsForCollectionWebServiceWsdl,
+            transport=httpAuthenticatedToolsForCollectionWebService,
+            cache=None,
+        )
         # Loop over all positions
         xsDataInputISPyBSetImageQualityIndicatorsPlot = self.getDataInput()
-        iDataCollectionId = self.getXSValue(xsDataInputISPyBSetImageQualityIndicatorsPlot.dataCollectionId)
-        imageQualityIndicatorsPlotPath = self.getXSValue(xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsPlotPath)
-        imageQualityIndicatorsCSVPath = self.getXSValue(xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsCSVPath)
-        self.dataCollectionId = clientToolsForCollectionWebService.service.setImageQualityIndicatorsPlot(
-                                    arg0=iDataCollectionId, \
-                                    imageQualityIndicatorsPlotPath=imageQualityIndicatorsPlotPath, \
-                                    imageQualityIndicatorsCSVPath=imageQualityIndicatorsCSVPath, \
-                                    )
-        self.DEBUG("EDPluginISPyBSetImageQualityIndicatorsPlotv1_4.process: dataCollectionId=%r" % self.dataCollectionId)
-
-
-
-
+        iDataCollectionId = self.getXSValue(
+            xsDataInputISPyBSetImageQualityIndicatorsPlot.dataCollectionId
+        )
+        imageQualityIndicatorsPlotPath = self.getXSValue(
+            xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsPlotPath,
+            _bDoTruncate=False,
+        )
+        imageQualityIndicatorsCSVPath = self.getXSValue(
+            xsDataInputISPyBSetImageQualityIndicatorsPlot.imageQualityIndicatorsCSVPath,
+            _bDoTruncate=False,
+        )
+        # DPC-152 : Make sure that file path is never more than 255 characters
+        imageQualityIndicatorsPlotPath = EDUtilsPath.truncateFilePath(
+            imageQualityIndicatorsPlotPath
+        )
+        imageQualityIndicatorsCSVPath = EDUtilsPath.truncateFilePath(
+            imageQualityIndicatorsCSVPath
+        )
+        self.dataCollectionId = (
+            clientToolsForCollectionWebService.service.setImageQualityIndicatorsPlot(
+                arg0=iDataCollectionId,
+                imageQualityIndicatorsPlotPath=imageQualityIndicatorsPlotPath,
+                imageQualityIndicatorsCSVPath=imageQualityIndicatorsCSVPath,
+            )
+        )
+        self.DEBUG(
+            "EDPluginISPyBSetImageQualityIndicatorsPlotv1_4.process: dataCollectionId=%r"
+            % self.dataCollectionId
+        )
 
     def finallyProcess(self, _edObject=None):
         EDPluginISPyBv1_4.finallyProcess(self)
         self.DEBUG("EDPluginISPyBSetImageQualityIndicatorsPlotv1_4.finallyProcess")
-        xsDataResultISPyBSetImageQualityIndicatorsPlot = XSDataResultISPyBSetImageQualityIndicatorsPlot()
-        xsDataResultISPyBSetImageQualityIndicatorsPlot.dataCollectionId = XSDataInteger(self.dataCollectionId)
+        xsDataResultISPyBSetImageQualityIndicatorsPlot = (
+            XSDataResultISPyBSetImageQualityIndicatorsPlot()
+        )
+        xsDataResultISPyBSetImageQualityIndicatorsPlot.dataCollectionId = XSDataInteger(
+            self.dataCollectionId
+        )
         self.setDataOutput(xsDataResultISPyBSetImageQualityIndicatorsPlot)
-
-
