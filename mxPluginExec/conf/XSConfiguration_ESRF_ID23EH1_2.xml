@@ -41,7 +41,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/xdsme/v0.5.0.2/linux/XOalign/XOalign_esrf.py</value>
+					<value>/cvmfs/sb.esrf.fr/software/packages/ubuntu20.04/x86_64/xdsme/0.6.6.0/xdsme/XOalign/XOalign_esrf.py</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
