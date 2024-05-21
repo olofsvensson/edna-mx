@@ -737,7 +737,7 @@
 				</XSParamItem>
 				<XSParamItem>
 					<name>execProcessScriptExecutable</name>
-					<value>/opt/pxsoft/bin/wkhtmltopdf</value>
+					<value>/cvmfs/sb.esrf.fr/bin/wkhtmltopdf</value>
 				</XSParamItem>
 				<XSParamItem>
 					<name>timeOut</name>
