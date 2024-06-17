@@ -82,14 +82,17 @@ class EDUtilsICAT:
         proposal,
         timeStart,
         timeEnd,
-        reprocess=False
+        reprocess=False,
+        icat_dir_name=None
     ):
         if directory.endswith("/"):
             directory = directory[:-1]
         if icatProcessDataDir.endswith("/"):
             icatProcessDataDir = icatProcessDataDir[:-1]
-
-        dataset_name = processName
+        if icat_dir_name is None:
+            dataset_name = processName
+        else:
+            dataset_name = icat_dir_name
         icat_dir = os.path.join(icatProcessDataDir, dataset_name)
         os.makedirs(icat_dir, mode=0o755, exist_ok=False)
         # Attached files
